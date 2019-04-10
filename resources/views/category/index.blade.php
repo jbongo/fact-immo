@@ -122,9 +122,7 @@ Ajouter une categorie
 @section('js-content')
 
 <script>
-var table = $('#example').DataTable({
 
-});
 
 
 $(function() {

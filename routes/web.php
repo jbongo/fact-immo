@@ -25,8 +25,19 @@ Route::middleware('auth')->group(function(){
     Route::get('/category/delete/{category}','CategoryController@destroyNo')->name('category.delete');
     Route::put('/category/update/{category}','CategoryController@update')->name('category.update');
 
+    // Mandataires
+    Route::get('/mandataires','mandataireController@index')->name('mandataire.index');
+    Route::get('/mandataire/create','mandataireController@create')->name('mandataire.create');
+    Route::post('/mandataire/add','mandataireController@store')->name('mandataire.add');
+    Route::get('/mandataire/show/{id}','mandataireController@show')->name('mandataire.show');
+    Route::put('/mandataire/edit/{mandataire}','mandataireController@edit')->name('mandataire.edit');
+    Route::put('/mandataire/update/{mandataire}','mandataireController@update')->name('mandataire.update');
+    Route::delete('/mandataire/delete/{mandataire}','mandataireController@destroy')->name('mandataire.delete');
+    Route::delete('/mandataire/archive/{mandataire}','mandataireController@archive')->name('mandataire.archive');
 
-
+    // Contrat 
+    Route::get('/contrat/create','contratController@create')->name('contrat.create');
+    Route::post('/contrat/add','contratController@store')->name('contrat.add');
 
 
     Route::get('/', function () {

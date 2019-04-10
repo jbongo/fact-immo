@@ -4,16 +4,21 @@
         <div class="nano">
             <div class="nano-content">
                 <ul>
-                    <li class="active"><a ><i class="ti-home"></i> Dashboard </a></li>
-                    <li><a class="sidebar-sub-toggle"><i class="ti-pencil-alt"></i>Produits <span class="badge badge-primary">28</span><span class="sidebar-collapse-icon ti-angle-down"></span></a>
+                    <li class="active"><a ><i class="ti-home"></i> Accueil </a></li>
+                    <li><a  class="sidebar-sub-toggle"><i class="ti-target"></i>Mandataires  <span class="sidebar-collapse-icon ti-angle-down"></span></a>
                         <ul>
-                            <li><a href="{{ route('product.add') }}">Gestion</a></li>
+                            <li><a href="{{route('mandataire.index')}}">Gestion</a></li>
+                            <li><a href="page-login.html">Modèles commision</a></li>
+                            <li><a href="page-login.html">Tarif pack pub</a></li>
                         </ul>
                     </li>
-                    <li class="active"><a href="{{route('category.index')}}" ><i class="ti-pencil-alt"></i> Catégories </a></li>
+                    <li class="active"><a href="{{route('mandataire.index')}}" ><i class="ti-pencil-alt"></i> Factures </a></li>
+                    <li><a class="sidebar-sub-toggle"><i class="ti-pencil-alt"></i>Utilisateurs <span class="badge badge-primary">2</span></a></li>
                     <li><a  class="sidebar-sub-toggle"><i class="ti-target"></i> Paramètres <span class="sidebar-collapse-icon ti-angle-down"></span></a>
                         <ul>
-                            <li><a href="page-login.html">Stripe</a></li>
+                            <li><a href="page-login.html">Info Entreprise</a></li>
+                            <li><a href="page-login.html">Modèles commision</a></li>
+                            <li><a href="page-login.html">Tarif pack pub</a></li>
                         </ul>
                     </li>
                     <li><a href="{{ route('logout') }}"  onclick="event.preventDefault();
@@ -30,7 +35,7 @@
 
     <div class="header">
         <div class="pull-left">
-            <div class="logo"><a href="index.html"><!-- <img src="assets/images/logo.png" alt="" /> --><span>HuntPro</span></a></div>
+            <div class="logo"><a href="index.html"><!-- <img src="assets/images/logo.png" alt="" /> --><span>Fact-Immo</span></a></div>
             <div class="hamburger sidebar-toggle">
                 <span class="line"></span>
                 <span class="line"></span>

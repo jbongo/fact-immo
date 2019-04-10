@@ -22,10 +22,15 @@
     <script src="{{ asset('js/dropzone.js')}}"></script>
     <script src="{{ asset('js/dropzone-config.js')}}"></script>
     <script src="{{ asset('js/sweetalert2.js')}}"></script>
+    <script src="{{ asset('js/lib/select2/select2.full.min.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
+
     <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
     <script>
+        var table = $('#example').DataTable({
 
-        
+        });
+                
 
     </script>
     @yield('js-content')
