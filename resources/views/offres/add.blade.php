@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
 @section ('page_title')
-Ajout du contrat
+Ajout d'une offre
 @endsection
 <div class="row">
 	<div class="col-lg-12">
@@ -15,15 +15,47 @@ Ajout du contrat
 			<div class="col-lg-10">
 			</div>
 			<div class="card-body">
+                <form class="form-valide3" action="" method="post">
+                        {{ csrf_field() }}
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                
+                                <div class="form-group row">
+                                    <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="val-select">Type d'offre <span class="text-danger">*</span></label>
+                                        <div class="col-lg-6 col-md-6 col-sm-6">
+                                            <select class="js-select2 form-control {{$errors->has('val-lastname') ? 'is-invalid' : ''}}" id="val-select" name="val-select" style="width: 100%;" data-placeholder="Choose one.." required>
+                                                <option ></option>
+                                                <option value="independant">Vente</option>
+                                                <option value="auto-entrepreneur">Location</option>
+                                           </select>
+                                           @if ($errors->has('val-select'))
+                                           <br>
+                                           <div class="alert alert-warning ">
+                                              <strong>{{$errors->first('val-lastname')}}</strong> 
+                                           </div>
+                                           @endif
+                                        </div>
+                                </div>
+                                                       
+                            </div>
+
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="form-group row">
+                                    <label class="col-lg-4 col-form-label" for="date-entree">Désignation<span class="text-danger">*</span></label>
+                                    <div class="col-lg-6">
+                                        <textarea class="form-control" name="" id="" cols="60" rows="5" required></textarea>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
 
                 <div class="panel-body">
                     <fieldset class="col-md-12">
-                        <legend>Infos basiques</legend>
+                        <legend>Infos propriétaire / Vendeur</legend>
                         <div class="panel panel-warning">
-                            <div class="panel-body">
-                                <form class="form-valide3" action="" method="post">
-                                    {{ csrf_field() }}
-
+                            <div class="panel-body">                      
 
                                     <div class="row">
                                         <div class="col-lg-6 col-md-6 col-sm-6">

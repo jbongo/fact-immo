@@ -506,7 +506,11 @@ div.dt-button:active:not(.disabled) {
     border-color: #1de9b6;
     color: #fff
 }
-
+.panel-heading-default {
+    background: #4e4940;
+    border-color: #1de9b6;
+    color: #fff
+}
 .panel-info {
     border-color: #03a9f4
 }

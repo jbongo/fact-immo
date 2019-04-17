@@ -24,7 +24,7 @@
     <link href="{{ asset('css/lib/data-table/data-table.css')}}" rel="stylesheet">
     <link href="{{ asset('css/lib/select2/select2.min.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{asset('css/lib/bootstrap-select.min.css')}}">
-
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
     
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <meta name="csrf-token" content="{{ csrf_token() }}">

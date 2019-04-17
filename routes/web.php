@@ -34,6 +34,16 @@ Route::middleware('auth')->group(function(){
     Route::put('/mandataire/update/{mandataire}','mandataireController@update')->name('mandataire.update');
     Route::delete('/mandataire/delete/{mandataire}','mandataireController@destroy')->name('mandataire.delete');
     Route::delete('/mandataire/archive/{mandataire}','mandataireController@archive')->name('mandataire.archive');
+    
+    // offres
+    Route::get('/offres','offreController@index')->name('offre.index');
+    Route::get('/offre/create','offreController@create')->name('offre.create');
+    Route::post('/offre/add','offreController@store')->name('offre.add');
+    Route::get('/offre/show/{id}','offreController@show')->name('offre.show');
+    Route::put('/offre/edit/{offre}','offreController@edit')->name('offre.edit');
+    Route::put('/offre/update/{offre}','offreController@update')->name('offre.update');
+    Route::delete('/offre/delete/{offre}','offreController@destroy')->name('offre.delete');
+    Route::delete('/offre/archive/{offre}','offreController@archive')->name('offre.archive');
 
     // Contrat 
     Route::get('/contrat/create','contratController@create')->name('contrat.create');
