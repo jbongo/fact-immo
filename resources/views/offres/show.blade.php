@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
 @section ('page_title')
-Ajout d'une offre
+Offre
 @endsection
 <div class="row">
 	<div class="col-lg-12">
@@ -13,8 +13,14 @@ Ajout d'une offre
 		@endif
 		<div class="card">
 			<div class="col-lg-10">
-			</div>
+                    <a class="btn btn-danger btn-flat btn-addon btn-sm m-b-10 m-l-5 submit"><i class="ti-file"></i>Demander Facture stylimmo</a>
+                    <a class="btn btn-success btn-flat btn-addon btn-sm m-b-10 m-l-5 submit"><i class="ti-pencil-alt"></i>Modifier l'offre</a>
+            </div>
+
+
+            <br><br><hr>
 			<div class="card-body">
+                
                 <form class="form-valide3" action="{{ route('offre.add') }}" method="post">
                         {{ csrf_field() }}
                         <div class="row">
@@ -332,7 +338,7 @@ Ajout d'une offre
                     <div class="form-validation">
                         <div class="form-group row" style="text-align: center; margin-top: 50px;">
                             <div class="col-lg-8 ml-auto">
-                                <button class="btn btn-danger btn-flat btn-addon btn-lg m-b-10 m-l-5 submit"><i class="ti-file"></i>Enregistrer</button>
+                                <button class="btn btn-success btn-flat btn-addon btn-lg m-b-10 m-l-5 submit"><i class="ti-save"></i>Enregistrer</button>
                             </div>
                         </div>
                     </div>
@@ -344,6 +350,11 @@ Ajout d'une offre
 @stop
 @section('js-content')
 
+<script>
+$('input').attr('readonly',true);
+$('textarea').attr('readonly',true);
+$('select').attr('readonly',true);
+</script>
 
 
 
