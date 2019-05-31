@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateStripeinfosTable extends Migration
+class CreateOffresTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateStripeinfosTable extends Migration
      */
     public function up()
     {
-        Schema::create('stripeinfos', function (Blueprint $table) {
+        Schema::create('offres', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->timestamps();
         });
@@ -26,6 +26,6 @@ class CreateStripeinfosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('stripeinfos');
+        Schema::dropIfExists('offres');
     }
 }

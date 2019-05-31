@@ -39,7 +39,8 @@ class OffreController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
+        return view('offres.show');
     }
 
     /**
