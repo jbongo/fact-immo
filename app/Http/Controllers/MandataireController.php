@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Crypt;
 
 class MandataireController extends Controller
 {
@@ -38,7 +40,32 @@ class MandataireController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'statut' => 'required|string',
+            'nom' => 'required|string|max:150',
+            'prenom' => 'required|string',
+            'email' => 'required|email|unique:users',
+        ]);
+
+        $user = User::create([
+            'civilite' => $request->civilite,
+            'nom' => $request->nom,
+            'prenom'=>$request->prenom,
+            'telephone'=>$request->telephone,
+            'ville'=>$request->ville,
+            'code_postal'=>$request->code_postal,
+            'pays'=>$request->pays,
+            'statut'=>$request->statut,
+            'email'=>$request->email,
+            'email'=>$request->email,
+            'role'=>"mandataire",
+            'adresse'=>$request->adresse,
+            'complement_adresse'=>$request->compl_adresse,
+            'password' => Hash::make(\str_random(8))
+        ]);
+
+         return redirect()->route('contrat.create', ['user_id'=>Crypt::encrypt($user->id)]);
+
     }
 
     /**

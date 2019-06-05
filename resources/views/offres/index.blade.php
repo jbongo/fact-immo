@@ -26,46 +26,49 @@
                             <table  id="example" class=" table student-data-table  m-t-20 "  style="width:100%">
                                 <thead>
                                     <tr>
-                                        <th>@lang('Nom')</th>
-                                        <th>@lang('Email')</th>
-                                        <th>@lang('Téléphone')</th>
-                                        <th>@lang('Ville')</th>
-                                        <th>@lang('Adresse')</th>
-                                        <th>@lang('Role')</th>
+                                        <th>@lang('Offre')</th>
+                                        <th>@lang('Désignation')</th>
+                                        <th>@lang('Numéro Mandat')</th>
+                                        <th>@lang('Net Vendeur')</th>
+                                        <th>@lang('Date exacte de vente')</th>
+                                        <th>@lang('Partage avec Agent/Agence')</th>
                                         <th>@lang('Action')</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                @foreach ($offres as $offre)
+                                    @foreach ($offres as $offre)
                                     <tr>
 
                                         <td>
-                                        {{$offre->nom}} {{$offre->prenom}}
+                                        {{$offre->type_offre}}
                                         </td>
-                                        <td style="color: #32ade1; text-decoration: underline;">
-                                        <strong>{{$offre->email}}</strong> 
+                                        <td >
+                                        <strong>{{$offre->designation}}</strong> 
                                         </td>
-                                        <td style="color: #e05555;; text-decoration: underline;">
-                                            <strong> {{$offre->telephone}}</strong> 
-                                        </td>
-                                        <td>
-                                        {{$offre->ville}}   
+                                        <td style="color: #e05555;">
+                                            <strong> {{$offre->numero_mandat}}</strong> 
                                         </td>
                                         <td>
-                                        {{$offre->adresse}} 
+                                            {{$offre->net_vendeur}}   
+                                        </td>
+                                        <td>
+                                        {{$offre->date_mandat}}   
+                                        </td>
+                                        <td>
+                                            @php($color = "danger")
+
+                                            @if($offre->est_partage_agent == 0)
+                                                <span class="badge badge-danger">Non</span>
+                                            @else
+                                                <span class="badge badge-success">Oui</span>
+                                            @endif
+
                                         </td>                                        
+                                      
                                         <td>
-                                           
-                                                @php($color = "danger")
-                                            
-                                        <span class="badge badge-{{$color}}">{{$offre->role}}</span>
-                                          
-                                        </td>
-                                        <td>
-                                            <span><a href="{{route('offre.show',$offre->id)}}" data-toggle="tooltip" title="@lang('Détails de ') {{ $offre->nom }}"><i class="large material-icons color-info">visibility</i></a> </span>
-                                            <span><a href="{{route('offre.edit',$offre->id)}}" data-toggle="tooltip" title="@lang('Modifier ') {{ $offre->nom }}"><i class="large material-icons color-warning">edit</i></a></span>
-        
-                                        <span><a  href="{{route('offre.archive',[$offre->id,1])}}" class="delete" data-toggle="tooltip" title="@lang('Archiver ') {{ $offre->nom }}"><i class="large material-icons color-danger">delete</i> </a></span>
+                                            <span><a href="{{route('offre.show',Crypt::encrypt($offre->id))}}" data-toggle="tooltip" title="@lang('Détails  ')"><i class="large material-icons color-info">visibility</i></a> </span>
+                                            <span><a href="{{route('offre.show',Crypt::encrypt($offre->id))}}" data-toggle="tooltip" title="@lang('Modifier ') "><i class="large material-icons color-warning">edit</i></a></span>
+                                            <span><a  href="{{route('offre.archive',[$offre->id,1])}}" class="delete" data-toggle="tooltip" title="@lang('Archiver ') {{ $offre->nom }}"><i class="large material-icons color-danger">delete</i> </a></span>
                                         </td>
                                     </tr>
                             @endforeach

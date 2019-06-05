@@ -15,23 +15,23 @@ Ajout d'une offre
 			<div class="col-lg-10">
 			</div>
 			<div class="card-body">
-                <form class="form-valide3" action="" method="post">
+                <form class="form-valide3" action="{{ route('offre.add') }}" method="post">
                         {{ csrf_field() }}
                         <div class="row">
                             <div class="col-lg-6 col-md-6 col-sm-6">
                                 
                                 <div class="form-group row">
-                                    <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="val-select">Type d'offre <span class="text-danger">*</span></label>
+                                    <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="type_offre">Type d'offre <span class="text-danger">*</span></label>
                                         <div class="col-lg-6 col-md-6 col-sm-6">
-                                            <select class="js-select2 form-control {{$errors->has('val-lastname') ? 'is-invalid' : ''}}" id="val-select" name="val-select" style="width: 100%;" data-placeholder="Choose one.." required>
+                                            <select class="js-select2 form-control {{$errors->has('type_offre') ? 'is-invalid' : ''}}" id="type_offre" name="type_offre" style="width: 100%;" data-placeholder="Choose one.." required>
                                                 <option ></option>
-                                                <option value="independant">Vente</option>
-                                                <option value="auto-entrepreneur">Location</option>
+                                                <option value="Vente">Vente</option>
+                                                <option value="Location">Location</option>
                                            </select>
-                                           @if ($errors->has('val-select'))
+                                           @if ($errors->has('type_offre'))
                                            <br>
                                            <div class="alert alert-warning ">
-                                              <strong>{{$errors->first('val-lastname')}}</strong> 
+                                              <strong>{{$errors->first('type_offre')}}</strong> 
                                            </div>
                                            @endif
                                         </div>
@@ -41,9 +41,9 @@ Ajout d'une offre
 
                             <div class="col-lg-6 col-md-6 col-sm-6">
                                 <div class="form-group row">
-                                    <label class="col-lg-4 col-form-label" for="date-entree">Désignation<span class="text-danger">*</span></label>
+                                    <label class="col-lg-4 col-form-label" for="designation">Désignation<span class="text-danger">*</span></label>
                                     <div class="col-lg-6">
-                                        <textarea class="form-control" name="" id="" cols="60" rows="5" required></textarea>
+                                        <textarea class="form-control" name="designation" id="designation" cols="60" rows="5" required></textarea>
                                         
                                     </div>
                                 </div>
@@ -62,9 +62,9 @@ Ajout d'une offre
                                         <div class="col-lg-4 col-md-4 col-sm-4">
                                             <div class="form-group row">
                                                 
-                                                    <label class="col-lg-8 col-md-8 col-sm-8 col-form-label" for="civilite">Civilité <span class="text-danger">*</span></label>
+                                                    <label class="col-lg-8 col-md-8 col-sm-8 col-form-label" for="civilite_vendeur">Civilité <span class="text-danger">*</span></label>
                                                     <div class="col-lg-6 col-md-6 col-sm-6 ">
-                                                        <select class="js-select2 form-control" id="civilite" name="civilite" required>
+                                                        <select class="js-select2 form-control" id="civilite_vendeur" name="civilite_vendeur" required>
                                                             <option ></option>
                                                             <option value="Mr">Mr</option>
                                                             <option value="Mme">Mme</option>
@@ -76,15 +76,15 @@ Ajout d'une offre
 
                                         <div class="col-lg-4 col-md-4 col-sm-4">
                                             <div class="form-group">
-                                                <label for="level1">Nom </label>
-                                                <input class="form-control" type="text" value="" id="level1" name="nom" >
+                                                <label for="nom_vendeur">Nom </label>
+                                                <input class="form-control" type="text" value="" id="nom_vendeur" name="nom_vendeur" >
                                             </div>
                                         </div>
 
                                         <div class="col-lg-4 col-md-4 col-sm-4">
                                             <div class="form-group">
-                                                <label for="level1">Prénom(s) </label>
-                                                <input class="form-control" type="text" value="" id="level1" name="prenom" >
+                                                <label for="prenom_vendeur">Prénom(s) </label>
+                                                <input class="form-control" type="text" value="" id="prenom_vendeur" name="prenom_vendeur" >
                                             </div>
                                         </div>
 
@@ -93,28 +93,28 @@ Ajout d'une offre
 
                                         <div class="col-lg-3 col-md-3 col-sm-3">                                            
                                                 <div class="form-group">
-                                                    <label for="adresse1">Adresse 1 </label>
-                                                    <input class="form-control" type="text" value="" id="adresse1" name="adresse1" >
+                                                    <label for="adresse1_vendeur">Adresse 1 </label>
+                                                    <input class="form-control" type="text" value="" id="adresse1_vendeur" name="adresse1_vendeur" >
                                                 </div>                                            
                                         </div>
 
                                         <div class="col-lg-3 col-md-3 col-sm-3">                                            
                                                 <div class="form-group">
                                                     <label for="adresse2">Adresse 2 </label>
-                                                    <input class="form-control" type="text" value="" id="adresse2" name="adresse2" >
+                                                    <input class="form-control" type="text" value="" id="adresse2_vendeur" name="adresse2_vendeur" >
                                                 </div>                                            
                                         </div>
 
                                         <div class="col-lg-3 col-md-3 col-sm-3">                                            
                                                 <div class="form-group">
-                                                    <label for="codepostal">Code Postal </label>
-                                                    <input class="form-control" type="text" value="" id="codepostal" name="codepostal" >
+                                                    <label for="codepostal_vendeur">Code Postal </label>
+                                                    <input class="form-control" type="text" value="" id="codepostal_vendeur" name="codepostal_vendeur" >
                                                 </div>                                            
                                         </div>
                                         <div class="col-lg-3 col-md-3 col-sm-3">                                            
                                                 <div class="form-group">
-                                                    <label for="ville">Ville </label>
-                                                    <input class="form-control" type="text" value="" id="ville" name="ville" >
+                                                    <label for="ville_vendeur">Ville </label>
+                                                    <input class="form-control" type="text" value="" id="ville_vendeur" name="ville_vendeur" >
                                                 </div>                                            
                                         </div>
 
@@ -139,9 +139,9 @@ Ajout d'une offre
                                         <div class="col-lg-4 col-md-4 col-sm-4">
                                             <div class="form-group row">
                                                 
-                                                    <label class="col-lg-8 col-md-8 col-sm-8 col-form-label" for="civilite">Civilité <span class="text-danger">*</span></label>
+                                                    <label class="col-lg-8 col-md-8 col-sm-8 col-form-label" for="civilite_acquereur">Civilité <span class="text-danger">*</span></label>
                                                     <div class="col-lg-6 col-md-6 col-sm-6 ">
-                                                        <select class="js-select2 form-control" id="civilite" name="civilite2" required>
+                                                        <select class="js-select2 form-control" id="civilite_acquereur" name="civilite_acquereur" required>
                                                             <option ></option>
                                                             <option value="Mr">Mr</option>
                                                             <option value="Mme">Mme</option>
@@ -153,15 +153,15 @@ Ajout d'une offre
 
                                         <div class="col-lg-4 col-md-4 col-sm-4">
                                             <div class="form-group">
-                                                <label for="nom2">Nom </label>
-                                                <input class="form-control" type="text" value="" id="nom2" name="nom2" >
+                                                <label for="nom_acquereur">Nom </label>
+                                                <input class="form-control" type="text" value="" id="nom_acquereur" name="nom_acquereur" >
                                             </div>
                                         </div>
 
                                         <div class="col-lg-4 col-md-4 col-sm-4">
                                             <div class="form-group">
-                                                <label for="prenom2">Prénom(s) </label>
-                                                <input class="form-control" type="text" value="" id="prenom2" name="prenom2" >
+                                                <label for="prenom_acquereur">Prénom(s) </label>
+                                                <input class="form-control" type="text" value="" id="prenom_acquereur" name="prenom_acquereur" >
                                             </div>
                                         </div>
 
@@ -170,28 +170,28 @@ Ajout d'une offre
 
                                         <div class="col-lg-3 col-md-3 col-sm-3">                                            
                                                 <div class="form-group">
-                                                    <label for="adresse12">Adresse 1 </label>
-                                                    <input class="form-control" type="text" value="" id="adresse12" name="adresse12" >
+                                                    <label for="adresse1_acquereur">Adresse 1 </label>
+                                                    <input class="form-control" type="text" value="" id="adresse1_acquereur" name="adresse1_acquereur" >
                                                 </div>                                            
                                         </div>
 
                                         <div class="col-lg-3 col-md-3 col-sm-3">                                            
                                                 <div class="form-group">
-                                                    <label for="adresse22">Adresse 2 </label>
-                                                    <input class="form-control" type="text" value="" id="adresse22" name="adresse22" >
+                                                    <label for="adresse2_acquereur">Adresse 2 </label>
+                                                    <input class="form-control" type="text" value="" id="adresse2_acquereur" name="adresse2_acquereur" >
                                                 </div>                                            
                                         </div>
 
                                         <div class="col-lg-3 col-md-3 col-sm-3">                                            
                                                 <div class="form-group">
-                                                    <label for="codepostal2">Code Postal </label>
-                                                    <input class="form-control" type="text" value="" id="codepostal2" name="codepostal2" >
+                                                    <label for="codepostal2_acquereur">Code Postal </label>
+                                                    <input class="form-control" type="text" value="" id="codepostal2_acquereur" name="codepostal2_acquereur" >
                                                 </div>                                            
                                         </div>
                                         <div class="col-lg-3 col-md-3 col-sm-3">                                            
                                                 <div class="form-group">
-                                                    <label for="ville2">Ville </label>
-                                                    <input class="form-control" type="text" value="" id="ville2" name="ville2" >
+                                                    <label for="ville2_acquereur">Ville </label>
+                                                    <input class="form-control" type="text" value="" id="ville2_acquereur" name="ville2_acquereur" >
                                                 </div>                                            
                                         </div>
 
@@ -215,15 +215,15 @@ Ajout d'une offre
 
                                         <div class="col-lg-4 col-md-4 col-sm-4">
                                             <div class="form-group">
-                                                <label for="nummandat">Numéro Mandat </label>
-                                                <input class="form-control" type="text" value="" id="nummandat" name="nummandat" >
+                                                <label for="numero_mandat">Numéro Mandat </label>
+                                                <input class="form-control" type="text" value="" id="numero_mandat" name="numero_mandat" >
                                             </div>
                                         </div>
 
                                         <div class="col-lg-4 col-md-4 col-sm-4">
                                             <div class="form-group">
-                                                <label for="datemandat">Date mandat </label>
-                                                <input class="form-control" type="date" value="" id="datemandat" name="datemandat" >
+                                                <label for="date_mandat">Date mandat </label>
+                                                <input class="form-control" type="date" value="" id="date_mandat" name="date_mandat" >
                                             </div>
                                         </div>
 
@@ -260,8 +260,8 @@ Ajout d'une offre
 
                                         <div class="col-lg-3 col-md-3 col-sm-3">
                                             <div class="form-group">
-                                                <label for="nomagent">Nom Agence/Agent </label>
-                                                <input class="form-control" type="text" value="" id="nomagent" name="nomagent" >
+                                                <label for="nom_agent">Nom Agence/Agent </label>
+                                                <input class="form-control" type="text" value="" id="nom_agent" name="nom_agent" >
                                             </div>
                                         </div>
 
@@ -273,8 +273,8 @@ Ajout d'une offre
                                         </div>
                                         <div class="col-lg-3 col-md-3 col-sm-3">
                                             <div class="form-group">
-                                                <label for="montantdeduis">Montant Déduis Ht ou Net </label>
-                                                <input class="form-control" type="number" value="" id="montantdeduis" name="montantdeduis" >
+                                                <label for="montant_deduis">Montant Déduis Ht ou Net </label>
+                                                <input class="form-control" type="number" value="" id="montant_deduis" name="montant_deduis" >
                                             </div>
                                         </div>
 
@@ -300,7 +300,6 @@ Ajout d'une offre
                                                 <label class="col-lg-8 col-md-8 col-sm-8 col-form-label" for="charge">Charge vendeur/Acquereur <span class="text-danger">*</span></label>
                                                 <div class="col-lg-6 col-md-6 col-sm-6 ">
                                                     <select class="js-select2 form-control" id="charge" name="charge" required>
-                                                        <option ></option>
                                                         <option value="Vendeur">Vendeur</option>
                                                         <option value="Acquéreur">Acquéreur</option>
                                                     </select>
@@ -310,21 +309,21 @@ Ajout d'une offre
 
                                         <div class="col-lg-3 col-md-3 col-sm-3">
                                             <div class="form-group">
-                                                <label for="netvendeur">Net Vendeur </label>
-                                                <input class="form-control" type="number" value="" id="netvendeur" name="netvendeur" >
+                                                <label for="net_vendeur">Net Vendeur </label>
+                                                <input class="form-control" type="number" value="" id="net_vendeur" name="net_vendeur" >
                                             </div>
                                         </div>
 
                                         <div class="col-lg-3 col-md-3 col-sm-3">
                                             <div class="form-group">
-                                                <label for="scpnotaire">SCP Notaire </label>
-                                                <input class="form-control" type="texte" value="" id="scpnotaire" name="scpnotaire" >
+                                                <label for="scp_notaire">SCP Notaire </label>
+                                                <input class="form-control" type="texte" value="" id="scp_notaire" name="scp_notaire" >
                                             </div>
                                         </div>
                                         <div class="col-lg-3 col-md-3 col-sm-3">
                                             <div class="form-group">
-                                                <label for="datevente">Date exacte Vente </label>
-                                                <input class="form-control" type="date" value="" id="datevente" name="datevente" >
+                                                <label for="date_vente">Date exacte Vente </label>
+                                                <input class="form-control" type="date" value="" id="date_vente" name="date_vente" >
                                             </div>
                                         </div>
 
@@ -336,26 +335,17 @@ Ajout d'une offre
                 </div>				
                 <br>
 
-
-
-
+            </div>
+            
+			<div class="form-validation">				
+                <div class="form-group row" style="text-align: center; margin-top: 50px;">
+                    <div class="col-lg-8 ml-auto">
+                        <button class="btn btn-danger btn-flat btn-addon btn-lg m-b-10 m-l-5 "><i class="ti-file"></i>Enregistrer</button>
+                    </div>
+                </div>				
             </div>
             
         </form>
-
-			<div class="form-validation">
-				<form class="form-valide3" action="" method="post">
-					{{ csrf_field() }}
-
-					<div class="form-group row" style="text-align: center; margin-top: 50px;">
-						<div class="col-lg-8 ml-auto">
-							<button class="btn btn-danger btn-flat btn-addon btn-lg m-b-10 m-l-5 submit"><i class="ti-file"></i>Enregistrer</button>
-						</div>
-					</div>
-				</form>
-            </div>
-            
-
 		</div>
 	</div>
 </div>

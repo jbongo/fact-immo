@@ -21,33 +21,34 @@ Ajout du contrat
                         <legend>Infos basiques</legend>
                         <div class="panel panel-warning">
                             <div class="panel-body">
-                                <form class="form-valide3" action="" method="post">
+                                <form class="form-valide3" action="{{ route('contrat.add') }}" method="post">
                                     {{ csrf_field() }}
-
 
                                     <div class="row">
                                         <div class="col-lg-6 col-md-6 col-sm-6">
                                             
                                             <div class="form-group row">
-                                                <label class="col-lg-4 col-form-label" for="forfait">Forfait d'entrée (€)<span class="text-danger">*</span></label>
+                                                <label class="col-lg-4 col-form-label" for="forfait_entree">Forfait d'entrée (€)<span class="text-danger">*</span></label>
                                                 <div class="col-lg-4">
-                                                    <input type="number" class="form-control" min="1" value="225" id="forfait" name="forfait" required>
+                                                    <input type="number" class="form-control" min="1" value="225" id="forfait_entree" name="forfait_entree" required>
                                                 </div>
                                             </div>
                                             <div class="form-group row">
-                                                <label class="col-lg-6 col-form-label" for="bool-starter">Démarrage en tant que Starter ?</label>
-                                                <input type="checkbox" unchecked data-toggle="toggle" id="bool-starter" name="bool-starter" data-off="Non" data-on="Oui" data-onstyle="success" data-offstyle="danger">
+                                                <label class="col-lg-6 col-form-label" for="est_starter">Démarrage en tant que Starter ?</label>
+                                                <input type="checkbox" unchecked data-toggle="toggle" id="est_starter" name="est_starter" data-off="Non" data-on="Oui" data-onstyle="success" data-offstyle="danger">
                                             </div>
                                             <div class="form-group row">
-                                                <label class="col-lg-6 col-form-label" for="parrain">Le mandataire a t'il un parrain ?</label>
-                                                <input type="checkbox" unchecked data-toggle="toggle" id="parrain" name="parrain" data-off="Non" data-on="Oui" data-onstyle="success" data-offstyle="danger">
+                                                <label class="col-lg-6 col-form-label" for="a_parrain">Le mandataire a t'il un parrain ?</label>
+                                                <input type="checkbox" unchecked data-toggle="toggle" id="a_parrain" name="a_parrain" data-off="Non" data-on="Oui" data-onstyle="success" data-offstyle="danger">
                                             </div>                                        
                                             
                                             <div class="form-group row" id="parrain-id">
-                                                <label class="col-lg-4 col-form-label" for="parr-id">Choisir le parrain</label>
+                                                <label class="col-lg-4 col-form-label" for="parrain_id">Choisir le parrain</label>
                                                 <div class="col-lg-8">
-                                                    <select class="selectpicker col-lg-6" id="parr-id" name="parr-id" data-live-search="true" data-style="btn-warning btn-rounded" >
-                                                        <option  value="szszsz" data-tokens="szszsz">Alain PoPar</option>
+                                                    <select class="selectpicker col-lg-6" id="parrain_id" name="parrain_id" data-live-search="true" data-style="btn-warning btn-rounded" >
+                                                        @foreach ($parrains as $parrain )
+                                                            <option  value="{{ $parrain->nom }} {{ $parrain->nom }}" data-tokens="{{ $parrain->nom }} {{ $parrain->nom }}">{{ $parrain->nom }} {{ $parrain->nom }}</option>
+                                                        @endforeach
                                                     </select>
                                                 </div>
                                             </div>
@@ -55,21 +56,19 @@ Ajout du contrat
 
                                         <div class="col-lg-6 col-md-6 col-sm-6">
                                             <div class="form-group row">
-                                                <label class="col-lg-4 col-form-label" for="date-entree">Date d'entrée<span class="text-danger">*</span></label>
+                                                <label class="col-lg-4 col-form-label" for="date_entree">Date d'entrée<span class="text-danger">*</span></label>
                                                 <div class="col-lg-4">
-                                                    <input type="date" class="form-control" id="date-entree" name="date-entree" required>
+                                                    <input type="date" class="form-control" id="date_entree" name="date_entree" required>
                                                 </div>
                                             </div>
                                             <div class="form-group row">
-                                                <label class="col-lg-4 col-form-label" for="date-debut">Date de début d'activité<span class="text-danger">*</span></label>
+                                                <label class="col-lg-4 col-form-label" for="date_debut">Date de début d'activité<span class="text-danger">*</span></label>
                                                 <div class="col-lg-4">
-                                                    <input type="date" class="form-control" id="date-debut" name="date-debut" required>
+                                                    <input type="date" class="form-control" id="date_debut" name="date_debut" required>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-
-                                </form>
                             </div>
                         </div>
                     </fieldset>
@@ -85,10 +84,9 @@ Ajout du contrat
                                     <div class="col-lg-6 col-md-6 col-sm-6">
                                         <div class="form-group row">
                                             <div class="col-lg-12 col-md-12 col-sm-12">
-                                                <label class="col-lg-6 col-md-6 col-sm-6 col-form-label" for="plan-type">Type du plan <span class="text-danger">*</span></label>
+                                                <label class="col-lg-6 col-md-6 col-sm-6 col-form-label" for="type_plan">Type du plan <span class="text-danger">*</span></label>
                                                 <div class="col-lg-4 col-md-4 col-sm-4 ">
-                                                    <select class="js-select2 form-control" id="plan-type" name="plan-type" required>
-                                                        <option ></option>
+                                                    <select class="js-select2 form-control" id="type_plan" name="type_plan" required>
                                                         <option value="Starter">Starter</option>
                                                         <option value="Expert">Expert</option>
                                                     </select>
@@ -96,23 +94,23 @@ Ajout du contrat
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <label class="col-lg-6 col-md-6 col-sm-6 col-form-label" for="max-starter">Pourcentage de départ du mandataire<span class="text-danger">*</span></label>     
+                                            <label class="col-lg-6 col-md-6 col-sm-6 col-form-label" for="pourcentage_depart">Pourcentage de départ du mandataire<span class="text-danger">*</span></label>     
                                             <div class="col-lg-4 col-md-4 col-sm-4 ">
-                                                <input type="number"  class="form-control"  id="max-starter" name="range_01" min="1" max="100"  required>
+                                                <input type="number"  class="form-control"  id="pourcentage_depart" name="pourcentage_depart" min="1" max="100"  required>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-lg-6 col-md-6 col-sm-6">
                                         <div class="form-group row" id="max-starter-parrent">
-                                            <label class="col-lg-6 col-md-6 col-sm-6 col-form-label" for="max-starter">Durée maximum du pack Starter<span class="text-danger">*</span></label>
+                                            <label class="col-lg-6 col-md-6 col-sm-6 col-form-label" for="duree_max_starter">Durée maximum du pack Starter<span class="text-danger">*</span></label>
                                             <div class="col-lg-4 col-md-4 col-sm-4 ">
-                                                <input type="number"  class="form-control"  id="max-starter" name="max-starter" min="1" max="48" value="7" required>
+                                                <input type="number"  class="form-control"  id="duree_max_starter" name="duree_max_starter" min="1" max="48" value="7" required>
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <label class="col-lg-6 col-form-label" for="free-duration">Durée de la gratuitée (mois)<span class="text-danger">*</span></label>
+                                            <label class="col-lg-6 col-form-label" for="duree_gratuite">Durée de la gratuitée (mois)<span class="text-danger">*</span></label>
                                             <div class="col-lg-4 col-md-4 col-sm-4 ">
-                                                <input type="number"  class="form-control"  id="free-duration" name="free-duration" min="0" max="48" value="4" required>
+                                                <input type="number"  class="form-control"  id="duree_gratuite" name="duree_gratuite" min="0" max="48" value="4" required>
                                             </div>
                                         </div>
                                     </div>
@@ -121,9 +119,9 @@ Ajout du contrat
 								<div class="row">
                                         <div class="col-lg-12 col-md-12 col-sm-12">
                                             <div class="form-group row">
-                                                <label class="col-lg-3 col-form-label" for="check-palier">Paliers<span class="text-danger">*</span></label>
+                                                <label class="col-lg-3 col-form-label" for="check_palier">Paliers<span class="text-danger">*</span></label>
                                                 <div class="col-lg-2">
-                                                    <input type="checkbox" unchecked data-toggle="toggle" id="check-palier" name="check-palier" data-off="Non" data-on="Oui" data-onstyle="success" data-offstyle="danger">
+                                                    <input type="checkbox" unchecked data-toggle="toggle" id="check_palier" name="check_palier" data-off="Non" data-on="Oui" data-onstyle="success" data-offstyle="danger">
                                                 </div>
                                             </div>
 
@@ -174,23 +172,23 @@ Ajout du contrat
                                                     <div class="row">
                                                         <div class="col-lg-6-col-md-6 col-sm-6">
                                                             <div class="form-group row">
-                                                                <label class="col-lg-6 col-md-6 col-sm-6 col-form-label" for="sales">Nombre de vente minimum</label>
+                                                                <label class="col-lg-6 col-md-6 col-sm-6 col-form-label" for="nombre_vente_min">Nombre de vente minimum</label>
                                                                 <div class="col-lg-4 col-md-4 col-sm-4 ">
-                                                                    <input class="form-control" type="number" min="0" value="4" id="min-sales" name="min-sales" required>
+                                                                    <input class="form-control" type="number" min="0" value="4" id="nombre_vente_min" name="nombre_vente_min" required>
                                                                 </div>
                                                             </div>
                                                             <div class="form-group row">
-                                                                <label class="col-lg-6 col-md-6 col-sm-6 col-form-label"  for="min-filleul">Nombre minimum de filleuls parrainés</label>
+                                                                <label class="col-lg-6 col-md-6 col-sm-6 col-form-label"  for="nombre_mini_filleul">Nombre minimum de filleuls parrainés</label>
                                                                 <div class="col-lg-4 col-md-4 col-sm-4 ">
-                                                                    <input class="form-control" type="number" min="0" value="4" id="min-filleul" name="min-filleul" required>
+                                                                    <input class="form-control" type="number" min="0" value="4" id="nombre_mini_filleul" name="nombre_mini_filleul" required>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                         <div class="col-lg-6-col-md-6 col-sm-6">
                                                             <div class="form-group row">
-                                                                <label class="col-lg-6 col-md-6 col-sm-6 col-form-label" for="min-exp-ch-affaire">Chiffre d'affaire(€) </label>
+                                                                <label class="col-lg-6 col-md-6 col-sm-6 col-form-label" for="chiffre_affaire">Chiffre d'affaire(€) </label>
                                                                 <div class="col-lg-4 col-md-4 col-sm-4 ">
-                                                                    <input class="form-control" type="number" min="0" value="27000" id="min-exp-ch-affaire" name="min-exp-ch-affaire" required>
+                                                                    <input class="form-control" type="number" min="0" value="27000" id="chiffre_affaire" name="chiffre_affaire" required>
                                                                 </div>
                                                             </div>
                                                             <strong>Si ces conditions ne sont pas réunies alors:
@@ -198,15 +196,13 @@ Ajout du contrat
                                                             <br>
                                                             </strong>
                                                             <div class="form-group row">
-                                                                <label class="col-lg-6 col-md-6 col-sm-6 col-form-label" for="sub-percent-expert">A soustraire (%)</label> 
+                                                                <label class="col-lg-6 col-md-6 col-sm-6 col-form-label" for="a_soustraitre">A soustraire (%)</label> 
                                                                 <div class="col-lg-4 col-md-4 col-sm-4 ">
-                                                                    <input class="form-control" type="number" min="0" value="10" max="15" step="0.10" id="sub-percent-exper" name="sub-percent-exper" required>
+                                                                    <input class="form-control" type="number" min="0" value="10" max="15" step="0.10" id="a_soustraitre" name="a_soustraitre" required>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    
-                                                    
                                                 </div>
                                             </div>
                                         </div>
@@ -225,8 +221,6 @@ Ajout du contrat
 						<legend>Parrainage</legend>
 						<div class="panel panel-warning">
 							<div class="panel-body">
-                                <form class="form-valide3" action="" method="post">
-                                    {{ csrf_field() }}
                                    
                                     <div class="row">
                                         <div class="col-lg-6 col-md-6 col-sm-6">
@@ -276,7 +270,6 @@ Ajout du contrat
                                             </div>
                                         </div>
                                     </div>
-                                </form>
 							</div>
 						</div>
 					</fieldset>
@@ -289,9 +282,6 @@ Ajout du contrat
 						<legend>Tarif et abonnement</legend>
 						<div class="panel panel-warning">
 							<div class="panel-body">
-                                <form class="form-valide3" action="" method="post">
-                                    {{ csrf_field() }}
-
 
                                     <div class="row">
                                         <div class="col-lg-6 col-md-6 col-sm-6">
@@ -311,33 +301,30 @@ Ajout du contrat
                                             </div>
                                         </div>
                                     </div>
-                                </form>
+                                
 							</div>
 						</div>
 					</fieldset>
 				</div>
             </div>
             
-
-
-			<div class="form-validation">
-				<form class="form-valide3" action="" method="post">
-					{{ csrf_field() }}
-
-					<div class="form-group row" style="text-align: center; margin-top: 50px;">
-						<div class="col-lg-8 ml-auto">
-							<button class="btn btn-danger btn-flat btn-addon btn-lg m-b-10 m-l-5 submit"><i class="ti-file"></i>Terminer</button>
-						</div>
-					</div>
-				</form>
+            <div class="form-group row" style="text-align: center; margin-top: 50px;">
+                <div class="col-lg-8 ml-auto">
+                    <button class="btn btn-danger btn-flat btn-addon btn-lg m-b-10 m-l-5  "><i class="ti-save"></i>Terminer</button>
+                </div>
             </div>
             
-
+</form>
 		</div>
 	</div>
 </div>
 </div>
 @stop
+
+
+
+
+
 @section('js-content')
 
 
@@ -488,31 +475,7 @@ $('#parrain').change(function(e){
               e.preventDefault();
               var form = $(".form-valide3");
               
-               form.validate({
-                   errorClass: "invalid-feedback animated fadeInDown",
-                   errorElement: "div",
-                   errorPlacement: function(e, a) {
-                       jQuery(a).parents(".form-group > div").append(e)
-                   },
-                   highlight: function(e) {
-                       jQuery(e).closest(".form-group").removeClass("is-invalid").addClass("is-invalid");
-                   },
-                   success: function(e) {
-                       jQuery(e).closest(".form-group").removeClass("is-invalid"), jQuery(e).remove();
-                   },
-                   rules: {
-                   ".plan-type": {
-                       required: !0
-                   },
-                   ".plan-name": {
-                        required: !0
-                   }
-               },
-               messages: {
-                   ".plan-type": "Veillez choisir un type !",
-                   ".plan-name": "Veillez saisir un nom !"
-               }
-           });
+              
            $('.plan-type').on("select2:close", function (e) {  
              $(this).valid(); 
          });

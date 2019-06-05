@@ -17,7 +17,7 @@ Ajout d'un mandataire
          </div>
          <div class="card-body">
             <div class="form-validation">
-               <form class="form-valide form-horizontal" action="{{ route('mandataire.create') }}" method="post">
+               <form class="form-valide form-horizontal" action="{{ route('mandataire.add') }}" method="post">
                   {{ csrf_field() }}
 
                 <div class="row">
@@ -27,61 +27,61 @@ Ajout d'un mandataire
                     <div class="col-lg-6 col-md-6 col-sm-6">
 
                         <div class="form-group row">
-                            <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="val-select">Statut <span class="text-danger">*</span></label>
+                            <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="statut">Statut <span class="text-danger">*</span></label>
                             <div class="col-lg-8 col-md-8 col-sm-8">
-                               <select class="js-select2 form-control {{$errors->has('val-lastname') ? 'is-invalid' : ''}}" id="val-select" name="val-select" style="width: 100%;" data-placeholder="Choose one.." required>
+                               <select class="js-select2 form-control {{$errors->has('statut') ? 'is-invalid' : ''}}" id="statut" name="statut" style="width: 100%;" data-placeholder="Choose one.." >
                                   <option ></option>
                                   <option value="independant">Indépendant</option>
                                   <option value="auto-entrepreneur">Auto Entrepreneur</option>
                                   <option value="portage-salarial">Portage Salarial</option>
                                </select>
-                               @if ($errors->has('val-select'))
+                               @if ($errors->has('statut'))
                                <br>
                                <div class="alert alert-warning ">
-                                  <strong>{{$errors->first('val-lastname')}}</strong> 
+                                  <strong>{{$errors->first('statut')}}</strong> 
                                </div>
                                @endif
                             </div>
                          </div>
        
                          <div class="form-group row">
-                            <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="val-select">@lang('Civilité') <span class="text-danger">*</span></label>
+                            <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="civilite">@lang('Civilité') <span class="text-danger">*</span></label>
                             <div class="col-lg-8 col-md-8 col-sm-8">
-                               <select class="js-select2 form-control {{$errors->has('val-civilite') ? 'is-invalid' : ''}}" id="val-civilite" name="val-civilite" style="width: 100%;" data-placeholder="Choose one.." required>
+                               <select class="js-select2 form-control {{$errors->has('civilite') ? 'is-invalid' : ''}}" id="civilite" name="civilite" style="width: 100%;" data-placeholder="Choose one.." required>
                                   <option ></option>
                                   <option value="M.">M.</option>
                                   <option value="Mme.">Mme.</option>
                                </select>
-                               @if ($errors->has('val-civilite'))
+                               @if ($errors->has('civilite'))
                                <br>
                                <div class="alert alert-warning ">
-                                  <strong>{{$errors->first('val-civilite')}}</strong> 
+                                  <strong>{{$errors->first('civilite')}}</strong> 
                                </div>
                                @endif
                             </div>
                          </div>
        
                          <div class="form-group row">
-                            <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="val-lastname">Nom <span class="text-danger">*</span></label>
+                            <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="nom">Nom <span class="text-danger">*</span></label>
                             <div class="col-lg-8 col-md-8 col-sm-8">
-                               <input type="text" class="form-control {{$errors->has('val-lastname') ? 'is-invalid' : ''}}" value="{{old('val-lastname')}}" id="val-lastname" name="val-lastname" placeholder="Nom.." required>
+                               <input type="text" class="form-control {{$errors->has('nom') ? 'is-invalid' : ''}}" value="{{old('nom')}}" id="nom" name="nom" placeholder="Nom.." required>
                                @if ($errors->has('val-lastname'))
                                <br>
                                <div class="alert alert-warning ">
-                                  <strong>{{$errors->first('val-lastname')}}</strong> 
+                                  <strong>{{$errors->first('nom')}}</strong> 
                                </div>
                                @endif
                             </div>
                          </div>
        
                          <div class="form-group row">
-                            <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="val-firstname">Prénom <span class="text-danger">*</span></label>
+                            <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="prenom">Prénom <span class="text-danger">*</span></label>
                             <div class="col-lg-8 col-md-8 col-sm-8">
-                               <input type="text"  class="form-control {{ $errors->has('val-firstname') ? ' is-invalid' : '' }}" value="{{old('val-firstname')}}" id="val-firstname" name="val-firstname" placeholder="Prénom.." required>
+                               <input type="text"  class="form-control {{ $errors->has('prenom') ? ' is-invalid' : '' }}" value="{{old('prenom')}}" id="prenom" name="prenom" placeholder="Prénom.." required>
                                @if ($errors->has('val-firstname'))
                                <br>
                                <div class="alert alert-warning ">
-                                  <strong>{{$errors->first('val-firstname')}}</strong> 
+                                  <strong>{{$errors->first('prenom')}}</strong> 
                                </div>
                                @endif
                             </div>
@@ -104,78 +104,78 @@ Ajout d'un mandataire
                     <div class="col-lg-6 col-md-6 col-sm-6">
 
                         <div class="form-group row">
-                            <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="val-adress">Adresse </label>
+                            <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="adresse">Adresse </label>
                             <div class="col-lg-8 col-md-8 col-sm-8">
-                               <input type="text" class="form-control {{ $errors->has('val-adress') ? ' is-invalid' : '' }}" value="{{old('val-adress')}}" id="val-adress" name="val-adress" placeholder="N° et Rue.." >
-                               @if ($errors->has('val-adress'))
+                               <input type="text" class="form-control {{ $errors->has('adresse') ? ' is-invalid' : '' }}" value="{{old('adresse')}}" id="adresse" name="adresse" placeholder="N° et Rue.." >
+                               @if ($errors->has('adresse'))
                                <br>
                                <div class="alert alert-warning ">
-                                  <strong>{{$errors->first('val-adress')}}</strong> 
+                                  <strong>{{$errors->first('adresse')}}</strong> 
                                </div>
                                @endif   
                             </div>
                          </div>
        
                          <div class="form-group row">
-                            <label class="col-lg-4 col-md-4 col-sm-4 control-label" value="" for="val-compl_adress">Complément d'adresse</label>
+                            <label class="col-lg-4 col-md-4 col-sm-4 control-label" value="" for="compl_adresse">Complément d'adresse</label>
                             <div class="col-lg-8 col-md-8 col-sm-8">
-                               <input type="text" id="val-compl_adress" class="form-control {{ $errors->has('val-compl_adress') ? ' is-invalid' : '' }}" value="{{old('val-compl_adress')}}" name="val-compl_adress" placeholder="Complément d'adresse..">
-                               @if ($errors->has('val-compl_adress'))
+                               <input type="text" id="compl_adresse" class="form-control {{ $errors->has('compl_adresse') ? ' is-invalid' : '' }}" value="{{old('compl_adresse')}}" name="compl_adresse" placeholder="Complément d'adresse..">
+                               @if ($errors->has('compl_adresse'))
                                <br>
                                <div class="alert alert-warning ">
-                                  <strong>{{$errors->first('val-compl_adress')}}</strong> 
+                                  <strong>{{$errors->first('compl_adresse')}}</strong> 
                                </div>
                                @endif 
                             </div>
                          </div>
        
                          <div class="form-group row">
-                            <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="val-zip">Code postal</label>
+                            <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="code_postal">Code postal</label>
                             <div class="col-lg-8 col-md-8 col-sm-8">
-                               <input type="text" class="form-control {{ $errors->has('val-zip') ? ' is-invalid' : '' }}" value="{{old('val-zip')}}" id="val-zip" name="val-zip" placeholder="Ex: 75001.." >
-                               @if ($errors->has('val-zip'))
+                               <input type="text" class="form-control {{ $errors->has('code_postal') ? ' is-invalid' : '' }}" value="{{old('code_postal')}}" id="code_postal" name="code_postal" placeholder="Ex: 75001.." >
+                               @if ($errors->has('code_postal'))
                                <br>
                                <div class="alert alert-warning ">
-                                  <strong>{{$errors->first('val-zip')}}</strong> 
+                                  <strong>{{$errors->first('code_postal')}}</strong> 
                                </div>
                                @endif 
                             </div>
                          </div>
        
                          <div class="form-group row">
-                            <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="val-town">Ville </label>
+                            <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="ville">Ville </label>
                             <div class="col-lg-8 col-md-8 col-sm-8">
-                               <input type="text" class="form-control {{ $errors->has('val-town') ? ' is-invalid' : '' }}" value="{{old('val-town')}}" id="val-town" name="val-town" placeholder="EX: Paris.." >
-                               @if ($errors->has('val-town'))
+                               <input type="text" class="form-control {{ $errors->has('ville') ? ' is-invalid' : '' }}" value="{{old('ville')}}" id="ville" name="ville" placeholder="EX: Paris.." >
+                               @if ($errors->has('ville'))
                                <br>
                                <div class="alert alert-warning ">
-                                  <strong>{{$errors->first('val-town')}}</strong> 
+                                  <strong>{{$errors->first('ville')}}</strong> 
                                </div>
                                @endif 
                             </div>
                          </div>
        
                          <div class="form-group row">
-                            <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="val-country">Pays </label>
+                            <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="pays">Pays </label>
                             <div class="col-lg-8 col-md-8 col-sm-8">
-                               <input type="text" class="form-control {{ $errors->has('val-country') ? ' is-invalid' : '' }}" value="{{old('val-country')}}" id="val-country" name="val-country" placeholder="Entez une lettre et choisissez.." >
-                               @if ($errors->has('val-country'))
+                               <input type="text" class="form-control {{ $errors->has('pays') ? ' is-invalid' : '' }}" value="{{old('pays')}}" id="pays" name="pays" placeholder="Entez une lettre et choisissez.." >
+                               @if ($errors->has('pays'))
                                <br>
                                <div class="alert alert-warning ">
-                                  <strong>{{$errors->first('val-country')}}</strong> 
+                                  <strong>{{$errors->first('pays')}}</strong> 
                                </div>
                                @endif 
                             </div>
                          </div>
        
                          <div class="form-group row">
-                            <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="val-phone">Téléphone (FR) </label>
+                            <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="telephone">Téléphone (FR) </label>
                             <div class="col-lg-8 col-md-8 col-sm-8">
-                               <input type="text" class="form-control {{ $errors->has('val-phone') ? ' is-invalid' : '' }}" value="{{old('val-phone')}}" id="val-phone" name="val-phone" placeholder="Ex: 0600000000.." >
-                               @if ($errors->has('val-phone'))
+                               <input type="text" class="form-control {{ $errors->has('telephone') ? ' is-invalid' : '' }}" value="{{old('telephone')}}" id="telephone" name="telephone" placeholder="Ex: 0600000000.." >
+                               @if ($errors->has('telephone'))
                                <br>
                                <div class="alert alert-warning ">
-                                  <strong>{{$errors->first('val-phone')}}</strong> 
+                                  <strong>{{$errors->first('telephone')}}</strong> 
                                </div>
                                @endif     
                             </div>
@@ -185,7 +185,7 @@ Ajout d'un mandataire
                   
                   <div class="form-group row" style="text-align: center; margin-top: 50px;">
                      <div class="col-lg-8 ml-auto">
-                        <a href="{{ route('contrat.create') }}" class="btn btn-success btn-flat btn-addon btn-lg m-b-10 m-l-5 submit" id="ajouter"><i class="ti-plus"></i>Ajouter son Contrat</a>
+                        <button class="btn btn-success btn-flat btn-addon btn-lg m-b-10 m-l-5 submit" id="ajouter"><i class="ti-plus"></i>Enregistrer</button>
                      </div>
                   </div>
                </form>
@@ -298,7 +298,7 @@ Ajout d'un mandataire
    var countries = ["Afghanistan","Albania","Algeria","Andorra","Angola","Anguilla","Antigua & Barbuda","Argentina","Armenia","Aruba","Australia","Austria","Azerbaijan","Bahamas","Bahrain","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bermuda","Bhutan","Bolivia","Bosnia & Herzegovina","Botswana","Brazil","British Virgin Islands","Brunei","Bulgaria","Burkina Faso","Burundi","Cambodia","Cameroon","Canada","Cape Verde","Cayman Islands","Central Arfrican Republic","Chad","Chile","China","Colombia","Congo","Cook Islands","Costa Rica","Cote D Ivoire","Croatia","Cuba","Curacao","Cyprus","Czech Republic","Denmark","Djibouti","Dominica","Dominican Republic","Ecuador","Egypt","El Salvador","Equatorial Guinea","Eritrea","Estonia","Ethiopia","Falkland Islands","Faroe Islands","Fiji","Finland","France","French Polynesia","French West Indies","Gabon","Gambia","Georgia","Germany","Ghana","Gibraltar","Greece","Greenland","Grenada","Guam","Guatemala","Guernsey","Guinea","Guinea Bissau","Guyana","Haiti","Honduras","Hong Kong","Hungary","Iceland","India","Indonesia","Iran","Iraq","Ireland","Isle of Man","Israel","Italy","Jamaica","Japan","Jersey","Jordan","Kazakhstan","Kenya","Kiribati","Kosovo","Kuwait","Kyrgyzstan","Laos","Latvia","Lebanon","Lesotho","Liberia","Libya","Liechtenstein","Lithuania","Luxembourg","Macau","Macedonia","Madagascar","Malawi","Malaysia","Maldives","Mali","Malta","Marshall Islands","Mauritania","Mauritius","Mexico","Micronesia","Moldova","Monaco","Mongolia","Montenegro","Montserrat","Morocco","Mozambique","Myanmar","Namibia","Nauro","Nepal","Netherlands","Netherlands Antilles","New Caledonia","New Zealand","Nicaragua","Niger","Nigeria","North Korea","Norway","Oman","Pakistan","Palau","Palestine","Panama","Papua New Guinea","Paraguay","Peru","Philippines","Poland","Portugal","Puerto Rico","Qatar","Reunion","Romania","Russia","Rwanda","Saint Pierre & Miquelon","Samoa","San Marino","Sao Tome and Principe","Saudi Arabia","Senegal","Serbia","Seychelles","Sierra Leone","Singapore","Slovakia","Slovenia","Solomon Islands","Somalia","South Africa","South Korea","South Sudan","Spain","Sri Lanka","St Kitts & Nevis","St Lucia","St Vincent","Sudan","Suriname","Swaziland","Sweden","Switzerland","Syria","Taiwan","Tajikistan","Tanzania","Thailand","Timor L'Este","Togo","Tonga","Trinidad & Tobago","Tunisia","Turkey","Turkmenistan","Turks & Caicos","Tuvalu","Uganda","Ukraine","United Arab Emirates","United Kingdom","United States of America","Uruguay","Uzbekistan","Vanuatu","Vatican City","Venezuela","Vietnam","Virgin Islands (US)","Yemen","Zambia","Zimbabwe"];
    
    /*initiate the autocomplete function on the "myInput" element, and pass along the countries array as possible autocomplete values:*/
-   autocomplete(document.getElementById("val-country"), countries);
+   autocomplete(document.getElementById("pays"), countries);
 </script>
 <script>
    var form_validation = function() {
@@ -331,21 +331,21 @@ Ajout d'un mandataire
                        required: !0,
                        email: !0
                    },
-                   "val-adress": {
+                   "adresse": {
                        required: !0,
                    },
-                   "val-zip": {
+                   "code_postal": {
                        required: !0,
                        digits: !0,
                        minlength: 5
                    },
-                   "val-town": {
+                   "ville": {
                        required: !0,
                    },
-                   "val-country": {
+                   "pays": {
                        required: !0
                    },
-                   "val-phone": {
+                   "telephone": {
                        required: !0,
                        digits: !0,
                        minlength: 10
@@ -359,15 +359,15 @@ Ajout d'un mandataire
                        required: "Veuillez saisir l'email",
                        email: "Le mail n'est pas valide!"
                    },
-                   "val-adress": "L'adresse doit etre saisie!",
-                   "val-zip": {
+                   "adresse": "L'adresse doit etre saisie!",
+                   "code_postal": {
                        required: "Le code postal doit etre saisi!",
                        digits: "Le code postal doit contenir que des nombres",
                        minlength: "le code postal doit contenir 5 nombres au minimum"
                    },
-                   "val-town": "La ville doit etre saisi!",
-                   "val-country": "Le pays doit etre saisi!",
-                   "val-phone": {
+                   "ville": "La ville doit etre saisi!",
+                   "pays": "Le pays doit etre saisi!",
+                   "telephone": {
                        required: "Le téléphone doit etre saisi!",
                        digits: "Le téléphone doit contenir que des nombres",
                        minlength: "le téléphone doit contenir 10 nombres au minimum"

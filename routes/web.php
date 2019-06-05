@@ -46,7 +46,7 @@ Route::middleware('auth')->group(function(){
     Route::delete('/offre/archive/{offre}','offreController@archive')->name('offre.archive');
 
     // Contrat 
-    Route::get('/contrat/create','contratController@create')->name('contrat.create');
+    Route::get('/contrat/create/{user_id}','contratController@create')->name('contrat.create');
     Route::post('/contrat/add','contratController@store')->name('contrat.add');
 
 
