@@ -8,12 +8,12 @@
     <!-- sidebar -->
     <script src="{{ asset('js/lib/bootstrap.min.js')}}"></script>
     <!-- bootstrap -->
-    <script src="{{ asset('js/lib/weather/jquery.simpleWeather.min.js')}}"></script>
-    <script src="{{ asset('js/lib/weather/weather-init.js')}}"></script>
+    {{-- <script src="{{ asset('js/lib/weather/jquery.simpleWeather.min.js')}}"></script>
+    <script src="{{ asset('js/lib/weather/weather-init.js')}}"></script> --}}
     <script src="{{ asset('js/lib/circle-progress/circle-progress.min.js')}}"></script>
     <script src="{{ asset('js/lib/circle-progress/circle-progress-init.js')}}"></script>
-    <script src="{{ asset('js/lib/chartist/chartist.min.js')}}"></script>
-    <script src="{{ asset('js/lib/chartist/chartist-init.js')}}"></script>
+    {{-- <script src="{{ asset('js/lib/chartist/chartist.min.js')}}"></script>
+    <script src="{{ asset('js/lib/chartist/chartist-init.js')}}"></script> --}}
     <script src="{{ asset('js/lib/sparklinechart/jquery.sparkline.min.js')}}"></script>
     <script src="{{ asset('js/lib/sparklinechart/sparkline.init.js')}}"></script>
     <script src="{{ asset('js/lib/owl-carousel/owl.carousel.min.js')}}"></script>

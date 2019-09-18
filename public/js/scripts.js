@@ -66,7 +66,7 @@
     /*  Auto date in footer and refresh
     --------------------------------------*/
 
-    document.getElementById("date-time").innerHTML = Date();
+    document.getElementById("date-time") != null ? document.getElementById("date-time").innerHTML = Date() : null;
 
     $('.page-refresh').on("click", function() {
         location.reload();
@@ -141,7 +141,7 @@
     })
 
     $(window).bind("resize", function() {
-        
+
         if ($(this).width() < 680) {
             $('.logo').addClass('hidden')
             $('.sidebar').removeClass('sidebar-shrink')
@@ -154,25 +154,25 @@
     /*  Search
     ------------*/
     $('a[href="#search"]').on('click', function(event) {
-                event.preventDefault();
-                $('#search').addClass('open');
-                $('#search > form > input[type="search"]').focus();
-            });
-            
-            $('#search, #search button.close').on('click keyup', function(event) {
-                if (event.target == this || event.target.className == 'close' || event.keyCode == 27) {
-                    $(this).removeClass('open');
-                }
-            });
-            
-            
-            //Do not include! This prevents the form from submitting for DEMO purposes only!
-            $('form').submit(function(event) {
-                event.preventDefault();
-                return false;
-            })
+        event.preventDefault();
+        $('#search').addClass('open');
+        $('#search > form > input[type="search"]').focus();
+    });
 
-    
+    $('#search, #search button.close').on('click keyup', function(event) {
+        if (event.target == this || event.target.className == 'close' || event.keyCode == 27) {
+            $(this).removeClass('open');
+        }
+    });
+
+
+    //Do not include! This prevents the form from submitting for DEMO purposes only!
+    // $('form').submit(function(event) {
+    //     event.preventDefault();
+    //     return false;
+    // })
+
+
 
     /*  pace Loader
     -------------*/

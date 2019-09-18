@@ -8,13 +8,16 @@
                     <li><a  class="sidebar-sub-toggle"><i class="ti-target"></i>Mandataires  <span class="sidebar-collapse-icon ti-angle-down"></span></a>
                         <ul>
                             <li><a href="{{route('mandataire.index')}}">Gestion</a></li>
-                            <li><a href="page-login.html">Modèles commision</a></li>
+                            <li><a href="{{route('commissions.index')}}">Modèles commision</a></li>
                             <li><a href="page-login.html">Tarif pack pub</a></li>
+                            <li><a href="page-login.html">Contrats</a></li>
+
                         </ul>
                     </li>
                     <li class="active"><a href="{{route('offre.index')}}" ><i class="ti-pencil-alt"></i> Offres </a></li>
-                    <li class="active"><a href="{{route('mandataire.index')}}" ><i class="ti-pencil-alt"></i> Factures </a></li>
-                    <li><a class="sidebar-sub-toggle"><i class="ti-pencil-alt"></i>Utilisateurs <span class="badge badge-primary">2</span></a></li>
+                    <li class="active"><a href="{{route('facture.index')}}" ><i class="ti-pencil-alt"></i> Factures Styl </a></li>
+                    <li><a class="sidebar-sub-toggle"><i class="ti-pencil-alt"></i>Demandes de facture <span class="badge badge-danger">2</span></a></li>
+                    {{-- <li><a class="sidebar-sub-toggle"><i class="ti-pencil-alt"></i>Utilisateurs <span class="badge badge-primary">2</span></a></li> --}}
                     <li><a  class="sidebar-sub-toggle"><i class="ti-target"></i> Paramètres <span class="sidebar-collapse-icon ti-angle-down"></span></a>
                         <ul>
                             <li><a href="page-login.html">Info Entreprise</a></li>

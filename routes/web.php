@@ -45,10 +45,22 @@ Route::middleware('auth')->group(function(){
     Route::delete('/offre/delete/{offre}','offreController@destroy')->name('offre.delete');
     Route::delete('/offre/archive/{offre}','offreController@archive')->name('offre.archive');
 
-    // Contrat 
-    Route::get('/contrat/create/{user_id}','contratController@create')->name('contrat.create');
-    Route::post('/contrat/add','contratController@store')->name('contrat.add');
+     // factures
+     Route::get('/factures','factureController@index')->name('facture.index');
+     Route::get('/factures/create','factureController@create')->name('facture.create');
 
+     // Demandes factures
+     Route::get('/demandefacture/{mandataire}/{offre_achat}','factureController@demandeFacture')->name('facture.demande');
+     Route::get('/factures/create','factureController@create')->name('facture.create');
+
+    // Contrat 
+    Route::get('/contrat/create/{user_id}','ContratController@create')->name('contrat.create');
+    Route::post('/contrat/add','ContratController@store')->name('contrat.add');
+
+    // Commissions
+    Route::get('commissions/','CommissionController@index')->name('commissions.index');
+    Route::post('commissions/create','CommissionController@create')->name('commissions.create');
+   
 
     Route::get('/', function () {
         return view('home');

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use App\Facture;
 class FactureController extends Controller
 {
     /**
@@ -14,6 +14,9 @@ class FactureController extends Controller
     public function index()
     {
         //
+        //
+        $factures = Facture::all();
+        return view ('facture.index',compact('factures'));
     }
 
     /**
@@ -80,5 +83,9 @@ class FactureController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public  function demandeFacture($mandataire, $offre){
+        
     }
 }

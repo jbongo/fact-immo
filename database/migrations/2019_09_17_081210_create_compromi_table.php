@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateOffresTable extends Migration
+class CreateCompromiTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateOffresTable extends Migration
      */
     public function up()
     {
-        Schema::create('offres', function (Blueprint $table) {
+        Schema::create('compromi', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('user_id');
             $table->enum('type_offre',['vente','location']);
@@ -53,6 +53,8 @@ class CreateOffresTable extends Migration
             $table->string('scp_notaire')->nullable();
             $table->date('date_vente')->nullable();
 
+            // demande facture
+            $table->boolean('demande_facture')->default(false);
             $table->timestamps();
         });
     }
@@ -64,6 +66,6 @@ class CreateOffresTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('offres');
+        Schema::dropIfExists('compromi');
     }
 }

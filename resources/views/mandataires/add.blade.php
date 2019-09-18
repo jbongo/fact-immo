@@ -194,8 +194,10 @@ Ajout d'un mandataire
       </div>
    </div>
 </div>
+
+
 @stop
-@section('js-content')
+@section('js-content') 
 <script>
    function autocomplete(inp, arr) {
      /*the autocomplete function takes two arguments,
@@ -300,92 +302,5 @@ Ajout d'un mandataire
    /*initiate the autocomplete function on the "myInput" element, and pass along the countries array as possible autocomplete values:*/
    autocomplete(document.getElementById("pays"), countries);
 </script>
-<script>
-   var form_validation = function() {
-   
-   var e = function() {
-           jQuery(".form-valide").validate({
-               ignore: [],
-               errorClass: "invalid-feedback animated fadeInDown",
-               errorElement: "div",
-               errorPlacement: function(e, a) {
-                   jQuery(a).parents(".form-group > div").append(e)
-               },
-               highlight: function(e) {
-                   jQuery(e).closest(".form-group").removeClass("is-invalid").addClass("is-invalid")
-               },
-               success: function(e) {
-                   jQuery(e).closest(".form-group").removeClass("is-invalid"), jQuery(e).remove()
-               },
-               rules: {
-                   "val-select": {
-                       required: !0
-                   },
-                   "val-lastname": {
-                       required: !0,
-                   },
-                   "val-firstname": {
-                       required: !0,
-                   },
-                   "val-email": {
-                       required: !0,
-                       email: !0
-                   },
-                   "adresse": {
-                       required: !0,
-                   },
-                   "code_postal": {
-                       required: !0,
-                       digits: !0,
-                       minlength: 5
-                   },
-                   "ville": {
-                       required: !0,
-                   },
-                   "pays": {
-                       required: !0
-                   },
-                   "telephone": {
-                       required: !0,
-                       digits: !0,
-                       minlength: 10
-                   }
-               },
-               messages: {
-                   "val-select": "il faut choisir un role!",
-                   "val-lastname": "Le nom doit etre saisi!",
-                   "val-firstname": "Le prenom doit etre saisi!",
-                   "val-email": {
-                       required: "Veuillez saisir l'email",
-                       email: "Le mail n'est pas valide!"
-                   },
-                   "adresse": "L'adresse doit etre saisie!",
-                   "code_postal": {
-                       required: "Le code postal doit etre saisi!",
-                       digits: "Le code postal doit contenir que des nombres",
-                       minlength: "le code postal doit contenir 5 nombres au minimum"
-                   },
-                   "ville": "La ville doit etre saisi!",
-                   "pays": "Le pays doit etre saisi!",
-                   "telephone": {
-                       required: "Le téléphone doit etre saisi!",
-                       digits: "Le téléphone doit contenir que des nombres",
-                       minlength: "le téléphone doit contenir 10 nombres au minimum"
-                   }
-               }
-           })
-       }
-   return {
-       init: function() {
-           e(), jQuery(".js-select2").on("change", function() {
-               jQuery(this).valid()
-           })
-       }
-   }
-   }();
-   jQuery(function() {
-   form_validation.init()
-   });
-                   
-</script>
+
 @endsection

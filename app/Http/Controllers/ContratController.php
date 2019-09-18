@@ -23,11 +23,11 @@ class ContratController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($user_id)
     {
         //
         $parrains = User::where('role','mandataire')->get();
-        return view ('contrat.add', compact('parrains'));
+        return view ('contrat.add', compact(['parrains','user_id']));
     }
 
     /**
@@ -65,7 +65,7 @@ class ContratController extends Controller
             "prime_forfaitaire"=>$request->prime_forfaitaire,
         ]);
 
-        return  redirect()->route('mandataire.index');
+        return  json_encode( $request);
                 
     }
 

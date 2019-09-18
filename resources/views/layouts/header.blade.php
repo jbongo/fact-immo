@@ -20,7 +20,7 @@
     <link href="{{ asset('css/style.css')}}" rel="stylesheet">
     <link href="{{ asset('css/dropzone.css')}}" rel="stylesheet">
     <link href="{{ asset('css/dropzone-custom.css')}}" rel="stylesheet">
-    <link href="{{ asset('css/lib/sweetalert.css')}}" rel="stylesheet">
+    <link href="{{ asset('css/lib/sweetalert/sweetalert.css')}}" rel="stylesheet">
     <link href="{{ asset('css/lib/data-table/data-table.css')}}" rel="stylesheet">
     <link href="{{ asset('css/lib/select2/select2.min.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{asset('css/lib/bootstrap-select.min.css')}}">

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
     @section ('page_title')
-    Ajouter une offre
+    Factures stylimmo
     @endsection
     <div class="row"> 
        
@@ -15,66 +15,60 @@
              @endif       
             <div class="card alert">
                 <!-- table -->
-            <a href="{{route('offre.create')}}" class="btn btn-success btn-rounded btn-addon btn-sm m-b-10 m-l-5"><i class="ti-user"></i>@lang('Nouvelle offre')</a>
+            <a href="{{route('facture.create')}}" class="btn btn-success btn-rounded btn-addon btn-sm m-b-10 m-l-5"><i class="ti-user"></i>@lang('Nouvelle facture')</a>
                 
                 <div class="card-body">
                         <div class="panel panel-info m-t-15" id="cont">
-                                <div class="panel-heading">Listes des offres</div>
+                                <div class="panel-heading">Listes des factures</div>
                                 <div class="panel-body">
 
                         <div class="table-responsive" style="overflow-x: inherit !important;">
                             <table  id="example" class=" table student-data-table  m-t-20 "  style="width:100%">
                                 <thead>
                                     <tr>
-                                        <th>@lang('Offre')</th>
-                                        <th>@lang('Désignation')</th>
-                                        <th>@lang('Numéro Mandat')</th>
-                                        <th>@lang('Net Vendeur')</th>
-                                        <th>@lang('Date exacte de vente')</th>
-                                        <th>@lang('Partage avec Agent/Agence')</th>
-                                        <th>@lang('demande facture styl')</th>
+                                        <th>@lang('Num Facture')</th>
+                                        <th>@lang('Mandat')</th>
+                                        <th>@lang('Année')</th>
+                                        <th>@lang('Date')</th>
+                                        <th>@lang('Mandataire')</th>
+                                        <th>@lang('Montant TTC')</th>
+                                        <th>@lang('Montant HT')</th>
+                                        <th>@lang('%')</th>
+                                        <th>@lang('Date de règlement Com Styl en Banque')</th>
                                         <th>@lang('Action')</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($offres as $offre)
+                                @foreach ($factures as $facture)
                                     <tr>
 
                                         <td>
-                                        {{$offre->type_offre}}
+                                        {{$facture->nom}} {{$facture->prenom}}
                                         </td>
-                                        <td >
-                                        <strong>{{$offre->designation}}</strong> 
+                                        <td style="color: #32ade1; text-decoration: underline;">
+                                        <strong>{{$facture->email}}</strong> 
                                         </td>
-                                        <td style="color: #e05555;">
-                                            <strong> {{$offre->numero_mandat}}</strong> 
-                                        </td>
-                                        <td>
-                                            {{$offre->net_vendeur}}   
+                                        <td style="color: #e05555;; text-decoration: underline;">
+                                            <strong> {{$facture->telephone}}</strong> 
                                         </td>
                                         <td>
-                                        {{$offre->date_mandat}}   
+                                        {{$facture->ville}}   
                                         </td>
                                         <td>
-                                            @php($color = "danger")
-
-                                            @if($offre->est_partage_agent == 0)
-                                                <span class="badge badge-danger">Non</span>
-                                            @else
-                                                <span class="badge badge-success">Oui</span>
-                                            @endif
-
-                                        </td>        
+                                        {{$facture->adresse}} 
+                                        </td>                                        
                                         <td>
-                                            @if($offre->demande_facture == false)
-                                            <span><button class="btn btn-default" href="{{route('offre.show',Crypt::encrypt($offre->id))}}" data-toggle="tooltip" title="@lang(' ')">demander facture styl</button> </span>
-                                        @endif
-                                        </td>                                
-                                      
+                                           
+                                                @php($color = "danger")
+                                            
+                                        <span class="badge badge-{{$color}}">{{$facture->role}}</span>
+                                          
+                                        </td>
                                         <td>
-                                            <span><a href="{{route('offre.show',Crypt::encrypt($offre->id))}}" data-toggle="tooltip" title="@lang('Détails  ')"><i class="large material-icons color-info">visibility</i></a> </span>
-                                            <span><a href="{{route('offre.show',Crypt::encrypt($offre->id))}}" data-toggle="tooltip" title="@lang('Modifier ') "><i class="large material-icons color-warning">edit</i></a></span>
-                                            <span><a  href="{{route('offre.archive',[$offre->id,1])}}" class="delete" data-toggle="tooltip" title="@lang('Archiver ') {{ $offre->nom }}"><i class="large material-icons color-danger">delete</i> </a></span>
+                                            <span><a href="{{route('facture.show',$facture->id)}}" data-toggle="tooltip" title="@lang('Détails de ') {{ $facture->nom }}"><i class="large material-icons color-info">visibility</i></a> </span>
+                                            <span><a href="{{route('facture.edit',$facture->id)}}" data-toggle="tooltip" title="@lang('Modifier ') {{ $facture->nom }}"><i class="large material-icons color-warning">edit</i></a></span>
+        
+                                        <span><a  href="{{route('facture.archive',[$facture->id,1])}}" class="delete" data-toggle="tooltip" title="@lang('Archiver ') {{ $facture->nom }}"><i class="large material-icons color-danger">delete</i> </a></span>
                                         </td>
                                     </tr>
                             @endforeach
@@ -108,7 +102,7 @@
 })
 
         swalWithBootstrapButtons({
-            title: '@lang('Vraiment archiver cet offre  ?')',
+            title: '@lang('Vraiment archiver cet facture  ?')',
             type: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#DD6B55',
@@ -128,7 +122,7 @@
 
                 swalWithBootstrapButtons(
                 'Archivé!',
-                'L\'offre a bien été archivé.',
+                'L\'facture a bien été archivé.',
                 'success'
                 )
                 
