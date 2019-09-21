@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
     @section ('page_title')
-    Ajouter une categorie
+    Demandes de factures
     @endsection
     <div class="row"> 
        
@@ -15,57 +15,56 @@
              @endif       
             <div class="card alert">
                 <!-- table -->
-            <a href="{{route('mandataire.create')}}" class="btn btn-success btn-rounded btn-addon btn-sm m-b-10 m-l-5"><i class="ti-user"></i>@lang('Nouveau mandataire')</a>
                 
                 <div class="card-body">
                         <div class="panel panel-info m-t-15" id="cont">
-                                <div class="panel-heading">Listes des mandataires</div>
+                                <div class="panel-heading">Listes des compromis</div>
                                 <div class="panel-body">
 
                         <div class="table-responsive" style="overflow-x: inherit !important;">
                             <table  id="example" class=" table student-data-table  m-t-20 "  style="width:100%">
                                 <thead>
                                     <tr>
-                                        <th>@lang('Nom')</th>
-                                        <th>@lang('Email')</th>
-                                        <th>@lang('Téléphone')</th>
-                                        <th>@lang('Ville')</th>
-                                        <th>@lang('Adresse')</th>
-                                        <th>@lang('Role')</th>
+                                       
+                                        <th>@lang('Mandataire')</th>
+                                        <th>@lang('Désignation')</th>
+                                        <th>@lang('Numéro Mandat')</th>
+                                        <th>@lang('Net Vendeur')</th>
+                                        <th>@lang('Date exacte de vente')</th>
+                                        <th>@lang('Partage avec Agent/Agence')</th>
                                         <th>@lang('Action')</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                @foreach ($mandataires as $mandataire)
+                                    @foreach ($compromis as $compromi)
                                     <tr>
+                                        <td >
+                                            <label class="color-info">{{$compromi->user->civilite}} {{$compromi->user->nom}} {{$compromi->user->prenom}}</label> 
+                                        </td>
+                                        <td >
+                                        <strong>{{$compromi->designation}}</strong> 
+                                        </td>
+                                        <td style="color: #e05555;">
+                                            <strong> {{$compromi->numero_mandat}}</strong> 
+                                        </td>
+                                        <td>
+                                            {{$compromi->net_vendeur}}   
+                                        </td>
+                                        <td>
+                                        {{$compromi->date_mandat}}   
+                                        </td>
+                                        <td>
+                                            @php($color = "danger")
 
+                                            @if($compromi->est_partage_agent == 0)
+                                                <span class="badge badge-danger">Non</span>
+                                            @else
+                                                <span class="badge badge-success">Oui</span>
+                                            @endif
+
+                                        </td>                                
                                         <td>
-                                        {{$mandataire->nom}} {{$mandataire->prenom}}
-                                        </td>
-                                        <td style="color: #32ade1; text-decoration: underline;">
-                                        <strong>{{$mandataire->email}}</strong> 
-                                        </td>
-                                        <td style="color: #e05555;; text-decoration: underline;">
-                                            <strong> {{$mandataire->telephone}}</strong> 
-                                        </td>
-                                        <td>
-                                        {{$mandataire->ville}}   
-                                        </td>
-                                        <td>
-                                        {{$mandataire->adresse}} 
-                                        </td>                                        
-                                        <td>
-                                           
-                                                @php($color = "danger")
-                                            
-                                        <span class="badge badge-{{$color}}">{{$mandataire->role}}</span>
-                                          
-                                        </td>
-                                        <td>
-                                            <span><a href="{{route('mandataire.show',Crypt::encrypt($mandataire->id) )}}" data-toggle="tooltip" title="@lang('Détails de ') {{ $mandataire->nom }}"><i class="large material-icons color-info">visibility</i></a> </span>
-                                            <span><a href="{{route('mandataire.edit',Crypt::encrypt($mandataire->id) )}}" data-toggle="tooltip" title="@lang('Modifier ') {{ $mandataire->nom }}"><i class="large material-icons color-warning">edit</i></a></span>
-        
-                                        <span><a  href="{{route('mandataire.archive',[$mandataire->id,1])}}" class="delete" data-toggle="tooltip" title="@lang('Archiver ') {{ $mandataire->nom }}"><i class="large material-icons color-danger">delete</i> </a></span>
+                                            <span><a href="{{route('facture.show_demande_stylimmo',Crypt::encrypt($compromi->id))}}" data-toggle="tooltip" title="@lang('Voir la demande  ')"><i class="large material-icons color-info">visibility</i></a> </span>
                                         </td>
                                     </tr>
                             @endforeach
@@ -99,7 +98,7 @@
 })
 
         swalWithBootstrapButtons({
-            title: '@lang('Vraiment archiver cet mandataire  ?')',
+            title: '@lang('Vraiment archiver cet compromis  ?')',
             type: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#DD6B55',
@@ -119,7 +118,7 @@
 
                 swalWithBootstrapButtons(
                 'Archivé!',
-                'L\'mandataire a bien été archivé.',
+                'L\'compromis a bien été archivé.',
                 'success'
                 )
                 

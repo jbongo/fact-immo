@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCompromiTable extends Migration
+class CreateCompromisTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,12 @@ class CreateCompromiTable extends Migration
      */
     public function up()
     {
-        Schema::create('compromi', function (Blueprint $table) {
+        Schema::create('compromis', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('user_id');
             $table->enum('type_offre',['vente','location']);
-            $table->text('designation')->nullable();
+            $table->text('description_bien')->nullable();
+            $table->string('ville_bien')->nullable();
 
             // Infos propriétaire / Vendeur
             $table->string('civilite_vendeur')->nullable();
@@ -50,11 +51,13 @@ class CreateCompromiTable extends Migration
             // Autres Infos
             $table->string('charge')->nullable();
             $table->double('net_vendeur')->nullable();
+            $table->double('frais_agence')->nullable();
             $table->string('scp_notaire')->nullable();
             $table->date('date_vente')->nullable();
 
             // demande facture
-            $table->boolean('demande_facture')->default(false);
+        // 0 = facture non demandée, 1= facture demandée en attente de validation, 2 = demande traitée par stylimmo
+            $table->boolean('demande_facture')->default(false); 
             $table->timestamps();
         });
     }
@@ -66,6 +69,6 @@ class CreateCompromiTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('compromi');
+        Schema::dropIfExists('compromis');
     }
 }

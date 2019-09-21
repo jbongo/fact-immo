@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
     @section ('page_title')
-    Ajouter une offre
+    Ajouter un compromis
     @endsection
     <div class="row"> 
        
@@ -15,50 +15,51 @@
              @endif       
             <div class="card alert">
                 <!-- table -->
-            <a href="{{route('offre.create')}}" class="btn btn-success btn-rounded btn-addon btn-sm m-b-10 m-l-5"><i class="ti-user"></i>@lang('Nouvelle offre')</a>
+            <a href="{{route('compromis.create')}}" class="btn btn-success btn-rounded btn-addon btn-sm m-b-10 m-l-5"><i class="ti-user"></i>@lang('Nouveau compromis')</a>
                 
                 <div class="card-body">
                         <div class="panel panel-info m-t-15" id="cont">
-                                <div class="panel-heading">Listes des offres</div>
+                                <div class="panel-heading">Listes des compromis</div>
                                 <div class="panel-body">
 
                         <div class="table-responsive" style="overflow-x: inherit !important;">
                             <table  id="example" class=" table student-data-table  m-t-20 "  style="width:100%">
                                 <thead>
                                     <tr>
-                                        <th>@lang('Offre')</th>
-                                        <th>@lang('Désignation')</th>
+                                       
+                                        <th>@lang('Description bien')</th>
+                                        <th>@lang('ville bien')</th>
                                         <th>@lang('Numéro Mandat')</th>
                                         <th>@lang('Net Vendeur')</th>
                                         <th>@lang('Date exacte de vente')</th>
                                         <th>@lang('Partage avec Agent/Agence')</th>
-                                        <th>@lang('demande facture styl')</th>
+                                        <th>@lang('Facture stylimmo')</th>
                                         <th>@lang('Action')</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($offres as $offre)
+                                    @foreach ($compromis as $compromi)
                                     <tr>
 
-                                        <td>
-                                        {{$offre->type_offre}}
+                                        <td >
+                                        <strong>{{$compromi->description_bien}}</strong> 
                                         </td>
                                         <td >
-                                        <strong>{{$offre->designation}}</strong> 
+                                            <strong>{{$compromi->ville_bien}}</strong> 
                                         </td>
                                         <td style="color: #e05555;">
-                                            <strong> {{$offre->numero_mandat}}</strong> 
+                                            <strong> {{$compromi->numero_mandat}}</strong> 
                                         </td>
                                         <td>
-                                            {{$offre->net_vendeur}}   
+                                            {{$compromi->net_vendeur}}   
                                         </td>
                                         <td>
-                                        {{$offre->date_mandat}}   
+                                        {{$compromi->date_mandat}}   
                                         </td>
                                         <td>
                                             @php($color = "danger")
 
-                                            @if($offre->est_partage_agent == 0)
+                                            @if($compromi->est_partage_agent == 0)
                                                 <span class="badge badge-danger">Non</span>
                                             @else
                                                 <span class="badge badge-success">Oui</span>
@@ -66,15 +67,19 @@
 
                                         </td>        
                                         <td>
-                                            @if($offre->demande_facture == false)
-                                            <span><button class="btn btn-default" href="{{route('offre.show',Crypt::encrypt($offre->id))}}" data-toggle="tooltip" title="@lang(' ')">demander facture styl</button> </span>
-                                        @endif
+                                            @if($compromi->demande_facture == 0)
+                                                <span><a class="btn btn-default" href="{{route('facture.demander_facture',Crypt::encrypt($compromi->id))}}" data-toggle="tooltip" title="@lang(' ddddd')">demander facture styl</a> </span>
+                                            @elseif($compromi->demande_facture == 1)
+                                                <span class="color-warning">En attente..</span>                                            
+                                            @else 
+                                                <span><a class="btn btn-warning" href="{{route('compromis.show',Crypt::encrypt($compromi->id))}}" data-toggle="tooltip" title="@lang(' Voir facture stylimmo')">Voir facture styl</a> </span>
+                                            @endif
                                         </td>                                
                                       
                                         <td>
-                                            <span><a href="{{route('offre.show',Crypt::encrypt($offre->id))}}" data-toggle="tooltip" title="@lang('Détails  ')"><i class="large material-icons color-info">visibility</i></a> </span>
-                                            <span><a href="{{route('offre.show',Crypt::encrypt($offre->id))}}" data-toggle="tooltip" title="@lang('Modifier ') "><i class="large material-icons color-warning">edit</i></a></span>
-                                            <span><a  href="{{route('offre.archive',[$offre->id,1])}}" class="delete" data-toggle="tooltip" title="@lang('Archiver ') {{ $offre->nom }}"><i class="large material-icons color-danger">delete</i> </a></span>
+                                            <span><a href="{{route('compromis.show',Crypt::encrypt($compromi->id))}}" data-toggle="tooltip" title="@lang('Détails  ')"><i class="large material-icons color-info">visibility</i></a> </span>
+                                            <span><a href="{{route('compromis.show',Crypt::encrypt($compromi->id))}}" data-toggle="tooltip" title="@lang('Modifier ') "><i class="large material-icons color-warning">edit</i></a></span>
+                                            <span><a  href="{{route('compromis.archive',[$compromi->id,1])}}" class="delete" data-toggle="tooltip" title="@lang('Archiver ') {{ $compromi->nom }}"><i class="large material-icons color-danger">delete</i> </a></span>
                                         </td>
                                     </tr>
                             @endforeach
@@ -108,7 +113,7 @@
 })
 
         swalWithBootstrapButtons({
-            title: '@lang('Vraiment archiver cet offre  ?')',
+            title: '@lang('Vraiment archiver cet compromis  ?')',
             type: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#DD6B55',
@@ -128,7 +133,7 @@
 
                 swalWithBootstrapButtons(
                 'Archivé!',
-                'L\'offre a bien été archivé.',
+                'L\'compromis a bien été archivé.',
                 'success'
                 )
                 

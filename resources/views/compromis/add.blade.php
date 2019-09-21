@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
 @section ('page_title')
-Ajout d'une offre
+Ajout d'un compromis
 @endsection
 <div class="row">
 	<div class="col-lg-12">
@@ -15,38 +15,26 @@ Ajout d'une offre
 			<div class="col-lg-10">
 			</div>
 			<div class="card-body">
-                <form class="form-valide3" action="{{ route('offre.add') }}" method="post">
+                <form class="form-valide3" action="{{ route('compromis.add') }}" method="post">
                         {{ csrf_field() }}
                         <div class="row">
-                            <div class="col-lg-6 col-md-6 col-sm-6">
-                                
-                                <div class="form-group row">
-                                    <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="type_offre">Type d'offre <span class="text-danger">*</span></label>
-                                        <div class="col-lg-6 col-md-6 col-sm-6">
-                                            <select class="js-select2 form-control {{$errors->has('type_offre') ? 'is-invalid' : ''}}" id="type_offre" name="type_offre" style="width: 100%;" data-placeholder="Choose one.." required>
-                                                <option ></option>
-                                                <option value="Vente">Vente</option>
-                                                <option value="Location">Location</option>
-                                           </select>
-                                           @if ($errors->has('type_offre'))
-                                           <br>
-                                           <div class="alert alert-warning ">
-                                              <strong>{{$errors->first('type_offre')}}</strong> 
-                                           </div>
-                                           @endif
-                                        </div>
-                                </div>
-                                                       
-                            </div>
 
                             <div class="col-lg-6 col-md-6 col-sm-6">
                                 <div class="form-group row">
-                                    <label class="col-lg-4 col-form-label" for="designation">Désignation<span class="text-danger">*</span></label>
+                                    <label class="col-lg-4 col-form-label" for="description_bien">Description du bien<span class="text-danger">*</span></label>
                                     <div class="col-lg-6">
-                                        <textarea class="form-control" name="designation" id="designation" cols="60" rows="5" required></textarea>
+                                        <textarea class="form-control" name="description_bien" id="description_bien" cols="60" rows="5" required></textarea>
                                         
                                     </div>
                                 </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="form-group row">
+                                    <label class="col-lg-4 col-form-label" for="ville_bien">Ville du bien <span class="text-danger">*</span></label>
+                                    <div class="col-lg-6">
+                                        <input class="form-control" type="text"  id="ville_bien" name="ville_bien" required >                                        
+                                    </div>
+                                </div>                
                             </div>
                         </div>
 
@@ -250,7 +238,6 @@ Ajout d'une offre
                                                 <label class="col-lg-8 col-md-8 col-sm-8 col-form-label" for="partage">Partage avec Agence/Agent ? <span class="text-danger">*</span></label>
                                                 <div class="col-lg-6 col-md-6 col-sm-6 ">
                                                     <select class="js-select2 form-control" id="partage" name="partage" required>
-                                                        <option ></option>
                                                         <option value="Non">Non</option>
                                                         <option value="Oui">Oui</option>
                                                     </select>
@@ -313,6 +300,12 @@ Ajout d'une offre
                                                 <input class="form-control" type="number" value="" id="net_vendeur" name="net_vendeur" >
                                             </div>
                                         </div>
+                                        <div class="col-lg-3 col-md-3 col-sm-3">
+                                            <div class="form-group">
+                                                <label for="frais_agence">Frais d'agence</label>
+                                                <input class="form-control" min="0" type="number" value="" id="frais_agence" name="frais_agence" >
+                                            </div>
+                                        </div>
 
                                         <div class="col-lg-3 col-md-3 col-sm-3">
                                             <div class="form-group">
@@ -320,12 +313,7 @@ Ajout d'une offre
                                                 <input class="form-control" type="texte" value="" id="scp_notaire" name="scp_notaire" >
                                             </div>
                                         </div>
-                                        <div class="col-lg-3 col-md-3 col-sm-3">
-                                            <div class="form-group">
-                                                <label for="date_vente">Date exacte Vente </label>
-                                                <input class="form-control" type="date" value="" id="date_vente" name="date_vente" >
-                                            </div>
-                                        </div>
+                                        
 
                                     </div>
                                     
@@ -354,219 +342,4 @@ Ajout d'une offre
 @section('js-content')
 
 
-{{-- INFOS DE BASE --}}
-<script>
-$('#parrain-id').hide();
-$('#parrain').change(function(e){
-    e.preventDefault();
-    $("#parrain").prop('checked') ? $('#parrain-id').slideDown()  : $('#parrain-id').slideUp() ;
-    
-});
-</script>
-{{-- FIN INFOS DE BASE --}}
-
-
-<script>
-    $("#check-palier").change(function(e){
-        e.preventDefault();
-        console.log($("#check-palier").prop('checked'));
-        
-    })
-	$(document).ready(function() {
-	    // $('#parrain').is(':unchecked') ? $('#parrain-id').hide() : $('#parrain-id').show();
-	    // $('#parrain').change(function(e){
-	    //     e.preventDefault();
-	    //     $('#parrain').is(':unchecked') ? $('#parrain-id').hide() : $('#parrain-id').show();
-	    // });
-	
-	    // $('#refund').is(':unchecked') ? $('#durex1').hide() : $('#durex1').show();
-	    // $('#refund').change(function(e){
-	    //     e.preventDefault();
-	    //     $('#refund').is(':unchecked') ? $('#durex1').hide() : $('#durex1').show();
-	    // });
-	
-	    // $('#bool-starter').is(':unchecked') ? $('#glob').hide() : $('#glob').show();
-	    // $('#bool-starter').change(function(e){
-	    //     e.preventDefault();
-	    //     $('#bool-starter').is(':unchecked') ? $('#glob').hide() : $('#glob').show();
-	    // });
-	});
-</script>
-
-
-
-<!--enable palier-->
-<script>
-        $(document).ready(function() {
-         $('#palier').hide();
-         $('#plan-type').change(function(){
-     
-                 if($('#plan-type').val() === 'Starter')
-                     {
-                         $('#expert-par').hide();
-                         $('#max-starter-parrent').show();
-                     }
-                     if($('#plan-type').val() === 'Expert')
-                     {
-                         $('#expert-par').show();
-                         $('#max-starter-parrent').hide();
-                     }
-                     $('#check-palier').change(function(e){
-                     e.preventDefault();
-                     $("#check-palier").prop('checked') ? $('#palier').show() :  $('#palier').hide();
-                     
-                     });
-     
-                     $('#plan-type').change(function(){
-                     if($('#plan-type').val() === 'Starter')
-                         {
-                             $('#expert-par').hide();
-                             $('#max-starter-parrent').show();
-                         }
-                     else 
-                         {
-                             $('#expert-par').show() ;
-                             $('#max-starter-parrent').hide();
-                         }
-                     
-                     });
-     
-         });
-         
-        });
-     </script>
-     <!--paliers-->
-     <script>
-        var x = 1;
-        $(document).ready(function() {
-        var max_fields      = 15;
-        var wrapper         = $(".input_fields_wrap");
-        var add_button      = $(".add_field_button"); 
-     
-        $('#check-palier').change(function(e){
-         e.preventDefault();
-         $("#check-palier").prop('checked') ? $('#palier').slideDown()  : $('#palier').slideUp() ;
-         
-        });
-
-
-        $(add_button).click(function(e){
-            e.preventDefault();      
-            if(x < max_fields){
-                var min_chiffre = parseInt($("#max"+x+'').change().val()) + 1;
-                var percent_diff = ((95 * 10) - (parseFloat($("#range_01").change().val() * 10))) / 10;
-                var i = 1;           
-                while (i <= x)
-                {
-                    let tmp = parseFloat($("#percent"+i+'').change().val() * 10) / 10;
-                    percent_diff = (percent_diff * 10 - tmp * 10) / 10;
-                    i++;
-                }
-                if(x > 1 && percent_diff > 0) 
-                     $("#pal"+x+'').hide();
-                if(percent_diff > 0)
-                     x++;
-                if(percent_diff < 0)
-                 {
-                     percent_diff = 0;
-             
-                 }
-                 var val_chiffre = parseInt(min_chiffre) + 19999;
-                 if (percent_diff > 5)
-                     $(wrapper).append('<div class = "form-inline field'+x+'"><div class="form-group"><label for="level'+x+'">Niveau: </label> <input class="form-control" type="text" value="'+x+'" id="level'+x+'" name="level'+x+'"/ readonly></div> <div class="form-group"><label for="percent'+x+'">Pourcentage en + (%): </label> <input class="form-control" type="number" step="0.10" min="0" max="'+percent_diff+'" value="'+percent_diff+'" id="percent'+x+'" name="percent'+x+'"/> </div> <div class="form-group"><label for="min'+x+'">Chiffre d\'affaire minimum (€): </label> <input class="form-control" type="number" value="'+min_chiffre+'" id="min'+x+'" name="min'+x+'" readonly></div> <div class="form-group"><label for="max'+x+'">Chiffre d\'affaire maximum (€): </label> <input class="form-control" type="number" min="'+min_chiffre+'" value="'+val_chiffre+'" id="max'+x+'" name="max'+x+'"/></div>  <button href="#" id="pal'+x+'" class="btn btn-danger remove_field">Enlever</button></br></div>'); //add input box
-                 else if(percent_diff <= 5 && percent_diff > 0)
-                     $(wrapper).append('<div class = "form-inline field'+x+'"><div class="form-group"><label for="level'+x+'">Niveau: </label> <input class="form-control" type="text" value="'+x+'" id="level'+x+'" name="level'+x+'"/ readonly></div> <div class="form-group"><label for="percent'+x+'">Pourcentage en + (%): </label> <input class="form-control" type="number" step="0.10" min="0" max="'+percent_diff+'" value="'+percent_diff+'" id="percent'+x+'" name="percent'+x+'"/> </div> <div class="form-group"><label for="min'+x+'">Chiffre d\'affaire minimum (€): </label> <input class="form-control" type="number" value="'+min_chiffre+'" id="min'+x+'" name="min'+x+'" readonly></div> <div class="form-group"><label for="max'+x+'">Chiffre d\'affaire maximum (€): </label> <input class="form-control" type="number" min="'+min_chiffre+'" value="'+val_chiffre+'" id="max'+x+'" name="max'+x+'"/></div>  <button href="#" id="pal'+x+'" class="btn btn-danger remove_field">Enlever</button></br></div>'); //add input box
-                 else
-                 {
-                     swal(
-                     'Ajout impossible!',
-                     'Le maximum de 95% en pourcentage est atteint, vous ne pouvez pas ajouter d\'avantages de paliers!',
-                     'error'
-                     ); 
-                 }
-            }  
-        });
-        
-        $(wrapper).on("click",".remove_field", function(e){ 
-            e.preventDefault(); 
-            if(x > 2) $("#pal"+(x-1)+'').show();
-            $(this).parent('div').remove(); 
-            x--;
-        })
-     });
-     </script>
-     <!--validate and ajax push-->
-     <script>
-        $('.submit').click(function(e){ 
-              e.preventDefault();
-              var form = $(".form-valide3");
-              
-               form.validate({
-                   errorClass: "invalid-feedback animated fadeInDown",
-                   errorElement: "div",
-                   errorPlacement: function(e, a) {
-                       jQuery(a).parents(".form-group > div").append(e)
-                   },
-                   highlight: function(e) {
-                       jQuery(e).closest(".form-group").removeClass("is-invalid").addClass("is-invalid");
-                   },
-                   success: function(e) {
-                       jQuery(e).closest(".form-group").removeClass("is-invalid"), jQuery(e).remove();
-                   },
-                   rules: {
-                   ".plan-type": {
-                       required: !0
-                   },
-                   ".plan-name": {
-                        required: !0
-                   }
-               },
-               messages: {
-                   ".plan-type": "Veillez choisir un type !",
-                   ".plan-name": "Veillez saisir un nom !"
-               }
-           });
-           $('.plan-type').on("select2:close", function (e) {  
-             $(this).valid(); 
-         });
-           if (form.valid() === true){
-             var check = $('#check-palier').is(':unchecked') ? "off" : "on";
-             var level = $('#palier input').serialize();
-             var planname = $('#plan-name').val();
-               $.ajax({
-                   type: "POST",
-                   url: "",
-                   beforeSend: function(xhr, type) {
-                     if (!type.crossDomain) {
-                         xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
-                     }
-                     },
-                   data: {
-                       plantype: $('#plan-type').val(), planname: $('#plan-name').val(), range01: $('#range_01').val(),
-                       checkpalier: check, palierdata: level,
-                       maxstarter: $('#max-starter').val(), freeduration: $('#free-duration').val(), minsales: $('#min-sales').val(),
-                       minfilleul: $('#min-filleul').val(), minexpchaffaire: $('#min-exp-ch-affaire').val(),
-                       subpercentexper: $('#sub-percent-exper').val()
-                       },
-                   success: function(data){
-                     swal(
-                     'Ajouté',
-                     'Le model '+planname+' est ajouté avec succées!',
-                     'success'
-                     )
-                     .then(function(){
-                         window.location.href = "";
-                     })
-                   },
-                   error: function(data){
-                     swal(
-                     'Echec',
-                     'Le model '+planname+' n\'a pas été ajouté!',
-                     'danger'
-                     );
-                   }
-               });
-           }
-        });
-     </script>
 @endsection

@@ -25,6 +25,7 @@ class CreateUsersTable extends Migration
             $table->string('pays')->nullable();
             $table->string('telephone')->nullable();
             $table->string('statut')->nullable();
+            $table->bigInteger('siret')->nullable();
             $table->string('email')->unique();
             $table->enum('role',['admin','mandataire']);
             $table->timestamp('email_verified_at')->nullable();

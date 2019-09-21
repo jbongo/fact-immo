@@ -1,0 +1,689 @@
+@extends('layouts.app') 
+@section('content') 
+@section ('page_title') 
+    Mandataire
+@endsection
+<div class="row">
+   <div class="col-lg-12">
+      <div class="card">
+         <div class="card-body">
+            <div class="col-lg-6">
+               <div class="panel panel-info lobipanel-basic">
+                  <div class="panel-heading">Fiche utilisateur.</div>
+                  <div class="panel-body">
+                     <div class="card alert">
+                        <div class="card-body">
+                           <div class="user-profile">
+                              <div class="row">
+                                 <div class="col-lg-4">
+                                    <div class="col-lg-12">
+                                       <div class="user-photo m-b-30">
+                                          <img class="img-responsive" style="object-fit: cover; width: 225px; height: 225px; border: 5px solid #8ba2ad; border-style: solid; border-radius: 20px; padding: 3px;" src="{{asset('/images/photo_profile/'.(($mandataire->avatar !== NULL) ? $mandataire->avatar : "default.png"))}}" alt="">
+                                       </div>
+                                    </div>
+    
+                                    <div class="user-skill">
+                                       <h4 style="color: #32ade1;text-decoration: underline;">Options</h4>
+                                       <a type="button" data-toggle="modal" data-target="#user_edit" class="btn btn-warning btn-rounded btn-addon btn-xs m-b-10"><i class="ti-pencil"></i>Modifier</a>
+                                    </div>
+                                 </div>
+                                 <div class="col-lg-8">
+                                    <div class="user-profile-name" style="color: #d68300;">{{$mandataire->civilite}} {{$mandataire->nom}} {{$mandataire->prenom}}</div>
+                                    <div class="user-Location"><i class="ti-location-pin"></i> {{$mandataire->ville}}</div>
+                                    
+                                    <div class="custom-tab user-profile-tab">
+                                       <ul class="nav nav-tabs" role="tablist">
+                                          <li role="presentation" class="active"><a href="#1" aria-controls="1" role="tab" data-toggle="tab">Détails</a></li>
+                                       </ul>
+                                       <div class="tab-content">
+                                          <div role="tabpanel" class="tab-pane active" id="1">
+                                             <div class="contact-information">
+                                                <div class="phone-content">
+                                                    <span class="contact-title"><strong>Statut:</strong></span>
+                                                    <span class="phone-number" style="color: #ff435c;">{{$mandataire->statut}}</span>
+                                                </div>
+                                                <div class="phone-content">
+                                                   <span class="contact-title"><strong>Téléphone:</strong></span>
+                                                   <span class="phone-number" style="color: #ff435c; text-decoration: underline;">{{$mandataire->telephone}}</span>
+                                                </div>
+                                                <div class="address-content">
+                                                   <span class="contact-title"><strong>Adresse:</strong></span>
+                                                   <span class="mail-address">{{$mandataire->adresse}}</span>
+                                                </div>
+                                                <div class="address-content">
+                                                    <span class="contact-title"><strong>Complément adresse:</strong></span>
+                                                    <span class="mail-address">{{$mandataire->complement_adresse}}</span>
+                                                </div>
+                                                <div class="website-content">
+                                                   <span class="contact-title"><strong>Code postal:</strong></span>
+                                                   <span class="contact-website">{{$mandataire->code_postal}}</span>
+                                                </div>
+                                                
+                                                <div class="website-content">
+                                                   <span class="contact-title"><strong>Ville:</strong></span>
+                                                   <span class="contact-website">{{$mandataire->ville}}</span>
+                                                </div>
+                                                <div class="website-content">
+                                                    <span class="contact-title"><strong>Pays:</strong></span>
+                                                    <span class="contact-website">{{$mandataire->pays}}</span>
+                                                </div>
+                                                <div class="email-content">
+                                                   <span class="contact-title"><strong>Email:</strong></span>
+                                                   <span class="contact-email" style="color: #ff435c; text-decoration: underline;">{{$mandataire->email}}</span>
+                                                </div>
+                                             </div>
+                                             <div class="basic-information">
+                                                {{-- <h4 style="color: #32ade1;text-decoration: underline;">Role utilisateur</h4> --}}
+                                                
+                                                <div class="gender-content">
+                                                   <span class="contact-title"><strong>Date d'ajout:</strong></span>
+                                                   <span class="gender">{{date('d-m-Y',strtotime($mandataire->created_at ))}}</span>
+                                                </div>
+                                             </div>
+                                            
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div class="col-lg-6">
+              
+               <div class="panel panel-success lobipanel-basic">
+                     <div class="panel-heading">Statistiques.</div>
+                     <div class="panel-body">
+                           <div class="col-lg-6">
+                                 <div class="card bg-danger">
+                                     <div class="media">
+                                         <div class="media-left meida media-middle">
+                                             <span><i class="ti-home f-s-48 color-white"></i></span>
+                                         </div>
+                                         <div class="media-body media-text-right">
+                                             <h4>0</h4>
+                                             <h5>Compromis</h5>
+                                         </div>
+                                     </div>
+                                 </div>
+                                </div>
+                            
+                                <div class="col-lg-6">
+                                 <div class="card bg-primary">
+                                     <div class="media">
+                                         <div class="media-left meida media-middle">
+                                             <span><i class="ti-money f-s-48 color-white"></i></span>
+                                         </div>
+                                         <div class="media-body media-text-right">
+                                             <h4>0,00 €</h4>
+                                             <h5>Chiffre d'affaire</h5>
+                                         </div>
+                                     </div>
+                                 </div>
+                                </div>
+                     </div>
+                  </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+
+<div class="row">
+
+    <div class="panel panel-warning lobipanel-basic">
+        <div class="panel-heading">Contrat.</div>
+        <div class="panel-body">
+            
+                <div class="row">
+                        <div class="col-lg-12">
+                            
+                            @if ($mandataire->contrat == null)
+                            <label class="color-red" >  <h4>  Pas de contrat </h4></label> <hr>
+                            @php
+                                $mandataire_id = Crypt::encrypt($mandataire->id);
+                            @endphp
+                        <a class="btn btn-default btn-flat btn-addon btn-lg m-b-10 m-l-5 " href="{{route('contrat.create',$mandataire_id)}}" ><i class="ti-plus"></i>Ajouter contrat</a> <hr>
+                            
+                            @else 
+                            
+                            <div class="card">
+                                <div class="col-lg-10">
+                                </div>
+                                <div class="card-body">
+                    
+                                    <div class="panel-body">
+                                        <fieldset class="col-md-12">
+                                            <legend>Infos basiques</legend>
+                                            <div class="panel panel-warning">
+                                                <div class="panel-body">
+                    
+                                                        <div class="row">
+                                                            <div class="col-lg-6 col-md-6 col-sm-6">
+                    
+                                                                <div class="form-group row">
+                                                                    <label class="col-lg-4 col-form-label" for="forfait_entree">Forfait d'entrée (€)<span class="text-danger">*</span></label>
+                                                                    <div class="col-lg-4">
+                                                                    <label class="color-primary">{{$mandataire->contrat->forfait_entree}}</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group row">
+                                                                    <label class="col-lg-6 col-form-label" for="est_starter">Démarrage en tant que Starter ?</label>
+                                                                    <label class="color-primary">{{$mandataire->contrat->est_demarrage_starter == 1 ? "Oui" : "Non"}}</label>
+                                                                    
+                                                                </div>
+                                                                <div class="form-group row">
+                                                                    <label class="col-lg-6 col-form-label" for="a_parrain">Le mandataire a t'il un parrain ?</label>
+                                                                    <label class="color-primary">{{$mandataire->contrat->a_parrain == 1 ? "Oui" : "Non"}}</label>
+                                                                </div>
+                                                                
+                                                                @if ($mandataire->contrat->a_parrain == 1)
+                                                                    <div class="form-group row" id="parrain-id">
+                                                                        <label class="col-lg-4 col-form-label" for="parrain_id">Parrain</label>
+                                                                        <div class="col-lg-8">
+                                                                        <label class="color-primary">{{$mandataire->contrat->parrain_id}}</label>  
+                                                                            {{--**********************  --}}
+                                                                    </div>
+                                                                </div>
+                                                                @endif
+
+                                                                
+
+
+                                                            </div>
+                    
+                                                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                                                <div class="form-group row">
+                                                                    <label class="col-lg-4 col-form-label" for="date_entree">Date d'entrée<span class="text-danger">*</span></label>
+                                                                    <div class="col-lg-4">
+                                                                    <label class="color-primary">{{$mandataire->contrat->date_entree}}</label>
+
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group row">
+                                                                    <label class="col-lg-4 col-form-label" for="date_debut">Date de début d'activité<span class="text-danger">*</span></label>
+                                                                    <div class="col-lg-4">
+                                                                    <label class="color-primary">{{$mandataire->contrat->date_deb_activite}}</label>
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                                                <div class="form-group row">
+                                                                    <label class="col-lg-4 col-form-label" for="ca_depart">Chiffre d'affaire de depart<span class="text-danger">*</span></label>
+                                                                    <div class="col-lg-4">
+                                                                        <label class="color-primary">{{$mandataire->contrat->ca_depart}}</label>                                                                        
+                                                                    </div>
+                                                                </div>
+                                                                
+                                                            </div>
+                                                        </div>
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                    
+                                    <div class="panel-body">
+                                        <fieldset class="col-md-12">
+                                            <legend>Commision direct</legend>
+                                            <div class="panel panel-warning">
+                                                <div class="panel-body">
+                    
+                                                    {{-- PACK STARTER --}}
+                                                @if ($mandataire->contrat->est_demarrage_starter == 1)
+                                                    
+                                                <div class="row" id="pack_starter">
+                                                        <div class="row">
+                                                            <div class="col-md-12 col-lg-12 col-sm-12 "style="color: #5c96b3; ">
+                                                                <h4> <strong><center> @lang('Starter') </center></strong></h4>                          
+                                                            </div>
+                                                        </div>
+                                                        <hr>
+                                                    <div class="row">
+                                                        <div class="col-lg-6 col-md-6 col-sm-6">
+                                                           
+                                                            <div class="form-group row">
+                                                                <label class="col-lg-6 col-md-6 col-sm-6 col-form-label" for="pourcentage_depart_starter">Pourcentage de départ du mandataire<span class="text-danger">*</span></label>
+                                                                <div class="col-lg-4 col-md-4 col-sm-4 ">
+                                                                    <label class="color-primary">{{$mandataire->contrat->pourcentage_depart_starter}} %</label>                                                                    
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-6 col-md-6 col-sm-6">
+                                                            <div class="form-group row" id="max-starter-parrent">
+                                                                <label class="col-lg-6 col-md-6 col-sm-6 col-form-label" for="duree_max_starter">Durée maximum du pack Starter<span class="text-danger">*</span></label>
+                                                                <div class="col-lg-4 col-md-4 col-sm-4 ">
+                                                                    <label class="color-primary">{{$mandataire->contrat->duree_max_starter}} </label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group row">
+                                                                <label class="col-lg-6 col-form-label" for="duree_gratuite_starter">Durée de la gratuitée (mois)<span class="text-danger">*</span></label>
+                                                                <div class="col-lg-4 col-md-4 col-sm-4 ">
+                                                                    <label class="color-primary">{{$mandataire->contrat->duree_gratuite_starter}} </label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                    
+                                                    @if ($mandataire->contrat->a_palier_starter == 1)
+                                                        
+                                                    
+                                                    <div class="row">
+                                                        <div class="col-lg-12 col-md-12 col-sm-12">
+                    
+                                                            <div class="col-lg-12 col-md-12 col-sm-12" id="palier_starter">
+                                                                <div class="panel panel-pink m-t-15">
+                                                                    <div class="panel-heading"></div>
+                                                                    <div class="panel-body">
+                                                                        <div class="input_fields_wrap_starter">
+                                                                            
+                                                                            <div class="card alert">
+                                                                                    <div class="card-header">
+                                                                                        <h4><strong>Paliers Starter</strong> </h4>
+                                                                                    </div>
+
+                                                                                    <div class="card-body">
+                                                                                        <div class="table-responsive">
+                                                                                            <table class="table table-bordered">
+                                                                                                <thead>
+                                                                                                    <tr>
+                                                                                                        <th>Niveau</th>
+                                                                                                        <th>Pourcentage en +</th>
+                                                                                                        <th>chiffre affaire min</th>
+                                                                                                        <th>chiffre affaire max</th>
+                                                                                                    </tr>
+                                                                                                </thead>
+                                                                                                <tbody>
+                                                                                                @foreach ($palier_starter as $pal)
+                                                                                                    <tr>
+                                                                                                        <th class="color-primary" scope="row">{{$pal[0]}}</th>
+                                                                                                        <td>{{$pal[1]}}</td>
+                                                                                                        <td>{{$pal[2]}}</td>
+                                                                                                        <td>{{$pal[3]}}</td>
+                                                                                                    </tr>
+                                                                                                @endforeach
+                                                                                                </tbody>
+                                                                                            </table>
+                                                                                        </div>
+                                                                                    </div>
+
+                                                                                </div>
+                                                                            </div>
+
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        @else 
+                                                            <label class="color-danger">pas de palier starter</label>
+                                                        @endif
+                    
+                                                    </div>
+                                                    @endif
+                                                    
+                    
+                                                {{-- </div> --}}
+                                                {{-- FIN PACK STARTER --}}
+                    
+                    
+                    
+                                                {{-- PACK EXPERT --}}
+                                                <br>
+                                                <hr>
+                                                <div class="row">
+                                                    <div class="row">
+                                                        <div class="col-md-12 col-lg-12 col-sm-12 "style="color: #5c96b3; ">
+                                                            <h4> <strong><center> @lang('Expert') </center></strong></h4>                          
+                                                        </div>
+                                                    </div><hr>
+                                                    
+                                                    <div class="row">
+                                                        <div class="col-lg-6 col-md-6 col-sm-6">
+                                                            <div class="form-group row">
+                                                                <label class="col-lg-6 col-md-6 col-sm-6 col-form-label" for="pourcentage_depart_expert">Pourcentage de départ du mandataire<span class="text-danger">*</span></label>
+                                                                <div class="col-lg-4 col-md-4 col-sm-4 ">
+                                                                    <label class="color-primary">{{$mandataire->contrat->pourcentage_depart_expert}} %</label>                                                                    
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-6 col-md-6 col-sm-6">
+                                                           
+                                                            <div class="form-group row">
+                                                                <label class="col-lg-6 col-form-label" for="duree_gratuite_expert">Durée de la gratuitée (mois)<span class="text-danger">*</span></label>
+                                                                <div class="col-lg-4 col-md-4 col-sm-4 ">
+                                                                    <label class="color-primary">{{$mandataire->contrat->duree_gratuite_expert}} </label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+
+
+                                                    @if ($mandataire->contrat->a_palier_expert == 1)
+                                                        
+                                                    
+                                                    <div class="row">
+                                                        <div class="col-lg-12 col-md-12 col-sm-12">
+                    
+                                                            <div class="col-lg-12 col-md-12 col-sm-12" id="palier_expert">
+                                                                <div class="panel panel-pink m-t-15">
+                                                                    <div class="panel-heading"></div>
+                                                                    <div class="panel-body">
+                                                                        <div class="input_fields_wrap_expert">
+                                                                            
+                                                                            <div class="card alert">
+                                                                                    <div class="card-header">
+                                                                                        <h4><strong>Paliers Expert</strong> </h4>
+                                                                                    </div>
+
+                                                                                    <div class="card-body">
+                                                                                        <div class="table-responsive">
+                                                                                            <table class="table table-bordered">
+                                                                                                <thead>
+                                                                                                    <tr>
+                                                                                                        <th>Niveau</th>
+                                                                                                        <th>Pourcentage en +</th>
+                                                                                                        <th>chiffre affaire min</th>
+                                                                                                        <th>chiffre affaire max</th>
+                                                                                                    </tr>
+                                                                                                </thead>
+                                                                                                <tbody>
+                                                                                                @foreach ($palier_expert as $pal)
+                                                                                                    <tr>
+                                                                                                        <th class="color-primary" scope="row">{{$pal[0]}}</th>
+                                                                                                        <td>{{$pal[1]}}</td>
+                                                                                                        <td>{{$pal[2]}}</td>
+                                                                                                        <td>{{$pal[3]}}</td>
+                                                                                                    </tr>
+                                                                                                @endforeach
+                                                                                                </tbody>
+                                                                                            </table>
+                                                                                        </div>
+                                                                                    </div>
+
+                                                                                </div>
+                                                                            </div>
+
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                    
+                                                    </div>
+                                                    @else 
+                                                        <label class="color-danger">pas de palier expert</label>
+                                                    @endif
+                    
+                    
+                                                    <div class="row">
+                                                        <div class="col-lg-12 col-md-12 col-sm-12">
+                    
+                                                            <div class="col-lg-12" id="expert-par">
+                                                                <div class="panel panel-default m-t-15">
+                                                                    <div class="panel-heading-default"><strong>Paramètres du pack expert</strong></div>
+                                                                    <div class="panel-body">
+                                                                        <br>
+                                                                        <br>
+                                                                        </strong>
+                    
+                                                                        <div class="row">
+                                                                            <div class="col-lg-6-col-md-6 col-sm-6">
+                                                                                <div class="form-group row">
+                                                                                    <label class="col-lg-6 col-md-6 col-sm-6 col-form-label" for="nombre_vente_min">Nombre de vente minimum</label>
+                                                                                    <div class="col-lg-4 col-md-4 col-sm-4 ">
+                                                                                        <label class="color-primary">{{$mandataire->contrat->nombre_vente_min}} </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="form-group row">
+                                                                                    <label class="col-lg-6 col-md-6 col-sm-6 col-form-label" for="nombre_mini_filleul">Nombre minimum de filleuls parrainés</label>
+                                                                                    <div class="col-lg-4 col-md-4 col-sm-4 ">
+                                                                                        <label class="color-primary">{{$mandataire->contrat->nombre_mini_filleul}} </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-lg-6-col-md-6 col-sm-6">
+                                                                                <div class="form-group row">
+                                                                                    <label class="col-lg-6 col-md-6 col-sm-6 col-form-label" for="chiffre_affaire">Chiffre d'affaire(€) </label>
+                                                                                    <div class="col-lg-4 col-md-4 col-sm-4 ">
+                                                                                        <label class="color-primary">{{$mandataire->contrat->chiffre_affaire}} €</label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <strong>Si ces conditions ne sont pas réunies alors:
+                                                                                <br>
+                                                                                <br>
+                                                                                </strong>
+                                                                                <div class="form-group row">
+                                                                                    <label class="col-lg-6 col-md-6 col-sm-6 col-form-label" for="a_soustraitre">A soustraire (%)</label>
+                                                                                    <div class="col-lg-4 col-md-4 col-sm-4 ">
+                                                                                        <label class="color-primary">{{$mandataire->contrat->a_soustraitre}} %</label>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                {{-- FIN PACK EXPERT --}}
+                    
+                    
+                    
+                    
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                    <br>
+                    
+                                    <div class="panel-body" id="parrainage_div">
+                                        <fieldset class="col-md-12">
+                                            <legend>Parrainage</legend>
+                                            <div class="panel panel-warning">
+                                                <div class="panel-body">
+                    
+                                                    <div class="row">
+                                                                                <!-- /# column -->
+                                            <div class="col-lg-6">
+                                                    <div class="card alert">
+                                                        <div class="card-header">
+                                                            <h4>&Eacute;volution de l'impact </h4>
+                                
+                                                        </div>
+                                                        <div class="card-body">
+                                                            <div class="table-responsive">
+                                                                <table class="table table-bordered">
+                                                                    <thead>
+                                                                        <tr>
+                                                                           
+                                                                            <th>Année</th>
+                                                                            <th>1er filleul</th>
+                                                                            <th>2<sup> ème</sup> filleul</th>
+                                                                            <th>3<sup> ème</sup> filleul</th>
+                                                                            <th>4<sup> ème</sup> filleul</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <th class="color-primary" scope="row">1</th>
+                                                                            <td>5%</td>
+                                                                            <td>5%</td>
+                                                                            <td>5%</td>
+                                                                            <td>5%</td>
+                                                                            
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <th class="color-primary" scope="row">2</th>
+                                                                            <td>3%</td>
+                                                                            <td>4%</td>
+                                                                            <td>5%</td>
+                                                                            <td>5%</td>
+                                                                            
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <th class="color-primary" scope="row">3</th>
+                                                                            <td>1%</td>
+                                                                            <td>3%</td>
+                                                                            <td>4%</td>
+                                                                            <td>5%</td>
+                                                                            
+                                                                        </tr>
+                                                                       
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                        <div class="col-lg-6 col-md-6 col-sm-6">
+                                                            <div class="form-group row" id="max-starter-parrent">
+                                                                <label class="col-lg-6 col-md-6 col-sm-6 col-form-label col-form-label" for="prime_max_forfait">Prime forfaitaire si le parrain est à 100% (€)<span class="text-danger">*</span></label>
+                                                                <div class="col-lg-4 col-md-4 col-sm-4">
+                                                                    <label class="color-primary">{{$mandataire->contrat->prime_forfaitaire}} €</label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                    
+                    
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                    <br>
+                    
+                                    <div class="panel-body">
+                                        <fieldset class="col-md-12">
+                                            <legend>Pack pub</legend>
+                                            <div class="panel panel-warning">
+                                                <div class="panel-body">
+                    
+                                                    <div class="row">
+                                                        <div class="col-lg-6 col-md-6 col-sm-6">
+                                                            <div class="form-group row">
+                                                                <label class="color-primary">{{$mandataire->contrat->packpub_id}} </label>
+                                                            </div>
+                                                        </div>
+                                                        
+                                                    </div>
+                    
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                </div>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+            
+                
+        </div>
+    </div>
+
+</div>
+
+@endsection
+@section('js-content')
+<script>
+   var addr = "https://api-adresse.data.gouv.fr/search/?q=134+Rue+Etienne+Dolet+94230+Cachan";
+   var tmp = "{{$mandataire->adresse}}"+"+"+"{{$mandataire->code_postal}}"+"+"+"{{$mandataire->ville}}";
+   var addr = "https://api-adresse.data.gouv.fr/search/?q="+(tmp.replace(/ /gi, "+"));
+   console.log(addr);
+   
+   $.ajax({
+      beforeSend :  function () {},
+        url: addr,
+        dataType: "json",
+        success: function(data) {
+            var util = (((data['features'])[0])['geometry'])['coordinates'];
+            var map = L.map('situation').setView([util[1], util[0]], 15);
+            var osmLayer = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap',
+                maxZoom: 19
+            });
+            map.addLayer(osmLayer);
+            L.marker([util[1], util[0]]).addTo(map)
+                .bindPopup(' <img class="img-responsive" style="object-fit: cover; width: 110px; height: 110px; border: 5px solid #8ba2ad; border-style: solid; border-radius: 20px; padding: 3px;" src="{{asset('/images/photo_profile/'.(($mandataire->avatar !== NULL) ? $mandataire->avatar : "default.png"))}}" alt=""><br><strong>AIT SLIMANI Belkacem</strong><br> 94230 Cachan');
+       }
+    });
+</script>
+<script>
+   $("#code_postal").autocomplete({
+	source: function (request, response) {
+		$.ajax({
+         beforeSend :  function () {},
+			url: "https://api-adresse.data.gouv.fr/search/?postcode="+$("input[name='code_postal']").val(),
+			data: { q: request.term },
+			dataType: "json",
+			success: function (data) {
+            var postcodes = [];
+            console.log(data)
+				response($.map(data.features, function (item) {
+					// Ici on est obligé d'ajouter les CP dans un array pour ne pas avoir plusieurs fois le même
+					if ($.inArray(item.properties.city, postcodes) == -1) {
+						postcodes.push(item.properties.postcode);
+						return { label: item.properties.postcode + " - " + item.properties.city, 
+								 city: item.properties.city,
+								 value: item.properties.postcode
+						};
+					}
+				}));
+			}
+		});
+	},
+	// On remplit aussi la ville
+	select: function(event, ui) {
+		$('#ville').val(ui.item.city);
+	}
+});
+$("#ville").autocomplete({
+	source: function (request, response) {
+		$.ajax({
+         beforeSend :  function () {},
+			url: "https://api-adresse.data.gouv.fr/search/?city="+$("input[name='ville']").val(),
+			data: { q: request.term },
+			dataType: "json",
+			success: function (data) {
+				var cities = [];
+				response($.map(data.features, function (item) {
+					// Ici on est obligé d'ajouter les villes dans un array pour ne pas avoir plusieurs fois la même
+					if ($.inArray(item.properties.postcode, cities) == -1) {
+						cities.push(item.properties.postcode);
+						return { label: item.properties.postcode + " - " + item.properties.city, 
+								 postcode: item.properties.postcode,
+								 value: item.properties.city
+						};
+					}
+				}));
+			}
+		});
+	},
+	// On remplit aussi le CP
+	select: function(event, ui) {
+		$('#code_postal').val(ui.item.postcode);
+	}
+});
+$("#adresse").autocomplete({
+	source: function (request, response) {
+		$.ajax({
+         beforeSend :  function () {},
+			url: "https://api-adresse.data.gouv.fr/search/?postcode="+$("input[name='code_postal']").val(),
+			data: { q: request.term },
+			dataType: "json",
+			success: function (data) {
+				response($.map(data.features, function (item) {
+					return { label: item.properties.name, value: item.properties.name};
+				}));
+			}
+		});
+	}
+});
+</script>
+@endsection

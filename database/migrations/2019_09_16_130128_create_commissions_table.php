@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCommissionTable extends Migration
+class CreateCommissionsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateCommissionTable extends Migration
      */
     public function up()
     {
-        Schema::create('commission', function (Blueprint $table) {
+        Schema::create('commissions', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->timestamps();
         });
@@ -26,6 +26,6 @@ class CreateCommissionTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('commission');
+        Schema::dropIfExists('commissions');
     }
 }

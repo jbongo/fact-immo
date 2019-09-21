@@ -8,4 +8,9 @@ class Contrat extends Model
 {
     //
     protected $guarded =[];
+
+    public function  mandataire(){
+
+        return $this->belongsTo(Mandataire::class);
+    }
 }

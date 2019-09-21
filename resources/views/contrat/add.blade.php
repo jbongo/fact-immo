@@ -68,6 +68,15 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-6">
+                                            <div class="form-group row">
+                                                <label class="col-lg-4 col-form-label" for="ca_depart">Chiffre d'affaire de depart<span class="text-danger">*</span></label>
+                                                <div class="col-lg-4">
+                                                    <input type="number" min="0" class="form-control" value="0" id="ca_depart" name="ca_depart" required>
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
                                     </div>
                             </div>
                         </div>
@@ -106,9 +115,9 @@
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <label class="col-lg-6 col-form-label" for="duree_gratuite">Durée de la gratuitée (mois)<span class="text-danger">*</span></label>
+                                            <label class="col-lg-6 col-form-label" for="duree_gratuite_starter">Durée de la gratuitée (mois)<span class="text-danger">*</span></label>
                                             <div class="col-lg-4 col-md-4 col-sm-4 ">
-                                                <input type="number" class="form-control" id="duree_gratuite" name="duree_gratuite_starter" min="0" max="48" value="4" required>
+                                                <input type="number" class="form-control" id="duree_gratuite_starter" name="duree_gratuite_starter" min="0" max="48" value="4" required>
                                             </div>
                                         </div>
                                     </div>
@@ -410,7 +419,6 @@
         </div>
     </div>
 </div>
-</div>
 @stop @section('js-content') 
 {{-- ###### Parrainage --}}
 <script>
@@ -622,13 +630,14 @@
             "forfait_entree" : $('#forfait_entree').val(),
             "date_entree" : $('#date_entree').val(),
             "date_debut" : $('#date_debut').val(),
-            "est_starter" : $('#est_starter').val(),
+            "ca_depart" : $('#ca_depart').val(),
+            "est_starter" : $('#est_starter').val(),            
             "a_parrain" : $('#a_parrain').val(),
             "parrain_id" : $('#parrain_id').val(),
 
             "pourcentage_depart_starter" : $('#pourcentage_depart_starter').val(),
             "duree_max_starter" : $('#duree_max_starter').val(),
-            "duree_gratuite" : $('#duree_gratuite').val(),
+            "duree_gratuite_starter" : $('#duree_gratuite_starter').val(),
             "check_palier_starter" : check_palier_starter,
             "palier_starter" : $('#palier_starter input').serialize(),
 
@@ -645,35 +654,37 @@
 
         }
           
-        console.log(data);
-        
+        // console.log(data);
+        $.ajaxSetup({
+            headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
+        })
             $.ajax({
                 type: "POST",
                 url: "{{route('contrat.add')}}",
-                beforeSend: function(xhr, type) {
-                    if (!type.crossDomain) {
-                        xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
-                    }
-                },
+               
                 data: data,
                 success: function(data) {
                     console.log(data);
                     
                     swal(
                             'Ajouté',
-                            'Le model  est ajouté avec succées!',
+                            'Le contrat a été ajouté avec succés!',
                             'success'
                         )
                         .then(function() {
-                            window.location.href = "";
+                        window.location.href = "{{route('mandataire.index')}}";
                         })
+                        setInterval(() => {
+                            window.location.href = "{{route('mandataire.index')}}";
+                            
+                        }, 5);
                 },
                 error: function(data) {
                     console.log(data);
                     
                     swal(
                         'Echec',
-                        'Le model  n\'a pas été ajouté!',
+                        'Le contrat  n\'a pas été ajouté!',
                         'danger'
                     );
                 }

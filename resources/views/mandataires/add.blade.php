@@ -29,7 +29,7 @@ Ajout d'un mandataire
                         <div class="form-group row">
                             <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="statut">Statut <span class="text-danger">*</span></label>
                             <div class="col-lg-8 col-md-8 col-sm-8">
-                               <select class="js-select2 form-control {{$errors->has('statut') ? 'is-invalid' : ''}}" id="statut" name="statut" style="width: 100%;" data-placeholder="Choose one.." >
+                               <select class="js-select2 form-control {{$errors->has('statut') ? 'is-invalid' : ''}}" id="statut" name="statut" style="width: 100%;" data-placeholder="Choose one.." required>
                                   <option ></option>
                                   <option value="independant">Indépendant</option>
                                   <option value="auto-entrepreneur">Auto Entrepreneur</option>
@@ -99,6 +99,18 @@ Ajout d'un mandataire
                                @endif
                             </div>
                          </div>
+                         <div class="form-group row">
+                              <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="siret">Numero siret </label>
+                              <div class="col-lg-8 col-md-8 col-sm-8">
+                                 <input type="text" class="form-control {{ $errors->has('siret') ? ' is-invalid' : '' }}" value="{{old('siret')}}" id="siret" name="siret" placeholder="Ex: 2561452136582" >
+                                 @if ($errors->has('siret'))
+                                    <br>
+                                    <div class="alert alert-warning ">
+                                       <strong>{{$errors->first('siret')}}</strong> 
+                                    </div>
+                                 @endif     
+                              </div>
+                        </div>
 
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-6">

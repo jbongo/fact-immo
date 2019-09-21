@@ -15,20 +15,29 @@ class CreateContratTable extends Migration
     {
         Schema::create('contrats', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->integer('user_id')->nullable();
             // infos basiques
             $table->string('forfait_entree')->nullable();
             $table->date('date_entree')->nullable();
             $table->date('date_deb_activite')->nullable();
+            $table->double('ca_depart')->default(0);
             $table->boolean('est_demarrage_starter')->default(false);
             $table->boolean('a_parrain')->default(false);
             $table->integer('parrain_id')->nullable();
 
-            // Commission direct
-            $table->string('type_plan')->nullable();
-            $table->double('pourcentage_depart')->nullable();
+            // Commission direct pack starter
+            $table->double('pourcentage_depart_starter')->nullable();
             $table->integer('duree_max_starter')->nullable();
-            $table->integer('duree_gratuite')->nullable();
-            // pack expert
+            $table->integer('duree_gratuite_starter')->nullable();
+            $table->boolean('a_palier_starter')->nullable();
+            $table->text('palier_starter')->nullable();
+
+            //  Commission direct pack expert
+            $table->double('pourcentage_depart_expert')->nullable();
+            $table->integer('duree_max_starter_expert')->nullable();
+            $table->integer('duree_gratuite_expert')->nullable();
+            $table->boolean('a_palier_expert')->nullable();
+            $table->text('palier_expert')->nullable();
             $table->integer('nombre_vente_min')->nullable();
             $table->integer('nombre_mini_filleul')->nullable();
             $table->double('chiffre_affaire')->nullable();
@@ -37,11 +46,9 @@ class CreateContratTable extends Migration
 
             // parrainage
             $table->double('prime_forfaitaire')->nullable();
-            $table->double('pourcentage_annee_un')->nullable();
 
-            // Tarif et abonnement
-            $table->double('tarif_mensuel')->nullable();
-            $table->integer('nombre_annonce')->nullable();
+            // Pack pub
+            $table->integer('packpub_id')->nullable();
 
             $table->timestamps();
         });
