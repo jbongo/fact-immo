@@ -1,11 +1,24 @@
 <table style="width: 50%">
         <tbody>
             <tr>
-                <td style="width: 382px;"><img src="https://www.stylimmo.com/images/logo.jpg" alt="" width="219" height="114" /></td>
-                <td style="width: 337px;">
-                    <p>{{$compromis->nom_vendeur}} {{$compromis->prenom_vendeur}}</p>
-    
-                    <p><strong>{{$compromis->code_postal_vendeur}} {{$compromis->ville_vendeur}}</strong></p>
+                <td style="width: 482px;"><img src="https://www.stylimmo.com/images/logo.jpg" alt="" width="219" height="114" /></td>
+                <td style="width: 437px;">
+                    @if ($compromis->charge == "Vendeur")
+                        @if ($compromis->civilite_vendeur == "M." || $compromis->civilite_vendeur == "Mme")
+                            <p>{{$compromis->nom_vendeur}} {{$compromis->prenom_vendeur}}</p>
+                        @else 
+                            <p>{{$compromis->raison_sociale_vendeur}} {{$compromis->raison_sociale_vendeur}}</p>                        
+                        @endif
+                            <p><strong>{{$compromis->code_postal_vendeur}} {{$compromis->ville_vendeur}}</strong></p>
+                    @else 
+
+                        @if ($compromis->civilite_acquereur == "M." || $compromis->civilite_acquereur == "Mme")
+                            <p>{{$compromis->nom_acquereur}} {{$compromis->prenom_acquereur}}</p>                
+                        @else 
+                            <p>{{$compromis->raison_sociale_acquereur}} {{$compromis->raison_sociale_acquereur}}</p>                        
+                        @endif
+                        <p><strong>{{$compromis->code_postal_acquereur}} {{$compromis->ville_acquereur}}</strong></p>
+                    @endif
                 </td>
             </tr>
         </tbody>
@@ -132,7 +145,7 @@
         </tbody>
     </table>
     <br>
-    <table class="table table-striped table-bordered table-hover" style="width: 100%;" border="1">
+    <table class="table table-striped table-bordered table-hover" style="width: 100%;" border="1" cellspacing="0">
         <thead>
             <tr style="height: 18px;">
                 <th align="center" style="height: 18px;">DOMICILIATION BANCAIRE: Credit Mutuel</th>

@@ -16,11 +16,13 @@ class CreateFactureTable extends Migration
         Schema::create('factures', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('numero')->nullable();
+            $table->integer('user_id')->nullable();
             $table->integer('compromis_id')->nullable();
             $table->enum('type',['stylimmo','honoraire','pack_pub','carte_visite'])->nullable();
             $table->boolean('encaissee')->default(false);
             $table->double('montant_ht')->nullable();
             $table->double('montant_ttc')->nullable();
+            $table->string('url')->nullable();
             $table->timestamps();
         });
     }

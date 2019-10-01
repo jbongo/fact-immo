@@ -17,6 +17,8 @@
             <div class="card-body">
 
                 <div class="panel-body">
+                        <button class="btn btn-default btn-flat btn-addon btn-lg m-b-10 m-l-5  " id="terminer"><i class="ti-save"></i>Appliquer le Modèle par defaut</button>
+<br> <hr>
                     <fieldset class="col-md-12">
                         <legend>Infos basiques</legend>
                         <div class="panel panel-warning">
@@ -28,9 +30,15 @@
                                         <div class="col-lg-6 col-md-6 col-sm-6">
 
                                             <div class="form-group row">
-                                                <label class="col-lg-4 col-form-label" for="forfait_entree">Forfait d'entrée (€)<span class="text-danger">*</span></label>
+                                                <label class="col-lg-4 col-form-label" for="forfait_administratif">Forfait administratif (€)<span class="text-danger">*</span></label>
                                                 <div class="col-lg-4">
-                                                    <input type="number" class="form-control" min="1" value="225" id="forfait_entree" name="forfait_entree" required>
+                                                    <input type="number" class="form-control" min="1" value="175" id="forfait_administratif" name="forfait_administratif" required>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-lg-4 col-form-label" for="forfait_carte_pro">Forfait carte pro (€)<span class="text-danger">*</span></label>
+                                                <div class="col-lg-4">
+                                                    <input type="number" class="form-control" min="1" value="50" id="forfait_carte_pro" name="forfait_carte_pro" required>
                                                 </div>
                                             </div>
                                             <div class="form-group row">
@@ -47,7 +55,7 @@
                                                 <div class="col-lg-8">
                                                     <select class="selectpicker col-lg-6" id="parrain_id" name="parrain_id" data-live-search="true" data-style="btn-warning btn-rounded">
                                                         @foreach ($parrains as $parrain )
-                                                        <option value="{{ $parrain->id }}" data-tokens="{{ $parrain->nom }} {{ $parrain->prenom }}">{{ $parrain->nom }} {{ $parrain->nom }}</option>
+                                                        <option value="{{ $parrain->id }}" data-tokens="{{ $parrain->nom }} {{ $parrain->prenom }}">{{ $parrain->nom }} {{ $parrain->prenom }}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
@@ -627,7 +635,8 @@
 
         data = {
             "user_id": "{{$user_id}}",
-            "forfait_entree" : $('#forfait_entree').val(),
+            "forfait_administratif" : $('#forfait_administratif').val(),
+            "forfait_carte_pro" : $('#forfait_carte_pro').val(),
             "date_entree" : $('#date_entree').val(),
             "date_debut" : $('#date_debut').val(),
             "ca_depart" : $('#ca_depart').val(),
@@ -672,7 +681,7 @@
                             'success'
                         )
                         .then(function() {
-                        window.location.href = "{{route('mandataire.index')}}";
+                            window.location.href = "{{route('mandataire.index')}}";
                         })
                         setInterval(() => {
                             window.location.href = "{{route('mandataire.index')}}";

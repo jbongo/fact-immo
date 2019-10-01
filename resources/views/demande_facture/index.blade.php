@@ -64,7 +64,7 @@
 
                                         </td>                                
                                         <td>
-                                            <span><a href="{{route('facture.show_demande_stylimmo',Crypt::encrypt($compromi->id))}}" data-toggle="tooltip" title="@lang('Voir la demande  ')"><i class="large material-icons color-info">visibility</i></a> </span>
+                                            <span><a href="{{route('facture.generer_facture_stylimmo', Crypt::encrypt($compromi->id) )}}" data-toggle="tooltip" title="@lang('Voir la demande  ')"><i class="large material-icons color-info">visibility</i></a> </span>
                                         </td>
                                     </tr>
                             @endforeach

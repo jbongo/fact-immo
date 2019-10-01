@@ -6,6 +6,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use App\User;
 use App\Contrat;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\CreationMandataire;
+use Illuminate\Support\Facades\Hash;
+
+
+
 
 class ContratController extends Controller
 {
@@ -52,7 +58,7 @@ class ContratController extends Controller
     public function create($user_id)
     {
         //
-        $parrains = User::where('role','mandataire')->get();
+        $parrains = User::where([['role','mandataire'], ['id','<>', Crypt::decrypt($user_id)]])->get();
         return view ('contrat.add', compact(['parrains','user_id']));
     }
 
@@ -66,11 +72,13 @@ class ContratController extends Controller
     {
       
         // parrainage
-        // return "".$request->a_parrain;
+        // return "".$request->forfait_administratif;
         Contrat::create([
               // infos basiques
-              "user_id" => Crypt::decrypt($request->user_id) ,
-            "forfait_entree"=>$request->forfait_entree,
+            "user_id" => Crypt::decrypt($request->user_id) ,
+            "forfait_entree"=> $request->forfait_administratif + $request->forfait_carte_pro,
+            "forfait_administratif"=>$request->forfait_administratif,
+            "forfait_carte_pro"=>$request->forfait_carte_pro,
             "date_entree"=>$request->date_entree,
             "date_deb_activite"=>$request->date_debut,
             // "ca_depart"=>$request->ca_depart,
@@ -101,12 +109,22 @@ class ContratController extends Controller
             "packpub_id"=>$request->pack_pub,
 
         ]);
+        // Génération du mot de passe
+        
+        $mandataire = User::where('id',Crypt::decrypt($request->user_id))->first();
+
+        $datedeb = date_create($request->date_debut);
+        $dateini = date_create('1899-12-30');
+        $interval = date_diff($datedeb, $dateini);
+        $password = "S". strtoupper (substr($mandataire->nom,0,1).substr($mandataire->nom,strlen($mandataire->nom)-1 ,1)). strtolower(substr($mandataire->prenom,0,1)).$interval->days.'@@';
 
 
-        // $palier_starter = $this->palier_unserialize($request->palier_starter);
-        // $palier_expert = $this->palier_unserialize($request->palier_expert);
+        $mandataire->password = Hash::make($password) ;
+        $mandataire->update();
 
-        return 0;
+        Mail::to($mandataire->email)->send(new CreationMandataire($mandataire,$password));
+
+        return 1;
                 
     }
 

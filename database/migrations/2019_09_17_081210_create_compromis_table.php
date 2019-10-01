@@ -16,7 +16,7 @@ class CreateCompromisTable extends Migration
         Schema::create('compromis', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('user_id');
-            $table->enum('type_offre',['vente','location']);
+            $table->enum('type_affaire',['Vente','Location']);
             $table->text('description_bien')->nullable();
             $table->string('ville_bien')->nullable();
 
@@ -40,7 +40,8 @@ class CreateCompromisTable extends Migration
 
             // Infos Mandat
             $table->string('numero_mandat')->nullable();
-            $table->date('date_mandat')->nullable();
+            $table->string('numero_mandat_porte_pas')->nullable(); // mandat renseigné par celui qui ne porte l'affaire
+            $table->date('date_mandat')->nullable(); 
 
             // Info Partage
             $table->boolean('est_partage_agent')->default(false);
@@ -58,6 +59,16 @@ class CreateCompromisTable extends Migration
             // demande facture
         // 0 = facture non demandée, 1= facture demandée en attente de validation, 2 = demande traitée par stylimmo
             $table->boolean('demande_facture')->default(false); 
+
+            $table->integer('agent_id')->nullable(); 
+            $table->boolean('je_porte_affaire')->default(false); 
+            $table->boolean('partage_reseau')->default(false); 
+            $table->string('raison_sociale_acquereur')->nullable(); 
+            $table->string('raison_sociale_vendeur')->nullable(); 
+
+            $table->boolean('facture_stylimmo_valide')->default(false);
+
+            
             $table->timestamps();
         });
     }

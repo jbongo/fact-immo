@@ -16,8 +16,10 @@ class CreateContratTable extends Migration
         Schema::create('contrats', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('user_id')->nullable();
-            // infos basiques
-            $table->string('forfait_entree')->nullable();
+            // infos basiques 
+            $table->double('forfait_entree')->nullable();
+            $table->double('forfait_administratif')->nullable();
+            $table->double('forfait_carte_pro')->nullable();
             $table->date('date_entree')->nullable();
             $table->date('date_deb_activite')->nullable();
             $table->double('ca_depart')->default(0);

@@ -7,7 +7,13 @@ use App\Facture;
 use App\User;
 use App\Compromis;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\DemandeFactureStylimmo;
+use App\Mail\EnvoyerFactureStylimmoMandataire;
+use App\Mail\EncaissementFacture;
 use PDF;
+use Illuminate\Support\Facades\File ;
+
 
 class FactureController extends Controller
 {
@@ -20,8 +26,17 @@ class FactureController extends Controller
     {
         //
         //
-        $factures = Facture::all();
-        return view ('facture.index',compact('factures'));
+        if(auth()->user()->role == "admin"){
+            $factureEmises = Facture::whereIn('type',['pack_pub','carte_visite','stylimmo'])->get();
+            $factureRecues = Facture::whereIn('type',['honoraire'])->get();
+
+        }else{
+            $factureEmises = Facture::where('user_id',auth()->user()->id)->whereIn('type',['honoraire'])->get();
+            $factureRecues = Facture::where('user_id',auth()->user()->id)->whereIn('type',['pack_pub','carte_visite','stylimmo'])->get();
+        }
+   
+        
+        return view ('facture.index',compact(['factureEmises','factureRecues']));
     }
 
     /**
@@ -121,18 +136,39 @@ class FactureController extends Controller
 
         $compromis->update();
 
+        $nb_demande_facture =  Compromis::where('demande_facture',1)->count();
+
+
+        // dd($nb_demande_facture);
+
+        $admins = User::where('role','admin')->get();
+
+        foreach ($admins as $admin) {
+           $admin->demande_facture = $nb_demande_facture;
+           $admin->update();
+        }
+
+        Mail::to("gestion@stylimmo.com")->send(new DemandeFactureStylimmo($compromis->user));
+
+
+
+
         // return view ('demande_facture.demande',compact('compromis'));    
         return redirect()->route('compromis.index')->with('ok', __('Demande de facture éffectuée')  );
 
     }
 
 
+
+// ################
     public  function demandes_stylimmo()
     {
         
         $compromis = Compromis::where('demande_facture', 1)->get();
         return view ('demande_facture.index',compact('compromis'));
     }
+
+    //################
 
     public  function show_demande_stylimmo($compromis)
     {
@@ -141,67 +177,111 @@ class FactureController extends Controller
         return view ('demande_facture.show',compact('compromis'));
     }
 
+
+//############
+public  function valider_facture_stylimmo($compromis)
+{
+    
+    $compromis = Compromis::where('id', Crypt::decrypt($compromis))->first();
+    $mandataire = $compromis->user;
+    // save la facture
+
+    $tva = 0.2;
+    $numero = 1507;
+    $facture = Facture::where([ ['type','stylimmo'],['compromis_id',$compromis->id]])->first();
+    $nb_numeros_facture = Facture::where([ ['type','stylimmo']])->select('numero')->count();
+    
+    if($nb_numeros_facture > 0){
+        $numeros_facture = Facture::where([ ['type','stylimmo']])->select('numero')->get()->toArray();
+        $numeros = array();
+
+        foreach ($numeros_facture as $num) {
+            $numeros[] = $num["numero"];
+        }
+
+        $numero = max($numeros)+1;
+    }
+
+    // dd($numeros_facture);
+    
+    // dd($numero);
+
+    // Si la facture n'est pas déjà crée
+    if ($facture == null) {
+            $facture = Facture::create([
+            "numero"=> $numero,
+            "user_id"=> $compromis->user_id,
+            "compromis_id"=> $compromis->id,
+            "type"=> "stylimmo",
+            "encaissee"=> false,
+            "montant_ht"=>  round ($compromis->frais_agence*$tva ,2),
+            "montant_ttc"=> $compromis->frais_agence,
+
+        ]);
+
+    }else{
+        $facture = Facture::where([ ['type','stylimmo'],['compromis_id',$compromis->id]])->first();
+    }
+    
+    // fin save facture
+
+    $compromis->facture_stylimmo_valide = true;
+    $compromis->update();
+
+    // on sauvegarde la facture dans le repertoire du mandataire
+    $path = storage_path('app/public/'.$mandataire->id.'/factures');
+
+    if(!File::exists($path))
+        File::makeDirectory($path, 0755, true);
+    
+    $pdf = PDF::loadView('facture.pdf_stylimmo',compact(['compromis','mandataire','facture']));
+    $path = $path.'/facture_'.$facture->numero.'.pdf';
+    $pdf->save($path);
+    
+    $facture->url = $path;
+    $compromis->demande_facture = 2;
+    $facture->update();
+    $compromis->update();
+
+    $nb_demande_facture =  Compromis::where('demande_facture',1)->count();
+    $admins = User::where('role','admin')->get();
+
+    foreach ($admins as $admin) {
+        $admin->demande_facture = $nb_demande_facture;
+        $admin->update();
+    }
+    
+    Mail::to($mandataire->email)->send(new EnvoyerFactureStylimmoMandataire($mandataire,$facture));
+    
+    return view ('facture.generer_stylimmo',compact(['compromis','mandataire','facture']))->with('ok', __('Facture envoyée au mandataire') );
+    
+}
+
+//############
     public  function generer_facture_stylimmo($compromis)
     {
         
         $compromis = Compromis::where('id', Crypt::decrypt($compromis))->first();
         $mandataire = $compromis->user;
-        // save la facture
-
-        $tva = 0.2;
-        $numero = 1507;
         $facture = Facture::where([ ['type','stylimmo'],['compromis_id',$compromis->id]])->first();
-        $nb_numeros_facture = Facture::where([ ['type','stylimmo']])->select('numero')->count();
         
-        if($nb_numeros_facture > 0){
-            $numeros_facture = Facture::where([ ['type','stylimmo']])->select('numero')->get()->toArray();
-            $numeros = array();
-
-            foreach ($numeros_facture as $num) {
-                $numeros[] = $num["numero"];
-            }
-
-            $numero = max($numeros)+1;
-        }
-
-        // dd($numeros_facture);
-        
-        // dd($numero);
-
-        // Si la facture n'est pas déjà crée
-        if ($facture == null) {
-             $facture = Facture::create([
-                "numero"=> $numero,
-                "compromis_id"=> $compromis->id,
-                "type"=> "stylimmo",
-                "encaissee"=> false,
-                "montant_ht"=>  round ($compromis->frais_agence*$tva ,2),
-                "montant_ttc"=> $compromis->frais_agence,
-
-            ]);
-
-        }else{
-            $facture = Facture::where([ ['type','stylimmo'],['compromis_id',$compromis->id]])->first();
-        }
-       
-        // fin save facture
       
         return view ('facture.generer_stylimmo',compact(['compromis','mandataire','facture']));
       
     }
 
-
-    public  function generer_pdf_facture_stylimmo()
-    {
+    // ###########
+    // public  function generer_pdf_facture_stylimmo()
+    // {
         
-        $pdf = PDF::loadView('facture.generer_stylimmo');
-        $path = storage_path('app/public/factures/test.pdf');
-        $pdf->save($path);
-       return $pdf->download('facture.pdf');
+    //     $pdf = PDF::loadView('facture.generer_stylimmo');
+    //     $path = storage_path('app/public/factures/test.pdf');
+    //     $pdf->save($path);
+    //    return $pdf->download('facture.pdf');
       
-    }
+    // }
 
-    // telecharger facture stylimmo
+    //###### telecharger facture stylimmo
     public  function download_pdf_facture_stylimmo($compromis_id)
     {
 
@@ -213,16 +293,48 @@ class FactureController extends Controller
         // dd('ddd');
         $pdf = PDF::loadView('facture.pdf_stylimmo',compact(['compromis','mandataire','facture']));
         $path = storage_path('app/public/factures/facture.pdf');
-        $pdf->save($path);
+        // $pdf->save($path);
         // $pdf->download($path);
        return $pdf->download('facture.pdf');
-
-  
-       
       
     }
     
+    //###### envoyer facture stylimmo au mandataire
+    public  function envoyer_facture_stylimmo($facture_id)
+    {
 
-    
-    
+
+        $facture = Facture::where('id', Crypt::decrypt($facture_id))->first();
+
+        // dd($facture);
+
+        $compromis = $facture->compromis;
+        $mandataire = $compromis->user;
+
+        // dd('ddd');
+        Mail::to($mandataire->email)->send(new EnvoyerFactureStylimmoMandataire($mandataire,$facture));
+
+        return redirect()->route('facture.demande_stylimmo')->with('ok', __('Facture envoyée au mandataire')  );
+        
+    }
+
+       //###### envoyer facture stylimmo au mandataire
+       public  function encaisser_facture_stylimmo($facture_id)
+       {
+   
+   
+           $facture = Facture::where('id', Crypt::decrypt($facture_id))->first();
+        
+           $facture->encaissee = true;
+           $facture->update();
+           // dd($facture);
+   
+   
+           // dd('ddd');
+           Mail::to($facture->compromis->user->email)->send(new EncaissementFacture($facture));
+   
+           return redirect()->route('facture.index')->with('ok', __('Facture encaissée, le mandataire a été notifié')  );
+           
+       }
+        
 }

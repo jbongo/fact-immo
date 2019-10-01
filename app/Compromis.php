@@ -8,6 +8,8 @@ class Compromis extends Model
 {
     //
     protected $guarded =[];
+    protected $dates = ['date_vente'];
+
 
     public function  user(){
         return $this->belongsTo('App\User');

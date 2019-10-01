@@ -7,7 +7,8 @@ use App\Compromis;
 use Auth;
 use App\User;
 use Illuminate\Support\Facades\Crypt;
-
+use Illuminate\Support\Facades\Mail;
+use App\Mail\PartageAffaire;
 class CompromisController extends Controller
 {
    /**
@@ -36,7 +37,8 @@ class CompromisController extends Controller
     public function create()
     {
         //
-        return view ('compromis.add');
+        $agents = User::where([['role','mandataire'],['id','<>',Auth::user()->id]])->get();
+        return view ('compromis.add',compact('agents'));
     }
 
     /**
@@ -47,40 +49,74 @@ class CompromisController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->all());
-        $request->validate([
-            'numero_mandat' => 'required|unique:compromis',
-        ]);
-        $compromis = Compromis::create([
-            "user_id"=> Auth::user()->id,
-            "description_bien"=> $request->description_bien,
-            "ville_bien"=> $request->ville_bien,
-            "civilite_vendeur"=> $request->civilite_vendeur,
-            "nom_vendeur"=> $request->nom_vendeur,
-            "prenom_vendeur"=>$request->prenom_vendeur,
-            "adresse1_vendeur"=>$request->adresse1_vendeur,
-            "adresse2_vendeur"=>$request->adresse2_vendeur,
-            "code_postal_vendeur"=>$request->code_postal_vendeur,
-            "ville_vendeur"=>$request->ville_vendeur,
-            "civilite_acquereur"=>$request->civilite_acquereur,
-            "nom_acquereur"=>$request->nom_acquereur,
-            "prenom_acquereur"=>$request->prenom_acquereur,
-            "adresse1_acquereur"=>$request->adresse1_acquereur,
-            "adresse2_acquereur"=>$request->adresse2_acquereur,
-            "code_postal_acquereur"=>$request->code_postal_acquereur,
-            "ville_acquereur"=>$request->ville_acquereur,
-            "numero_mandat"=>$request->numero_mandat,
-            "date_mandat"=>$request->date_mandat,
-            "est_partage_agent"=>$request->partage == "Non" ? false : true,
-            "nom_agent"=>$request->nom_agent,
-            "pourcentage_agent"=>$request->pourcentage_agent,
-            "montant_deduis_net"=>$request->montant_deduis,
-            "frais_agence"=>$request->frais_agence,
-            "charge"=>$request->charge,
-            "net_vendeur"=>$request->net_vendeur,
-            "scp_notaire"=>$request->scp_notaire,
+        //  dd($request->all());
+        if($request->partage == "Non"  || ($request->partage == "Oui" &&  $request->je_porte_affaire == "on" ) ){
+            $request->validate([
+                'numero_mandat' => 'unique:compromis',
             ]);
+
             
+            $compromis = Compromis::create([
+                "user_id"=> Auth::user()->id,
+                "est_partage_agent"=>$request->partage == "Non" ? false : true,
+                "partage_reseau"=>$request->hors_reseau == "Non" ? false : true,
+                "agent_id"=>$request->agent_id,
+                "nom_agent"=>$request->nom_agent,
+                "pourcentage_agent"=>$request->pourcentage_agent,
+                "je_porte_affaire"=>$request->je_porte_affaire == "on" ? true : false,
+                "type_affaire"=> $request->type_affaire,
+                "description_bien"=> $request->description_bien,
+                "ville_bien"=> $request->ville_bien,
+                "civilite_vendeur"=> $request->civilite_vendeur,
+                "nom_vendeur"=> $request->nom_vendeur,
+                "prenom_vendeur"=>$request->prenom_vendeur,
+                "adresse1_vendeur"=>$request->adresse1_vendeur,
+                "adresse2_vendeur"=>$request->adresse2_vendeur,
+                "code_postal_vendeur"=>$request->code_postal_vendeur,
+                "ville_vendeur"=>$request->ville_vendeur,
+                "civilite_acquereur"=>$request->civilite_acquereur,
+                "nom_acquereur"=>$request->nom_acquereur,
+                "prenom_acquereur"=>$request->prenom_acquereur,
+                "adresse1_acquereur"=>$request->adresse1_acquereur,
+                "adresse2_acquereur"=>$request->adresse2_acquereur,
+                "code_postal_acquereur"=>$request->code_postal_acquereur,
+                "ville_acquereur"=>$request->ville_acquereur,
+                "raison_sociale_vendeur"=>$request->raison_sociale_vendeur,
+                "raison_sociale_acquereur"=>$request->raison_sociale_acquereur,
+                "numero_mandat"=>$request->numero_mandat,
+                "date_mandat"=>$request->date_mandat,
+                "frais_agence"=>$request->frais_agence,
+                "charge"=>$request->charge,
+                "net_vendeur"=>$request->net_vendeur,
+                "scp_notaire"=>$request->scp_notaire,
+                
+                
+                ]);
+        }else{
+            $request->validate([
+                'numero_mandat_porte_pas' => 'unique:compromis',
+            ]);
+            $compromis = Compromis::create([
+                "user_id"=> Auth::user()->id,
+                "est_partage_agent"=>$request->partage == "Non" ? false : true,
+                "partage_reseau"=>$request->hors_reseau == "Non" ? false : true,
+                "agent_id"=>$request->agent_id,
+                "nom_agent"=>$request->nom_agent,
+                "pourcentage_agent"=>$request->pourcentage_agent,
+                "je_porte_affaire"=>$request->je_porte_affaire == "on" ? true : false,
+                "numero_mandat_porte_pas"=>$request->numero_mandat_porte_pas,
+            ]);
+
+        }
+
+        // dd($compromis);
+ 
+            if($request->partage == "Oui" && $request->partage_reseau == "Non"){
+                $agent = User::where('id',$request->agent_id)->first();
+
+                Mail::to($agent->email)->send(new PartageAffaire($compromis->user, $compromis));
+            }
+
 
 
         return redirect()->route('compromis.show', ['id' => Crypt::encrypt($compromis->id)]); 
@@ -96,8 +132,11 @@ class CompromisController extends Controller
     {
         $id = Crypt::decrypt($id);
         $compromis = Compromis::where('id',$id)->first();
+        $agents = User::where([['role','mandataire'],['id','<>',Auth::user()->id]])->get();
+        $agence = User::where('id',$compromis->agent_id)->first();
+
         // dd($compromis);
-        return view('compromis.show', compact('compromis'));
+        return view('compromis.show', compact('compromis','agents','agence'));
     }
 
     /**
@@ -121,38 +160,60 @@ class CompromisController extends Controller
     public function update(Request $request, Compromis $compromis)
     {
         // dd($compromis);
-        if($request->numero_mandat != $compromis->numero_mandat){
-            $request->validate([
-                'numero_mandat' => 'required|unique:compromis',
-            ]);
+        if($request->partage == "Non"  || ($request->partage == "Oui" &&  $request->je_porte_affaire == "on" ) ){
+            if($request->numero_mandat != $compromis->numero_mandat){
+                $request->validate([
+                    'numero_mandat' => 'required|unique:compromis',
+                ]);
+            }
+            $compromis->est_partage_agent = $request->partage == "Non" ? false : true;
+            $compromis->type_affaire = $request->type_affaire;
+            $compromis->description_bien = $request->description_bien;
+            $compromis->ville_bien = $request->ville_bien;
+            $compromis->civilite_vendeur = $request->civilite_vendeur;
+            $compromis->nom_vendeur = $request->nom_vendeur;
+            $compromis->prenom_vendeur = $request->prenom_vendeur;
+            $compromis->adresse1_vendeur = $request->adresse1_vendeur;
+            $compromis->adresse2_vendeur = $request->adresse2_vendeur;
+            $compromis->code_postal_vendeur = $request->code_postal_vendeur;
+            $compromis->ville_vendeur = $request->ville_vendeur;
+            $compromis->civilite_acquereur = $request->civilite_acquereur;
+            $compromis->nom_acquereur = $request->nom_acquereur;
+            $compromis->prenom_acquereur = $request->prenom_acquereur;
+            $compromis->adresse1_acquereur = $request->adresse1_acquereur;
+            $compromis->adresse2_acquereur = $request->adresse2_acquereur;
+            $compromis->code_postal_acquereur = $request->code_postal_acquereur;
+            $compromis->ville_acquereur = $request->ville_acquereur;
+            $compromis->raison_sociale_vendeur = $request->raison_sociale_vendeur;
+            $compromis->raison_sociale_acquereur = $request->raison_sociale_acquereur;
+            $compromis->numero_mandat = $request->numero_mandat;
+            $compromis->date_mandat = $request->date_mandat;
+            $compromis->montant_deduis_net = $request->montant_deduis;
+            $compromis->frais_agence = $request->frais_agence;
+            $compromis->charge = $request->charge;
+            $compromis->net_vendeur = $request->net_vendeur;
+            $compromis->scp_notaire = $request->scp_notaire;
+
+        
+        }else{
+
+            if($request->numero_mandat_porte_pas != $compromis->numero_mandat_porte_pas){
+                $request->validate([
+                    'numero_mandat_porte_pas' => 'required|unique:compromis',
+                ]);
+            }
+
+            $compromis->est_partage_agent = $request->partage == "Non" ? false : true;
+            $compromis->partage_reseau = $request->partage_reseau;
+            $compromis->agent_id = $request->agent_id;
+            $compromis->nom_agent = $request->nom_agent;
+            $compromis->pourcentage_agent = $request->pourcentage_agent;
+            $compromis->je_porte_affaire = $request->je_porte_affaire;
+            $compromis->numero_mandat_porte_pas = $request->numero_mandat_porte_pas;
+
+ 
         }
 
-        $compromis->description_bien = $request->description_bien;
-        $compromis->ville_bien = $request->ville_bien;
-        $compromis->civilite_vendeur = $request->civilite_vendeur;
-        $compromis->nom_vendeur = $request->nom_vendeur;
-        $compromis->prenom_vendeur = $request->prenom_vendeur;
-        $compromis->adresse1_vendeur = $request->adresse1_vendeur;
-        $compromis->adresse2_vendeur = $request->adresse2_vendeur;
-        $compromis->code_postal_vendeur = $request->code_postal_vendeur;
-        $compromis->ville_vendeur = $request->ville_vendeur;
-        $compromis->civilite_acquereur = $request->civilite_acquereur;
-        $compromis->nom_acquereur = $request->nom_acquereur;
-        $compromis->prenom_acquereur = $request->prenom_acquereur;
-        $compromis->adresse1_acquereur = $request->adresse1_acquereur;
-        $compromis->adresse2_acquereur = $request->adresse2_acquereur;
-        $compromis->code_postal_acquereur = $request->code_postal_acquereur;
-        $compromis->ville_acquereur = $request->ville_acquereur;
-        $compromis->numero_mandat = $request->numero_mandat;
-        $compromis->date_mandat = $request->date_mandat;
-        $compromis->est_partage_agent = $request->partage == "Non" ? false : true;
-        $compromis->nom_agent = $request->nom_agent;
-        $compromis->pourcentage_agent = $request->pourcentage_agent;
-        $compromis->montant_deduis_net = $request->montant_deduis;
-        $compromis->frais_agence = $request->frais_agence;
-        $compromis->charge = $request->charge;
-        $compromis->net_vendeur = $request->net_vendeur;
-        $compromis->scp_notaire = $request->scp_notaire;
         
         $compromis->update();
         return redirect()->route('compromis.index')->with('ok', __('compromis modifié')  );

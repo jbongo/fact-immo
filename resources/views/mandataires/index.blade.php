@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
     @section ('page_title')
-    Ajouter une categorie
+    Ajouter un mandataire
     @endsection
     <div class="row"> 
        

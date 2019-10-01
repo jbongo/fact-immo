@@ -66,29 +66,35 @@ class MandataireController extends Controller
      */
     public function store(Request $request)
     {
+      
+        // dd( $password);
+        
         $request->validate([
             'statut' => 'required|string',
             'nom' => 'required|string|max:150',
-            'prenom' => 'required|string',
+            'prenom' => 'required',
+            'siret' => 'required|string',
             'email' => 'required|email|unique:users',
+            'email_perso' => 'required|email|unique:users',
         ]);
 
         $user = User::create([
             'civilite' => $request->civilite,
             'nom' => $request->nom,
             'prenom'=>$request->prenom,
-            'telephone'=>$request->telephone,
+            'telephone1'=>$request->telephone1,
+            'telephone2'=>$request->telephone2,
             'ville'=>$request->ville,
             'code_postal'=>$request->code_postal,
             'pays'=>$request->pays,
             'statut'=>$request->statut,
-            'statut'=>$request->statut,
             'siret'=>$request->siret,
             'email'=>$request->email,
+            'email_perso'=>$request->email_perso,
             'role'=>"mandataire",
             'adresse'=>$request->adresse,
             'complement_adresse'=>$request->compl_adresse,
-            'password' => Hash::make(\str_random(8))
+        
         ]);
 
          return redirect()->route('contrat.create', ['user_id'=>Crypt::encrypt($user->id)]);
@@ -159,7 +165,8 @@ class MandataireController extends Controller
         $mandataire->civilite = $request->civilite; 
         $mandataire->nom = $request->nom; 
         $mandataire->prenom = $request->prenom; 
-        $mandataire->telephone = $request->telephone; 
+        $mandataire->telephone1 = $request->telephone1; 
+        $mandataire->telephone2 = $request->telephone2; 
         $mandataire->ville = $request->ville; 
         $mandataire->code_postal = $request->code_postal; 
         $mandataire->pays = $request->pays; 

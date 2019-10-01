@@ -4,18 +4,33 @@
         <div class="nano">
             <div class="nano-content">
                 <ul>
-                    <li class="active"><a ><i class="ti-home"></i> Accueil </a></li>
-                    <li><a  class="sidebar-sub-toggle"><i class="ti-target"></i>Mandataires  <span class="sidebar-collapse-icon ti-angle-down"></span></a>
-                        <ul>
+                    <li class="active" ><a href="{{route('home')}}" ><i class="ti-home"></i> Accueil </a></li>
+                    @if (Auth()->user()->role == "admin")
+                        
+                  
+                    <li><a  href="{{route('mandataire.index')}}" class="">  <i class="ti-user"></i>Mandataires  </a>
+                        {{-- <ul>
                             <li><a href="{{route('mandataire.index')}}">Gestion</a></li>
                             <li><a href="{{route('commissions.index')}}">Modèles commision</a></li>
                             <li><a href="page-login.html">Tarif pack pub</a></li>
+                        </ul> --}}
+                    </li>
+
+                    @endif
+                    <li class=""><a href="{{route('compromis.index')}}" ><i class="ti-pencil-alt"></i> Affaires </a></li>
+                    <li><a  class="sidebar-sub-toggle"><i class="ti-pencil-alt"></i> Factures <span class="sidebar-collapse-icon ti-angle-down"></span></a>
+                        <ul>
+                            <li><a href="{{route('facture.index')}}">Gestion</a></li>
+                            @if (Auth()->user()->role == "admin")
+                            <li><a  href="{{route('facture.demande_stylimmo')}}" > Demandes de facture @if(auth()->user()->demande_facture > 0) <span class="badge badge-danger">{{auth()->user()->demande_facture}}</span>@endif </a></li>
+                            @endif
+                            <li><a href="#">Avoir</a></li>
                         </ul>
                     </li>
-                    <li class="active"><a href="{{route('compromis.index')}}" ><i class="ti-pencil-alt"></i> Compromis </a></li>
-                    <li class="active"><a href="{{route('facture.index')}}" ><i class="ti-pencil-alt"></i> Factures Styl </a></li>
-                    <li><a  href="{{route('facture.demande_stylimmo')}}" > <i class="ti-pencil-alt"></i>Demandes de facture <span class="badge badge-danger">2</span></a></li>
-                    {{-- <li><a class="sidebar-sub-toggle"><i class="ti-pencil-alt"></i>Utilisateurs <span class="badge badge-primary">2</span></a></li> --}}
+                    
+                    
+                    @if (Auth()->user()->role == "admin")
+                    
                     <li><a  class="sidebar-sub-toggle"><i class="ti-target"></i> Paramètres <span class="sidebar-collapse-icon ti-angle-down"></span></a>
                         <ul>
                             <li><a href="page-login.html">Info Entreprise</a></li>
@@ -23,12 +38,13 @@
                             <li><a href="page-login.html">Tarif pack pub</a></li>
                         </ul>
                     </li>
+                    @endif
                     <li><a href="{{ route('logout') }}"  onclick="event.preventDefault();
                      document.getElementById('logout-form').submit();" ><i class="ti-close"></i> Déconnexion</a></li>
 
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                        @csrf
-                                    </form>
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                            @csrf
+                        </form>
                 </ul>
             </div>
         </div>

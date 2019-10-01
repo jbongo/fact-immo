@@ -2,7 +2,11 @@
 
 @section('content')
     @section ('page_title')
+@if ($compromis->facture_stylimmo_valide == true)
 Facture N° {{$facture->numero}}
+@else 
+Valider la facture
+@endif
  @endsection
 <div class="row"> 
        
@@ -16,12 +20,19 @@ Facture N° {{$facture->numero}}
            @endif       
           <div class="card alert">
          <div class="row">
+            @if ($compromis->facture_stylimmo_valide == true)
             <div class="col-lg-2 ml-auto">
-               <a  href="{{route('facture.pdf.generer_facture_stylimmo')}}"  class="btn btn-danger btn-flat btn-addon  m-b-10 m-l-5 " id="ajouter"><i class="ti-email"></i>Envoyer au mandataire</a>
+               <a  href="{{route('facture.envoyer_facture_stylimmo', Crypt::encrypt($facture->id))}}"  class="btn btn-danger btn-flat btn-addon  m-b-10 m-l-5 " id="ajouter"><i class="ti-email"></i>Renvoyer au mandataire</a>
             </div>
             <div class="col-lg-2 ml-auto">
                <a href="{{route('facture.telecharger_pdf_facture_stylimmo', Crypt::encrypt($compromis->id))}}"  class="btn btn-default btn-flat btn-addon  m-b-10 m-l-5 " id="ajouter"><i class="ti-download"></i>Télécharger</a>
             </div>
+            @else
+            <div class="col-lg-2 ml-auto">
+                <a href="{{route('facture.valider_facture_stylimmo', Crypt::encrypt($compromis->id))}}"  class="btn btn-default btn-flat btn-addon  m-b-10 m-l-5 " id="ajouter"><i class="ti-check"></i>Valider la facture</a>
+            </div>
+            @endif
+
          </div>
                <hr>
 
@@ -30,9 +41,23 @@ Facture N° {{$facture->numero}}
         <tr>           
             <td style="width: 382px;"><img src="https://www.stylimmo.com/images/logo.jpg" alt="" width="219" height="114" /></td>
             <td style="width: 337px;">
-                <p>{{$compromis->nom_vendeur}} {{$compromis->prenom_vendeur}}</p>
-                
-                <p><strong>{{$compromis->code_postal_vendeur}} {{$compromis->ville_vendeur}}</strong></p>
+                @if ($compromis->charge == "Vendeur")
+                    @if ($compromis->civilite_vendeur == "M." || $compromis->civilite_vendeur == "Mme")
+                        <p>{{$compromis->nom_vendeur}} {{$compromis->prenom_vendeur}}</p>
+                    @else 
+                        <p>{{$compromis->raison_sociale_vendeur}} {{$compromis->raison_sociale_vendeur}}</p>                        
+                    @endif
+                        <p><strong>{{$compromis->code_postal_vendeur}} {{$compromis->ville_vendeur}}</strong></p>
+                @else 
+
+                    @if ($compromis->civilite_acquereur == "M." || $compromis->civilite_acquereur == "Mme")
+                    <p>{{$compromis->nom_acquereur}} {{$compromis->prenom_acquereur}}</p>                
+                    @else 
+                        <p>{{$compromis->raison_sociale_acquereur}} {{$compromis->raison_sociale_acquereur}}</p>                        
+                    @endif
+                    <p><strong>{{$compromis->code_postal_acquereur}} {{$compromis->ville_acquereur}}</strong></p>
+                @endif
+               
             </td>
         </tr>
     </tbody>
@@ -49,7 +74,7 @@ Facture N° {{$facture->numero}}
     <tbody>
         <tr>
             <td style="width: 343px;"><span style="color: #ff0000;">Merci d'indiquer le num&eacute;ro de facture en r&eacute;f&eacute;rence du virement.</span></td>
-            <td style="width: 344px;"><span style="text-decoration: underline;"><strong>FACTURE N&deg; {{$facture->numero}}</strong></span></td>
+            <td style="width: 344px;"><span style="text-decoration: underline;"><strong>FACTURE N&deg; @if ($compromis->facture_stylimmo_valide == true)  {{$facture->numero}} @else xxxx</strong></span>@endif</td>
         </tr>
     </tbody>
 </table>
@@ -135,7 +160,7 @@ Facture N° {{$facture->numero}}
         <tr style="height: 25px;">
             <td style="width: 349px; height: 25px;">Valeur en votre aimable r&egrave;glement de :</td>
             <td style="width: 117px; height: 25px;">{{round($compromis->frais_agence,2)}} &euro; TTC</td>
-            <td style="width: 177px; height: 25px;"><span style="color: #ff0000;">&nbsp;R&eacute;f &agrave; rappeler: {{$facture->numero}}</span></td>
+            <td style="width: 177px; height: 25px;">@if ($compromis->facture_stylimmo_valide == true)<span style="color: #ff0000;">&nbsp;R&eacute;f &agrave; rappeler: {{$facture->numero}}</span>@endif</td>
         </tr>
     </tbody>
 
