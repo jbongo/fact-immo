@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
     @section ('page_title')
-    Ajouter un mandataire
+    Ajouter un pack
     @endsection
     <div class="row"> 
        
@@ -15,57 +15,38 @@
              @endif       
             <div class="card alert">
                 <!-- table -->
-            <a href="{{route('mandataire.create')}}" class="btn btn-success btn-rounded btn-addon btn-sm m-b-10 m-l-5"><i class="ti-user"></i>@lang('Nouveau mandataire')</a>
+            <a href="{{route('pack_pub.create')}}" class="btn btn-success btn-rounded btn-addon btn-sm m-b-10 m-l-5"><i class="ti-user"></i>@lang('Nouveau pack_pub')</a>
                 
                 <div class="card-body">
-                        <div class="panel panel-info m-t-15" id="cont">
-                                <div class="panel-heading">Listes des mandataires</div>
+                        <div class="panel panel-info m-t-15" id="cont" >
+                                <div class="panel-heading">Listes des pack pubs</div>
                                 <div class="panel-body">
 
                         <div class="table-responsive" style="overflow-x: inherit !important;">
                             <table  id="example" class=" table student-data-table  m-t-20 "  style="width:100%">
                                 <thead>
                                     <tr>
-                                        <th>@lang('Nom')</th>
-                                        <th>@lang('Email')</th>
-                                        <th>@lang('Téléphone')</th>
-                                        <th>@lang('Adresse')</th>
-                                        <th>@lang('Ville')</th>
-                                        <th>@lang('Commission')</th>
-                                        <th>@lang('Chiffre d\'affaire')</th>
+                                        <th>@lang('Nom Pack')</th>
+                                        <th>@lang('Tarif')</th>
                                         <th>@lang('Action')</th>
+                                       
                                     </tr>
                                 </thead>
                                 <tbody>
-                                @foreach ($mandataires as $mandataire)
+                                @foreach ($packs as $pack)
                                     <tr>
 
-                                        <td>
-                                        {{$mandataire->nom}} {{$mandataire->prenom}}
-                                        </td>
                                         <td style="color: #32ade1; text-decoration: underline;">
-                                        <strong>{{$mandataire->email}}</strong> 
+                                        <strong>{{$pack->nom}}</strong> 
                                         </td>
                                         <td style="color: #e05555;; text-decoration: underline;">
-                                            <strong> {{$mandataire->telephone1}} </strong> 
+                                            <strong> {{$pack->tarif}} €</strong> 
                                         </td>
+                                                                         
+                                
                                         <td>
-                                            {{$mandataire->adresse}} 
-                                        </td>
-                                        <td>
-                                            {{$mandataire->ville}}   
-                                        </td>                                        
-                                        <td>                                             
-                                            <span class="color-success">{{$mandataire->commission}} %</span>
-                                        </td>
-                                        <td>                                             
-                                            <span class="color-warning">{{$mandataire->chiffre_affaire}} €</span>
-                                        </td>
-                                        <td>
-                                            <span><a href="{{route('mandataire.show',Crypt::encrypt($mandataire->id) )}}" data-toggle="tooltip" title="@lang('Détails de ') {{ $mandataire->nom }}"><i class="large material-icons color-info">visibility</i></a> </span>
-                                            <span><a href="{{route('mandataire.edit',Crypt::encrypt($mandataire->id) )}}" data-toggle="tooltip" title="@lang('Modifier ') {{ $mandataire->nom }}"><i class="large material-icons color-warning">edit</i></a></span>
-        
-                                        <span><a  href="{{route('mandataire.archive',[$mandataire->id,1])}}" class="delete" data-toggle="tooltip" title="@lang('Archiver ') {{ $mandataire->nom }}"><i class="large material-icons color-danger">delete</i> </a></span>
+                                            <span><a href="{{route('pack_pub.edit',Crypt::encrypt($pack->id))}}" data-toggle="tooltip" title="@lang('Modifier ') {{ $pack->nom }}"><i class="large material-icons color-warning">edit</i></a></span>
+                                        <span><a  href="{{route('pack_pub.edit',$pack->id)}}" class="delete" data-toggle="tooltip" title="@lang('Archiver ') {{ $pack->nom }}"><i class="large material-icons color-danger">delete</i> </a></span>
                                         </td>
                                     </tr>
                             @endforeach
@@ -99,7 +80,7 @@
 })
 
         swalWithBootstrapButtons({
-            title: '@lang('Vraiment archiver cet mandataire  ?')',
+            title: '@lang('Vraiment archiver cet pack_pub  ?')',
             type: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#DD6B55',
@@ -119,7 +100,7 @@
 
                 swalWithBootstrapButtons(
                 'Archivé!',
-                'L\'mandataire a bien été archivé.',
+                'L\'pack_pub a bien été archivé.',
                 'success'
                 )
                 

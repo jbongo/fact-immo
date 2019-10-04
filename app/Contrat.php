@@ -13,4 +13,8 @@ class Contrat extends Model
 
         return $this->belongsTo(Mandataire::class);
     }
+    public function packpub()
+    {
+        return $this->belongsto(Packpub::class);
+    }
 }

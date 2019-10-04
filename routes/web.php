@@ -39,6 +39,7 @@ Route::middleware('auth')->group(function(){
     Route::post('/compromis/update/{compromis}','CompromisController@update')->name('compromis.update');
     Route::delete('/compromis/delete/{compromis}','CompromisController@destroy')->name('compromis.delete');
     Route::delete('/compromis/archive/{compromis}','CompromisController@archive')->name('compromis.archive');
+    Route::post('/compromis/cloturer/{compromis}','CompromisController@cloturer')->name('compromis.cloturer');
 
     // demandes factures stylimmo
     
@@ -52,19 +53,25 @@ Route::middleware('auth')->group(function(){
     Route::get('telecharger/pdf/factures-stylimmo/{compromis_id}','factureController@download_pdf_facture_stylimmo')->name('facture.telecharger_pdf_facture_stylimmo'); //ok
     Route::get('envoyer/factures-stylimmo/{facture}','factureController@envoyer_facture_stylimmo')->name('facture.envoyer_facture_stylimmo');//ok
     Route::post('encaisser/factures-stylimmo/{facture}','factureController@encaisser_facture_stylimmo')->name('facture.encaisser_facture_stylimmo');//ok
-
-     // factures
+// factures
      Route::get('/factures','factureController@index')->name('facture.index');
      Route::get('/factures/create','factureController@create')->name('facture.create');
+    //  factures honoraire
+    Route::get('preparer/factures-honoraire/{compromis}','factureController@preparer_facture_honoraire')->name('facture.preparer_facture_honoraire');//ok
+    Route::post('deduire-pub/factures-honoraire/{compromis}','factureController@deduire_pub_facture_honoraire')->name('facture.deduire_pub_facture_honoraire');//ok
+    // Route::get('generer/pdf/factures-honoraire/','factureController@generer_pdf_facture_honoraire')->name('facture.pdf.generer_facture_honoraire');
      
     // Contrat 
     Route::get('/contrat/create/{user_id}','ContratController@create')->name('contrat.create');
     Route::post('/contrat/add','ContratController@store')->name('contrat.add');
 
-    // Commissions
-    Route::get('commissions/','CommissionController@index')->name('commissions.index');
-    Route::post('commissions/create','CommissionController@create')->name('commissions.create');
    
+    // Pack pub
+    Route::get('parametre/pack_pub/','PackpubController@index')->name('pack_pub.index');
+    Route::get('parametre/pack_pub/edit/{pack_pub}','PackpubController@edit')->name('pack_pub.edit');
+    Route::get('parametre/pack_pub/create','PackpubController@create')->name('pack_pub.create');
+    Route::post('parametre/pack_pub/store','PackpubController@store')->name('pack_pub.store');
+    Route::post('parametre/pack_pub/update/{pack_pub}','PackpubController@update')->name('pack_pub.update');
 
     Route::get('/', function () {
         return view('home');

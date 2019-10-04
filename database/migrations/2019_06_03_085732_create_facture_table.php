@@ -22,6 +22,7 @@ class CreateFactureTable extends Migration
             $table->boolean('encaissee')->default(false);
             $table->double('montant_ht')->nullable();
             $table->double('montant_ttc')->nullable();
+            $table->integer('nb_mois_deduis')->nullable();
             $table->string('url')->nullable();
             $table->timestamps();
         });

@@ -10,17 +10,27 @@
     <!-- bootstrap -->
     {{-- <script src="{{ asset('js/lib/weather/jquery.simpleWeather.min.js')}}"></script>
     <script src="{{ asset('js/lib/weather/weather-init.js')}}"></script> --}}
-    <script src="{{ asset('js/lib/circle-progress/circle-progress.min.js')}}"></script>
+    {{-- <script src="{{ asset('js/lib/circle-progress/circle-progress.min.js')}}"></script>
     <script src="{{ asset('js/lib/circle-progress/circle-progress-init.js')}}"></script>
-    {{-- <script src="{{ asset('js/lib/chartist/chartist.min.js')}}"></script>
+    <script src="{{ asset('js/lib/chartist/chartist.min.js')}}"></script>
     <script src="{{ asset('js/lib/chartist/chartist-init.js')}}"></script> --}}
-    <script src="{{ asset('js/lib/sparklinechart/jquery.sparkline.min.js')}}"></script>
+
+{{-- 
+    <script src="{{ asset('js/lib/morris-chart/raphael-min.js')}}"></script>
+    <script src="{{ asset('js/lib/morris-chart/morris.js')}}"></script> --}}
+    {{-- <script src="{{ asset('js/lib/morris-chart/morris-init.js')}}"></script> --}}
+
+
+
+
+
+    {{-- <script src="{{ asset('js/lib/sparklinechart/jquery.sparkline.min.js')}}"></script>
     <script src="{{ asset('js/lib/sparklinechart/sparkline.init.js')}}"></script>
     <script src="{{ asset('js/lib/owl-carousel/owl.carousel.min.js')}}"></script>
-    <script src="{{ asset('js/lib/owl-carousel/owl.carousel-init.js')}}"></script>
+    <script src="{{ asset('js/lib/owl-carousel/owl.carousel-init.js')}}"></script> --}}
     <script src="{{ asset('js/scripts.js')}}"></script>
-    <script src="{{ asset('js/dropzone.js')}}"></script>
-    <script src="{{ asset('js/dropzone-config.js')}}"></script>
+    {{-- <script src="{{ asset('js/dropzone.js')}}"></script>
+    <script src="{{ asset('js/dropzone-config.js')}}"></script> --}}
     <script src="{{ asset('js/sweetalert2.js')}}"></script>
     <script src="{{ asset('js/lib/select2/select2.full.min.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>

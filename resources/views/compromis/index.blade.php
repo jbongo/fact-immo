@@ -40,41 +40,42 @@
                                         <th>@lang('Partage avec Agent/Agence')</th>
                                         <th>@lang('Facture Styl')</th>
 
-                                        <th>@lang('Action')</th>
+                                        <th>@lang('Action') </th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($compromis as $compromi)
                                     <tr>
                                             @if (Auth()->user()->role == "admin")
-                                        <td width="15%" >
+                                        <td  >
                                         <strong>{{$compromi->user->nom}} {{$compromi->user->prenom}}</strong> 
                                         </td> 
                                         @endif
-                                        <td width="15%">
+                                        <td >
                     
                                             @if($compromi->je_porte_affaire == 0)
                                                 <span class="badge badge-danger">Non</span>
                                                 @php  $grise = "background-color:#EDECE7"; @endphp
                                             @else
+                                                @php  $grise = ""; @endphp
                                                 <span class="badge badge-success">Oui</span>
                                             @endif
 
                                         </td>   
-                                        <td width="15%" style="color: #e05555;{{$grise}}">
+                                        <td  style="color: #e05555;{{$grise}}">
                                             <strong> {{$compromi->numero_mandat}}</strong> 
                                         </td>     
-                                        <td width="20%"style="{{$grise}}" >
+                                        <td width="15%" style="{{$grise}}" >
                                             <strong>{{$compromi->description_bien}}</strong> 
                                         </td>
                                         
-                                        <td width="15%" style="{{$grise}}">
+                                        <td  style="{{$grise}}">
                                             {{$compromi->net_vendeur}}   
                                         </td>
-                                        <td width="15%" style="{{$grise}}">
+                                        <td  style="{{$grise}}">
                                         {{$compromi->date_mandat}}   
                                         </td>
-                                        <td width="15%">
+                                        <td width="10%">
  
                                             @if($compromi->est_partage_agent == 0)
                                                 <span class="badge badge-danger">Non</span>
@@ -83,7 +84,7 @@
                                             @endif
 
                                         </td>        
-                                        <td width="15%" style="{{$grise}}">
+                                        <td  style="{{$grise}}">
                                             @if($compromi->je_porte_affaire == 1)
                                                 @if($compromi->demande_facture == 0)
                                                     <span><a class="btn btn-default" href="{{route('facture.demander_facture',Crypt::encrypt($compromi->id))}}" data-toggle="tooltip" title="@lang(' ddddd')">demander facture styl</a> </span>
@@ -96,12 +97,20 @@
                                         </td>                                
                                       
                                         <td width="15%">
-                                            <span><a href="{{route('compromis.show',Crypt::encrypt($compromi->id))}}" data-toggle="tooltip" title="@lang('Détails  ')"><i class="large material-icons color-info">visibility</i></a> </span>
+                                                <a href="{{route('compromis.show',Crypt::encrypt($compromi->id))}}" data-toggle="tooltip" title="@lang('Détails  ')"><i class="large material-icons color-info">visibility</i></a> 
+                                                @if ($compromi->cloture_affaire == 0 && $compromi->demande_facture == 2)
+                                                    <a class="cloturer" href="{{route('compromis.cloturer',Crypt::encrypt($compromi->id))}}" data-toggle="tooltip" title="@lang('Cloturer l\'affaire  ')"><i class="large material-icons color-danger">clear</i></a> 
+                                                @elseif($compromi->cloture_affaire == 1 && $compromi->facture_honoraire_cree == 0 )
+                                                    <a target="blank" href="{{route('facture.preparer_facture_honoraire',Crypt::encrypt($compromi->id))}}" data-toggle="tooltip" title="@lang('Note honoraire  ')"><i class="large material-icons color-danger">insert_drive_file</i></a> 
+                                                @endif
+                                                
                                             
                                             @if (Auth()->user()->role == "mandataire")
                                                 <span><a href="{{route('compromis.show',Crypt::encrypt($compromi->id))}}" data-toggle="tooltip" title="@lang('Modifier ') "><i class="large material-icons color-warning">edit</i></a></span>
                                                 <span><a  href="{{route('compromis.archive',[$compromi->id,1])}}" class="delete" data-toggle="tooltip" title="@lang('Archiver ') {{ $compromi->nom }}"><i class="large material-icons color-danger">delete</i> </a></span>
                                             @endif
+
+
                                         </td>
                                     </tr>
                             @endforeach
@@ -167,6 +176,71 @@
                 swalWithBootstrapButtons(
                 'Annulé',
                 'L\'utlisateur n\'a pas été archivé :)',
+                'error'
+                )
+            }
+        })
+            })
+        })
+
+
+        // ######### Cloturer une affaire
+
+
+        $(function() {
+            $.ajaxSetup({
+                headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
+            })
+            $('[data-toggle="tooltip"]').tooltip()
+            $('a.cloturer').click(function(e) {
+                let that = $(this)
+                e.preventDefault()
+                const swalWithBootstrapButtons = swal.mixin({
+            confirmButtonClass: 'btn btn-success',
+            cancelButtonClass: 'btn btn-danger',
+            buttonsStyling: false,
+})
+
+        swalWithBootstrapButtons({
+            title: '@lang('Vraiment cloturer cette affaire  ?')',
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#DD6B55',
+            confirmButtonText: '@lang('Oui')',
+            cancelButtonText: '@lang('Non')',
+            
+        }).then((result) => {
+            if (result.value) {
+                $('[data-toggle="tooltip"]').tooltip('hide')
+                    $.ajax({                        
+                        url: that.attr('href'),
+                        type: 'POST',
+                        success: function(data){
+                       document.location.reload();
+                     },
+                     error : function(data){
+                        console.log(data);
+                     }
+                    })
+                    .done(function () {
+                            that.parents('tr').remove()
+                    })
+
+                swalWithBootstrapButtons(
+                'Cloturé!',
+                'L\'affaire a bien été clôturée.',
+                'success'
+                )
+                
+                
+            } else if (
+                // Read more about handling dismissals
+                result.dismiss === swal.DismissReason.cancel
+            ) {
+                swalWithBootstrapButtons(
+                'Annulé',
+                'L\'affaire n\'a pas été clôturée.',
+              
                 'error'
                 )
             }

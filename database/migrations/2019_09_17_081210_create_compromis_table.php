@@ -62,11 +62,14 @@ class CreateCompromisTable extends Migration
 
             $table->integer('agent_id')->nullable(); 
             $table->boolean('je_porte_affaire')->default(false); 
+            $table->boolean('je_renseigne_affaire')->default(true); 
             $table->boolean('partage_reseau')->default(false); 
             $table->string('raison_sociale_acquereur')->nullable(); 
             $table->string('raison_sociale_vendeur')->nullable(); 
 
             $table->boolean('facture_stylimmo_valide')->default(false);
+            $table->boolean('facture_honoraire_cree')->default(false);
+            $table->boolean('cloture_affaire')->default(false);
 
             
             $table->timestamps();

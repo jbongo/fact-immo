@@ -11,15 +11,15 @@
     <link href="{{ asset('css/lib/chartist/chartist.min.css')}}" rel="stylesheet">
     <link href="{{ asset('css/lib/font-awesome.min.css')}}" rel="stylesheet">
     <link href="{{ asset('css/lib/themify-icons.css')}}" rel="stylesheet">
-    <link href="{{ asset('css/lib/owl.carousel.min.css')}}" rel="stylesheet" />
+    {{-- <link href="{{ asset('css/lib/owl.carousel.min.css')}}" rel="stylesheet" /> --}}
     <link href="{{ asset('css/lib/owl.theme.default.min.css')}}" rel="stylesheet" />
-    <link href="{{ asset('css/lib/weather-icons.css')}}" rel="stylesheet" />
+    {{-- <link href="{{ asset('css/lib/weather-icons.css')}}" rel="stylesheet" /> --}}
     <link href="{{ asset('css/lib/menubar/sidebar.css')}}" rel="stylesheet">
     <link href="{{ asset('css/lib/bootstrap.min.css')}}" rel="stylesheet">
     <link href="{{ asset('css/lib/unix.css')}}" rel="stylesheet">
     <link href="{{ asset('css/style.css')}}" rel="stylesheet">
-    <link href="{{ asset('css/dropzone.css')}}" rel="stylesheet">
-    <link href="{{ asset('css/dropzone-custom.css')}}" rel="stylesheet">
+    {{-- <link href="{{ asset('css/dropzone.css')}}" rel="stylesheet">
+    <link href="{{ asset('css/dropzone-custom.css')}}" rel="stylesheet"> --}}
     <link href="{{ asset('css/lib/sweetalert/sweetalert.css')}}" rel="stylesheet">
     <link href="{{ asset('css/lib/data-table/data-table.css')}}" rel="stylesheet">
     <link href="{{ asset('css/lib/select2/select2.min.css') }}" rel="stylesheet">

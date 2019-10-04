@@ -42,7 +42,7 @@ class CreateContratTable extends Migration
             $table->text('palier_expert')->nullable();
             $table->integer('nombre_vente_min')->nullable();
             $table->integer('nombre_mini_filleul')->nullable();
-            $table->double('chiffre_affaire')->nullable();
+            $table->double('chiffre_affaire_mini')->nullable();
             $table->double('a_soustraitre')->nullable();
 
 

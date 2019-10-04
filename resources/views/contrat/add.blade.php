@@ -111,7 +111,7 @@
                                         <div class="form-group row">
                                             <label class="col-lg-6 col-md-6 col-sm-6 col-form-label" for="pourcentage_depart_starter">Pourcentage de départ du mandataire<span class="text-danger">*</span></label>
                                             <div class="col-lg-4 col-md-4 col-sm-4 ">
-                                                <input type="number" class="form-control" id="pourcentage_depart_starter" name="pourcentage_depart_starter" min="1" max="100" hidden>
+                                                <input type="number" class="form-control" id="pourcentage_depart_starter" name="pourcentage_depart_starter" min="1" max="100" hidden required>
                                             </div>
                                         </div>
                                     </div>
@@ -398,13 +398,9 @@
                                     <div class="col-lg-6 col-md-6 col-sm-6">
                                         <div class="form-group row">
                                             <select class="col-lg-4 col-md-4 col-sm-4 form-control" id="pack_pub" name="pack_pub">
-                                                {{-- @foreach ($packs_pub as $pack_pub ) --}}
-                                                <option value="1">Pack 10</option>
-                                                <option value="2">Pack 20</option>
-                                                <option value="3">Pack 30</option>
-                                                <option value="4">Pack 40</option>
-                                                <option value="5">Pack 50</option>
-                                                {{-- @endforeach --}}
+                                                @foreach ($packs_pub as $pack_pub )
+                                                    <option value="{{$pack_pub->id}}">{{$pack_pub->nom}}</option>
+                                                @endforeach
                                             </select>
                                         </div>
                                     </div>
@@ -630,7 +626,7 @@
         e.preventDefault();
         var form = $(".form-valide3");
 
-            var check_palier_starter = $('#check_palier_starter').is(':checked') ? "on" : "off";
+           
             var palierdata = $('#palier_starter input').serialize();
 
         data = {
@@ -640,19 +636,19 @@
             "date_entree" : $('#date_entree').val(),
             "date_debut" : $('#date_debut').val(),
             "ca_depart" : $('#ca_depart').val(),
-            "est_starter" : $('#est_starter').val(),            
-            "a_parrain" : $('#a_parrain').val(),
+            "est_starter" : $("#est_starter").prop('checked'),            
+            "a_parrain" : $("#a_parrain").prop('checked') ,
             "parrain_id" : $('#parrain_id').val(),
 
             "pourcentage_depart_starter" : $('#pourcentage_depart_starter').val(),
             "duree_max_starter" : $('#duree_max_starter').val(),
             "duree_gratuite_starter" : $('#duree_gratuite_starter').val(),
-            "check_palier_starter" : check_palier_starter,
+            "check_palier_starter" : $("#check_palier_starter").prop('checked'),
             "palier_starter" : $('#palier_starter input').serialize(),
 
             "pourcentage_depart_expert" : $('#pourcentage_depart_expert').val(),
             "duree_gratuite_expert" : $('#duree_gratuite_expert').val(),
-            "check_palier_expert" : $('#check_palier_expert').val(),
+            "check_palier_expert" : $("#check_palier_expert").prop('checked'),
             "palier_expert" : $('#palier_expert input').serialize(),
             "nombre_vente_min" : $('#nombre_vente_min').val(),
             "chiffre_affaire" : $('#chiffre_affaire').val(),

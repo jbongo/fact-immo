@@ -21,9 +21,9 @@ class CompromisController extends Controller
 
         $compromis = array();
         if(Auth::user()->role =="admin") {
-            $compromis = Compromis::get()->all();
+            $compromis = Compromis::where('je_renseigne_affaire',true)->get();
         }else{
-            $compromis = Compromis::where('user_id',Auth::user()->id)->get();
+            $compromis = Compromis::where([['user_id',Auth::user()->id],['je_renseigne_affaire',true]])->get();
         }
         //  dd($compromis);
         return view ('compromis.index',compact('compromis'));
@@ -50,6 +50,7 @@ class CompromisController extends Controller
     public function store(Request $request)
     {
         //  dd($request->all());
+        // return $request->partage_reseau ;
         if($request->partage == "Non"  || ($request->partage == "Oui" &&  $request->je_porte_affaire == "on" ) ){
             $request->validate([
                 'numero_mandat' => 'unique:compromis',
@@ -105,6 +106,8 @@ class CompromisController extends Controller
                 "pourcentage_agent"=>$request->pourcentage_agent,
                 "je_porte_affaire"=>$request->je_porte_affaire == "on" ? true : false,
                 "numero_mandat_porte_pas"=>$request->numero_mandat_porte_pas,
+                "je_renseigne_affaire"=>false,
+                
             ]);
 
         }
@@ -276,5 +279,22 @@ class CompromisController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    /**
+     * Cloturer une affaire
+     *
+     * @param  string  $compromis
+     * @return \Illuminate\Http\Response
+     */
+    public function cloturer($compromis)
+    {
+        //
+        $id = Crypt::decrypt($compromis);
+        $compromis = Compromis::where('id',$id)->first();
+
+        $compromis->cloture_affaire = true;
+        $compromis->update();
+
     }
 }

@@ -24,7 +24,7 @@
     
                                     <div class="user-skill">
                                        <h4 style="color: #32ade1;text-decoration: underline;">Options</h4>
-                                       <a type="button" data-toggle="modal" data-target="#user_edit" class="btn btn-warning btn-rounded btn-addon btn-xs m-b-10"><i class="ti-pencil"></i>Modifier</a>
+                                    <a href="{{route('mandataire.edit',Crypt::encrypt($mandataire->id) )}}"  class="btn btn-warning btn-rounded btn-addon btn-xs m-b-10"><i class="ti-pencil"></i>Modifier</a>
                                     </div>
                                  </div>
                                  <div class="col-lg-8">
@@ -92,46 +92,102 @@
                   </div>
                </div>
             </div>
+            @if ($mandataire->role == "mandataire")
+                
+          
             <div class="col-lg-6">
               
                <div class="panel panel-success lobipanel-basic">
                      <div class="panel-heading">Statistiques.</div>
                      <div class="panel-body">
-                           <div class="col-lg-6">
+                           <div class="col-lg-4 col-md-4 col-sm-4 ">
                                  <div class="card bg-danger">
                                      <div class="media">
                                          <div class="media-left meida media-middle">
                                              <span><i class="ti-home f-s-48 color-white"></i></span>
                                          </div>
                                          <div class="media-body media-text-right">
-                                             <h4>0</h4>
-                                             <h5>Compromis</h5>
+                                         <h4>{{$nb_affaire}}</h4>
+                                             <h5>Affaires</h5>
                                          </div>
                                      </div>
                                  </div>
                                 </div>
                             
-                                <div class="col-lg-6">
-                                 <div class="card bg-primary">
-                                     <div class="media">
-                                         <div class="media-left meida media-middle">
-                                             <span><i class="ti-money f-s-48 color-white"></i></span>
-                                         </div>
-                                         <div class="media-body media-text-right">
-                                             <h4>0,00 €</h4>
-                                             <h5>Chiffre d'affaire</h5>
-                                         </div>
-                                     </div>
-                                 </div>
+                                <div class="col-lg-4 col-md-4 col-sm-4 ">
+                                    <div class="card bg-primary">
+                                        <div class="media">
+                                            <div class="media-left meida media-middle">
+                                                <span><i class="ti-money f-s-48 color-white"></i></span>
+                                            </div>
+                                            <div class="media-body media-text-right">
+                                                <h4>{{$mandataire->chiffre_affaire}}€</h4>
+                                                <h5>Chiffre d'affaire</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-sm-4 ">
+                                    <div class="card bg-success">
+                                        <div class="media">
+                                            <div class="media-left meida media-middle">
+                                                <span><i class="ti-money f-s-48 color-white"></i></span>
+                                            </div>
+                                            <div class="media-body media-text-right">
+                                                <h4>{{$nb_filleul}}</h4>
+                                                <h5>Filleuls</h5>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                      </div>
                   </div>
+                    @if($nb_filleul > 0)
+                    <div class="panel panel-default lobipanel-basic">
+                        <div class="panel-heading">Filleuls.</div>
+                        <div class="panel-body">
+                             
+                                <div class="table-responsive" style="overflow-x: inherit !important;">
+                                        <table  id="example" class=" table student-data-table  m-t-20 "  style="width:100%">
+                                            <thead>
+                                                <tr>
+                                                    <th>@lang('Nom filleul')</th>
+                                                    <th>@lang('rang')</th>
+                                                    <th>@lang('Action')</th>
+                                                   
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            @foreach ($filleuls as $filleul)
+                                                <tr>
+                                           
+                                                    <td style="color: #32ade1; text-decoration: underline;">
+                                                    <strong>{{$filleul->user->nom}} {{$filleul->user->prenom}}</strong> 
+                                                    </td>
+                                                    <td style="color: #e05555;; text-decoration: underline;">
+                                                        <strong> {{$filleul->rang}} </strong> 
+                                                    </td>
+                                                                                     
+                                                    <td>
+                                                        <span><a href="{{route('mandataire.show',Crypt::encrypt($filleul->user_id))}}" data-toggle="tooltip" title="@lang('Détail ') {{ $filleul->nom }}"><i class="large material-icons color-warning">visibility</i></a></span>
+                                                    </td>
+                                                </tr>
+                                        @endforeach
+                                          </tbody>
+                                        </table>
+                                    </div>
+                                
+                        </div>
+                    </div>
+                    @endif
+             
             </div>
+            @endif
          </div>
       </div>
    </div>
 </div>
-
+@if ($mandataire->role == "mandataire")
 <div class="row">
 
     <div class="panel panel-warning lobipanel-basic">
@@ -567,7 +623,8 @@
                                                     <div class="row">
                                                         <div class="col-lg-6 col-md-6 col-sm-6">
                                                             <div class="form-group row">
-                                                                <label class="color-primary">{{$mandataire->contrat->packpub_id}} </label>
+                                                                <label class="color-primary">{{$mandataire->contrat->packpub->nom}} &nbsp;&nbsp;</label>
+                                                                <label class="color-danger">{{$mandataire->contrat->packpub->tarif}} €</label>
                                                             </div>
                                                         </div>
                                                         
@@ -585,6 +642,7 @@
             
                 
         </div>
+        @endif
     </div>
 
 </div>

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+use App\Compromis;
+use App\Filleul;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Crypt;
 
@@ -118,8 +120,14 @@ class MandataireController extends Controller
         
         $palier_starter = $this->palier_unserialize($palier_starter);
         $palier_expert = $this->palier_unserialize($palier_expert);
+
+        // statistiques
+
+        $nb_affaire = Compromis::where('user_id', $id)->count();
+        $nb_filleul = Filleul::where('parrain_id', $id)->count();
+        $filleuls = Filleul::where('parrain_id', $id)->get();
        
-        return view('mandataires.show', compact(['mandataire','palier_starter','palier_expert']));
+        return view('mandataires.show', compact(['mandataire','palier_starter','palier_expert','nb_affaire','nb_filleul','filleuls']));
     }
 
     /**

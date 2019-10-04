@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use App\User;
+use App\Packpub;
 use App\Contrat;
+use App\Filleul;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\CreationMandataire;
 use Illuminate\Support\Facades\Hash;
@@ -59,7 +61,8 @@ class ContratController extends Controller
     {
         //
         $parrains = User::where([['role','mandataire'], ['id','<>', Crypt::decrypt($user_id)]])->get();
-        return view ('contrat.add', compact(['parrains','user_id']));
+        $packs_pub = Packpub::all();
+        return view ('contrat.add', compact(['parrains','user_id','packs_pub']));
     }
 
     /**
@@ -71,6 +74,7 @@ class ContratController extends Controller
     public function store(Request $request)
     {
       
+        // return $request->est_starter == "true" ? 1 : 0;
         // parrainage
         // return "".$request->forfait_administratif;
         Contrat::create([
@@ -81,28 +85,29 @@ class ContratController extends Controller
             "forfait_carte_pro"=>$request->forfait_carte_pro,
             "date_entree"=>$request->date_entree,
             "date_deb_activite"=>$request->date_debut,
-            // "ca_depart"=>$request->ca_depart,
-            "est_demarrage_starter"=>$request->est_starter == "on" ? true:false,
-            "a_parrain"=>$request->a_parrain== "on" ? true:false,
-            "parrain_id"=>$request->a_parrain== "on" ? $request->parrain_id : null,
+            "ca_depart"=>$request->ca_depart,
+
+            "est_demarrage_starter"=>  $request->est_starter == "true" ? true : false,
+            "a_parrain"=>$request->a_parrain == "true" ? true : false,
+            "parrain_id"=>$request->a_parrain== "true" ? $request->parrain_id : null,
             
             // Commission direct pack starter          
             "pourcentage_depart_starter"=>$request->pourcentage_depart_starter,
             "duree_max_starter"=>$request->duree_max_starter,
             "duree_gratuite_starter"=>$request->duree_gratuite_starter,
-            "a_palier_starter"=>$request->check_palier_starter== "on" ? true:false,
+            "a_palier_starter"=>$request->check_palier_starter == "true" ? true : false,
             "palier_starter"=>$request->palier_starter,
 
             // Commission direct pack expert          
             "pourcentage_depart_expert"=>$request->pourcentage_depart_expert,
             "duree_max_starter_expert"=>$request->duree_max_starter,
             "duree_gratuite_expert"=>$request->duree_gratuite_expert,
-            "a_palier_expert"=>$request->check_palier_expert== "on" ? true:false,
+            "a_palier_expert"=>$request->check_palier_expert == "true" ? true : false,
             "palier_expert"=>$request->palier_expert,
 
             "nombre_vente_min"=>$request->nombre_vente_min,
             "nombre_mini_filleul"=>$request->nombre_mini_filleul,
-            "chiffre_affaire"=>$request->chiffre_affaire,
+            "chiffre_affaire_mini"=>$request->chiffre_affaire,
             "a_soustraitre"=>$request->a_soustraitre,
 
             "prime_forfaitaire"=>$request->prime_max_forfait_parrain,
@@ -120,7 +125,38 @@ class ContratController extends Controller
 
 
         $mandataire->password = Hash::make($password) ;
+        $mandataire->chiffre_affaire = $request->ca_depart;
+        $mandataire->commission = $request->est_starter == "true" ? $request->pourcentage_depart_starter : $request->pourcentage_depart_expert ;
+        $mandataire->pack_actuel = $request->est_starter == "true" ? "starter" : "expert" ;
         $mandataire->update();
+        
+        
+        // Ajout du parrain
+
+        if($request->a_parrain == "true" ){
+            $nb_filleul = Filleul::where([ ['parrain_id',$request->parrain_id]])->count();
+    
+            if($nb_filleul > 0){
+                $rang_filleuls = Filleul::where([['parrain_id',$request->parrain_id] ])->select('rang')->get()->toArray();
+                $rangs = array();
+
+                foreach ($rang_filleuls as $rang_fill) {
+                    $rangs[] = $rang_fill["rang"];
+                }
+
+                $rang = max($rangs)+1;
+            }else{
+                $rang = 1;
+            }
+                
+            Filleul::create([
+                "user_id" => Crypt::decrypt($request->user_id),
+                "parrain_id" =>  $request->parrain_id,
+                "rang"=> $rang,
+                "expire" => false
+            ]);
+
+        }
 
         Mail::to($mandataire->email)->send(new CreationMandataire($mandataire,$password));
 

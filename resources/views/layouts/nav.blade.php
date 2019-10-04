@@ -35,7 +35,7 @@
                         <ul>
                             <li><a href="page-login.html">Info Entreprise</a></li>
                             <li><a href="page-login.html">Modèles commision</a></li>
-                            <li><a href="page-login.html">Tarif pack pub</a></li>
+                            <li><a href="{{route('pack_pub.index')}}">Tarif pack pub</a></li>
                         </ul>
                     </li>
                     @endif
@@ -87,12 +87,12 @@
                     </div>
                 </li>
 
-                <li class="header-icon dib"><img class="avatar-img" src="{{ asset('images/avatar/1.jpg')}}" alt="" /> <span class="user-avatar"> admin <i class="ti-angle-down f-s-10"></i></span>
+                <li class="header-icon dib"><img class="avatar-img" src="{{ asset('images/avatar/1.jpg')}}" alt="" /> <span class="user-avatar"> {{auth()->user()->nom }} {{auth()->user()->prenom }}<i class="ti-angle-down f-s-10"></i></span>
                     <div class="drop-down dropdown-profile">
                       
                         <div class="dropdown-content-body">
                             <ul>
-                                <li><a href="#"><i class="ti-user"></i> <span>Mon Profil</span></a></li>
+                            <li><a href="{{route('mandataire.show',Crypt::encrypt(Auth()->user()->id) )}}"><i class="ti-user"></i> <span>Mon Profil</span></a></li>
                                 <li><a href="{{ route('logout') }}"  onclick="event.preventDefault();
                      document.getElementById('logout-form').submit();" ><i class="ti-power-off"></i> <span>Se déconnecter</span></a></li>
                             </ul>

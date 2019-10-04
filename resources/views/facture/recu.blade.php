@@ -74,10 +74,12 @@
                                         @endphp
                                         @if($facture->type == "stylimmo")
                                         <td width="" >
-                                            @if( $facture->encaissee == false && $interval->days >=3 && $interval->days <=6)
-                                            <label  style="background-color:#FFC501">Ho làà  !!!&nbsp;&nbsp;&nbsp;</label>
+                                            @if( $facture->encaissee == false && $interval->days < 3)
+                                                <label  style="color:lime">En attente de payement</label>
+                                            @elseif( $facture->encaissee == false && $interval->days >=3 && $interval->days <=6)
+                                                <label  style="background-color:#FFC501">Ho làà  !!!&nbsp;&nbsp;&nbsp;</label>
                                             @elseif($facture->encaissee == false && $interval->days >6) 
-                                                <span  class="danger" style="background-color:#FF0633;color:white;visibility:visible;">Danger !!! &nbsp;&nbsp;</span>
+                                                <label class="danger" style="background-color:#FF0633;color:white;visibility:visible;">Danger !!! &nbsp;&nbsp;</label>
                                             @elseif($facture->encaissee == true)
                                                 <label  style="background-color:#EDECE7">En banque  </label>
                                             @endif

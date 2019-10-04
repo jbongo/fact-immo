@@ -186,7 +186,7 @@ public  function valider_facture_stylimmo($compromis)
     $mandataire = $compromis->user;
     // save la facture
 
-    $tva = 0.2;
+    $tva = 1.2;
     $numero = 1507;
     $facture = Facture::where([ ['type','stylimmo'],['compromis_id',$compromis->id]])->first();
     $nb_numeros_facture = Facture::where([ ['type','stylimmo']])->select('numero')->count();
@@ -214,7 +214,7 @@ public  function valider_facture_stylimmo($compromis)
             "compromis_id"=> $compromis->id,
             "type"=> "stylimmo",
             "encaissee"=> false,
-            "montant_ht"=>  round ($compromis->frais_agence*$tva ,2),
+            "montant_ht"=>  round ($compromis->frais_agence/$tva ,2),
             "montant_ttc"=> $compromis->frais_agence,
 
         ]);
@@ -336,5 +336,64 @@ public  function valider_facture_stylimmo($compromis)
            return redirect()->route('facture.index')->with('ok', __('Facture encaissée, le mandataire a été notifié')  );
            
        }
+
+
+    //    ######## FACTURE D'HONORAIRES
+
+// Préparation de la facture d'honoraire
+    public  function preparer_facture_honoraire($compromis)
+    {
         
+        $compromis = Compromis::where('id', Crypt::decrypt($compromis))->first();
+        $mandataire = $compromis->user;
+
+       
+        $facture = Facture::where([ ['type','honoraire'],['compromis_id',$compromis->id]])->first();
+        $factureStylimmo = Facture::where([ ['type','stylimmo'],['compromis_id',$compromis->id]])->first();
+
+  
+        return view ('facture.preparer_honoraire',compact(['compromis','mandataire','facture','factureStylimmo']));
+        
+    }
+    
+    // Déduction de la pub sur la facture d'honoraire
+    public  function deduire_pub_facture_honoraire(Request $request, $compromis)
+    {
+        
+//  on doit verifier que facture_honoraire_cree est false avant les modifsxxxxxxxxxxxxxxxxxxxxxxxxxxx
+// If faut creer la facture avec champs nb_mois_deduis en +
+       
+        $compromis = Compromis::where('id', Crypt::decrypt($compromis))->first();
+        $mandataire = $compromis->user;
+        if($compromis->facture_honoraire_cree == false && $mandataire->nb_mois_pub_restant > 0 ){
+            $tva = 1.2;
+            $facture = Facture::create([
+                "numero"=> null,
+                "user_id"=> $mandataire->id,
+                "compromis_id"=> $compromis->id,
+                "type"=> "honoraire",
+                "encaissee"=> false,
+                "montant_ht"=>  round ( ($compromis->frais_agence*$mandataire->commission/100 )/$tva ,2),
+                "montant_ttc"=> round( $compromis->frais_agence*$mandataire->commission/100,2),
+                "nb_mois_deduis"=> $request->nb_mois_deduire,
+            ]);
+            $mandataire->nb_mois_pub_restant -= $request->nb_mois_deduire;
+            $mandataire->update();
+            
+            $compromis->facture_honoraire_cree = true;
+            $compromis->update();
+        }else{
+            $facture = Facture::where([ ['type','honoraire'],['compromis_id',$compromis->id]])->first();
+        }
+        
+        $factureStylimmo = Facture::where([ ['type','stylimmo'],['compromis_id',$compromis->id]])->first();
+
+        
+
+        // $facture = Facture::where([ ['type','honoraire'],['compromis_id',$compromis->id]])->first();
+  
+        return view ('facture.preparer_honoraire',compact(['compromis','mandataire','facture','factureStylimmo']));
+        
+    }
+    
 }

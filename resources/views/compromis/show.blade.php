@@ -20,7 +20,7 @@ Affaire
 		<div class="card">
           
 			<div class="col-lg-10">
-                @if ($compromis->demande_facture == 0)
+                @if ($compromis->demande_facture == 0 && (  ($compromis->est_partage_agent == 1 && $compromis->je_porte_affaire == 1) ||  ($compromis->est_partage_agent == 0) )  )
                     <a class="btn btn-danger btn-flat btn-addon btn-sm m-b-10 m-l-5 submit" href="{{route('facture.demander_facture', Crypt::encrypt($compromis->id) )}}"><i class="ti-file"></i>Demander Facture stylimmo</a>
                 @endif
                 @if ($compromis->demande_facture != 3)
