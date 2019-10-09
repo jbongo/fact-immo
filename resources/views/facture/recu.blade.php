@@ -8,7 +8,7 @@
                                 <div class="panel-body">
 
                         <div class="table-responsive" style="overflow-x: inherit !important;">
-                            <table  id="example" class=" table student-data-table  m-t-20 "  style="width:100%">
+                            <table  id="example1" class=" table student-data-table  m-t-20 "  style="width:100%">
                                 <thead>
                                     <tr>
                                        

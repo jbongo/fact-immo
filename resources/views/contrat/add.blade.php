@@ -111,7 +111,7 @@
                                         <div class="form-group row">
                                             <label class="col-lg-6 col-md-6 col-sm-6 col-form-label" for="pourcentage_depart_starter">Pourcentage de départ du mandataire<span class="text-danger">*</span></label>
                                             <div class="col-lg-4 col-md-4 col-sm-4 ">
-                                                <input type="number" class="form-control" id="pourcentage_depart_starter" name="pourcentage_depart_starter" min="1" max="100" hidden required>
+                                                <input type="number" class="form-control" value="0" id="pourcentage_depart_starter" name="pourcentage_depart_starter" min="0" max="100" hidden required>
                                             </div>
                                         </div>
                                     </div>
@@ -193,7 +193,7 @@
                                         <div class="form-group row">
                                             <label class="col-lg-6 col-md-6 col-sm-6 col-form-label" for="pourcentage_depart_expert">Pourcentage de départ du mandataire<span class="text-danger">*</span></label>
                                             <div class="col-lg-4 col-md-4 col-sm-4 ">
-                                                <input type="number" class="form-control" id="pourcentage_depart_expert" name="pourcentage_depart_expert" min="1" max="100" required>
+                                                <input type="number" class="form-control" id="pourcentage_depart_expert" name="pourcentage_depart_expert" min="0" max="100" required>
                                             </div>
                                         </div>
                                     </div>

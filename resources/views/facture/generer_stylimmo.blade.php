@@ -21,10 +21,10 @@ Valider la facture
           <div class="card alert">
          <div class="row">
             @if ($compromis->facture_stylimmo_valide == true)
-            <div class="col-lg-2 ml-auto">
+            <div class="col-lg-3 col-md-3  col-sm-5 ">
                <a  href="{{route('facture.envoyer_facture_stylimmo', Crypt::encrypt($facture->id))}}"  class="btn btn-danger btn-flat btn-addon  m-b-10 m-l-5 " id="ajouter"><i class="ti-email"></i>Renvoyer au mandataire</a>
             </div>
-            <div class="col-lg-2 ml-auto">
+            <div class="col-lg-3 col-md-3 col-sm-5">
                <a href="{{route('facture.telecharger_pdf_facture_stylimmo', Crypt::encrypt($compromis->id))}}"  class="btn btn-default btn-flat btn-addon  m-b-10 m-l-5 " id="ajouter"><i class="ti-download"></i>Télécharger</a>
             </div>
             @else
@@ -107,13 +107,13 @@ Valider la facture
     <tbody>
         <tr>
             <td style="width: 48px;">&nbsp;</td>
-            <td style="width: 428px;"><span style="text-decoration: underline;"><strong>Vendeur:</strong></span></td>
-            <td style="width: 391px;">{{$compromis->nom_vendeur}} {{$compromis->prenom_vendeur}}</td>
+            <td style="width: 428px;"><span style="text-decoration: underline;"><strong>Vendeur: </span>&nbsp; {{$compromis->civilite_vendeur}}@if($compromis->civilite_vendeur =="M." || $compromis->civilite_vendeur =="Mme") {{$compromis->nom_vendeur}} {{$compromis->prenom_vendeur}} @else  {{$compromis->raison_sociale_vendeur}} @endif</strong></td>
+            <td style="width: 391px;">&nbsp;</td>
         </tr>
         <tr>
             <td style="width: 48px;">&nbsp;</td>
-            <td style="width: 228px;"><span style="text-decoration: underline;"><strong>Acquereur:</strong></span></td>
-            <td style="width: 391px;">{{$compromis->nom_acquereur}} {{$compromis->prenom_acquereur}}</td>
+            <td style="width: 228px;"><span style="text-decoration: underline;"><strong>Acquereur:</span>&nbsp; {{$compromis->civilite_acquereur}} @if($compromis->civilite_acquereur =="M." || $compromis->civilite_acquereur =="Mme")  {{$compromis->nom_acquereur}} {{$compromis->prenom_acquereur}} @else  {{$compromis->raison_sociale_acquereur}} @endif</strong></td>
+            <td style="width: 391px;">&nbsp;</td>
         </tr>
     </tbody>
 </table>

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Compromis;
 use Auth;
 use App\User;
+use App\Filleul;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\PartageAffaire;
@@ -22,11 +23,24 @@ class CompromisController extends Controller
         $compromis = array();
         if(Auth::user()->role =="admin") {
             $compromis = Compromis::where('je_renseigne_affaire',true)->get();
+            $compromisParrain = Compromis::where('je_renseigne_affaire',true)->get();
         }else{
-            $compromis = Compromis::where([['user_id',Auth::user()->id],['je_renseigne_affaire',true]])->get();
+            $compromis = Compromis::where([['user_id',Auth::user()->id],['je_renseigne_affaire',true]])->orWhere('agent_id',Auth::user()->id)->get();
+            
+            // On réccupère l'id des filleuls pour retrouver leurs affaires
+            $filleuls = Filleul::where([['parrain_id',Auth::user()->id],['expire',false]])->select('user_id')->get()->toArray();
+            $fill_ids = array();
+            foreach ($filleuls as $fill) {
+                $fill_ids[]= $fill['user_id'];
+            }
+
+            $compromisParrain = Compromis::whereIn('user_id',$fill_ids )->get();
+
+            // dd($compromisParrain);
+
         }
         //  dd($compromis);
-        return view ('compromis.index',compact('compromis'));
+        return view ('compromis.index',compact('compromis','compromisParrain'));
     }
 
     /**
@@ -61,7 +75,7 @@ class CompromisController extends Controller
                 "user_id"=> Auth::user()->id,
                 "est_partage_agent"=>$request->partage == "Non" ? false : true,
                 "partage_reseau"=>$request->hors_reseau == "Non" ? false : true,
-                "agent_id"=>$request->agent_id,
+                "agent_id"=> ($request->partage == "Oui" && $request->hors_reseau == "Non" ) ? $request->agent_id : null,
                 "nom_agent"=>$request->nom_agent,
                 "pourcentage_agent"=>$request->pourcentage_agent,
                 "je_porte_affaire"=>$request->je_porte_affaire == "on" ? true : false,

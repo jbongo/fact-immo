@@ -38,9 +38,9 @@
     <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
     <script>
         var table = $('#example').DataTable({
-
         });
-                
+        var table1 = $('#example1').DataTable({
+        });        
 
     </script>
     @yield('js-content')
