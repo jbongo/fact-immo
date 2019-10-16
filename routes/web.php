@@ -43,24 +43,24 @@ Route::middleware('auth')->group(function(){
 
     // demandes factures stylimmo
     
-    Route::get('/demander/factures/{compromis}','factureController@demander_facture')->name('facture.demander_facture');//ok
-    Route::post('/demander/factures/{compromis}','factureController@store_demande_facture')->name('facture.demander_facture');//ok
-    Route::get('/demande/factures','factureController@demandes_stylimmo')->name('facture.demande_stylimmo');
-    Route::get('show/demande/factures/{compromis}','factureController@show_demande_stylimmo')->name('facture.show_demande_stylimmo');//ok
-    Route::get('valider/factures-stylimmo/{compromis}','factureController@valider_facture_stylimmo')->name('facture.valider_facture_stylimmo');//ok
-    Route::get('generer/factures-stylimmo/{compromis}','factureController@generer_facture_stylimmo')->name('facture.generer_facture_stylimmo');//ok
-    Route::get('generer/pdf/factures-stylimmo/','factureController@generer_pdf_facture_stylimmo')->name('facture.pdf.generer_facture_stylimmo');
-    Route::get('telecharger/pdf/factures-stylimmo/{compromis_id}','factureController@download_pdf_facture_stylimmo')->name('facture.telecharger_pdf_facture_stylimmo'); //ok
-    Route::get('envoyer/factures-stylimmo/{facture}','factureController@envoyer_facture_stylimmo')->name('facture.envoyer_facture_stylimmo');//ok
-    Route::post('encaisser/factures-stylimmo/{facture}','factureController@encaisser_facture_stylimmo')->name('facture.encaisser_facture_stylimmo');//ok
+    Route::get('/demander/factures/{compromis}','FactureController@demander_facture')->name('facture.demander_facture');//ok
+    Route::post('/demander/factures/{compromis}','FactureController@store_demande_facture')->name('facture.demander_facture');//ok
+    Route::get('/demande/factures','FactureController@demandes_stylimmo')->name('facture.demande_stylimmo');
+    Route::get('show/demande/factures/{compromis}','FactureController@show_demande_stylimmo')->name('facture.show_demande_stylimmo');//ok
+    Route::get('valider/factures-stylimmo/{compromis}','FactureController@valider_facture_stylimmo')->name('facture.valider_facture_stylimmo');//ok
+    Route::get('generer/factures-stylimmo/{compromis}','FactureController@generer_facture_stylimmo')->name('facture.generer_facture_stylimmo');//ok
+    Route::get('generer/pdf/factures-stylimmo/','FactureController@generer_pdf_facture_stylimmo')->name('facture.pdf.generer_facture_stylimmo');
+    Route::get('telecharger/pdf/factures-stylimmo/{compromis_id}','FactureController@download_pdf_facture_stylimmo')->name('facture.telecharger_pdf_facture_stylimmo'); //ok
+    Route::get('envoyer/factures-stylimmo/{facture}','FactureController@envoyer_facture_stylimmo')->name('facture.envoyer_facture_stylimmo');//ok
+    Route::post('encaisser/factures-stylimmo/{facture}','FactureController@encaisser_facture_stylimmo')->name('facture.encaisser_facture_stylimmo');//ok
 // factures
-     Route::get('/factures','factureController@index')->name('facture.index');
-     Route::get('/factures/create','factureController@create')->name('facture.create');
-     Route::get('/factures/packpub','factureController@packpub')->name('facture.packpub');
+     Route::get('/factures','FactureController@index')->name('facture.index');
+     Route::get('/factures/create','FactureController@create')->name('facture.create');
+     Route::get('/factures/packpub','FactureController@packpub')->name('facture.packpub');
     //  factures honoraire
-    Route::get('preparer/factures-honoraire/{compromis}','factureController@preparer_facture_honoraire')->name('facture.preparer_facture_honoraire');//ok
-    Route::post('deduire-pub/factures-honoraire/{compromis}','factureController@deduire_pub_facture_honoraire')->name('facture.deduire_pub_facture_honoraire');//ok
-    // Route::get('generer/pdf/factures-honoraire/','factureController@generer_pdf_facture_honoraire')->name('facture.pdf.generer_facture_honoraire');
+    Route::get('preparer/factures-honoraire/{compromis}','FactureController@preparer_facture_honoraire')->name('facture.preparer_facture_honoraire');//ok
+    Route::post('deduire-pub/factures-honoraire/{compromis}','FactureController@deduire_pub_facture_honoraire')->name('facture.deduire_pub_facture_honoraire');//ok
+    // Route::get('generer/pdf/factures-honoraire/','FactureController@generer_pdf_facture_honoraire')->name('facture.pdf.generer_facture_honoraire');
      
     // Contrat 
     Route::get('/contrat/create/{user_id}','ContratController@create')->name('contrat.create');
