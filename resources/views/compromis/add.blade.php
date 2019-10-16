@@ -42,8 +42,8 @@ Ajout d'une affaire
                                                 <label class="col-lg-8 col-md-8 col-sm-8 col-form-label" for="hors_reseau">Agence/Agent réseau ? <span class="text-danger">*</span></label>
                                                 <div class="col-lg-6 col-md-6 col-sm-6 ">
                                                     <select class="js-select2 form-control" id="hors_reseau" name="hors_reseau" required>
-                                                        <option value="Oui">Oui</option>
-                                                        <option value="Non">Non</option>
+                                                        <option value="Non">Oui</option>
+                                                        <option value="Oui">Non</option>
                                                     </select>
                                                 </div>                                                
                                             </div>
@@ -80,7 +80,7 @@ Ajout d'une affaire
                                             <div class="form-group" id="div_pourcentage_agent">
                                                 <label class="col-lg-8 col-md-8 col-sm-8 col-form-label" for="pourcentage_agent">Mon % de partage <span class="text-danger">*</span></label>
                                                 <div class="col-lg-6 col-md-6 col-sm-6 ">
-                                                    <input class="form-control" type="number" value="{{old('pourcentage_agent') ? old('pourcentage_agent') : 0}}" id="pourcentage_agent" name="pourcentage_agent" required>
+                                                    <input class="form-control" type="number" min="0" max="100" value="{{old('pourcentage_agent') ? old('pourcentage_agent') : 0}}" id="pourcentage_agent" name="pourcentage_agent" required>
                                                 </div>
                                             </div>
                                         </div>
@@ -620,15 +620,16 @@ $('#je_porte_affaire').change(function(){
 
 $("#hors_reseau").change(function(){
     if($('#hors_reseau').val() == "Non"){
+        $('#div_agent_hors_reseau').hide();
+        $('#div_agent_reseau').show();
+        $('#label_partage_name').html($('#agent_id')[0].innerText);
+
+
+    }else{
         $('#div_agent_hors_reseau').show();
         $('#div_agent_reseau').hide();
         $('#label_partage_name').html($('#nom_agent').val());
 
-
-    }else{
-        $('#div_agent_hors_reseau').hide();
-        $('#div_agent_reseau').show();
-        $('#label_partage_name').html($('#agent_id')[0].innerText);
 
     }
 });

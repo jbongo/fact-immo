@@ -65,6 +65,25 @@ class ContratController extends Controller
         return view ('contrat.add', compact(['parrains','user_id','packs_pub']));
     }
 
+        /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create_model_contrat()
+    {
+        //
+        $packs_pub = Packpub::all();
+        $modele = Contrat::where('est_modele',true)->first();
+        $palier_starter =  $modele != null ?  $this->palier_unserialize($modele->palier_starter) : null;
+        $palier_expert =  $modele != null ? $this->palier_unserialize($modele->palier_expert) : null;
+        if($modele == null){
+            return view ('parametre.modele_contrat.add', compact(['packs_pub']));
+        }else{
+            return view ('parametre.modele_contrat.edit', compact(['packs_pub','modele','palier_starter','palier_expert']));
+        }
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -159,6 +178,61 @@ class ContratController extends Controller
         }
 
         Mail::to($mandataire->email)->send(new CreationMandataire($mandataire,$password));
+
+        return 1;
+                
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store_model_contrat(Request $request)
+    {
+      
+        // return $request->est_starter == "true" ? 1 : 0;
+        // parrainage
+        // return "".$request->forfait_administratif;
+        Contrat::create([
+              // infos basiques
+            "forfait_entree"=> $request->forfait_administratif + $request->forfait_carte_pro,
+            "forfait_administratif"=>$request->forfait_administratif,
+            "forfait_carte_pro"=>$request->forfait_carte_pro,
+            "date_entree"=>$request->date_entree,
+            "date_deb_activite"=>$request->date_debut,
+            "ca_depart"=>$request->ca_depart,
+
+            "est_demarrage_starter"=>  $request->est_starter == "true" ? true : false,
+           
+            
+            // Commission direct pack starter          
+            "pourcentage_depart_starter"=>$request->pourcentage_depart_starter,
+            "duree_max_starter"=>$request->duree_max_starter,
+            "duree_gratuite_starter"=>$request->duree_gratuite_starter,
+            "a_palier_starter"=>$request->check_palier_starter == "true" ? true : false,
+            "palier_starter"=>$request->palier_starter,
+
+            // Commission direct pack expert          
+            "pourcentage_depart_expert"=>$request->pourcentage_depart_expert,
+            "duree_max_starter_expert"=>$request->duree_max_starter,
+            "duree_gratuite_expert"=>$request->duree_gratuite_expert,
+            "a_palier_expert"=>$request->check_palier_expert == "true" ? true : false,
+            "palier_expert"=>$request->palier_expert,
+
+            "nombre_vente_min"=>$request->nombre_vente_min,
+            "nombre_mini_filleul"=>$request->nombre_mini_filleul,
+            "chiffre_affaire_mini"=>$request->chiffre_affaire,
+            "a_soustraitre"=>$request->a_soustraitre,
+
+            "prime_forfaitaire"=>$request->prime_max_forfait_parrain,
+            "packpub_id"=>$request->pack_pub,
+
+            "est_modele"=>true,
+
+        ]);     
+   
 
         return 1;
                 

@@ -56,6 +56,7 @@ Route::middleware('auth')->group(function(){
 // factures
      Route::get('/factures','factureController@index')->name('facture.index');
      Route::get('/factures/create','factureController@create')->name('facture.create');
+     Route::get('/factures/packpub','factureController@packpub')->name('facture.packpub');
     //  factures honoraire
     Route::get('preparer/factures-honoraire/{compromis}','factureController@preparer_facture_honoraire')->name('facture.preparer_facture_honoraire');//ok
     Route::post('deduire-pub/factures-honoraire/{compromis}','factureController@deduire_pub_facture_honoraire')->name('facture.deduire_pub_facture_honoraire');//ok
@@ -66,12 +67,19 @@ Route::middleware('auth')->group(function(){
     Route::post('/contrat/add','ContratController@store')->name('contrat.add');
 
    
+    // ##### PARAMETRE #######
     // Pack pub
     Route::get('parametre/pack_pub/','PackpubController@index')->name('pack_pub.index');
     Route::get('parametre/pack_pub/edit/{pack_pub}','PackpubController@edit')->name('pack_pub.edit');
     Route::get('parametre/pack_pub/create','PackpubController@create')->name('pack_pub.create');
     Route::post('parametre/pack_pub/store','PackpubController@store')->name('pack_pub.store');
     Route::post('parametre/pack_pub/update/{pack_pub}','PackpubController@update')->name('pack_pub.update');
+    
+    // Modèle commission
+    
+    Route::get('parametre/modele_contrat/create','ContratController@create_model_contrat')->name('modele_contrat.create');
+    Route::post('parametre/modele_contrat/store','ContratController@store_model_contrat')->name('modele_contrat.store');
+
 
     Route::get('/', function () {
         return view('home');

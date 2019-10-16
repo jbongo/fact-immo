@@ -395,5 +395,13 @@ public  function valider_facture_stylimmo($compromis)
         return view ('facture.preparer_honoraire',compact(['compromis','mandataire','facture','factureStylimmo']));
         
     }
+
+
+     //    ######## FACTURE PAC PUB
+public  function packpub()
+{
+    return view ('facture.pack_pub');
+}
+
     
 }

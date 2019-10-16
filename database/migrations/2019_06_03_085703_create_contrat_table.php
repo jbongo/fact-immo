@@ -52,6 +52,9 @@ class CreateContratTable extends Migration
             // Pack pub
             $table->integer('packpub_id')->nullable();
 
+            $table->boolean('est_modele')->default(false);
+
+
             $table->timestamps();
         });
     }

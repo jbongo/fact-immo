@@ -34,7 +34,7 @@
                     <li><a  class="sidebar-sub-toggle"><i class="ti-target"></i> Paramètres <span class="sidebar-collapse-icon ti-angle-down"></span></a>
                         <ul>
                             <li><a href="page-login.html">Info Entreprise</a></li>
-                            <li><a href="page-login.html">Modèles commision</a></li>
+                            <li><a href="{{route('modele_contrat.create')}}">Modèle contrat</a></li>
                             <li><a href="{{route('pack_pub.index')}}">Tarif pack pub</a></li>
                         </ul>
                     </li>

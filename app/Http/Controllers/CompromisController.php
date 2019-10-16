@@ -74,7 +74,7 @@ class CompromisController extends Controller
             $compromis = Compromis::create([
                 "user_id"=> Auth::user()->id,
                 "est_partage_agent"=>$request->partage == "Non" ? false : true,
-                "partage_reseau"=>$request->hors_reseau == "Non" ? false : true,
+                "partage_reseau"=>$request->hors_reseau == "Non" ? true : false,
                 "agent_id"=> ($request->partage == "Oui" && $request->hors_reseau == "Non" ) ? $request->agent_id : null,
                 "nom_agent"=>$request->nom_agent,
                 "pourcentage_agent"=>$request->pourcentage_agent,
@@ -114,7 +114,7 @@ class CompromisController extends Controller
             $compromis = Compromis::create([
                 "user_id"=> Auth::user()->id,
                 "est_partage_agent"=>$request->partage == "Non" ? false : true,
-                "partage_reseau"=>$request->hors_reseau == "Non" ? false : true,
+                "partage_reseau"=>$request->hors_reseau == "Non" ? true : false,
                 "agent_id"=>$request->agent_id,
                 "nom_agent"=>$request->nom_agent,
                 "pourcentage_agent"=>$request->pourcentage_agent,
@@ -128,7 +128,7 @@ class CompromisController extends Controller
 
         // dd($compromis);
  
-            if($request->partage == "Oui" && $request->partage_reseau == "Non"){
+            if($request->partage == "Oui" && $request->hors_reseau == "Non" && $request->agent_id != null){
                 $agent = User::where('id',$request->agent_id)->first();
 
                 Mail::to($agent->email)->send(new PartageAffaire($compromis->user, $compromis));
@@ -152,7 +152,7 @@ class CompromisController extends Controller
         $agents = User::where([['role','mandataire'],['id','<>',Auth::user()->id]])->get();
         $agence = User::where('id',$compromis->agent_id)->first();
 
-        // dd($compromis);
+        // dd($agence);
         return view('compromis.show', compact('compromis','agents','agence'));
     }
 
@@ -176,7 +176,7 @@ class CompromisController extends Controller
      */
     public function update(Request $request, Compromis $compromis)
     {
-        // dd($compromis);
+        // dd($request);
         if($request->partage == "Non"  || ($request->partage == "Oui" &&  $request->je_porte_affaire == "on" ) ){
             if($request->numero_mandat != $compromis->numero_mandat){
                 $request->validate([
@@ -185,6 +185,7 @@ class CompromisController extends Controller
             }
             $compromis->est_partage_agent = $request->partage == "Non" ? false : true;
             $compromis->type_affaire = $request->type_affaire;
+            $compromis->nom_agent = $request->nom_agent;
             $compromis->description_bien = $request->description_bien;
             $compromis->ville_bien = $request->ville_bien;
             $compromis->civilite_vendeur = $request->civilite_vendeur;
@@ -220,12 +221,12 @@ class CompromisController extends Controller
                 ]);
             }
 
-            $compromis->est_partage_agent = $request->partage == "Non" ? false : true;
-            $compromis->partage_reseau = $request->partage_reseau;
+            // $compromis->est_partage_agent = $request->partage == "Non" ? false : true;
+            // $compromis->partage_reseau = $request->partage_reseau;
             $compromis->agent_id = $request->agent_id;
             $compromis->nom_agent = $request->nom_agent;
             $compromis->pourcentage_agent = $request->pourcentage_agent;
-            $compromis->je_porte_affaire = $request->je_porte_affaire;
+            // $compromis->je_porte_affaire = $request->je_porte_affaire;
             $compromis->numero_mandat_porte_pas = $request->numero_mandat_porte_pas;
 
  
