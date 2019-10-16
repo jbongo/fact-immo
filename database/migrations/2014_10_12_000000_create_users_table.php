@@ -37,7 +37,6 @@ class CreateUsersTable extends Migration
             $table->double('commission')->nullable();
             $table->enum('pack_actuel',['starter','expert'])->nullable();
             $table->integer('nb_mois_pub_restant')->default(12);
-            $table->string('chiffre_affaire')->default(0); 
 
             $table->rememberToken();
             $table->timestamps();
