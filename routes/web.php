@@ -59,6 +59,7 @@ Route::middleware('auth')->group(function(){
     Route::get('/factures/packpub','FactureController@packpub')->name('facture.packpub');
     //  factures honoraire
     Route::get('preparer/factures-honoraire/{compromis}','FactureController@preparer_facture_honoraire')->name('facture.preparer_facture_honoraire');//ok
+    Route::get('preparer/factures-honoraire-parrainage/{compromis}','FactureController@preparer_facture_honoraire_parrainage')->name('facture.preparer_facture_honoraire_parrainage');//ok
     Route::post('deduire-pub/factures-honoraire/{compromis}','FactureController@deduire_pub_facture_honoraire')->name('facture.deduire_pub_facture_honoraire');//ok
     // Route::get('generer/pdf/factures-honoraire/','FactureController@generer_pdf_facture_honoraire')->name('facture.pdf.generer_facture_honoraire');
      

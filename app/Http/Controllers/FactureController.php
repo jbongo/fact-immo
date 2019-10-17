@@ -341,20 +341,36 @@ public  function valider_facture_stylimmo($compromis)
     //    ######## FACTURE D'HONORAIRES
 
 // Préparation de la facture d'honoraire
-    public  function preparer_facture_honoraire($compromis)
-    {
-        
-        $compromis = Compromis::where('id', Crypt::decrypt($compromis))->first();
-        $mandataire = $compromis->user;
+public  function preparer_facture_honoraire($compromis)
+{
+    
+    $compromis = Compromis::where('id', Crypt::decrypt($compromis))->first();
+    $mandataire = $compromis->user;
 
-       
-        $facture = Facture::where([ ['type','honoraire'],['compromis_id',$compromis->id]])->first();
-        $factureStylimmo = Facture::where([ ['type','stylimmo'],['compromis_id',$compromis->id]])->first();
+    
+    $facture = Facture::where([ ['type','honoraire'],['compromis_id',$compromis->id]])->first();
+    $factureStylimmo = Facture::where([ ['type','stylimmo'],['compromis_id',$compromis->id]])->first();
 
-  
-        return view ('facture.preparer_honoraire',compact(['compromis','mandataire','facture','factureStylimmo']));
-        
-    }
+    return view ('facture.preparer_honoraire',compact(['compromis','mandataire','facture','factureStylimmo']));
+    
+}
+
+    
+// Préparation de la facture d'honoraire du parrain
+public  function preparer_facture_honoraire_parrainage($compromis)
+{
+    
+    $compromis = Compromis::where('id', Crypt::decrypt($compromis))->first();
+    $mandataire = $compromis->user;
+
+   
+    $facture = Facture::where([ ['type','honoraire'],['compromis_id',$compromis->id]])->first();
+    $factureStylimmo = Facture::where([ ['type','stylimmo'],['compromis_id',$compromis->id]])->first();
+
+
+    return view ('facture.preparer_honoraire_parrainage',compact(['compromis','mandataire','facture','factureStylimmo']));
+    
+}
     
     // Déduction de la pub sur la facture d'honoraire
     public  function deduire_pub_facture_honoraire(Request $request, $compromis)

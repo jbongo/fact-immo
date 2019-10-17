@@ -2,7 +2,7 @@
 
 @section('content')
    @section ('page_title')
-      Note honoraire <span class="color-danger">(commission agence)</span>
+      Note honoraire <span class="color-danger">(commission parrainage)</span>
    @endsection
 <div class="row"> 
        
@@ -16,7 +16,7 @@
            @endif       
           <div class="card alert">
          <div class="row">
-            @if ($mandataire->statut == "auto-entrepreneur" && $compromis->facture_honoraire_cree == false)
+            {{-- @if ($mandataire->statut == "auto-entrepreneur" && $compromis->facture_honoraire_cree == false)
            <br><br>
                <div class="row">
                   <div class="col-lg-6 col-md-6 col-sm-6">
@@ -60,7 +60,7 @@
                   <div class="col-lg-4 col-md-4 col-sm-4"></div>
                </div>
 
-            @endif
+            @endif --}}
 
          </div>
                <hr>
@@ -90,7 +90,7 @@
         </tr>
         <tr>
             <td style="width: 423px;"><span style="text-decoration: underline;"><strong>Facture stylimmo N&deg;:</strong> </span> &nbsp; {{$factureStylimmo->numero}}&nbsp;</td>
-            <td style="width: 260px;height:35px"></td>
+            <td style="width: 260px; height:35px"></td>
         </tr>
     </tbody>
 </table>
@@ -113,7 +113,7 @@
                 @endif
                 
             </td>
-            <td style="width: 391px; height:35px"></td>
+            <td style="width: 391px;  height:35px"></td>
         </tr>
         <tr>
             <td style="width: 48px;">&nbsp;</td>
@@ -126,7 +126,8 @@
                 @endif
                 
             </td>
-            <td style="width: 391px; height:35px"></td>
+            <td style="width: 391px; height:35px "></td>
+            
         </tr>
         <tr>
             <td style="width: 48px;">&nbsp;</td>
@@ -135,6 +136,7 @@
             </td>
             <td style="width: 391px; height:35px"></td>
         </tr>
+        
     </tbody>
 </table>
 
@@ -156,24 +158,10 @@
         </tr>
         <tr><td>&nbsp;</td> <td>&nbsp;</td> </tr>
 
-        @php
-         $montant_pub_deduis =  0;   
-        @endphp
-
-        @if ($facture->nb_mois_deduis > 0)
-       @php $montant_pub_deduis = $facture->nb_mois_deduis * $mandataire->contrat->packpub->tarif @endphp
-        <tr>
-            <td style="width: 400px;">&nbsp;</td>
-            <td style="width: 153px;">Jetons déduis :</td>
-            <td style="width: 231px;">- {{$montant_pub_deduis}} &euro;</td>
-        </tr>
-        @endif
-       
-        <tr><td>&nbsp;</td> <td>&nbsp;</td> </tr>
         <tr>
             <td style="width: 400px;">&nbsp;</td>
             <td style="width: 153px;">TOTAL T.T.C:</td>
-            <td style="width: 231px;">{{$facture->montant_ttc - $montant_pub_deduis}} &euro;</td>
+            <td style="width: 231px;">{{$facture->montant_ttc}} &euro;</td>
         </tr>
     </tbody>
 </table>
@@ -183,7 +171,7 @@
     <tbody>
         <tr style="height: 25px;">
             <td style="width: 349px; height: 25px;">Valeur en votre aimable r&egrave;glement de :</td>
-            <td style="width: 117px; height: 25px;">{{round($facture->montant_ttc - $montant_pub_deduis ,2)}} &euro; TTC</td>
+            <td style="width: 117px; height: 25px;">{{round($facture->montant_ttc,2)}} &euro; TTC</td>
             <td style="width: 177px; height: 25px;"></td>
         </tr>
     </tbody>

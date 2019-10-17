@@ -7,7 +7,7 @@
                         @if ($compromis->civilite_vendeur == "M." || $compromis->civilite_vendeur == "Mme")
                             <p>{{$compromis->nom_vendeur}} {{$compromis->prenom_vendeur}}</p>
                         @else 
-                            <p>{{$compromis->raison_sociale_vendeur}} {{$compromis->raison_sociale_vendeur}}</p>                        
+                            <p>{{$compromis->raison_sociale_vendeur}} </p>                        
                         @endif
                             <p><strong>{{$compromis->code_postal_vendeur}} {{$compromis->ville_vendeur}}</strong></p>
                     @else 
@@ -15,7 +15,7 @@
                         @if ($compromis->civilite_acquereur == "M." || $compromis->civilite_acquereur == "Mme")
                             <p>{{$compromis->nom_acquereur}} {{$compromis->prenom_acquereur}}</p>                
                         @else 
-                            <p>{{$compromis->raison_sociale_acquereur}} {{$compromis->raison_sociale_acquereur}}</p>                        
+                            <p>{{$compromis->raison_sociale_acquereur}} </p>                        
                         @endif
                         <p><strong>{{$compromis->code_postal_acquereur}} {{$compromis->ville_acquereur}}</strong></p>
                     @endif
@@ -59,7 +59,7 @@
         <tbody>
             <tr>
                 <td style="width: 423px;"><span style="text-decoration: underline;"><strong>R&eacute;f.</strong></span><strong>:&nbsp;</strong>&nbsp; Mandat N&deg;&nbsp; {{$compromis->numero_mandat}}&nbsp; du : {{ Carbon\Carbon::parse($compromis->date_mandat)->format('d/m/Y')}}</td>
-                <td style="width: 260px;">Affaire suivie par : {{$mandataire->nom}} {{$mandataire->nom}}</td>
+                <td style="width: 260px;">Affaire suivie par : {{$mandataire->nom}} {{$mandataire->prenom}}</td>
             </tr>
         </tbody>
     </table>

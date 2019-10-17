@@ -98,7 +98,7 @@ Valider la facture
     <tbody>
         <tr>
             <td style="width: 423px;"><span style="text-decoration: underline;"><strong>R&eacute;f.</strong></span><strong>:&nbsp;</strong>&nbsp; Mandat N&deg;&nbsp; {{$compromis->numero_mandat}}&nbsp; du : {{ Carbon\Carbon::parse($compromis->date_mandat)->format('d/m/Y')}}</td>
-            <td style="width: 260px;">Affaire suivie par : {{$mandataire->nom}} {{$mandataire->nom}}</td>
+            <td style="width: 260px;">Affaire suivie par : {{$mandataire->nom}} {{$mandataire->prenom}}</td>
         </tr>
     </tbody>
 </table>
