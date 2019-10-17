@@ -47,6 +47,21 @@
                                                 <label class="col-lg-6 col-form-label" for="est_starter">Démarrage en tant que Starter ?</label>
                                                 <input type="checkbox" {{$check}} data-toggle="toggle" id="est_starter" name="est_starter" data-off="Non" data-on="Oui" data-onstyle="success" data-offstyle="danger">
                                             </div>
+                                            <div class="form-group row">
+                                                    <label class="col-lg-6 col-form-label" for="a_parrain">Le mandataire a t'il un parrain ?</label>
+                                                    <input type="checkbox" unchecked data-toggle="toggle" id="a_parrain" name="a_parrain" data-off="Non" data-on="Oui" data-onstyle="success" data-offstyle="danger">
+                                                </div>
+    
+                                                <div class="form-group row" id="parrain-id">
+                                                    <label class="col-lg-4 col-form-label" for="parrain_id">Choisir le parrain</label>
+                                                    <div class="col-lg-8">
+                                                        <select class="selectpicker col-lg-6" id="parrain_id" name="parrain_id" data-live-search="true" data-style="btn-warning btn-rounded">
+                                                            @foreach ($parrains as $parrain )
+                                                            <option value="{{ $parrain->id }}" data-tokens="{{ $parrain->nom }} {{ $parrain->prenom }}">{{ $parrain->nom }} {{ $parrain->prenom }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                </div>
                                            
 
                                         </div>
@@ -423,7 +438,28 @@
     </div>
 </div>
 @stop @section('js-content') 
+{{-- ###### Parrainage --}}
+<script>
+    
+    $('#parrain-id').hide();
+    $('#parrainage_div').hide();
 
+    $('#a_parrain').change(function(e) {
+        e.preventDefault();
+        if($("#a_parrain").prop('checked')){
+            $('#parrain-id').slideDown();
+            $('#parrainage_div').slideDown();
+        }else{
+            $('#parrain-id').slideUp();
+            $('#parrainage_div').slideUp();
+            
+        }
+        
+
+    });
+</script>
+    {{-- ###### Fin parrain --}}
+    
 {{-- ##### Pack Starter  --}}
 
 <script>

@@ -61,8 +61,10 @@ class ContratController extends Controller
     {
         //
         $parrains = User::where([['role','mandataire'], ['id','<>', Crypt::decrypt($user_id)]])->get();
+        $modele = Contrat::where('est_modele',true)->first();
+
         $packs_pub = Packpub::all();
-        return view ('contrat.add', compact(['parrains','user_id','packs_pub']));
+        return view ('contrat.add', compact(['parrains','user_id','packs_pub','modele']));
     }
 
 
@@ -82,9 +84,9 @@ class ContratController extends Controller
 
         $user_id =$user_id;
         if($modele == null){
-            return view ('contrat.add', compact(['parrains','user_id','packs_pub']));
+            return view ('contrat.add', compact(['parrains','user_id','packs_pub','modele']));
         }else{
-            return view ('contrat.model_add', compact(['packs_pub','modele','palier_starter','palier_expert','user_id']));
+            return view ('contrat.model_add', compact(['packs_pub','modele','palier_starter','palier_expert','user_id','parrains']));
         }
     }
 
