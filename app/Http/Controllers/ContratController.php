@@ -65,8 +65,31 @@ class ContratController extends Controller
         return view ('contrat.add', compact(['parrains','user_id','packs_pub']));
     }
 
-        /**
-     * Show the form for creating a new resource.
+
+     /**
+     * utilisation du model de contrat.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function model_create($user_id)
+    {
+        //
+        $packs_pub = Packpub::all();
+        $modele = Contrat::where('est_modele',true)->first();
+        $palier_starter =  $modele != null ?  $this->palier_unserialize($modele->palier_starter) : null;
+        $palier_expert =  $modele != null ? $this->palier_unserialize($modele->palier_expert) : null;
+        $parrains = User::where([['role','mandataire'], ['id','<>', Crypt::decrypt($user_id)]])->get();
+
+        $user_id =$user_id;
+        if($modele == null){
+            return view ('contrat.add', compact(['parrains','user_id','packs_pub']));
+        }else{
+            return view ('contrat.model_add', compact(['packs_pub','modele','palier_starter','palier_expert','user_id']));
+        }
+    }
+
+    /**
+     * Creation du model de contrat.
      *
      * @return \Illuminate\Http\Response
      */
@@ -119,7 +142,7 @@ class ContratController extends Controller
 
             // Commission direct pack expert          
             "pourcentage_depart_expert"=>$request->pourcentage_depart_expert,
-            "duree_max_starter_expert"=>$request->duree_max_starter,
+            "duree_max_starter_expert"=>$request->duree_max_expert,
             "duree_gratuite_expert"=>$request->duree_gratuite_expert,
             "a_palier_expert"=>$request->check_palier_expert == "true" ? true : false,
             "palier_expert"=>$request->palier_expert,
@@ -232,11 +255,59 @@ class ContratController extends Controller
             "est_modele"=>true,
 
         ]);     
-   
 
+        return 1;
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function update_model_contrat(Request $request)
+    {
+      
+        $modele = Contrat::where('est_modele',true)->first();
+
+        // infos basiques
+        $modele->forfait_entree = $request->forfait_administratif + $request->forfait_carte_pro;
+        $modele->forfait_administratif = $request->forfait_administratif;
+        $modele->forfait_carte_pro = $request->forfait_carte_pro;
+        $modele->date_entree = $request->date_entree;
+        $modele->date_deb_activite = $request->date_debut;
+        $modele->ca_depart = $request->ca_depart;
+        
+        $modele->est_demarrage_starter = $request->est_starter == "true" ? true : false;
+        
+        // Commission direct pack starter          
+        $modele->pourcentage_depart_starter = $request->pourcentage_depart_starter;
+        $modele->duree_max_starter = $request->duree_max_starter;
+        $modele->duree_gratuite_starter = $request->duree_gratuite_starter;
+        $modele->a_palier_starter = $request->check_palier_starter == "true" ? true : false;
+        $modele->palier_starter = $request->palier_starter;
+
+        // Commission direct pack expert          
+        $modele->pourcentage_depart_expert = $request->pourcentage_depart_expert;
+        $modele->duree_max_starter_expert = $request->duree_max_starter;
+        $modele->duree_gratuite_expert = $request->duree_gratuite_expert;
+        $modele->a_palier_expert = $request->check_palier_expert == "true" ? true : false;
+        $modele->palier_expert = $request->palier_expert;
+        $modele->nombre_vente_min = $request->nombre_vente_min;
+        $modele->nombre_mini_filleul = $request->nombre_mini_filleul;
+        $modele->chiffre_affaire_mini = $request->chiffre_affaire;
+        $modele->a_soustraitre = $request->a_soustraitre;
+
+        $modele->prime_forfaitaire = $request->prime_max_forfait_parrain;
+        $modele->packpub_id = $request->pack_pub;  
+   
+        $modele->update();
         return 1;
                 
     }
+
+
+
 
     /**
      * Display the specified resource.

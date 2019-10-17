@@ -1,7 +1,7 @@
 @extends('layouts.app') 
 @section('content') 
 @section ('page_title') 
-   Modifer le Modèle de contrat 
+   Création du contrat avec le modèle par défaut 
 @endsection
 <div class="row">
     <div class="col-lg-12">
@@ -11,7 +11,6 @@
             <strong> {{ session('ok') }}</strong>
         </div>
         @endif
-        
         <div class="card">
             <div class="col-lg-10">
             </div>
@@ -23,7 +22,7 @@
                         <legend>Infos basiques</legend>
                         <div class="panel panel-warning">
                             <div class="panel-body">
-                                <form class="form-valide3" action="{{ route('modele_contrat.store') }}" method="post">
+                                <form class="form-valide3" action="" method="post">
                                     {{ csrf_field() }}
 
                                     <div class="row">
@@ -617,13 +616,15 @@
             var palierdata = $('#palier_starter input').serialize();
 
         data = {
+            "user_id": "{{$user_id}}",
             "forfait_administratif" : $('#forfait_administratif').val(),
             "forfait_carte_pro" : $('#forfait_carte_pro').val(),
             "date_entree" : $('#date_entree').val(),
             "date_debut" : $('#date_debut').val(),
             "ca_depart" : $('#ca_depart').val(),
             "est_starter" : $("#est_starter").prop('checked'),            
-           
+            "a_parrain" : $("#a_parrain").prop('checked') ,
+            "parrain_id" : $('#parrain_id').val(),
 
             "pourcentage_depart_starter" : $('#pourcentage_depart_starter').val(),
             "duree_max_starter" : $('#duree_max_starter').val(),
@@ -643,14 +644,14 @@
             "pack_pub" : $('#pack_pub').val(),
 
         }
-          
-        // console.log(data);
+
+
         $.ajaxSetup({
             headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
         })
             $.ajax({
                 type: "POST",
-                url: "{{route('modele_contrat.update')}}",
+                url: "{{route('contrat.add')}}",
                
                 data: data,
                 success: function(data) {
@@ -658,14 +659,14 @@
                     
                     swal(
                             'Ajouté',
-                            'Le modèle de contrat a été ajouté avec succés!',
+                            'Le  contrat a été ajouté avec succés!',
                             'success'
                         )
                         .then(function() {
                             // window.location.href = "{{route('mandataire.index')}}";
                         })
                         setInterval(() => {
-                            window.location.href = "{{route('modele_contrat.create')}}";
+                            window.location.href = "{{route('mandataire.index')}}";
                             
                         }, 5);
                 },

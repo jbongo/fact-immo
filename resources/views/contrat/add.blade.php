@@ -17,7 +17,7 @@
             <div class="card-body">
 
                 <div class="panel-body">
-                        <button class="btn btn-default btn-flat btn-addon btn-lg m-b-10 m-l-5  " id="terminer"><i class="ti-save"></i>Appliquer le Modèle par defaut</button>
+                <a class="btn btn-default btn-flat btn-addon btn-lg m-b-10 m-l-5  " href="{{route('contrat.model_create',$user_id)}}" id="terminer"><i class="ti-save"></i>Appliquer le Modèle par defaut</a>
 <br> <hr>
                     <fieldset class="col-md-12">
                         <legend>Infos basiques</legend>
@@ -677,7 +677,7 @@
                             'success'
                         )
                         .then(function() {
-                            window.location.href = "{{route('mandataire.index')}}";
+                            // window.location.href = "{{route('mandataire.index')}}";
                         })
                         setInterval(() => {
                             window.location.href = "{{route('mandataire.index')}}";
@@ -690,7 +690,7 @@
                     swal(
                         'Echec',
                         'Le contrat  n\'a pas été ajouté!',
-                        'danger'
+                        'error'
                     );
                 }
             });

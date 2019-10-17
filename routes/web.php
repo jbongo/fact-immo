@@ -53,10 +53,10 @@ Route::middleware('auth')->group(function(){
     Route::get('telecharger/pdf/factures-stylimmo/{compromis_id}','FactureController@download_pdf_facture_stylimmo')->name('facture.telecharger_pdf_facture_stylimmo'); //ok
     Route::get('envoyer/factures-stylimmo/{facture}','FactureController@envoyer_facture_stylimmo')->name('facture.envoyer_facture_stylimmo');//ok
     Route::post('encaisser/factures-stylimmo/{facture}','FactureController@encaisser_facture_stylimmo')->name('facture.encaisser_facture_stylimmo');//ok
-// factures
-     Route::get('/factures','FactureController@index')->name('facture.index');
-     Route::get('/factures/create','FactureController@create')->name('facture.create');
-     Route::get('/factures/packpub','FactureController@packpub')->name('facture.packpub');
+    // factures
+    Route::get('/factures','FactureController@index')->name('facture.index');
+    Route::get('/factures/create','FactureController@create')->name('facture.create');
+    Route::get('/factures/packpub','FactureController@packpub')->name('facture.packpub');
     //  factures honoraire
     Route::get('preparer/factures-honoraire/{compromis}','FactureController@preparer_facture_honoraire')->name('facture.preparer_facture_honoraire');//ok
     Route::post('deduire-pub/factures-honoraire/{compromis}','FactureController@deduire_pub_facture_honoraire')->name('facture.deduire_pub_facture_honoraire');//ok
@@ -64,6 +64,7 @@ Route::middleware('auth')->group(function(){
      
     // Contrat 
     Route::get('/contrat/create/{user_id}','ContratController@create')->name('contrat.create');
+    Route::get('/contrat/model/create/{user_id}','ContratController@model_create')->name('contrat.model_create');
     Route::post('/contrat/add','ContratController@store')->name('contrat.add');
 
    
@@ -75,10 +76,11 @@ Route::middleware('auth')->group(function(){
     Route::post('parametre/pack_pub/store','PackpubController@store')->name('pack_pub.store');
     Route::post('parametre/pack_pub/update/{pack_pub}','PackpubController@update')->name('pack_pub.update');
     
-    // Modèle commission
+    // Modèle contrat
     
     Route::get('parametre/modele_contrat/create','ContratController@create_model_contrat')->name('modele_contrat.create');
     Route::post('parametre/modele_contrat/store','ContratController@store_model_contrat')->name('modele_contrat.store');
+    Route::post('parametre/modele_contrat/update','ContratController@update_model_contrat')->name('modele_contrat.update');
 
 
     Route::get('/', function () {
