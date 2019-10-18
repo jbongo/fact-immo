@@ -18,6 +18,7 @@ class CreateFilleulsTable extends Migration
             $table->integer('user_id')->nullable();
             $table->integer('parrain_id')->nullable();
             $table->integer('rang')->nullable();
+            $table->double('pourcentage')->default(5);
             $table->boolean('expire')->default(false);
             $table->timestamps();
         });

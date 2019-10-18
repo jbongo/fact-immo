@@ -69,6 +69,8 @@ class CreateCompromisTable extends Migration
             
             $table->boolean('facture_stylimmo_valide')->default(false);
             $table->boolean('facture_honoraire_cree')->default(false);
+            $table->boolean('facture_honoraire_parrainage_cree')->default(false);
+            $table->boolean('facture_honoraire_partage_cree')->default(false);
             $table->boolean('cloture_affaire')->default(false);
 
             

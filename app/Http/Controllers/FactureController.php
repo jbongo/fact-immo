@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Facture;
 use App\User;
 use App\Compromis;
+use App\Filleul;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\DemandeFactureStylimmo;
@@ -218,6 +219,7 @@ public  function valider_facture_stylimmo($compromis)
             "montant_ttc"=> $compromis->frais_agence,
 
         ]);
+        // $compromis->facture_honoraire_cree = true;
 
     }else{
         $facture = Facture::where([ ['type','stylimmo'],['compromis_id',$compromis->id]])->first();
@@ -270,17 +272,7 @@ public  function valider_facture_stylimmo($compromis)
       
     }
 
-    // ###########
-    // public  function generer_pdf_facture_stylimmo()
-    // {
-        
-    //     $pdf = PDF::loadView('facture.generer_stylimmo');
-    //     $path = storage_path('app/public/factures/test.pdf');
-    //     $pdf->save($path);
-    //    return $pdf->download('facture.pdf');
-      
-    // }
-
+  
     //###### telecharger facture stylimmo
     public  function download_pdf_facture_stylimmo($compromis_id)
     {
@@ -346,10 +338,30 @@ public  function preparer_facture_honoraire($compromis)
     
     $compromis = Compromis::where('id', Crypt::decrypt($compromis))->first();
     $mandataire = $compromis->user;
-
     
-    $facture = Facture::where([ ['type','honoraire'],['compromis_id',$compromis->id]])->first();
+    if($compromis->facture_honoraire_cree == false && $compromis->user->statut !="auto-entrepeneur" ){
+        $tva = 1.2;
+        $facture = Facture::create([
+            "numero"=> null,
+            "user_id"=> $mandataire->id,
+            "compromis_id"=> $compromis->id,
+            "type"=> "honoraire",
+            "encaissee"=> false,
+            "montant_ht"=>  round ( ($compromis->frais_agence*$mandataire->commission/100 )/$tva ,2),
+            "montant_ttc"=> round( $compromis->frais_agence*$mandataire->commission/100,2),
+        ]);
+        
+        
+        $compromis->facture_honoraire_cree = true;
+        $compromis->update();
+        }else{
+            $facture = Facture::where([ ['type','honoraire'],['compromis_id',$compromis->id]])->first();
+        }
+    
+        // dd($compromis);
+    // $facture = Facture::where([ ['type','honoraire'],['compromis_id',$compromis->id]])->first();
     $factureStylimmo = Facture::where([ ['type','stylimmo'],['compromis_id',$compromis->id]])->first();
+    // dd($facture);
 
     return view ('facture.preparer_honoraire',compact(['compromis','mandataire','facture','factureStylimmo']));
     
@@ -361,14 +373,75 @@ public  function preparer_facture_honoraire_parrainage($compromis)
 {
     
     $compromis = Compromis::where('id', Crypt::decrypt($compromis))->first();
-    $mandataire = $compromis->user;
+    $filleul = $compromis->user;
+    $parrain_id =  Filleul::where('user_id',$filleul->id)->select('parrain_id')->first();
+    $pourcentage_parrain =  Filleul::where('user_id',$filleul->id)->select('pourcentage')->first();
+    $pourcentage_parrain = $pourcentage_parrain['pourcentage'];
+    $parrain = User::where('id',$parrain_id['parrain_id'])->first();
+    
 
-   
-    $facture = Facture::where([ ['type','honoraire'],['compromis_id',$compromis->id]])->first();
-    $factureStylimmo = Facture::where([ ['type','stylimmo'],['compromis_id',$compromis->id]])->first();
+    $factureHonoraire = Facture::where([ ['type','honoraire'],['compromis_id',$compromis->id]])->first();   
+    // $factureStylimmo = Facture::where([ ['type','stylimmo'],['compromis_id',$compromis->id]])->first();
+    // dd($factureHonoraire);
+    if($compromis->facture_honoraire_parrainage_cree == false ){
+        $tva = 1.2;
+        $facture = Facture::create([
+            "numero"=> null,
+            "user_id"=> $parrain_id['parrain_id'],
+            "compromis_id"=> $compromis->id,
+            "type"=> "parrainage",
+            "encaissee"=> false,
+            "montant_ht"=>  round ( ($factureHonoraire->montant_ht*$pourcentage_parrain/100 )/$tva ,2),
+            "montant_ttc"=> round( $factureHonoraire->montant_ttc*$pourcentage_parrain/100,2),
+        ]);
+        
+        
+        $compromis->facture_honoraire_parrainage_cree = true;
+        $compromis->update();
+        }else{
+            $facture = Facture::where([ ['type','parrainage'],['compromis_id',$compromis->id]])->first();
+        }
+// dd($facture);
+
+    return view ('facture.preparer_honoraire_parrainage',compact(['compromis','parrain','filleul','facture','factureHonoraire','pourcentage_parrain']));
+    
+}
 
 
-    return view ('facture.preparer_honoraire_parrainage',compact(['compromis','mandataire','facture','factureStylimmo']));
+// Préparation de la facture d'honoraire pour le partage (le mandataire qui ne porte pas l'affaire)
+public  function preparer_facture_honoraire_partage($compromis)
+{
+    
+    $compromis = Compromis::where('id', Crypt::decrypt($compromis))->first();
+    $mandataire_porteur = $compromis->user;
+    $mandataire = User::where('id',$compromis->agent_id)->first();
+    $pourcentage_partage = 100 - $compromis->pourcentage_agent;
+
+    $factureHonoraire = Facture::where([ ['type','honoraire'],['compromis_id',$compromis->id]])->first();   
+    // $factureStylimmo = Facture::where([ ['type','stylimmo'],['compromis_id',$compromis->id]])->first();
+    // dd($factureHonoraire);
+
+    if($compromis->facture_honoraire_partage_cree == false ){
+        $tva = 1.2;
+        $facture = Facture::create([
+            "numero"=> null,
+            "user_id"=> $parrain_id['parrain_id'],
+            "compromis_id"=> $mandataire->id,
+            "type"=> "partage",
+            "encaissee"=> false,
+            "montant_ht"=>  round ( ( ($compromis->frais_agence*$mandataire_porteur->commission/100 )*$pourcentage_partage/100 )/$tva ,2),
+            "montant_ttc"=> round( ($compromis->frais_agence*$mandataire_porteur->commission/100 )*$pourcentage_partage/100,2),
+        ]);   
+        
+        
+        $compromis->facture_honoraire_partage_cree = true;
+        $compromis->update();
+        }else{
+            $facture = Facture::where([ ['type','partage'],['compromis_id',$compromis->id]])->first();
+        }
+// dd($facture);
+
+    return view ('facture.preparer_honoraire_parrainage',compact(['compromis','parrain','mandataire_porteur','facture','factureHonoraire','pourcentage_partage']));
     
 }
     
@@ -381,7 +454,7 @@ public  function preparer_facture_honoraire_parrainage($compromis)
        
         $compromis = Compromis::where('id', Crypt::decrypt($compromis))->first();
         $mandataire = $compromis->user;
-        if($compromis->facture_honoraire_cree == false && $mandataire->nb_mois_pub_restant > 0 ){
+        if($compromis->facture_honoraire_cree == false && $mandataire->nb_mois_pub_restant > 0 && $compromis->user->statut !="independant"){
             $tva = 1.2;
             $facture = Facture::create([
                 "numero"=> null,

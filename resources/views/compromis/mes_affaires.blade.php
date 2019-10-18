@@ -85,13 +85,12 @@
                                   
                                     <td width="15%">
                                             <a href="{{route('compromis.show',Crypt::encrypt($compromi->id))}}" data-toggle="tooltip" title="@lang('Détails  ')"><i class="large material-icons color-info">visibility</i></a> 
-                                            @if ($compromi->cloture_affaire == 0 && $compromi->demande_facture == 2)
+                                            @if ($compromi->cloture_affaire == 0 && $compromi->demande_facture == 2 && $compromi->agent_id != auth::user()->id)
                                                 <a class="cloturer" href="{{route('compromis.cloturer',Crypt::encrypt($compromi->id))}}" data-toggle="tooltip" title="@lang('Cloturer l\'affaire  ')"><i class="large material-icons color-danger">clear</i></a> 
-                                            @elseif($compromi->cloture_affaire == 1 && $compromi->facture_honoraire_cree == 0 )
+                                            @elseif($compromi->cloture_affaire == 1  )
                                                 <a target="blank" href="{{route('facture.preparer_facture_honoraire',Crypt::encrypt($compromi->id))}}" data-toggle="tooltip" title="@lang('Note honoraire  ')"><i class="large material-icons color-danger">insert_drive_file</i></a> 
                                             @endif
                                             
-                                        
                                         @if (Auth()->user()->role == "mandataire" && $compromi->agent_id != auth::user()->id)
                                             <span><a href="{{route('compromis.show',Crypt::encrypt($compromi->id))}}" data-toggle="tooltip" title="@lang('Modifier ') "><i class="large material-icons color-warning">edit</i></a></span>
                                             <span><a  href="{{route('compromis.archive',[$compromi->id,1])}}" class="delete" data-toggle="tooltip" title="@lang('Archiver ') {{ $compromi->nom }}"><i class="large material-icons color-danger">delete</i> </a></span>

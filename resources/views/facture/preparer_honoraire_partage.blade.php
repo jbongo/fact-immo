@@ -2,7 +2,7 @@
 
 @section('content')
    @section ('page_title')
-      Note honoraire <span class="color-danger">(commission parrainage)</span>
+      Note honoraire <span class="color-danger">(commission agence / partage)</span>
    @endsection
 <div class="row"> 
        
@@ -16,11 +16,11 @@
            @endif       
           <div class="card alert">
          <div class="row">
-            {{-- @if ($filleul->statut == "auto-entrepreneur" && $compromis->facture_honoraire_cree == false)
+            @if ($mandataire->statut == "auto-entrepreneur" && $compromis->facture_honoraire_cree == false)
            <br><br>
                <div class="row">
                   <div class="col-lg-6 col-md-6 col-sm-6">
-                     <span > <strong> Jetons restant : </strong></span>&nbsp;&nbsp;  <span class="color-warning"> <strong> {{$filleul->nb_mois_pub_restant}}</strong></span> <br>
+                     <span > <strong> Jetons restant : </strong></span>&nbsp;&nbsp;  <span class="color-warning"> <strong> {{$mandataire->nb_mois_pub_restant}}</strong></span> <br>
                      <span > <strong> Année concernée : </strong></span> &nbsp;&nbsp; <span class="color-warning"> <strong> {{date('Y')}}</strong></span> <br>
                   </div>
                   <div class="col-lg-6 col-md-6 col-sm-6"></div>
@@ -37,7 +37,7 @@
                                     <div class="form-group row">
                                         <label class="col-lg-6 col-md-6 col-sm-6 control-label" for="nb_mois_deduire">Nombre de jetons à utiliser<span class="text-danger">*</span> </label>
                                         <div class="col-lg-3 col-md-3 col-sm-3">
-                                        <input type="number" max="{{$filleul->nb_mois_pub_restant}}" min="0" class="form-control {{ $errors->has('nb_mois_deduire') ? ' is-invalid' : '' }}" value="{{old('nb_mois_deduire')}}" id="nb_mois_deduire" name="nb_mois_deduire" required >
+                                        <input type="number" max="{{$mandataire->nb_mois_pub_restant}}" min="0" class="form-control {{ $errors->has('nb_mois_deduire') ? ' is-invalid' : '' }}" value="{{old('nb_mois_deduire')}}" id="nb_mois_deduire" name="nb_mois_deduire" required >
                                            @if ($errors->has('nb_mois_deduire'))
                                            <br>
                                            <div class="alert alert-warning ">
@@ -60,7 +60,7 @@
                   <div class="col-lg-4 col-md-4 col-sm-4"></div>
                </div>
 
-            @endif --}}
+            @endif
 
          </div>
                <hr>
@@ -89,12 +89,8 @@
             <td style="width: 260px;height:35px"></td>
         </tr>
         <tr>
-            <td style="width: 423px;"><span style="text-decoration: underline;"><strong>Filleul:</strong></span> &nbsp;  <span class="color-warning"> {{$filleul->nom}} {{$filleul->prenom}}&nbsp; </span></td>
-            <td style="width: 260px; height:35px"></td>
-        </tr>
-        <tr>
-            <td style="width: 423px;"><span style="text-decoration: underline;"><strong>Honoraire Filleul:</strong></span> &nbsp;  <span class="color-warning"> {{$factureHonoraire->montant_ttc}} €&nbsp; </span></td>
-            <td style="width: 260px; height:35px"></td>
+            <td style="width: 423px;"><span style="text-decoration: underline;"><strong>Mandataire avec qui je partage:</strong> </span> &nbsp; {{$factureStylimmo->numero}}&nbsp;</td>
+            <td style="width: 260px;height:35px"></td>
         </tr>
     </tbody>
 </table>
@@ -103,12 +99,35 @@
     <tbody>
          <tr>
             <td style="width: 48px;">&nbsp;</td>
-            <td style="width: 428px;"><span style="text-decoration: underline;"><strong>Commission de parrainage:</strong></span>&nbsp;&nbsp;&nbsp;&nbsp; <span style="color:mediumblue"> {{$pourcentage_parrain}} %</td>
+            <td style="width: 428px;"><span style="text-decoration: underline;"><strong>Commission:</strong></span>&nbsp;&nbsp;&nbsp;&nbsp; <span style="color:mediumblue"> {{$mandataire->commission}} %</td>
             <td style="width: 391px; height:35px"></td>
          </tr>
-        
-        
-        
+        <tr>
+            <td style="width: 48px;">&nbsp;</td>
+            <td style="width: 428px;"><span style="text-decoration: underline;"><strong>Vendeur:</strong></span> &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:mediumblue">
+                {{$compromis->civilite_vendeur}}
+                @if ($compromis->civilite_vendeur == "M." || $compromis->civilite_vendeur == "Mme")
+                    {{$compromis->nom_vendeur}} {{$compromis->prenom_vendeur}}
+                @else 
+                   {{$compromis->raison_sociale_vendeur}}                      
+                @endif
+                
+            </td>
+            <td style="width: 391px; height:35px"></td>
+        </tr>
+        <tr>
+            <td style="width: 48px;">&nbsp;</td>
+            <td style="width: 228px;"><span style="text-decoration: underline;"><strong>Acquereur:</strong></span> &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:mediumblue"> 
+                {{$compromis->civilite_acquereur}}
+                @if ($compromis->civilite_acquereur == "M." || $compromis->civilite_acquereur == "Mme")
+                    {{$compromis->nom_acquereur}} {{$compromis->prenom_acquereur}}                  
+                @else 
+                    {{$compromis->raison_sociale_acquereur}}                            
+                @endif
+                
+            </td>
+            <td style="width: 391px; height:35px"></td>
+        </tr>
         <tr>
             <td style="width: 48px;">&nbsp;</td>
             <td style="width: 228px;"><span style="text-decoration: underline;"><strong>Description du bien:</strong></span> &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:mediumblue"> 
@@ -116,7 +135,6 @@
             </td>
             <td style="width: 391px; height:35px"></td>
         </tr>
-        
     </tbody>
 </table>
 
@@ -138,10 +156,24 @@
         </tr>
         <tr><td>&nbsp;</td> <td>&nbsp;</td> </tr>
 
+        @php
+         $montant_pub_deduis =  0;   
+        @endphp
+
+        @if ($facture->nb_mois_deduis > 0)
+       @php $montant_pub_deduis = $facture->nb_mois_deduis * $mandataire->contrat->packpub->tarif @endphp
+        <tr>
+            <td style="width: 400px;">&nbsp;</td>
+            <td style="width: 153px;">Jetons déduis :</td>
+            <td style="width: 231px;">- {{$montant_pub_deduis}} &euro;</td>
+        </tr>
+        @endif
+       
+        <tr><td>&nbsp;</td> <td>&nbsp;</td> </tr>
         <tr>
             <td style="width: 400px;">&nbsp;</td>
             <td style="width: 153px;">TOTAL T.T.C:</td>
-            <td style="width: 231px;">{{$facture->montant_ttc}} &euro;</td>
+            <td style="width: 231px;">{{$facture->montant_ttc - $montant_pub_deduis}} &euro;</td>
         </tr>
     </tbody>
 </table>
@@ -151,7 +183,7 @@
     <tbody>
         <tr style="height: 25px;">
             <td style="width: 349px; height: 25px;">Valeur en votre aimable r&egrave;glement de :</td>
-            <td style="width: 117px; height: 25px;">{{round($facture->montant_ttc,2)}} &euro; TTC</td>
+            <td style="width: 117px; height: 25px;">{{round($facture->montant_ttc - $montant_pub_deduis ,2)}} &euro; TTC</td>
             <td style="width: 177px; height: 25px;"></td>
         </tr>
     </tbody>
@@ -165,7 +197,7 @@
 
 <hr>
 <div style="text-align: center; font-size: 11px; margin-right: 25%; margin-left: 25%; margin-top: 20px;">
-    <p><strong>{{$filleul->nom}} {{$filleul->prenom}}</strong> &nbsp; - &nbsp;<strong> SIRET : {{$filleul->siret}} </strong> &nbsp; &nbsp; <strong>{{$filleul->adresse}} {{$filleul->code_postal}} {{$filleul->ville}}</strong>
+    <p><strong>{{$mandataire->nom}} {{$mandataire->prenom}}</strong> &nbsp; - &nbsp;<strong> SIRET : {{$mandataire->siret}} </strong> &nbsp; &nbsp; <strong>{{$mandataire->adresse}} {{$mandataire->code_postal}} {{$mandataire->ville}}</strong>
     </p>
 </div>
 
