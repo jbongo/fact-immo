@@ -205,6 +205,7 @@
                         <a class="btn btn-default btn-flat btn-addon btn-lg m-b-10 m-l-5 " href="{{route('contrat.create',$mandataire_id)}}" ><i class="ti-plus"></i>Ajouter contrat</a> <hr>
                             
                             @else 
+                            <a href="{{route('contrat.edit',Crypt::encrypt($mandataire->contrat->id) )}}"  class="btn btn-warning btn-rounded btn-addon btn-xs m-b-10"><i class="ti-pencil"></i>Modifier</a>
                             
                             <div class="card">
                                 <div class="col-lg-10">

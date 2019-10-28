@@ -68,6 +68,8 @@ Route::middleware('auth')->group(function(){
     Route::get('/contrat/create/{user_id}','ContratController@create')->name('contrat.create');
     Route::get('/contrat/model/create/{user_id}','ContratController@model_create')->name('contrat.model_create');
     Route::post('/contrat/add','ContratController@store')->name('contrat.add');
+    Route::get('/contrat/edit/{contrat_id}','ContratController@edit')->name('contrat.edit');
+    Route::post('/contrat/update/{contrat_id}','ContratController@update')->name('contrat.update');
 
    
     // ##### PARAMETRE #######

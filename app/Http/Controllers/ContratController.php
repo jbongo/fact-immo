@@ -67,6 +67,74 @@ class ContratController extends Controller
         return view ('contrat.add', compact(['parrains','user_id','packs_pub','modele']));
     }
 
+    /**
+     * Creation du model de contrat.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($contrat_id)
+    {
+        //
+        $contrat = Contrat::where('id',Crypt::decrypt($contrat_id))->first() ;         
+        $packs_pub = Packpub::all();
+        $parrains = User::where([['role','mandataire'], ['id','<>', $contrat->user->id]])->get();
+
+        
+        $palier_starter =  $contrat != null ?  $this->palier_unserialize($contrat->palier_starter) : null;
+        $palier_expert =  $contrat != null ? $this->palier_unserialize($contrat->palier_expert) : null;
+
+        return view ('contrat.edit', compact(['packs_pub','parrains','contrat','palier_starter','palier_expert']));
+  
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $contrat_id)
+    {
+        $contrat = Contrat::where('id',Crypt::decrypt($contrat_id))->first() ;               
+
+        // infos basiques
+        $contrat->forfait_entree = $request->forfait_administratif + $request->forfait_carte_pro;
+        $contrat->forfait_administratif = $request->forfait_administratif;
+        $contrat->forfait_carte_pro = $request->forfait_carte_pro;
+        $contrat->date_entree = $request->date_entree;
+        $contrat->date_deb_activite = $request->date_debut;
+        $contrat->ca_depart = $request->ca_depart;
+        
+        $contrat->est_demarrage_starter = $request->est_starter == "true" ? true : false;
+        
+        // Commission direct pack starter          
+        $contrat->pourcentage_depart_starter = $request->pourcentage_depart_starter;
+        $contrat->duree_max_starter = $request->duree_max_starter;
+        $contrat->duree_gratuite_starter = $request->duree_gratuite_starter;
+        $contrat->a_palier_starter = $request->check_palier_starter == "true" ? true : false;
+        $contrat->palier_starter = $request->palier_starter;
+
+        // Commission direct pack expert          
+        $contrat->pourcentage_depart_expert = $request->pourcentage_depart_expert;
+        $contrat->duree_max_starter_expert = $request->duree_max_starter;
+        $contrat->duree_gratuite_expert = $request->duree_gratuite_expert;
+        $contrat->a_palier_expert = $request->check_palier_expert == "true" ? true : false;
+        $contrat->palier_expert = $request->palier_expert;
+        $contrat->nombre_vente_min = $request->nombre_vente_min;
+        $contrat->nombre_mini_filleul = $request->nombre_mini_filleul;
+        $contrat->chiffre_affaire_mini = $request->chiffre_affaire;
+        $contrat->a_soustraitre = $request->a_soustraitre;
+
+        $contrat->prime_forfaitaire = $request->prime_max_forfait_parrain;
+        $contrat->packpub_id = $request->pack_pub;  
+   
+        $contrat->update();
+        return 1;
+                
+    }
+
+
+
 
      /**
      * utilisation du model de contrat.
@@ -322,28 +390,6 @@ class ContratController extends Controller
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
 
     /**
      * Remove the specified resource from storage.

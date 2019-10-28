@@ -9,9 +9,9 @@ class Contrat extends Model
     //
     protected $guarded =[];
 
-    public function  mandataire(){
+    public function  user(){
 
-        return $this->belongsTo(Mandataire::class);
+        return $this->belongsTo(User::class);
     }
     public function packpub()
     {
