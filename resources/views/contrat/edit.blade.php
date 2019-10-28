@@ -56,19 +56,21 @@
                                                 <input type="checkbox" {{$check_p}} data-toggle="toggle" id="a_parrain" name="a_parrain" data-off="Non" data-on="Oui" data-onstyle="success" data-offstyle="danger">
                                             </div>
                                      
-                                            @if ($contrat->a_parrain == true)
+                                            
                                                 <div class="form-group row" id="parrain-id">
                                                 <label class="col-lg-4 col-form-label" for="parrain_id">Choisir le parrain</label>
                                                     <div class="col-lg-8">
                                                         <select class="selectpicker col-lg-6" id="parrain_id" name="parrain_id" data-live-search="true" data-style="btn-warning btn-rounded">
+                                                            @if ($contrat->a_parrain == true)
                                                             <option value="{{ $parrain->id }}" data-tokens="{{ $parrain->nom }} {{ $parrain->prenom }}">{{ $parrain->nom }} {{ $parrain->prenom }}</option>
+                                                            @endif
                                                             @foreach ($parrains as $parrain )
                                                             <option value="{{ $parrain->id }}" data-tokens="{{ $parrain->nom }} {{ $parrain->prenom }}">{{ $parrain->nom }} {{ $parrain->prenom }}</option>
                                                             @endforeach
                                                         </select>
                                                     </div>
                                                 </div>
-                                            @endif
+                                       
                                             
                                            
 
@@ -448,8 +450,11 @@
 @stop @section('js-content') 
 {{-- ###### Parrainage --}}
 <script>
-    
-    // $('#parrain-id').hide();
+
+    if ("{{$contrat->a_parrain}}" == false){
+         $('#parrain-id').hide();
+         
+    }
     $('#parrainage_div').hide();
 
     $('#a_parrain').change(function(e) {
@@ -659,12 +664,15 @@
             var palierdata = $('#palier_starter input').serialize();
 
         data = {
+            
             "forfait_administratif" : $('#forfait_administratif').val(),
             "forfait_carte_pro" : $('#forfait_carte_pro').val(),
             "date_entree" : $('#date_entree').val(),
             "date_debut" : $('#date_debut').val(),
             "ca_depart" : $('#ca_depart').val(),
-            "est_starter" : $("#est_starter").prop('checked'),            
+            "est_starter" : $("#est_starter").prop('checked'),   
+            "a_parrain" : $("#a_parrain").prop('checked') ,
+            "parrain_id" : $('#parrain_id').val(),         
            
 
             "pourcentage_depart_starter" : $('#pourcentage_depart_starter').val(),

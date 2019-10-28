@@ -109,6 +109,7 @@ class ContratController extends Controller
         
         $contrat->est_demarrage_starter = $request->est_starter == "true" ? true : false;
         
+        
         // Commission direct pack starter          
         $contrat->pourcentage_depart_starter = $request->pourcentage_depart_starter;
         $contrat->duree_max_starter = $request->duree_max_starter;
@@ -130,7 +131,45 @@ class ContratController extends Controller
         $contrat->prime_forfaitaire = $request->prime_max_forfait_parrain;
         $contrat->packpub_id = $request->pack_pub;  
    
+
+        // Modif du parrain
+
+        if($request->a_parrain == "true" &&  $contrat->a_parrain == false ){
+           
+            $nb_filleul = Filleul::where([ ['parrain_id',$request->parrain_id]])->count();
+    
+            if($nb_filleul > 0){
+                $rang_filleuls = Filleul::where([['parrain_id',$request->parrain_id] ])->select('rang')->get()->toArray();
+                $rangs = array();
+
+                foreach ($rang_filleuls as $rang_fill) {
+                    $rangs[] = $rang_fill["rang"];
+                }
+
+                $rang = max($rangs)+1;
+            }else{
+                $rang = 1;
+            }
+                
+            Filleul::create([
+                "user_id" => $contrat->user->id,
+                "parrain_id" =>  $request->parrain_id,
+                "rang"=> $rang,
+                "expire" => false
+            ]);
+
+        } elseif($request->a_parrain == "true" &&  $contrat->a_parrain == true ){
+            $filleul = Filleul::where('user_id',$contrat->user->id)->first();
+
+            $filleul->parrain_id = $request->parrain_id;
+            $filleul->update();
+        }
+
+        $contrat->a_parrain = $request->a_parrain == "true" ? true : false;
+        $contrat->parrain_id = $request->a_parrain== "true" ? $request->parrain_id : null;
+        // dd("nooo");
         $contrat->update();
+
         return 1;
                 
     }
