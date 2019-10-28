@@ -78,12 +78,14 @@ class ContratController extends Controller
         $contrat = Contrat::where('id',Crypt::decrypt($contrat_id))->first() ;         
         $packs_pub = Packpub::all();
         $parrains = User::where([['role','mandataire'], ['id','<>', $contrat->user->id]])->get();
-
+        $parrain_id =   Filleul::where('user_id',$contrat->user->id)->select('parrain_id')->first();
+        $parrain = User::where('id',$parrain_id['parrain_id'])->first();
+        
         
         $palier_starter =  $contrat != null ?  $this->palier_unserialize($contrat->palier_starter) : null;
         $palier_expert =  $contrat != null ? $this->palier_unserialize($contrat->palier_expert) : null;
 
-        return view ('contrat.edit', compact(['packs_pub','parrains','contrat','palier_starter','palier_expert']));
+        return view ('contrat.edit', compact(['packs_pub','parrain','parrains','contrat','palier_starter','palier_expert']));
   
     }
 

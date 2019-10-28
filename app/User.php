@@ -43,6 +43,11 @@ class User extends Authenticatable
         return $this->hasOne('App\Contrat');
     }
 
+    public function  filleul(){
+
+        return $this->hasOne('App\Filleul');
+    }
+
 
 
 

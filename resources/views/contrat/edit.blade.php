@@ -48,21 +48,28 @@
                                                 <label class="col-lg-6 col-form-label" for="est_starter">Démarrage en tant que Starter ?</label>
                                                 <input type="checkbox" {{$check}} data-toggle="toggle" id="est_starter" name="est_starter" data-off="Non" data-on="Oui" data-onstyle="success" data-offstyle="danger">
                                             </div>
-                                            
+                                            @php
+                                               $check_p =  ($contrat->a_parrain == true) ? "checked" : "unchecked";
+                                            @endphp
                                             <div class="form-group row">
                                                 <label class="col-lg-6 col-form-label" for="a_parrain">Le mandataire a t'il un parrain ?</label>
-                                                <input type="checkbox" unchecked data-toggle="toggle" id="a_parrain" name="a_parrain" data-off="Non" data-on="Oui" data-onstyle="success" data-offstyle="danger">
+                                                <input type="checkbox" {{$check_p}} data-toggle="toggle" id="a_parrain" name="a_parrain" data-off="Non" data-on="Oui" data-onstyle="success" data-offstyle="danger">
                                             </div>
-                                            <div class="form-group row" id="parrain-id">
+                                     
+                                            @if ($contrat->a_parrain == true)
+                                                <div class="form-group row" id="parrain-id">
                                                 <label class="col-lg-4 col-form-label" for="parrain_id">Choisir le parrain</label>
-                                                <div class="col-lg-8">
-                                                    <select class="selectpicker col-lg-6" id="parrain_id" name="parrain_id" data-live-search="true" data-style="btn-warning btn-rounded">
-                                                        @foreach ($parrains as $parrain )
-                                                        <option value="{{ $parrain->id }}" data-tokens="{{ $parrain->nom }} {{ $parrain->prenom }}">{{ $parrain->nom }} {{ $parrain->prenom }}</option>
-                                                        @endforeach
-                                                    </select>
+                                                    <div class="col-lg-8">
+                                                        <select class="selectpicker col-lg-6" id="parrain_id" name="parrain_id" data-live-search="true" data-style="btn-warning btn-rounded">
+                                                            <option value="{{ $parrain->id }}" data-tokens="{{ $parrain->nom }} {{ $parrain->prenom }}">{{ $parrain->nom }} {{ $parrain->prenom }}</option>
+                                                            @foreach ($parrains as $parrain )
+                                                            <option value="{{ $parrain->id }}" data-tokens="{{ $parrain->nom }} {{ $parrain->prenom }}">{{ $parrain->nom }} {{ $parrain->prenom }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
                                                 </div>
-                                            </div>
+                                            @endif
+                                            
                                            
 
                                         </div>
@@ -153,7 +160,7 @@
                                                 <div class="panel-heading"><strong>Paliers Starter</strong></div>
                                                 <div class="panel-body">
                                                     <div class="input_fields_wrap_starter">
-                                                        <button class="btn btn-warning add_field_button_starter" style="margin-left: 53px;">Ajouter un niveau</button>
+                                                        <a class="btn btn-warning add_field_button_starter" style="margin-left: 53px;">Ajouter un niveau</a>
                                                         <div class="form-inline field1">
                                                                 <div class="form-group">
                                                                     <label for="level_starter1">Niveau: </label>
@@ -274,7 +281,7 @@
                                                 <div class="panel-heading"><strong>Paliers Expert</strong></div>
                                                 <div class="panel-body">
                                                     <div class="input_fields_wrap_expert">
-                                                        <button class="btn btn-warning add_field_button_expert" style="margin-left: 53px;">Ajouter un niveau</button>
+                                                        <a class="btn btn-warning add_field_button_expert" style="margin-left: 53px;">Ajouter un niveau</a>
                                                         <div class="form-inline field1">
                                                             <div class="form-group">
                                                                 <label for="level_expert1">Niveau: </label>
@@ -442,7 +449,7 @@
 {{-- ###### Parrainage --}}
 <script>
     
-    $('#parrain-id').hide();
+    // $('#parrain-id').hide();
     $('#parrainage_div').hide();
 
     $('#a_parrain').change(function(e) {

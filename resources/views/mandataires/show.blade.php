@@ -241,7 +241,7 @@
                                                                     <div class="form-group row" id="parrain-id">
                                                                         <label class="col-lg-4 col-form-label" for="parrain_id">Parrain</label>
                                                                         <div class="col-lg-8">
-                                                                        <label class="color-primary">{{$mandataire->contrat->parrain_id}}</label>  
+                                                                        <label class="color-primary">{{$parrain->nom}} {{$parrain->prenom}}</label>  
                                                                             {{--**********************  --}}
                                                                     </div>
                                                                 </div>
@@ -256,14 +256,14 @@
                                                                 <div class="form-group row">
                                                                     <label class="col-lg-4 col-form-label" for="date_entree">Date d'entrée<span class="text-danger">*</span></label>
                                                                     <div class="col-lg-4">
-                                                                    <label class="color-primary">{{$mandataire->contrat->date_entree}}</label>
+                                                                    <label class="color-primary">{{$mandataire->contrat->date_entree->format('d-m-Y')}}</label>
 
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-group row">
                                                                     <label class="col-lg-4 col-form-label" for="date_debut">Date de début d'activité<span class="text-danger">*</span></label>
                                                                     <div class="col-lg-4">
-                                                                    <label class="color-primary">{{$mandataire->contrat->date_deb_activite}}</label>
+                                                                    <label class="color-primary">{{$mandataire->contrat->date_deb_activite->format('d-m-Y')}}</label>
 
                                                                     </div>
                                                                 </div>
