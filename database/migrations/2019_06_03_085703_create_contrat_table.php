@@ -23,6 +23,7 @@ class CreateContratTable extends Migration
             $table->date('date_entree')->nullable();
             $table->date('date_deb_activite')->nullable();
             $table->double('ca_depart')->default(0);
+            $table->double('ca_depart_sty')->default(0);
             $table->boolean('est_demarrage_starter')->default(false);
             $table->boolean('a_parrain')->default(false);
             $table->integer('parrain_id')->nullable();

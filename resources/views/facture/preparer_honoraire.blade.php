@@ -2,7 +2,8 @@
 
 @section('content')
    @section ('page_title')
-      Note honoraire <span class="color-danger">(commission agence)</span>
+      Note honoraire <span class="color-danger">(commission agence)</span> 
+      <span >| {{$mandataire->nom}} {{$mandataire->prenom}}</span>
    @endsection
 <div class="row"> 
        
@@ -102,6 +103,11 @@
             <td style="width: 428px;"><span style="text-decoration: underline;"><strong>Commission:</strong></span>&nbsp;&nbsp;&nbsp;&nbsp; <span style="color:mediumblue"> {{$mandataire->commission}} %</td>
             <td style="width: 391px; height:35px"></td>
          </tr>
+         <tr>
+            <td style="width: 48px;">&nbsp;</td>
+            <td style="width: 428px;"><span style="text-decoration: underline;"><strong>Frais agence:</strong></span>&nbsp;&nbsp;&nbsp;&nbsp; <span style="color:mediumblue"> {{$compromis->frais_agence}} €</td>
+            <td style="width: 391px; height:35px"></td>
+        </tr>
         <tr>
             <td style="width: 48px;">&nbsp;</td>
             <td style="width: 428px;"><span style="text-decoration: underline;"><strong>Vendeur:</strong></span> &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:mediumblue">
@@ -143,10 +149,19 @@
 @if($facture != null )
 <table style="height: 47px; width: 672px;">
     <tbody>
+   
+        @foreach ($formule[0] as $key=>$formu)
         <tr>
             <td style="width: 400px;">&nbsp;</td>
-            <td style="width: 153px;">TOTAL H.T :</td>
-            <td style="width: 231px;">{{$facture->montant_ht}} &euro;</td>
+            <td style="width: 153px; color:rebeccapurple">{{$key+1}} &nbsp; :</td>
+            <td style="width: 231px;">{{$formu[0]}} &euro; * {{$formu[1]/100}}</td>
+        </tr>
+        @endforeach
+        
+        <tr>
+            <td style="width: 400px;">&nbsp; </td>
+            <td style="width: 153px;"><hr style="border-top: 1px solid red;">TOTAL H.T :</td>
+            <td style="width: 231px;"><hr style="border-top: 1px solid red;">{{$facture->montant_ht}} &euro;</td>
         </tr>
         <tr><td>&nbsp;</td> <td>&nbsp;</td> </tr>
         <tr>

@@ -24,6 +24,7 @@ class CreateFactureTable extends Migration
             $table->double('montant_ttc')->nullable();
             $table->integer('nb_mois_deduis')->nullable();
             $table->string('url')->nullable();
+            $table->text('formule')->nullable();
             $table->timestamps();
         });
     }

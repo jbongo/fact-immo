@@ -2,7 +2,7 @@
 
 @section('content')
    @section ('page_title')
-      Note honoraire <span class="color-danger">(commission agence / partage)</span>
+      Note honoraire <span class="color-danger">(commission agence / partage)</span> | {{$mandataire->nom}} {{$mandataire->prenom}}
    @endsection
 <div class="row"> 
        
@@ -16,7 +16,7 @@
            @endif       
           <div class="card alert">
          <div class="row">
-            @if ($mandataire->statut == "auto-entrepreneur" && $compromis->facture_honoraire_cree == false)
+            @if ($mandataire->statut == "auto-entrepreneur" && $compromis->facture_honoraire_partage_cree == false)
            <br><br>
                <div class="row">
                   <div class="col-lg-6 col-md-6 col-sm-6">
@@ -89,7 +89,15 @@
             <td style="width: 260px;height:35px"></td>
         </tr>
         <tr>
-            <td style="width: 423px;"><span style="text-decoration: underline;"><strong>Mandataire avec qui je partage:</strong> </span> &nbsp; {{$factureStylimmo->numero}}&nbsp;</td>
+            <td style="width: 423px;"><span style="text-decoration: underline;"><strong>Mandataire avec qui je partage:</strong> </span> &nbsp; {{$mandataire_partage->nom}} {{$mandataire_partage->prenom}}&nbsp;</td>
+            <td style="width: 260px;height:35px"></td>
+        </tr>
+        <tr>
+            <td style="width: 423px;"><span style="text-decoration: underline;"><strong>Frais d'agence:</strong> </span> &nbsp; {{ number_format($compromis->frais_agence, 2, '.', ' ') }} € &nbsp;</td>
+            <td style="width: 260px;height:35px"></td>
+        </tr>
+        <tr>
+            <td style="width: 423px;"><span style="text-decoration: underline;"><strong>Mon pourcentage de partage:</strong> </span> &nbsp; {{$pourcentage_partage}} %&nbsp; soit ({{ number_format($compromis->frais_agence * $pourcentage_partage /100, 2, '.', ' ')  }} €) </td>
             <td style="width: 260px;height:35px"></td>
         </tr>
     </tbody>
@@ -143,16 +151,24 @@
 @if($facture != null )
 <table style="height: 47px; width: 672px;">
     <tbody>
+        @foreach ($formule[0] as $key=>$formu)
         <tr>
             <td style="width: 400px;">&nbsp;</td>
-            <td style="width: 153px;">TOTAL H.T :</td>
-            <td style="width: 231px;">{{$facture->montant_ht}} &euro;</td>
+            <td style="width: 153px; color:rebeccapurple">{{$key+1}} &nbsp; :</td>
+            <td style="width: 231px;">{{ number_format($formu[0], 2, '.', ' ') }} &euro; * {{$formu[1]/100}}</td>
+        </tr>
+        @endforeach
+        
+        <tr>
+            <td style="width: 400px;">&nbsp; </td>
+            <td style="width: 153px;"><hr style="border-top: 1px solid red;">TOTAL H.T :</td>
+            <td style="width: 231px;"><hr style="border-top: 1px solid red;">{{ number_format($facture->montant_ht, 2, '.', ' ') }} &euro;</td>
         </tr>
         <tr><td>&nbsp;</td> <td>&nbsp;</td> </tr>
         <tr>
             <td style="width: 400px;">&nbsp;</td>
             <td style="width: 153px;">T.V.A 20% :</td>
-            <td style="width: 231px;">{{$facture->montant_ttc - $facture->montant_ht}} &euro;</td>
+            <td style="width: 231px;">{{ number_format($facture->montant_ttc - $facture->montant_ht, 2, '.', ' ') }} &euro;</td>
         </tr>
         <tr><td>&nbsp;</td> <td>&nbsp;</td> </tr>
 
@@ -165,7 +181,7 @@
         <tr>
             <td style="width: 400px;">&nbsp;</td>
             <td style="width: 153px;">Jetons déduis :</td>
-            <td style="width: 231px;">- {{$montant_pub_deduis}} &euro;</td>
+            <td style="width: 231px;">- {{ number_format($montant_pub_deduis, 2, '.', ' ') }} &euro;</td>
         </tr>
         @endif
        
@@ -173,7 +189,7 @@
         <tr>
             <td style="width: 400px;">&nbsp;</td>
             <td style="width: 153px;">TOTAL T.T.C:</td>
-            <td style="width: 231px;">{{$facture->montant_ttc - $montant_pub_deduis}} &euro;</td>
+            <td style="width: 231px;">{{ number_format($facture->montant_ttc - $montant_pub_deduis, 2, '.', ' ') }} &euro;</td>
         </tr>
     </tbody>
 </table>
@@ -183,7 +199,7 @@
     <tbody>
         <tr style="height: 25px;">
             <td style="width: 349px; height: 25px;">Valeur en votre aimable r&egrave;glement de :</td>
-            <td style="width: 117px; height: 25px;">{{round($facture->montant_ttc - $montant_pub_deduis ,2)}} &euro; TTC</td>
+            <td style="width: 117px; height: 25px;">{{  number_format($facture->montant_ttc - $montant_pub_deduis, 2, '.', ' ')  }} &euro; TTC</td>
             <td style="width: 177px; height: 25px;"></td>
         </tr>
     </tbody>
@@ -206,4 +222,11 @@
           </div>
       </div>
 </div>
+@endsection
+@section('js-content')
+    <script>
+    // $('.price')    nb = 1580000;
+    // alert(nb.toLocaleString());
+
+    </script>
 @endsection

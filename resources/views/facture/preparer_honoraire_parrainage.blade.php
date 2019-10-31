@@ -3,6 +3,7 @@
 @section('content')
    @section ('page_title')
       Note honoraire <span class="color-danger">(commission parrainage)</span>
+<span >| {{$parrain->nom}} {{$parrain->prenom}}</span>
    @endsection
 <div class="row"> 
        
@@ -93,7 +94,7 @@
             <td style="width: 260px; height:35px"></td>
         </tr>
         <tr>
-            <td style="width: 423px;"><span style="text-decoration: underline;"><strong>Honoraire Filleul:</strong></span> &nbsp;  <span class="color-warning"> {{$factureHonoraire->montant_ttc}} €&nbsp; </span></td>
+            <td style="width: 423px;"><span style="text-decoration: underline;"><strong>Commission agence:</strong></span> &nbsp;  <span class="color-warning"> {{$compromis->frais_agence}} €&nbsp; </span></td>
             <td style="width: 260px; height:35px"></td>
         </tr>
     </tbody>

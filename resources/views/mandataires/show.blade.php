@@ -336,7 +336,7 @@
                                                                     <div class="panel-heading"></div>
                                                                     <div class="panel-body">
                                                                         <div class="input_fields_wrap_starter">
-                                                                            
+                                                                        <span>Niveau starter actuel : {{$niveau_starter}}</span>
                                                                             <div class="card alert">
                                                                                     <div class="card-header">
                                                                                         <h4><strong>Paliers Starter</strong> </h4>
@@ -355,7 +355,10 @@
                                                                                                 </thead>
                                                                                                 <tbody>
                                                                                                 @foreach ($palier_starter as $pal)
-                                                                                                    <tr>
+                                                                                               
+                                                                                                    
+                                                                                                
+                                                                                                    <tr  @if ($pal[0] == $niveau_starter) style="background-color:linen" @endif>
                                                                                                         <th class="color-primary" scope="row">{{$pal[0]}}</th>
                                                                                                         <td>{{$pal[1]}}</td>
                                                                                                         <td>{{$pal[2]}}</td>
@@ -431,7 +434,7 @@
                                                                     <div class="panel-heading"></div>
                                                                     <div class="panel-body">
                                                                         <div class="input_fields_wrap_expert">
-                                                                            
+                                                                        <span>Niveau expert actuel : {{$niveau_expert}}</span>                                                                            
                                                                             <div class="card alert">
                                                                                     <div class="card-header">
                                                                                         <h4><strong>Paliers Expert</strong> </h4>
@@ -450,7 +453,7 @@
                                                                                                 </thead>
                                                                                                 <tbody>
                                                                                                 @foreach ($palier_expert as $pal)
-                                                                                                    <tr>
+                                                                                                    <tr @if ($pal[0] == $niveau_expert) style="background-color:linen" @endif>
                                                                                                         <th class="color-primary" scope="row">{{$pal[0]}}</th>
                                                                                                         <td>{{$pal[1]}}</td>
                                                                                                         <td>{{$pal[2]}}</td>

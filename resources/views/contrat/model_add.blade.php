@@ -84,10 +84,18 @@
                                             <div class="form-group row">
                                                 <label class="col-lg-4 col-form-label" for="ca_depart">Chiffre d'affaire de depart<span class="text-danger">*</span></label>
                                                 <div class="col-lg-4">
-                                                    <input type="number" min="0" class="form-control" value="{{$modele->ca_depart}}" id="ca_depart" name="ca_depart" required>
+                                                    <input type="number" min="0" class="form-control" value="0" id="ca_depart" name="ca_depart" required>
                                                 </div>
                                             </div>
                                             
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-6">
+                                            <div class="form-group row">
+                                                <label class="col-lg-4 col-form-label" for="ca_depart_sty">Chiffre d'affaire rapporté à stylimmo<span class="text-danger">*</span></label>
+                                                <div class="col-lg-4">
+                                                    <input type="number" min="0" class="form-control" value="0" id="ca_depart_sty" name="ca_depart_sty" required>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                             </div>
@@ -658,6 +666,7 @@
             "date_entree" : $('#date_entree').val(),
             "date_debut" : $('#date_debut').val(),
             "ca_depart" : $('#ca_depart').val(),
+            "ca_depart_sty" : $('#ca_depart_sty').val(),
             "est_starter" : $("#est_starter").prop('checked'),            
             "a_parrain" : $("#a_parrain").prop('checked') ,
             "parrain_id" : $('#parrain_id').val(),

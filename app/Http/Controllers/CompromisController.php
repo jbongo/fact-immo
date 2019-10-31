@@ -37,7 +37,6 @@ class CompromisController extends Controller
             $compromisParrain = Compromis::whereIn('user_id',$fill_ids )->get();
 
             // dd($compromisParrain);
-
         }
         //  dd($compromis);
         return view ('compromis.index',compact('compromis','compromisParrain'));

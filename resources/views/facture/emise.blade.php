@@ -20,10 +20,10 @@
                                         <th>@lang('Montant TTC ')</th>
                                         {{-- <th>@lang('Date Facture')</th> --}}
                                         <th>@lang('Date règlement en banque')</th>
-                                        @if(auth()->user()->role == "admin")
+                                        {{-- @if(auth()->user()->role == "admin") --}}
                                         <th>@lang('Alerte payement')</th>
                                         <th>@lang('Encaissement')</th>
-                                        @endif
+                                        {{-- @endif --}}
                                         <th>@lang('Télécharger')</th>
 
                                     </tr>

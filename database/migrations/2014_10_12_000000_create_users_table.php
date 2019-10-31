@@ -34,6 +34,7 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->nullable();
             $table->double('chiffre_affaire')->default(0);
+            $table->double('chiffre_affaire_sty')->default(0);
             $table->double('commission')->nullable();
             $table->enum('pack_actuel',['starter','expert'])->nullable();
             $table->integer('nb_mois_pub_restant')->default(12);

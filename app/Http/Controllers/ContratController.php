@@ -106,6 +106,7 @@ class ContratController extends Controller
         $contrat->date_entree = $request->date_entree;
         $contrat->date_deb_activite = $request->date_debut;
         $contrat->ca_depart = $request->ca_depart;
+        $contrat->ca_depart_sty = $request->ca_depart_sty;
         
         $contrat->est_demarrage_starter = $request->est_starter == "true" ? true : false;
         
@@ -239,6 +240,7 @@ class ContratController extends Controller
             "date_entree"=>$request->date_entree,
             "date_deb_activite"=>$request->date_debut,
             "ca_depart"=>$request->ca_depart,
+            "ca_depart_sty"=>$request->ca_depart_sty,
 
             "est_demarrage_starter"=>  $request->est_starter == "true" ? true : false,
             "a_parrain"=>$request->a_parrain == "true" ? true : false,
@@ -279,6 +281,7 @@ class ContratController extends Controller
 
         $mandataire->password = Hash::make($password) ;
         $mandataire->chiffre_affaire = $request->ca_depart;
+        $mandataire->chiffre_affaire_sty = $request->ca_depart_sty;
         $mandataire->commission = $request->est_starter == "true" ? $request->pourcentage_depart_starter : $request->pourcentage_depart_expert ;
         $mandataire->pack_actuel = $request->est_starter == "true" ? "starter" : "expert" ;
         $mandataire->update();
