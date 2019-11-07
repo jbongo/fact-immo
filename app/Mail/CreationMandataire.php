@@ -32,6 +32,6 @@ class CreationMandataire extends Mailable
      */
     public function build()
     {
-        return $this->markdown('email.creation_mandataire');
+        return $this->subject("Outil de facturation - Vos informations de connexion")->markdown('email.creation_mandataire');
     }
 }

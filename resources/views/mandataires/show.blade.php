@@ -122,7 +122,7 @@
                                             </div>
                                             <div class="media-body media-text-right">
                                                 <h4>{{$mandataire->chiffre_affaire}}€</h4>
-                                                <h5>Chiffre d'affaire</h5>
+                                                <h5>Chiffre d'affaires</h5>
                                             </div>
                                         </div>
                                     </div>
@@ -270,7 +270,7 @@
                                                             </div>
                                                             <div class="col-lg-6 col-md-6 col-sm-6">
                                                                 <div class="form-group row">
-                                                                    <label class="col-lg-4 col-form-label" for="ca_depart">Chiffre d'affaire de depart<span class="text-danger">*</span></label>
+                                                                    <label class="col-lg-4 col-form-label" for="ca_depart">Chiffre d'affaires de depart<span class="text-danger">*</span></label>
                                                                     <div class="col-lg-4">
                                                                         <label class="color-primary">{{$mandataire->contrat->ca_depart}}</label>                                                                        
                                                                     </div>
@@ -285,7 +285,7 @@
                     
                                     <div class="panel-body">
                                         <fieldset class="col-md-12">
-                                            <legend>Commision direct</legend>
+                                            <legend>Commission directe</legend>
                                             <div class="panel panel-warning">
                                                 <div class="panel-body">
                     
@@ -349,8 +349,8 @@
                                                                                                     <tr>
                                                                                                         <th>Niveau</th>
                                                                                                         <th>Pourcentage en +</th>
-                                                                                                        <th>chiffre affaire min</th>
-                                                                                                        <th>chiffre affaire max</th>
+                                                                                                        <th>chiffre affaires min</th>
+                                                                                                        <th>chiffre affaires max</th>
                                                                                                     </tr>
                                                                                                 </thead>
                                                                                                 <tbody>
@@ -447,8 +447,8 @@
                                                                                                     <tr>
                                                                                                         <th>Niveau</th>
                                                                                                         <th>Pourcentage en +</th>
-                                                                                                        <th>chiffre affaire min</th>
-                                                                                                        <th>chiffre affaire max</th>
+                                                                                                        <th>chiffre affaires min</th>
+                                                                                                        <th>chiffre affaires max</th>
                                                                                                     </tr>
                                                                                                 </thead>
                                                                                                 <tbody>
@@ -508,7 +508,7 @@
                                                                             </div>
                                                                             <div class="col-lg-6-col-md-6 col-sm-6">
                                                                                 <div class="form-group row">
-                                                                                    <label class="col-lg-6 col-md-6 col-sm-6 col-form-label" for="chiffre_affaire">Chiffre d'affaire(€) </label>
+                                                                                    <label class="col-lg-6 col-md-6 col-sm-6 col-form-label" for="chiffre_affaire">Chiffre d'affaires (€) </label>
                                                                                     <div class="col-lg-4 col-md-4 col-sm-4 ">
                                                                                         <label class="color-primary">{{$mandataire->contrat->chiffre_affaire}} €</label>
                                                                                     </div>

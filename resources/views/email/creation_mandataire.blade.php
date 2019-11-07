@@ -1,7 +1,7 @@
 @component('mail::message')
-# Bonjour {{$mandataire->nom}} {{$mandataire->nom}}
+# Bonjour {{$mandataire->prenom}} {{$mandataire->nom}}
 
-Félicitation vous pourrez maintenant vous connecter sur l'outil de facturation. <br>
+Félicitation vous pouvez maintenant vous connecter sur l'outil de facturation : <a href="{{config('app.url')}}">Cliquez ici</a> pour vous connecter<br>
 Login {{$mandataire->email}} <br>
 Mot de passe : {{$password}}
 
@@ -11,5 +11,7 @@ Se connecter
 @endcomponent
 
 Bien cordialement,<br>
-{{ config('app.name') }}
+L'Équipe STYL'IMMO.
+<img src="{{asset('images/logo.jpg')}}" width="130px" height="65px" alt="logo">
+
 @endcomponent

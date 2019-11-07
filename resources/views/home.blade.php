@@ -7,53 +7,53 @@
 
 
 <div class="row">
-    <div class="col-lg-3">
+    <div class="col-lg-3 col-md-6 col-sm-6">
         <div class="card">
             <div class="stat-widget-five">
                 <div class="stat-icon">
                     <i class="ti-home bg-primary"></i>
                 </div>
                 <div class="stat-content">
-                    <div class="stat-heading color-primary">Affaires </div>
+                    <div class="color-primary">Affaires </div>
                     <div class="stat-text">27</div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="col-lg-3">
+    <div class="col-lg-3 col-md-6 col-sm-6">
         <div class="card">
             <div class="stat-widget-five">
                 <div class="stat-icon">
                     <i class="ti-money bg-success"></i>
                 </div>
                 <div class="stat-content">
-                    <div class="stat-heading color-success">Chiffre d'affaire</div>
+                    <div class=" color-success">Chiffre d'affaires</div>
                     <div class="stat-text">5000</div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="col-lg-3">
+    <div class="col-lg-3 col-md-6 col-sm-6">
         <div class="card">
             <div class="stat-widget-five">
                 <div class="stat-icon">
                     <i class="ti-user bg-warning"></i>
                 </div>
                 <div class="stat-content">
-                    <div class="stat-heading color-primary">Mandataire</div>
+                    <div class=" color-primary">Mandataire</div>
                     <div class="stat-text">200</div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="col-lg-3">
+    <div class="col-lg-3 col-md-6 col-sm-6">
         <div class="card">
             <div class="stat-widget-five">
                 <div class="stat-icon bg-danger">
                     <i class="ti-sharethis"></i>
                 </div>
                 <div class="stat-content">
-                    <div class="stat-heading color-primary">Partage</div>
+                    <div class="color-primary">Partage</div>
                     <div class="stat-text">6</div>
                 </div>
             </div>
@@ -133,7 +133,7 @@
                         <div class="col-lg-12">
                             <div class="card">
                                 <div class="card-body">
-                                    <h4 class="card-title">Chiffre d'affaire mensuel 2019</h4>
+                                    <h4 class="card-title">Chiffre d'affaires mensuel 2019</h4>
                                     <div id="morris-bar-chart"></div>
                                 </div>
                             </div>
@@ -220,7 +220,7 @@ $(function() {
     ],
         xkey: 'y',
         ykeys: ['a' ],
-        labels: ['Chiffre Affaire', ],
+        labels: ['Chiffre Affaires', ],
         barColors: ['#55ce63', '#8b67c9', '#009efb'],
         hideHover: 'auto',
         gridLineColor: '#eef0f2',

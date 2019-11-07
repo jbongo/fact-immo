@@ -19,4 +19,7 @@ class Facture extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function avoir(){
+        return $this->hasOne(Avoir::class);
+    }
 }

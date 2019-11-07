@@ -30,10 +30,10 @@ Ajout d'un mandataire
                             <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="statut">Statut <span class="text-danger">*</span></label>
                             <div class="col-lg-8 col-md-8 col-sm-8">
                                <select class="js-select2 form-control {{$errors->has('statut') ? 'is-invalid' : ''}}" id="statut" name="statut" style="width: 100%;" data-placeholder="Choose one.." required>
-                                  <option ></option>
-                                  <option value="independant">Indépendant</option>
-                                  <option value="auto-entrepreneur">Auto Entrepreneur</option>
-                                  <option value="portage-salarial">Portage Salarial</option>
+                                  <option value="{{old('statut')}}">{{old('statut')}}</option>
+                                  <option value="independant">indépendant</option>
+                                  <option value="auto-entrepreneur">auto Entrepreneur</option>
+                                  <option value="portage-salarial">portage Salarial</option>
                                </select>
                                @if ($errors->has('statut'))
                                <br>
@@ -48,7 +48,7 @@ Ajout d'un mandataire
                             <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="civilite">@lang('Civilité') <span class="text-danger">*</span></label>
                             <div class="col-lg-8 col-md-8 col-sm-8">
                                <select class="js-select2 form-control {{$errors->has('civilite') ? 'is-invalid' : ''}}" id="civilite" name="civilite" style="width: 100%;" data-placeholder="Choose one.." required>
-                                  <option ></option>
+                                  <option value="{{old('civilite')}}">{{old('civilite')}}</option>
                                   <option value="M.">M.</option>
                                   <option value="Mme.">Mme.</option>
                                </select>
@@ -113,7 +113,7 @@ Ajout d'un mandataire
                            </div>
                         </div>
                          <div class="form-group row">
-                              <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="siret">Numero siret <span class="text-danger">*</span></label>
+                              <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="siret">Numéro SIRET <span class="text-danger">*</span></label>
                               <div class="col-lg-8 col-md-8 col-sm-8">
                                  <input type="text" class="form-control {{ $errors->has('siret') ? ' is-invalid' : '' }}" value="{{old('siret')}}" id="siret" name="siret" placeholder="Ex: 2561452136582" required >
                                  @if ($errors->has('siret'))
@@ -238,6 +238,38 @@ Ajout d'un mandataire
 
 @stop
 @section('js-content') 
+
+<script>
+ $('#nom').keyup(function(){
+        $(this).val($(this).val().toUpperCase());
+ });
+ $('#ville').keyup(function(){
+        $(this).val($(this).val().toUpperCase());
+ });
+
+ $('#prenom').on('focusout',function(){
+      //   $(this).val( $(this).val().chartAt(0).toUpperCase());
+      var prenom = $(this).val(); 
+      tab  = prenom.split(" ");
+      var prenoms = "";
+      tab.forEach(element => {
+
+         first = ""+element.substring(0,1);
+         first=first.toUpperCase();
+
+         second = element.substring(1,);
+
+         prenoms+= first+second+" ";
+      });
+      $(this).val(prenoms);
+      // console.log(tab);
+      
+ });
+
+</script>
+
+
+
 <script>
    function autocomplete(inp, arr) {
      /*the autocomplete function takes two arguments,

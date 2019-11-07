@@ -18,11 +18,11 @@
 
                     @endif
                     <li class=""><a href="{{route('compromis.index')}}" ><i class="ti-pencil-alt"></i> Affaires </a></li>
-                    <li><a  class="sidebar-sub-toggle"><i class="ti-pencil-alt"></i> Factures <span class="sidebar-collapse-icon ti-angle-down"></span></a>
+                    <li><a  class="sidebar-sub-toggle"><i class="ti-pencil-alt"></i> Factures @if(auth()->user()->demande_facture > 0) <span class="badge badge-danger">{{auth()->user()->demande_facture}}</span> @endif<span class="sidebar-collapse-icon ti-angle-down"></span></a>
                         <ul>
                             <li><a href="{{route('facture.index')}}">Gestion</a></li>
                             @if (Auth()->user()->role == "admin")
-                            <li><a  href="{{route('facture.demande_stylimmo')}}" > Demandes de facture @if(auth()->user()->demande_facture > 0) <span class="badge badge-danger">{{auth()->user()->demande_facture}}</span>@endif </a></li>
+                            <li  @if(auth()->user()->demande_facture > 0) style="background-color:#FFEEEB" @endif><a  href="{{route('facture.demande_stylimmo')}}" > Demandes de facture  </a></li>
                             @endif
                             <li><a href="#">Avoir</a></li>
                         </ul>

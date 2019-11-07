@@ -25,6 +25,7 @@ class CreateFactureTable extends Migration
             $table->integer('nb_mois_deduis')->nullable();
             $table->string('url')->nullable();
             $table->text('formule')->nullable();
+            $table->boolean('a_avoir')->default(false);
             $table->timestamps();
         });
     }

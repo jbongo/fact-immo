@@ -123,7 +123,7 @@
 })
 
         swalWithBootstrapButtons({
-            title: '@lang('Vraiment cloturer cette affaire  ?')',
+            title: 'Confirmez-vous la clôture de cette affaire (Mandat '+that.attr("data-mandat")+' )  ?',
             type: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#DD6B55',

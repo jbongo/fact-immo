@@ -17,6 +17,7 @@
                                         <th>@lang('Mandataire')</th>
                                         @endif
                                         <th>@lang('Type Facture')</th>
+                                        <th>@lang('Montant HT ')</th>
                                         <th>@lang('Montant TTC ')</th>
                                         {{-- <th>@lang('Date Facture')</th> --}}
                                         <th>@lang('Date règlement en banque')</th>
@@ -25,6 +26,7 @@
                                         <th>@lang('Encaissement')</th>
                                         {{-- @endif --}}
                                         <th>@lang('Télécharger')</th>
+                                        <th>@lang('Avoir')</th>
 
                                     </tr>
                                 </thead>
@@ -47,7 +49,10 @@
                                             <label class="color-info">{{$facture->type}} </label> 
                                         </td>
                                         <td  width="" >
-                                        {{$facture->montant_ttc}}
+                                        {{number_format($facture->montant_ht,'2','.',' ')}}
+                                        </td>
+                                        <td  width="" >
+                                        {{number_format($facture->montant_ttc,'2','.',' ')}}
                                         </td>
                                         {{-- <td  width="" class="color-info">
                                                 {{$facture->created_at->format('d/m/Y')}}
@@ -100,7 +105,14 @@
                                         <td width="" >
                                             <a href="{{route('facture.telecharger_pdf_facture_stylimmo', Crypt::encrypt($facture->compromis->id))}}"  class="btn btn-warning btn-flat btn-addon  m-b-10 m-l-5 " id="ajouter"><i class="ti-download"></i>Télécharger</a>
                                         </td> 
-                                       
+                                       {{-- Avoir --}}
+                                        <td width="" >
+                                            @if($facture->a_avoir == 0)
+                                                <a href="{{route('facture.avoir.create', Crypt::encrypt($facture->id))}}"  class="btn btn-info btn-flat btn-xs m-b-10 m-l-5 " id=""><i class="ti-link"></i>créer</a>
+                                            @else
+                                                <a href="{{route('facture.avoir.show', Crypt::encrypt($facture->id))}}"  class="btn btn-danger btn-flat btn-xs m-b-10 m-l-5 " id=""><i class="ti-file"></i>Voir facture</a>
+                                            @endif
+                                        </td>
                                     </tr> 
                                
                             @endforeach

@@ -118,8 +118,6 @@ class MandataireController extends Controller
         $palier_starter = ($mandataire->contrat == null) ? null : $mandataire->contrat->palier_starter ;
         $palier_expert =  ($mandataire->contrat == null) ? null : $mandataire->contrat->palier_expert ;
         
-        $palier_starter = $this->palier_unserialize($palier_starter);
-        $palier_expert = $this->palier_unserialize($palier_expert);
 
         // statistiques
 
@@ -131,27 +129,35 @@ class MandataireController extends Controller
         $parrain = User::where('id',$parrain_id['parrain_id'])->first();
 
         $niveau_starter = 1;
-        $nb_niveau_starter = sizeof($palier_starter) -1 ;
-        foreach ($palier_starter as $palier) {
+        if($palier_starter != null){
+
+            $palier_starter = $this->palier_unserialize($palier_starter);
+            $nb_niveau_starter = sizeof($palier_starter) -1 ;
+            foreach ($palier_starter as $palier) {
            
-            if($mandataire->chiffre_affaire >= $palier[2] && $mandataire->chiffre_affaire <= $palier[3] ){
-                $niveau_starter = $palier[0];
-            }elseif($mandataire->chiffre_affaire > $palier_starter[ $nb_niveau_starter ][3]){
-                $niveau_starter = $palier_starter[ $nb_niveau_starter ][0];
+                if($mandataire->chiffre_affaire >= $palier[2] && $mandataire->chiffre_affaire <= $palier[3] ){
+                    $niveau_starter = $palier[0];
+                }elseif($mandataire->chiffre_affaire > $palier_starter[ $nb_niveau_starter ][3]){
+                    $niveau_starter = $palier_starter[ $nb_niveau_starter ][0];
+                }
             }
         }
+     
 
         $niveau_expert = 1;
-        $nb_niveau_expert = sizeof($palier_expert) -1 ;
-        foreach ($palier_expert as $palier) {
-           
-            if($mandataire->chiffre_affaire >= $palier[2] && $mandataire->chiffre_affaire <= $palier[3] ){
-                $niveau_expert = $palier[0];
-            }elseif($mandataire->chiffre_affaire > $palier_expert[ $nb_niveau_expert ][3]){
-                $niveau_expert = $palier_expert[ $nb_niveau_expert ][0];
+        if($palier_expert != null){
+
+            $palier_expert = $this->palier_unserialize($palier_expert);
+            $nb_niveau_expert = sizeof($palier_expert) -1 ;
+            foreach ($palier_expert as $palier) {
+            
+                if($mandataire->chiffre_affaire >= $palier[2] && $mandataire->chiffre_affaire <= $palier[3] ){
+                    $niveau_expert = $palier[0];
+                }elseif($mandataire->chiffre_affaire > $palier_expert[ $nb_niveau_expert ][3]){
+                    $niveau_expert = $palier_expert[ $nb_niveau_expert ][0];
+                }
             }
         }
-        
         return view('mandataires.show', compact(['mandataire','palier_starter','palier_expert','nb_affaire','nb_filleul','filleuls','parrain','niveau_starter','niveau_expert']));
     }
 

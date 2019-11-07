@@ -22,7 +22,7 @@
                                     <th>@lang('Numéro Mandat')</th>
                                     <th>@lang('Description bien')</th>
                                     <th>@lang('Net Vendeur')</th>
-                                    <th>@lang('Date vente')</th>
+                                    <th>@lang('Date Mandat')</th>
                                     <th>@lang('Partage avec Agent/Agence')</th>
                                     <th>@lang('Facture Styl')</th>
 
@@ -53,14 +53,14 @@
                                         <strong> {{$compromi->numero_mandat}}</strong> 
                                     </td>     
                                     <td width="15%" style="{{$grise}}" >
-                                        <strong>{{$compromi->description_bien}}</strong> 
+                                        <strong>{{ substr($compromi->description_bien,0,40)}}...</strong> 
                                     </td>
                                     
                                     <td  style="{{$grise}}">
-                                        {{$compromi->net_vendeur}}   
+                                        {{number_format($compromi->net_vendeur,'2','.',' ')}}   
                                     </td>
                                     <td  style="{{$grise}}">
-                                    {{$compromi->date_mandat}}   
+                                    {{$compromi->date_mandat->format('d/m/Y')}}   
                                     </td>
                                     <td width="10%">
 
@@ -86,7 +86,7 @@
                                     <td width="15%">
                                             <a href="{{route('compromis.show',Crypt::encrypt($compromi->id))}}" data-toggle="tooltip" title="@lang('Détails  ')"><i class="large material-icons color-info">visibility</i></a> 
                                             @if ($compromi->cloture_affaire == 0 && $compromi->demande_facture == 2 && $compromi->agent_id != auth::user()->id)
-                                                <a class="cloturer" href="{{route('compromis.cloturer',Crypt::encrypt($compromi->id))}}" data-toggle="tooltip" title="@lang('Cloturer l\'affaire  ')"><i class="large material-icons color-danger">clear</i></a> 
+                                    <a class="cloturer" href="{{route('compromis.cloturer',Crypt::encrypt($compromi->id))}}" data-toggle="tooltip" data-mandat="{{$compromi->numero_mandat}}" title="@lang('Cloturer l\'affaire  ')"><i class="large material-icons color-danger">clear</i></a> 
                                             @elseif($compromi->cloture_affaire == 1  )
                                                 @if ($compromi->je_porte_affaire == 0  || $compromi->agent_id == auth::user()->id || ($compromi->je_porte_affaire == 1 && $compromi->est_partage_agent == 1) )
                                                 <a target="blank" href="{{route('facture.preparer_facture_honoraire_partage',Crypt::encrypt($compromi->id))}}" data-toggle="tooltip" title="@lang('Note honoraire  ')"><i class="large material-icons color-danger">insert_drive_file</i></a> 

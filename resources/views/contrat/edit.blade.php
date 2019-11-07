@@ -36,7 +36,7 @@
                                                 </div>
                                             </div>
                                             <div class="form-group row">
-                                                <label class="col-lg-4 col-form-label" for="forfait_carte_pro">Forfait carte pro (€)<span class="text-danger">*</span></label>
+                                                <label class="col-lg-4 col-form-label" for="forfait_carte_pro">Attestation de collaborateur (€)<span class="text-danger">*</span></label>
                                                 <div class="col-lg-4">
                                                     <input type="number" class="form-control" min="1" value="{{$contrat->forfait_carte_pro}}" id="forfait_carte_pro" name="forfait_carte_pro" required>
                                                 </div>
@@ -92,7 +92,7 @@
                                         </div>
                                         <div class="col-lg-6 col-md-6 col-sm-6">
                                             <div class="form-group row">
-                                                <label class="col-lg-4 col-form-label" for="ca_depart">Chiffre d'affaire de depart<span class="text-danger">*</span></label>
+                                                <label class="col-lg-4 col-form-label" for="ca_depart">Chiffre d'affaires de depart<span class="text-danger">*</span></label>
                                                 <div class="col-lg-4">
                                                     <input type="number" min="0" class="form-control" value="{{$contrat->ca_depart}}" id="ca_depart" name="ca_depart" required>
                                                 </div>
@@ -101,7 +101,7 @@
                                         </div>
                                         <div class="col-lg-6 col-md-6 col-sm-6">
                                             <div class="form-group row">
-                                                <label class="col-lg-4 col-form-label" for="ca_depart_sty">Chiffre d'affaire rapporté à stylimmo<span class="text-danger">*</span></label>
+                                                <label class="col-lg-4 col-form-label" for="ca_depart_sty">Chiffre d'affaires rapporté à stylimmo<span class="text-danger">*</span></label>
                                                 <div class="col-lg-4">
                                                     <input type="number" min="0" class="form-control" value="{{$contrat->ca_depart_sty}}" id="ca_depart_sty" name="ca_depart_sty" required>
                                                 </div>
@@ -115,7 +115,7 @@
 
                 <div class="panel-body">
                     <fieldset class="col-md-12">
-                        <legend>Commision direct</legend>
+                        <legend>Commission directe</legend>
                         <div class="panel panel-warning">
                             <div class="panel-body">
 
@@ -386,7 +386,7 @@
                                                         </div>
                                                         <div class="col-lg-6-col-md-6 col-sm-6">
                                                             <div class="form-group row">
-                                                                <label class="col-lg-6 col-md-6 col-sm-6 col-form-label" for="chiffre_affaire">Chiffre d'affaire(€) </label>
+                                                                <label class="col-lg-6 col-md-6 col-sm-6 col-form-label" for="chiffre_affaire">Chiffre d'affaires(€) </label>
                                                                 <div class="col-lg-4 col-md-4 col-sm-4 ">
                                                                     <input class="form-control" type="number" min="0" value="{{$contrat->chiffre_affaire_mini}}" id="chiffre_affaire" name="chiffre_affaire" required>
                                                                 </div>

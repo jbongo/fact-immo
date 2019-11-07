@@ -32,7 +32,7 @@
                                         <th>@lang('Adresse')</th>
                                         <th>@lang('Ville')</th>
                                         <th>@lang('Commission')</th>
-                                        <th>@lang('Chiffre d\'affaire')</th>
+                                        <th>@lang('Chiffre d\'affaires')</th>
                                         <th>@lang('Action')</th>
                                     </tr>
                                 </thead>

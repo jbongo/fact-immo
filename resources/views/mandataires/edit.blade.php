@@ -14,8 +14,12 @@ Modifier mandataire {{$mandataire->nom}}
       <div class="card">
          <div class="col-lg-12">
             <a href="{{route('mandataire.index')}}" class="btn btn-default btn-flat btn-addon m-b-10 m-l-5"><i class="ti-angle-double-left"></i>@lang('Liste des mandataires')</a>
+            
+            @if($mandataire->contrat != null) 
             <a href="{{route('contrat.edit',Crypt::encrypt($mandataire->contrat->id) )}}"  class="btn btn-warning btn-flat btn-addon m-b-10 m-l-5"><i class="ti-pencil"></i>Modifier le contrat</a>
-
+            @else
+            <a href="{{route('contrat.create',Crypt::encrypt($mandataire->id) )}}"  class="btn btn-warning btn-flat btn-addon m-b-10 m-l-5"><i class="ti-pencil"></i>Ajouter un contrat</a>
+            @endif
          </div>
          <div class="card-body">
             <div class="form-validation">

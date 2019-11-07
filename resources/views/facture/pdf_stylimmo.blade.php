@@ -5,19 +5,19 @@
                 <td style="width: 437px;">
                     @if ($compromis->charge == "Vendeur")
                         @if ($compromis->civilite_vendeur == "M." || $compromis->civilite_vendeur == "Mme")
-                            <p>{{$compromis->nom_vendeur}} {{$compromis->prenom_vendeur}}</p>
+                            <p>{{$compromis->civilite_vendeur}} {{$compromis->nom_vendeur}} {{$compromis->prenom_vendeur}}</p>
                         @else 
-                            <p>{{$compromis->raison_sociale_vendeur}} </p>                        
+                            <p>{{$compromis->civilite_vendeur}} {{$compromis->raison_sociale_vendeur}} </p>                        
                         @endif
-                            <p><strong>{{$compromis->code_postal_vendeur}} {{$compromis->ville_vendeur}}</strong></p>
+                            <p><strong>{{$compromis->adresse1_vendeur}},{{$compromis->code_postal_vendeur}}, {{$compromis->ville_vendeur}}</strong></p>
                     @else 
 
                         @if ($compromis->civilite_acquereur == "M." || $compromis->civilite_acquereur == "Mme")
-                            <p>{{$compromis->nom_acquereur}} {{$compromis->prenom_acquereur}}</p>                
+                            <p> {{$compromis->civilite_acquereur}} {{$compromis->nom_acquereur}} {{$compromis->prenom_acquereur}}</p>                
                         @else 
-                            <p>{{$compromis->raison_sociale_acquereur}} </p>                        
+                            <p> {{$compromis->civilite_acquereur}} {{$compromis->raison_sociale_acquereur}} </p>                        
                         @endif
-                        <p><strong>{{$compromis->code_postal_acquereur}} {{$compromis->ville_acquereur}}</strong></p>
+                        <p><strong>{{$compromis->adresse1_acquereur}}, {{$compromis->code_postal_acquereur}}, {{$compromis->ville_acquereur}}</strong></p>
                     @endif
                 </td>
             </tr>
@@ -35,7 +35,7 @@
         <tbody>
             <tr>
                 <td style="width: 443px;"><span style="color: #ff0000;">Merci d'indiquer le num&eacute;ro de facture en r&eacute;f&eacute;rence du virement.</span></td>
-                <td style="width: 344px;"><span style="text-decoration: underline;"><strong>FACTURE N&deg; {{$facture->numero}}</strong></span></td>
+                <td style="width: 344px;"><span style="text-decoration: underline;font-size:20px"><strong>FACTURE N&deg; {{$facture->numero}}</strong></span></td>
             </tr>
         </tbody>
     </table>
@@ -68,13 +68,13 @@
         <tbody>
             <tr>
                 <td style="width: 48px;">&nbsp;</td>
-                <td style="width: 428px;"><span style="text-decoration: underline;"><strong>Vendeur:</strong></span></td>
-                <td style="width: 391px;">{{$compromis->nom_vendeur}} {{$compromis->prenom_vendeur}}</td>
+                <td style="width: 428px;"><span style="text-decoration: underline;"><strong>Vendeur: </span>&nbsp; {{$compromis->civilite_vendeur}}@if($compromis->civilite_vendeur =="M." || $compromis->civilite_vendeur =="Mme") {{$compromis->nom_vendeur}} {{$compromis->prenom_vendeur}} @else  {{$compromis->raison_sociale_vendeur}} @endif</strong></td>
+                <td style="width: 391px;">&nbsp;</td>
             </tr>
             <tr>
                 <td style="width: 48px;">&nbsp;</td>
-                <td style="width: 228px;"><span style="text-decoration: underline;"><strong>Acquereur:</strong></span></td>
-                <td style="width: 391px;">{{$compromis->nom_acquereur}} {{$compromis->prenom_acquereur}}</td>
+                <td style="width: 228px;"><span style="text-decoration: underline;"><strong>Acquereur:</span>&nbsp; {{$compromis->civilite_acquereur}} @if($compromis->civilite_acquereur =="M." || $compromis->civilite_acquereur =="Mme")  {{$compromis->nom_acquereur}} {{$compromis->prenom_acquereur}} @else  {{$compromis->raison_sociale_acquereur}} @endif</strong></td>
+                <td style="width: 391px;">&nbsp;</td>
             </tr>
         </tbody>
     </table>
@@ -88,7 +88,7 @@
             </tr>
             <tr style="">
                 <td style="width: 48px;">&nbsp;</td>
-                <td style="width: 428px; ">{{$compromis->description_bien}} &agrave; {{$compromis->ville_bien}}</td>
+                <td style="width: 428px; ">{{substr($compromis->description_bien, 0,200)}}... &agrave; {{$compromis->ville_bien}}</td>
                 <td style="width: 391px;"></td>
     
             </tr>
@@ -100,17 +100,17 @@
             <tr>
                 <td style="width: 400px;">&nbsp;</td>
                 <td style="width: 153px;">TOTAL H.T :</td>
-                <td style="width: 231px;">{{round($compromis->frais_agence - $compromis->frais_agence*0.2,2)}} &euro;</td>
+                <td style="width: 231px;">{{number_format($compromis->frais_agence - $compromis->frais_agence*0.2,2,'.',' ')}} &euro;</td>
             </tr>
             <tr>
                 <td style="width: 400px;">&nbsp;</td>
                 <td style="width: 153px;">T.V.A 20% :</td>
-                <td style="width: 231px;">{{round($compromis->frais_agence * 0.2,2)}} &euro;</td>
+                <td style="width: 231px;">{{number_format($compromis->frais_agence * 0.2,2,'.',' ')}} &euro;</td>
             </tr>
             <tr>
                 <td style="width: 400px;">&nbsp;</td>
                 <td style="width: 153px;">TOTAL T.T.C:</td>
-                <td style="width: 231px;">{{round($compromis->frais_agence,2)}} &euro;</td>
+                <td style="width: 231px;">{{number_format($compromis->frais_agence,2,'.',' ')}} &euro;</td>
             </tr>
         </tbody>
     </table>
@@ -120,8 +120,8 @@
         <tbody>
             <tr style="height: 25px;">
                 <td style="width: 349px; height: 25px;">Valeur en votre aimable r&egrave;glement de :</td>
-                <td style="width: 117px; height: 25px;">{{round($compromis->frais_agence,2)}} &euro; TTC</td>
-                <td style="width: 177px; height: 25px;"><span style="color: #ff0000;">&nbsp;R&eacute;f &agrave; rappeler: {{$facture->numero}}</span></td>
+                <td style="width: 117px; height: 25px;">{{number_format($compromis->frais_agence,2,'.',' ')}} &euro; TTC</td>
+                <td style="width: 177px; height: 25px;"><span style="color: #ff0000; font-size:20px">&nbsp;R&eacute;f &agrave; rappeler: {{$facture->numero}}</span></td>
             </tr>
         </tbody>
     
@@ -148,7 +148,7 @@
     <table class="table table-striped table-bordered table-hover" style="width: 100%;" border="1" cellspacing="0">
         <thead>
             <tr style="height: 18px;">
-                <th align="center" style="height: 18px;">DOMICILIATION BANCAIRE: Credit Mutuel</th>
+                <th align="center" style="height: 18px;">DOMICILIATION BANCAIRE: Crédit Mutuel</th>
             </tr>
         </thead>
         <tbody>
@@ -165,7 +165,7 @@
     </table>
     <br>
 
-    <div style="text-align: center; font-size: 11px; margin-right: 25%; margin-left: 25%; margin-top: 20px;">
+    <div style="text-align: center; font-size: 11px; margin-right: 10%; margin-left: 10%; margin-top: 20px;">
         <p><strong>SARL V4F</strong> - 115 Avenue de la Roquette - Zone Artisanale de Berret - 30200 BAGNOLS SUR CEZE Carte professionnelle N°1312T14 TVA in FR 67 800738478 - SIRET: 800 738 478 00018 - RCS NIMES 800 738 478
         </p>
     </div>

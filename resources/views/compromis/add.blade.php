@@ -660,4 +660,68 @@ $('#je_porte_affaire').change(function(){
 
 
 </script>
+
+<script>
+        $('#nom_vendeur').keyup(function(){
+               $(this).val($(this).val().toUpperCase());
+        });
+        $('#ville_vendeur').keyup(function(){
+               $(this).val($(this).val().toUpperCase());
+        });
+       
+        $('#prenom_vendeur').on('focusout',function(){
+             //   $(this).val( $(this).val().chartAt(0).toUpperCase());
+             var prenom = $(this).val(); 
+             tab  = prenom.split(" ");
+             var prenoms = "";
+             tab.forEach(element => {
+       
+                first = ""+element.substring(0,1);
+                first=first.toUpperCase();
+       
+                second = element.substring(1,);
+       
+                prenoms+= first+second+" ";
+             });
+             $(this).val(prenoms);
+             // console.log(tab);
+             
+        });
+
+
+        $('#nom_acquereur').keyup(function(){
+               $(this).val($(this).val().toUpperCase());
+        });
+        $('#ville_acquereur').keyup(function(){
+               $(this).val($(this).val().toUpperCase());
+        });
+       
+        $('#prenom_acquereur').on('focusout',function(){
+             //   $(this).val( $(this).val().chartAt(0).toUpperCase());
+             var prenom = $(this).val(); 
+             tab  = prenom.split(" ");
+             var prenoms = "";
+             tab.forEach(element => {
+       
+                first = ""+element.substring(0,1);
+                first=first.toUpperCase();
+       
+                second = element.substring(1,);
+       
+                prenoms+= first+second+" ";
+             });
+             $(this).val(prenoms);
+             // console.log(tab);
+             
+        });
+
+
+        $('#nom_agent').keyup(function(){
+               $(this).val($(this).val().toUpperCase());
+        });
+       
+        $('#ville_bien').keyup(function(){
+               $(this).val($(this).val().toUpperCase());
+        });
+       </script>
 @endsection

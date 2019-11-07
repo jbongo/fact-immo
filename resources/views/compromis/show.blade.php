@@ -44,6 +44,7 @@ Affaire
                                                 <div class="col-lg-4 col-md-4 col-sm-4">
                                                     <div class="form-group row" id="parrain-id">
                                                         <label class="col-lg-8 col-form-label" for="parr-id">Partage avec agence /agent ?</label>
+                                                        <input type="hidden" name="partage" value="{{ $compromis->est_partage_agent == 0 ? "Non":"Oui"}}">
                                                         <div class="col-lg-8">
                                                             {{-- <select class="col-lg-6 form-control" id="parr-id" name="partage"  >
                                                                 <option value="{{ $compromis->est_partage_agent == 0 ? "Non":"Oui"}}">{{ $compromis->est_partage_agent == 0 ? "Non":"Oui"}}</option>
@@ -125,7 +126,7 @@ Affaire
                                                                     @endphp --}}
                                                                     <label class="col-lg-7 col-md-7 col-sm-7" for="je_porte_affaire">Je porte l'affaire</label> 
                                                                     <div class="col-lg-6 col-md-6 col-sm-6">
-                                                                        {{-- <input type="checkbox" {{$check}} data-toggle="toggle" id="je_porte_affaire" name="je_porte_affaire" data-off="Non" data-on="Oui" data-onstyle="success" data-offstyle="danger"> --}}
+                                                                        <input type="hidden" id="je_porte_affaire" name="je_porte_affaire" value="{{$compromis->je_porte_affaire ==  true ? "Oui" : "Non"}}">
                                                                         <span style="color:red">{{$compromis->je_porte_affaire ==  true ? "Oui" : "Non"}}</span>
                                                                     
                                                                     </div>

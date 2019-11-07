@@ -12,7 +12,7 @@ class EnvoyerFactureStylimmoMandataire extends Mailable
     use Queueable, SerializesModels;
     public $mandataire;
     public $facture;
-
+    public $numero_facture;
     /**
      * Create a new message instance.
      *
@@ -23,6 +23,7 @@ class EnvoyerFactureStylimmoMandataire extends Mailable
         //
         $this->mandataire = $mandataire;
         $this->facture = $facture;
+        $this->numero_facture = $facture->numero;
     }
 
     /**
@@ -32,7 +33,7 @@ class EnvoyerFactureStylimmoMandataire extends Mailable
      */
     public function build()
     {
-        return $this->markdown('email.envoyer_facture_stylimmo_mandataire')
+        return $this->subject("STYL'IMMO Facture F$this->numero_facture")->markdown('email.envoyer_facture_stylimmo_mandataire')
         ->attach($this->facture->url);
         ;
     }

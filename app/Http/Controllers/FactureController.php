@@ -7,6 +7,7 @@ use App\Facture;
 use App\User;
 use App\Compromis;
 use App\Filleul;
+use App\Avoir;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\DemandeFactureStylimmo;
@@ -671,6 +672,97 @@ public function calcul_niveau($paliers, $chiffre_affaire)
 
     return $niveau;
 }
+
+
+    /**
+     * Création de facture d'avoir
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create_avoir($facture_id)
+    {
+        $facture = Facture::where('id',  Crypt::decrypt($facture_id))->first();
+       return view('facture.add_avoir', compact('facture') );
+    }
+
+    /**
+     * sauvegarde de facture d'avoir
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function store_avoir(Request $request)
+    {
+        
+        $request->validate([
+            'montant' => 'required|numeric',
+            'date' => 'required|date',
+            'motif' => 'required|string',
+        ]);
+        
+        $facture = Facture::where('id',$request->facture_id)->first();
+        Avoir::create([
+            "numero" => "av".$facture->numero,
+            "facture_id"=> $facture->id,
+            "montant"=> $request->montant,
+            "date"=> $request->date,
+            "motif"=> $request->motif,
+        ]);
+
+        return redirect()->route('facture.index')->with('ok', __('Avoir crée')  );
+
+      
+    }
+
+    /**
+     * sauvegarde de facture d'avoir
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function show_avoir($facture_id)
+    {
+        
+        $facture = Facture::where('id', Crypt::decrypt($facture_id))->first();
+        $avoir = $facture->avoir;
+        $compromis = $facture->compromis;
+        $mandataire = $compromis->user;
+        // dd($mandataire);
+
+       return view('facture.show_avoir', compact('facture','avoir','compromis','mandataire') );
+    }
+
+    
+    /**
+     * construction de la vue pdf d'une facture d'avoir
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function generer_pdf_avoir($facture_id)
+    {
+        $avoir = Avoir::where('id',Crypt::decrypt($avoir_id))->first();
+        $facture = $avoir->facture ; 
+        $compromis = $facture->compromis;
+        $mandataire = $compromis->user;
+        
+      
+        return view ('facture.generer_pdf_avoir',compact(['compromis','mandataire','facture','avoir']));
+    }
+
+    //###### telecharger facture avoir
+    public  function download_pdf_avoir($avoir_id)
+    {
+
+        $avoir = Avoir::where('id', Crypt::decrypt($avoir_id))->first();
+        $facture = $avoir->facture;
+        $compromis = $facture->compromis;
+        $mandataire = $compromis->user;
+        $pdf = PDF::loadView('facture.pdf_avoir',compact(['compromis','mandataire','facture','avoir']));
+        $path = storage_path('app/public/avoirs/avoir.pdf');
+        $pdf->save($path);
+    //    return  $pdf->download($path);
+        // dd('ddd');
+       return $pdf->download('facture.pdf');
+      
+    }
 
 
 

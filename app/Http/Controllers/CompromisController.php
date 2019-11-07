@@ -176,7 +176,7 @@ class CompromisController extends Controller
     public function update(Request $request, Compromis $compromis)
     {
         // dd($request);
-        if($request->partage == "Non"  || ($request->partage == "Oui" &&  $request->je_porte_affaire == "on" ) ){
+        if($request->partage == "Non"  || ($request->partage == "Oui" &&  $request->je_porte_affaire == "Oui" ) ){
             if($request->numero_mandat != $compromis->numero_mandat){
                 $request->validate([
                     'numero_mandat' => 'required|unique:compromis',
@@ -211,7 +211,6 @@ class CompromisController extends Controller
             $compromis->net_vendeur = $request->net_vendeur;
             $compromis->scp_notaire = $request->scp_notaire;
 
-        
         }else{
 
             if($request->numero_mandat_porte_pas != $compromis->numero_mandat_porte_pas){

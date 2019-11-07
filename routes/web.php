@@ -63,6 +63,13 @@ Route::middleware('auth')->group(function(){
     Route::get('preparer/factures-honoraire-partage/{compromis}','FactureController@preparer_facture_honoraire_partage')->name('facture.preparer_facture_honoraire_partage');//ok
     Route::post('deduire-pub/factures-honoraire/{compromis}','FactureController@deduire_pub_facture_honoraire')->name('facture.deduire_pub_facture_honoraire');//ok
     // Route::get('generer/pdf/factures-honoraire/','FactureController@generer_pdf_facture_honoraire')->name('facture.pdf.generer_facture_honoraire');
+    // Facture d'avoir
+    Route::get('/factures/avoir/create/{facture_id}','FactureController@create_avoir')->name('facture.avoir.create');
+    Route::post('/factures/avoir/store/','FactureController@store_avoir')->name('facture.avoir.store');
+    Route::get('/factures/avoir/show/{facture_id}','FactureController@show_avoir')->name('facture.avoir.show');
+    Route::get('generer/pdf/avoir/','FactureController@generer_pdf_avoir')->name('facture.pdf.generer_avoir');
+    Route::get('telecharger/pdf/avoir/{avoir_id}','FactureController@download_pdf_avoir')->name('facture.telecharger_pdf_avoir'); //ok
+
      
     // Contrat 
     Route::get('/contrat/create/{user_id}','ContratController@create')->name('contrat.create');
@@ -92,5 +99,8 @@ Route::middleware('auth')->group(function(){
     });
     Route::get('/home', 'HomeController@index')->name('home');       
   
+    Route::get('test', function () {
+        return view('email.creation_mandataire');
+    });
 });
 

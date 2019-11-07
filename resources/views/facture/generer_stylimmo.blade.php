@@ -43,19 +43,19 @@ Valider la facture
             <td style="width: 337px;">
                 @if ($compromis->charge == "Vendeur")
                     @if ($compromis->civilite_vendeur == "M." || $compromis->civilite_vendeur == "Mme")
-                        <p>{{$compromis->nom_vendeur}} {{$compromis->prenom_vendeur}}</p>
+                        <p>{{$compromis->civilite_vendeur}} {{$compromis->nom_vendeur}} {{$compromis->prenom_vendeur}}</p>
                     @else 
-                        <p>{{$compromis->raison_sociale_vendeur}} {{$compromis->raison_sociale_vendeur}}</p>                        
+                        <p>{{$compromis->civilite_vendeur}} {{$compromis->raison_sociale_vendeur}} </p>                        
                     @endif
-                        <p><strong>{{$compromis->code_postal_vendeur}} {{$compromis->ville_vendeur}}</strong></p>
+                        <p><strong>{{$compromis->adresse1_vendeur}}, {{$compromis->code_postal_vendeur}}, {{$compromis->ville_vendeur}}</strong></p>
                 @else 
 
                     @if ($compromis->civilite_acquereur == "M." || $compromis->civilite_acquereur == "Mme")
-                    <p>{{$compromis->nom_acquereur}} {{$compromis->prenom_acquereur}}</p>                
+                    <p>{{$compromis->civilite_acquereur}} {{$compromis->nom_acquereur}} {{$compromis->prenom_acquereur}}</p>                
                     @else 
-                        <p>{{$compromis->raison_sociale_acquereur}} {{$compromis->raison_sociale_acquereur}}</p>                        
+                        <p>{{$compromis->civilite_acquereur}} {{$compromis->raison_sociale_acquereur}} </p>                        
                     @endif
-                    <p><strong>{{$compromis->code_postal_acquereur}} {{$compromis->ville_acquereur}}</strong></p>
+                    <p><strong>{{$compromis->adresse1_acquereur}} {{$compromis->code_postal_acquereur}} {{$compromis->ville_acquereur}}</strong></p>
                 @endif
                
             </td>
@@ -74,7 +74,7 @@ Valider la facture
     <tbody>
         <tr>
             <td style="width: 343px;"><span style="color: #ff0000;">Merci d'indiquer le num&eacute;ro de facture en r&eacute;f&eacute;rence du virement.</span></td>
-            <td style="width: 344px;"><span style="text-decoration: underline;"><strong>FACTURE N&deg; @if ($compromis->facture_stylimmo_valide == true)  {{$facture->numero}} @else xxxx</strong></span>@endif</td>
+            <td style="width: 344px;"><span style="text-decoration: underline; font-size:20px"><strong>FACTURE N&deg; @if ($compromis->facture_stylimmo_valide == true)  {{$facture->numero}} @else xxxx</strong></span>@endif</td>
         </tr>
     </tbody>
 </table>
@@ -117,6 +117,7 @@ Valider la facture
         </tr>
     </tbody>
 </table>
+
 <table style="height: 63px; width: 50%;">
     <tbody>
         <tr >
@@ -127,9 +128,8 @@ Valider la facture
         </tr>
         <tr style="">
             <td style="width: 48px;">&nbsp;</td>
-            <td style="width: 428px; ">{{$compromis->description_bien}} &agrave; {{$compromis->ville_bien}}</td>
+            <td style="width: 428px; ">{{ substr($compromis->description_bien, 0,150) }}... &agrave; {{$compromis->ville_bien}}</td>
             <td style="width: 391px;"></td>
-
         </tr>
     </tbody>
 </table>
@@ -139,17 +139,17 @@ Valider la facture
         <tr>
             <td style="width: 400px;">&nbsp;</td>
             <td style="width: 153px;">TOTAL H.T :</td>
-            <td style="width: 231px;">{{round($compromis->frais_agence - $compromis->frais_agence*0.2,2)}} &euro;</td>
+            <td style="width: 231px;">{{number_format($compromis->frais_agence - $compromis->frais_agence*0.2,2,'.',' ')}} &euro;</td>
         </tr>
         <tr>
             <td style="width: 400px;">&nbsp;</td>
             <td style="width: 153px;">T.V.A 20% :</td>
-            <td style="width: 231px;">{{round($compromis->frais_agence * 0.2,2)}} &euro;</td>
+            <td style="width: 231px;">{{number_format($compromis->frais_agence * 0.2,2,'.',' ')}} &euro;</td>
         </tr>
         <tr>
             <td style="width: 400px;">&nbsp;</td>
             <td style="width: 153px;">TOTAL T.T.C:</td>
-            <td style="width: 231px;">{{round($compromis->frais_agence,2)}} &euro;</td>
+            <td style="width: 231px;">{{number_format($compromis->frais_agence,2,'.',' ')}} &euro;</td>
         </tr>
     </tbody>
 </table>
@@ -159,8 +159,8 @@ Valider la facture
     <tbody>
         <tr style="height: 25px;">
             <td style="width: 349px; height: 25px;">Valeur en votre aimable r&egrave;glement de :</td>
-            <td style="width: 117px; height: 25px;">{{round($compromis->frais_agence,2)}} &euro; TTC</td>
-            <td style="width: 177px; height: 25px;">@if ($compromis->facture_stylimmo_valide == true)<span style="color: #ff0000;">&nbsp;R&eacute;f &agrave; rappeler: {{$facture->numero}}</span>@endif</td>
+            <td style="width: 117px; height: 25px;">{{number_format($compromis->frais_agence,2,'.',' ')}} &euro; TTC</td>
+            <td style="width: 177px; height: 25px;">@if ($compromis->facture_stylimmo_valide == true)<span style="color: #ff0000;font-size:17px">&nbsp;R&eacute;f &agrave; rappeler: {{$facture->numero}}</span>@endif</td>
         </tr>
     </tbody>
 
@@ -177,7 +177,7 @@ Valider la facture
             </td>
             <td style="width: 488px;">
                 <div>
-                    <div>Au plus tard le jour de la signature de l'acte athentique, par virement &agrave; la SARL&nbsp;V4F, en rappelant au moins sur l'objet du virement les r&eacute;f&eacute;rences de la facture.</div>
+                    <div>Au plus tard le jour de la signature de l'acte authentique, par virement &agrave; la SARL&nbsp;V4F, en rappelant au moins sur l'objet du virement les r&eacute;f&eacute;rences de la facture.</div>
                 </div>
             </td>
         </tr>
@@ -187,7 +187,7 @@ Valider la facture
 <table class="table table-striped table-bordered table-hover" style="width: 50%;" border="1">
     <thead>
         <tr style="height: 18px;">
-            <th align="center" style="height: 18px;">DOMICILIATION BANCAIRE: Credit Mutuel</th>
+            <th align="center" style="height: 18px;">DOMICILIATION BANCAIRE: Crédit Mutuel</th>
         </tr>
     </thead>
     <tbody>
@@ -204,7 +204,7 @@ Valider la facture
 </table>
 
 <hr>
-<div style="text-align: center; font-size: 11px; margin-right: 25%; margin-left: 25%; margin-top: 20px;">
+<div style="text-align: center; font-size: 11px; margin-right: 20%; margin-left: 20%; margin-top: 20px;">
     <p><strong>SARL V4F</strong> - 115 Avenue de la Roquette - Zone Artisanale de Berret - 30200 BAGNOLS SUR CEZE Carte professionnelle N°1312T14 TVA in FR 67 800738478 - SIRET: 800 738 478 00018 - RCS NIMES 800 738 478
     </p>
 </div>
