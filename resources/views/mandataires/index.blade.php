@@ -59,7 +59,7 @@
                                             <span class="color-success">{{$mandataire->commission}} %</span>
                                         </td>
                                         <td>                                             
-                                            <span class="color-warning">{{number_format($mandataire->chiffre_affaire,2'.',' ')}} €</span>
+                                            <span class="color-warning">{{number_format($mandataire->chiffre_affaire,2,'.',' ')}} €</span>
                                         </td>
                                         <td>
                                             <span><a href="{{route('mandataire.show',Crypt::encrypt($mandataire->id) )}}" data-toggle="tooltip" title="@lang('Détails de ') {{ $mandataire->nom }}"><i class="large material-icons color-info">visibility</i></a> </span>
