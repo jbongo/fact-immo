@@ -139,9 +139,9 @@ class MandataireController extends Controller
             $nb_niveau_starter = sizeof($palier_starter) -1 ;
             foreach ($palier_starter as $palier) {
            
-                if($mandataire->chiffre_affaire >= $palier[2] && $mandataire->chiffre_affaire <= $palier[3] ){
+                if($mandataire->chiffre_affaire_sty >= $palier[2] && $mandataire->chiffre_affaire_sty <= $palier[3] ){
                     $niveau_starter = $palier[0];
-                }elseif($mandataire->chiffre_affaire > $palier_starter[ $nb_niveau_starter ][3]){
+                }elseif($mandataire->chiffre_affaire_sty > $palier_starter[ $nb_niveau_starter ][3]){
                     $niveau_starter = $palier_starter[ $nb_niveau_starter ][0];
                 }
             }
@@ -155,9 +155,9 @@ class MandataireController extends Controller
             $nb_niveau_expert = sizeof($palier_expert) -1 ;
             foreach ($palier_expert as $palier) {
             
-                if($mandataire->chiffre_affaire >= $palier[2] && $mandataire->chiffre_affaire <= $palier[3] ){
+                if($mandataire->chiffre_affaire_sty >= $palier[2] && $mandataire->chiffre_affaire_sty <= $palier[3] ){
                     $niveau_expert = $palier[0];
-                }elseif($mandataire->chiffre_affaire > $palier_expert[ $nb_niveau_expert ][3]){
+                }elseif($mandataire->chiffre_affaire_sty > $palier_expert[ $nb_niveau_expert ][3]){
                     $niveau_expert = $palier_expert[ $nb_niveau_expert ][0];
                 }
             }

@@ -700,7 +700,7 @@ public function calcul_niveau($paliers, $chiffre_affaire)
         ]);
         
         $facture = Facture::where('id',$request->facture_id)->first();
-        Avoir::create([
+       $avoir = Avoir::create([
             "numero" => "av".$facture->numero,
             "facture_id"=> $facture->id,
             "montant"=> $request->montant,
@@ -708,8 +708,15 @@ public function calcul_niveau($paliers, $chiffre_affaire)
             "motif"=> $request->motif,
         ]);
 
-        return redirect()->route('facture.index')->with('ok', __('Avoir crée')  );
+        if($avoir != null ){
+            $facture->a_avoir = true;
+            $facture->update();
+            return redirect()->route('facture.index')->with('ok', __('Avoir crée')  );
+        }else{
+            return redirect()->route('facture.index')->with('ok', __('Avoir non crée')  );
 
+        }
+       
       
     }
 
