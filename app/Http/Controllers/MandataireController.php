@@ -5,9 +5,13 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\User;
 use App\Compromis;
+use App\Contrat;
 use App\Filleul;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Crypt;
+use App\Mail\CreationMandataire;
+use Illuminate\Support\Facades\Mail;
+
 
 class MandataireController extends Controller
 {
@@ -228,5 +232,28 @@ class MandataireController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    /**
+     * Renvoyer les accès du mandataire.
+     *
+     * @param  int  $contrat_id
+     * @return \Illuminate\Http\Response
+     */
+    public function send_access($mandataire_id,$contrat_id)
+    {
+        $mandataire = User::where('id',Crypt::decrypt($mandataire_id))->first();
+        $contrat = Contrat::where('id',Crypt::decrypt($contrat_id))->first();
+
+        $datedeb = date_create($contrat->date_debut);
+        $dateini = date_create('1899-12-30');
+        $interval = date_diff($datedeb, $dateini);
+        $password = "S". strtoupper (substr($mandataire->nom,0,1).substr($mandataire->nom,strlen($mandataire->nom)-1 ,1)). strtolower(substr($mandataire->prenom,0,1)).$interval->days.'@@';
+       
+        Mail::to($mandataire->email)->send(new CreationMandataire($mandataire,$password));
+
+        return 1;
+       
+
     }
 }

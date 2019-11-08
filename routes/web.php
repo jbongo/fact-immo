@@ -25,11 +25,9 @@ Route::middleware('auth')->group(function(){
         Route::post('/mandataire/update/{mandataire}','MandataireController@update')->name('mandataire.update');
         Route::delete('/mandataire/delete/{mandataire}','MandataireController@destroy')->name('mandataire.delete');
         Route::delete('/mandataire/archive/{mandataire}','MandataireController@archive')->name('mandataire.archive');
-  
+        Route::get('/mandataire/send-access/{mandataire_id}/{contrat_id}','MandataireController@send_access')->name('mandataire.send_access');
 
-    
-    
-    
+  
     // compromis
     Route::get('/compromis','CompromisController@index')->name('compromis.index');
     Route::get('/compromis/create','CompromisController@create')->name('compromis.create');
