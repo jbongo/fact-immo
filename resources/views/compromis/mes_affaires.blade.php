@@ -97,12 +97,10 @@
                                                 @endif
                                             @endif
                                             
-                                        @if (Auth()->user()->role == "mandataire" && $compromi->agent_id != auth::user()->id)
+                                        @if ($compromi->agent_id != auth::user()->id && $compromi->facture_stylimmo_valide == false)
                                             <span><a href="{{route('compromis.show',Crypt::encrypt($compromi->id))}}" data-toggle="tooltip" title="@lang('Modifier ') "><i class="large material-icons color-warning">edit</i></a></span>
                                             <span><a  href="{{route('compromis.archive',[$compromi->id,1])}}" class="delete" data-toggle="tooltip" title="@lang('Archiver ') {{ $compromi->nom }}"><i class="large material-icons color-danger">delete</i> </a></span>
                                         @endif
-
-
                                     </td>
                                 </tr>
                         @endforeach

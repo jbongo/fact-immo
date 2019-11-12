@@ -443,26 +443,32 @@ Ajout d'une affaire
                                             </div>
                                         </div>
 
-                                        <div class="col-lg-3 col-md-3 col-sm-3">
+                                        <div class="col-lg-4 col-md-4 col-sm-4">
                                             <div class="form-group">
                                                 <label for="net_vendeur">Net Vendeur <span class="text-danger">*</span></label>
                                                 <input class="form-control" type="number" value="{{old('net_vendeur')}}" id="net_vendeur" name="net_vendeur" required>
                                             </div>
                                         </div>
-                                        <div class="col-lg-3 col-md-3 col-sm-3">
+                                        <div class="col-lg-4 col-md-4 col-sm-4">
                                             <div class="form-group">
                                                 <label for="frais_agence">Frais d'agence <span class="text-danger">*</span> </label>
                                                 <input class="form-control" min="0" type="number" value="{{old('frais_agence')}}" id="frais_agence" name="frais_agence" required>
                                             </div>
                                         </div>
 
-                                        <div class="col-lg-3 col-md-3 col-sm-3">
+                                        <div class="col-lg-4 col-md-4 col-sm-4">
                                             <div class="form-group">
                                                 <label for="scp_notaire">SCP Notaire <span class="text-danger">*</span> </label>
                                                 <input class="form-control" type="texte" value="{{old('scp_notaire')}}" id="scp_notaire" name="scp_notaire" required>
                                             </div>
                                         </div>
                                         
+                                        <div class="col-lg-4 col-md-4 col-sm-4">
+                                            <div class="form-group">
+                                                <label for="date_vente">Date provisoire de la Vente </label>
+                                                <input class="form-control" type="date" value="" id="date_vente" name="date_vente" >
+                                            </div>
+                                        </div>
 
                                     </div>
                                     

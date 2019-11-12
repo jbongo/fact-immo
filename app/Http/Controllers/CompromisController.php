@@ -103,6 +103,7 @@ class CompromisController extends Controller
                 "charge"=>$request->charge,
                 "net_vendeur"=>$request->net_vendeur,
                 "scp_notaire"=>$request->scp_notaire,
+                "date_vente"=>$request->date_vente,
                 
                 
                 ]);
@@ -210,6 +211,7 @@ class CompromisController extends Controller
             $compromis->charge = $request->charge;
             $compromis->net_vendeur = $request->net_vendeur;
             $compromis->scp_notaire = $request->scp_notaire;
+            $compromis->date_vente = $request->date_vente;
 
         }else{
 

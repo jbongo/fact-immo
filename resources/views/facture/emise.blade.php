@@ -23,7 +23,9 @@
                                         <th>@lang('Date règlement en banque')</th>
                                         {{-- @if(auth()->user()->role == "admin") --}}
                                         <th>@lang('Alerte payement')</th>
+                                        @if(auth()->user()->role == "admin")
                                         <th>@lang('Encaissement')</th>
+                                        @endif
                                         {{-- @endif --}}
                                         <th>@lang('Télécharger')</th>
                                         <th>@lang('Avoir')</th>
@@ -94,6 +96,8 @@
                                         </td>
                                         @endif
                                     {{-- fin alert payement --}}
+                                        {{-- encaissement seulement par admin --}}
+                                        @if(auth()->user()->role == "admin")
                                         <td width="" >
                                             @if($facture->encaissee == 0)
                                             <a href="{{route('facture.encaisser_facture_stylimmo', Crypt::encrypt($facture->id))}}"  class="btn btn-success btn-flat btn-addon  m-b-10 m-l-5 encaisser" id="ajouter"><i class="ti-download"></i>Encaisser</a>
@@ -101,7 +105,7 @@
                                             <label class="color-danger">Encaissée </label> 
                                             @endif 
                                         </td>
-                                        
+                                        @endif
                                         <td width="" >
                                             <a href="{{route('facture.telecharger_pdf_facture_stylimmo', Crypt::encrypt($facture->compromis->id))}}"  class="btn btn-warning btn-flat btn-addon  m-b-10 m-l-5 " id="ajouter"><i class="ti-download"></i>Télécharger</a>
                                         </td> 

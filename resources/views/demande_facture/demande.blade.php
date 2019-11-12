@@ -1,12 +1,12 @@
 @extends('layouts.app')
 @section('content')
 @section ('page_title')
-Demande de facture  | {{ $compromis->description_bien }} à {{ $compromis->ville_bien }}
+Demande de facture  | {{ substr($compromis->description_bien,0,150) }}... 
 @endsection
 <style>
 
 .form-control{
-    color: red;
+    color: slategray;
 }
 </style>
 <div class="row">
@@ -33,8 +33,8 @@ Demande de facture  | {{ $compromis->description_bien }} à {{ $compromis->ville
                     
                         <div class="col-lg-4 col-md-4 col-sm-4">
                             <div class="form-group">
-                                <label for="date_vente">Date exacte de vente <span class="text-danger">*</span></label>
-                                <input class="form-control" type="date" value="" id="date_vente" name="date_vente" required >
+                                <label for="date_vente">Confimez la date exacte de vente <span class="text-danger">*</span></label>
+                                <input class="form-control" type="date"  id="date_vente" name="date_vente" value="{{$compromis->date_vente->format('Y-m-d')}}" required >
                             </div>
                         </div>
                     </div>

@@ -6,7 +6,7 @@ Affaire
 <style>
 
 .form-control{
-    color: red;
+    color: slategray;
 }
 </style>
 <div class="row">
@@ -20,10 +20,10 @@ Affaire
 		<div class="card">
           
 			<div class="col-lg-10">
-                @if ($compromis->demande_facture == 0 && $compromis->user_id == Auth::user()->id && (  ($compromis->est_partage_agent == 1 && $compromis->je_porte_affaire == 1) ||  ($compromis->est_partage_agent == 0) )  )
+                @if ($compromis->demande_facture == 0 && (  ($compromis->est_partage_agent == 1 && $compromis->je_porte_affaire == 1) ||  ($compromis->est_partage_agent == 0) )  )
                     <a class="btn btn-danger btn-flat btn-addon btn-sm m-b-10 m-l-5 submit" href="{{route('facture.demander_facture', Crypt::encrypt($compromis->id) )}}"><i class="ti-file"></i>Demander Facture stylimmo</a>
                 @endif
-                @if ($compromis->demande_facture < 2 && $compromis->user_id == Auth::user()->id)
+                @if ($compromis->demande_facture < 2 )
                 <a class="btn btn-success btn-flat btn-addon btn-sm m-b-10 m-l-5  " id="modifier_compromis"><i class="ti-pencil-alt"></i>Modifier le compromis</a>
                 @endif
             
@@ -52,7 +52,7 @@ Affaire
                                                                 <option  value="Oui" >Oui</option>
                                                             </select> --}}
                                                                 
-                                                                <span style="color:red">{{ $compromis->est_partage_agent == 0 ? "Non":"Oui"}}</span>
+                                                                <span style="color:slategray">{{ $compromis->est_partage_agent == 0 ? "Non":"Oui"}}</span>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -71,7 +71,7 @@ Affaire
                                                                         <option value="Non">Oui</option>
                                                                         <option value="Oui">Non</option>
                                                                     </select> --}}
-                                                                <span style="color:red">{{$compromis->partage_reseau ==  true ? "Oui" : "Non"}}</span>
+                                                                <span style="color:slategray">{{$compromis->partage_reseau ==  true ? "Oui" : "Non"}}</span>
 
                                                                 </div>                                                
                                                             </div>
@@ -127,7 +127,7 @@ Affaire
                                                                     <label class="col-lg-7 col-md-7 col-sm-7" for="je_porte_affaire">Je porte l'affaire</label> 
                                                                     <div class="col-lg-6 col-md-6 col-sm-6">
                                                                         <input type="hidden" id="je_porte_affaire" name="je_porte_affaire" value="{{$compromis->je_porte_affaire ==  true ? "Oui" : "Non"}}">
-                                                                        <span style="color:red">{{$compromis->je_porte_affaire ==  true ? "Oui" : "Non"}}</span>
+                                                                        <span style="color:slategray">{{$compromis->je_porte_affaire ==  true ? "Oui" : "Non"}}</span>
                                                                     
                                                                     </div>
                                                                 </div>
@@ -481,7 +481,7 @@ Affaire
                                                 <div class="form-group row" id="parrain-id">
                                                     <label class="col-lg-8 col-form-label" for="date_mandat">Date Mandat</label>
                                                     <div class="col-lg-8">
-                                                        <input type="date" class="form-control" id="date_mandat" value="{{ $compromis->date_mandat}}" name="date_mandat" required>                                                    
+                                                        <input type="date" class="form-control" id="date_mandat" value="{{ $compromis->date_mandat->format('Y-m-d')}}" name="date_mandat" required>                                                    
                                                     </div>
                                                 </div>
                                             </div>
@@ -538,15 +538,15 @@ Affaire
                                             </div>
                                             
 
-                                            @if ($compromis->date_vente != null)
+                                            {{-- @if ($compromis->date_vente != null) --}}
                                                 
                                             <div class="col-lg-3 col-md-3 col-sm-3">
                                                 <div class="form-group">
                                                     <label for="date_vente">Date exacte Vente </label>
-                                                    <input class="form-control" type="date" value="{{ $compromis->date_vente->format('Y/m/d')}}" id="date_vente" name="date_vente" >
+                                                    <input class="form-control" type="date" value="{{ $compromis->date_vente->format('Y-m-d')}}" id="date_vente" name="date_vente" >
                                                 </div>
                                             </div>
-                                            @endif                
+                                            {{-- @endif                 --}}
             
                                         </div>
     

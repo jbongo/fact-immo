@@ -5,7 +5,7 @@
 @if ($compromis->facture_stylimmo_valide == true)
 Facture N° {{$facture->numero}}
 @else 
-Valider la facture
+Valider la facture {{$numero}}
 @endif
  @endsection
 <div class="row"> 
@@ -21,15 +21,30 @@ Valider la facture
           <div class="card alert">
          <div class="row">
             @if ($compromis->facture_stylimmo_valide == true)
-            <div class="col-lg-3 col-md-3  col-sm-5 ">
+            <div class="col-lg-3 col-md-3  col-sm-5 col-xs-8">
                <a  href="{{route('facture.envoyer_facture_stylimmo', Crypt::encrypt($facture->id))}}"  class="btn btn-danger btn-flat btn-addon  m-b-10 m-l-5 " id="ajouter"><i class="ti-email"></i>Renvoyer au mandataire</a>
             </div>
-            <div class="col-lg-3 col-md-3 col-sm-5">
+            <div class="col-lg-3 col-md-3 col-sm-6">
                <a href="{{route('facture.telecharger_pdf_facture_stylimmo', Crypt::encrypt($compromis->id))}}"  class="btn btn-default btn-flat btn-addon  m-b-10 m-l-5 " id="ajouter"><i class="ti-download"></i>Télécharger</a>
             </div>
             @else
-            <div class="col-lg-2 ml-auto">
-                <a href="{{route('facture.valider_facture_stylimmo', Crypt::encrypt($compromis->id))}}"  class="btn btn-default btn-flat btn-addon  m-b-10 m-l-5 " id="ajouter"><i class="ti-check"></i>Valider la facture</a>
+            <div class="col-lg-4 col-md-4  col-sm-5 ml-auto">
+                <form action="{{route('facture.valider_facture_stylimmo', Crypt::encrypt($compromis->id))}}" method="get">
+                        <label for="numero">Modifier le numéro facture :</label>
+                    <div class="form-group row ">
+                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">  <input class="form-control " style="height:35px; border-color:royalblue" type="number" name="numero" id="numero" value="{{$numero}}" required> </div>
+                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6"> <button  class="btn btn-default btn-flat btn-addon  " id="ajouter"><i class="ti-check"></i>Valider la facture</button></div>
+                        @if ($errors->has('numero'))
+                        <br>
+                        <div class="alert alert-warning ">
+                           <strong>{{$errors->first('numero')}}</strong> 
+                        </div>
+                        @endif     
+                    </div>
+                
+                
+                </form>
+                
             </div>
             @endif
 
@@ -74,7 +89,7 @@ Valider la facture
     <tbody>
         <tr>
             <td style="width: 343px;"><span style="color: #ff0000;">Merci d'indiquer le num&eacute;ro de facture en r&eacute;f&eacute;rence du virement.</span></td>
-            <td style="width: 344px;"><span style="text-decoration: underline; font-size:20px"><strong>FACTURE N&deg; @if ($compromis->facture_stylimmo_valide == true)  {{$facture->numero}} @else xxxx</strong></span>@endif</td>
+            <td style="width: 344px;"><span style="text-decoration: underline; font-size:20px"><strong>FACTURE N&deg; @if ($compromis->facture_stylimmo_valide == true)  {{$facture->numero}} @else {{$numero}}</strong></span>@endif</td>
         </tr>
     </tbody>
 </table>
