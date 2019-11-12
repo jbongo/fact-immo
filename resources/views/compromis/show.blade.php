@@ -481,7 +481,7 @@ Affaire
                                                 <div class="form-group row" id="parrain-id">
                                                     <label class="col-lg-8 col-form-label" for="date_mandat">Date Mandat</label>
                                                     <div class="col-lg-8">
-                                                        <input type="date" class="form-control" id="date_mandat" value="{{ $compromis->date_mandat->format('Y-m-d')}}" name="date_mandat" required>                                                    
+                                                        <input type="date" class="form-control" id="date_mandat" @if($compromis->date_mandat != null)  value="{{ $compromis->date_mandat->format('Y-m-d')}}" @endif name="date_mandat" required>                                                    
                                                     </div>
                                                 </div>
                                             </div>
@@ -543,7 +543,7 @@ Affaire
                                             <div class="col-lg-3 col-md-3 col-sm-3">
                                                 <div class="form-group">
                                                     <label for="date_vente">Date exacte Vente </label>
-                                                    <input class="form-control" type="date" value="{{ $compromis->date_vente->format('Y-m-d')}}" id="date_vente" name="date_vente" >
+                                                    <input class="form-control" type="date" @if($compromis->date_vente != null)  value="{{ $compromis->date_vente->format('Y-m-d')}}" @endif id="date_vente" name="date_vente" >
                                                 </div>
                                             </div>
                                             {{-- @endif                 --}}
