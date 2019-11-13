@@ -9,9 +9,10 @@
                         @else 
                             <p>{{$compromis->civilite_vendeur}} {{$compromis->raison_sociale_vendeur}} </p>                        
                         @endif
-                            <p><strong>{{$compromis->adresse1_vendeur}},</strong></p> 
-                            <p><strong>{{$compromis->code_postal_vendeur}}, {{$compromis->ville_vendeur}},</strong></p>
-                            <p><strong>{{$compromis->adresse2_vendeur}}</strong></p>
+                            <p><strong>{{$compromis->adresse1_vendeur}}</strong></p>
+                            <p><strong>{{$compromis->adresse2_vendeur}}</strong></p> 
+                            <p><strong>{{$compromis->code_postal_vendeur}}, {{$compromis->ville_vendeur}}</strong></p>
+                            
                     @else 
 
                         @if ($compromis->civilite_acquereur == "M." || $compromis->civilite_acquereur == "Mme")
@@ -19,16 +20,17 @@
                         @else 
                             <p> {{$compromis->civilite_acquereur}} {{$compromis->raison_sociale_acquereur}} </p>                        
                         @endif
-                        <p><strong>{{$compromis->adresse1_acquereur}},</strong> </p>
-                        <p><strong> {{$compromis->code_postal_acquereur}}, {{$compromis->ville_acquereur}},</strong></p>
-                        <p><strong>{{$compromis->adresse2_acquereur}},</strong> </p>
+                        <p><strong>{{$compromis->adresse1_acquereur}}</strong> </p>
+                        <p><strong>{{$compromis->adresse2_acquereur}}</strong> </p>
+                        <p><strong> {{$compromis->code_postal_acquereur}}, {{$compromis->ville_acquereur}}</strong></p>
+                        
 
                     @endif
                 </td>
             </tr>
         </tbody>
     </table>
-    <table style="height: 91px; width: 20%">
+    <table style="height: 30px; width: 20%">
         <tbody>
             <tr>
                 <td style="width: 216px;">Bagnols sur C&egrave;ze, le</td>
@@ -168,7 +170,6 @@
             </tr>
         </tbody>
     </table>
-    <br>
 
     <div style="text-align: center; font-size: 11px; margin-right: 10%; margin-left: 10%; margin-top: 20px;">
         <p><strong>SARL V4F</strong> - 115 Avenue de la Roquette - Zone Artisanale de Berret - 30200 BAGNOLS SUR CEZE Carte professionnelle N°1312T14 TVA in FR 67 800738478 - SIRET: 800 738 478 00018 - RCS NIMES 800 738 478

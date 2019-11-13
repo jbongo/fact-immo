@@ -62,7 +62,9 @@ Valider la facture {{$numero}}
                     @else 
                         <p>{{$compromis->civilite_vendeur}} {{$compromis->raison_sociale_vendeur}} </p>                        
                     @endif
-                        <p><strong>{{$compromis->adresse1_vendeur}}, {{$compromis->code_postal_vendeur}}, {{$compromis->ville_vendeur}}</strong></p>
+                        <p><strong>{{$compromis->adresse1_vendeur}}</strong></p>
+                        <p><strong>{{$compromis->adresse2_vendeur}}</strong></p> 
+                        <p><strong>{{$compromis->code_postal_vendeur}}, {{$compromis->ville_vendeur}}</strong></p>
                 @else 
 
                     @if ($compromis->civilite_acquereur == "M." || $compromis->civilite_acquereur == "Mme")
@@ -70,7 +72,9 @@ Valider la facture {{$numero}}
                     @else 
                         <p>{{$compromis->civilite_acquereur}} {{$compromis->raison_sociale_acquereur}} </p>                        
                     @endif
-                    <p><strong>{{$compromis->adresse1_acquereur}} {{$compromis->code_postal_acquereur}} {{$compromis->ville_acquereur}}</strong></p>
+                        <p><strong>{{$compromis->adresse1_acquereur}}</strong> </p>
+                        <p><strong>{{$compromis->adresse2_acquereur}}</strong> </p>
+                        <p><strong>{{$compromis->code_postal_acquereur}}, {{$compromis->ville_acquereur}}</strong></p>
                 @endif
                
             </td>

@@ -73,17 +73,17 @@
                                         @endif
                                         {{--  alert payement--}}
                                         @php
-                                            $datevente = date_create($facture->compromis->date_vente->format('Y-m-d'));
-                                            $today = date_create(date('Y-m-d'));
-                                            $interval = date_diff($today, $datevente);
+                                            $interval = strtotime(date('Y-m-d')) - strtotime($facture->compromis->date_vente);
+                                            $diff_jours = $interval / 86400 ;
                                         @endphp
+                                       
                                         @if($facture->type == "stylimmo")
                                         <td width="" >
-                                            @if( $facture->encaissee == false && $interval->days < 3)
+                                            @if( $facture->encaissee == false && $diff_jours < 3)
                                                 <label  style="color:lime">En attente de payement</label>
-                                            @elseif( $facture->encaissee == false && $interval->days >=3 && $interval->days <=6)
+                                            @elseif( $facture->encaissee == false && $diff_jours >=3 && $diff_jours <=6)
                                                 <label  style="background-color:#FFC501">Ho làà  !!!&nbsp;&nbsp;&nbsp;</label>
-                                            @elseif($facture->encaissee == false && $interval->days >6) 
+                                            @elseif($facture->encaissee == false && $diff_jours >6) 
                                                 <label class="danger" style="background-color:#FF0633;color:white;visibility:visible;">Danger !!! &nbsp;&nbsp;</label>
                                             @elseif($facture->encaissee == true)
                                                 <label  style="background-color:#EDECE7">En banque  </label>

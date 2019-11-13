@@ -24,8 +24,11 @@
     
                                     <div class="user-skill">
                                        <h4 style="color: #32ade1;text-decoration: underline;">Options</h4>
-                                       <a href="{{route('mandataire.edit',Crypt::encrypt($mandataire->id) )}}"  class="btn btn-warning btn-rounded btn-addon btn-xs m-b-10"><i class="ti-pencil"></i>Modifier</a>
-                                       @if (auth()->user()->role == "admin" && $mandataire->contrat != null)
+                                        @if (auth()->user()->role == "admin")
+                                            <a href="{{route('mandataire.edit',Crypt::encrypt($mandataire->id) )}}"  class="btn btn-warning btn-rounded btn-addon btn-xs m-b-10"><i class="ti-pencil"></i>Modifier</a>
+                                        @endif
+                                        
+                                        @if (auth()->user()->role == "admin" && $mandataire->contrat != null)
                                        <a href="{{route('mandataire.send_access',[ Crypt::encrypt($mandataire->id) ,Crypt::encrypt($mandataire->contrat->id) ])}}"  class="btn btn-default btn-rounded btn-addon btn-xs m-b-10 send-access"><i class="ti-pencil"></i>Envoyer les accès au mandataire</a>
                                         @endif
                                     </div>
@@ -202,14 +205,16 @@
                             
                             @if ($mandataire->contrat == null)
                             <label class="color-red" >  <h4>  Pas de contrat </h4></label> <hr>
-                            @php
-                                $mandataire_id = Crypt::encrypt($mandataire->id);
-                            @endphp
-                        <a class="btn btn-default btn-flat btn-addon btn-lg m-b-10 m-l-5 " href="{{route('contrat.create',$mandataire_id)}}" ><i class="ti-plus"></i>Ajouter contrat</a> <hr>
-                            
+                                @if (auth()->user()->role == "admin")
+                                    @php
+                                        $mandataire_id = Crypt::encrypt($mandataire->id);
+                                    @endphp
+                                    <a class="btn btn-default btn-flat btn-addon btn-lg m-b-10 m-l-5 " href="{{route('contrat.create',$mandataire_id)}}" ><i class="ti-plus"></i>Ajouter contrat</a> <hr>
+                                @endif
                             @else 
-                            <a href="{{route('contrat.edit',Crypt::encrypt($mandataire->contrat->id) )}}"  class="btn btn-warning btn-rounded btn-addon btn-xs m-b-10"><i class="ti-pencil"></i>Modifier</a>
-                            
+                                @if (auth()->user()->role == "admin")
+                                    <a href="{{route('contrat.edit',Crypt::encrypt($mandataire->contrat->id) )}}"  class="btn btn-warning btn-rounded btn-addon btn-xs m-b-10"><i class="ti-pencil"></i>Modifier</a>
+                                @endif
                             <div class="card">
                                 <div class="col-lg-10">
                                 </div>
