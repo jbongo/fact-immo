@@ -57,7 +57,7 @@
             headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
          })
          $('[data-toggle="tooltip"]').tooltip()
-         $('a.encaisser').click(function(e) {
+         $('a.encaisser').on('click',function(e) {
             let that = $(this)
             e.preventDefault()
             const swalWithBootstrapButtons = swal.mixin({
@@ -79,7 +79,7 @@
             $('[data-toggle="tooltip"]').tooltip('hide')
                   $.ajax({                        
                      url: that.attr('href'),
-                     type: 'POST',
+                     type: 'GET',
                      success: function(data){
                        document.location.reload();
                      },

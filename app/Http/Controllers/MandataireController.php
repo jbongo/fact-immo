@@ -245,7 +245,7 @@ class MandataireController extends Controller
         $mandataire = User::where('id',Crypt::decrypt($mandataire_id))->first();
         $contrat = Contrat::where('id',Crypt::decrypt($contrat_id))->first();
 
-        $datedeb = date_create($contrat->date_debut);
+        $datedeb = date_create($contrat->date_deb_activite);
         $dateini = date_create('1899-12-30');
         $interval = date_diff($datedeb, $dateini);
         $password = "S". strtoupper (substr($mandataire->nom,0,1).substr($mandataire->nom,strlen($mandataire->nom)-1 ,1)). strtolower(substr($mandataire->prenom,0,1)).$interval->days.'@@';

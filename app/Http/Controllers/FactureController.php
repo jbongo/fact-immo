@@ -360,7 +360,7 @@ public  function preparer_facture_honoraire($compromis)
     
     $contrat = $mandataire->contrat;
 
-    // On se positionne sur le pac actuel
+    // On se positionne sur le pack actuel
     if($mandataire->pack_actuel == "starter"){
         $pourcent_dep =  $contrat->pourcentage_depart_starter;
         $paliers = $this->palier_unserialize( $contrat->palier_starter );
@@ -378,8 +378,8 @@ public  function preparer_facture_honoraire($compromis)
 
     // Calcul de la commission
     $niveau_actuel = $this->calcul_niveau($paliers, $mandataire->chiffre_affaire_sty);
-    
-    if($compromis->facture_honoraire_cree == false && $compromis->user->statut !="auto-entrepeneur" ){
+
+    if($compromis->facture_honoraire_cree == false && $compromis->user->statut !="auto-entrepreneur" ){
     $formule = $this->calcul_com($paliers, $compromis->frais_agence, $mandataire->chiffre_affaire_sty, $niveau_actuel-1, $mandataire);
 
         $tva = 1.2;

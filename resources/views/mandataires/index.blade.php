@@ -27,6 +27,7 @@
                                 <thead>
                                     <tr>
                                         <th>@lang('Nom')</th>
+                                        <th>@lang('Statut')</th>
                                         <th>@lang('Email')</th>
                                         <th>@lang('Téléphone')</th>
                                         <th>@lang('Adresse')</th>
@@ -42,6 +43,9 @@
 
                                         <td>
                                         {{$mandataire->nom}} {{$mandataire->prenom}}
+                                        </td>
+                                        <td>
+                                        {{$mandataire->statut}} 
                                         </td>
                                         <td style="color: #32ade1; text-decoration: underline;">
                                         <strong>{{$mandataire->email}}</strong> 

@@ -180,7 +180,7 @@ class CompromisController extends Controller
         if($request->partage == "Non"  || ($request->partage == "Oui" &&  $request->je_porte_affaire == "Oui" ) ){
             if($request->numero_mandat != $compromis->numero_mandat){
                 $request->validate([
-                    'numero_mandat' => 'required|unique:compromis',
+                    'numero_mandat' => 'required|numeric|unique:compromis',
                 ]);
             }
             $compromis->est_partage_agent = $request->partage == "Non" ? false : true;
@@ -217,7 +217,7 @@ class CompromisController extends Controller
 
             if($request->numero_mandat_porte_pas != $compromis->numero_mandat_porte_pas){
                 $request->validate([
-                    'numero_mandat_porte_pas' => 'required|unique:compromis',
+                    'numero_mandat_porte_pas' => 'required|numeric|unique:compromis',
                 ]);
             }
 
@@ -249,7 +249,7 @@ class CompromisController extends Controller
         // dd($compromis);
         if($request->numero_mandat != $compromis->numero_mandat){
             $request->validate([
-                'numero_mandat' => 'required|unique:compromis',
+                'numero_mandat' => 'required|numeric|unique:compromis',
             ]);
         }
 

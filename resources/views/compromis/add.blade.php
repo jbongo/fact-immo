@@ -393,7 +393,7 @@ Ajout d'une affaire
                                         <div class="col-lg-4 col-md-4 col-sm-4">
                                             <div class="form-group">
                                                 <label for="numero_mandat">Numéro Mandat <span class="text-danger">*</span></label>
-                                                <input class="form-control" type="text" value="{{old('numero_mandat')}}" id="numero_mandat" name="numero_mandat" required>
+                                                <input class="form-control" type="number" min="10000" max="99999" value="{{old('numero_mandat')}}" id="numero_mandat" name="numero_mandat" required>
                                             </div>
                                             @if ($errors->has('numero_mandat'))
                                                 <br>

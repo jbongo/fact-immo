@@ -467,7 +467,7 @@ Affaire
                                                 <div class="form-group row" id="parrain-id">
                                                     <label class="col-lg-8 col-form-label" for="numero_mandat">Numéro Mandat</label>
                                                     <div class="col-lg-8">
-                                                        <input type="text" class="form-control" id="numero_mandat" value="{{ $compromis->numero_mandat}}" name="numero_mandat" required>
+                                                        <input type="number" min="10000" max="99999" class="form-control" id="numero_mandat" value="{{ $compromis->numero_mandat}}" name="numero_mandat" required>
                                                     </div>
                                                     @if ($errors->has('numero_mandat'))
                                                     <br>
