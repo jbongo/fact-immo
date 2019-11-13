@@ -36,13 +36,13 @@
                                             <div class="form-group row">
                                                 <label class="col-lg-4 col-form-label" for="forfait_administratif">Forfait administratif (€)<span class="text-danger">*</span></label>
                                                 <div class="col-lg-4">
-                                                    <input type="number" class="form-control" min="1" value="175" id="forfait_administratif" name="forfait_administratif" required>
+                                                    <input type="number" class="form-control" min="0" value="175" id="forfait_administratif" name="forfait_administratif" required>
                                                 </div>
                                             </div>
                                             <div class="form-group row">
                                                 <label class="col-lg-4 col-form-label" for="forfait_carte_pro">Attestation de collaborateur (€)<span class="text-danger">*</span></label>
                                                 <div class="col-lg-4">
-                                                    <input type="number" class="form-control" min="1" value="50" id="forfait_carte_pro" name="forfait_carte_pro" required>
+                                                    <input type="number" class="form-control" min="0" value="50" id="forfait_carte_pro" name="forfait_carte_pro" required>
                                                 </div>
                                             </div>
                                             <div class="form-group row">
@@ -84,7 +84,7 @@
                                             <div class="form-group row">
                                                 <label class="col-lg-4 col-form-label" for="ca_depart">Chiffre d'affaires de depart<span class="text-danger">*</span></label>
                                                 <div class="col-lg-4">
-                                                    <input type="number" min="0" class="form-control" value="0" id="ca_depart" name="ca_depart" required>
+                                                    <input type="number" min="0" step="0.1" class="form-control" value="0" id="ca_depart" name="ca_depart" required>
                                                 </div>
                                             </div>
                                             
@@ -93,7 +93,7 @@
                                             <div class="form-group row">
                                                 <label class="col-lg-4 col-form-label" for="ca_depart_sty">Chiffre d'affaires rapporté à stylimmo<span class="text-danger">*</span></label>
                                                 <div class="col-lg-4">
-                                                    <input type="number" min="0" class="form-control" value="0" id="ca_depart_sty" name="ca_depart_sty" required>
+                                                    <input type="number" min="0" step="0.1" class="form-control" value="0" id="ca_depart_sty" name="ca_depart_sty" required>
                                                 </div>
                                             </div>
                                             
@@ -132,13 +132,13 @@
                                         <div class="form-group row" id="max-starter-parrent">
                                             <label class="col-lg-6 col-md-6 col-sm-6 col-form-label" for="duree_max_starter">Durée maximum du pack Starter<span class="text-danger">*</span></label>
                                             <div class="col-lg-4 col-md-4 col-sm-4 ">
-                                                <input type="number" class="form-control" id="duree_max_starter" name="duree_max_starter" min="1" max="48" value="7" required>
+                                                <input type="number" class="form-control" id="duree_max_starter" name="duree_max_starter" min="0" value="7" required>
                                             </div>
                                         </div>
                                         <div class="form-group row">
                                             <label class="col-lg-6 col-form-label" for="duree_gratuite_starter">Durée de la gratuitée (mois)<span class="text-danger">*</span></label>
                                             <div class="col-lg-4 col-md-4 col-sm-4 ">
-                                                <input type="number" class="form-control" id="duree_gratuite_starter" name="duree_gratuite_starter" min="0" max="48" value="4" required>
+                                                <input type="number" class="form-control" id="duree_gratuite_starter" name="duree_gratuite_starter" min="0" value="4" required>
                                             </div>
                                         </div>
                                     </div>
@@ -215,7 +215,7 @@
                                         <div class="form-group row">
                                             <label class="col-lg-6 col-form-label" for="duree_gratuite_expert">Durée de la gratuitée (mois)<span class="text-danger">*</span></label>
                                             <div class="col-lg-4 col-md-4 col-sm-4 ">
-                                                <input type="number" class="form-control" id="duree_gratuite_expert" name="duree_gratuite_expert" min="0" max="48" value="4" required>
+                                                <input type="number" class="form-control" id="duree_gratuite_expert" name="duree_gratuite_expert" min="0" value="4" required>
                                             </div>
                                         </div>
                                     </div>
@@ -303,7 +303,7 @@
                                                             <div class="form-group row">
                                                                 <label class="col-lg-6 col-md-6 col-sm-6 col-form-label" for="a_soustraitre">A soustraire (%)</label>
                                                                 <div class="col-lg-4 col-md-4 col-sm-4 ">
-                                                                    <input class="form-control" type="number" min="0" value="10" max="15" step="0.10" id="a_soustraitre" name="a_soustraitre" required>
+                                                                    <input class="form-control" type="number" min="0" value="10"  step="0.10" id="a_soustraitre" name="a_soustraitre" required>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -388,7 +388,7 @@
                                         <div class="form-group row" id="max-starter-parrent">
                                             <label class="col-lg-6 col-md-6 col-sm-6 col-form-label col-form-label" for="prime_max_forfait">Prime forfaitaire si le parrain est à 100% (€)<span class="text-danger">*</span></label>
                                             <div class="col-lg-4 col-md-4 col-sm-4">
-                                                <input type="number" class="form-control" id="prime_max_forfait" name="prime_max_forfait" min="1" value="200" required>
+                                                <input type="number" class="form-control" id="prime_max_forfait" name="prime_max_forfait" min="0" value="200" required>
                                             </div>
                                         </div>
                                     </div>

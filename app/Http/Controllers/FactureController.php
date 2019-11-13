@@ -196,22 +196,7 @@ public  function valider_facture_stylimmo( Request $request, $compromis)
     $tva = 1.2;
     // $numero = 1507;
     $facture = Facture::where([ ['type','stylimmo'],['compromis_id',$compromis->id]])->first();
-    // $nb_numeros_facture = Facture::where([ ['type','stylimmo']])->select('numero')->count();
-    
-    // if($nb_numeros_facture > 0){
-    //     $numeros_facture = Facture::where([ ['type','stylimmo']])->select('numero')->get()->toArray();
-    //     $numeros = array();
 
-    //     foreach ($numeros_facture as $num) {
-    //         $numeros[] = $num["numero"];
-    //     }
-
-    //     $numero = max($numeros)+1;
-    // }
-
-    // dd($numeros_facture);
-    
-    // dd($numero);
 
     // Si la facture n'est pas déjà crée
     if ($facture == null) {
@@ -380,7 +365,9 @@ public  function preparer_facture_honoraire($compromis)
     $niveau_actuel = $this->calcul_niveau($paliers, $mandataire->chiffre_affaire_sty);
 
     if($compromis->facture_honoraire_cree == false && $compromis->user->statut !="auto-entrepreneur" ){
-    $formule = $this->calcul_com($paliers, $compromis->frais_agence, $mandataire->chiffre_affaire_sty, $niveau_actuel-1, $mandataire);
+    
+        $montant_vnt_ht = ($compromis->frais_agence - $compromis->frais_agence * 0.2) ; 
+        $formule = $this->calcul_com($paliers, $montant_vnt_ht, $mandataire->chiffre_affaire_sty, $niveau_actuel-1, $mandataire);
 
         $tva = 1.2;
         $facture = Facture::create([
@@ -501,7 +488,9 @@ public  function preparer_facture_honoraire_partage($compromis)
     if($compromis->je_porte_affaire == 1 && $compromis->est_partage_agent == 1 && Auth()->user()->id == $compromis->user_id){
         // facture du mandataire qui porte l'affaire
         if($compromis->facture_honoraire_partage_porteur_cree == false ){
-        $formule = $this->calcul_com($paliers, $compromis->frais_agence*$pourcentage_partage/100, $mandataire->chiffre_affaire_sty, $niveau_actuel-1, $mandataire);
+            $montant_vnt_ht = ($compromis->frais_agence - $compromis->frais_agence * 0.2) ;
+
+            $formule = $this->calcul_com($paliers, $montant_vnt_ht*$pourcentage_partage/100, $mandataire->chiffre_affaire_sty, $niveau_actuel-1, $mandataire);
 
             $tva = 1.2;
         
@@ -534,7 +523,8 @@ public  function preparer_facture_honoraire_partage($compromis)
 // facture du mandataire qui ne porte pas l'affaire
     else{
         if($compromis->facture_honoraire_partage_cree == false ){
-            $formule = $this->calcul_com($paliers, $compromis->frais_agence*$pourcentage_partage/100, $mandataire->chiffre_affaire_sty, $niveau_actuel-1, $mandataire);
+            $montant_vnt_ht = ($compromis->frais_agence - $compromis->frais_agence * 0.2) ;
+            $formule = $this->calcul_com($paliers, $montant_vnt_ht*$pourcentage_partage/100, $mandataire->chiffre_affaire_sty, $niveau_actuel-1, $mandataire);
 
             $tva = 1.2;
         
@@ -643,32 +633,31 @@ public function palier_unserialize($param)
     return $chunk;
 }
 
-
-public function calcul_com($palier, $montant_vnt, $ca, $niveau)
+// Calcul de la commission en fonction du palier, de la vente, du chiffre d'affaire styl et du niveau actuel
+public function calcul_com($palier, $montant_vnt_ht, $ca, $niveau)
 {
 
     $commission = 0;
     $tab = array();
-
+        // à partir du niveau actuell, on avance sur le palier
        for ($i=$niveau; $i<count($palier);$i++){
-           if ($ca + $montant_vnt <= ($palier[$i])[3] || $i == count($palier) - 1){
-               $commission += ($montant_vnt / 100) * ($palier[$i])[1];
-               $tab[] = array($montant_vnt,($palier[$i])[1]);
+           if ($ca + $montant_vnt_ht <= ($palier[$i])[3] || $i == count($palier) - 1){
+               $commission += ($montant_vnt_ht / 100) * ($palier[$i])[1];
+               $tab[] = array($montant_vnt_ht,($palier[$i])[1]);
                break;
            }
            else {
                $diff = ($palier[$i])[3] - $ca;
                $commission += ($diff / 100) * ($palier[$i])[1];
-               $montant_vnt -= $diff;
+               $montant_vnt_ht -= $diff;
 
                $tab[] = array($diff,($palier[$i])[1]);
             
                echo("Ajout à la commission:". ($diff / 100) * ($palier[$i])[1]);
-               echo("reste:". $montant_vnt);
+               echo("reste:". $montant_vnt_ht);
                $ca += $diff;
            }
        }
-    //    dd($commission);
 
     $tabs = array($tab,$commission);
     return $tabs;
