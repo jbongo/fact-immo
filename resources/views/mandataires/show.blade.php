@@ -74,8 +74,12 @@
                                                     <span class="contact-website">{{$mandataire->pays}}</span>
                                                 </div>
                                                 <div class="email-content">
-                                                   <span class="contact-title"><strong>Email:</strong></span>
+                                                   <span class="contact-title"><strong>Email Pro:</strong></span>
                                                    <span class="contact-email" style="color: #ff435c; text-decoration: underline;">{{$mandataire->email}}</span>
+                                                </div>
+                                                <div class="email-content">
+                                                    <span class="contact-title"><strong>Email Perso:</strong></span>
+                                                    <span class="contact-email" style="color: #ff435c; text-decoration: underline;">{{$mandataire->email_perso}}</span>
                                                 </div>
                                              </div>
                                              <div class="basic-information">

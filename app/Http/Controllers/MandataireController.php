@@ -189,21 +189,48 @@ class MandataireController extends Controller
      */
     public function update(Request $request, User $mandataire)
     {
-        // dd($mandataire);
+     
         if($request->email == $mandataire->email){
-            $request->validate([
-                'statut' => 'required|string',
-                'nom' => 'required|string|max:150',
-                'prenom' => 'required|string',
-            ]);
+            
+            if($request->email_perso == $mandataire->email_perso){
+
+                $request->validate([
+                    'statut' => 'required|string',
+                    'nom' => 'required|string|max:150',
+                    'prenom' => 'required|string',
+                ]);
+            }
+            else{
+                $request->validate([
+                    'statut' => 'required|string',
+                    'nom' => 'required|string|max:150',
+                    'prenom' => 'required|string',
+                    'email_perso' => 'required|email|unique:users',
+
+                ]);
+            }
         }else{
-            $request->validate([
-                'statut' => 'required|string',
-                'nom' => 'required|string|max:150',
-                'prenom' => 'required|string',
-                'email' => 'required|email|unique:users',
-            ]);
+
+            if($request->email_perso == $mandataire->email_perso){
+                $request->validate([
+                    'statut' => 'required|string',
+                    'nom' => 'required|string|max:150',
+                    'prenom' => 'required|string',
+                    'email' => 'required|email|unique:users',
+                ]);
+            }
+            else{
+                $request->validate([
+                    'statut' => 'required|string',
+                    'nom' => 'required|string|max:150',
+                    'prenom' => 'required|string',
+                    'email' => 'required|email|unique:users',
+                    'email_perso' => 'required|email|unique:users',
+                ]);
+            }
+
         }
+
         
         $mandataire->civilite = $request->civilite; 
         $mandataire->nom = $request->nom; 
@@ -216,6 +243,7 @@ class MandataireController extends Controller
         $mandataire->statut = $request->statut; 
         $mandataire->siret = $request->siret; 
         $mandataire->email = $request->email; 
+        $mandataire->email_perso = $request->email_perso; 
         $mandataire->adresse = $request->adresse; 
         $mandataire->complement_adresse = $request->compl_adresse; 
 

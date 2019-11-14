@@ -94,9 +94,9 @@ Modifier mandataire {{$mandataire->nom}}
                          </div>
        
                          <div class="form-group row">
-                            <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="val-email">Email <span class="text-danger">*</span></label>
+                            <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="val-email">Email pro <span class="text-danger">*</span></label>
                             <div class="col-lg-8 col-md-8 col-sm-8">
-                               <input type="text" class="form-control {{ $errors->has('email') ? ' is-invalid' : '' }}" id="val-email" value="{{old('email')? old('email') : $mandataire->email}}" name="email" placeholder="Email.." required>
+                               <input type="email" class="form-control {{ $errors->has('email') ? ' is-invalid' : '' }}" id="val-email" value="{{old('email')? old('email') : $mandataire->email}}" name="email" placeholder="Email.." required>
                                @if ($errors->has('email'))
                                <br>
                                <div class="alert alert-warning ">
@@ -105,6 +105,18 @@ Modifier mandataire {{$mandataire->nom}}
                                @endif
                             </div>
                          </div>
+                         <div class="form-group row">
+                              <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="val-email_perso">Email perso<span class="text-danger">*</span></label>
+                              <div class="col-lg-8 col-md-8 col-sm-8">
+                                 <input type="email" class="form-control {{ $errors->has('email_perso') ? ' is-invalid' : '' }}" id="val-email_perso" value="{{old('email_perso')? old('email_perso') : $mandataire->email_perso}}" name="email_perso" placeholder="Email.." required>
+                                 @if ($errors->has('email_perso'))
+                                 <br>
+                                 <div class="alert alert-warning ">
+                                    <strong>{{$errors->first('email_perso')}}</strong> 
+                                 </div>
+                                 @endif
+                              </div>
+                           </div>
                          <div class="form-group row">
                               <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="siret">Numero siret </label>
                               <div class="col-lg-8 col-md-8 col-sm-8">
