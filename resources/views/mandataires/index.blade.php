@@ -59,8 +59,8 @@
                                         <td>
                                             {{$mandataire->ville}}   
                                         </td>                                        
-                                        <td>                                             
-                                            <span class="color-success">{{$mandataire->commission}} %</span>
+                                        <td @if($mandataire->contrat== null) style="background:#757575; color:white" @endif>                                             
+                                            <span class="color-success" >@if($mandataire->contrat!= null) {{$mandataire->commission}} % @else Pas de contrat @endif</span>
                                         </td>
                                         <td>                                             
                                             <span class="color-warning">{{number_format($mandataire->chiffre_affaire,2,'.',' ')}} €</span>
