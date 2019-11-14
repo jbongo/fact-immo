@@ -486,7 +486,6 @@ Affaire
                                                 </div>
                                             </div>
                                             
-                                            
                                         </div>
     
                                 </div>
@@ -520,9 +519,19 @@ Affaire
                                                     <label class="col-lg-8 col-form-label" for="charge_qui">Charge </label>
                                                     <div class="col-lg-8">
                                                         <select class="col-lg-6 form-control" id="charge_qui" name="charge"  >
-                                                            <option value="{{ $compromis->charge}}">{{ $compromis->charge}}</option>
-                                                            <option  value="Vendeur" >Vendeur</option>
-                                                            <option  value="Acquereur" >Acquereur</option>
+                                                            @php
+                                                                if ($compromis->charge == "Vendeur"){
+                                                                    $premier = "Vendeur";
+                                                                    $deuxieme = "Acquereur";
+                                                                }
+                                                                else{
+                                                                    $premier = "Acquereur";
+                                                                    $deuxieme = "Vendeur";
+                                                                }
+                                                            @endphp
+                                                    
+                                                            <option  value="{{$premier}}" >{{$premier}}</option>
+                                                            <option  value="{{$deuxieme}}" >{{$deuxieme}}</option>
                                                         </select>
                                                     </div>
                                                 </div>

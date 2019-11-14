@@ -82,7 +82,7 @@
                                         </div>
                                         <div class="col-lg-6 col-md-6 col-sm-6">
                                             <div class="form-group row">
-                                                <label class="col-lg-4 col-form-label" for="ca_depart">Chiffre d'affaires de depart<span class="text-danger">*</span></label>
+                                                <label class="col-lg-4 col-form-label" for="ca_depart">Chiffre d'affaires de depart HT<span class="text-danger">*</span></label>
                                                 <div class="col-lg-4">
                                                     <input type="number" min="0" class="form-control" value="0" id="ca_depart" name="ca_depart" required>
                                                 </div>
@@ -91,7 +91,7 @@
                                         </div>
                                         <div class="col-lg-6 col-md-6 col-sm-6">
                                             <div class="form-group row">
-                                                <label class="col-lg-4 col-form-label" for="ca_depart_sty">Chiffre d'affaires rapporté à stylimmo<span class="text-danger">*</span></label>
+                                                <label class="col-lg-4 col-form-label" for="ca_depart_sty">Chiffre d'affaires rapporté à stylimmo HT<span class="text-danger">*</span></label>
                                                 <div class="col-lg-4">
                                                     <input type="number" min="0" class="form-control" value="0" id="ca_depart_sty" name="ca_depart_sty" required>
                                                 </div>
@@ -376,7 +376,7 @@
                                                         </div>
                                                         <div class="col-lg-6-col-md-6 col-sm-6">
                                                             <div class="form-group row">
-                                                                <label class="col-lg-6 col-md-6 col-sm-6 col-form-label" for="chiffre_affaire">Chiffre d'affaires (€) </label>
+                                                                <label class="col-lg-6 col-md-6 col-sm-6 col-form-label" for="chiffre_affaire">Chiffre d'affaires HT (€) </label>
                                                                 <div class="col-lg-4 col-md-4 col-sm-4 ">
                                                                     <input class="form-control" type="number" min="0" value="{{$modele->chiffre_affaire_mini}}" id="chiffre_affaire" name="chiffre_affaire" required>
                                                                 </div>

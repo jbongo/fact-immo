@@ -390,17 +390,20 @@ Ajout d'une affaire
 
                                     <div class="row">
 
-                                        <div class="col-lg-4 col-md-4 col-sm-4">
-                                            <div class="form-group">
-                                                <label for="numero_mandat">Numéro Mandat <span class="text-danger">*</span></label>
-                                                <input class="form-control" type="number" min="10000" max="99999" value="{{old('numero_mandat')}}" id="numero_mandat" name="numero_mandat" required>
-                                            </div>
-                                            @if ($errors->has('numero_mandat'))
-                                                <br>
-                                                <div class="alert alert-warning ">
-                                                    <strong>{{$errors->first('numero_mandat')}}</strong> 
+                                        <div class="col-lg-4 col-md-4 col-sm-4" >
+                                            <div id="div_numero_mandat">
+
+                                                <div class="form-group">
+                                                    <label for="numero_mandat">Numéro Mandat <span class="text-danger">*</span></label>
+                                                    <input class="form-control" type="number" min="10000" max="99999" value="{{old('numero_mandat')}}" id="numero_mandat" name="numero_mandat" required>
                                                 </div>
-                                            @endif
+                                                @if ($errors->has('numero_mandat'))
+                                                    <br>
+                                                    <div class="alert alert-warning ">
+                                                        <strong>{{$errors->first('numero_mandat')}}</strong> 
+                                                    </div>
+                                                @endif
+                                            </div>
                                         </div>
 
                                         <div class="col-lg-4 col-md-4 col-sm-4">
@@ -445,14 +448,14 @@ Ajout d'une affaire
 
                                         <div class="col-lg-4 col-md-4 col-sm-4">
                                             <div class="form-group">
-                                                <label for="net_vendeur">Net Vendeur <span class="text-danger">*</span></label>
-                                                <input class="form-control" type="number" value="{{old('net_vendeur')}}" id="net_vendeur" name="net_vendeur" required>
+                                                <label for="net_vendeur">Net Vendeur TTC<span class="text-danger">*</span></label>
+                                                <input class="form-control" min="0" step="0.1" type="number" value="{{old('net_vendeur')}}" id="net_vendeur" name="net_vendeur" required>
                                             </div>
                                         </div>
                                         <div class="col-lg-4 col-md-4 col-sm-4">
                                             <div class="form-group">
-                                                <label for="frais_agence">Frais d'agence <span class="text-danger">*</span> </label>
-                                                <input class="form-control" min="0" type="number" value="{{old('frais_agence')}}" id="frais_agence" name="frais_agence" required>
+                                                <label for="frais_agence">Frais d'agence TTC <span class="text-danger">*</span> </label>
+                                                <input class="form-control" min="0" step="0.1" type="number" value="{{old('frais_agence')}}" id="frais_agence" name="frais_agence" required>
                                             </div>
                                         </div>
 
@@ -588,11 +591,11 @@ $('#je_porte_affaire').change(function(){
         $('#div_pourcentage_agent').hide();*/
         $('#div_partage_non_porte_alert').show();
         $('#div_partage_porte_alert').hide();
-        if($('#hors_reseau').val() == "Non"){
+        if($('#hors_reseau').val() == "Oui"){
             $('#label_partage_name').html($('#nom_agent').val());
 
         }else{
-            $('#label_partage_name').html($('#agent_id')[0].innerText);
+            $('#label_partage_name').html($("#agent_id").children("option:selected").data('tokens'));
 
         }
         
@@ -600,9 +603,9 @@ $('#je_porte_affaire').change(function(){
         <div id="sous_div_mandat_partage">                        
             
             <div class="form-group">
-                <label class="col-lg-8 col-md-8 col-sm-8" for="numero_mandat_porte_pas">Numéro Mandat <span class="text-danger">*</span></label>
+                <label class="col-lg-8 col-md-8 col-sm-8"  for="numero_mandat_porte_pas">Numéro Mandat <span class="text-danger">*</span></label>
                 <div class="col-lg-6 col-md-6 col-sm-6 ">
-                    <input class="form-control" type="text" value="{{old('numero_mandat_porte_pas')}}" id="numero_mandat_porte_pas" name="numero_mandat_porte_pas" required>
+                    <input class="form-control" type="number" min="10000" max="99999" value="{{old('numero_mandat_porte_pas')}}" id="numero_mandat_porte_pas" name="numero_mandat_porte_pas" required>
                 </div>
             </div>
             @if ($errors->has('numero_mandat_porte_pas'))
@@ -622,20 +625,21 @@ $('#je_porte_affaire').change(function(){
    }
 });
 
-
+$("#agent_id").change(function(){
+        
+    $('#label_partage_name').html($("#agent_id").children("option:selected").data('tokens'));
+})
 
 $("#hors_reseau").change(function(){
     if($('#hors_reseau').val() == "Non"){
         $('#div_agent_hors_reseau').hide();
         $('#div_agent_reseau').show();
-        $('#label_partage_name').html($('#agent_id')[0].innerText);
-
+        $('#label_partage_name').html($("#agent_id").children("option:selected").data('tokens'));
 
     }else{
         $('#div_agent_hors_reseau').show();
         $('#div_agent_reseau').hide();
         $('#label_partage_name').html($('#nom_agent').val());
-
 
     }
 });
@@ -648,13 +652,29 @@ $("#hors_reseau").change(function(){
 
 $('#je_porte_affaire').change(function(){
     if( $('#je_porte_affaire').is(':checked') ){
+      
+              
+        $('#div_numero_mandat').html(`
+        
+            <div class="form-group">
+                <label for="numero_mandat">Numéro Mandat <span class="text-danger">*</span></label>
+                <input class="form-control" type="number" min="10000" max="99999" value="{{old('numero_mandat')}}" id="numero_mandat" name="numero_mandat" required>
+            </div>
+            @if ($errors->has('numero_mandat'))
+                <br>
+                <div class="alert alert-warning ">
+                    <strong>{{$errors->first('numero_mandat')}}</strong> 
+                </div>
+            @endif
+     
+        `);
        
     }else{
  
         $('#description_bien').val(" ");
         $('#civilite_vendeur').val(" ");
         $('#civilite_acquereur').val(" ");
-        $('#numero_mandat').val(" ");
+        $('#numero_mandat').remove();
         $('#date_mandat').val("2000-01-01");
         $('#net_vendeur').val(0)
         $('#frais_agence').val(0)
