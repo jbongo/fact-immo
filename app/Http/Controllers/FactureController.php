@@ -30,8 +30,8 @@ class FactureController extends Controller
         //
         if(auth()->user()->role == "admin"){
             $factureEmises = Facture::whereIn('type',['pack_pub','carte_visite','stylimmo'])->get();
-            $factureRecues = Facture::whereIn('type',['honoraire'])->get();
-
+            $factureRecues = Facture::whereIn('type',['honoraire','partage','parrainage'])->get();
+            
         }else{
             $factureEmises = Facture::where('user_id',auth()->user()->id)->whereIn('type',['honoraire'])->get();
             $factureRecues = Facture::where('user_id',auth()->user()->id)->whereIn('type',['pack_pub','carte_visite','stylimmo'])->get();
@@ -185,6 +185,7 @@ public  function valider_facture_stylimmo( Request $request, $compromis)
 {
     $request->validate([
         'numero' => 'required|numeric|unique:factures',
+        'date_facture' => 'required|date',
     ]);
     
     // dd($request->numero);
@@ -208,6 +209,7 @@ public  function valider_facture_stylimmo( Request $request, $compromis)
             "encaissee"=> false,
             "montant_ht"=>  round ($compromis->frais_agence/$tva ,2),
             "montant_ttc"=> $compromis->frais_agence,
+            "date_facture"=> $request->date_facture,
 
         ]);
         // $compromis->facture_honoraire_cree = true;
@@ -366,18 +368,21 @@ public  function preparer_facture_honoraire($compromis)
 
     if($compromis->facture_honoraire_cree == false && $compromis->user->statut !="auto-entrepreneur" ){
     
-        $montant_vnt_ht = ($compromis->frais_agence - $compromis->frais_agence * 0.2) ; 
+        $montant_vnt_ht = ($compromis->frais_agence/1.2) ; 
         $formule = $this->calcul_com($paliers, $montant_vnt_ht, $mandataire->chiffre_affaire_sty, $niveau_actuel-1, $mandataire);
-
+        
         $tva = 1.2;
+        $montant_ht = round ( $formule[1] ,2) ;
+        $montant_ttc = round ($montant_ht*$tva,2);
+
         $facture = Facture::create([
             "numero"=> null,
             "user_id"=> $mandataire->id,
             "compromis_id"=> $compromis->id,
             "type"=> "honoraire",
             "encaissee"=> false,
-            "montant_ht"=>  round ( ($formule[1])/$tva ,2),
-            "montant_ttc"=> round( $formule[1],2),
+            "montant_ht"=>   round($montant_ht,2),
+            "montant_ttc"=> round($montant_ttc,2),
             "formule" => serialize($formule)
         ]);
         
@@ -386,25 +391,29 @@ public  function preparer_facture_honoraire($compromis)
         $compromis->update();
         // on incremente le chiffre d'affaire et on modifie s'il le faut le pourcentage
         $mandataire->chiffre_affaire += $formule[1];
-        $mandataire->chiffre_affaire_sty += $compromis->frais_agence;
+        $mandataire->chiffre_affaire_sty += $compromis->frais_agence/1.2;
         $niveau = $this->calcul_niveau($paliers, $mandataire->chiffre_affaire_sty );
         $mandataire->commission = $paliers[$niveau-1][1];
         $mandataire->update();
 
-        }else{
+        }
+        elseif($compromis->facture_honoraire_cree == false && $compromis->user->statut =="auto-entrepreneur"){
+            $facture = null;
+            $formule = null;
+        }
+        else{
             $facture = Facture::where([ ['type','honoraire'],['compromis_id',$compromis->id]])->first();
             $formule = unserialize( $facture->formule);
         }
+        
  
 
     $factureStylimmo = Facture::where([ ['type','stylimmo'],['compromis_id',$compromis->id]])->first();
-
-
     return view ('facture.preparer_honoraire',compact(['compromis','mandataire','facture','factureStylimmo','formule']));
     
 }
 
-// Préparation de la facture d'honoraire du parrain
+// Préparation de la facture d'honoraire du parrain  / *************revoir pour ajouter la formule de calcul par niveau***************
 public  function preparer_facture_honoraire_parrainage($compromis)
 {
     
@@ -417,6 +426,7 @@ public  function preparer_facture_honoraire_parrainage($compromis)
     
     if($compromis->facture_honoraire_parrainage_cree == false ){
         $tva = 1.2;
+        
         $facture = Facture::create([
             "numero"=> null,
             "user_id"=> $parrain_id['parrain_id'],
@@ -443,9 +453,8 @@ public  function preparer_facture_honoraire_parrainage($compromis)
 
 
 // Préparation de la facture d'honoraire pour le partage (le mandataire qui ne porte pas l'affaire)
-public  function preparer_facture_honoraire_partage($compromis)
+public  function preparer_facture_honoraire_partage($compromis,$mandataire_id = null)
 {
-    
     $compromis = Compromis::where('id', Crypt::decrypt($compromis))->first();
 
     if($compromis->je_porte_affaire == 1 && $compromis->est_partage_agent == 1 && Auth()->user()->id == $compromis->user_id){
@@ -459,6 +468,7 @@ public  function preparer_facture_honoraire_partage($compromis)
         $mandataire = User::where('id',$compromis->agent_id)->first();
         $pourcentage_partage = 100 - $compromis->pourcentage_agent;    
     }
+    
 
    
     // $factureHonoraire = Facture::where([ ['type','honoraire'],['compromis_id',$compromis->id]])->first();   
@@ -488,11 +498,13 @@ public  function preparer_facture_honoraire_partage($compromis)
     if($compromis->je_porte_affaire == 1 && $compromis->est_partage_agent == 1 && Auth()->user()->id == $compromis->user_id){
         // facture du mandataire qui porte l'affaire
         if($compromis->facture_honoraire_partage_porteur_cree == false ){
-            $montant_vnt_ht = ($compromis->frais_agence - $compromis->frais_agence * 0.2) ;
+            $montant_vnt_ht = ($compromis->frais_agence/1.2) ;
 
             $formule = $this->calcul_com($paliers, $montant_vnt_ht*$pourcentage_partage/100, $mandataire->chiffre_affaire_sty, $niveau_actuel-1, $mandataire);
 
             $tva = 1.2;
+            $montant_ht = round ( $formule[1] ,2) ;
+            $montant_ttc = round ($montant_ht*$tva,2);
         
             $facture = Facture::create([
                 "numero"=> null,
@@ -500,8 +512,8 @@ public  function preparer_facture_honoraire_partage($compromis)
                 "compromis_id"=> $compromis->id,
                 "type"=> "partage",
                 "encaissee"=> false,
-                "montant_ht"=>  round ( $formule[1]/$tva,2),
-                "montant_ttc"=> round ( $formule[1],2),
+                "montant_ht"=>  $montant_ht,
+                "montant_ttc"=> $montant_ttc,
                 "formule" => serialize($formule)
             ]);   
             
@@ -511,31 +523,36 @@ public  function preparer_facture_honoraire_partage($compromis)
 
             // on incremente le chiffre d'affaire et on modifie s'il le faut le pourcentage
             $mandataire->chiffre_affaire += $formule[1];
-            $mandataire->chiffre_affaire_sty += $compromis->frais_agence*$pourcentage_partage/100;
+            $mandataire->chiffre_affaire_sty += ($compromis->frais_agence/1.2)*$pourcentage_partage/100;
             $niveau = $this->calcul_niveau($paliers, $mandataire->chiffre_affaire_sty );
             $mandataire->commission = $paliers[$niveau-1][1];
             $mandataire->update();
+            
         }else{
-            $facture = Facture::where([ ['type','partage'],['user_id',$mandataire->id],['compromis_id',$compromis->id]])->first();
+          
+                $facture = Facture::where([ ['type','partage'],['user_id',$mandataire->id],['compromis_id',$compromis->id]])->first();
+         
             $formule = unserialize( $facture->formule);
         }
     }
 // facture du mandataire qui ne porte pas l'affaire
     else{
         if($compromis->facture_honoraire_partage_cree == false ){
-            $montant_vnt_ht = ($compromis->frais_agence - $compromis->frais_agence * 0.2) ;
+            $montant_vnt_ht = ($compromis->frais_agence/1.2) ;
             $formule = $this->calcul_com($paliers, $montant_vnt_ht*$pourcentage_partage/100, $mandataire->chiffre_affaire_sty, $niveau_actuel-1, $mandataire);
 
             $tva = 1.2;
-        
+            $montant_ht = round ( $formule[1] ,2) ;
+            $montant_ttc = round ($montant_ht*$tva,2);
+
             $facture = Facture::create([
                 "numero"=> null,
                 "user_id"=> $mandataire->id,
                 "compromis_id"=> $compromis->id,
                 "type"=> "partage",
                 "encaissee"=> false,
-                "montant_ht"=>  round ( $formule[1]/$tva,2),
-                "montant_ttc"=> round ( $formule[1],2),
+                "montant_ht"=>  $montant_ht,
+                "montant_ttc"=> $montant_ttc,
                 "formule" => serialize($formule)
             ]);   
             
@@ -545,12 +562,20 @@ public  function preparer_facture_honoraire_partage($compromis)
 
             // on incremente le chiffre d'affaire et on modifie s'il le faut le pourcentage
             $mandataire->chiffre_affaire += $formule[1];
-            $mandataire->chiffre_affaire_sty += $compromis->frais_agence*$pourcentage_partage/100;
+            $mandataire->chiffre_affaire_sty += ($compromis->frais_agence/1.2)*$pourcentage_partage/100;
             $niveau = $this->calcul_niveau($paliers, $mandataire->chiffre_affaire_sty );
             $mandataire->commission = $paliers[$niveau-1][1];
             $mandataire->update();
         }else{
-            $facture = Facture::where([ ['type','partage'],['user_id',$mandataire->id],['compromis_id',$compromis->id]])->first();
+            if($mandataire_id == null){
+                $facture = Facture::where([ ['type','partage'],['user_id',$mandataire->id],['compromis_id',$compromis->id]])->first();
+
+            }else{
+            
+                $facture = Facture::where([ ['type','partage'],['user_id',$mandataire_id],['compromis_id',$compromis->id]])->first();
+
+            }
+
             $formule = unserialize( $facture->formule);
         }
 
@@ -567,39 +592,84 @@ public  function preparer_facture_honoraire_partage($compromis)
         
 //  on doit verifier que facture_honoraire_cree est false avant les modifsxxxxxxxxxxxxxxxxxxxxxxxxxxx
 // If faut creer la facture avec champs nb_mois_deduis en +
-       
-        $compromis = Compromis::where('id', Crypt::decrypt($compromis))->first();
-        $mandataire = $compromis->user;
-        if($compromis->facture_honoraire_cree == false && $mandataire->nb_mois_pub_restant > 0 && $compromis->user->statut !="independant"){
-            $tva = 1.2;
-            $facture = Facture::create([
-                "numero"=> null,
-                "user_id"=> $mandataire->id,
-                "compromis_id"=> $compromis->id,
-                "type"=> "honoraire",
-                "encaissee"=> false,
-                "montant_ht"=>  round ( ($compromis->frais_agence*$mandataire->commission/100 )/$tva ,2),
-                "montant_ttc"=> round( $compromis->frais_agence*$mandataire->commission/100,2),
-                "nb_mois_deduis"=> $request->nb_mois_deduire,
-            ]);
-            $mandataire->nb_mois_pub_restant -= $request->nb_mois_deduire;
-            $mandataire->update();
-            
-            $compromis->facture_honoraire_cree = true;
-            $compromis->update();
-        }else{
-            $facture = Facture::where([ ['type','honoraire'],['compromis_id',$compromis->id]])->first();
-        }
-        
-        $factureStylimmo = Facture::where([ ['type','stylimmo'],['compromis_id',$compromis->id]])->first();
 
-        
 
-        // $facture = Facture::where([ ['type','honoraire'],['compromis_id',$compromis->id]])->first();
-  
-        return view ('facture.preparer_honoraire',compact(['compromis','mandataire','facture','factureStylimmo']));
-        
+    $compromis = Compromis::where('id', Crypt::decrypt($compromis))->first();
+    $mandataire = $compromis->user;
+
+    $contrat = $mandataire->contrat;
+
+    // On se positionne sur le pack actuel
+    if($mandataire->pack_actuel == "starter"){
+        $pourcent_dep =  $contrat->pourcentage_depart_starter;
+        $paliers = $this->palier_unserialize( $contrat->palier_starter );
+    }else{
+        $pourcent_dep =  $contrat->pourcentage_depart_expert;
+        $paliers = $this->palier_unserialize( $contrat->palier_expert );
     }
+
+    // on modifie le palier pour ajouter le % de depart dans la colonne des % (palier[1])
+    $p = $pourcent_dep ;
+    for($i = 0 ; $i <count($paliers); $i++) {
+        $p += $paliers[$i][1];
+        $paliers[$i][1] = $p; 
+    }
+
+    // Calcul de la commission
+    $niveau_actuel = $this->calcul_niveau($paliers, $mandataire->chiffre_affaire_sty);
+
+    if($compromis->facture_honoraire_cree == false && $mandataire->nb_mois_pub_restant > 0 && $compromis->user->statut !="independant"){
+        $tva = 1.2;
+        $montant_vnt_ht = ($compromis->frais_agence/$tva) ; 
+      
+        $formule = $this->calcul_com($paliers, $montant_vnt_ht, $mandataire->chiffre_affaire_sty, $niveau_actuel-1, $mandataire);
+        // on deduis maintenant le montant des nb mois de pub
+        $montant_ht = round ( ($formule[1] - ($contrat->packpub->tarif * $request->nb_mois_deduire) ) ,2) ;
+        $montant_ttc = round ($montant_ht*$tva,2);
+
+        $facture = Facture::create([
+            "numero"=> null,
+            "user_id"=> $mandataire->id,
+            "compromis_id"=> $compromis->id,
+            "type"=> "honoraire",
+            "encaissee"=> false,
+            "montant_ht"=>  $montant_ht,  
+            "montant_ttc"=> $montant_ttc,
+            "formule" => serialize($formule),
+            "nb_mois_deduis"=> $request->nb_mois_deduire,
+        ]);
+        $mandataire->nb_mois_pub_restant -= $request->nb_mois_deduire;
+        $mandataire->update();
+        
+        $compromis->facture_honoraire_cree = true;
+        $compromis->update();
+    }else{
+        $facture = Facture::where([ ['type','honoraire'],['compromis_id',$compromis->id]])->first();
+        $formule = unserialize( $facture->formule);
+
+
+    }
+
+
+
+
+    $compromis->facture_honoraire_cree = true;
+    $compromis->update();
+    // on incremente le chiffre d'affaire et on modifie s'il le faut le pourcentage
+    $mandataire->chiffre_affaire += $formule[1];
+    $mandataire->chiffre_affaire_sty += $compromis->frais_agence/1.2; // revoir cette partie, faut t-il utiliser le ht ou ttc des frais agence ?
+    $niveau = $this->calcul_niveau($paliers, $mandataire->chiffre_affaire_sty );
+    $mandataire->commission = $paliers[$niveau-1][1];
+    $mandataire->update();
+
+
+    $factureStylimmo = Facture::where([ ['type','stylimmo'],['compromis_id',$compromis->id]])->first();
+
+    // $facture = Facture::where([ ['type','honoraire'],['compromis_id',$compromis->id]])->first();
+
+    return view ('facture.preparer_honoraire',compact(['compromis','mandataire','facture','formule','factureStylimmo']));
+        
+}
 
 
      //    ######## FACTURE PAC PUB

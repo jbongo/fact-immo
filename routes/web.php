@@ -37,7 +37,7 @@ Route::middleware('auth')->group(function(){
     Route::post('/compromis/update/{compromis}','CompromisController@update')->name('compromis.update');
     Route::delete('/compromis/delete/{compromis}','CompromisController@destroy')->name('compromis.delete');
     Route::delete('/compromis/archive/{compromis}','CompromisController@archive')->name('compromis.archive');
-    Route::post('/compromis/cloturer/{compromis}','CompromisController@cloturer')->name('compromis.cloturer');
+    Route::get('/compromis/cloturer/{compromis}','CompromisController@cloturer')->name('compromis.cloturer');
 
     // demandes factures stylimmo
     
@@ -58,7 +58,7 @@ Route::middleware('auth')->group(function(){
     //  factures honoraire
     Route::get('preparer/factures-honoraire/{compromis}','FactureController@preparer_facture_honoraire')->name('facture.preparer_facture_honoraire');//ok
     Route::get('preparer/factures-honoraire-parrainage/{compromis}','FactureController@preparer_facture_honoraire_parrainage')->name('facture.preparer_facture_honoraire_parrainage');//ok
-    Route::get('preparer/factures-honoraire-partage/{compromis}','FactureController@preparer_facture_honoraire_partage')->name('facture.preparer_facture_honoraire_partage');//ok
+    Route::get('preparer/factures-honoraire-partage/{compromis}/{mandataire_id?}','FactureController@preparer_facture_honoraire_partage')->name('facture.preparer_facture_honoraire_partage');//ok
     Route::post('deduire-pub/factures-honoraire/{compromis}','FactureController@deduire_pub_facture_honoraire')->name('facture.deduire_pub_facture_honoraire');//ok
     // Route::get('generer/pdf/factures-honoraire/','FactureController@generer_pdf_facture_honoraire')->name('facture.pdf.generer_facture_honoraire');
     // Facture d'avoir

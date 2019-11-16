@@ -8,6 +8,7 @@ class Facture extends Model
 {
     //
     protected $guarded =[];
+    protected $dates =['date_facture'];
 
     public function compromis()
     {

@@ -23,7 +23,7 @@ Affaire
                 @if ($compromis->demande_facture == 0 && (  ($compromis->est_partage_agent == 1 && $compromis->je_porte_affaire == 1) ||  ($compromis->est_partage_agent == 0) )  )
                     <a class="btn btn-danger btn-flat btn-addon btn-sm m-b-10 m-l-5 submit" href="{{route('facture.demander_facture', Crypt::encrypt($compromis->id) )}}"><i class="ti-file"></i>Demander Facture stylimmo</a>
                 @endif
-                @if ($compromis->demande_facture < 2 )
+                @if ($compromis->demande_facture < 2 ||  auth::user()->role =="admin" )
                 <a class="btn btn-success btn-flat btn-addon btn-sm m-b-10 m-l-5  " id="modifier_compromis"><i class="ti-pencil-alt"></i>Modifier le compromis</a>
                 @endif
             

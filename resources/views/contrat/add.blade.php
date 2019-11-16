@@ -1,7 +1,7 @@
 @extends('layouts.app') 
 @section('content') 
 @section ('page_title') 
-    Infos du contrat 
+    Ajouter le contrat de <span class="color-warning"> {{$mandataire->nom}} {{$mandataire->prenom}}</span> 
 @endsection
 <div class="row">
     <div class="col-lg-12">

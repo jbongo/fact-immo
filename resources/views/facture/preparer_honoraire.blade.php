@@ -105,7 +105,7 @@
          </tr>
          <tr>
             <td style="width: 48px;">&nbsp;</td>
-            <td style="width: 428px;"><span style="text-decoration: underline;"><strong>Frais agence:</strong></span>&nbsp;&nbsp;&nbsp;&nbsp; <span style="color:mediumblue"> {{$compromis->frais_agence}} €</td>
+            <td style="width: 428px;"><span style="text-decoration: underline;"><strong>Frais agence:</strong></span>&nbsp;&nbsp;&nbsp;&nbsp; <span style="color:mediumblue"> {{number_format($compromis->frais_agence,'2','.',' ')}} €</td>
             <td style="width: 391px; height:35px"></td>
         </tr>
         <tr>
@@ -154,20 +154,14 @@
         <tr>
             <td style="width: 400px;">&nbsp;</td>
             <td style="width: 153px; color:rebeccapurple">{{$key+1}} &nbsp; :</td>
-            <td style="width: 231px;">{{$formu[0]}} &euro; * {{$formu[1]/100}}</td>
+            <td style="width: 231px;">{{number_format($formu[0],'2','.',' ')}} &euro; * {{$formu[1]/100}}</td>
         </tr>
         @endforeach
         
         <tr>
             <td style="width: 400px;">&nbsp; </td>
             <td style="width: 153px;"><hr style="border-top: 1px solid red;">TOTAL H.T :</td>
-            <td style="width: 231px;"><hr style="border-top: 1px solid red;">{{$facture->montant_ht}} &euro;</td>
-        </tr>
-        <tr><td>&nbsp;</td> <td>&nbsp;</td> </tr>
-        <tr>
-            <td style="width: 400px;">&nbsp;</td>
-            <td style="width: 153px;">T.V.A 20% :</td>
-            <td style="width: 231px;">{{$facture->montant_ttc - $facture->montant_ht}} &euro;</td>
+            <td style="width: 231px;"><hr style="border-top: 1px solid red;">{{number_format($facture->montant_ht,'2','.',' ')}} &euro;</td>
         </tr>
         <tr><td>&nbsp;</td> <td>&nbsp;</td> </tr>
 
@@ -179,17 +173,41 @@
        @php $montant_pub_deduis = $facture->nb_mois_deduis * $mandataire->contrat->packpub->tarif @endphp
         <tr>
             <td style="width: 400px;">&nbsp;</td>
+            <td style="width: 355px; color:#dc3545">(Jetons déjà déduis : {{number_format($montant_pub_deduis,'2','.',' ')}} &euro;)</td>
+            <td style="width: 31px; ">&nbsp;</td>
+        </tr>
+        @endif
+        <tr><td>&nbsp;</td> <td>&nbsp;</td> </tr>
+        @if(($facture->user->chiffre_affaire >= 35200 && $facture->user->statut == "auto-entrepreneur") || $facture->user->statut!="auto-entrepreneur") )
+        <tr>
+            <td style="width: 400px;">&nbsp;</td>
+            <td style="width: 153px;">T.V.A 20% :</td>
+            <td style="width: 231px;">{{number_format($facture->montant_ttc - $facture->montant_ht,'2','.',' ')}} &euro;</td>
+        </tr>
+        @endif
+
+        @php
+         $montant_pub_deduis =  0;   
+        @endphp
+
+    @if ($facture->nb_mois_deduis > 0)
+        @php $montant_pub_deduis = $facture->nb_mois_deduis * $mandataire->contrat->packpub->tarif @endphp
+        <tr>
+            <td style="width: 400px;">&nbsp;</td>
             <td style="width: 153px;">Jetons déduis :</td>
-            <td style="width: 231px;">- {{$montant_pub_deduis}} &euro;</td>
+            <td style="width: 231px;">- {{ number_format($montant_pub_deduis, 2, '.', ' ') }} &euro;</td>
         </tr>
         @endif
        
         <tr><td>&nbsp;</td> <td>&nbsp;</td> </tr>
+        @if(($facture->user->chiffre_affaire >= 35200 && $facture->user->statut == "auto-entrepreneur") || $facture->user->statut!="auto-entrepreneur") )
+
         <tr>
             <td style="width: 400px;">&nbsp;</td>
             <td style="width: 153px;">TOTAL T.T.C:</td>
-            <td style="width: 231px;">{{$facture->montant_ttc - $montant_pub_deduis}} &euro;</td>
+            <td style="width: 231px;">{{number_format($facture->montant_ttc,'2','.',' ')}} &euro;</td>
         </tr>
+        @endif
     </tbody>
 </table>
 <br>
@@ -198,7 +216,13 @@
     <tbody>
         <tr style="height: 25px;">
             <td style="width: 349px; height: 25px;">Valeur en votre aimable r&egrave;glement de :</td>
-            <td style="width: 117px; height: 25px;">{{round($facture->montant_ttc - $montant_pub_deduis ,2)}} &euro; TTC</td>
+            @if(($facture->user->chiffre_affaire >= 35200 && $facture->user->statut == "auto-entrepreneur") || $facture->user->statut!="auto-entrepreneur") )
+
+            <td style="width: 117px; height: 25px;">{{number_format($facture->montant_ttc - $montant_pub_deduis ,2,'.',' ')}} &euro; TTC</td>
+            @else 
+            <td style="width: 117px; height: 25px;">{{number_format($facture->montant_ht - $montant_pub_deduis ,2,'.',' ')}} &euro; HT</td>
+
+            @endif
             <td style="width: 177px; height: 25px;"></td>
         </tr>
     </tbody>

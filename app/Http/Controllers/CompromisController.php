@@ -311,5 +311,6 @@ class CompromisController extends Controller
         $compromis->cloture_affaire = true;
         $compromis->update();
 
+        return redirect()->route('compromis.index')->with('ok', __("Affaire cloturée (mandat $compromis->numero_mandat)  "));
     }
 }

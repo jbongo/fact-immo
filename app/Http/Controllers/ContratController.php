@@ -62,9 +62,9 @@ class ContratController extends Controller
         //
         $parrains = User::where([['role','mandataire'], ['id','<>', Crypt::decrypt($user_id)]])->get();
         $modele = Contrat::where('est_modele',true)->first();
-
+        $mandataire = User::where('id', Crypt::decrypt($user_id))->first();
         $packs_pub = Packpub::all();
-        return view ('contrat.add', compact(['parrains','user_id','packs_pub','modele']));
+        return view ('contrat.add', compact(['parrains','user_id','packs_pub','modele','mandataire']));
     }
 
     /**
@@ -105,8 +105,18 @@ class ContratController extends Controller
         $contrat->forfait_carte_pro = $request->forfait_carte_pro;
         $contrat->date_entree = $request->date_entree;
         $contrat->date_deb_activite = $request->date_debut;
-        $contrat->ca_depart = $request->ca_depart;
-        $contrat->ca_depart_sty = $request->ca_depart_sty;
+        if($contrat->ca_depart != $request->ca_depart){
+
+            $contrat->user->chiffre_affaire = $contrat->user->chiffre_affaire - $contrat->ca_depart + $request->ca_depart;
+            $contrat->ca_depart = $request->ca_depart;
+            $contrat->user->update();
+        }
+        if($contrat->ca_depart_sty != $request->ca_depart_sty){
+            $contrat->user->chiffre_affaire_sty = $contrat->user->chiffre_affaire_sty - $contrat->ca_depart_sty + $request->ca_depart_sty;
+            $contrat->ca_depart_sty = $request->ca_depart_sty;
+            $contrat->user->update();
+        }
+        
         
         $contrat->est_demarrage_starter = $request->est_starter == "true" ? true : false;
         

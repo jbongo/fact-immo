@@ -1,7 +1,7 @@
 <table style="width: 50%">
         <tbody>
             <tr>
-                <td style="width: 482px;"><img src="https://www.stylimmo.com/images/logo.jpg" alt="" width="219" height="114" /></td>
+                <td style="width: 450px;"><img src="https://www.stylimmo.com/images/logo.jpg" alt="" width="279" height="144" /></td>
                 <td style="width: 437px;">
                     @if ($compromis->charge == "Vendeur")
                         @if ($compromis->civilite_vendeur == "M." || $compromis->civilite_vendeur == "Mme")
@@ -34,7 +34,7 @@
         <tbody>
             <tr>
                 <td style="width: 216px;">Bagnols sur C&egrave;ze, le</td>
-                <td style="width: 194px;">{{Carbon\Carbon::now()->format('d/m/Y')}}</td>
+                <td style="width: 194px;">@if($facture->date_facture != null) {{$facture->date_facture->format('d/m/Y')}} @else{{$facture->created_at->format('d/m/Y')}}  @endif</td>
             </tr>
         </tbody>
     </table>
@@ -107,17 +107,17 @@
             <tr>
                 <td style="width: 400px;">&nbsp;</td>
                 <td style="width: 153px;">TOTAL H.T :</td>
-                <td style="width: 231px;">{{number_format($compromis->frais_agence - $compromis->frais_agence*0.2,2,'.',' ')}} &euro;</td>
+                <td style="width: 231px;">{{number_format($facture->montant_ht,2,'.',' ')}} &euro;</td>
             </tr>
             <tr>
                 <td style="width: 400px;">&nbsp;</td>
                 <td style="width: 153px;">T.V.A 20% :</td>
-                <td style="width: 231px;">{{number_format($compromis->frais_agence * 0.2,2,'.',' ')}} &euro;</td>
+                <td style="width: 231px;">{{number_format($facture->montant_ht * 0.2,2,'.',' ')}} &euro;</td>
             </tr>
             <tr>
                 <td style="width: 400px;">&nbsp;</td>
                 <td style="width: 153px;">TOTAL T.T.C:</td>
-                <td style="width: 231px;">{{number_format($compromis->frais_agence,2,'.',' ')}} &euro;</td>
+                <td style="width: 231px;">{{number_format($facture->montant_ttc,2,'.',' ')}} &euro;</td>
             </tr>
         </tbody>
     </table>
@@ -128,7 +128,7 @@
             <tr style="height: 25px;">
                 <td style="width: 349px; height: 25px;">Valeur en votre aimable r&egrave;glement de :</td>
                 <td style="width: 117px; height: 25px;">{{number_format($compromis->frais_agence,2,'.',' ')}} &euro; TTC</td>
-                <td style="width: 177px; height: 25px;"><span style="color: #ff0000; font-size:20px">&nbsp;R&eacute;f &agrave; rappeler: {{$facture->numero}}</span></td>
+                <td style="width: 177px; height: 25px;"><span style="color: #ff0000; font-size:15px">&nbsp;R&eacute;f &agrave; rappeler: {{$facture->numero}}</span></td>
             </tr>
         </tbody>
     

@@ -2,7 +2,7 @@
 
 @section('content')
    @section ('page_title')
-      Note honoraire <span class="color-danger">(commission agence / partage)</span> | {{$mandataire->nom}} {{$mandataire->prenom}}
+      Note honoraire <span class="color-danger">(commission agence / partage)</span> | {{$facture->user->nom}} {{$facture->user->prenom}}
    @endsection
 <div class="row"> 
        
@@ -88,28 +88,34 @@
             <td style="width: 423px;"><span style="text-decoration: underline;"><strong>R&eacute;f.</strong></span><strong>:&nbsp;</strong>&nbsp; Mandat N&deg;&nbsp; {{$compromis->numero_mandat}}&nbsp; du : {{ Carbon\Carbon::parse($compromis->date_mandat)->format('d/m/Y')}}</td>
             <td style="width: 260px;height:35px"></td>
         </tr>
+        @if(auth::user()->role !="admin")       
         <tr>
             <td style="width: 423px;"><span style="text-decoration: underline;"><strong>Mandataire avec qui je partage:</strong> </span> &nbsp; {{$mandataire_partage->nom}} {{$mandataire_partage->prenom}}&nbsp;</td>
             <td style="width: 260px;height:35px"></td>
         </tr>
+        @endif
         <tr>
             <td style="width: 423px;"><span style="text-decoration: underline;"><strong>Frais d'agence:</strong> </span> &nbsp; {{ number_format($compromis->frais_agence, 2, '.', ' ') }} € &nbsp;</td>
             <td style="width: 260px;height:35px"></td>
         </tr>
+            @if(auth::user()->role !="admin")
         <tr>
             <td style="width: 423px;"><span style="text-decoration: underline;"><strong>Mon pourcentage de partage:</strong> </span> &nbsp; {{$pourcentage_partage}} %&nbsp; soit ({{ number_format($compromis->frais_agence * $pourcentage_partage /100, 2, '.', ' ')  }} €) </td>
             <td style="width: 260px;height:35px"></td>
         </tr>
+        @endif
     </tbody>
 </table>
 <br>
 <table style="height: 66px; width: 50%">
     <tbody>
+            @if(auth::user()->role !="admin")
          <tr>
             <td style="width: 48px;">&nbsp;</td>
             <td style="width: 428px;"><span style="text-decoration: underline;"><strong>Commission:</strong></span>&nbsp;&nbsp;&nbsp;&nbsp; <span style="color:mediumblue"> {{$mandataire->commission}} %</td>
             <td style="width: 391px; height:35px"></td>
          </tr>
+         @endif
         <tr>
             <td style="width: 48px;">&nbsp;</td>
             <td style="width: 428px;"><span style="text-decoration: underline;"><strong>Vendeur:</strong></span> &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:mediumblue">
@@ -165,32 +171,48 @@
             <td style="width: 231px;"><hr style="border-top: 1px solid red;">{{ number_format($facture->montant_ht, 2, '.', ' ') }} &euro;</td>
         </tr>
         <tr><td>&nbsp;</td> <td>&nbsp;</td> </tr>
+
+        @if(($facture->user->chiffre_affaire >= 35200 && $facture->user->statut == "auto-entrepreneur") || $facture->user->statut!="auto-entrepreneur"))
+
         <tr>
             <td style="width: 400px;">&nbsp;</td>
             <td style="width: 153px;">T.V.A 20% :</td>
             <td style="width: 231px;">{{ number_format($facture->montant_ttc - $facture->montant_ht, 2, '.', ' ') }} &euro;</td>
         </tr>
         <tr><td>&nbsp;</td> <td>&nbsp;</td> </tr>
+        @endif
+
 
         @php
          $montant_pub_deduis =  0;   
         @endphp
 
-        @if ($facture->nb_mois_deduis > 0)
-       @php $montant_pub_deduis = $facture->nb_mois_deduis * $mandataire->contrat->packpub->tarif @endphp
+    @if ($facture->nb_mois_deduis > 0)
+        @php $montant_pub_deduis = $facture->nb_mois_deduis * $mandataire->contrat->packpub->tarif @endphp
         <tr>
             <td style="width: 400px;">&nbsp;</td>
             <td style="width: 153px;">Jetons déduis :</td>
             <td style="width: 231px;">- {{ number_format($montant_pub_deduis, 2, '.', ' ') }} &euro;</td>
         </tr>
         @endif
-       
+       @if(($facture->user->chiffre_affaire >= 35200 && $facture->user->statut == "auto-entrepreneur") || $facture->user->statut!="auto-entrepreneur"))
         <tr><td>&nbsp;</td> <td>&nbsp;</td> </tr>
         <tr>
             <td style="width: 400px;">&nbsp;</td>
             <td style="width: 153px;">TOTAL T.T.C:</td>
             <td style="width: 231px;">{{ number_format($facture->montant_ttc - $montant_pub_deduis, 2, '.', ' ') }} &euro;</td>
         </tr>
+        @endif
+        @if(($facture->user->chiffre_affaire < 35200 && $facture->user->statut == "auto-entrepreneur") || $facture->user->statut!="auto-entrepreneur"))
+        <tr>
+            <td style="width: 400px;">&nbsp;</td>
+            <td style="width: 353px; color:brown">Vous n'êtes pas soumis à la TVA </td>
+            <td style="width: 31px;"></td>
+        </tr>
+        <tr><td>&nbsp;</td> <td>&nbsp;</td> </tr>
+
+        @endif
+
     </tbody>
 </table>
 <br>
@@ -199,7 +221,15 @@
     <tbody>
         <tr style="height: 25px;">
             <td style="width: 349px; height: 25px;">Valeur en votre aimable r&egrave;glement de :</td>
-            <td style="width: 117px; height: 25px;">{{  number_format($facture->montant_ttc - $montant_pub_deduis, 2, '.', ' ')  }} &euro; TTC</td>
+                @if(($facture->user->chiffre_affaire >= 35200 && $facture->user->statut == "auto-entrepreneur") || $facture->user->statut!="auto-entrepreneur"))
+                    <td style="width: 117px; height: 25px;">{{  number_format($facture->montant_ttc- $montant_pub_deduis, 2, '.', ' ')  }} &euro; TTC</td>
+
+                @else 
+
+                    <td style="width: 117px; height: 25px;">{{  number_format($facture->montant_ht- $montant_pub_deduis, 2, '.', ' ')  }} &euro; HT</td>
+
+                @endif
+
             <td style="width: 177px; height: 25px;"></td>
         </tr>
     </tbody>

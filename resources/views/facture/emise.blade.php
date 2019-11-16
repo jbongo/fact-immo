@@ -13,6 +13,7 @@
                                     <tr>
                                        
                                         <th>@lang('Numéro Facture')</th>
+                                        <th>@lang('Numéro Mandat')</th>
                                         @if(auth()->user()->role == "admin")
                                         <th>@lang('Mandataire')</th>
                                         @endif
@@ -38,6 +39,9 @@
                                     <tr>
                                         <td width="" >
                                             <label class="color-info">{{$facture->numero}} </label> 
+                                        </td>
+                                        <td width="" >
+                                            <label class="color-info">{{$facture->compromis->numero_mandat}} </label> 
                                         </td>
                                         @if(auth()->user()->role == "admin")
                                         <td width="" >

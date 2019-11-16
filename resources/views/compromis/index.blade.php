@@ -135,7 +135,7 @@
                 $('[data-toggle="tooltip"]').tooltip('hide')
                     $.ajax({                        
                         url: that.attr('href'),
-                        type: 'POST',
+                        type: 'GET',
                         success: function(data){
                        document.location.reload();
                      },

@@ -1,7 +1,7 @@
 @extends('layouts.app') 
 @section('content') 
 @section ('page_title') 
-   Modifer le contrat 
+   Modifer le contrat de <span class="color-warning"> {{$contrat->user->nom}} {{$contrat->user->prenom}}</span>
 @endsection
 <div class="row">
     <div class="col-lg-12">

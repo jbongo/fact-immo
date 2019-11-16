@@ -131,7 +131,7 @@
                                                 <span><i class="ti-money f-s-48 color-white"></i></span>
                                             </div>
                                             <div class="media-body media-text-right">
-                                                <h4>{{$mandataire->chiffre_affaire}}€</h4>
+                                                <h4>{{number_format($mandataire->chiffre_affaire,2,'.',' ')}}€</h4>
                                                 <h5>Chiffre d'affaires</h5>
                                             </div>
                                         </div>
@@ -284,7 +284,7 @@
                                                                 <div class="form-group row">
                                                                     <label class="col-lg-4 col-form-label" for="ca_depart">Chiffre d'affaires de depart<span class="text-danger">*</span></label>
                                                                     <div class="col-lg-4">
-                                                                        <label class="color-primary">{{$mandataire->contrat->ca_depart}}</label>                                                                        
+                                                                        <label class="color-primary">{{number_format($mandataire->contrat->ca_depart,2,'.',' ')}} €</label>                                                                        
                                                                     </div>
                                                                 </div>
                                                                 
@@ -373,8 +373,8 @@
                                                                                                     <tr  @if ($pal[0] == $niveau_starter) style="background-color:linen" @endif>
                                                                                                         <th class="color-primary" scope="row">{{$pal[0]}}</th>
                                                                                                         <td>{{$pal[1]}}</td>
-                                                                                                        <td>{{$pal[2]}}</td>
-                                                                                                        <td>{{$pal[3]}}</td>
+                                                                                                        <td>{{number_format($pal[2],2,'.',' ')}} €</td>
+                                                                                                        <td>{{number_format($pal[3],2,'.',' ')}} €</td>
                                                                                                     </tr>
                                                                                                 @endforeach
                                                                                                 </tbody>
@@ -468,8 +468,8 @@
                                                                                                     <tr @if ($pal[0] == $niveau_expert) style="background-color:linen" @endif>
                                                                                                         <th class="color-primary" scope="row">{{$pal[0]}}</th>
                                                                                                         <td>{{$pal[1]}}</td>
-                                                                                                        <td>{{$pal[2]}}</td>
-                                                                                                        <td>{{$pal[3]}}</td>
+                                                                                                        <td>{{number_format($pal[2],2,'.',' ') }} €</td>
+                                                                                                        <td>{{number_format($pal[3],2,'.',' ') }} €</td>
                                                                                                     </tr>
                                                                                                 @endforeach
                                                                                                 </tbody>

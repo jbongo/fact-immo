@@ -13,6 +13,7 @@
                                     <tr>
                                        
                                         <th>@lang('Numéro Facture')</th>
+                                        <th>@lang('Numéro Mandat')</th>
                                         @if(auth()->user()->role == "admin")
                                         <th>@lang('Mandataire')</th>
                                         @endif
@@ -27,7 +28,7 @@
                                         <th>@lang('Encaissement')</th>
                                         @endif --}}
 
-                                        <th>@lang('Télécharger')</th>
+                                        <th>@lang('Facture')</th>
 
                                     </tr>
                                 </thead>
@@ -37,6 +38,9 @@
                                     <tr>
                                         <td width="" >
                                             <label class="color-info">{{$facture->numero}} </label> 
+                                        </td>
+                                        <td width="" >
+                                            <label class="color-info">{{$facture->compromis->numero_mandat}} </label> 
                                         </td>
                                         @if(auth()->user()->role == "admin")
                                         <td width="" >
@@ -105,7 +109,18 @@
                                         </td>
                                         @endif --}}
                                         <td width="" >
-                                            <a href="{{route('facture.telecharger_pdf_facture_stylimmo', Crypt::encrypt($facture->compromis->id))}}"  class="btn btn-warning btn-flat btn-addon  m-b-10 m-l-5 " id="ajouter"><i class="ti-download"></i>Télécharger</a>
+                                            @if(auth::user()->role=="admin")
+                                                @if ($facture->compromis->je_porte_affaire == 0  || $facture->compromis->agent_id == auth::user()->id || ($facture->compromis->je_porte_affaire == 1 && $facture->compromis->est_partage_agent == 1) )
+                                                <a target="blank" href="{{route('facture.preparer_facture_honoraire_partage',[Crypt::encrypt($facture->compromis->id), $facture->user_id ])}}" data-toggle="tooltip" title="@lang('Note honoraire  ')"><i class="large material-icons color-danger">insert_drive_file</i></a> 
+
+                                                @else 
+                                                <a target="blank" href="{{route('facture.preparer_facture_honoraire',Crypt::encrypt($facture->compromis->id))}}" data-toggle="tooltip" title="@lang('Note honoraire  ')"><i class="large material-icons color-danger">insert_drive_file</i></a> 
+                                                    
+                                                @endif
+                                                @else
+                                                <a href="{{route('facture.telecharger_pdf_facture_stylimmo', Crypt::encrypt($facture->compromis->id))}}"  class="btn btn-warning btn-flat btn-addon  m-b-10 m-l-5 " id="ajouter"><i class="ti-download"></i>Télécharger</a>
+
+                                            @endif
                                         </td> 
                                     </tr> 
                                

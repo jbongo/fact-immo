@@ -34,7 +34,7 @@ Demande de facture  | {{ substr($compromis->description_bien,0,150) }}...
                         <div class="col-lg-4 col-md-4 col-sm-4">
                             <div class="form-group">
                                 <label for="date_vente">Confirmez la date exacte de vente <span class="text-danger">*</span></label>
-                                <input class="form-control" type="date"  id="date_vente" name="date_vente" @if($compromis->date_vente != null) value="{{$compromis->date_vente->format('Y-m-d')}} @endif" required >
+                                <input class="form-control" type="date"  id="date_vente" name="date_vente" @if($compromis->date_vente != null) value="{{$compromis->date_vente->format('Y-m-d')}}" @endif required >
                             </div>
                         </div>
                     </div>

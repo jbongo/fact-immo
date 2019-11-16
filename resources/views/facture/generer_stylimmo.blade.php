@@ -30,19 +30,40 @@ Valider la facture {{$numero}}
             @else
             <div class="col-lg-4 col-md-4  col-sm-5 ml-auto">
                 <form action="{{route('facture.valider_facture_stylimmo', Crypt::encrypt($compromis->id))}}" method="get">
-                        <label for="numero">Modifier le numéro facture :</label>
-                    <div class="form-group row ">
-                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">  <input class="form-control " style="height:35px; border-color:royalblue" type="number" name="numero" id="numero" value="{{$numero}}" required> </div>
-                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6"> <button  class="btn btn-default btn-flat btn-addon  " id="ajouter"><i class="ti-check"></i>Valider la facture</button></div>
-                        @if ($errors->has('numero'))
-                        <br>
-                        <div class="alert alert-warning ">
-                           <strong>{{$errors->first('numero')}}</strong> 
+                        <div class="row">
+                            <div class="  col-lg-4 col-md-4 col-sm-6 col-xs-6">
+                                <label for="numero">Numéro facture :</label>
+                            </div>
+                            <div class=" col-lg-4 col-md-4 col-sm-6 col-xs-6">
+                                <label for="numero">Date facture :</label>
+                            </div>
                         </div>
-                        @endif     
+                    
+                    <div class="row">
+                        <div class="form-group  col-lg-4 col-md-4 col-sm-6 col-xs-6">
+                            <div class="">  <input class="form-control " style="height:35px; border-color:royalblue" type="number" name="numero" id="numero" value="{{$numero}}" required> </div>
+                            @if ($errors->has('numero'))
+                            <br>
+                            <div class="alert alert-warning ">
+                            <strong>{{$errors->first('numero')}}</strong> 
+                            </div>
+                            @endif     
+                        </div>
+                        <div class="form-group col-lg-4 col-md-4 col-sm-6 col-xs-6">
+                            <div class="">  <input class="form-control " style="height:35px; border-color:royalblue" type="date" name="date_facture" id="date_facture"  required> </div>
+                            @if ($errors->has('date_facture'))
+                            <br>
+                            <div class="alert alert-warning ">
+                                <strong>{{$errors->first('date_facture')}}</strong> 
+                            </div>
+                            @endif     
+                        </div>
                     </div>
-                
-                
+                    <div class="form-group  ">
+                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
+                            <button  class="btn btn-default btn-flat btn-addon "  id="ajouter"><i class="ti-check"></i>Valider la facture</button>
+                        </div>
+                    </div>
                 </form>
                 
             </div>
@@ -81,14 +102,15 @@ Valider la facture {{$numero}}
         </tr>
     </tbody>
 </table>
-<table style="height: 91px; width: 20%">
+<br>
+{{-- <table style="height: 91px; width: 20%">
     <tbody>
         <tr>
             <td style="width: 216px;">Bagnols sur C&egrave;ze, le</td>
             <td style="width: 194px;">{{Carbon\Carbon::now()->format('d/m/Y')}}</td> 
         </tr>
     </tbody>
-</table>
+</table> --}}
 <table style="height: 53px;" width="50%">
     <tbody>
         <tr>
@@ -158,12 +180,12 @@ Valider la facture {{$numero}}
         <tr>
             <td style="width: 400px;">&nbsp;</td>
             <td style="width: 153px;">TOTAL H.T :</td>
-            <td style="width: 231px;">{{number_format($compromis->frais_agence - $compromis->frais_agence*0.2,2,'.',' ')}} &euro;</td>
+            <td style="width: 231px;">{{number_format($compromis->frais_agence/1.2 ,2,'.',' ')}} &euro;</td>
         </tr>
         <tr>
             <td style="width: 400px;">&nbsp;</td>
             <td style="width: 153px;">T.V.A 20% :</td>
-            <td style="width: 231px;">{{number_format($compromis->frais_agence * 0.2,2,'.',' ')}} &euro;</td>
+            <td style="width: 231px;">{{number_format(($compromis->frais_agence/1.2) *0.2,2,'.',' ')}} &euro;</td>
         </tr>
         <tr>
             <td style="width: 400px;">&nbsp;</td>

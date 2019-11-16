@@ -26,6 +26,7 @@ class CreateFactureTable extends Migration
             $table->string('url')->nullable();
             $table->text('formule')->nullable();
             $table->boolean('a_avoir')->default(false);
+            $table->date('date_facture')->nullable();
             $table->timestamps();
         });
     }
