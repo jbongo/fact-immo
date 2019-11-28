@@ -18,6 +18,7 @@ class CreateCompromisTable extends Migration
             $table->integer('user_id');
             $table->enum('type_affaire',['Vente','Location']);
             $table->text('description_bien')->nullable();
+            $table->text('code_postal_bien')->nullable();
             $table->string('ville_bien')->nullable();
 
             // Infos propriétaire / Vendeur

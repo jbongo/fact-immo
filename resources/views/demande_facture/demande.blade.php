@@ -20,12 +20,8 @@ Demande de facture  | {{ substr($compromis->description_bien,0,150) }}...
         <form class="form-valide3" action="{{route('facture.demander_facture', Crypt::encrypt($compromis->id) )}}" method="post">
                 {{ csrf_field() }}
 		<div class="card">
-			<div class="col-lg-10"> 
-                    <button id="demander_facture" class="btn btn-danger btn-flat btn-addon btn-sm m-b-10 m-l-5 submit" href="" ><i class="ti-file"></i>Demander Facture stylimmo</button>
-            </div>
+			
 
-
-            <br><br><hr>
 			<div class="card-body">
                 
                
@@ -39,7 +35,12 @@ Demande de facture  | {{ substr($compromis->description_bien,0,150) }}...
                         </div>
                     </div>
 
-
+                    <div class="col-lg-10"> 
+                        <button id="demander_facture" class="btn btn-danger btn-flat btn-addon btn-sm m-b-10 m-l-5 submit" href="" ><i class="ti-file"></i>Demander Facture stylimmo</button>
+                    <a class="btn btn-primary btn-flat btn-addon btn-sm m-b-10 m-l-5 submit" target="_blank" href="{{route('facture.generer_facture_stylimmo',Crypt::encrypt($compromis->id) )}}" ><i class="ti-file"></i>Prévisualiser Facture stylimmo</a>
+                    </div>
+                    <hr>
+    <br><br>
                 <div class="panel-body">
                     <fieldset class="col-md-12">
                         <legend>Vérifiez les informations ci-dessous</legend>

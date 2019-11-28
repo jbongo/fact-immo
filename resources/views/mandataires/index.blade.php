@@ -23,7 +23,7 @@
                                 <div class="panel-body">
 
                         <div class="table-responsive" style="overflow-x: inherit !important;">
-                            <table  id="example" class=" table student-data-table  m-t-20 "  style="width:100%">
+                            <table  id="example3" class=" table student-data-table  m-t-20 "  style="width:100%">
                                 <thead>
                                     <tr>
                                         <th>@lang('Nom')</th>
@@ -65,10 +65,11 @@
                                         <td>                                             
                                             <span class="color-warning">{{number_format($mandataire->chiffre_affaire_sty,2,'.',' ')}} €</span>
                                         </td>
-                                        <td width="10%">
+                                        <td width="13%">
                                             <span><a href="{{route('mandataire.show',Crypt::encrypt($mandataire->id) )}}" data-toggle="tooltip" title="@lang('Détails de ') {{ $mandataire->nom }}"><i class="large material-icons color-info">visibility</i></a> </span>
                                             <span><a href="{{route('mandataire.edit',Crypt::encrypt($mandataire->id) )}}" data-toggle="tooltip" title="@lang('Modifier ') {{ $mandataire->nom }}"><i class="large material-icons color-warning">edit</i></a></span>
-        
+                                            <span><a href="{{route('switch_user',Crypt::encrypt($mandataire->id) )}}" data-toggle="tooltip" title="@lang('Se connecter en tant que ') {{ $mandataire->nom }}"><i class="large material-icons color-warning">person_pin</i></a></span>
+                                            
                                         <span><a  href="{{route('mandataire.archive',[$mandataire->id,1])}}" class="delete" data-toggle="tooltip" title="@lang('Archiver ') {{ $mandataire->nom }}"><i class="large material-icons color-danger">delete</i> </a></span>
                                         </td>
                                     </tr>

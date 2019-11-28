@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Crypt;
 use App\Mail\CreationMandataire;
 use Illuminate\Support\Facades\Mail;
+use Auth;
 
 
 class MandataireController extends Controller
@@ -283,5 +284,44 @@ class MandataireController extends Controller
         return 1;
        
 
+    }
+
+    /**
+     * Switcher sur un mandataire étant admin.
+     *
+     * @param  int  $user_id
+     * @return \Illuminate\Http\Response
+     */
+    public function switch_user($user_id)
+    {
+       
+        $user = User::where('id',Crypt::decrypt($user_id))->first();
+        session(['is_switch'=> true]);
+        session(['admin_id'=> Auth::user()->id]);
+
+        Auth::login($user);
+        
+        return redirect('home');
+       
+
+    }
+
+    /**
+     * Switcher sur un mandataire étant admin.
+     *
+     * @param  int  $user_id
+     * @return \Illuminate\Http\Response
+     */
+    public function unswitch_user()
+    {
+       
+        $user = User::where('id',1)->first();
+        // dd($user);
+        Auth::login($user);
+        session(['is_switch'=> null]);
+        session(['admin_id'=> null]);
+        
+        return redirect('home');
+    
     }
 }

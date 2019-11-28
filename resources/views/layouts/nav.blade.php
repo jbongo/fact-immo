@@ -62,6 +62,10 @@
         </div>
         <div class="pull-right p-r-15">
             <ul>
+                
+                {{-- <li class="header-icon dib"><a href="" class="waves-effect waves-light btn red"> <span><i class="material-icons left">arrow_back</i> Retourner </span>  </a> 
+                    
+                </li> --}}
                 <li class="header-icon dib"><i class="ti-bell"></i>
                     <div class="drop-down">
                         <div class="dropdown-content-heading">
@@ -93,8 +97,13 @@
                         <div class="dropdown-content-body">
                             <ul>
                             <li><a href="{{route('mandataire.show',Crypt::encrypt(Auth()->user()->id) )}}"><i class="ti-user"></i> <span>Mon Profil</span></a></li>
-                                <li><a href="{{ route('logout') }}"  onclick="event.preventDefault();
-                     document.getElementById('logout-form').submit();" ><i class="ti-power-off"></i> <span>Se déconnecter</span></a></li>
+                            @if(session('is_switch') == true)
+                            <li ><a href="{{ route('unswitch_user') }}" class="btn btn-success"><i class="ti-arrow-left"></i> <span>Retour ADMIN</span></a>
+                            @endif
+                            </li>
+                            <li><a href="{{ route('logout') }}"  onclick="event.preventDefault();
+                                document.getElementById('logout-form').submit();" ><i class="ti-power-off"></i> <span>Se déconnecter</span></a>
+                            </li>
                             </ul>
                         </div>
                     </div>

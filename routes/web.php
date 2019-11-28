@@ -100,5 +100,10 @@ Route::middleware('auth')->group(function(){
     Route::get('test', function () {
         return view('email.creation_mandataire');
     });
+
+    // Se connecter sur une autre session utilisateur
+
+    Route::get('/switch/{user_id}','MandataireController@switch_user')->name('switch_user');
+    Route::get('/unswitch','MandataireController@unswitch_user')->name('unswitch_user');
 });
 

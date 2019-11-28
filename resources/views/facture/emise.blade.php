@@ -21,7 +21,7 @@
                                         <th>@lang('Montant HT ')</th>
                                         <th>@lang('Montant TTC ')</th>
                                         {{-- <th>@lang('Date Facture')</th> --}}
-                                        <th>@lang('Date règlement en banque')</th>
+                                        <th>@lang('Date de l\'acte')</th>
                                         {{-- @if(auth()->user()->role == "admin") --}}
                                         <th>@lang('Alerte payement')</th>
                                         @if(auth()->user()->role == "admin")

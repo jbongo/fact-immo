@@ -194,15 +194,24 @@ Affaire
                                 <div class="col-lg-6 col-md-6 col-sm-6">
                                     <div class="form-group ">
                                         <label class=" col-lg-7 col-md-7 col-sm-7 " for="description_bien">Description du bien<span class="text-danger">*</span></label>
-                                        <div class=" col-lg-7 col-md-7 col-sm-7 ">
-                                            <textarea class="form-control" name="description_bien" id="description_bien" cols="50" rows="5" required>{{ $compromis->description_bien }}</textarea>
+                                        <div class=" col-lg-12 col-md-12 col-sm-12 ">
+                                            <textarea class="form-control" maxlength="180" name="description_bien" id="description_bien" cols="50" rows="5" required>{{ $compromis->description_bien }}</textarea>
+                                            <span id="rchars" style="color:#2805B8">180</span> <span style="color:#2805B8"> Caractères restants </span>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="col-lg-3 col-md-3 col-sm-3">
+                                    <div class="form-group ">
+                                        <label class="col-lg-7 col-md-7 col-sm-7 " for="code_postal_bien">Code postal du bien  <span class="text-danger">*</span></label>
+                                        <div class="col-lg-12 col-md-12 col-sm-12 ">
+                                            <input class="form-control" type="text" value="{{$compromis->code_postal_bien}}" id="code_postal_bien" name="code_postal_bien" required >                                        
+                                        </div>
+                                    </div>                
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-3">
                                     <div class="form-group ">
                                         <label class="col-lg-7 col-md-7 col-sm-7 " for="ville_bien">Ville du bien <span class="text-danger">*</span></label>
-                                        <div class="col-lg-7 col-md-7 col-sm-7 ">
+                                        <div class="col-lg-12 col-md-12 col-sm-12 ">
                                             <input class="form-control" type="text" style='color=#FFFF00' value="{{ $compromis->ville_bien }}" id="ville_bien" name="ville_bien" required >                                        
                                         </div>
                                     </div>                
@@ -221,12 +230,16 @@ Affaire
                                     <div class="row">
                                         <div class="col-lg-4 col-md-4 col-sm-4">
                                             <div class="form-group row" id="parrain-id">
-                                                <label class="col-lg-8 col-form-label" for="civilite_vendeur">Civilité/Forme juridique</label>
-                                                <div class="col-lg-8">
-                                                    <select class="col-lg-6 form-control" id="civilite_vendeur" name="civilite_vendeur"  >
+                                                <label class="col-lg-12 col-md-12 col-sm-12col-form-label" for="civilite_vendeur">Civilité/Forme juridique</label>
+                                                <div class="col-lg-8 col-md-8 col-sm-8">
+                                                    <select class=" form-control" id="civilite_vendeur" name="civilite_vendeur"  >
                                                         <option value="{{ $compromis->civilite_vendeur}}">{{ $compromis->civilite_vendeur}}</option>
                                                         <option value="M.">M.</option>
                                                         <option value="Mme">Mme</option>
+                                                        <option value="MM.">MM.</option>
+                                                        <option value="Mmes">Mmes</option>
+                                                        <option value="M. et Mme">M. et Mme</option>
+                                                        <option value="MM. et Mmes">MM. et Mmes</option>
                                                         <option value="SCI">SCI</option>
                                                         <option value="SARL">SARL</option>
                                                         <option value="EURL">EURL</option>
@@ -261,52 +274,33 @@ Affaire
                                                 </div>
                                             </div>
                                         </div>
-                                        @if ($compromis->civilite_vendeur == "M." || $compromis->civilite_vendeur == "Mme")
-                                            
-                                       
-                                        <div class="col-lg-4 col-md-4 col-sm-4">
-                                            <div class="form-group row" id="parrain-id">
-                                                <label class="col-lg-8 col-form-label" for="nom_vendeur">Nom</label>
-                                                <div class="col-lg-8">
+
+                                        <div class="col-lg-8 col-md-8 col-sm-8">
+                                            <div class="form-group " id="parrain-id">
+                                                <label for="nom_vendeur">Nom(s) <span class="text-danger">*</span> <span style="color:red; font-size:12px">indiquer la raison sociale ou les noms et prénoms de tous les vendeurs (ex : Dupond Jean, Tamar Sarah)</span> </label>
+                                                <div class="">
                                                     <input type="text" class="form-control" id="nom_vendeur" style='color=red'  value="{{ $compromis->nom_vendeur}} "name="nom_vendeur" required>                                                    
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-lg-4 col-md-4 col-sm-4">
-                                            <div class="form-group row" id="parrain-id">
-                                                <label class="col-lg-8 col-form-label" for="prenom_vendeur">Prénom</label>
-                                                <div class="col-lg-8">
-                                                    <input type="text" class="form-control" id="prenom_vendeur" value="{{ $compromis->prenom_vendeur}}" name="prenom_vendeur" required>                                                    
-                                                </div>
-                                            </div>
-                                        </div>
-                                        
-                                        @else 
-
-                                        <div class="col-lg-4 col-md-4 col-sm-4">
-                                            <div class="form-group" id="div_raison_sociale_vendeur">
-                                                <label for="raison_sociale_vendeur">Raison sociale <span class="text-danger">*</span></label>
-                                                <input class="form-control" type="text" value="{{ $compromis->raison_sociale_vendeur}}" id="raison_sociale_vendeur" name="raison_sociale_vendeur"  required >                                           </div>
-                                        </div>
-
-                                        @endif
+                                       
         
                                     </div>
 
                                     <div class="row">
                                         <div class="col-lg-3 col-md-3 col-sm-3">
                                             <div class="form-group row" id="parrain-id">
-                                                <label class="col-lg-8 col-form-label" for="adresse1_vendeur">Adresse 1</label>
+                                                <label class="col-lg-8 col-form-label" for="adresse1_vendeur">Adresse </label>
                                                 <div class="col-lg-8">
-                                                    <input type="text" class="form-control" id="adresse1_vendeur" value="{{ $compromis->adresse1_vendeur}} " name="adresse1_vendeur" required>                                                    
+                                                    <input type="text" class="form-control" id="adresse1_vendeur" value="{{ $compromis->adresse1_vendeur}} " name="adresse1_vendeur" >                                                    
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-lg-3 col-md-3 col-sm-3">
                                             <div class="form-group row" id="parrain-id">
-                                                <label class="col-lg-8 col-form-label" for="adresse2_vendeur">Adresse 2</label>
+                                                <label class="col-lg-8 col-form-label" for="adresse2_vendeur">Complément d'adresse</label>
                                                 <div class="col-lg-8">
-                                                    <input type="text" class="form-control" id="adresse2_vendeur" value="{{ $compromis->adresse2_vendeur}} " name="adresse2_vendeur" required>                                                    
+                                                    <input type="text" class="form-control" id="adresse2_vendeur" value="{{ $compromis->adresse2_vendeur}} " name="adresse2_vendeur" >                                                    
                                                 </div>
                                             </div>
                                         </div>
@@ -314,7 +308,7 @@ Affaire
                                             <div class="form-group row" id="parrain-id">
                                                 <label class="col-lg-8 col-form-label" for="code_postal_vendeur">Code Postal</label>
                                                 <div class="col-lg-8">
-                                                    <input type="text" class="form-control" id="code_postal_vendeur" value="{{ $compromis->code_postal_vendeur}} " name="code_postal_vendeur" required>                                                    
+                                                    <input type="text" class="form-control" id="code_postal_vendeur" value="{{ $compromis->code_postal_vendeur}} " name="code_postal_vendeur" >                                                    
                                                 </div>
                                             </div>
                                         </div>
@@ -322,7 +316,7 @@ Affaire
                                             <div class="form-group row" id="parrain-id">
                                                 <label class="col-lg-8 col-form-label" for="ville_vendeur">Ville</label>
                                                 <div class="col-lg-8">
-                                                    <input type="text" class="form-control" id="ville_vendeur" value="{{ $compromis->ville_vendeur}} "name="ville_vendeur" required>                                                    
+                                                    <input type="text" class="form-control" id="ville_vendeur" value="{{ $compromis->ville_vendeur}} "name="ville_vendeur" >                                                    
                                                 </div>
                                             </div>
                                         </div>
@@ -346,12 +340,16 @@ Affaire
                                     <div class="row">
                                         <div class="col-lg-4 col-md-4 col-sm-4">
                                             <div class="form-group row" id="parrain-id">
-                                                <label class="col-lg-8 col-form-label" for="civilite_acquereur">Civilité</label>
-                                                <div class="col-lg-8">
-                                                    <select class="col-lg-6 form-control" id="parr-id" name="civilite_acquereur"  >
+                                                <label class="col-lg-12 col-md-12 col-sm-12 col-form-label" for="civilite_acquereur">Civilité</label>
+                                                <div class="col-lg-8 col-md-8 col-sm-8 ">
+                                                    <select class=" form-control" id="parr-id" name="civilite_acquereur"  >
                                                         <option value="{{ $compromis->civilite_acquereur}}">{{ $compromis->civilite_acquereur}}</option>                                                        
                                                         <option value="M.">M.</option>
                                                         <option value="Mme">Mme</option>
+                                                        <option value="MM.">MM.</option>
+                                                        <option value="Mmes">Mmes</option>
+                                                        <option value="M. et Mme">M. et Mme</option>
+                                                        <option value="MM. et Mmes">MM. et Mmes</option>
                                                         <option value="SCI">SCI</option>
                                                         <option value="SARL">SARL</option>
                                                         <option value="EURL">EURL</option>
@@ -386,47 +384,32 @@ Affaire
                                                 </div>
                                             </div>
                                         </div>
-                                        @if ($compromis->civilite_acquereur == "M." || $compromis->civilite_acquereur == "Mme")
-                                        <div class="col-lg-4 col-md-4 col-sm-4">
-                                            <div class="form-group row" id="parrain-id">
-                                                <label class="col-lg-8 col-form-label" for="nom_acquereur">Nom</label>
-                                                <div class="col-lg-8">
+
+                                        <div class="col-lg-8 col-md-8 col-sm-8">
+                                            <div class="form-group " id="parrain-id">
+                                                <label for="nom_acquereur" >Nom(s) <span class="text-danger">*</span><span style="color:red; font-size:12px">indiquer la raison sociale ou les noms et prénoms de tous les acquéreurs (ex : Dupond Jean, Tamar Sarah)</label>
+                                                <div class="">
                                                     <input type="text" class="form-control" id="nom_acquereur"  value="{{ $compromis->nom_acquereur}}"name="nom_acquereur" required>                                                    
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-lg-4 col-md-4 col-sm-4">
-                                            <div class="form-group row" id="parrain-id">
-                                                <label class="col-lg-8 col-form-label" for="prenom_acquereur">Prénom</label>
-                                                <div class="col-lg-8">
-                                                    <input type="text" class="form-control" id="prenom_acquereur" value="{{ $compromis->prenom_acquereur}}" name="prenom_acquereur" required>                                                    
-                                                </div>
-                                            </div>
-                                        </div>
-                                        @else 
-
-                                        <div class="col-lg-4 col-md-4 col-sm-4">
-                                            <div class="form-group" id="div_raison_sociale_acquereur">
-                                                <label for="raison_sociale_acquereur">Raison sociale <span class="text-danger">*</span></label>
-                                                <input class="form-control" type="text" value="{{ $compromis->raison_sociale_acquereur}}" id="raison_sociale_acquereur" name="raison_sociale_acquereur"  required >                                           </div>
-                                            </div>
-                                        @endif
+                                        
                                     </div>
 
                                     <div class="row">
                                         <div class="col-lg-3 col-md-3 col-sm-3">
                                             <div class="form-group row" id="parrain-id">
-                                                <label class="col-lg-8 col-form-label" for="adresse1_acquereur">Adresse 1</label>
+                                                <label class="col-lg-8 col-form-label" for="adresse1_acquereur">Adresse</label>
                                                 <div class="col-lg-8">
-                                                    <input type="text" class="form-control" id="adresse1_acquereur" value="{{ $compromis->adresse1_acquereur}}" name="adresse1_acquereur" required>                                                    
+                                                    <input type="text" class="form-control" id="adresse1_acquereur" value="{{ $compromis->adresse1_acquereur}}" name="adresse1_acquereur" >                                                    
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-lg-3 col-md-3 col-sm-3">
                                             <div class="form-group row" id="parrain-id">
-                                                <label class="col-lg-8 col-form-label" for="adresse2_acquereur">Adresse 2</label>
+                                                <label class="col-lg-8 col-form-label" for="adresse2_acquereur">Complément adresse</label>
                                                 <div class="col-lg-8">
-                                                    <input type="text" class="form-control" id="adresse2_acquereur" value="{{ $compromis->adresse2_acquereur}}" name="adresse2_acquereur" required>                                                    
+                                                    <input type="text" class="form-control" id="adresse2_acquereur" value="{{ $compromis->adresse2_acquereur}}" name="adresse2_acquereur" >                                                    
                                                 </div>
                                             </div>
                                         </div>
@@ -434,7 +417,7 @@ Affaire
                                             <div class="form-group row" id="parrain-id">
                                                 <label class="col-lg-8 col-form-label" for="code_postal_acquereur">Code Postal</label>
                                                 <div class="col-lg-8">
-                                                    <input type="text" class="form-control" id="code_postal_acquereur" value="{{ $compromis->code_postal_acquereur}}" name="code_postal_acquereur" required>                                                    
+                                                    <input type="text" class="form-control" id="code_postal_acquereur" value="{{ $compromis->code_postal_acquereur}}" name="code_postal_acquereur" >                                                    
                                                 </div>
                                             </div>
                                         </div>
@@ -442,7 +425,7 @@ Affaire
                                             <div class="form-group row" id="parrain-id">
                                                 <label class="col-lg-8 col-form-label" for="ville_acquereur">Ville</label>
                                                 <div class="col-lg-8">
-                                                    <input type="text" class="form-control" id="ville_acquereur" value="{{ $compromis->ville_acquereur}}" name="ville_acquereur" required>                                                    
+                                                    <input type="text" class="form-control" id="ville_acquereur" value="{{ $compromis->ville_acquereur}}" name="ville_acquereur" >                                                    
                                                 </div>
                                             </div>
                                         </div>
@@ -603,34 +586,34 @@ $('#modifier_compromis').click(function(){
   // Acquereur Vendeur
 // $('#div_raison_sociale_vendeur').hide();
 // $('#div_raison_sociale_acquereur').hide();
-$('#civilite_vendeur').change(function(){
-    if($('#civilite_vendeur').val() =="M." || $('#civilite_vendeur').val() =="Mme"){
-        $('#div_raison_sociale_vendeur').hide();
-        $('#div_nom_vendeur').show();
-        $('#div_prenom_vendeur').show();
+// $('#civilite_vendeur').change(function(){
+//     if($('#civilite_vendeur').val() =="M." || $('#civilite_vendeur').val() =="Mme"){
+//         $('#div_raison_sociale_vendeur').hide();
+//         $('#div_nom_vendeur').show();
+//         $('#div_prenom_vendeur').show();
 
-    }else{
+//     }else{
 
-        $('#div_nom_vendeur').hide();
-        $('#div_prenom_vendeur').hide();
-        $('#div_raison_sociale_vendeur').show();
-    }
+//         $('#div_nom_vendeur').hide();
+//         $('#div_prenom_vendeur').hide();
+//         $('#div_raison_sociale_vendeur').show();
+//     }
 
-});
-$('#civilite_acquereur').change(function(){
-    if($('#civilite_acquereur').val() =="M." || $('#civilite_acquereur').val() =="Mme"){
-        $('#div_raison_sociale_acquereur').hide();
-        $('#div_nom_acquereur').show();
-        $('#div_prenom_acquereur').show();
+// });
+// $('#civilite_acquereur').change(function(){
+//     if($('#civilite_acquereur').val() =="M." || $('#civilite_acquereur').val() =="Mme"){
+//         $('#div_raison_sociale_acquereur').hide();
+//         $('#div_nom_acquereur').show();
+//         $('#div_prenom_acquereur').show();
 
-    }else{
+//     }else{
 
-        $('#div_nom_acquereur').hide();
-        $('#div_prenom_acquereur').hide();
-        $('#div_raison_sociale_acquereur').show();
-    }
+//         $('#div_nom_acquereur').hide();
+//         $('#div_prenom_acquereur').hide();
+//         $('#div_raison_sociale_acquereur').show();
+//     }
 
-});
+// });
 
 // Fin acquereur vendeur
 
@@ -669,5 +652,13 @@ $("#hors_reseau").change(function(){
 //fin info partage
 </script> 
 
+     {{-- Limite pour le textarea --}}
 
+     <script>
+        var maxLength = 180;
+             $('textarea').keyup(function() {
+             var textlen = maxLength - $(this).val().length;
+             $('#rchars').text(textlen);
+             });
+        </script>
 @endsection

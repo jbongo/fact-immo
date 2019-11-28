@@ -19,7 +19,8 @@ class CompromisController extends Controller
      */
     public function index()
     {
-
+        session(['admin_id' => 5]);
+        // dd(session("admin_id"));
         $compromis = array();
         if(Auth::user()->role =="admin") {
             $compromis = Compromis::where('je_renseigne_affaire',true)->get();
@@ -80,23 +81,24 @@ class CompromisController extends Controller
                 "je_porte_affaire"=>$request->je_porte_affaire == "on" ? true : false,
                 "type_affaire"=> $request->type_affaire,
                 "description_bien"=> $request->description_bien,
+                "code_postal_bien"=> $request->code_postal_bien,
                 "ville_bien"=> $request->ville_bien,
                 "civilite_vendeur"=> $request->civilite_vendeur,
                 "nom_vendeur"=> $request->nom_vendeur,
-                "prenom_vendeur"=>$request->prenom_vendeur,
+                // "prenom_vendeur"=>$request->prenom_vendeur,
                 "adresse1_vendeur"=>$request->adresse1_vendeur,
                 "adresse2_vendeur"=>$request->adresse2_vendeur,
                 "code_postal_vendeur"=>$request->code_postal_vendeur,
                 "ville_vendeur"=>$request->ville_vendeur,
                 "civilite_acquereur"=>$request->civilite_acquereur,
                 "nom_acquereur"=>$request->nom_acquereur,
-                "prenom_acquereur"=>$request->prenom_acquereur,
+                // "prenom_acquereur"=>$request->prenom_acquereur,
                 "adresse1_acquereur"=>$request->adresse1_acquereur,
                 "adresse2_acquereur"=>$request->adresse2_acquereur,
                 "code_postal_acquereur"=>$request->code_postal_acquereur,
                 "ville_acquereur"=>$request->ville_acquereur,
-                "raison_sociale_vendeur"=>$request->raison_sociale_vendeur,
-                "raison_sociale_acquereur"=>$request->raison_sociale_acquereur,
+                // "raison_sociale_vendeur"=>$request->raison_sociale_vendeur,
+                // "raison_sociale_acquereur"=>$request->raison_sociale_acquereur,
                 "numero_mandat"=>$request->numero_mandat,
                 "date_mandat"=>$request->date_mandat,
                 "frais_agence"=>$request->frais_agence,
@@ -187,23 +189,24 @@ class CompromisController extends Controller
             $compromis->type_affaire = $request->type_affaire;
             $compromis->nom_agent = $request->nom_agent;
             $compromis->description_bien = $request->description_bien;
+            $compromis->code_postal_bien = $request->code_postal_bien;
             $compromis->ville_bien = $request->ville_bien;
             $compromis->civilite_vendeur = $request->civilite_vendeur;
             $compromis->nom_vendeur = $request->nom_vendeur;
-            $compromis->prenom_vendeur = $request->prenom_vendeur;
+            // $compromis->prenom_vendeur = $request->prenom_vendeur;
             $compromis->adresse1_vendeur = $request->adresse1_vendeur;
             $compromis->adresse2_vendeur = $request->adresse2_vendeur;
             $compromis->code_postal_vendeur = $request->code_postal_vendeur;
             $compromis->ville_vendeur = $request->ville_vendeur;
             $compromis->civilite_acquereur = $request->civilite_acquereur;
             $compromis->nom_acquereur = $request->nom_acquereur;
-            $compromis->prenom_acquereur = $request->prenom_acquereur;
+            // $compromis->prenom_acquereur = $request->prenom_acquereur;
             $compromis->adresse1_acquereur = $request->adresse1_acquereur;
             $compromis->adresse2_acquereur = $request->adresse2_acquereur;
             $compromis->code_postal_acquereur = $request->code_postal_acquereur;
             $compromis->ville_acquereur = $request->ville_acquereur;
-            $compromis->raison_sociale_vendeur = $request->raison_sociale_vendeur;
-            $compromis->raison_sociale_acquereur = $request->raison_sociale_acquereur;
+            // $compromis->raison_sociale_vendeur = $request->raison_sociale_vendeur;
+            // $compromis->raison_sociale_acquereur = $request->raison_sociale_acquereur;
             $compromis->numero_mandat = $request->numero_mandat;
             $compromis->date_mandat = $request->date_mandat;
             $compromis->montant_deduis_net = $request->montant_deduis;
@@ -237,52 +240,52 @@ class CompromisController extends Controller
         return redirect()->route('compromis.index')->with('ok', __('compromis modifié')  );
     }
 
-    /**
-     * modifier une partie du compromis dans la demande de facture stylimmo
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update_part(Request $request, Compromis $compromis)
-    {
-        // dd($compromis);
-        if($request->numero_mandat != $compromis->numero_mandat){
-            $request->validate([
-                'numero_mandat' => 'required|numeric|unique:compromis',
-            ]);
-        }
+    // /**
+    //  * modifier une partie du compromis dans la demande de facture stylimmo
+    //  *
+    //  * @param  \Illuminate\Http\Request  $request
+    //  * @param  int  $id
+    //  * @return \Illuminate\Http\Response
+    //  */
+    // public function update_part(Request $request, Compromis $compromis)
+    // {
+    //     // dd($compromis);
+    //     if($request->numero_mandat != $compromis->numero_mandat){
+    //         $request->validate([
+    //             'numero_mandat' => 'required|numeric|unique:compromis',
+    //         ]);
+    //     }
 
-        $compromis->description_bien = $request->description_bien;
-        $compromis->ville_bien = $request->ville_bien;
-        $compromis->civilite_vendeur = $request->civilite_vendeur;
-        $compromis->nom_vendeur = $request->nom_vendeur;
-        $compromis->prenom_vendeur = $request->prenom_vendeur;
-        $compromis->adresse1_vendeur = $request->adresse1_vendeur;
-        $compromis->adresse2_vendeur = $request->adresse2_vendeur;
-        $compromis->code_postal_vendeur = $request->code_postal_vendeur;
-        $compromis->ville_vendeur = $request->ville_vendeur;
-        $compromis->civilite_acquereur = $request->civilite_acquereur;
-        $compromis->nom_acquereur = $request->nom_acquereur;
-        $compromis->prenom_acquereur = $request->prenom_acquereur;
-        $compromis->adresse1_acquereur = $request->adresse1_acquereur;
-        $compromis->adresse2_acquereur = $request->adresse2_acquereur;
-        $compromis->code_postal_acquereur = $request->code_postal_acquereur;
-        $compromis->ville_acquereur = $request->ville_acquereur;
-        $compromis->numero_mandat = $request->numero_mandat;
-        $compromis->date_mandat = $request->date_mandat;
-        $compromis->est_partage_agent = $request->partage == "Non" ? false : true;
-        $compromis->nom_agent = $request->nom_agent;
-        $compromis->pourcentage_agent = $request->pourcentage_agent;
-        $compromis->montant_deduis_net = $request->montant_deduis;
-        $compromis->frais_agence = $request->frais_agence;
-        $compromis->charge = $request->charge;
-        $compromis->net_vendeur = $request->net_vendeur;
-        $compromis->scp_notaire = $request->scp_notaire;
+    //     $compromis->description_bien = $request->description_bien;
+    //     $compromis->ville_bien = $request->ville_bien;
+    //     $compromis->civilite_vendeur = $request->civilite_vendeur;
+    //     $compromis->nom_vendeur = $request->nom_vendeur;
+    //     $compromis->prenom_vendeur = $request->prenom_vendeur;
+    //     $compromis->adresse1_vendeur = $request->adresse1_vendeur;
+    //     $compromis->adresse2_vendeur = $request->adresse2_vendeur;
+    //     $compromis->code_postal_vendeur = $request->code_postal_vendeur;
+    //     $compromis->ville_vendeur = $request->ville_vendeur;
+    //     $compromis->civilite_acquereur = $request->civilite_acquereur;
+    //     $compromis->nom_acquereur = $request->nom_acquereur;
+    //     $compromis->prenom_acquereur = $request->prenom_acquereur;
+    //     $compromis->adresse1_acquereur = $request->adresse1_acquereur;
+    //     $compromis->adresse2_acquereur = $request->adresse2_acquereur;
+    //     $compromis->code_postal_acquereur = $request->code_postal_acquereur;
+    //     $compromis->ville_acquereur = $request->ville_acquereur;
+    //     $compromis->numero_mandat = $request->numero_mandat;
+    //     $compromis->date_mandat = $request->date_mandat;
+    //     $compromis->est_partage_agent = $request->partage == "Non" ? false : true;
+    //     $compromis->nom_agent = $request->nom_agent;
+    //     $compromis->pourcentage_agent = $request->pourcentage_agent;
+    //     $compromis->montant_deduis_net = $request->montant_deduis;
+    //     $compromis->frais_agence = $request->frais_agence;
+    //     $compromis->charge = $request->charge;
+    //     $compromis->net_vendeur = $request->net_vendeur;
+    //     $compromis->scp_notaire = $request->scp_notaire;
         
-        $compromis->update();
-        return redirect()->route('compromis.index')->with('ok', __('compromis modifié')  );
-    }
+    //     $compromis->update();
+    //     return redirect()->route('compromis.index')->with('ok', __('compromis modifié')  );
+    // }
 
 
     /**

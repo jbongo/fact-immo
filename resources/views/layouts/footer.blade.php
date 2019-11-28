@@ -40,7 +40,11 @@
         var table = $('#example').DataTable({
         });
         var table1 = $('#example1').DataTable({
-        });        
+        }); 
+        // mandataire
+        var table = $('#example3').DataTable({
+            paging: false,
+        });       
 
     </script>
     @yield('js-content')

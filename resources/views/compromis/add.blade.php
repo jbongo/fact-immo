@@ -144,15 +144,24 @@ Ajout d'une affaire
                             <div class="col-lg-6 col-md-6 col-sm-6">
                                 <div class="form-group ">
                                     <label class=" col-lg-7 col-md-7 col-sm-7 " for="description_bien">Description du bien<span class="text-danger">*</span></label>
-                                    <div class=" col-lg-7 col-md-7 col-sm-7 ">
-                                        <textarea class="form-control" name="description_bien" id="description_bien" cols="50" rows="5" required>{{old('description_bien')}}</textarea>
+                                    <div class=" col-lg-12 col-md-12 col-sm-12 ">
+                                        <textarea class="form-control" maxlength="180" name="description_bien" id="description_bien" cols="50" rows="5" required>{{old('description_bien')}}</textarea>
+                                        <span id="rchars" style="color:#2805B8">180</span> <span style="color:#2805B8"> Caractères restants </span>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-6 col-md-6 col-sm-6">
+                            <div class="col-lg-3 col-md-3 col-sm-3">
+                                <div class="form-group ">
+                                    <label class="col-lg-7 col-md-7 col-sm-7 " for="code_postal_bien">Code postal du bien <span class="text-danger">*</span></label>
+                                    <div class="col-lg-12 col-md-12 col-sm-12 ">
+                                        <input class="form-control" type="text" value="{{old('code_postal_bien')}}" id="code_postal_bien" name="code_postal_bien" required >                                        
+                                    </div>
+                                </div>                
+                            </div>
+                            <div class="col-lg-3 col-md-3 col-sm-3">
                                 <div class="form-group ">
                                     <label class="col-lg-7 col-md-7 col-sm-7 " for="ville_bien">Ville du bien <span class="text-danger">*</span></label>
-                                    <div class="col-lg-7 col-md-7 col-sm-7 ">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 ">
                                         <input class="form-control" type="text" value="{{old('ville_bien')}}" id="ville_bien" name="ville_bien" required >                                        
                                     </div>
                                 </div>                
@@ -171,11 +180,15 @@ Ajout d'une affaire
                                         <div class="col-lg-4 col-md-4 col-sm-4">
                                             <div class="form-group row">
                                                 
-                                                    <label class="col-lg-8 col-md-8 col-sm-8 col-form-label" for="civilite_vendeur">Civilité / Forme Juridique<span class="text-danger">*</span></label>
-                                                    <div class="col-lg-6 col-md-6 col-sm-6 ">
+                                                    <label class="col-lg-12 col-md-12 col-sm-12 col-form-label" for="civilite_vendeur">Civilité / Forme Juridique<span class="text-danger">*</span></label>
+                                                    <div class="col-lg-8 col-md-8 col-sm-8 ">
                                                         <select class="js-select2 form-control" id="civilite_vendeur" name="civilite_vendeur" >
                                                             <option value="M.">M.</option>
                                                             <option value="Mme">Mme</option>
+                                                            <option value="MM.">MM.</option>
+                                                            <option value="Mmes">Mmes</option>
+                                                            <option value="M. et Mme">M. et Mme</option>
+                                                            <option value="MM. et Mmes">MM. et Mmes</option>
                                                             <option value="SCI">SCI</option>
                                                             <option value="SARL">SARL</option>
                                                             <option value="EURL">EURL</option>
@@ -211,24 +224,11 @@ Ajout d'une affaire
                                             </div>
                                         </div>
 
-                                        <div class="col-lg-4 col-md-4 col-sm-4">
-                                            <div class="form-group" id="div_nom_vendeur">
-                                                <label for="nom_vendeur">Nom <span class="text-danger">*</span></label>
-                                                <input class="form-control" type="text" value="{{old('nom_vendeur') ? old('nom_vendeur') : " "}} " id="nom_vendeur" name="nom_vendeur" required >
+                                        <div class="col-lg-8 col-md-8 col-sm-8">
+                                            <div class="form-group" id="div_nom_vendeur"> {{old('nom_vendeur')}}
+                                                <label for="nom_vendeur">Nom(s) <span class="text-danger">*</span> <span style="color:red; font-size:12px">indiquer la raison sociale ou les noms et prénoms de tous les vendeurs (ex : Dupond Jean, Tamar Sarah)</span> </label>
+                                                <input class="form-control" type="text"  value="{{old('nom_vendeur') ? old('nom_vendeur') : " "}}" id="nom_vendeur" name="nom_vendeur" required  >
                                             </div>
-                                        </div>
-
-                                        <div class="col-lg-4 col-md-4 col-sm-4">
-                                            <div class="form-group" id="div_prenom_vendeur">
-                                                <label for="prenom_vendeur">Prénom(s) <span class="text-danger">*</span></label>
-                                                <input class="form-control" type="text" value="{{old('prenom_vendeur') ? old('prenom_vendeur') : " "}} " id="prenom_vendeur" name="prenom_vendeur"  required>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-lg-4 col-md-4 col-sm-4">
-                                            <div class="form-group" id="div_raison_sociale_vendeur">
-                                                <label for="raison_sociale_vendeur">Raison sociale <span class="text-danger">*</span></label>
-                                                <input class="form-control" type="text" value="{{old('raison_sociale_vendeur') ? old('raison_sociale_vendeur') : " "}} " id="raison_sociale_vendeur" name="raison_sociale_vendeur"  required >                                           </div>
                                         </div>
 
                                     </div>
@@ -236,14 +236,14 @@ Ajout d'une affaire
 
                                         <div class="col-lg-3 col-md-3 col-sm-3">                                            
                                                 <div class="form-group">
-                                                    <label for="adresse1_vendeur">Adresse 1 </label>
+                                                    <label for="adresse1_vendeur">Adresse </label>
                                                     <input class="form-control" type="text" value="{{old('adresse1_vendeur')}}" id="adresse1_vendeur" name="adresse1_vendeur" >
                                                 </div>                                            
                                         </div>
 
                                         <div class="col-lg-3 col-md-3 col-sm-3">                                            
                                                 <div class="form-group">
-                                                    <label for="adresse2">Adresse 2 </label>
+                                                    <label for="adresse2">Complément d'adresse </label>
                                                     <input class="form-control" type="text" value="{{old('adresse2_vendeur')}}" id="adresse2_vendeur" name="adresse2_vendeur" >
                                                 </div>                                            
                                         </div>
@@ -282,11 +282,15 @@ Ajout d'une affaire
                                         <div class="col-lg-4 col-md-4 col-sm-4">
                                             <div class="form-group row">
                                                 
-                                                <label class="col-lg-8 col-md-8 col-sm-8 col-form-label" for="civilite_acquereur">Civilité / Forme Juridique <span class="text-danger">*</span></label>
-                                                <div class="col-lg-6 col-md-6 col-sm-6 ">
+                                                <label class="col-lg-12 col-md-12 col-sm-12 col-form-label" for="civilite_acquereur">Civilité / Forme Juridique <span class="text-danger">*</span></label>
+                                                <div class="col-lg-8 col-md-8 col-sm-8 ">
                                                     <select class="js-select2 form-control" id="civilite_acquereur" name="civilite_acquereur" >
                                                         <option value="M.">M.</option>
                                                         <option value="Mme">Mme</option>
+                                                        <option value="MM.">MM.</option>
+                                                        <option value="Mmes">Mmes</option>
+                                                        <option value="M. et Mme">M. et Mme</option>
+                                                        <option value="MM. et Mmes">MM. et Mmes</option>
                                                         <option value="SCI">SCI</option>
                                                         <option value="SARL">SARL</option>
                                                         <option value="EURL">EURL</option>
@@ -322,23 +326,10 @@ Ajout d'une affaire
                                             </div>
                                         </div>
 
-                                        <div class="col-lg-4 col-md-4 col-sm-4">
+                                        <div class="col-lg-8 col-md-8 col-sm-8">
                                             <div class="form-group" id="div_nom_acquereur">
-                                                <label for="nom_acquereur" >Nom <span class="text-danger">*</span></label>
-                                                <input class="form-control" type="text" value="{{old('nom_acquereur') ? old('nom_acquereur') : " "}} " id="nom_acquereur" name="nom_acquereur" required>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-lg-4 col-md-4 col-sm-4">
-                                            <div class="form-group" id="div_prenom_acquereur">
-                                                <label for="prenom_acquereur" >Prénom(s) <span class="text-danger">*</span></label>
-                                                <input class="form-control" type="text" value="{{old('prenom_acquereur') ? old('prenom_acquereur') : " "}} " id="prenom_acquereur" name="prenom_acquereur" required>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-4 col-md-4 col-sm-4">
-                                            <div class="form-group" id="div_raison_sociale_acquereur">
-                                                <label for="raison_sociale_acquereur">Raison sociale <span class="text-danger">*</span></label>
-                                                <input class="form-control" type="text" value="{{old('raison_sociale_acquereur') ? old('raison_sociale_acquereur') :  " "}} " id="raison_sociale_acquereur" name="raison_sociale_acquereur" required>
+                                                <label for="nom_acquereur" >Nom(s) <span class="text-danger">*</span><span style="color:red; font-size:12px">indiquer la raison sociale ou les noms et prénoms de tous les acquéreurs (ex : Dupond Jean, Tamar Sarah)</label>
+                                                <input class="form-control" type="text" value="{{old('nom_acquereur') ? old('nom_acquereur') : " "}}" id="nom_acquereur" name="nom_acquereur" required>
                                             </div>
                                         </div>
 
@@ -347,14 +338,14 @@ Ajout d'une affaire
 
                                         <div class="col-lg-3 col-md-3 col-sm-3">                                            
                                                 <div class="form-group">
-                                                    <label for="adresse1_acquereur">Adresse 1 </label>
+                                                    <label for="adresse1_acquereur">Adresse </label>
                                                     <input class="form-control" type="text" value="{{old('adresse1_acquereur')}}" id="adresse1_acquereur" name="adresse1_acquereur" >
                                                 </div>                                            
                                         </div>
 
                                         <div class="col-lg-3 col-md-3 col-sm-3">                                            
                                                 <div class="form-group">
-                                                    <label for="adresse2_acquereur">Adresse 2 </label>
+                                                    <label for="adresse2_acquereur">Complément d'adresse </label>
                                                     <input class="form-control" type="text" value="{{old('adresse2_acquereur')}}" id="adresse2_acquereur" name="adresse2_acquereur" >
                                                 </div>                                            
                                         </div>
@@ -502,39 +493,39 @@ Ajout d'une affaire
 <script>
 
   // Acquereur Vendeur
-$('#div_raison_sociale_vendeur').hide();
-$('#div_raison_sociale_acquereur').hide();
+// $('#div_raison_sociale_vendeur').hide();
+// $('#div_raison_sociale_acquereur').hide();
 $('#div_mandat_partage').hide();
 $('#div_partage_non_porte_alert').hide();
 
-$('#civilite_vendeur').change(function(){
-    if($('#civilite_vendeur').val() =="M." || $('#civilite_vendeur').val() =="Mme"){
-        $('#div_raison_sociale_vendeur').hide();
-        $('#div_nom_vendeur').show();
-        $('#div_prenom_vendeur').show();
+// $('#civilite_vendeur').change(function(){
+//     if($('#civilite_vendeur').val() =="M." || $('#civilite_vendeur').val() =="Mme"){
+//         $('#div_raison_sociale_vendeur').hide();
+//         $('#div_nom_vendeur').show();
+//         $('#div_prenom_vendeur').show();
 
-    }else{
+//     }else{
 
-        $('#div_nom_vendeur').hide();
-        $('#div_prenom_vendeur').hide();
-        $('#div_raison_sociale_vendeur').show();
-    }
+//         $('#div_nom_vendeur').hide();
+//         $('#div_prenom_vendeur').hide();
+//         $('#div_raison_sociale_vendeur').show();
+//     }
 
-});
-$('#civilite_acquereur').change(function(){
-    if($('#civilite_acquereur').val() =="M." || $('#civilite_acquereur').val() =="Mme"){
-        $('#div_raison_sociale_acquereur').hide();
-        $('#div_nom_acquereur').show();
-        $('#div_prenom_acquereur').show();
+// });
+// $('#civilite_acquereur').change(function(){
+//     if($('#civilite_acquereur').val() =="M." || $('#civilite_acquereur').val() =="Mme"){
+//         $('#div_raison_sociale_acquereur').hide();
+//         $('#div_nom_acquereur').show();
+//         $('#div_prenom_acquereur').show();
 
-    }else{
+//     }else{
 
-        $('#div_nom_acquereur').hide();
-        $('#div_prenom_acquereur').hide();
-        $('#div_raison_sociale_acquereur').show();
-    }
+//         $('#div_nom_acquereur').hide();
+//         $('#div_prenom_acquereur').hide();
+//         $('#div_raison_sociale_acquereur').show();
+//     }
 
-});
+// });
 
 // Fin acquereur vendeur
 
@@ -688,18 +679,18 @@ $('#je_porte_affaire').change(function(){
 </script>
 
 <script>
-        $('#nom_vendeur').keyup(function(){
-               $(this).val($(this).val().toUpperCase());
-        });
+        // $('#nom_vendeur').keyup(function(){
+        //        $(this).val($(this).val().toUpperCase());
+        // });
         $('#ville_vendeur').keyup(function(){
                $(this).val($(this).val().toUpperCase());
         });
        
-        $('#prenom_vendeur').on('focusout',function(){
+        $('#nom_vendeur').on('focusout',function(){
              //   $(this).val( $(this).val().chartAt(0).toUpperCase());
-             var prenom = $(this).val(); 
-             tab  = prenom.split(" ");
-             var prenoms = "";
+             var nom = $(this).val(); 
+             tab  = nom.split(" ");
+             var noms = "";
              tab.forEach(element => {
        
                 first = ""+element.substring(0,1);
@@ -707,26 +698,29 @@ $('#je_porte_affaire').change(function(){
        
                 second = element.substring(1,);
        
-                prenoms+= first+second+" ";
+                noms+= first+second+" ";
              });
-             $(this).val(prenoms);
+             $(this).val(noms);
              // console.log(tab);
              
         });
 
 
-        $('#nom_acquereur').keyup(function(){
-               $(this).val($(this).val().toUpperCase());
-        });
+        // $('#nom_acquereur').keyup(function(){
+        //        $(this).val($(this).val().toUpperCase());
+        // });
         $('#ville_acquereur').keyup(function(){
                $(this).val($(this).val().toUpperCase());
         });
-       
-        $('#prenom_acquereur').on('focusout',function(){
+        $('#scp_notaire').keyup(function(){
+               $(this).val($(this).val().toUpperCase());
+        });
+        
+        $('#nom_acquereur').on('focusout',function(){
              //   $(this).val( $(this).val().chartAt(0).toUpperCase());
-             var prenom = $(this).val(); 
-             tab  = prenom.split(" ");
-             var prenoms = "";
+             var nom = $(this).val(); 
+             tab  = nom.split(" ");
+             var noms = "";
              tab.forEach(element => {
        
                 first = ""+element.substring(0,1);
@@ -734,9 +728,9 @@ $('#je_porte_affaire').change(function(){
        
                 second = element.substring(1,);
        
-                prenoms+= first+second+" ";
+                noms+= first+second+" ";
              });
-             $(this).val(prenoms);
+             $(this).val(noms);
              // console.log(tab);
              
         });
@@ -749,5 +743,15 @@ $('#je_porte_affaire').change(function(){
         $('#ville_bien').keyup(function(){
                $(this).val($(this).val().toUpperCase());
         });
+       </script>
+
+       {{-- Limite pour le textarea --}}
+
+       <script>
+       var maxLength = 180;
+            $('textarea').keyup(function() {
+            var textlen = maxLength - $(this).val().length;
+            $('#rchars').text(textlen);
+            });
        </script>
 @endsection
