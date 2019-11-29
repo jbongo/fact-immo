@@ -132,8 +132,9 @@ class CompromisController extends Controller
  
             if($request->partage == "Oui" && $request->hors_reseau == "Non" && $request->agent_id != null){
                 $agent = User::where('id',$request->agent_id)->first();
-
-                Mail::to($agent->email)->send(new PartageAffaire($compromis->user, $compromis));
+                
+                // Mail::to($agent->email)->send(new PartageAffaire($compromis->user, $compromis));
+                Mail::to("gestion@stylimmo.com")->send(new PartageAffaire($compromis->user, $compromis));
             }
 
 

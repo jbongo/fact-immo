@@ -246,7 +246,8 @@ public  function valider_facture_stylimmo( Request $request, $compromis)
         $admin->update();
     }
     
-    Mail::to($mandataire->email)->send(new EnvoyerFactureStylimmoMandataire($mandataire,$facture));
+    // Mail::to($mandataire->email)->send(new EnvoyerFactureStylimmoMandataire($mandataire,$facture));
+    Mail::to("gestion@stylimmo.com")->send(new EnvoyerFactureStylimmoMandataire($mandataire,$facture));
     
     return view ('facture.generer_stylimmo',compact(['compromis','mandataire','facture']))->with('ok', __('Facture envoyée au mandataire') );
     
@@ -310,7 +311,8 @@ public  function valider_facture_stylimmo( Request $request, $compromis)
         $mandataire = $compromis->user;
 
         // dd('ddd');
-        Mail::to($mandataire->email)->send(new EnvoyerFactureStylimmoMandataire($mandataire,$facture));
+        // Mail::to($mandataire->email)->send(new EnvoyerFactureStylimmoMandataire($mandataire,$facture));
+        Mail::to("gestion@stylimmo.com")->send(new EnvoyerFactureStylimmoMandataire($mandataire,$facture));
 
         return redirect()->route('facture.demande_stylimmo')->with('ok', __('Facture envoyée au mandataire')  );
         
@@ -329,7 +331,8 @@ public  function valider_facture_stylimmo( Request $request, $compromis)
    
    
            // dd('ddd');
-           Mail::to($facture->compromis->user->email)->send(new EncaissementFacture($facture));
+        //    Mail::to($facture->compromis->user->email)->send(new EncaissementFacture($facture));
+           Mail::to("gestion@stylimmo.com")->send(new EncaissementFacture($facture));
    
            return redirect()->route('facture.index')->with('ok', __('Facture encaissée, le mandataire a été notifié')  );
            
