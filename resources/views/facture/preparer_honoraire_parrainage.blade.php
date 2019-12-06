@@ -94,7 +94,7 @@
             <td style="width: 260px; height:35px"></td>
         </tr>
         <tr>
-            <td style="width: 423px;"><span style="text-decoration: underline;"><strong>Commission agence:</strong></span> &nbsp;  <span class="color-warning"> {{$compromis->frais_agence}} €&nbsp; </span></td>
+            <td style="width: 423px;"><span style="text-decoration: underline;"><strong>Commission agence:</strong></span> &nbsp;  <span class="color-warning"> {{number_format($compromis->frais_agence,'2','.',' ')}} €&nbsp; </span></td>
             <td style="width: 260px; height:35px"></td>
         </tr>
     </tbody>
@@ -129,20 +129,20 @@
         <tr>
             <td style="width: 400px;">&nbsp;</td>
             <td style="width: 153px;">TOTAL H.T :</td>
-            <td style="width: 231px;">{{$facture->montant_ht}} &euro;</td>
+            <td style="width: 231px;">{{number_format($facture->montant_ht,'2','.',' ')}} &euro;</td>
         </tr>
         <tr><td>&nbsp;</td> <td>&nbsp;</td> </tr>
         <tr>
             <td style="width: 400px;">&nbsp;</td>
             <td style="width: 153px;">T.V.A 20% :</td>
-            <td style="width: 231px;">{{$facture->montant_ttc - $facture->montant_ht}} &euro;</td>
+            <td style="width: 231px;">{{number_format($facture->montant_ttc,'2','.',' ') - $facture->montant_ht}} &euro;</td>
         </tr>
         <tr><td>&nbsp;</td> <td>&nbsp;</td> </tr>
 
         <tr>
             <td style="width: 400px;">&nbsp;</td>
             <td style="width: 153px;">TOTAL T.T.C:</td>
-            <td style="width: 231px;">{{$facture->montant_ttc}} &euro;</td>
+            <td style="width: 231px;">{{number_format($facture->montant_ttc,'2','.',' ')}} &euro;</td>
         </tr>
     </tbody>
 </table>
@@ -152,7 +152,7 @@
     <tbody>
         <tr style="height: 25px;">
             <td style="width: 349px; height: 25px;">Valeur en votre aimable r&egrave;glement de :</td>
-            <td style="width: 117px; height: 25px;">{{round($facture->montant_ttc,2)}} &euro; TTC</td>
+            <td style="width: 117px; height: 25px;">{{number_format($facture->montant_ttc,'2','.',' ')}} &euro; TTC</td>
             <td style="width: 177px; height: 25px;"></td>
         </tr>
     </tbody>

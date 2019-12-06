@@ -38,12 +38,18 @@
     <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
     <script>
         var table = $('#example').DataTable({
+            "order": [],
+            "iDisplayLength": 50
         });
         var table1 = $('#example1').DataTable({
+            "order": [],
+            "iDisplayLength": 50
+
         }); 
         // mandataire
         var table = $('#example3').DataTable({
             paging: false,
+            "order": [],
         });       
 
     </script>

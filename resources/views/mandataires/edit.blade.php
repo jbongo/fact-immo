@@ -129,6 +129,18 @@ Modifier mandataire {{$mandataire->nom}}
                                  @endif     
                               </div>
                         </div>
+                        <div class="form-group row">
+                              <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="numero_tva">Numéro TVA intracommunautaire </label>
+                              <div class="col-lg-8 col-md-8 col-sm-8">
+                                 <input type="text" class="form-control {{ $errors->has('numero_tva') ? ' is-invalid' : '' }}" value="{{old('numero_tva')? old('numero_tva') : $mandataire->numero_tva}}" id="numero_tva" name="numero_tva"  >
+                                 @if ($errors->has('numero_tva'))
+                                    <br>
+                                    <div class="alert alert-warning ">
+                                       <strong>{{$errors->first('numero_tva')}}</strong> 
+                                    </div>
+                                 @endif     
+                              </div>
+                        </div>
 
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-6">

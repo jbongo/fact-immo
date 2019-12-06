@@ -62,6 +62,7 @@ class CreateCompromisTable extends Migration
             $table->boolean('demande_facture')->default(false); 
 
             $table->integer('agent_id')->nullable(); 
+            $table->integer('parrain_partage_id')->nullable(); 
             $table->boolean('je_porte_affaire')->default(false); 
             $table->boolean('je_renseigne_affaire')->default(true); 
             $table->boolean('partage_reseau')->default(false); 
@@ -71,6 +72,7 @@ class CreateCompromisTable extends Migration
             $table->boolean('facture_stylimmo_valide')->default(false);
             $table->boolean('facture_honoraire_cree')->default(false);
             $table->boolean('facture_honoraire_parrainage_cree')->default(false);
+            $table->boolean('facture_honoraire_parrainage_partage_cree')->default(false);
             $table->boolean('facture_honoraire_partage_cree')->default(false);
             $table->boolean('facture_honoraire_partage_porteur_cree')->default(false);
             $table->boolean('cloture_affaire')->default(false);

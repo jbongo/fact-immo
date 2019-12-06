@@ -46,8 +46,9 @@
                                         @if(auth()->user()->role == "admin")
                                         <td width="" >
                                             <label class="color-info">
+                                                @if($facture->user !=null)
                                                 {{$facture->user->nom}} {{$facture->user->prenom}} 
-                                               
+                                               @endif
                                             </label> 
                                         </td>
                                         @endif

@@ -19,14 +19,13 @@ class CompromisController extends Controller
      */
     public function index()
     {
-        session(['admin_id' => 5]);
-        // dd(session("admin_id"));
+
         $compromis = array();
         if(Auth::user()->role =="admin") {
-            $compromis = Compromis::where('je_renseigne_affaire',true)->get();
-            $compromisParrain = Compromis::where('je_renseigne_affaire',true)->get();
+            $compromis = Compromis::where('je_renseigne_affaire',true)->latest()->get();
+            $compromisParrain = Compromis::where('je_renseigne_affaire',true)->latest()->get();
         }else{
-            $compromis = Compromis::where([['user_id',Auth::user()->id],['je_renseigne_affaire',true]])->orWhere('agent_id',Auth::user()->id)->get();
+            $compromis = Compromis::where([['user_id',Auth::user()->id],['je_renseigne_affaire',true]])->orWhere('agent_id',Auth::user()->id)->latest()->get();
             
             // On réccupère l'id des filleuls pour retrouver leurs affaires
             $filleuls = Filleul::where([['parrain_id',Auth::user()->id],['expire',false]])->select('user_id')->get()->toArray();
@@ -34,10 +33,12 @@ class CompromisController extends Controller
             foreach ($filleuls as $fill) {
                 $fill_ids[]= $fill['user_id'];
             }
+      
+            $compromisParrain = Compromis::whereIn('user_id',$fill_ids )->orWhereIn('agent_id',$fill_ids )->latest()->get();
 
-            $compromisParrain = Compromis::whereIn('user_id',$fill_ids )->get();
+            //  dd($fill_ids);
+        return view ('compromis.index',compact('compromis','compromisParrain','fill_ids'));
 
-            // dd($compromisParrain);
         }
         //  dd($compromis);
         return view ('compromis.index',compact('compromis','compromisParrain'));
@@ -133,11 +134,24 @@ class CompromisController extends Controller
             if($request->partage == "Oui" && $request->hors_reseau == "Non" && $request->agent_id != null){
                 $agent = User::where('id',$request->agent_id)->first();
                 
+                // On check si le partage a un parrain 
+                $parrain_agent = Filleul::where('user_id',$agent->id)->first();
+                if($parrain_agent != null ){
+                    $compromis->parrain_partage_id = $parrain_agent->parrain_id ;
+                    $compromis->update();
+
+                }
+
+                $filleuls = Filleul::where([['parrain_id',Auth::user()->id],['expire',false]])->select('user_id')->get()->toArray();
+                $fill_ids = array();
+                foreach ($filleuls as $fill) {
+                    $fill_ids[]= $fill['user_id'];
+                }
+
+                
                 // Mail::to($agent->email)->send(new PartageAffaire($compromis->user, $compromis));
                 Mail::to("gestion@stylimmo.com")->send(new PartageAffaire($compromis->user, $compromis));
             }
-
-
 
         return redirect()->route('compromis.show', ['id' => Crypt::encrypt($compromis->id)]); 
     }
@@ -240,53 +254,6 @@ class CompromisController extends Controller
         $compromis->update();
         return redirect()->route('compromis.index')->with('ok', __('compromis modifié')  );
     }
-
-    // /**
-    //  * modifier une partie du compromis dans la demande de facture stylimmo
-    //  *
-    //  * @param  \Illuminate\Http\Request  $request
-    //  * @param  int  $id
-    //  * @return \Illuminate\Http\Response
-    //  */
-    // public function update_part(Request $request, Compromis $compromis)
-    // {
-    //     // dd($compromis);
-    //     if($request->numero_mandat != $compromis->numero_mandat){
-    //         $request->validate([
-    //             'numero_mandat' => 'required|numeric|unique:compromis',
-    //         ]);
-    //     }
-
-    //     $compromis->description_bien = $request->description_bien;
-    //     $compromis->ville_bien = $request->ville_bien;
-    //     $compromis->civilite_vendeur = $request->civilite_vendeur;
-    //     $compromis->nom_vendeur = $request->nom_vendeur;
-    //     $compromis->prenom_vendeur = $request->prenom_vendeur;
-    //     $compromis->adresse1_vendeur = $request->adresse1_vendeur;
-    //     $compromis->adresse2_vendeur = $request->adresse2_vendeur;
-    //     $compromis->code_postal_vendeur = $request->code_postal_vendeur;
-    //     $compromis->ville_vendeur = $request->ville_vendeur;
-    //     $compromis->civilite_acquereur = $request->civilite_acquereur;
-    //     $compromis->nom_acquereur = $request->nom_acquereur;
-    //     $compromis->prenom_acquereur = $request->prenom_acquereur;
-    //     $compromis->adresse1_acquereur = $request->adresse1_acquereur;
-    //     $compromis->adresse2_acquereur = $request->adresse2_acquereur;
-    //     $compromis->code_postal_acquereur = $request->code_postal_acquereur;
-    //     $compromis->ville_acquereur = $request->ville_acquereur;
-    //     $compromis->numero_mandat = $request->numero_mandat;
-    //     $compromis->date_mandat = $request->date_mandat;
-    //     $compromis->est_partage_agent = $request->partage == "Non" ? false : true;
-    //     $compromis->nom_agent = $request->nom_agent;
-    //     $compromis->pourcentage_agent = $request->pourcentage_agent;
-    //     $compromis->montant_deduis_net = $request->montant_deduis;
-    //     $compromis->frais_agence = $request->frais_agence;
-    //     $compromis->charge = $request->charge;
-    //     $compromis->net_vendeur = $request->net_vendeur;
-    //     $compromis->scp_notaire = $request->scp_notaire;
-        
-    //     $compromis->update();
-    //     return redirect()->route('compromis.index')->with('ok', __('compromis modifié')  );
-    // }
 
 
     /**

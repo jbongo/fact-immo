@@ -172,7 +172,7 @@
         </tr>
         <tr><td>&nbsp;</td> <td>&nbsp;</td> </tr>
 
-        @if(($facture->user->chiffre_affaire >= 35200 && $facture->user->statut == "auto-entrepreneur") || $facture->user->statut!="auto-entrepreneur"))
+        @if(($facture->user->chiffre_affaire >= 35200 && $facture->user->statut == "auto-entrepreneur") || $facture->user->statut!="auto-entrepreneur")
 
         <tr>
             <td style="width: 400px;">&nbsp;</td>
@@ -195,7 +195,7 @@
             <td style="width: 231px;">- {{ number_format($montant_pub_deduis, 2, '.', ' ') }} &euro;</td>
         </tr>
         @endif
-       @if(($facture->user->chiffre_affaire >= 35200 && $facture->user->statut == "auto-entrepreneur") || $facture->user->statut!="auto-entrepreneur"))
+       @if(($facture->user->chiffre_affaire >= 35200 && $facture->user->statut == "auto-entrepreneur") || $facture->user->statut!="auto-entrepreneur")
         <tr><td>&nbsp;</td> <td>&nbsp;</td> </tr>
         <tr>
             <td style="width: 400px;">&nbsp;</td>
@@ -203,7 +203,7 @@
             <td style="width: 231px;">{{ number_format($facture->montant_ttc - $montant_pub_deduis, 2, '.', ' ') }} &euro;</td>
         </tr>
         @endif
-        @if(($facture->user->chiffre_affaire < 35200 && $facture->user->statut == "auto-entrepreneur") || $facture->user->statut!="auto-entrepreneur"))
+        @if(($facture->user->chiffre_affaire < 35200 && $facture->user->statut == "auto-entrepreneur") || $facture->user->statut!="auto-entrepreneur")
         <tr>
             <td style="width: 400px;">&nbsp;</td>
             <td style="width: 353px; color:brown">Vous n'êtes pas soumis à la TVA </td>
@@ -221,7 +221,7 @@
     <tbody>
         <tr style="height: 25px;">
             <td style="width: 349px; height: 25px;">Valeur en votre aimable r&egrave;glement de :</td>
-                @if(($facture->user->chiffre_affaire >= 35200 && $facture->user->statut == "auto-entrepreneur") || $facture->user->statut!="auto-entrepreneur"))
+                @if(($facture->user->chiffre_affaire >= 35200 && $facture->user->statut == "auto-entrepreneur") || $facture->user->statut!="auto-entrepreneur")
                     <td style="width: 117px; height: 25px;">{{  number_format($facture->montant_ttc- $montant_pub_deduis, 2, '.', ' ')  }} &euro; TTC</td>
 
                 @else 
