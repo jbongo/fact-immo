@@ -178,7 +178,7 @@
         </tr>
         @endif
         <tr><td>&nbsp;</td> <td>&nbsp;</td> </tr>
-        @if(($facture->user->chiffre_affaire >= 35200 && $facture->user->statut == "auto-entrepreneur") || $facture->user->statut!="auto-entrepreneur") )
+        @if(($facture->user->chiffre_affaire >= 35200 && $facture->user->statut == "auto-entrepreneur") || $facture->user->statut!="auto-entrepreneur" )
         <tr>
             <td style="width: 400px;">&nbsp;</td>
             <td style="width: 153px;">T.V.A 20% :</td>
@@ -200,7 +200,7 @@
         @endif
        
         <tr><td>&nbsp;</td> <td>&nbsp;</td> </tr>
-        @if(($facture->user->chiffre_affaire >= 35200 && $facture->user->statut == "auto-entrepreneur") || $facture->user->statut!="auto-entrepreneur") )
+        @if(($facture->user->chiffre_affaire >= 35200 && $facture->user->statut == "auto-entrepreneur") || $facture->user->statut!="auto-entrepreneur" )
 
         <tr>
             <td style="width: 400px;">&nbsp;</td>
@@ -216,11 +216,11 @@
     <tbody>
         <tr style="height: 25px;">
             <td style="width: 349px; height: 25px;">Valeur en votre aimable r&egrave;glement de :</td>
-            @if(($facture->user->chiffre_affaire >= 35200 && $facture->user->statut == "auto-entrepreneur") || $facture->user->statut!="auto-entrepreneur") )
+            @if(($facture->user->chiffre_affaire >= 35200 && $facture->user->statut == "auto-entrepreneur") || $facture->user->statut!="auto-entrepreneur") 
 
-            <td style="width: 117px; height: 25px;">{{number_format($facture->montant_ttc - $montant_pub_deduis ,2,'.',' ')}} &euro; TTC</td>
+            <td style="width: 117px; height: 25px;">{{number_format($facture->montant_ttc ,2,'.',' ')}} &euro; TTC</td>
             @else 
-            <td style="width: 117px; height: 25px;">{{number_format($facture->montant_ht - $montant_pub_deduis ,2,'.',' ')}} &euro; HT</td>
+            <td style="width: 117px; height: 25px;">{{number_format($facture->montant_ht ,2,'.',' ')}} &euro; HT</td>
 
             @endif
             <td style="width: 177px; height: 25px;"></td>

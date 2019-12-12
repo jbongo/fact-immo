@@ -88,12 +88,14 @@
                                             @if ($compromi->cloture_affaire == 0 && $compromi->demande_facture == 2 && $compromi->agent_id != auth::user()->id)
                                     <a class="cloturer" href="{{route('compromis.cloturer',Crypt::encrypt($compromi->id))}}" data-toggle="tooltip" data-mandat="{{$compromi->numero_mandat}}" title="@lang('Cloturer l\'affaire  ')"><i class="large material-icons color-danger">clear</i></a> 
                                             @elseif($compromi->cloture_affaire == 1  )
-                                                @if ($compromi->je_porte_affaire == 0  || $compromi->agent_id == auth::user()->id || ($compromi->je_porte_affaire == 1 && $compromi->est_partage_agent == 1) )
-                                                <a target="blank" href="{{route('facture.preparer_facture_honoraire_partage',Crypt::encrypt($compromi->id))}}" data-toggle="tooltip" title="@lang('Note honoraire  ')"><i class="large material-icons color-danger">insert_drive_file</i></a> 
+                                                @if(auth::user()->role != "admin"  )
+                                                    @if ($compromi->je_porte_affaire == 0  || $compromi->agent_id == auth::user()->id || ($compromi->je_porte_affaire == 1 && $compromi->est_partage_agent == 1) )
+                                                    <a target="blank" href="{{route('facture.preparer_facture_honoraire_partage',Crypt::encrypt($compromi->id))}}" data-toggle="tooltip" title="@lang('Note honoraire  ')"><i class="large material-icons color-danger">insert_drive_file</i></a> 
 
-                                                @else 
-                                                <a target="blank" href="{{route('facture.preparer_facture_honoraire',Crypt::encrypt($compromi->id))}}" data-toggle="tooltip" title="@lang('Note honoraire  ')"><i class="large material-icons color-danger">insert_drive_file</i></a> 
-                                                    
+                                                    @else 
+                                                    <a target="blank" href="{{route('facture.preparer_facture_honoraire',Crypt::encrypt($compromi->id))}}" data-toggle="tooltip" title="@lang('Note honoraire  ')"><i class="large material-icons color-danger">insert_drive_file</i></a> 
+                                                        
+                                                    @endif
                                                 @endif
                                             @endif
                                             

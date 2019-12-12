@@ -50,7 +50,7 @@ class MandataireController extends Controller
     public function index()
     {
         //
-        $mandataires = User::where('role','mandataire')->get();
+        $mandataires = User::where('role','mandataire')->latest()->get();
         return view ('mandataires.index',compact('mandataires'));
     }
 
@@ -96,6 +96,7 @@ class MandataireController extends Controller
             'pays'=>$request->pays,
             'statut'=>$request->statut,
             'siret'=>$request->siret,
+            'numero_tva'=>$request->numero_tva,
             'email'=>$request->email,
             'email_perso'=>$request->email_perso,
             'role'=>"mandataire",
@@ -243,6 +244,7 @@ class MandataireController extends Controller
         $mandataire->pays = $request->pays; 
         $mandataire->statut = $request->statut; 
         $mandataire->siret = $request->siret; 
+        $mandataire->numero_tva = $request->numero_tva; 
         $mandataire->email = $request->email; 
         $mandataire->email_perso = $request->email_perso; 
         $mandataire->adresse = $request->adresse; 

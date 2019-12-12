@@ -45,7 +45,9 @@
                                         @if(auth()->user()->role == "admin")
                                         <td width="" >
                                             <label class="color-info">
+                                                @if($facture->user !=null)
                                                 {{$facture->user->nom}} {{$facture->user->prenom}} 
+                                                @endif
                                                
                                             </label> 
                                         </td>
@@ -110,14 +112,20 @@
                                         @endif --}}
                                         <td width="" >
                                             @if(auth::user()->role=="admin")
-                                                @if ($facture->compromis->je_porte_affaire == 0  || $facture->compromis->agent_id == auth::user()->id || ($facture->compromis->je_porte_affaire == 1 && $facture->compromis->est_partage_agent == 1) )
-                                                <a target="blank" href="{{route('facture.preparer_facture_honoraire_partage',[Crypt::encrypt($facture->compromis->id), $facture->user_id ])}}" data-toggle="tooltip" title="@lang('Note honoraire  ')"><i class="large material-icons color-danger">insert_drive_file</i></a> 
+                                            {{-- @if ($facture->compromis->je_porte_affaire == 0  || $facture->compromis->agent_id == auth::user()->id || ($facture->compromis->je_porte_affaire == 1 && $facture->compromis->est_partage_agent == 1) ) --}}
+                                                @if ($facture->type == "partage" )
+                                                    <a target="blank" href="{{route('facture.preparer_facture_honoraire_partage',[Crypt::encrypt($facture->compromis->id), $facture->user_id ])}}" data-toggle="tooltip" title="@lang('Note honoraire  ')"><i class="large material-icons color-danger">insert_drive_file</i></a> 
 
+                                                @elseif($facture->type == "parrainage")
+                                                    <a target="blank" href="{{route('facture.preparer_facture_honoraire_parrainage',Crypt::encrypt($facture->compromis->id))}}" data-toggle="tooltip" title="@lang('Note honoraire  ')"><i class="large material-icons color-danger">insert_drive_file</i></a> 
+                                                
+                                                @elseif($facture->type == "parrainage_partage")
+                                                    <a target="blank" href="{{route('facture.preparer_facture_honoraire_parrainage_partage',$facture->compromis->id)}}" data-toggle="tooltip" title="@lang('Note honoraire  ')"><i class="large material-icons color-danger">insert_drive_file</i></a> 
                                                 @else 
-                                                <a target="blank" href="{{route('facture.preparer_facture_honoraire',Crypt::encrypt($facture->compromis->id))}}" data-toggle="tooltip" title="@lang('Note honoraire  ')"><i class="large material-icons color-danger">insert_drive_file</i></a> 
+                                                    <a target="blank" href="{{route('facture.preparer_facture_honoraire',Crypt::encrypt($facture->compromis->id))}}" data-toggle="tooltip" title="@lang('Note honoraire  ')"><i class="large material-icons color-danger">insert_drive_file</i></a> 
                                                     
                                                 @endif
-                                                @else
+                                            @else
                                                 <a href="{{route('facture.telecharger_pdf_facture_stylimmo', Crypt::encrypt($facture->compromis->id))}}"  class="btn btn-warning btn-flat btn-addon  m-b-10 m-l-5 " id="ajouter"><i class="ti-download"></i>Télécharger</a>
 
                                             @endif
