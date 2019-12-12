@@ -189,6 +189,10 @@ Ajout d'une affaire
                                                             <option value="Mmes">Mmes</option>
                                                             <option value="M. et Mme">M. et Mme</option>
                                                             <option value="MM. et Mmes">MM. et Mmes</option>
+                                                            <option value="M. & M.">M. & M.</option>
+                                                            <option value="Mme & Mme">Mme & Mme</option>
+                                                            <option value="Indivision">Indivision</option>
+                                                            <option value="Consorts">Consorts</option>
                                                             <option value="SCI">SCI</option>
                                                             <option value="SARL">SARL</option>
                                                             <option value="EURL">EURL</option>
@@ -197,27 +201,9 @@ Ajout d'une affaire
                                                             <option value="SA">SA</option>
                                                             <option value="SAS">SAS</option>
                                                             <option value="SNC">SNC</option>
-                                                            <option value="EARL">EARL</option>                                                            
+                                                            <option value="EARL">EARL</option>
                                                             <option value="EIRL">EIRL</option>
-                                                            <option value="GAEC">GAEC</option>
-                                                            <option value="GEIE">GEIE</option>
                                                             <option value="GIE">GIE</option>
-                                                            <option value="SASU">SASU</option>
-                                                            <option value="SC">SC</option>
-                                                            <option value="SCA">SCA</option>
-                                                            <option value="SCIC">SCIC</option>
-                                                            <option value="SCM">SCM</option>
-                                                            <option value="SCOP">SCOP</option>
-                                                            <option value="SCS">SCS</option>
-                                                            <option value="SEL">SEL</option>
-                                                            <option value="SELAFA">SELAFA</option>
-                                                            <option value="SELARL">SELARL</option>
-                                                            <option value="SELAS">SELAS</option>
-                                                            <option value="SELCA">SELCA</option>
-                                                            <option value="SEM">SEM</option>
-                                                            <option value="SEML">SEML</option>
-                                                            <option value="SEP">SEP</option>
-                                                            <option value="SICA">SICA</option>
                                                             <option value="Autre">Autre</option>
                                                         </select>
                                                     </div>
@@ -285,42 +271,28 @@ Ajout d'une affaire
                                                 <label class="col-lg-12 col-md-12 col-sm-12 col-form-label" for="civilite_acquereur">Civilité / Forme Juridique <span class="text-danger">*</span></label>
                                                 <div class="col-lg-8 col-md-8 col-sm-8 ">
                                                     <select class="js-select2 form-control" id="civilite_acquereur" name="civilite_acquereur" >
-                                                        <option value="M.">M.</option>
-                                                        <option value="Mme">Mme</option>
-                                                        <option value="MM.">MM.</option>
-                                                        <option value="Mmes">Mmes</option>
-                                                        <option value="M. et Mme">M. et Mme</option>
-                                                        <option value="MM. et Mmes">MM. et Mmes</option>
-                                                        <option value="SCI">SCI</option>
-                                                        <option value="SARL">SARL</option>
-                                                        <option value="EURL">EURL</option>
-                                                        <option value="EI">EI</option>
-                                                        <option value="SCP">SCP</option>
-                                                        <option value="SA">SA</option>
-                                                        <option value="SAS">SAS</option>
-                                                        <option value="SNC">SNC</option>
-                                                        <option value="EARL">EARL</option>                                                            
-                                                        <option value="EIRL">EIRL</option>
-                                                        <option value="GAEC">GAEC</option>
-                                                        <option value="GEIE">GEIE</option>
-                                                        <option value="GIE">GIE</option>
-                                                        <option value="SASU">SASU</option>
-                                                        <option value="SC">SC</option>
-                                                        <option value="SCA">SCA</option>
-                                                        <option value="SCIC">SCIC</option>
-                                                        <option value="SCM">SCM</option>
-                                                        <option value="SCOP">SCOP</option>
-                                                        <option value="SCS">SCS</option>
-                                                        <option value="SEL">SEL</option>
-                                                        <option value="SELAFA">SELAFA</option>
-                                                        <option value="SELARL">SELARL</option>
-                                                        <option value="SELAS">SELAS</option>
-                                                        <option value="SELCA">SELCA</option>
-                                                        <option value="SEM">SEM</option>
-                                                        <option value="SEML">SEML</option>
-                                                        <option value="SEP">SEP</option>
-                                                        <option value="SICA">SICA</option>
-                                                        <option value="Autre">Autre</option>
+                                                            <option value="M.">M.</option>
+                                                            <option value="Mme">Mme</option>
+                                                            <option value="MM.">MM.</option>
+                                                            <option value="Mmes">Mmes</option>
+                                                            <option value="M. et Mme">M. et Mme</option>
+                                                            <option value="MM. et Mmes">MM. et Mmes</option>
+                                                            <option value="M. & M.">M. & M.</option>
+                                                            <option value="Mme & Mme">Mme & Mme</option>
+                                                            <option value="Indivision">Indivision</option>
+                                                            <option value="Consorts">Consorts</option>
+                                                            <option value="SCI">SCI</option>
+                                                            <option value="SARL">SARL</option>
+                                                            <option value="EURL">EURL</option>
+                                                            <option value="EI">EI</option>
+                                                            <option value="SCP">SCP</option>
+                                                            <option value="SA">SA</option>
+                                                            <option value="SAS">SAS</option>
+                                                            <option value="SNC">SNC</option>
+                                                            <option value="EARL">EARL</option>
+                                                            <option value="EIRL">EIRL</option>
+                                                            <option value="GIE">GIE</option>
+                                                            <option value="Autre">Autre</option>
                                                     </select>
                                                 </div>                                                
                                             </div>
