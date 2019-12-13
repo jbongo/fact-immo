@@ -22,8 +22,9 @@
                     <!-- Navigation Buttons -->
                     <div class="col-lg-12 col-md-12 col-sm-12">
                        <ul class="nav nav-pills nav-tabs" id="myTabs">
-                          <li id="li_stylimmo" class="active"><a href="#stylimmo" data-toggle="pill"> <i class="material-icons" style="font-size: 15px;">file_download</i> @lang('Factures émises')</a></li>
-                          <li id="li_caracteristique_nav"><a href="#caracteristique_nav" data-toggle="pill"> <i class="material-icons" style="font-size: 15px;">file_download</i> @lang('Factures reçues')</a></li>
+                          <li id="li_stylimmo" class="active"><a href="#stylimmo" data-toggle="pill"> <i class="material-icons" style="font-size: 15px;">file_download</i> @lang('Factures Styl\'immo')</a></li>
+                          <li id="li_caracteristique_nav"><a href="#caracteristique_nav" data-toggle="pill"> <i class="material-icons" style="font-size: 15px;">file_download</i> @lang('Factures Honoraires')</a></li>
+                          <li id="li_autre_nav"><a href="#autre_nav" data-toggle="pill"> <i class="material-icons" style="font-size: 15px;">file_download</i> @if(auth::user()->role == "admin") @lang('Factures Fournisseurs') @else @lang('Factures Communication') @endif </a></li>
                          
                          
                        </ul>
@@ -33,8 +34,9 @@
                        <div class="card">
                           <div class="card-body">
                              <div class="tab-content">
-                                <div class="tab-pane active" id="stylimmo"> @include('facture.emise')</div>
-                                <div class="tab-pane" id="caracteristique_nav">@include('facture.recu')</div>
+                                <div class="tab-pane active" id="stylimmo"> @include('facture.stylimmo')</div>
+                                <div class="tab-pane" id="caracteristique_nav">@include('facture.honoraire')</div>
+                                <div class="tab-pane" id="autre_nav">@include('facture.autre')</div>
                                
                              </div>
                           </div>

@@ -8,7 +8,7 @@
                                 <div class="panel-body">
 
                         <div class="table-responsive" style="overflow-x: inherit !important;">
-                            <table  id="example" class=" table student-data-table  m-t-20 "  style="width:100%">
+                            <table  id="example1" class=" table student-data-table  m-t-20 "  style="width:100%">
                                 <thead>
                                     <tr>
                                        
@@ -22,19 +22,18 @@
                                         <th>@lang('Montant TTC ')</th>
                                         {{-- <th>@lang('Date Facture')</th> --}}
                                         <th>@lang('Date de l\'acte')</th>
-                                        {{-- @if(auth()->user()->role == "admin") --}}
                                         <th>@lang('Alerte payement')</th>
-                                        @if(auth()->user()->role == "admin")
+
+                                        {{-- @if(auth()->user()->role == "admin")
                                         <th>@lang('Encaissement')</th>
-                                        @endif
-                                        {{-- @endif --}}
-                                        <th>@lang('Télécharger')</th>
-                                        <th>@lang('Avoir')</th>
+                                        @endif --}}
+
+                                        <th>@lang('Facture')</th>
 
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($factureEmises as $facture)
+                                    @foreach ($factureHonoraires as $facture)
 
                                     <tr>
                                         <td width="" >
@@ -48,7 +47,8 @@
                                             <label class="color-info">
                                                 @if($facture->user !=null)
                                                 {{$facture->user->nom}} {{$facture->user->prenom}} 
-                                               @endif
+                                                @endif
+                                               
                                             </label> 
                                         </td>
                                         @endif
@@ -56,10 +56,10 @@
                                             <label class="color-info">{{$facture->type}} </label> 
                                         </td>
                                         <td  width="" >
-                                        {{number_format($facture->montant_ht,'2','.',' ')}}
+                                        {{number_format($facture->montant_ht,2,'.',' ')}}
                                         </td>
                                         <td  width="" >
-                                        {{number_format($facture->montant_ttc,'2','.',' ')}}
+                                        {{number_format($facture->montant_ttc,2,'.',' ')}}
                                         </td>
                                         {{-- <td  width="" class="color-info">
                                                 {{$facture->created_at->format('d/m/Y')}}
@@ -78,17 +78,17 @@
                                         @endif
                                         {{--  alert payement--}}
                                         @php
-                                            $interval = strtotime(date('Y-m-d')) - strtotime($facture->compromis->date_vente);
-                                            $diff_jours = $interval / 86400 ;
+                                            $datevente = date_create($facture->compromis->date_vente->format('Y-m-d'));
+                                            $today = date_create(date('Y-m-d'));
+                                            $interval = date_diff($today, $datevente);
                                         @endphp
-                                       
                                         @if($facture->type == "stylimmo")
                                         <td width="" >
-                                            @if( $facture->encaissee == false && $diff_jours < 3)
+                                            @if( $facture->encaissee == false && $interval->days < 3)
                                                 <label  style="color:lime">En attente de payement</label>
-                                            @elseif( $facture->encaissee == false && $diff_jours >=3 && $diff_jours <=6)
+                                            @elseif( $facture->encaissee == false && $interval->days >=3 && $interval->days <=6)
                                                 <label  style="background-color:#FFC501">Ho làà  !!!&nbsp;&nbsp;&nbsp;</label>
-                                            @elseif($facture->encaissee == false && $diff_jours >6) 
+                                            @elseif($facture->encaissee == false && $interval->days >6) 
                                                 <label class="danger" style="background-color:#FF0633;color:white;visibility:visible;">Danger !!! &nbsp;&nbsp;</label>
                                             @elseif($facture->encaissee == true)
                                                 <label  style="background-color:#EDECE7">En banque  </label>
@@ -101,8 +101,7 @@
                                         </td>
                                         @endif
                                     {{-- fin alert payement --}}
-                                        {{-- encaissement seulement par admin --}}
-                                        @if(auth()->user()->role == "admin")
+                                        {{-- @if(auth()->user()->role == "admin")
                                         <td width="" >
                                             @if($facture->encaissee == 0)
                                             <a href="{{route('facture.encaisser_facture_stylimmo', Crypt::encrypt($facture->id))}}"  class="btn btn-success btn-flat btn-addon  m-b-10 m-l-5 encaisser" id="ajouter"><i class="ti-download"></i>Encaisser</a>
@@ -110,18 +109,27 @@
                                             <label class="color-danger">Encaissée </label> 
                                             @endif 
                                         </td>
-                                        @endif
+                                        @endif --}}
                                         <td width="" >
-                                            <a href="{{route('facture.telecharger_pdf_facture_stylimmo', Crypt::encrypt($facture->compromis->id))}}"  class="btn btn-warning btn-flat btn-addon  m-b-10 m-l-5 " id="ajouter"><i class="ti-download"></i>Télécharger</a>
-                                        </td> 
-                                       {{-- Avoir --}}
-                                        <td width="" >
-                                            @if($facture->a_avoir == 0)
-                                                <a href="{{route('facture.avoir.create', Crypt::encrypt($facture->id))}}"  class="btn btn-info btn-flat btn-xs m-b-10 m-l-5 " id=""><i class="ti-link"></i>créer</a>
+                                            @if(auth::user()->role=="admin")
+                                            {{-- @if ($facture->compromis->je_porte_affaire == 0  || $facture->compromis->agent_id == auth::user()->id || ($facture->compromis->je_porte_affaire == 1 && $facture->compromis->est_partage_agent == 1) ) --}}
+                                                @if ($facture->type == "partage" )
+                                                    <a target="blank" href="{{route('facture.preparer_facture_honoraire_partage',[Crypt::encrypt($facture->compromis->id), $facture->user_id ])}}" data-toggle="tooltip" title="@lang('Note honoraire  ')"><i class="large material-icons color-danger">insert_drive_file</i></a> 
+
+                                                @elseif($facture->type == "parrainage")
+                                                    <a target="blank" href="{{route('facture.preparer_facture_honoraire_parrainage',Crypt::encrypt($facture->compromis->id))}}" data-toggle="tooltip" title="@lang('Note honoraire  ')"><i class="large material-icons color-danger">insert_drive_file</i></a> 
+                                                
+                                                @elseif($facture->type == "parrainage_partage")
+                                                    <a target="blank" href="{{route('facture.preparer_facture_honoraire_parrainage_partage',$facture->compromis->id)}}" data-toggle="tooltip" title="@lang('Note honoraire  ')"><i class="large material-icons color-danger">insert_drive_file</i></a> 
+                                                @else 
+                                                    <a target="blank" href="{{route('facture.preparer_facture_honoraire',Crypt::encrypt($facture->compromis->id))}}" data-toggle="tooltip" title="@lang('Note honoraire  ')"><i class="large material-icons color-danger">insert_drive_file</i></a> 
+                                                    
+                                                @endif
                                             @else
-                                                <a href="{{route('facture.avoir.show', Crypt::encrypt($facture->id))}}"  class="btn btn-danger btn-flat btn-xs m-b-10 m-l-5 " id=""><i class="ti-file"></i>Voir facture</a>
+                                                <a href="{{route('facture.telecharger_pdf_facture_stylimmo', Crypt::encrypt($facture->compromis->id))}}"  class="btn btn-warning btn-flat btn-addon  m-b-10 m-l-5 " id="ajouter"><i class="ti-download"></i>Télécharger</a>
+
                                             @endif
-                                        </td>
+                                        </td> 
                                     </tr> 
                                
                             @endforeach

@@ -30,15 +30,19 @@ class FactureController extends Controller
         //
      
         if(auth()->user()->role == "admin"){
-            $factureEmises = Facture::whereIn('type',['pack_pub','carte_visite','stylimmo'])->latest()->get();
-            $factureRecues = Facture::whereIn('type',['honoraire','partage','parrainage','parrainage_partage'])->latest()->get();
+            $factureStylimmos = Facture::whereIn('type',['stylimmo'])->latest()->get();
+            $factureHonoraires = Facture::whereIn('type',['honoraire','partage','parrainage','parrainage_partage'])->latest()->get();
+            $factureCommunications = Facture::where('type',['pack_pub','carte_visite'])->latest()->get();
             
         }else{
-            $factureEmises = Facture::where('user_id',auth()->user()->id)->whereIn('type',['honoraire','partage','parrainage','parrainage_partage'])->latest()->get();
-            $factureRecues = Facture::where('user_id',auth()->user()->id)->whereIn('type',['pack_pub','carte_visite','stylimmo'])->latest()->get();
+            $factureHonoraires = Facture::where('user_id',auth()->user()->id)->whereIn('type',['honoraire','partage','parrainage','parrainage_partage'])->latest()->get();
+            $factureStylimmos = Facture::where('user_id',auth()->user()->id)->where('type','stylimmo')->latest()->get();
+            $factureCommunications = Facture::where('user_id',auth()->user()->id)->whereIn('type',['pack_pub','carte_visite'])->latest()->get();
+
         }
+        // dd($factureStylimmos);
         
-        return view ('facture.index',compact(['factureEmises','factureRecues']));
+        return view ('facture.index',compact(['factureHonoraires','factureStylimmos']));
     }
 
     /**
