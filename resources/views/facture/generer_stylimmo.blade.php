@@ -52,7 +52,7 @@ Facture N° {{$facture->numero}}
                     
                     <div class="row">
                         <div class="form-group  col-lg-4 col-md-4 col-sm-6 col-xs-6">
-                            <div class="">  <input class="form-control " style="height:35px; border-color:royalblue" type="number" name="numero" id="numero" value="{{$numero}}" required> </div>
+                            <div class="">  <input class="form-control " style="height:35px; border-color:royalblue" type="number" name="numero" id="numero" value="{{ old('numero') ? old('numero') : $numero}}" required> </div>
                             @if ($errors->has('numero'))
                             <br>
                             <div class="alert alert-warning ">
@@ -61,7 +61,7 @@ Facture N° {{$facture->numero}}
                             @endif     
                         </div>
                         <div class="form-group col-lg-4 col-md-4 col-sm-6 col-xs-6">
-                            <div class="">  <input class="form-control " style="height:35px; border-color:royalblue" type="date" name="date_facture" id="date_facture"  required> </div>
+                        <div class="">  <input class="form-control " style="height:35px; border-color:royalblue" type="date"  name="date_facture" id="date_facture"  required> </div>
                             @if ($errors->has('date_facture'))
                             <br>
                             <div class="alert alert-warning ">
@@ -131,10 +131,11 @@ Facture N° {{$facture->numero}}
     <tbody>
         <tr>
             <td style="width: 158px;"><span style="text-decoration: underline;"><strong>TRANSACTION</strong></span></td>
-            <td style="width: 143px;"><span style="text-decoration: underline;"><strong>VENTE</strong></span></td>
+        <td style="width: 143px;"><span style="text-decoration: underline;"><strong> {{strtoupper($compromis->type_affaire)}}</strong></span></td>
         </tr>
     </tbody>
 </table>
+@if($compromis->type_affaire == "Vente")
 <table style="height: 26px; width: 50%;">
     <tbody>
         <tr>
@@ -143,6 +144,7 @@ Facture N° {{$facture->numero}}
         </tr>
     </tbody>
 </table>
+@endif
 <table style="height: 37px; width: 50%;">
     <tbody>
         <tr>
@@ -156,12 +158,12 @@ Facture N° {{$facture->numero}}
     <tbody>
         <tr>
             <td style="width: 48px;">&nbsp;</td>
-            <td style="width: 428px;"><span style="text-decoration: underline;">Vendeur: </span>&nbsp; {{$compromis->civilite_vendeur}} {{$compromis->nom_vendeur}} </td>
+            <td style="width: 428px;"><span style="text-decoration: underline;">@if($compromis->type_affaire == "Vente") Vendeur(s) @else Propriétaire(s)@endif: </span>&nbsp; {{$compromis->civilite_vendeur}} {{$compromis->nom_vendeur}} </td>
             <td style="width: 191px;">&nbsp;</td>
         </tr>
         <tr>
             <td style="width: 48px;">&nbsp;</td>
-            <td style="width: 228px;"><span style="text-decoration: underline;">Acquereur:</span>&nbsp; {{$compromis->civilite_acquereur}} {{$compromis->nom_acquereur}} {{$compromis->prenom_acquereur}} </td>
+            <td style="width: 228px;"><span style="text-decoration: underline;">@if($compromis->type_affaire == "Vente") Acquéreur(s) @else Locataire(s)@endif:</span>&nbsp; {{$compromis->civilite_acquereur}} {{$compromis->nom_acquereur}} {{$compromis->prenom_acquereur}} </td>
             <td style="width: 191px;">&nbsp;</td>
         </tr>
     </tbody>
@@ -215,7 +217,7 @@ Facture N° {{$facture->numero}}
 
 </table>
 <br>
-
+@if($compromis->type_affaire == "Vente")
 <table style="height: 40px; width: 50%;">
     <tbody>
         <tr>
@@ -232,6 +234,7 @@ Facture N° {{$facture->numero}}
         </tr>
     </tbody>
 </table>
+@endif
 <br>
 <table class="table table-striped table-bordered table-hover" style="width: 50%;" border="1">
     <thead>

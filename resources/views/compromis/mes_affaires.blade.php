@@ -33,9 +33,9 @@
                             <tbody>
                                 @foreach ($compromis as $compromi)
                                 <tr>
-                                        @if (Auth()->user()->role == "admin")
+                                    @if (Auth()->user()->role == "admin")
                                     <td  >
-                                    <strong>{{$compromi->user->nom}} {{$compromi->user->prenom}}</strong> 
+                                    <strong> <a href="{{route('switch_user',Crypt::encrypt($compromi->user->id) )}}" data-toggle="tooltip" title="@lang('Se connecter en tant que ') {{$compromi->user->nom}}">{{$compromi->user->nom}} {{$compromi->user->prenom}}<i style="font-size: 17px" class="material-icons color-success">person_pin</i></a> </strong> 
                                     </td> 
                                     @endif
                                     <td >

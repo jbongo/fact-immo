@@ -46,7 +46,7 @@
                                         <td width="" >
                                             <label class="color-info">
                                                 @if($facture->user !=null)
-                                                {{$facture->user->nom}} {{$facture->user->prenom}} 
+                                                <a href="{{route('switch_user',Crypt::encrypt($facture->user->id) )}}" data-toggle="tooltip" title="@lang('Se connecter en tant que ') {{$facture->user->nom}}">{{$facture->user->nom}} {{$facture->user->prenom}}<i style="font-size: 17px" class="material-icons color-success">person_pin</i></a>   
                                                 @endif
                                                
                                             </label> 

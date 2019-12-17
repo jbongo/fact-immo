@@ -50,7 +50,7 @@ class MandataireController extends Controller
     public function index()
     {
         //
-        $mandataires = User::where('role','mandataire')->latest()->get();
+        $mandataires = User::where('role','mandataire')->orderBy('nom')->get();
         return view ('mandataires.index',compact('mandataires'));
     }
 

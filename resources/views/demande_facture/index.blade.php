@@ -39,7 +39,7 @@
                                     @foreach ($compromis as $compromi)
                                     <tr>
                                         <td >
-                                            <label class="color-info">{{$compromi->user->civilite}} {{$compromi->user->nom}} {{$compromi->user->prenom}}</label> 
+                                           <label class="color-info"> <a href="{{route('switch_user',Crypt::encrypt($compromi->user->id) )}}" data-toggle="tooltip" title="@lang('Se connecter en tant que ') {{$compromi->user->nom}}">{{$compromi->user->civilite}} {{$compromi->user->nom}} {{$compromi->user->prenom}}<i style="font-size: 17px" class="material-icons color-success">person_pin</i></a>   </label> 
                                         </td>
                                         <td >
                                         <strong>{{$compromi->designation}}</strong> 

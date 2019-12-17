@@ -187,10 +187,24 @@ class FactureController extends Controller
 //############
 public  function valider_facture_stylimmo( Request $request, $compromis)
 {
-    $request->validate([
-        'numero' => 'required|numeric|unique:factures',
-        'date_facture' => 'required|date',
-    ]);
+    $numero = Facture::where([ ['type','stylimmo']])->max('numero') ;
+    $lastdate = Facture::where('numero',$numero)->select('date_facture')->first();
+    $lastdate = $lastdate['date_facture'];
+    $lastdate = $lastdate->format('d-m-Y');
+    // dd($lastdate->format('Y-m-d'));
+    if($request->numero > $numero){
+        $request->validate([
+            'numero' => 'required|numeric|unique:factures',
+            'date_facture' => "required|date|after:$lastdate",
+        ]);
+    }else{
+        $request->validate([
+            'numero' => 'required|numeric|unique:factures',
+            'date_facture' => "required|date|before:$lastdate",
+        ]);
+    }
+   
+
     
     // dd($request->numero);
     $numero = $request->numero;
@@ -264,22 +278,28 @@ public  function valider_facture_stylimmo( Request $request, $compromis)
         $compromis = Compromis::where('id', Crypt::decrypt($compromis))->first();
         $mandataire = $compromis->user;
         $facture = Facture::where([ ['type','stylimmo'],['compromis_id',$compromis->id]])->first();
+
         $numero = "";
-        $nb_numeros_facture = Facture::where([ ['type','stylimmo']])->select('numero')->count();
+        // $nb_numeros_facture = Facture::where([ ['type','stylimmo']])->select('numero')->count();
         
-        if($nb_numeros_facture > 0){
-            $numeros_facture = Facture::where([ ['type','stylimmo']])->select('numero')->get()->toArray();
-            $numeros = array();
+        // if($nb_numeros_facture > 0){
+        //     $numeros_facture = Facture::where([ ['type','stylimmo']])->select('numero')->get()->toArray();
+        //     $numeros = array();
     
-            foreach ($numeros_facture as $num) {
-                $numeros[] = $num["numero"];
-            }
+        //     foreach ($numeros_facture as $num) {
+        //         $numeros[] = $num["numero"];
+        //     }
     
-            $numero = max($numeros)+1;
-        }
+        //     $numero = max($numeros)+1;
+        // }
         
+        $numero = Facture::where([ ['type','stylimmo']])->max('numero') + 1;
+        $lastdate = Facture::where('numero',$numero-1)->select('date_facture')->first();
+            
+
+        $lastdate= $lastdate['date_facture'];
       
-        return view ('facture.generer_stylimmo',compact(['compromis','numero','mandataire','facture']));
+        return view ('facture.generer_stylimmo',compact(['compromis','numero','mandataire','facture','lastdate']));
       
     }
 

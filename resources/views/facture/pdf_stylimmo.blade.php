@@ -47,10 +47,11 @@
         <tbody>
             <tr>
                 <td style="width: 158px;"><span style="text-decoration: underline;"><strong>TRANSACTION</strong></span></td>
-                <td style="width: 143px;"><span style="text-decoration: underline;"><strong>VENTE</strong></span></td>
+                <td style="width: 143px;"><span style="text-decoration: underline;"><strong>{{strtoupper($compromis->type_affaire)}}</strong></span></td>
             </tr>
         </tbody>
     </table>
+@if($compromis->type_affaire == "Vente")
     <table style="height: 26px; width: 50%;">
         <tbody>
             <tr>
@@ -59,6 +60,7 @@
             </tr>
         </tbody>
     </table>
+@endif
     <table style="height: 37px; width: 50%;">
         <tbody>
             <tr>
@@ -72,7 +74,7 @@
         <tbody>
             <tr>
                 <td style="width: 48px;">&nbsp;</td>
-                <td style=""><span style="text-decoration: underline; font-weight:bold">Vendeur(s) : </span> {{$compromis->civilite_vendeur}} {{$compromis->nom_vendeur}} </td>
+                <td style=""><span style="text-decoration: underline; font-weight:bold"> @if($compromis->type_affaire == "Vente") Vendeur(s) @else Propriétaire(s)@endif: </span> {{$compromis->civilite_vendeur}} {{$compromis->nom_vendeur}} </td>
                 {{-- <td style="width: 391px;">&nbsp;</td> --}}
             </tr>
 
@@ -83,7 +85,7 @@
         <tbody>
             <tr>
                 <td style="width: 48px;">&nbsp;</td>
-                <td style=""><span style="text-decoration: underline; font-weight:bold">Acquéreur(s) :</span> {{$compromis->civilite_acquereur}}   {{$compromis->nom_acquereur}} </strong></td>
+                <td style=""><span style="text-decoration: underline; font-weight:bold">@if($compromis->type_affaire == "Vente") Acquéreur(s) @else Locataire(s)@endif:</span> {{$compromis->civilite_acquereur}}   {{$compromis->nom_acquereur}} </strong></td>
                 {{-- <td style="width: 391px;">&nbsp;</td> --}}
             </tr>
         </tbody>
@@ -139,7 +141,7 @@
     </table>
     <br>
     <br>
-    
+    @if($compromis->type_affaire == "Vente")
     <table style="height: 40px; ">
         <tbody>
             <tr>
@@ -156,6 +158,7 @@
             </tr>
         </tbody>
     </table>
+    @endif
     <br>
     <style>
         @page { margin: 50px 45px; }
