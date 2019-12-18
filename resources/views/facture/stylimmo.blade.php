@@ -41,7 +41,9 @@
                                             <label class="color-info">{{$facture->numero}} </label> 
                                         </td>
                                         <td width="" >
-                                            <label class="color-info">{{$facture->compromis->numero_mandat}} </label> 
+                                            {{-- <label class="color-info">{{$facture->compromis->numero_mandat}} </label>  --}}
+                                        <label class="color-info"><a href="{{route('compromis.show',Crypt::encrypt($facture->compromis->id) )}}" target="_blank" title="@lang('voir l\'affaire  ') ">{{$facture->compromis->numero_mandat}}  <i style="font-size: 17px" class="material-icons color-success">account_balance</i></a></label>
+
                                         </td>
                                         @if(auth()->user()->role == "admin")
                                         <td width="" >
