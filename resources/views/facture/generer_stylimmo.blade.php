@@ -140,7 +140,17 @@ Facture N° {{$facture->numero}}
     <tbody>
         <tr>
             <td style="width: 423px;">En l'&eacute;tude de Scp&nbsp; {{$compromis->scp_notaire}}</td>
-            <td style="width: 260px;">Pr&eacute;vue pour le : {{ Carbon\Carbon::parse($compromis->date_vente)->format('d/m/Y')}}</td>
+            <td style="width: 260px;">  Pr&eacute;vue pour le : {{ Carbon\Carbon::parse($compromis->date_vente)->format('d/m/Y')}} </td>
+        </tr>
+    </tbody>
+</table>
+@endif
+@if($compromis->type_affaire == "Location")
+<table style="height: 26px; width: 50%;">
+    <tbody>
+        <tr>
+            <td style="width: 423px;">&nbsp; </td>
+            <td style="width: 260px;"> date entrée : {{ Carbon\Carbon::parse($compromis->user->date_entree)->format('d/m/Y')}}   </td>
         </tr>
     </tbody>
 </table>

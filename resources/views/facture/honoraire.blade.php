@@ -12,7 +12,8 @@
                                 <thead>
                                     <tr>
                                        
-                                        <th>@lang('Numéro Facture')</th>
+                                        <th>@lang('Numéro Honoraire')</th>
+                                        <th>@lang('Numéro Stylimmo')</th>
                                         <th>@lang('Numéro Mandat')</th>
                                         @if(auth()->user()->role == "admin")
                                         <th>@lang('Mandataire')</th>
@@ -22,7 +23,7 @@
                                         <th>@lang('Montant TTC ')</th>
                                         {{-- <th>@lang('Date Facture')</th> --}}
                                         <th>@lang('Date de l\'acte')</th>
-                                        <th>@lang('Alerte payement')</th>
+                                        <th>@lang('Paiement')</th>
 
                                         {{-- @if(auth()->user()->role == "admin")
                                         <th>@lang('Encaissement')</th>
@@ -38,6 +39,9 @@
                                     <tr>
                                         <td width="" >
                                             <label class="color-info">{{$facture->numero}} </label> 
+                                        </td>
+                                        <td width="" >
+                                            <label class="color-info">{{$facture->compromis->getFactureStylimmo()->numero}} </label> 
                                         </td>
                                         <td width="" >
                                             <label class="color-info">{{$facture->compromis->numero_mandat}} </label> 
@@ -64,52 +68,33 @@
                                         {{-- <td  width="" class="color-info">
                                                 {{$facture->created_at->format('d/m/Y')}}
                                         </td> --}}
-                                        @if($facture->type == "stylimmo")
+                                       
                                         <td width="" >
                                             <label class="color-info">
                                                 {{$facture->compromis->date_vente->format('d/m/Y')}} 
                                             </label> 
                                         </td>
 
-                                        @else 
-                                        <td width="" style="background-color:#DCD6E1" >
-                                            
-                                        </td>
-                                        @endif
-                                        {{--  alert payement--}}
+                                        {{--  paiement--}}
                                         @php
                                             $datevente = date_create($facture->compromis->date_vente->format('Y-m-d'));
                                             $today = date_create(date('Y-m-d'));
                                             $interval = date_diff($today, $datevente);
                                         @endphp
-                                        @if($facture->type == "stylimmo")
+                                        {{-- @if($facture->type == "stylimmo") --}}
                                         <td width="" >
-                                            @if( $facture->encaissee == false && $interval->days < 3)
-                                                <label  style="color:lime">En attente de payement</label>
-                                            @elseif( $facture->encaissee == false && $interval->days >=3 && $interval->days <=6)
-                                                <label  style="background-color:#FFC501">Ho làà  !!!&nbsp;&nbsp;&nbsp;</label>
-                                            @elseif($facture->encaissee == false && $interval->days >6) 
-                                                <label class="danger" style="background-color:#FF0633;color:white;visibility:visible;">Danger !!! &nbsp;&nbsp;</label>
-                                            @elseif($facture->encaissee == true)
-                                                <label  style="background-color:#EDECE7">En banque  </label>
-                                            @endif
-                                        </td>
-
-                                        @else 
-                                        <td width="" style="background-color:#DCD6E1" >
-                                           
-                                        </td>
-                                        @endif
-                                    {{-- fin alert payement --}}
-                                        {{-- @if(auth()->user()->role == "admin")
-                                        <td width="" >
-                                            @if($facture->encaissee == 0)
-                                            <a href="{{route('facture.encaisser_facture_stylimmo', Crypt::encrypt($facture->id))}}"  class="btn btn-success btn-flat btn-addon  m-b-10 m-l-5 encaisser" id="ajouter"><i class="ti-download"></i>Encaisser</a>
+                                            @if($facture->reglee == 0)
+                                                @if(auth::user()->role == "admin")
+                                                    <button data-toggle="modal" data-target="#myModal" id="{{Crypt::encrypt($facture->id)}}"  class="btn btn-success btn-flat btn-addon  m-b-10 m-l-5 payer" ><i class="ti-wallet"></i>Payer</button>
+                                                @else 
+                                                    <label class="color-danger">Non réglé </label> 
+                                                @endif
                                             @else 
-                                            <label class="color-danger">Encaissée </label> 
+                                                <label class="color-success">@if($facture->date_reglement != null) Réglé le {{$facture->date_reglement->format('d-m-Y')}} @else Réglé @endif</label> 
                                             @endif 
                                         </td>
-                                        @endif --}}
+
+                                        
                                         <td width="" >
                                             @if(auth::user()->role=="admin")
                                             {{-- @if ($facture->compromis->je_porte_affaire == 0  || $facture->compromis->agent_id == auth::user()->id || ($facture->compromis->je_porte_affaire == 1 && $facture->compromis->est_partage_agent == 1) ) --}}
@@ -139,6 +124,55 @@
                     </div>
                 </div>
 
-                    </div>
-                <!-- end table -->
+
+<div class="container">
+
+        <!-- Trigger the modal with a button -->
+        {{-- <button type="button" class="btn btn-info btn-lg" id="myBtn">Open Modal</button> --}}
+      
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" role="dialog">
+          <div class="modal-dialog modal-sm">
+          
+            <!-- Modal content-->
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Date de règlement</h4>
+              </div>
+              <div class="modal-body">
+                <p><form action="" method="get" id="form_regler">
+                        <div class="modal-body">
+                          
+                                <div class="col-lg-offset-2  col-md-offset-2 col-sm-offset-2 col-lg-4 col-md-4 col-sm-4">
+                                    <div class="form-group row">
+                                        <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="date_reglement">Date de règlement <span class="text-danger">*</span> </label>
+                                        <div class="col-lg-8 col-md-8 col-sm-8">
+                                            <input type="date"  class="form-control {{ $errors->has('date_reglement') ? ' is-invalid' : '' }}" value="{{old('date_reglement')}}" id="date_reglement" name="date_reglement" required >
+                                            @if ($errors->has('date_reglement'))
+                                            <br>
+                                            <div class="alert alert-warning ">
+                                                <strong>{{$errors->first('date_reglement')}}</strong> 
+                                            </div>
+                                            @endif   
+                                        </div>
+                                    </div>
+                                </div>
+                          </p>
+              </div>
+              <div class="modal-footer">
+                <input type="submit" class="btn btn-success" id="valider_reglement"  value="Valider" />
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+        </form> 
+          </div>
+        </div>
+        
+      </div>              
+
+
+                </div>
+                </div>
+            <!-- end table -->
             

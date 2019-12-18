@@ -14,11 +14,13 @@
                         <table  id="example" class=" table student-data-table  m-t-20 "  style="width:100%">
                             <thead>
                                 <tr>
-                                        @if (Auth()->user()->role == "admin")
+                                    @if (Auth()->user()->role == "admin")
                                     <th>@lang('Mandataire')</th>
-                                @endif
-
+                                    @endif
+                                    @if(Auth()->user()->role == "mandataire")
                                     <th>@lang('porte l\'affaire')</th>
+                                    @endif
+                                    <th>@lang('Numéro Stylimmo')</th>
                                     <th>@lang('Numéro Mandat')</th>
                                     <th>@lang('Description bien')</th>
                                     <th>@lang('Net Vendeur')</th>
@@ -38,6 +40,7 @@
                                     <strong> <a href="{{route('switch_user',Crypt::encrypt($compromi->user->id) )}}" data-toggle="tooltip" title="@lang('Se connecter en tant que ') {{$compromi->user->nom}}">{{$compromi->user->nom}} {{$compromi->user->prenom}}<i style="font-size: 17px" class="material-icons color-success">person_pin</i></a> </strong> 
                                     </td> 
                                     @endif
+                                    @if(Auth()->user()->role == "mandataire")
                                     <td >
                 
                                         @if($compromi->je_porte_affaire == 0  || $compromi->agent_id == auth::user()->id)
@@ -48,7 +51,15 @@
                                             <span class="badge badge-success">Oui</span>
                                         @endif
 
-                                    </td>   
+                                    </td>  
+                                    @endif 
+                                    <td width="" >
+                                        @if($compromi->getFactureStylimmo()!=null)
+                                        <label class="color-info">{{$compromi->getFactureStylimmo()->numero}} </label>
+                                        @else 
+                                            <span class="color-warning">En attente ..</span>                                            
+                                        @endif
+                                    </td>
                                     <td  style="color: #e05555;{{$grise}}">
                                         <strong> {{$compromi->numero_mandat}}</strong> 
                                     </td>     
@@ -67,7 +78,18 @@
                                         @if($compromi->est_partage_agent == 0)
                                             <span class="badge badge-danger">Non</span>
                                         @else
-                                            <span class="badge badge-success">Oui</span>
+                                            @if(auth::user()->role == "admin")
+                                            {{-- <span class="badge badge-success">Oui</span> --}}
+                                            
+                                            <strong> <a href="{{route('switch_user',Crypt::encrypt($compromi->getPartage()->id) )}}" data-toggle="tooltip" title="@lang('Se connecter en tant que ') {{$compromi->getPartage()->nom}}">{{$compromi->getPartage()->nom}} {{$compromi->getPartage()->prenom}}<i style="font-size: 17px" class="material-icons color-success">person_pin</i></a> </strong> 
+
+                                            @else 
+                                            {{-- {{$compromi->user->nom}} {{$compromi->user->prenom}} --}}
+                                            <strong> <a href="{{route('switch_user',Crypt::encrypt($compromi->user->id) )}}" data-toggle="tooltip" title="@lang('Se connecter en tant que ') {{$compromi->user->nom}}">{{$compromi->user->nom}} {{$compromi->user->prenom}}<i style="font-size: 17px" class="material-icons color-success">person_pin</i></a> </strong> 
+
+
+                                            @endif
+
                                         @endif
 
                                     </td>        

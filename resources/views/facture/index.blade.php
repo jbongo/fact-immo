@@ -114,7 +114,7 @@
          })
       })
 </script>
-
+{{-- Alertes paiement  --}}
 <script type="text/javascript">
    var clignotement = function(){
 
@@ -136,4 +136,40 @@
    periode = setInterval(clignotement, 1500);
 
 </script>
+
+{{--  Reglement de la facture stylimmo--}}
+<script>
+   $('.payer').on('click',function(e){
+
+      facture_id = $(this).attr('id');
+      
+   });
+
+   $('#valider_reglement').on('click',function(e){
+      // e.preventDefault();
+ 
+      if($("#date_reglement").val() != ""){
+
+     
+         $.ajax({
+               type: "POST",
+               url: "regler/factures-honoraire/"+facture_id ,
+               data:  $("#form_regler").serialize(),
+               success: function (result) {
+                  console.log(result); 
+                  document.location.reload();
+               },
+               error: function(error){
+                  console.log(error);
+                  
+               }
+         });
+      }
+
+
+   });
+ 
+</script>
+
+
 @endsection

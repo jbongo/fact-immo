@@ -26,4 +26,10 @@ class Compromis extends Model
         $partage = User::where('id',$this->parrain_partage_id)->first();
         return $partage;
     }
+
+    public function getFactureStylimmo(){
+
+        $facture = Facture::where([['compromis_id',$this->id],['type','stylimmo']])->first();
+        return $facture;
+    }
 }

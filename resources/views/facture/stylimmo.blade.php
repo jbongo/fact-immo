@@ -12,7 +12,7 @@
                                 <thead>
                                     <tr>
                                        
-                                        <th>@lang('Numéro Facture')</th>
+                                        <th>@lang('Numéro Stylimmo')</th>
                                         <th>@lang('Numéro Mandat')</th>
                                         @if(auth()->user()->role == "admin")
                                         <th>@lang('Mandataire')</th>
@@ -23,7 +23,7 @@
                                         {{-- <th>@lang('Date Facture')</th> --}}
                                         <th>@lang('Date de l\'acte')</th>
                                         {{-- @if(auth()->user()->role == "admin") --}}
-                                        <th>@lang('Alerte payement')</th>
+                                        <th>@lang('Alerte paiement')</th>
                                         @if(auth()->user()->role == "admin")
                                         <th>@lang('Encaissement')</th>
                                         @endif
@@ -76,7 +76,7 @@
                                             
                                         </td>
                                         @endif
-                                        {{--  alert payement--}}
+                                        {{--  alert paiement--}}
                                         @php
                                             $interval = strtotime(date('Y-m-d')) - strtotime($facture->compromis->date_vente);
                                             $diff_jours = $interval / 86400 ;
@@ -85,7 +85,7 @@
                                         @if($facture->type == "stylimmo")
                                         <td width="" >
                                             @if( $facture->encaissee == false && $diff_jours < 3)
-                                                <label  style="color:lime">En attente de payement</label>
+                                                <label  style="color:lime">En attente de paiement</label>
                                             @elseif( $facture->encaissee == false && $diff_jours >=3 && $diff_jours <=6)
                                                 <label  style="background-color:#FFC501">Ho làà  !!!&nbsp;&nbsp;&nbsp;</label>
                                             @elseif($facture->encaissee == false && $diff_jours >6) 
@@ -100,19 +100,19 @@
                                            
                                         </td>
                                         @endif
-                                    {{-- fin alert payement --}}
+                                    {{-- fin alert paiement --}}
                                         {{-- encaissement seulement par admin --}}
                                         @if(auth()->user()->role == "admin")
                                         <td width="" >
                                             @if($facture->encaissee == 0)
-                                            <a href="{{route('facture.encaisser_facture_stylimmo', Crypt::encrypt($facture->id))}}"  class="btn btn-success btn-flat btn-addon  m-b-10 m-l-5 encaisser" id="ajouter"><i class="ti-download"></i>Encaisser</a>
+                                            <a href="{{route('facture.encaisser_facture_stylimmo', Crypt::encrypt($facture->id))}}"  class="btn btn-success btn-flat btn-addon  m-b-10 m-l-5 encaisser" id="ajouter"><i class="ti-wallet"></i>Encaisser</a>
                                             @else 
                                             <label class="color-danger">Encaissée </label> 
                                             @endif 
                                         </td>
                                         @endif
                                         <td width="" >
-                                            <a href="{{route('facture.telecharger_pdf_facture_stylimmo', Crypt::encrypt($facture->compromis->id))}}"  class="btn btn-warning btn-flat btn-addon  m-b-10 m-l-5 " id="ajouter"><i class="ti-download"></i>Télécharger</a>
+                                            <a href="{{route('facture.telecharger_pdf_facture_stylimmo', Crypt::encrypt($facture->compromis->id))}}"  class="btn btn-warning btn-flat btn-addon  m-b-10 m-l-5 " id="telecharger"><i class="ti-download"></i>Télécharger</a>
                                         </td> 
                                        {{-- Avoir --}}
                                         <td width="" >

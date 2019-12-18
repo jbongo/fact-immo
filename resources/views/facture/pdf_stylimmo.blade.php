@@ -61,6 +61,16 @@
         </tbody>
     </table>
 @endif
+@if($compromis->type_affaire == "Location")
+<table style="height: 26px; width: 50%;">
+    <tbody>
+        <tr>
+            <td style="width: 423px;">&nbsp; </td>
+            <td style="width: 260px;"> date entrée : {{ Carbon\Carbon::parse($compromis->user->date_entree)->format('d/m/Y')}}   </td>
+        </tr>
+    </tbody>
+</table>
+@endif
     <table style="height: 37px; width: 50%;">
         <tbody>
             <tr>

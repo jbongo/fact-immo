@@ -52,7 +52,7 @@ class CompromisController extends Controller
     public function create()
     {
         //
-        $agents = User::where([['role','mandataire'],['id','<>',Auth::user()->id]])->get();
+        $agents = User::where([['role','mandataire'],['id','<>',Auth::user()->id]])->orderBy("nom")->get();
         return view ('compromis.add',compact('agents'));
     }
 

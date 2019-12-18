@@ -409,7 +409,7 @@ Ajout d'une affaire
                                             </div>
                                         </div>
 
-                                        <div class="col-lg-4 col-md-4 col-sm-4">
+                                        <div class="col-lg-4 col-md-4 col-sm-4" id="div_net_vendeur">
                                             <div class="form-group">
                                                 <label for="net_vendeur">Net Vendeur TTC<span class="text-danger">*</span></label>
                                                 <input class="form-control" min="0" step="0.1" type="number" value="{{old('net_vendeur')}}" id="net_vendeur" name="net_vendeur" required>
@@ -726,4 +726,23 @@ $('#je_porte_affaire').change(function(){
             $('#rchars').text(textlen);
             });
        </script>
+
+{{-- SELON QU'on choisisse vente ou location --}}
+
+<script>
+$('#type_affaire').on('change',function(){
+
+
+    if($('#type_affaire').val() == "Location"){
+
+        $('#div_net_vendeur').hide();
+        $('#net_vendeur').val(0);
+
+    }else{
+        $('#div_net_vendeur').show();
+    }
+})
+</script>
+
+
 @endsection

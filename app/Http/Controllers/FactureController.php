@@ -342,7 +342,7 @@ public  function valider_facture_stylimmo( Request $request, $compromis)
         
     }
 
-       //###### envoyer facture stylimmo au mandataire
+       //###### enaisser la facture stylimmo
        public  function encaisser_facture_stylimmo($facture_id)
        {
    
@@ -1038,6 +1038,24 @@ public function calcul_niveau($paliers, $chiffre_affaire)
       
     }
 
+    //###### regler la note d'honoraire
+    public  function regler_facture_honoraire(Request $request, $facture_id)
+    {
 
+
+        $facture = Facture::where('id', Crypt::decrypt($facture_id))->first();
+    
+        $facture->reglee = true;
+        $facture->date_reglement = $request->date_reglement;
+        $facture->update();
+        
+
+        return $facture->reglee.'';
+    //    ************* Creer un mail pour notifier le mandataire
+        // Mail::to("gestion@stylimmo.com")->send(new EncaissementFacture($facture));
+
+        // return redirect()->route('facture.index')->with('ok', __("Facture $facture->numero reglée")  );
+        
+    }
     
 }

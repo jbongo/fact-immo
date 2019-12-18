@@ -22,7 +22,7 @@
                         <ul>
                             <li><a href="{{route('facture.index')}}">Gestion</a></li>
                             @if (Auth()->user()->role == "admin")
-                            <li  @if(auth()->user()->demande_facture > 0) style="background-color:#FFEEEB" @endif><a  href="{{route('facture.demande_stylimmo')}}" > Demandes de facture  </a></li>
+                            <li  @if(auth()->user()->demande_facture > 0) style="background-color:#FFEEEB" @endif><a  href="{{route('facture.demande_stylimmo')}}" >  @if(auth()->user()->demande_facture > 0) <span class="badge badge-danger">{{auth()->user()->demande_facture}}</span> @endif Demandes de facture  </a></li>
                             @endif
                             <li><a href="#">Avoir</a></li>
                         </ul>
