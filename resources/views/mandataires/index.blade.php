@@ -30,7 +30,7 @@
                                         <th>@lang('Statut')</th>
                                         <th>@lang('Email')</th>
                                         <th>@lang('Téléphone')</th>
-                                        <th>@lang('Adresse')</th>
+                                        {{-- <th>@lang('Adresse')</th> --}}
                                         <th>@lang('Ville')</th>
                                         <th>@lang('Commission')</th>
                                         <th>@lang('Chiffre d\'affaires Styl')</th>
@@ -53,9 +53,9 @@
                                         <td style="color: #e05555;; text-decoration: underline;">
                                             <strong> {{$mandataire->telephone1}} </strong> 
                                         </td>
-                                        <td>
+                                        {{-- <td>
                                             {{$mandataire->adresse}} 
-                                        </td>
+                                        </td> --}}
                                         <td>
                                             {{$mandataire->ville}}   
                                         </td>                                        
@@ -68,7 +68,7 @@
                                         <td width="13%">
                                             <span><a href="{{route('mandataire.show',Crypt::encrypt($mandataire->id) )}}" data-toggle="tooltip" title="@lang('Détails de ') {{ $mandataire->nom }}"><i class="large material-icons color-info">visibility</i></a> </span>
                                             <span><a href="{{route('mandataire.edit',Crypt::encrypt($mandataire->id) )}}" data-toggle="tooltip" title="@lang('Modifier ') {{ $mandataire->nom }}"><i class="large material-icons color-warning">edit</i></a></span>
-                                            <span><a href="{{route('switch_user',Crypt::encrypt($mandataire->id) )}}" data-toggle="tooltip" title="@lang('Se connecter en tant que ') {{ $mandataire->nom }}"><i class="large material-icons color-success">person_pin</i></a></span>
+                                            {{-- <span><a href="{{route('switch_user',Crypt::encrypt($mandataire->id) )}}" data-toggle="tooltip" title="@lang('Se connecter en tant que ') {{ $mandataire->nom }}"><i class="large material-icons color-success">person_pin</i></a></span> --}}
                                             
                                         <span><a  href="{{route('mandataire.archive',[$mandataire->id,1])}}" class="delete" data-toggle="tooltip" title="@lang('Archiver ') {{ $mandataire->nom }}"><i class="large material-icons color-danger">delete</i> </a></span>
                                         </td>

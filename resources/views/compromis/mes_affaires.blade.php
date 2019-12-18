@@ -10,9 +10,10 @@
                     <div class="panel panel-info ">
                             <div class="panel-body">
 
-                    <div class="table-responsive" >
-                        <table  id="example" class=" table table-striped table-hover dt-responsive display nowrap" >
+                    <div class="table-responsive" style="overflow-x: inherit !important;">
+                        <table  id="example" class=" table student-data-table  table-striped table-hover dt-responsive display    "  style="width:100%">
                             <thead>
+                                {{-- table table-striped table-hover dt-responsive display nowrap --}}
                                 <tr>
                                     @if (Auth()->user()->role == "admin")
                                     <th>@lang('Mandataire')</th>
