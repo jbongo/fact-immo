@@ -7,8 +7,8 @@
                                 <div class="panel-heading"></div>
                                 <div class="panel-body">
 
-                        <div class="table-responsive" style="overflow-x: inherit !important;">
-                            <table  id="example1" class=" table student-data-table  m-t-20 "  style="width:100%">
+                        <div class="table-responsive" >
+                            <table  id="example1" class=" table table-striped table-hover dt-responsive display nowrap"  >
                                 <thead>
                                     <tr>
                                        
@@ -37,19 +37,19 @@
                                     @foreach ($factureHonoraires as $facture)
 
                                     <tr>
-                                        <td width="" >
+                                        <td  >
                                             <label class="color-info">{{$facture->numero}} </label> 
                                         </td>
-                                        <td width="" >
+                                        <td  >
                                             <label class="color-info">{{$facture->compromis->getFactureStylimmo()->numero}} </label> 
                                         </td>
-                                        <td width="" >
+                                        <td  >
                                            
                                         <label class="color-info"><a href="{{route('compromis.show',Crypt::encrypt($facture->compromis->id) )}}" target="_blank" title="@lang('voir l\'affaire  ') ">{{$facture->compromis->numero_mandat}}  <i style="font-size: 17px" class="material-icons color-success">account_balance</i></a></label>
 
                                         </td>
                                         @if(auth()->user()->role == "admin")
-                                        <td width="" >
+                                        <td  >
                                             <label class="color-info">
                                                 @if($facture->user !=null)
                                                 <a href="{{route('switch_user',Crypt::encrypt($facture->user->id) )}}" data-toggle="tooltip" title="@lang('Se connecter en tant que ') {{$facture->user->nom}}">{{$facture->user->nom}} {{$facture->user->prenom}}<i style="font-size: 17px" class="material-icons color-success">person_pin</i></a>   
@@ -58,20 +58,20 @@
                                             </label> 
                                         </td>
                                         @endif
-                                        <td width="" >
+                                        <td  >
                                             <label class="color-info">{{$facture->type}} </label> 
                                         </td>
-                                        <td  width="" >
+                                        <td   >
                                         {{number_format($facture->montant_ht,2,'.',' ')}}
                                         </td>
-                                        <td  width="" >
+                                        <td   >
                                         {{number_format($facture->montant_ttc,2,'.',' ')}}
                                         </td>
-                                        {{-- <td  width="" class="color-info">
+                                        {{-- <td   class="color-info">
                                                 {{$facture->created_at->format('d/m/Y')}}
                                         </td> --}}
                                        
-                                        <td width="" >
+                                        <td  >
                                             <label class="color-info">
                                                 {{$facture->compromis->date_vente->format('d/m/Y')}} 
                                             </label> 
@@ -84,7 +84,7 @@
                                             $interval = date_diff($today, $datevente);
                                         @endphp
                                         {{-- @if($facture->type == "stylimmo") --}}
-                                        <td width="" >
+                                        <td  >
                                             @if($facture->reglee == 0)
                                                 @if(auth::user()->role == "admin")
                                                     <button data-toggle="modal" data-target="#myModal" id="{{Crypt::encrypt($facture->id)}}"  class="btn btn-success btn-flat btn-addon  m-b-10 m-l-5 payer" ><i class="ti-wallet"></i>Payer</button>
@@ -97,7 +97,7 @@
                                         </td>
 
                                         
-                                        <td width="" >
+                                        <td  >
                                             @if(auth::user()->role=="admin")
                                             {{-- @if ($facture->compromis->je_porte_affaire == 0  || $facture->compromis->agent_id == auth::user()->id || ($facture->compromis->je_porte_affaire == 1 && $facture->compromis->est_partage_agent == 1) ) --}}
                                                 @if ($facture->type == "partage" )

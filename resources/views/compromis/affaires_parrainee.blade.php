@@ -10,8 +10,8 @@
                     <div class="panel panel-info m-t-15" id="cont">
                             <div class="panel-body">
 
-                    <div class="table-responsive" style="overflow-x: inherit !important;">
-                        <table  id="example1" class=" table student-data-table  m-t-20 "  style="width:100%">
+                    <div class="table-responsive" >
+                        <table  id="example1" class=" table table-striped table-hover dt-responsive display nowrap "  >
                             <thead>
                                 <tr>
                                        
