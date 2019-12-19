@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
     @section ('page_title')
-    Ajouter un pack
+    Publicité
     @endsection
     <div class="row"> 
        
@@ -15,11 +15,11 @@
              @endif       
             <div class="card alert">
                 <!-- table -->
-            <a href="{{route('pack_pub.create')}}" class="btn btn-success btn-rounded btn-addon btn-sm m-b-10 m-l-5"><i class="ti-user"></i>@lang('Nouveau pack_pub')</a>
+            <a href="{{route('pack_pub.create')}}" class="btn btn-success btn-rounded btn-addon btn-sm m-b-10 m-l-5"><i class="ti-user"></i>@lang('Ajouter un pack pub')</a>
                 
                 <div class="card-body">
                         <div class="panel panel-info m-t-15" id="cont" >
-                                <div class="panel-heading">Listes des pack pubs</div>
+                                <div class="panel-heading">Listes des packs pub</div>
                                 <div class="panel-body">
 
                         <div class="table-responsive" style="overflow-x: inherit !important;">

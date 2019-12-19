@@ -68,7 +68,7 @@
                                         </div>
                                         <div class="col-lg-6 col-md-6 col-sm-6">
                                             <div class="form-group row">
-                                                <label class="col-lg-4 col-form-label" for="ca_depart">Chiffre d'affaire de depart<span class="text-danger">*</span></label>
+                                                <label class="col-lg-4 col-form-label" for="ca_depart">Chiffre d'affaire de départ<span class="text-danger">*</span></label>
                                                 <div class="col-lg-4">
                                                     <input type="number" min="0" class="form-control" value="{{$modele->ca_depart}}" id="ca_depart" name="ca_depart" required>
                                                 </div>
@@ -83,7 +83,7 @@
 
                 <div class="panel-body">
                     <fieldset class="col-md-12">
-                        <legend>Commision direct</legend>
+                        <legend>Commision directe</legend>
                         <div class="panel panel-warning">
                             <div class="panel-body">
 
@@ -113,7 +113,7 @@
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <label class="col-lg-6 col-form-label" for="duree_gratuite_starter">Durée de la gratuitée (mois)<span class="text-danger">*</span></label>
+                                            <label class="col-lg-6 col-form-label" for="duree_gratuite_starter">Durée de la gratuité (mois)<span class="text-danger">*</span></label>
                                             <div class="col-lg-4 col-md-4 col-sm-4 ">
                                                 <input type="number" class="form-control" id="duree_gratuite_starter" name="duree_gratuite_starter" min="0" max="48" value="{{$modele->duree_gratuite_starter}}" required>
                                             </div>
@@ -234,7 +234,7 @@
                                     <div class="col-lg-6 col-md-6 col-sm-6">
                                        
                                         <div class="form-group row">
-                                            <label class="col-lg-6 col-form-label" for="duree_gratuite_expert">Durée de la gratuitée (mois)<span class="text-danger">*</span></label>
+                                            <label class="col-lg-6 col-form-label" for="duree_gratuite_expert">Durée de la gratuité (mois)<span class="text-danger">*</span></label>
                                             <div class="col-lg-4 col-md-4 col-sm-4 ">
                                                 <input type="number" class="form-control" id="duree_gratuite_expert" name="duree_gratuite_expert" min="0" max="48" value="{{$modele->duree_gratuite_expert}}" required>
                                             </div>
@@ -332,7 +332,7 @@
                                             <div class="panel panel-default m-t-15">
                                                 <div class="panel-heading-default"><strong>Paramètres du pack expert</strong></div>
                                                 <div class="panel-body">
-                                                    <strong>Pour garder le pourcentage de départ definis en haut à l'année N voici les conditions à réaliser sur l'année N-1:
+                                                    <strong>Pour garder le pourcentage de départ défini en haut à l'année N voici les conditions à réaliser sur l'année N-1:
                                                     <br>
                                                     <br>
                                                     </strong>

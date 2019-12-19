@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
     @section ('page_title')
-    Factures  {{session('admin_id')}}
+    Factures 
     @endsection
 
     <div class="row"> 

@@ -171,7 +171,7 @@ Ajout d'une affaire
 
                 <div class="panel-body">
                     <fieldset class="col-md-12">
-                        <legend>Infos propriétaire / Vendeur</legend>
+                        <legend>Infos Propriétaire / Vendeur</legend>
                         <div class="panel panel-warning">
                             <div class="panel-body">                      
 

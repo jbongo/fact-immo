@@ -12,9 +12,9 @@
                                 <thead>
                                     <tr>
                                        
-                                        <th>@lang('Numéro Honoraire')</th>
-                                        <th>@lang('Numéro Stylimmo')</th>
-                                        <th>@lang('Numéro Mandat')</th>
+                                        <th>@lang('Facture Honoraire')</th>
+                                        <th>@lang('Facture Stylimmo')</th>
+                                        <th>@lang('Mandat')</th>
                                         @if(auth()->user()->role == "admin")
                                         <th>@lang('Mandataire')</th>
                                         @endif
@@ -29,7 +29,7 @@
                                         <th>@lang('Encaissement')</th>
                                         @endif --}}
 
-                                        <th>@lang('Facture')</th>
+                                        <th>@lang('Note honoraire')</th>
 
                                     </tr>
                                 </thead>
@@ -41,7 +41,9 @@
                                             <label class="color-info">{{$facture->numero}} </label> 
                                         </td>
                                         <td  >
-                                            <label class="color-info">{{$facture->compromis->getFactureStylimmo()->numero}} </label> 
+                                            {{-- <label class="color-info">{{$facture->compromis->getFactureStylimmo()->numero}} </label>  --}}
+                                        <a href="{{route('facture.telecharger_pdf_facture_stylimmo', Crypt::encrypt($facture->compromis->id))}}"  class="  m-b-10 m-l-5 " id="ajouter"><label class="color-info">{{$facture->compromis->getFactureStylimmo()->numero}}  <i class="ti-download"></i> </label></a>
+                                            
                                         </td>
                                         <td  >
                                            
@@ -62,10 +64,10 @@
                                             <label class="color-info">{{$facture->type}} </label> 
                                         </td>
                                         <td   >
-                                        {{number_format($facture->montant_ht,2,'.',' ')}}
+                                        {{number_format($facture->montant_ht,2,'.',' ')}} €
                                         </td>
                                         <td   >
-                                        {{number_format($facture->montant_ttc,2,'.',' ')}}
+                                        {{number_format($facture->montant_ttc,2,'.',' ')}} €
                                         </td>
                                         {{-- <td   class="color-info">
                                                 {{$facture->created_at->format('d/m/Y')}}
@@ -92,7 +94,7 @@
                                                     <label class="color-danger">Non réglé </label> 
                                                 @endif
                                             @else 
-                                                <label class="color-success">@if($facture->date_reglement != null) Réglé le {{$facture->date_reglement->format('d-m-Y')}} @else Réglé @endif</label> 
+                                                <label class="color-success">@if($facture->date_reglement != null) Réglé le {{$facture->date_reglement->format('d/m/Y')}} @else Réglé @endif</label> 
                                             @endif 
                                         </td>
 

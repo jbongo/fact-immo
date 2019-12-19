@@ -12,12 +12,12 @@
                                 <thead>
                                     <tr>
                                        
-                                        <th>@lang('Numéro Stylimmo')</th>
-                                        <th>@lang('Numéro Mandat')</th>
+                                        <th>@lang('Facture Stylimmo')</th>
+                                        <th>@lang('Mandat')</th>
                                         @if(auth()->user()->role == "admin")
                                         <th>@lang('Mandataire')</th>
                                         @endif
-                                        <th>@lang('Type Facture')</th>
+                                        {{-- <th>@lang('Type Facture')</th> --}}
                                         <th>@lang('Montant HT ')</th>
                                         <th>@lang('Montant TTC ')</th>
                                         {{-- <th>@lang('Date Facture')</th> --}}
@@ -38,7 +38,9 @@
 
                                     <tr>
                                         <td width="" >
-                                            <label class="color-info">{{$facture->numero}} </label> 
+                                            
+                                        <a href="{{route('facture.telecharger_pdf_facture_stylimmo', Crypt::encrypt($facture->compromis->id))}}"  class="  m-b-10 m-l-5 " id="ajouter"><label class="color-info">{{$facture->numero}}  <i class="ti-download"></i> </label></a>
+
                                         </td>
                                         <td width="" >
                                             {{-- <label class="color-info">{{$facture->compromis->numero_mandat}} </label>  --}}
@@ -54,9 +56,9 @@
                                             </label> 
                                         </td>
                                         @endif
-                                        <td width="" >
+                                        {{-- <td width="" >
                                             <label class="color-info">{{$facture->type}} </label> 
-                                        </td>
+                                        </td> --}}
                                         <td  width="" >
                                         {{number_format($facture->montant_ht,'2','.',' ')}}
                                         </td>

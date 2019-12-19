@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
 @section ('page_title')
-Affaire
+Détail de l'affaire @if(auth::user()->role =="admin") de {{$compromis->user->nom}} {{$compromis->user->prenom}} @endif
 @endsection
 <style>
 
@@ -24,7 +24,7 @@ Affaire
                     <a class="btn btn-danger btn-flat btn-addon btn-sm m-b-10 m-l-5 submit" href="{{route('facture.demander_facture', Crypt::encrypt($compromis->id) )}}"><i class="ti-file"></i>Demander Facture stylimmo</a>
                 @endif
                 @if ($compromis->demande_facture < 2 ||  auth::user()->role =="admin" )
-                <a class="btn btn-success btn-flat btn-addon btn-sm m-b-10 m-l-5  " id="modifier_compromis"><i class="ti-pencil-alt"></i>Modifier le compromis</a>
+                <a class="btn btn-success btn-flat btn-addon btn-sm m-b-10 m-l-5  " id="modifier_compromis"><i class="ti-pencil-alt"></i>Modifier l'affaire</a>
                 @endif
             
             </div>
@@ -178,9 +178,15 @@ Affaire
                                         <label class="col-lg-7 col-md-7 col-sm-7" for="type_affaire">Type d'affaire <span class="text-danger">*</span></label>
                                         <div class="col-lg-6 col-md-6 col-sm-6">
                                             <select class="js-select2 form-control" id="type_affaire" name="type_affaire" required>
-                                                <option value="{{$compromis->type_affaire }}">{{$compromis->type_affaire }}</option>
+                                                {{-- <option value="{{$compromis->type_affaire }}">{{$compromis->type_affaire }}</option> --}}
+                                                @if($compromis->type_affaire == "Vente")
                                                 <option value="Vente">Vente</option>
                                                 <option value="Location">Location</option>
+                                                @else 
+                                                <option value="Location">Location</option>
+                                                <option value="Vente">Vente</option>
+                                                @endif
+                                                
                                             </select>
                                         </div>
                                         
@@ -223,7 +229,7 @@ Affaire
 
                 <div class="panel-body">
                     <fieldset class="col-md-12">
-                        <legend>Infos propriétaire / Vendeur</legend>
+                        <legend>Infos Propriétaire / Vendeur</legend>
                         <div class="panel panel-warning">
                             <div class="panel-body">                      
 
@@ -319,7 +325,7 @@ Affaire
                 
                 <div class="panel-body">
                     <fieldset class="col-md-12">
-                        <legend>Infos Locataire / Acquereur</legend>
+                        <legend>Infos Locataire / Acquéreur</legend>
                         <div class="panel panel-warning">
                             <div class="panel-body">                      
 

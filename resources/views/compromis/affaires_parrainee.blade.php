@@ -21,8 +21,8 @@
                                     <th>@lang('Description bien')</th>
                                     <th>@lang('Net Vendeur')</th>
                                     <th>@lang('Frais agence')</th>
-                                    <th>@lang('Date mandat')</th>
-                                    <th>@lang('Partage avec Agent/Agence')</th>
+                                    {{-- <th>@lang('Date mandat')</th> --}}
+                                    <th>@lang('Partage')</th>
                                     <th>@lang('Facture Styl')</th>
                                     <th>@lang('Note honoraire')</th>
 
@@ -48,15 +48,15 @@
                                     </td>
                                     
                                     <td  style="{{$grise}}">
-                                        <span class="color-warning">{{number_format($compromi->net_vendeur,'2','.',' ')}}</span>   
+                                        <span class="color-warning">{{number_format($compromi->net_vendeur,'2','.',' ')}} €</span>   
                                     </td>
                                     <td  style="{{$grise}}">
-                                        <span class="color-success">{{number_format($compromi->frais_agence,'2','.',' ')}}</span>   
+                                        <span class="color-success">{{number_format($compromi->frais_agence,'2','.',' ')}} €</span>   
                                     </td>
                                  
-                                    <td  style="{{$grise}}">
+                                    {{-- <td  style="{{$grise}}">
                                     {{$compromi->date_mandat->format('d/m/Y')}}   
-                                    </td>
+                                    </td> --}}
                                     <td width="10%">
 
                                         @if($compromi->est_partage_agent == 0)

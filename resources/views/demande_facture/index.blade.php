@@ -18,7 +18,7 @@
                 
                 <div class="card-body">
                         <div class="panel panel-info m-t-15" id="cont">
-                                <div class="panel-heading">Listes des compromis</div>
+                                {{-- <div class="panel-heading">Listes des compromis</div> --}}
                                 <div class="panel-body">
 
                         <div class="table-responsive" style="overflow-x: inherit !important;">
@@ -28,10 +28,10 @@
                                        
                                         <th>@lang('Mandataire')</th>
                                         <th>@lang('Désignation')</th>
-                                        <th>@lang('Numéro Mandat')</th>
+                                        <th>@lang('Mandat')</th>
                                         <th>@lang('Net Vendeur')</th>
                                         <th>@lang('Date exacte de vente')</th>
-                                        <th>@lang('Partage avec Agent/Agence')</th>
+                                        <th>@lang('Partage')</th>
                                         <th>@lang('Action')</th>
                                     </tr>
                                 </thead>
@@ -48,10 +48,10 @@
                                             <strong> {{$compromi->numero_mandat}}</strong> 
                                         </td>
                                         <td>
-                                            {{$compromi->net_vendeur}}   
+                                            {{number_format($compromi->net_vendeur,2,',',' ')}} €  
                                         </td>
                                         <td>
-                                        {{$compromi->date_mandat}}   
+                                        {{$compromi->date_mandat->format('d/m/Y')}}   
                                         </td>
                                         <td>
                                             @php($color = "danger")
@@ -59,7 +59,11 @@
                                             @if($compromi->est_partage_agent == 0)
                                                 <span class="badge badge-danger">Non</span>
                                             @else
-                                                <span class="badge badge-success">Oui</span>
+                                                
+                                                
+                                                <strong> <a href="{{route('switch_user',Crypt::encrypt($compromi->getPartage()->id) )}}" data-toggle="tooltip" title="@lang('Se connecter en tant que ') {{$compromi->getPartage()->nom}}">{{$compromi->getPartage()->nom}} {{$compromi->getPartage()->prenom}}<i style="font-size: 17px" class="material-icons color-success">person_pin</i></a> </strong> 
+
+                                               
                                             @endif
 
                                         </td>                                

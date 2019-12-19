@@ -49,8 +49,8 @@ Ajout d'un mandataire
                             <div class="col-lg-8 col-md-8 col-sm-8">
                                <select class="js-select2 form-control {{$errors->has('civilite') ? 'is-invalid' : ''}}" id="civilite" name="civilite" style="width: 100%;" data-placeholder="Choose one.." required>
                                   <option value="{{old('civilite')}}">{{old('civilite')}}</option>
-                                  <option value="M.">M.</option>
-                                  <option value="Mme.">Mme.</option>
+                                  <option value="M">M</option>
+                                  <option value="Mme">Mme</option>
                                </select>
                                @if ($errors->has('civilite'))
                                <br>
@@ -207,7 +207,7 @@ Ajout d'un mandataire
                          </div>
        
                          <div class="form-group row">
-                            <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="telephone1">Téléphone (FR) </label>
+                            <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="telephone1">Téléphone perso </label>
                             <div class="col-lg-8 col-md-8 col-sm-8">
                                <input type="text" class="form-control {{ $errors->has('telephone1') ? ' is-invalid' : '' }}" value="{{old('telephone1')}}" id="telephone1" name="telephone1" placeholder="Ex: 0600000000.." >
                                @if ($errors->has('telephone1'))
@@ -220,7 +220,7 @@ Ajout d'un mandataire
                          </div>
 
                          <div class="form-group row">
-                           <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="telephone2">Téléphone 2 (FR) </label>
+                           <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="telephone2">Téléphone pro </label>
                            <div class="col-lg-8 col-md-8 col-sm-8">
                               <input type="text" class="form-control {{ $errors->has('telephone2') ? ' is-invalid' : '' }}" value="{{old('telephone2')}}" id="telephone2" name="telephone2" placeholder="Ex: 0600000000.." >
                               @if ($errors->has('telephone2'))

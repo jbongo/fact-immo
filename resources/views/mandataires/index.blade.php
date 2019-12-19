@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
     @section ('page_title')
-    Ajouter un mandataire
+    Mandataires
     @endsection
     <div class="row"> 
        
@@ -19,7 +19,7 @@
                 
                 <div class="card-body">
                         <div class="panel panel-info m-t-15" id="cont">
-                                <div class="panel-heading">Listes des mandataires</div>
+                                <div class="panel-heading">Liste des mandataires</div>
                                 <div class="panel-body">
 
                         <div class="table-responsive" style="overflow-x: inherit !important;">
@@ -32,7 +32,7 @@
                                         <th>@lang('Téléphone')</th>
                                         {{-- <th>@lang('Adresse')</th> --}}
                                         <th>@lang('Ville')</th>
-                                        <th>@lang('Commission')</th>
+                                        <th>@lang('Comm')</th>
                                         <th>@lang('Chiffre d\'affaires Styl')</th>
                                         <th>@lang('Action')</th>
                                     </tr>

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
 @section ('page_title')
-Modifier un pack
+Modifier un pack pub
 @endsection
 <div class="row">
    <div class="col-lg-12 col-md-12 col-sm-12">

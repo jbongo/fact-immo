@@ -4,11 +4,11 @@
         <div class="nano">
             <div class="nano-content">
                 <ul>
-                    <li class="active" ><a href="{{route('home')}}" ><i class="ti-home"></i> Accueil </a></li>
+                    <li class="active" ><a href="{{route('home')}}" ><i class="large material-icons" style="font-size:20px;">home</i> Accueil </a></li>
                     @if (Auth()->user()->role == "admin")
                         
                   
-                    <li><a  href="{{route('mandataire.index')}}" class="">  <i class="ti-user"></i>Mandataires  </a>
+                    <li><a  href="{{route('mandataire.index')}}" class=""> <i class="large material-icons" style="font-size:20px;">person</i></i>Mandataires  </a>
                         {{-- <ul>
                             <li><a href="{{route('mandataire.index')}}">Gestion</a></li>
                             <li><a href="{{route('commissions.index')}}">Modèles commision</a></li>
@@ -17,30 +17,30 @@
                     </li>
 
                     @endif
-                    <li class=""><a href="{{route('compromis.index')}}" ><i class="ti-pencil-alt"></i> Affaires </a></li>
-                    <li><a  class="sidebar-sub-toggle"><i class="ti-pencil-alt"></i> Factures @if(auth()->user()->demande_facture > 0) <span class="badge badge-danger">{{auth()->user()->demande_facture}}</span> @endif<span class="sidebar-collapse-icon ti-angle-down"></span></a>
+                    <li class=""><a href="{{route('compromis.index')}}" ><i class="large material-icons" style="font-size:20px;">folder_open</i>  Affaires </a></li>
+                    <li><a  class="sidebar-sub-toggle"><i class="large material-icons">description</i> Factures @if(auth()->user()->demande_facture > 0) <span class="badge badge-danger">{{auth()->user()->demande_facture}}</span> @endif<span class="sidebar-collapse-icon ti-angle-down"></span></a>
                         <ul>
                             <li><a href="{{route('facture.index')}}">Gestion</a></li>
                             @if (Auth()->user()->role == "admin")
                             <li  @if(auth()->user()->demande_facture > 0) style="background-color:#FFEEEB" @endif><a  href="{{route('facture.demande_stylimmo')}}" >  @if(auth()->user()->demande_facture > 0) <span class="badge badge-danger">{{auth()->user()->demande_facture}}</span> @endif Demandes de facture  </a></li>
                             @endif
-                            <li><a href="#">Avoir</a></li>
+                            {{-- <li><a href="#">Avoir</a></li> --}}
                         </ul>
                     </li>
                     
                     
                     @if (Auth()->user()->role == "admin")
                     
-                    <li><a  class="sidebar-sub-toggle"><i class="ti-target"></i> Paramètres <span class="sidebar-collapse-icon ti-angle-down"></span></a>
+                    <li><a  class="sidebar-sub-toggle"><i class="large material-icons" style="font-size:20px;">build</i> Paramètres <span class="sidebar-collapse-icon ti-angle-down"></span></a>
                         <ul>
                             {{-- <li><a href="page-login.html">Info Entreprise</a></li> --}}
                             <li><a href="{{route('modele_contrat.create')}}">Modèle contrat</a></li>
-                            <li><a href="{{route('pack_pub.index')}}">Tarif pack pub</a></li>
+                            <li><a href="{{route('pack_pub.index')}}">Publicité</a></li>
                         </ul>
                     </li>
                     @endif
                     <li><a href="{{ route('logout') }}"  onclick="event.preventDefault();
-                     document.getElementById('logout-form').submit();" ><i class="ti-close"></i> Déconnexion</a></li>
+                     document.getElementById('logout-form').submit();" ><i class="large material-icons" style="font-size:20px;">close</i></i> Déconnexion</a></li>
 
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                             @csrf
@@ -53,7 +53,7 @@
 
     <div class="header">
         <div class="pull-left">
-            <div class="logo"><a href="index.html"><!-- <img src="assets/images/logo.png" alt="" /> --><span>Fact-Immo</span></a></div>
+            <div class="logo"><a href="index.html"><!-- <img src="assets/images/logo.png" alt="" /> --><span>Mini Curieux</span></a></div>
             <div class="hamburger sidebar-toggle">
                 <span class="line"></span>
                 <span class="line"></span>

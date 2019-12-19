@@ -1,7 +1,7 @@
 @extends('layouts.app') 
 @section('content') 
 @section ('page_title') 
-    Mandataire
+    Profil du mandataire 
 @endsection
 <div class="row">
    <div class="col-lg-12">
@@ -282,7 +282,7 @@
                                                             </div>
                                                             <div class="col-lg-6 col-md-6 col-sm-6">
                                                                 <div class="form-group row">
-                                                                    <label class="col-lg-4 col-form-label" for="ca_depart">Chiffre d'affaires de depart<span class="text-danger">*</span></label>
+                                                                    <label class="col-lg-4 col-form-label" for="ca_depart">Chiffre d'affaires de départ<span class="text-danger">*</span></label>
                                                                     <div class="col-lg-4">
                                                                         <label class="color-primary">{{number_format($mandataire->contrat->ca_depart,2,'.',' ')}} €</label>                                                                        
                                                                     </div>
@@ -329,7 +329,7 @@
                                                                 </div>
                                                             </div>
                                                             <div class="form-group row">
-                                                                <label class="col-lg-6 col-form-label" for="duree_gratuite_starter">Durée de la gratuitée (mois)<span class="text-danger">*</span></label>
+                                                                <label class="col-lg-6 col-form-label" for="duree_gratuite_starter">Durée de la gratuité (mois)<span class="text-danger">*</span></label>
                                                                 <div class="col-lg-4 col-md-4 col-sm-4 ">
                                                                     <label class="color-primary">{{$mandataire->contrat->duree_gratuite_starter}} </label>
                                                                 </div>
@@ -425,7 +425,7 @@
                                                         <div class="col-lg-6 col-md-6 col-sm-6">
                                                            
                                                             <div class="form-group row">
-                                                                <label class="col-lg-6 col-form-label" for="duree_gratuite_expert">Durée de la gratuitée (mois)<span class="text-danger">*</span></label>
+                                                                <label class="col-lg-6 col-form-label" for="duree_gratuite_expert">Durée de la gratuité (mois)<span class="text-danger">*</span></label>
                                                                 <div class="col-lg-4 col-md-4 col-sm-4 ">
                                                                     <label class="color-primary">{{$mandataire->contrat->duree_gratuite_expert}} </label>
                                                                 </div>
