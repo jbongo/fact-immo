@@ -24,6 +24,7 @@
                                         {{-- <th>@lang('Date Facture')</th> --}}
                                         <th>@lang('Date de l\'acte')</th>
                                         <th>@lang('Paiement')</th>
+                                        <th>@lang('Etat (Fac Stylimmo)')</th>
 
                                         {{-- @if(auth()->user()->role == "admin")
                                         <th>@lang('Encaissement')</th>
@@ -98,6 +99,14 @@
                                             @endif 
                                         </td>
 
+                                        <td  >
+                                            @if($facture->compromis->getFactureStylimmo()->encaissee == 0 )
+                                                <label class="color-danger" ><strong> Non encaissé </strong> </label>                                            
+                                            @else 
+                                                <label class="color-primary"><strong> Encaissé  </strong></label> 
+                                            @endif 
+                                        </td>
+                                        
                                         
                                         <td  >
                                             @if(auth::user()->role=="admin")
