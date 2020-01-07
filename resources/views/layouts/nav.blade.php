@@ -1,41 +1,88 @@
 <body>
+@php
+    $curent_url = $_SERVER['REQUEST_URI']; 
+    $curent_url = explode("/", $curent_url);
 
+
+    $li_home = $li_mandataire = $li_affaire = $li_facture = $li_facture_gestion = $li_facture_demande = $li_parametre = $li_parametre_modele = $li_parametre_pub = "";
+    
+    switch ($curent_url[1]) {
+        case 'home':       
+            $li_home = "active";
+            break;
+        case 'mandataires':
+            $li_mandataire = "active";
+            break;
+        case 'compromis':
+            $li_affaire = "active";
+            break;
+        case 'factures':
+            $li_facture= "active open";
+            if( sizeof($curent_url) == 2 )
+            $li_facture_gestion = "active";
+            break;
+        case 'demande':
+            $li_facture_demande= "active open";
+            break;
+        case 'parametre':
+            $li_parametre= "active open";
+            break;
+        
+        default:
+            // dd("default");
+            break;
+    }
+    if(sizeof($curent_url) > 2){
+
+        switch ($curent_url[2]) {
+            case 'modele_contrat':       
+                $li_parametre_modele = "active";
+                break;
+            case 'pack_pub':
+                $li_parametre_pub = "active";
+                break;    
+            
+            default:
+                // dd("default");
+                break;
+        }
+    }
+@endphp
     <div class="sidebar sidebar-hide-to-small sidebar-shrink sidebar-gestures">
         <div class="nano">
             <div class="nano-content">
+
+
                 <ul>
-                    <li class="active" ><a href="{{route('home')}}" ><i class="large material-icons" style="font-size:20px;">home</i> Accueil </a></li>
-                    @if (Auth()->user()->role == "admin")
+                <li class="{{$li_home}}" ><a href="{{route('home')}}" ><i class="large material-icons" style="font-size:20px;">home</i> Accueil </a></li>
+                    
+                @if (Auth()->user()->role == "admin")
                         
-                  
-                    <li><a  href="{{route('mandataire.index')}}" class=""> <i class="large material-icons" style="font-size:20px;">person</i></i>Mandataires  </a>
-                        {{-- <ul>
-                            <li><a href="{{route('mandataire.index')}}">Gestion</a></li>
-                            <li><a href="{{route('commissions.index')}}">Modèles commision</a></li>
-                            <li><a href="page-login.html">Tarif pack pub</a></li>
-                        </ul> --}}
+               
+                    <li class="{{$li_mandataire}}"><a  href="{{route('mandataire.index')}}" class=""> <i class="large material-icons" style="font-size:20px;">person</i></i>Mandataires  </a>
                     </li>
 
-                    @endif
-                    <li class=""><a href="{{route('compromis.index')}}" ><i class="large material-icons" style="font-size:20px;">folder_open</i>  Affaires </a></li>
-                    <li><a  class="sidebar-sub-toggle"><i class="large material-icons">description</i> Factures @if(auth()->user()->demande_facture > 0) <span class="badge badge-danger">{{auth()->user()->demande_facture}}</span> @endif<span class="sidebar-collapse-icon ti-angle-down"></span></a>
-                        <ul>
-                            <li><a href="{{route('facture.index')}}">Gestion</a></li>
-                            @if (Auth()->user()->role == "admin")
-                            <li  @if(auth()->user()->demande_facture > 0) style="background-color:#FFEEEB" @endif><a  href="{{route('facture.demande_stylimmo')}}" >  @if(auth()->user()->demande_facture > 0) <span class="badge badge-danger">{{auth()->user()->demande_facture}}</span> @endif Demandes de facture  </a></li>
-                            @endif
-                            {{-- <li><a href="#">Avoir</a></li> --}}
-                        </ul>
-                    </li>
+                @endif
+                <li class="{{ $li_affaire}}"><a href="{{route('compromis.index')}}" ><i class="large material-icons" style="font-size:20px;">folder_open</i>  Affaires </a></li>
+                
+                <li class="{{$li_facture}} {{$li_facture_demande}}" ><a  class="sidebar-sub-toggle"><i class="large material-icons">description</i> Factures @if(auth()->user()->demande_facture > 0) <span class="badge badge-danger">{{auth()->user()->demande_facture}}</span> @endif<span class="sidebar-collapse-icon ti-angle-down"></span></a>
+                    <ul>
+                        <li class="{{$li_facture_gestion}}" ><a href="{{route('facture.index')}}">Gestion</a></li>
+                        @if (Auth()->user()->role == "admin")
+                        <li class="{{$li_facture_demande}}" ><a  href="{{route('facture.demande_stylimmo')}}" >  @if(auth()->user()->demande_facture > 0) <span class="badge badge-danger">{{auth()->user()->demande_facture}}</span> @endif Demandes </a></li>
+                        @endif
+                        {{-- <li><a href="#">Avoir</a></li> --}}
+                    </ul>
+                </li>
                     
                     
                     @if (Auth()->user()->role == "admin")
                     
-                    <li><a  class="sidebar-sub-toggle"><i class="large material-icons" style="font-size:20px;">build</i> Paramètres <span class="sidebar-collapse-icon ti-angle-down"></span></a>
+                <li class="{{$li_parametre}}"><a  class="sidebar-sub-toggle"><i class="large material-icons" style="font-size:20px;">build</i> Paramètres <span class="sidebar-collapse-icon ti-angle-down"></span></a>
                         <ul>
                             {{-- <li><a href="page-login.html">Info Entreprise</a></li> --}}
-                            <li><a href="{{route('modele_contrat.create')}}">Modèle contrat</a></li>
-                            <li><a href="{{route('pack_pub.index')}}">Publicité</a></li>
+                            <li class="{{$li_parametre_modele}}"><a href="{{route('modele_contrat.create')}}">Modèle contrat</a></li>
+                            <li class="{{$li_parametre_pub}}"><a href="{{route('pack_pub.index')}}">Publicité</a></li>
                         </ul>
                     </li>
                     @endif
@@ -91,7 +138,7 @@
                     </div>
                 </li>
 
-                <li class="header-icon dib"><img class="avatar-img" src="{{ asset('images/avatar/1.jpg')}}" alt="" /> <span class="user-avatar"> {{auth()->user()->nom }} {{auth()->user()->prenom }}<i class="ti-angle-down f-s-10"></i></span>
+                <li class="header-icon dib"><img class="avatar-img" src="{{ asset('/images/avatar/'.((auth()->user()->civilite == "Mme." || auth()->user()->civilite == "Mme") ? "user_female.jpg ": "user_male.jpg"))}}" alt="" /> <span class="user-avatar"> {{auth()->user()->nom }} {{auth()->user()->prenom }}<i class="ti-angle-down f-s-10"></i></span>
                     <div class="drop-down dropdown-profile">
                       
                         <div class="dropdown-content-body">

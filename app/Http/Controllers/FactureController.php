@@ -188,21 +188,66 @@ class FactureController extends Controller
 public  function valider_facture_stylimmo( Request $request, $compromis)
 {
     $numero = Facture::where([ ['type','stylimmo']])->max('numero') ;
-    $lastdate = Facture::where('numero',$numero)->select('date_facture')->first();
-    $lastdate = $lastdate['date_facture'];
-    $lastdate = $lastdate->format('d-m-Y');
-    // dd($lastdate->format('Y-m-d'));
-    if($request->numero > $numero){
-        $request->validate([
-            'numero' => 'required|numeric|unique:factures',
-            'date_facture' => "required|date|after:$lastdate",
-        ]);
-    }else{
-        $request->validate([
-            'numero' => 'required|numeric|unique:factures',
-            'date_facture' => "required|date|before:$lastdate",
-        ]);
+    
+    // la date d'une facture doit être supérieur ou égale à la facture précedente  et/ou inférieure ou égale à la facture suivante
+
+    // #1 dans ce bloc on réccupère les numéros de facture qui viennent avant et/ou après le numéro de la facture suivante.. afin de comparer les dates
+    $next_numeros = Facture::where([ ['type','stylimmo'], ['numero','>',$request['numero']] ])->select("numero")->orderBy('numero')->get()->toArray();
+    $prev_numeros = Facture::where([ ['type','stylimmo'], ['numero','<',$request['numero']] ])->select("numero")->orderBy('numero','desc')->get()->toArray();
+    // $next_nums = array();
+    $next_nums = null;
+    $prev_nums = null;
+    if($next_numeros != null){
+        foreach ($next_numeros as $next) {
+            $next_nums [] = $next['numero'] ;
+        }
     }
+    
+    if($prev_numeros != null){
+        foreach ($prev_numeros as $next) {
+            $prev_nums [] = $next['numero'] ;
+        }
+    }
+
+
+    // Dans ce bloc on compare les dates
+    if($prev_nums != null && $next_nums != null){
+
+        $prev_fact = Facture::where([ ['type','stylimmo'], ['numero',$prev_nums[0]] ])->first();
+        $next_fact = Facture::where([ ['type','stylimmo'], ['numero',$next_nums[0]] ])->first();
+
+        $prev_date = $prev_fact->date_facture->format('Y-m-d');
+        $next_date = $next_fact->date_facture->format('Y-m-d');
+     
+        $request->validate([
+            'numero' => 'required|numeric|unique:factures',
+            'date_facture' => "required|date|after_or_equal:$prev_date|before_or_equal:$next_date",
+        ]);
+
+    }elseif($prev_nums != null && $next_nums == null){
+        $prev_fact = Facture::where([ ['type','stylimmo'], ['numero',$prev_nums[0]] ])->first();
+        $prev_date = $prev_fact->date_facture->format('Y-m-d');
+        $request->validate([
+            'numero' => 'required|numeric|unique:factures',
+            'date_facture' => "required|date|after_or_equal:$prev_date",
+        ]);
+     
+    }elseif($prev_nums == null && $next_nums != null){
+        $next_fact = Facture::where([ ['type','stylimmo'], ['numero',$next_nums[0]] ])->first();
+        $next_date = $next_fact->date_facture->format('Y-m-d');
+        $request->validate([
+            'numero' => 'required|numeric|unique:factures',
+            'date_facture' => "required|date|before_or_equal:$next_date",
+        ]);
+
+    }
+    else{
+
+    }
+    
+
+    // dd($request['numero']." est compris entre " .$prev_nums[0]." et ".$next_nums[0]);
+
    
 
     

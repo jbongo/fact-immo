@@ -92,18 +92,18 @@
                                                 @if(auth::user()->role == "admin")
                                                     <button data-toggle="modal" data-target="#myModal" id="{{Crypt::encrypt($facture->id)}}"  class="btn btn-success btn-flat btn-addon  m-b-10 m-l-5 payer" ><i class="ti-wallet"></i>Payer</button>
                                                 @else 
-                                                    <label class="color-danger">Non réglé </label> 
+                                                    <label class="color-danger">Non réglée </label> 
                                                 @endif
                                             @else 
-                                                <label class="color-success">@if($facture->date_reglement != null) Réglé le {{$facture->date_reglement->format('d/m/Y')}} @else Réglé @endif</label> 
+                                                <label class="color-success">@if($facture->date_reglement != null) Réglée le {{$facture->date_reglement->format('d/m/Y')}} @else Réglée @endif</label> 
                                             @endif 
                                         </td>
 
                                         <td  >
                                             @if($facture->compromis->getFactureStylimmo()->encaissee == 0 )
-                                                <label class="color-danger" ><strong> Non encaissé </strong> </label>                                            
+                                                <label class="color-danger" ><strong> Non encaissée </strong> </label>                                            
                                             @else 
-                                                <label class="color-primary"><strong> Encaissé  </strong></label> 
+                                                <label class="color-primary"><strong> Encaissée </strong></label> 
                                             @endif 
                                         </td>
                                         

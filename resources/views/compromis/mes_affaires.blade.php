@@ -85,8 +85,11 @@
                                             <strong> <a href="{{route('switch_user',Crypt::encrypt($compromi->getPartage()->id) )}}" data-toggle="tooltip" title="@lang('Se connecter en tant que ') {{$compromi->getPartage()->nom}}">{{$compromi->getPartage()->nom}} {{$compromi->getPartage()->prenom}}<i style="font-size: 17px" class="material-icons color-success">person_pin</i></a> </strong> 
 
                                             @else 
-                                            {{-- {{$compromi->user->nom}} {{$compromi->user->prenom}} --}}
-                                            <strong> <a href="{{route('switch_user',Crypt::encrypt($compromi->user->id) )}}" data-toggle="tooltip" title="@lang('Se connecter en tant que ') {{$compromi->user->nom}}">{{$compromi->user->nom}} {{$compromi->user->prenom}}<i style="font-size: 17px" class="material-icons color-success">person_pin</i></a> </strong> 
+                                                @if ($compromi->getPartage()->id == auth::user()->id)
+                                                    <strong> <a >{{$compromi->user->nom}} {{$compromi->user->prenom}}</a> </strong>
+                                                @else 
+                                                    <strong> <a >{{$compromi->getPartage()->nom}} {{$compromi->getPartage()->prenom}}</a> </strong>
+                                                @endif
 
 
                                             @endif

@@ -18,7 +18,7 @@
                                  <div class="col-lg-4">
                                     <div class="col-lg-12">
                                        <div class="user-photo m-b-30">
-                                          <img class="img-responsive" style="object-fit: cover; width: 225px; height: 225px; border: 5px solid #8ba2ad; border-style: solid; border-radius: 20px; padding: 3px;" src="{{asset('/images/photo_profile/'.(($mandataire->avatar !== NULL) ? $mandataire->avatar : "default.png"))}}" alt="">
+                                          <img class="img-responsive" style="object-fit: cover; width: 225px; height: 225px; border: 5px solid #8ba2ad; border-style: solid; border-radius: 20px; padding: 3px;" src="{{asset('/images/avatar/'.(($mandataire->civilite == "Mme." || $mandataire->civilite == "Mme") ? "user_female.jpg ": "user_male.jpg"))}}" alt="">
                                        </div>
                                     </div>
     
@@ -29,7 +29,7 @@
                                         @endif
                                         
                                         @if (auth()->user()->role == "admin" && $mandataire->contrat != null)
-                                       <a href="{{route('mandataire.send_access',[ Crypt::encrypt($mandataire->id) ,Crypt::encrypt($mandataire->contrat->id) ])}}"  class="btn btn-default btn-rounded btn-addon btn-xs m-b-10 send-access"><i class="ti-pencil"></i>Envoyer les accès au mandataire</a>
+                                       <a href="{{route('mandataire.send_access',[ Crypt::encrypt($mandataire->id) ,Crypt::encrypt($mandataire->contrat->id) ])}}" title="Envoyer les accès au mandataire" class="btn btn-default btn-rounded btn-addon btn-xs m-b-10 send-access"><i class="ti-pencil"></i>Envoyer les accès </a>
                                         @endif
                                     </div>
                                  </div>
