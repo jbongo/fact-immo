@@ -6,7 +6,7 @@
       <span >| {{$mandataire->nom}} {{$mandataire->prenom}}</span>
    @endsection
 <div class="row"> 
-       
+    
       <div class="col-lg-12">
               @if (session('ok'))
      
@@ -17,8 +17,9 @@
            @endif       
           <div class="card alert">
          <div class="row">
+               
             @if ($mandataire->statut == "auto-entrepreneur" && $compromis->facture_honoraire_cree == false)
-           <br><br>
+           <br>
                <div class="row">
                   <div class="col-lg-6 col-md-6 col-sm-6">
                      <span > <strong> Jetons restant : </strong></span>&nbsp;&nbsp;  <span class="color-warning"> <strong> {{$mandataire->nb_mois_pub_restant}}</strong></span> <br>
@@ -232,7 +233,10 @@
 
 <br>
 
-
+<hr>
+<a href="{{route('facture.generer_honoraire_create', Crypt::encrypt($facture->id))}}" class="btn btn-default btn-rounded btn-addon btn-sm m-b-10 m-l-5"><i class="ti-loop"></i>Générer la facture</a>
+<a href="{{route('facture.create_upload_pdf_honoraire', Crypt::encrypt($facture->id))}}" class="btn btn-danger btn-rounded btn-addon btn-sm m-b-10 m-l-5"><i class="ti-upload"></i>Ajouter ma facture</a>
+            
 
 <hr>
 <div style="text-align: center; font-size: 11px; margin-right: 25%; margin-left: 25%; margin-top: 20px;">

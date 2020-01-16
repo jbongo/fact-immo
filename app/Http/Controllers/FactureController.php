@@ -983,6 +983,101 @@ public function calcul_niveau($paliers, $chiffre_affaire)
 }
 
 
+/**
+ * Vues pour générer les factures d'honoraires
+ *
+ * @return \Illuminate\Http\Response
+ */
+    public function generer_facture_honoraire_create($facture_id)
+    {
+        $facture = Facture::where('id',  Crypt::decrypt($facture_id))->first();
+        return view('facture.generer_honoraire', compact('facture') );
+    }
+
+/**
+ * Vues pour générer les factures d'honoraires
+ *
+ * @return \Illuminate\Http\Response
+ */
+public function generer_pdf_facture_honoraire(Request $request, $facture_id)
+{
+
+   
+    $facture = Facture::where('id',  Crypt::decrypt($facture_id))->first();
+    $formule = unserialize( $facture->formule);
+
+    $facture->numero = $request->numero ;
+    $facture->date_facture = $request->date ;
+
+    $facture->update();
+    
+
+    if($request->modele == 1){
+      
+           $pdf = PDF::loadView('facture.modele.modele1',compact(['facture','formule']));
+           $path = storage_path('app/public/factures/facture_hono.pdf');
+           // $pdf->save($path);
+           // $pdf->download($path);
+          return $pdf->download('facture_hono.pdf');
+    }
+    elseif($request->modele == 2){
+        // return view('facture.modele.modele2', compact(['facture','formule']) );
+        $pdf = PDF::loadView('facture.modele.modele2',compact(['facture','formule']));
+           $path = storage_path('app/public/factures/facture_hono.pdf');
+           // $pdf->save($path);
+           // $pdf->download($path);
+          return $pdf->download('facture_hono.pdf');
+    }
+    elseif($request->modele == 3){
+        // return view('facture.modele.modele3', compact(['facture','formule']) );
+        $pdf = PDF::loadView('facture.modele.modele3',compact(['facture','formule']));
+           $path = storage_path('app/public/factures/facture_hono.pdf');
+           // $pdf->save($path);
+           // $pdf->download($path);
+          return $pdf->download('facture_hono.pdf');
+    }
+    
+}
+
+
+/**
+ * Vues pour ajouter le pdf d'une facture d'honoraire
+ *
+ * @return \Illuminate\Http\Response
+ */
+public function create_upload_pdf_honoraire($facture_id)
+{
+    $facture = Facture::where('id',  Crypt::decrypt($facture_id))->first();
+    return view('facture.add_honoraire_pdf', compact('facture') );
+    
+}
+
+/**
+ * Sauvegarde du pdf d'une facture d'honoraire
+ *
+ * @return \Illuminate\Http\Response
+ */
+public function store_upload_pdf_honoraire(Request $request , $facture_id)
+{
+    
+   
+    $facture = Facture::where('id',  Crypt::decrypt($facture_id))->first();
+
+    if($file = $request->file('file')){
+
+        $name = $file->getClientOriginalName();
+        dd($name);
+    }
+ dd($request->all());
+    return view('facture.add_honoraire_pdf', compact('facture') );
+    
+}
+
+
+
+// ############## FIN FACTURES D'HONORAIRES 
+
+
 
 // ############## FACTURES D'AVOIR ###############
 

@@ -72,6 +72,15 @@ Route::middleware('auth')->group(function(){
     Route::get('generer/pdf/avoir/','FactureController@generer_pdf_avoir')->name('facture.pdf.generer_avoir');
     Route::get('telecharger/pdf/avoir/{avoir_id}','FactureController@download_pdf_avoir')->name('facture.telecharger_pdf_avoir'); //ok
 
+    // ## Creation des factures d'honoraires
+    Route::get('facture/honoraire/generer/create/{facture_id}','FactureController@generer_facture_honoraire_create')->name('facture.generer_honoraire_create'); 
+    Route::get('facture/honoraire/generer-pdf/{facture_id}','FactureController@generer_pdf_facture_honoraire')->name('facture.generer_pdf_honoraire'); 
+    // Ajout d'une factue d'honoraire 
+    Route::get('facture/honoraire/upload/create/{facture_id}','FactureController@create_upload_pdf_honoraire')->name('facture.create_upload_pdf_honoraire'); 
+    Route::post('facture/honoraire/upload/store/{facture_id}','FactureController@store_upload_pdf_honoraire')->name('facture.store_upload_pdf_honoraire'); 
+
+
+
      
     // Contrat 
     Route::get('/contrat/create/{user_id}','ContratController@create')->name('contrat.create');

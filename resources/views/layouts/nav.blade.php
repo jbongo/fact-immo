@@ -100,7 +100,7 @@
 
     <div class="header">
         <div class="pull-left">
-            <div class="logo"><a href="index.html"><!-- <img src="assets/images/logo.png" alt="" /> --><span>Mini Curieux</span></a></div>
+            <div class="logo"><a href="{{route('home')}}"><!-- <img src="assets/images/logo.png" alt="" /> --><span>Mini Curieux</span></a></div>
             <div class="hamburger sidebar-toggle">
                 <span class="line"></span>
                 <span class="line"></span>
