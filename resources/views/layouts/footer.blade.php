@@ -39,7 +39,7 @@
     <script>
         var table = $('#example').DataTable({
             "order": [],
-            "iDisplayLength": 10,
+            "iDisplayLength": 50,
             "language": {
             "decimal":        "",
             "emptyTable":     "Aucune donnée disponible dans le tableau",
@@ -64,7 +64,7 @@
         });
         var table1 = $('#example1').DataTable({
             "order": [],
-            "iDisplayLength": 10,
+            "iDisplayLength": 50,
 
             "language": {
             "decimal":        "",
@@ -91,7 +91,7 @@
         }); 
         // mandataire
         var table = $('#example3').DataTable({
-            // paging: false,
+            paging: false,
             "order": [],
             
 
