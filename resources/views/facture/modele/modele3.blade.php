@@ -30,10 +30,10 @@
     <table style="height: 41px;" width="707">
     <tbody>
     <tr>
-    <td style="width: 697px;"><strong>Facture n&deg; : {{$facture->numero}}</strong></td>
+    <td style="width: 697px; font-size:25px"><strong>Facture n&deg; : {{$facture->numero}}</strong></td>
     </tr>
     <tr>
-    <td style="width: 697px;">DATE: {{$facture->compromis->date_mandat->format('d/m/Y')}}</td>
+    <td style="width: 697px;">DATE: {{$facture->date_facture->format('d/m/Y')}}</td>
     </tr>
     </tbody>
     </table>
@@ -60,16 +60,16 @@
 
     <td style="width: 165px; text-align: center;"><strong>COMMISSION&nbsp;TOTALE</strong></td>
     <td style="width: 165px; text-align: center;">
-    <div><strong>TAUX DE</strong></div>
-    <div><strong>COMMISSIONNEMENT&nbsp;</strong></div>
+      <strong>TAUX DE</strong>    
+      <strong>COMMISSIONNEMENT&nbsp;</strong>   
     </td>
-    <td style="width: 166px; text-align: center;"><strong>MODE DE&nbsp;PAIEMENT</strong></td>
+    <td style="width: 165px; text-align: center;"><strong>MODE DE&nbsp;PAIEMENT</strong></td>
     </tr>
     <tr>
-    <td style="width: 134px;">{{$facture->compromis->nom_vendeur}}</td>
-    <td style="width: 134px;">{{number_format($facture->montant_ttc,'2',',',' ')}} TTC</td>
-    <td style="width: 134px;">{{$facture->user->commission }}%</td>
-    <td style="width: 135px;">RIB</td>
+    <td style="width: 170px;">{{$facture->compromis->nom_vendeur}}</td>
+    <td style="width: 165px;">{{number_format($facture->compromis->frais_agence,'2',',',' ')}} TTC</td>
+    <td style="width: 165px;">{{$facture->user->commission }}%</td>
+    <td style="width: 165px;">RIB</td>
     </tr>
     </tbody>
     </table>
@@ -81,7 +81,7 @@
     <td style="width: 100px;">
     <div><strong>QUANTITES</strong></div>
     </td>
-    <td style="width: 230px;">
+    <td style="width: 244px;">
     <div><strong>DESIGNATION</strong></div>
     </td>
     <td style="width: 166px;">
@@ -90,12 +90,12 @@
     <td style="width: 166px;"><strong>MONTANT H.T</strong></td>
     </tr>
     <tr>
-    <td style="width: 136px;">
+    <td style="width: 100px;">
     <p>&nbsp;</p>
     <p style="text-align: center;">1</p>
     <p>&nbsp;</p>
     </td>
-<td style="width: 194px;">{{number_format($facture->compromis->frais_agence,'2',',',' ')}} TTC * {{$facture->user->commission}}%= {{number_format($facture->montant_ttc,'2',',',' ')}} TTC ???</td>
+    <td style="width: 244px;">Commission sur {{number_format($facture->compromis->frais_agence,'2',',',' ')}} de frais d'agence = {{number_format($facture->montant_ht,'2',',',' ')}} HT</td>
     <td style="width: 166px;">{{number_format($facture->montant_ht,'2',',',' ')}}</td>
     <td style="width: 166px;">{{number_format($facture->montant_ht,'2',',',' ')}}</td>
     </tr>
@@ -106,6 +106,8 @@
     </td>
     <td style="width: 166px;">{{number_format($facture->montant_ht,'2',',',' ')}}</td>
     </tr>
+    @if( ($facture->compromis->user->statut == "auto-entrepeneur" && $facture->compromis->user->chiffre_affaire >= 35200 ) || $facture->compromis->user->statut != "auto-entrepeneur")
+
     <tr>
     <td style="width: 166px;">T.V.A. 20 %</td>
     <td style="width: 166px;">
@@ -113,18 +115,15 @@
    
     </td>
     </tr>
-    <tr>
-    <td style="width: 166px;">
-    <div>Pubs stylimmo ????</div>
-    </td>
-    <td style="width: 166px;">547,20</td>
-    </tr>
+
     <tr>
     <td style="width: 166px;">TOTAL T.T.C</td>
     <td style="width: 166px;">
     <div>{{number_format($facture->montant_ttc,'2',',',' ')}}</div>
     </td>
     </tr>
+
+    @endif
     </tbody>
     </table>
     </div>

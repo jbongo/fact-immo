@@ -42,6 +42,50 @@
                           </div>
                        </div>
                     </div>
+
+
+
+                        <!-- Modal d'encaissement de la facture stylimmo-->
+                  <div class="modal fade" id="myModal2" role="dialog">
+                     <div class="modal-dialog modal-xs">
+                     
+                     <!-- Modal content-->
+                     <div class="modal-content col-lg-offset-4  col-md-offset-4 col-sm-offset-4 col-lg-4 col-md-4 col-sm-4">
+                        <div class="modal-header">
+                           <button type="button" class="close" data-dismiss="modal">&times;</button>
+                           <h4 class="modal-title">Date de d'encaissement</h4>
+                        </div>
+                        <div class="modal-body">
+                           <p><form action="" method="get" id="form_encaissement">
+                                 <div class="modal-body">
+                                    
+                                          <div class="">
+                                             <div class="form-group row">
+                                                   <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="date_encaissement">Date d'encaissement <span class="text-danger">*</span> </label>
+                                                   <div class="col-lg-8 col-md-8 col-sm-8">
+                                                      <input type="date"  class="form-control {{ $errors->has('date_encaissement') ? ' is-invalid' : '' }}" value="{{old('date_encaissement')}}" id="date_encaissement" name="date_encaissement" required >
+                                                      @if ($errors->has('date_encaissement'))
+                                                      <br>
+                                                      <div class="alert alert-warning ">
+                                                         <strong>{{$errors->first('date_encaissement')}}</strong> 
+                                                      </div>
+                                                      @endif   
+                                                   </div>
+                                             </div>
+                                          </div>
+                                    </p>
+                        </div>
+                        <div class="modal-footer">
+                           <input type="submit" class="btn btn-success" id="valider_encaissement"  value="Valider" />
+                           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                     </div>
+                  </form> 
+                     </div>
+                  </div>
+
+
+
             </div>
 
             </div>
@@ -52,67 +96,98 @@
 @section('js-content')
 
 
-  
-  <script>
-      $(function() {
-         $.ajaxSetup({
-            headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
-         })
-         $('[data-toggle="tooltip"]').tooltip()
-         $('a.encaisser').on('click',function(e) {
-            let that = $(this)
-            e.preventDefault()
-            const swalWithBootstrapButtons = swal.mixin({
-            confirmButtonClass: 'btn btn-success',
-            cancelButtonClass: 'btn btn-danger',
-            buttonsStyling: false,
-            })
+{{-- ##### Encaissement de la facture stylimmo --}}
+{{-- href="{{route('facture.encaisser_facture_stylimmo', Crypt::encrypt($facture->id))}}" --}}
 
-      swalWithBootstrapButtons({
-         title: '@lang('Voulez-vous vraiment continuer ?')',
-         type: 'warning',
-         showCancelButton: true,
-         confirmButtonColor: '#DD6B55',
-         confirmButtonText: '@lang('Oui')',
-         cancelButtonText: '@lang('Non')',
-         
-      }).then((result) => {
-         if (result.value) {
-            $('[data-toggle="tooltip"]').tooltip('hide')
-                  $.ajax({                        
-                     url: that.attr('href'),
-                     type: 'GET',
-                     success: function(data){
-                       document.location.reload();
-                     },
-                     error : function(data){
-                        console.log(data);
-                     }
-                  })
-                  .done(function () {
-                        
-                  })
+<script>
+   $('.encaisser').on('click',function(e){
+      facture_id = $(this).attr('id');
+   });
 
-            swalWithBootstrapButtons(
-            'Encaissée!',
-            'Le mandatataire sera notifié par mail.',
-            'success'
-            )
+$('#valider_encaissement').on('click',function(e){
+// e.preventDefault();
+
+if($("#date_encaissement").val() != ""){
+
+
+   $.ajax({
+         type: "GET",
+         url: "encaisser/factures-stylimmo/"+facture_id ,
+         data:  $("#form_encaissement").serialize(),
+         success: function (result) {
+            console.log(result); 
+            document.location.reload();
+         },
+         error: function(error){
+            console.log(error);
             
-            
-         } else if (
-            // Read more about handling dismissals
-            result.dismiss === swal.DismissReason.cancel
-         ) {
-            swalWithBootstrapButtons(
-            'Annulé',
-            'Aucune modification effectuée :)',
-            'error'
-            )
          }
-      })
-         })
-      })
+   });
+}
+
+
+});
+
+
+      // $(function() {
+      //    $.ajaxSetup({
+      //       headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
+      //    })
+      //    $('[data-toggle="tooltip"]').tooltip()
+      //    $('a.encaisser').on('click',function(e) {
+      //       let that = $(this)
+      //       e.preventDefault()
+      //       const swalWithBootstrapButtons = swal.mixin({
+      //       confirmButtonClass: 'btn btn-success',
+      //       cancelButtonClass: 'btn btn-danger',
+      //       buttonsStyling: false,
+      //       })
+
+      // swalWithBootstrapButtons({
+      //    title: '@lang('Voulez-vous vraiment continuer ?')',
+      //    type: 'warning',
+      //    showCancelButton: true,
+      //    confirmButtonColor: '#DD6B55',
+      //    confirmButtonText: '@lang('Oui')',
+      //    cancelButtonText: '@lang('Non')',
+         
+      // }).then((result) => {
+      //    if (result.value) {
+      //       $('[data-toggle="tooltip"]').tooltip('hide')
+      //             $.ajax({                        
+      //                url: that.attr('href'),
+      //                type: 'GET',
+      //                success: function(data){
+      //                  document.location.reload();
+      //                },
+      //                error : function(data){
+      //                   console.log(data);
+      //                }
+      //             })
+      //             .done(function () {
+                        
+      //             })
+
+      //       swalWithBootstrapButtons(
+      //       'Encaissée!',
+      //       'Le mandatataire sera notifié par mail.',
+      //       'success'
+      //       )
+            
+            
+      //    } else if (
+      //       // Read more about handling dismissals
+      //       result.dismiss === swal.DismissReason.cancel
+      //    ) {
+      //       swalWithBootstrapButtons(
+      //       'Annulé',
+      //       'Aucune modification effectuée :)',
+      //       'error'
+      //       )
+      //    }
+      // })
+      //    })
+      // })
 </script>
 {{-- Alertes paiement  --}}
 <script type="text/javascript">

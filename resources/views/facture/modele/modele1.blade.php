@@ -40,9 +40,7 @@
                 <tbody>
                     <tr style="height: 25px;">
                     <td style="width: 25px; height: 25px;">
-                    <div>
-                    <div>Client</div>
-                    </div>
+                        Client :   
                     </td>
                     <td style="width: 230px; height: 25px;">
                     <div>
@@ -87,7 +85,7 @@
             <td style="width: 468px;">
                 <span style="text-decoration: underline;"><strong> D&eacute;signation de l'op&eacute;ration </strong></span>
             </td>
-            <td style="width: 229px;">{{$facture->type}}</td>
+            <td style="width: 229px; font-size:20px">{{ ucfirst($facture->type)}}</td>
             </tr>
             </tbody>
             </table>
@@ -114,7 +112,7 @@
             <tr>
                 @if($facture->type == "parrainage")
 
-                    <td style="width: 191px; text-align: center;">&nbsp;Commission : {{$facture->compromis->montant_ttc}} TTC&nbsp;</td>
+                    <td style="width: 191px; text-align: center;">&nbsp;Commission : {{number_format($facture->compromis->montant_ttc,'2','.',' ')}} TTC&nbsp;</td>
                 @elseif($facture->type == "partage")
                     <td style="width: 250px; text-align: center;">&nbsp;Commission : {{number_format($facture->montant_ttc,'2','.',' ')}} TTC&nbsp;</td>
 
@@ -127,7 +125,12 @@
             
                         {{-- <td style="width: 400px;">&nbsp;</td> --}}
                         {{-- <td style="width: 191px; text-align: center;">{{$key+1}} &nbsp; :</td> --}}
-                        <td style="width: 250px; text-align: center;">&nbsp;Commission : {{number_format($facture->montant_ttc,'2','.',' ')}} TTC&nbsp;</td>
+
+                        @if($facture->user->statut != "auto-entrepreneur" || ($facture->user->statut == "auto-entrepreneur" && $facture->user->chiffre_affaire >= 35200) )
+                            <td style="width: 250px; text-align: center;">&nbsp;Commission : {{number_format($facture->montant_ttc,'2','.',' ')}} TTC&nbsp;</td>
+                        @else 
+                            <td style="width: 250px; text-align: center;">&nbsp;Commission : {{number_format($facture->montant_ht,'2','.',' ')}} HT&nbsp;</td>
+                        @endif    
                     {{-- @endforeach --}}
                 @endif
                 <br>
@@ -141,9 +144,13 @@
             <tr>
             <td style="width: 185px; text-align: center;">&nbsp;Total Hors Taxes d&ucirc; : &hellip;............&nbsp;{{number_format($facture->montant_ht,'2','.',' ')}} &euro;&nbsp;</td>
             </tr>
+            
+            @if($facture->user->statut != "auto-entrepreneur" || ($facture->user->statut == "auto-entrepreneur" && $facture->user->chiffre_affaire >= 35200) )
             <tr style="text-align: center;">
             <td style="width: 185px;">&nbsp;Imputation T.V.A : 20%&nbsp;: &hellip;..........&nbsp;{{number_format($facture->montant_ttc - $facture->montant_ht,'2','.',' ')}} &euro;&nbsp;</td>
             </tr>
+            @endif
+
             </tbody>
             </table>
 
@@ -151,7 +158,11 @@
             <table style="height: 50px; width: 700px;">
             <tbody>
             <tr>
-            <td style="width: 182px; text-align: center;">&nbsp;<strong>SOIT UN TOTAL T.T.C : {{number_format($facture->montant_ttc,'2','.',' ')}} &euro;</strong>&nbsp;</td>
+            @if($facture->user->statut != "auto-entrepreneur" || ($facture->user->statut == "auto-entrepreneur" && $facture->user->chiffre_affaire >= 35200) )
+                <td style="width: 182px; text-align: center;">&nbsp;<strong>SOIT UN TOTAL T.T.C : {{number_format($facture->montant_ttc,'2','.',' ')}} &euro;</strong>&nbsp;</td>
+            @else 
+                <td style="width: 182px; text-align: center;">&nbsp;<strong>SOIT UN TOTAL H.T: {{number_format($facture->montant_ht,'2','.',' ')}} &euro;</strong>&nbsp;</td>
+            @endif
             </tr>
             </tbody>
             </table>

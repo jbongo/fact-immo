@@ -66,7 +66,7 @@
     <td style="width: 436px;">&nbsp;</td>
     <td style="width: 260px;"><strong>TOTAL HT&nbsp; &nbsp; &nbsp; {{number_format($facture->montant_ht,'2',',',' ')}}  &euro;</strong></td>
     </tr>
-    @if( ($facture->compromis->user->statut == "auto-entrepeneur" && $facture->compromis->user->chiffre_affaire > 35200 ) || $facture->compromis->user->statut != "auto-entrepeneur")
+    @if( ($facture->compromis->user->statut == "auto-entrepeneur" && $facture->compromis->user->chiffre_affaire >= 35200 ) || $facture->compromis->user->statut != "auto-entrepeneur")
     <tr>
         <td style="width: 436px;">&nbsp;</td>
         <td style="width: 260px;"><strong>TOTAL TTC&nbsp; &nbsp; &nbsp; {{number_format($facture->montant_ttc,'2',',',' ')}}  &euro;</strong></td>
@@ -83,7 +83,7 @@
     <p>&nbsp;</p>
 
     <div style="text-align: center; font-size: 14px; margin-right: 10%; margin-left: 10%; margin-top: 90px;">
-        <p>    {{$facture->compromis->user->prenom}} {{ strtoupper($facture->compromis->user->nom) }} - @if($facture->compromis->user->siret != null ) SIRET {{$facture->compromis->user->siret}} @endif - {{$facture->compromis->user->adresse}} {{$facture->compromis->user->code_postal}} {{$facture->compromis->user->ville}}
-
+        <p>    
+            {{$facture->compromis->user->prenom}} {{ strtoupper($facture->compromis->user->nom) }} - @if($facture->compromis->user->siret != null ) SIRET {{$facture->compromis->user->siret}} @endif - {{$facture->compromis->user->adresse}} {{$facture->compromis->user->code_postal}} {{$facture->compromis->user->ville}}
         </p>
     </div>

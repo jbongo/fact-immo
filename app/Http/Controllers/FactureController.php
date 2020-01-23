@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use App\Facture;
 use App\User;
 use App\Compromis;
@@ -15,6 +16,8 @@ use App\Mail\EnvoyerFactureStylimmoMandataire;
 use App\Mail\EncaissementFacture;
 use PDF;
 use Illuminate\Support\Facades\File ;
+use Illuminate\Support\Facades\Storage;
+
 
 
 class FactureController extends Controller
@@ -388,13 +391,14 @@ public  function valider_facture_stylimmo( Request $request, $compromis)
     }
 
        //###### enaisser la facture stylimmo
-       public  function encaisser_facture_stylimmo($facture_id)
+       public  function encaisser_facture_stylimmo($facture_id, Request $request)
        {
    
    
-           $facture = Facture::where('id', Crypt::decrypt($facture_id))->first();
+           $facture = Facture::where('id', $facture_id)->first();
         
            $facture->encaissee = true;
+           $facture->date_encaissement = $request->date_encaissement;
            $facture->update();
            // dd($facture);
    
@@ -1005,37 +1009,67 @@ public function generer_pdf_facture_honoraire(Request $request, $facture_id)
    
     $facture = Facture::where('id',  Crypt::decrypt($facture_id))->first();
     $formule = unserialize( $facture->formule);
+// dd($facture->user);
+    $check_numero = Facture::where([['user_id',$facture->user_id],['numero',$request->numero]])->first();
+    
+    // dd($request->numero);
+    $request->validate([
+        "numero" => "required",
+        "date" => "required|date",
+    ]);
+
+
+    if($check_numero != null && $facture->numero != $request->numero ){
+        return redirect()->route('facture.generer_honoraire_create',$facture_id)->with('ok',__("Le numéro de facture $request->numero existe déjà dans vos factures"));
+    }
+
+
 
     $facture->numero = $request->numero ;
     $facture->date_facture = $request->date ;
+    $facture->statut = "valide";
+
+    // on sauvegarde la facture dans le repertoire du mandataire
+    $path = storage_path('app/public/'.$facture->user->id.'/factures');
+
+    if(!File::exists($path))
+        File::makeDirectory($path, 0755, true);
+ 
+    $path = $path.'/facture_honoraire_'.$request->numero.'.pdf';
+ 
+    // dd($path);
+    // $path = storage_path('app/public/factures/facture_honoraire_'.$facture->numero.'.pdf');
+
+    $facture->url = $path ;
+
 
     $facture->update();
     
-
     if($request->modele == 1){
       
            $pdf = PDF::loadView('facture.modele.modele1',compact(['facture','formule']));
-           $path = storage_path('app/public/factures/facture_hono.pdf');
-           // $pdf->save($path);
+           
+           $pdf->save($path);
            // $pdf->download($path);
-          return $pdf->download('facture_hono.pdf');
+        //   return $pdf->download("facture_honoraire_$facture->numero.pdf");
     }
     elseif($request->modele == 2){
         // return view('facture.modele.modele2', compact(['facture','formule']) );
         $pdf = PDF::loadView('facture.modele.modele2',compact(['facture','formule']));
-           $path = storage_path('app/public/factures/facture_hono.pdf');
-           // $pdf->save($path);
+        $pdf->save($path);
            // $pdf->download($path);
-          return $pdf->download('facture_hono.pdf');
+        //   return $pdf->download("facture_honoraire_$facture->numero.pdf");
     }
     elseif($request->modele == 3){
         // return view('facture.modele.modele3', compact(['facture','formule']) );
         $pdf = PDF::loadView('facture.modele.modele3',compact(['facture','formule']));
-           $path = storage_path('app/public/factures/facture_hono.pdf');
-           // $pdf->save($path);
+           $pdf->save($path);
            // $pdf->download($path);
-          return $pdf->download('facture_hono.pdf');
+        //   return $pdf->download("facture_honoraire_$facture->numero.pdf");
     }
+
+    return redirect()->route('facture.index')->with('ok',__("Votre facture $request->numero a bien été générée "));
+    
     
 }
 
@@ -1060,19 +1094,100 @@ public function create_upload_pdf_honoraire($facture_id)
 public function store_upload_pdf_honoraire(Request $request , $facture_id)
 {
     
-   
     $facture = Facture::where('id',  Crypt::decrypt($facture_id))->first();
 
+    $check_numero = Facture::where([['user_id',$facture->user_id],['numero',$request->numero_facture]])->first();
+    
+    $request->validate([
+        "numero_facture" => "required",
+        "date_facture" => "required|date",
+        "montant_ht" => "required|numeric",
+        "file" => "required|mimes:jpeg,png,pdf,doc,docx'|max:5000",
+    ]);
+
+
+    if($check_numero != null && $facture->numero != $request->numero_facture ){
+        return redirect()->route('facture.create_upload_pdf_honoraire',$facture_id)->with('ok',__("Le numéro de facture $request->numero_facture existe déjà dans vos factures"));
+    }
+
+    if($request->montant_ht != $facture->montant_ht ){
+        return redirect()->route('facture.create_upload_pdf_honoraire',$facture_id)->with('ok',__("Votre montant HT ( $request->montant_ht € )  ne correspond pas au montant HT  ( $facture->montant_ht € ) de la note d'honoraire. Veuillez contacter l'administrateur."));
+    }
+  
+
+
+//   dd($check_numero);
     if($file = $request->file('file')){
 
         $name = $file->getClientOriginalName();
-        dd($name);
+
+        // on sauvegarde la facture dans le repertoire du mandataire
+        $path = storage_path('app/public/'.$facture->user->id.'/factures');
+
+        if(!File::exists($path))
+            File::makeDirectory($path, 0755, true);
+ 
+            $file->move($path,'facture_honoraire_'.$facture->numero.'.pdf');            
+            $path = $path.'/facture_honoraire_'.$facture->numero.'.pdf';
+        
+            $facture->url = $path;
+            $facture->numero = $request->numero_facture;
+            $facture->date_facture = $request->date_facture;
+            $facture->statut = "en attente de validation";
+            $facture->update();
     }
- dd($request->all());
-    return view('facture.add_honoraire_pdf', compact('facture') );
+    return redirect()->route('facture.index')->with('ok',__("Votre facture $facture->numero est attente de validation."));
     
 }
 
+/**
+ * Liste des factures d'honoraire à valider
+ *
+ * @return \Illuminate\Http\Response
+ */
+public function honoraire_a_valider()
+{
+    $factures = Facture::where('statut',  "en attente de validation")->get();
+    return view('facture.a_valider', compact('factures') );
+    
+}
+
+
+/**
+ * Télécharger les factures 
+ *
+ * @return \Illuminate\Http\Response
+ */
+public function download_pdf_facture($facture_id)
+{
+    $facture = Facture::where('id',  Crypt::decrypt($facture_id))->first();
+    return response()->download($facture->url);
+    
+}
+
+/**
+ * Valider les factures 
+ *
+ * @return \Illuminate\Http\Response
+ */
+public function valider_honoraire($action, $facture_id)
+{
+    $facture = Facture::where('id',  Crypt::decrypt($facture_id))->first();
+    if($action == 1){
+        $facture->statut = "valide";
+        // ##### Notifier le mandataire par mail
+    }else{
+        $facture->statut = "refuse";
+        $facture->url = null;
+       
+       if(file_exists($facture->url)) unlink($facture->url);
+        // ##### Notifier le mandataire par mail
+
+    }
+    $facture->update();
+    // return response()->download($facture->url);
+    
+}
 
 
 // ############## FIN FACTURES D'HONORAIRES 

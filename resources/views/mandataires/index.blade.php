@@ -94,7 +94,7 @@
                 headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
             })
             $('[data-toggle="tooltip"]').tooltip()
-            $('a.delete').click(function(e) {
+            $('body').on('click','a.delete',function(e) {
                 let that = $(this)
                 e.preventDefault()
                 const swalWithBootstrapButtons = swal.mixin({

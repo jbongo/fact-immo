@@ -6,7 +6,7 @@
 <div class="row">
     <div class="col-lg-12">
         @if (session('ok'))
-        <div class="alert alert-success alert-dismissible fade in">
+        <div class="alert alert-danger alert-dismissible fade in">
             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
             <strong> {{ session('ok') }}</strong>
         </div>
@@ -34,11 +34,15 @@
                                                 <div class="col-lg-4">
                                                     <input type="text" class="form-control"  id="numero" name="numero" required>
                                                 </div>
-                                            </div>
-                                           
-                                            
+                                                @if ($errors->has('numero'))
+                                                    <br>
+                                                    <div class="alert alert-warning ">
+                                                        <strong>{{$errors->first('numero')}}</strong> 
+                                                    </div>
+                                                @endif
 
-                                           
+                                            </div>
+
                                         </div>
 
                                         <div class="col-lg-6 col-md-6 col-sm-6">
@@ -47,6 +51,12 @@
                                                 <div class="col-lg-4">
                                                     <input type="date" class="form-control" id="date" name="date" required>
                                                 </div>
+                                                @if ($errors->has('date'))
+                                                    <br>
+                                                    <div class="alert alert-warning ">
+                                                        <strong>{{$errors->first('date')}}</strong> 
+                                                    </div>
+                                                @endif
                                             </div>
                                             
                                         </div>

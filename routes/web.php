@@ -78,6 +78,13 @@ Route::middleware('auth')->group(function(){
     // Ajout d'une factue d'honoraire 
     Route::get('facture/honoraire/upload/create/{facture_id}','FactureController@create_upload_pdf_honoraire')->name('facture.create_upload_pdf_honoraire'); 
     Route::post('facture/honoraire/upload/store/{facture_id}','FactureController@store_upload_pdf_honoraire')->name('facture.store_upload_pdf_honoraire'); 
+    Route::get('facture/honoraire/valider/{action}/{facture_id}','FactureController@valider_honoraire')->name('facture.valider_honoraire'); 
+    // Factures d'honoraires à valider
+    Route::get('facture/honoraire/a_valider/','FactureController@honoraire_a_valider')->name('facture.honoraire_a_valider'); 
+    //Telecharger les factures
+    Route::get('telecharger/pdf/factures/{facture_id}','FactureController@download_pdf_facture')->name('facture.telecharger_pdf_facture'); //ok
+    
+    
 
 
 

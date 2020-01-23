@@ -47,7 +47,15 @@
                 break;
         }
     }
+
+    //  Factures honoraires en attente de validation 
+    $nb = App\Facture::where('statut','en attente de validation')->get()->count();
+
+    $nb_notif =  auth()->user()->demande_facture + $nb ;
+    
+
 @endphp
+
     <div class="sidebar sidebar-hide-to-small sidebar-shrink sidebar-gestures">
         <div class="nano">
             <div class="nano-content">
@@ -65,11 +73,15 @@
                 @endif
                 <li class="{{ $li_affaire}}"><a href="{{route('compromis.index')}}" ><i class="large material-icons" style="font-size:20px;">folder_open</i>  Affaires </a></li>
                 
-                <li class="{{$li_facture}} {{$li_facture_demande}}" ><a  class="sidebar-sub-toggle"><i class="large material-icons">description</i> Factures @if(auth()->user()->demande_facture > 0) <span class="badge badge-danger">{{auth()->user()->demande_facture}}</span> @endif<span class="sidebar-collapse-icon ti-angle-down"></span></a>
+                <li class="{{$li_facture}} {{$li_facture_demande}}" ><a  class="sidebar-sub-toggle"><i class="large material-icons">description</i> Factures @if($nb_notif > 0 && auth::user()->role == "admin") <span class="badge badge-danger">{{$nb_notif}}</span> @endif<span class="sidebar-collapse-icon ti-angle-down"></span></a>
                     <ul>
                         <li class="{{$li_facture_gestion}}" ><a href="{{route('facture.index')}}">Gestion</a></li>
                         @if (Auth()->user()->role == "admin")
                         <li class="{{$li_facture_demande}}" ><a  href="{{route('facture.demande_stylimmo')}}" >  @if(auth()->user()->demande_facture > 0) <span class="badge badge-danger">{{auth()->user()->demande_facture}}</span> @endif Demandes </a></li>
+                        @endif
+                        
+                        @if (Auth()->user()->role == "admin")
+                        <li class="{{$li_facture_demande}}" ><a  href="{{route('facture.honoraire_a_valider')}}" >  @if($nb > 0) <span class="badge badge-danger">{{$nb}}</span> @endif A valider </a></li>
                         @endif
                         {{-- <li><a href="#">Avoir</a></li> --}}
                     </ul>

@@ -30,6 +30,8 @@ class CreateFactureTable extends Migration
             $table->text('formule')->nullable();
             $table->boolean('a_avoir')->default(false);
             $table->date('date_facture')->nullable();
+            $table->enum('statut',['non valide','en attente de validation','refuse','valide'])->default('non valide');
+
             $table->timestamps();
         });
     }

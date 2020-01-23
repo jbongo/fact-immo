@@ -109,9 +109,9 @@
                                         @if(auth()->user()->role == "admin")
                                         <td width="" >
                                             @if($facture->encaissee == 0)
-                                            <a href="{{route('facture.encaisser_facture_stylimmo', Crypt::encrypt($facture->id))}}"  class="btn btn-success btn-flat btn-addon  m-b-10 m-l-5 encaisser" id="ajouter"><i class="ti-wallet"></i>Encaisser</a>
+                                            <button   data-toggle="modal" data-target="#myModal2" class="btn btn-success btn-flat btn-addon  m-b-10 m-l-5 encaisser" id="{{$facture->id}}"><i class="ti-wallet"></i>Encaisser</button>
                                             @else 
-                                            <label class="color-danger">Encaissée </label> 
+                                            <label class="color-danger"> @if($facture->date_encaissement != null) encaissée le {{$facture->date_encaissement->format('d/m/Y')}} @else encaissée @endif  </label> 
                                             @endif 
                                         </td>
                                         @endif
@@ -135,6 +135,9 @@
                     </div>
                 </div>
 
-                    </div>
+            </div>
                 <!-- end table -->
             
+
+
+          

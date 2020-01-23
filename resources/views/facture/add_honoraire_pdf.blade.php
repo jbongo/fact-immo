@@ -1,12 +1,12 @@
 @extends('layouts.app') 
 @section('content') 
 @section ('page_title') 
-    Générer la facture <span class="color-warning"> {{$facture->compromis_id}} </span> 
+    Ajouter votre facture <span class="color-warning"> {{$facture->compromis_id}} </span> 
 @endsection
 <div class="row">
     <div class="col-lg-12">
         @if (session('ok'))
-        <div class="alert alert-success alert-dismissible fade in">
+        <div class="alert alert-danger alert-dismissible fade in">
             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
             <strong> {{ session('ok') }}</strong>
         </div>
@@ -32,8 +32,14 @@
                                             <div class="form-group row">
                                                 <label class="col-lg-4 col-form-label" for="numero_facture">Numéro de la facture<span class="text-danger">*</span></label>
                                                 <div class="col-lg-6">
-                                                    <input type="text" class="form-control"  id="numero_facture" name="numero_facture" required>
+                                                    <input type="text" class="form-control" value="{{old('numero_facture')}}"  id="numero_facture" name="numero_facture" required>
                                                 </div>
+                                                 @if ($errors->has('numero_facture'))
+                                                    <br>
+                                                    <div class="alert alert-warning ">
+                                                        <strong>{{$errors->first('numero_facture')}}</strong> 
+                                                    </div>
+                                                @endif
                                             </div>
                                            
                                         </div>
@@ -42,18 +48,30 @@
                                             <div class="form-group row">
                                                 <label class="col-lg-4 col-form-label" for="date_facture">Date de la facture<span class="text-danger">*</span></label>
                                                 <div class="col-lg-6">
-                                                    <input type="date" class="form-control" id="date_facture" name="date_facture" required>
+                                                    <input type="date" class="form-control" value="{{old('date_facture')}}" id="date_facture" name="date_facture" required>
                                                 </div>
+                                                 @if ($errors->has('date_facture'))
+                                                    <br>
+                                                    <div class="alert alert-warning ">
+                                                        <strong>{{$errors->first('date_facture')}}</strong> 
+                                                    </div>
+                                                @endif
                                             </div>
                                             
                                         </div>
                                         <div class="col-lg-4 col-md-4 col-sm-4">
 
                                             <div class="form-group row">
-                                                <label class="col-lg-4 col-form-label" for="montant_ttc">Montant TTC <span class="text-danger">*</span></label>
+                                                <label class="col-lg-4 col-form-label" for="montant_ht">Montant HT <span class="text-danger">*</span></label>
                                                 <div class="col-lg-6">
-                                                    <input type="text" class="form-control"  id="montant_ttc" name="montant_ttc" required>
+                                                <input type="text" class="form-control" value="{{old('montant_ht')}}"  id="montant_ht" name="montant_ht" required>
                                                 </div>
+                                                 @if ($errors->has('montant_ht'))
+                                                    <br>
+                                                    <div class="alert alert-warning ">
+                                                        <strong>{{$errors->first('montant_ht')}}</strong> 
+                                                    </div>
+                                                @endif
                                             </div>
                                            
                                         </div>
@@ -84,6 +102,12 @@
                                             <div class="col-lg-6 col-md-6 col-sm-6">
                                                 <input type="file" class="form-control"  id="file"  name="file"  required>
                                             </div>
+                                             @if ($errors->has('file'))
+                                                <br>
+                                                <div class="alert alert-warning ">
+                                                    <strong>{{$errors->first('file')}}</strong> 
+                                                </div>
+                                            @endif
                                         </div>
 
                                     </div>

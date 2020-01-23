@@ -50,20 +50,20 @@
 @endsection
 @section('js-content')
 <script>
-        $(function() {
+
+$(function() {
             $.ajaxSetup({
                 headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
             })
             $('[data-toggle="tooltip"]').tooltip()
-            $('a.delete').click(function(e) {
+            $('body').on('click','a.delete',function(e) {
                 let that = $(this)
                 e.preventDefault()
                 const swalWithBootstrapButtons = swal.mixin({
-            confirmButtonClass: 'btn btn-success',
-            cancelButtonClass: 'btn btn-danger',
-            buttonsStyling: false,
-})
-
+                    confirmButtonClass: 'btn btn-success',
+                    cancelButtonClass: 'btn btn-danger',
+                    buttonsStyling: false,
+                })
         swalWithBootstrapButtons({
             title: '@lang('Vraiment archiver cette affaire  ?')',
             type: 'warning',
@@ -85,7 +85,7 @@
 
                 swalWithBootstrapButtons(
                 'Archivé!',
-                'L\'compromis a bien été archivé.',
+                'Le compromis a bien été archivé.',
                 'success'
                 )
                 
@@ -96,13 +96,17 @@
             ) {
                 swalWithBootstrapButtons(
                 'Annulé',
-                'L\'utlisateur n\'a pas été archivé :)',
+                'Le compromis n\'a pas été archivé :)',
                 'error'
                 )
             }
         })
             })
         })
+
+
+
+
 
 
         // ######### Cloturer une affaire
@@ -113,7 +117,7 @@
                 headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
             })
             $('[data-toggle="tooltip"]').tooltip()
-            $('a.cloturer').click(function(e) {
+            $('body').on('click','a.cloturer',function(e) {
                 let that = $(this)
                 e.preventDefault()
                 const swalWithBootstrapButtons = swal.mixin({

@@ -23,6 +23,7 @@
                                         <th>@lang('Montant TTC ')</th>
                                         {{-- <th>@lang('Date Facture')</th> --}}
                                         <th>@lang('Date de l\'acte')</th>
+                                        <th>Validation</th>
                                         <th>@lang('Paiement')</th>
                                         <th>@lang('Etat (Fac Stylimmo)')</th>
 
@@ -31,6 +32,7 @@
                                         @endif --}}
 
                                         <th>@lang('Note honoraire')</th>
+                                        <th>@lang('Télécharger')</th>
 
                                     </tr>
                                 </thead>
@@ -39,7 +41,9 @@
 
                                     <tr>
                                         <td  >
+                                            @if($facture->staut != "en attente de validation")
                                             <label class="color-info">{{$facture->numero}} </label> 
+                                            @endif
                                         </td>
                                         <td  >
                                             {{-- <label class="color-info">{{$facture->compromis->getFactureStylimmo()->numero}} </label>  --}}
@@ -74,10 +78,23 @@
                                                 {{$facture->created_at->format('d/m/Y')}}
                                         </td> --}}
                                        
-                                        <td  >
+                                        <td >
                                             <label class="color-info">
                                                 {{$facture->compromis->date_vente->format('d/m/Y')}} 
                                             </label> 
+                                        </td>
+
+                                        <td  >
+                                            @if($facture->statut == "valide" && $facture->numero != null )
+                                                <label class="color-primary" ><strong> Bon à payer</strong> </label>                                            
+                                            @elseif($facture->statut == "en attente de validation" && $facture->numero != null) 
+                                                <label class="color-default"><strong> En attente de validation </strong></label> 
+                                            @elseif($facture->statut == "refuse" && $facture->numero != null) 
+                                                <label class="color-success"><strong>Réfusée </strong></label>
+                                            @else
+                                                <label class="color-danger"><strong>Non valide </strong></label> 
+
+                                            @endif 
                                         </td>
 
                                         {{--  paiement--}}
@@ -90,7 +107,7 @@
                                         <td  >
                                             @if($facture->reglee == 0)
                                                 @if(auth::user()->role == "admin")
-                                                    <button data-toggle="modal" data-target="#myModal" id="{{Crypt::encrypt($facture->id)}}"  class="btn btn-success btn-flat btn-addon  m-b-10 m-l-5 payer" ><i class="ti-wallet"></i>Payer</button>
+                                                    <button data-toggle="modal" @if($facture->compromis->getFactureStylimmo()->encaissee == 0 )disabled style="background:#bdbdbd" @endif data-target="#myModal" id="{{Crypt::encrypt($facture->id)}}"  class="btn btn-success btn-flat btn-addon  m-b-10 m-l-5 payer" ><i class="ti-wallet"></i>Payer</button>
                                                 @else 
                                                     <label class="color-danger">Non réglée </label> 
                                                 @endif
@@ -109,7 +126,7 @@
                                         
                                         
                                         <td  >
-                                            @if(auth::user()->role=="admin")
+                                            {{-- @if(auth::user()->role=="admin") --}}
                                             {{-- @if ($facture->compromis->je_porte_affaire == 0  || $facture->compromis->agent_id == auth::user()->id || ($facture->compromis->je_porte_affaire == 1 && $facture->compromis->est_partage_agent == 1) ) --}}
                                                 @if ($facture->type == "partage" )
                                                     <a target="blank" href="{{route('facture.preparer_facture_honoraire_partage',[Crypt::encrypt($facture->compromis->id), $facture->user_id ])}}" data-toggle="tooltip" title="@lang('Note honoraire  ')"><i class="large material-icons color-danger">insert_drive_file</i></a> 
@@ -123,11 +140,19 @@
                                                     <a target="blank" href="{{route('facture.preparer_facture_honoraire',Crypt::encrypt($facture->compromis->id))}}" data-toggle="tooltip" title="@lang('Note honoraire  ')"><i class="large material-icons color-danger">insert_drive_file</i></a> 
                                                     
                                                 @endif
-                                            @else
+                                            {{-- @else
                                                 <a href="{{route('facture.telecharger_pdf_facture_stylimmo', Crypt::encrypt($facture->compromis->id))}}"  class="btn btn-warning btn-flat btn-addon  m-b-10 m-l-5 " id="ajouter"><i class="ti-download"></i>Télécharger</a>
 
-                                            @endif
+                                            @endif --}}
                                         </td> 
+
+                                        <td width="" >     
+                                            @if($facture->url != null)                                       
+                                                <a href="{{route('facture.telecharger_pdf_facture', Crypt::encrypt($facture->id))}}"  class=" btn btn-warning btn-flat btn-addon m-b-10 m-l-5 " id="telecharger"><i class="ti-download"></i> Télécharger</a>
+                                            @else 
+                                                <label class="color-danger" ><strong> Non disponible </strong> </label>                                            
+                                            @endif
+                                        </td>
                                     </tr> 
                                
                             @endforeach
@@ -138,7 +163,7 @@
                 </div>
 
 
-<div class="container">
+{{-- <div class="container"> --}}
 
         <!-- Trigger the modal with a button -->
         {{-- <button type="button" class="btn btn-info btn-lg" id="myBtn">Open Modal</button> --}}
@@ -148,7 +173,7 @@
           <div class="modal-dialog modal-sm">
           
             <!-- Modal content-->
-            <div class="modal-content">
+            <div class="modal-content col-lg-offset-4  col-md-offset-4 col-sm-offset-4 col-lg-4 col-md-4 col-sm-4">
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <h4 class="modal-title">Date de règlement</h4>
@@ -157,7 +182,7 @@
                 <p><form action="" method="get" id="form_regler">
                         <div class="modal-body">
                           
-                                <div class="col-lg-offset-2  col-md-offset-2 col-sm-offset-2 col-lg-4 col-md-4 col-sm-4">
+                                <div class="">
                                     <div class="form-group row">
                                         <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="date_reglement">Date de règlement <span class="text-danger">*</span> </label>
                                         <div class="col-lg-8 col-md-8 col-sm-8">
@@ -182,7 +207,7 @@
           </div>
         </div>
         
-      </div>              
+      {{-- </div>               --}}
 
 
                 </div>

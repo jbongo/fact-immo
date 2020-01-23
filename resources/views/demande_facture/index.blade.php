@@ -51,7 +51,7 @@
                                             {{number_format($compromi->net_vendeur,2,',',' ')}} €  
                                         </td>
                                         <td>
-                                        {{$compromi->date_mandat->format('d/m/Y')}}   
+                                        {{$compromi->date_vente->format('d/m/Y')}}   
                                         </td>
                                         <td>
                                             @php($color = "danger")
