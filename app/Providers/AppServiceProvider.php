@@ -27,15 +27,15 @@ class AppServiceProvider extends ServiceProvider
     {
         Schema::defaultStringLength(191);
 
-        $parametre = Parametre::first();
-        Config::set('setting.raison_sociale',$parametre->raison_sociale);
-        Config::set('setting.numero_siret',$parametre->numero_siret);
-        Config::set('setting.numero_rcs',$parametre->numero_rcs);
-        Config::set('setting.numero_tva',$parametre->numero_tva);
-        Config::set('setting.adresse',$parametre->adresse);
-        Config::set('setting.ville',$parametre->ville);
-        Config::set('setting.ca_imposable',$parametre->ca_imposable);
-        Config::set('setting.tva',$parametre->tva->tva_actuelle);
+        // $parametre = Parametre::first();
+        // Config::set('setting.raison_sociale',$parametre->raison_sociale);
+        // Config::set('setting.numero_siret',$parametre->numero_siret);
+        // Config::set('setting.numero_rcs',$parametre->numero_rcs);
+        // Config::set('setting.numero_tva',$parametre->numero_tva);
+        // Config::set('setting.adresse',$parametre->adresse);
+        // Config::set('setting.ville',$parametre->ville);
+        // Config::set('setting.ca_imposable',$parametre->ca_imposable);
+        // Config::set('setting.tva',$parametre->tva->tva_actuelle);
          
     }
 }
