@@ -23,11 +23,11 @@
                                     @endif
                                     <th>@lang('Facture Stylimmo')</th>
                                     <th>@lang('Mandat')</th>
-                                    <th>@lang('Description bien')</th>
-                                    <th>@lang('Net Vendeur')</th>
+                                    <th>@lang('Vendeur')</th>
+                                    <th>@lang('Commission')</th>
                                     {{-- <th>@lang('Date Mandat')</th> --}}
                                     <th>@lang('Partage')</th>
-                                    <th>@lang('Facture Styl')</th>
+                              
 
                                     <th>@lang('Action') </th>
                                 </tr>
@@ -56,7 +56,7 @@
                                     @endif 
                                     <td width="" >
                                         @if($compromi->getFactureStylimmo()!=null)
-                                        <a href="{{route('facture.telecharger_pdf_facture_stylimmo', Crypt::encrypt($compromi->id))}}"  class="  m-b-10 m-l-5 " id="ajouter"><label class="color-info">{{$compromi->getFactureStylimmo()->numero}} <i class="ti-download"></i> </label></a>
+                                        <a class="color-info" title="Télécharger la facture stylimmo"  href="{{route('facture.telecharger_pdf_facture_stylimmo', Crypt::encrypt($compromi->id))}}"  class="  m-b-10 m-l-5 " id="ajouter">{{$compromi->getFactureStylimmo()->numero}} <i class="ti-download"></i> </a>
                                         @else 
                                             <span class="color-warning">En attente ..</span>                                            
                                         @endif
@@ -65,11 +65,11 @@
                                         <strong> {{$compromi->numero_mandat}}</strong> 
                                     </td>     
                                     <td width="15%" style="{{$grise}}" >
-                                        <strong>{{ substr($compromi->description_bien,0,40)}}...</strong> 
+                                        <strong>{{ substr($compromi->nom_vendeur,0,50)}}</strong> 
                                     </td>
                                     
                                     <td  style="{{$grise}}">
-                                        {{number_format($compromi->net_vendeur,'2','.',' ')}} €   
+                                        {{number_format($compromi->frais_agence,'2','.',' ')}} €   
                                     </td>
                                     {{-- <td  style="{{$grise}}">
                                    @if($compromi->date_mandat != null) {{$compromi->date_mandat->format('d/m/Y')}} @endif  
@@ -97,7 +97,7 @@
                                         @endif
 
                                     </td>        
-                                    <td  style="{{$grise}}">
+                                    {{-- <td  style="{{$grise}}">
                                         @if($compromi->je_porte_affaire == 1 && $compromi->agent_id != auth::user()->id)
                                             @if($compromi->demande_facture == 0 )
                                                 <span><a class="btn btn-default" href="{{route('facture.demander_facture',Crypt::encrypt($compromi->id))}}" data-toggle="tooltip" title="@lang(' ddddd')">demander facture styl</a> </span>
@@ -108,7 +108,7 @@
                                             @endif
                                         @endif
                                     </td>                                
-                                  
+                                   --}}
                                     <td width="15%">
                                             <a href="{{route('compromis.show',Crypt::encrypt($compromi->id))}}" data-toggle="tooltip" title="@lang('Détails  ')"><i class="large material-icons color-info">visibility</i></a> 
                                             @if ($compromi->cloture_affaire == 0 && $compromi->demande_facture == 2 && $compromi->agent_id != auth::user()->id)

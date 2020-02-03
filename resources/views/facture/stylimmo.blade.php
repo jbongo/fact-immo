@@ -14,6 +14,7 @@
                                        
                                         <th>@lang('Facture Stylimmo')</th>
                                         <th>@lang('Mandat')</th>
+                                        <th>@lang('Vendeur')</th>
                                         @if(auth()->user()->role == "admin")
                                         <th>@lang('Mandataire')</th>
                                         @endif
@@ -28,7 +29,7 @@
                                         <th>@lang('Encaissement')</th>
                                         @endif
                                         {{-- @endif --}}
-                                        <th>@lang('Télécharger')</th>
+                                        {{-- <th>@lang('Télécharger')</th> --}}
                                         <th>@lang('Avoir')</th>
 
                                     </tr>
@@ -39,13 +40,16 @@
                                     <tr>
                                         <td width="" >
                                             
-                                        <a href="{{route('facture.telecharger_pdf_facture_stylimmo', Crypt::encrypt($facture->compromis->id))}}"  class="  m-b-10 m-l-5 " id="ajouter"><label class="color-info">{{$facture->numero}}  <i class="ti-download"></i> </label></a>
+                                        <a class="color-info" title="Télécharger la facture stylimmo" href="{{route('facture.telecharger_pdf_facture_stylimmo', Crypt::encrypt($facture->compromis->id))}}"  class="  m-b-10 m-l-5 " id="ajouter">{{$facture->numero}}  <i class="ti-download"></i> </a>
 
                                         </td>
                                         <td width="" >
                                             {{-- <label class="color-info">{{$facture->compromis->numero_mandat}} </label>  --}}
                                         <label class="color-info"><a href="{{route('compromis.show',Crypt::encrypt($facture->compromis->id) )}}" target="_blank" title="@lang('voir l\'affaire  ') ">{{$facture->compromis->numero_mandat}}  <i style="font-size: 17px" class="material-icons color-success">account_balance</i></a></label>
 
+                                        </td>
+                                        <td  style="">
+                                            <span class="color-warning">{{$facture->compromis->nom_vendeur}}</span>   
                                         </td>
                                         @if(auth()->user()->role == "admin")
                                         <td width="" >
@@ -115,9 +119,9 @@
                                             @endif 
                                         </td>
                                         @endif
-                                        <td width="" >
+                                        {{-- <td width="" >
                                             <a href="{{route('facture.telecharger_pdf_facture_stylimmo', Crypt::encrypt($facture->compromis->id))}}"  class="btn btn-warning btn-flat btn-addon  m-b-10 m-l-5 " id="telecharger"><i class="ti-download"></i>Télécharger</a>
-                                        </td> 
+                                        </td>  --}}
                                        {{-- Avoir --}}
                                         <td width="" >
                                             @if($facture->a_avoir == 0)

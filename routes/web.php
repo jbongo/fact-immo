@@ -103,13 +103,22 @@ Route::middleware('auth')->group(function(){
     Route::get('parametre/pack_pub/edit/{pack_pub}','PackpubController@edit')->name('pack_pub.edit');
     Route::get('parametre/pack_pub/create','PackpubController@create')->name('pack_pub.create');
     Route::post('parametre/pack_pub/store','PackpubController@store')->name('pack_pub.store');
-    Route::post('parametre/pack_pub/update/{pack_pub}','PackpubController@update')->name('pack_pub.update');
-    
-    // Modèle contrat
-    
+    Route::post('parametre/pack_pub/update/{pack_pub}','PackpubController@update')->name('pack_pub.update');    
+    // Modèle contrat    
     Route::get('parametre/modele_contrat/create','ContratController@create_model_contrat')->name('modele_contrat.create');
     Route::post('parametre/modele_contrat/store','ContratController@store_model_contrat')->name('modele_contrat.store');
     Route::post('parametre/modele_contrat/update','ContratController@update_model_contrat')->name('modele_contrat.update');
+    // Pramètre généraux
+    Route::get('parametre/generaux/create','ParametreController@create_parametre_generaux')->name('parametre_generaux.create');
+    Route::post('parametre/generaux/store','ParametreController@store_parametre_generaux')->name('parametre_generaux.store');
+    Route::post('parametre/generaux/update','ParametreController@update_parametre_generaux')->name('parametre_generaux.update');
+
+
+    // ##### CALCUL STATS TEST
+    
+    Route::get('stats/mandataire/{mandataire_id}','MandataireController@stats_user')->name('stats_user');
+
+
 
 
     Route::get('/', function () {

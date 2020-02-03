@@ -13,8 +13,17 @@ class CreateParametreTable extends Migration
      */
     public function up()
     {
-        Schema::create('parametre', function (Blueprint $table) {
+        Schema::create('parametres', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->integer('tva_id')->nullable();
+            $table->string('raison_sociale')->nullable();
+            $table->string('numero_siret')->nullable();
+            $table->string('numero_rcs')->nullable();
+            $table->string('numero_tva')->nullable();
+            $table->string('adresse')->nullable();
+            $table->string('code_postal')->nullable();
+            $table->string('ville')->nullable();
+            $table->double('ca_imposable')->nullable();
             $table->timestamps();
         });
     }

@@ -326,4 +326,24 @@ class MandataireController extends Controller
         return redirect('home');
     
     }
+
+
+
+
+    // ###### Calculs stats test
+
+       /**
+     * stats pour un mandataire
+     *
+     * @param  int  $mandataire_id
+     * @return \Illuminate\Http\Response
+     */
+    public function stats_user($mandataire_id)
+    {
+       
+        $mandataire = User::where('id', $mandataire_id)->first();
+        
+        return view('calculs_stats',compact('mandataire'));
+    }
+    
 }

@@ -18,9 +18,8 @@
 
                                     <th>@lang('Filleul')</th>
                                     <th>@lang('Numéro Mandat')</th>
-                                    <th>@lang('Description bien')</th>
-                                    <th>@lang('Net Vendeur')</th>
-                                    <th>@lang('Frais agence')</th>
+                                    <th>@lang('Vendeur')</th>
+                                    <th>@lang('Commission')</th>
                                     {{-- <th>@lang('Date mandat')</th> --}}
                                     <th>@lang('Partage')</th>
                                     <th>@lang('Facture Styl')</th>
@@ -43,12 +42,10 @@
                                     <td  style="color: #e05555;{{$grise}}">
                                         <strong> {{$compromi->numero_mandat}}</strong> 
                                     </td>     
-                                    <td width="15%" style="{{$grise}}" >
-                                        <strong>{{$compromi->description_bien}}</strong> 
-                                    </td>
+                                   
                                     
-                                    <td  style="{{$grise}}">
-                                        <span class="color-warning">{{number_format($compromi->net_vendeur,'2','.',' ')}} €</span>   
+                                    <td  style="">
+                                        <span class="color-warning">{{$compromi->nom_vendeur}}</span>   
                                     </td>
                                     <td  style="{{$grise}}">
                                         <span class="color-success">{{number_format($compromi->frais_agence,'2','.',' ')}} €</span>   
