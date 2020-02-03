@@ -27,7 +27,7 @@
                                     <th>@lang('Commission')</th>
                                     {{-- <th>@lang('Date Mandat')</th> --}}
                                     <th>@lang('Partage')</th>
-                              
+                                    <th>@lang('Facture Styl')</th>
 
                                     <th>@lang('Action') </th>
                                 </tr>
@@ -97,7 +97,7 @@
                                         @endif
 
                                     </td>        
-                                    {{-- <td  style="{{$grise}}">
+                                    <td  style="{{$grise}}">
                                         @if($compromi->je_porte_affaire == 1 && $compromi->agent_id != auth::user()->id)
                                             @if($compromi->demande_facture == 0 )
                                                 <span><a class="btn btn-default" href="{{route('facture.demander_facture',Crypt::encrypt($compromi->id))}}" data-toggle="tooltip" title="@lang(' ddddd')">demander facture styl</a> </span>
@@ -108,7 +108,7 @@
                                             @endif
                                         @endif
                                     </td>                                
-                                   --}}
+                                  
                                     <td width="15%">
                                             <a href="{{route('compromis.show',Crypt::encrypt($compromi->id))}}" data-toggle="tooltip" title="@lang('Détails  ')"><i class="large material-icons color-info">visibility</i></a> 
                                             @if ($compromi->cloture_affaire == 0 && $compromi->demande_facture == 2 && $compromi->agent_id != auth::user()->id)
