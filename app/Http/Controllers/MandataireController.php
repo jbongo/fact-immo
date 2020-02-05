@@ -7,6 +7,7 @@ use App\User;
 use App\Compromis;
 use App\Contrat;
 use App\Filleul;
+use App\Facture;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Crypt;
 use App\Mail\CreationMandataire;
@@ -339,11 +340,43 @@ class MandataireController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function stats_user($mandataire_id)
-    {
-       
+    { 
+        // Dans cette partie on détermine le jour exaxt de il y'a 12 mois
+        $today = date("Y-m-d");//  aujourd'hui 
+        $date = strtotime( date("Y-m-d", strtotime($today)) . " -1 year");    // aujourd'hui  - 1 ans   
+
+        $date_12 = date("Y-m-d",$date);
+
         $mandataire = User::where('id', $mandataire_id)->first();
         
-        return view('calculs_stats',compact('mandataire'));
+
+    //   on réccupère toutes les factures honoraires, partage,  valide du mandataire et dont la date est superieur aux 12 derniers mois
+        $fact_directs = Facture::where([['user_id',$mandataire_id],['date_facture','>=',$date_12],['statut','valide']])->whereIn('type',['honoraire','partage'])->get();
+        // dd($fact_directs);
+        $ca_direct = 0 ;
+        foreach ($fact_directs as $fact) {
+            $ca_direct += $fact->montant_ht ;
+        }
+
+        $ca_indirect = 0;
+     //   on réccupère toutes les factures parrainage valide du mandataire et dont la date est superieur aux 12 derniers mois
+     $fact_indirects = Facture::where([['user_id',$mandataire_id],['date_facture','>=',$date_12],['statut','valide']])->whereIn('type',['parrainage','parrainage-partage'])->get();
+     // dd($fact_indirects);
+     foreach ($fact_indirects as $fact) {
+         $ca_indirect += $fact->montant_ht ;
+     }
+
+    //  On réccupère les ventes des 12 derniers mois
+
+    $vente_12 = Compromis::where([['user_id',$mandataire_id],['demande_facture',2]])->count();
+
+    // On réccupère le nombre de filleul du mandataire
+
+     $nb_filleul = Filleul::where('parrain_id',$mandataire_id)->count();
+
+
+
+        return view('calculs_stats',compact('mandataire','ca_direct','ca_indirect','vente_12','nb_filleul'));
     }
     
 }

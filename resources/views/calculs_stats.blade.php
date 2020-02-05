@@ -18,10 +18,10 @@
                 
                 <div class="card-body">
                         
-                    <span style="color: #ff0080"> CA directe sur les 12 derniers mois  </span> :<span> 1450000</span> <hr>
-                    <span style="color: #ff0080"> CA indirecte sur les 12 derniers mois </span> : <span> 1550</span> <hr>
-                    <span style="color: #ff0080"> Nombre de vente sur les 12 derniers mois </span> : <span> 5</span> <hr>
-                    <span style="color: #ff0080"> Nombre de filleuls </span> : <span> </span> <hr>
+                    <span style="color: #ff0080"> CA directe sur les 12 derniers mois  </span> :<span> {{$ca_direct}}</span> <hr>
+                    <span style="color: #ff0080"> CA indirecte sur les 12 derniers mois </span> : <span> {{$ca_indirect}}</span> <hr>
+                    <span style="color: #ff0080"> Nombre de vente sur les 12 derniers mois </span> : <span> {{$vente_12}}</span> <hr>
+                    <span style="color: #ff0080"> Nombre de filleuls </span> : <span>{{$nb_filleul}} </span> <hr>
                     <span style="color: #ff0080"> Est-il à jour dans ses règlements de pubs ? </span> : <span> </span> <hr>
                     <span style="color: #ff0080"> Si filleul, dans quel cycle ?  </span> : <span> </span> <hr>
                 </div>
