@@ -14,7 +14,7 @@
                     <i class="ti-home bg-primary"></i>
                 </div>
                 <div class="stat-content">
-                    <div class="color-primary">Affaires </div>
+                    <div class="color-primary">Affaires OLD </div>
                     <div class="stat-text">27</div>
                 </div>
             </div>
