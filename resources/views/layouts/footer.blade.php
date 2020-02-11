@@ -124,7 +124,7 @@
 {{-- DASHBOARD --}}
 
 <script src="{{ asset('js/lib/preloader/pace.min.js') }}"></script>
-<script src="{{ asset('js/lib/bootstrap.min.js') }}"></script>
+{{-- <script src="{{ asset('js/lib/bootstrap.min.js') }}"></script> --}}
 <script src="{{ asset('js/lib/circle-progress/circle-progress.min.js') }}"></script>
 <script src="{{ asset('js/lib/circle-progress/circle-progress-init.js') }}"></script>
 <script src="{{ asset('js/lib/owl-carousel/owl.carousel.min.js') }}"></script>
