@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Compromis;
+use App\User;
+use App\Filleul;
 
 class HomeController extends Controller
 {
@@ -23,6 +26,18 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+    //     ############ Infos de stats ##########
+
+    $STATS = array();
+    $nb_affaires = Compromis::count();
+    $nb_mandataires = User::where('role','mandataire')->count();
+    $nb_filleuls = Filleul::count();
+
+
+    $STATS["nb_affaires"] = $nb_affaires;
+    $STATS["nb_mandataires"] = $nb_mandataires;
+    $STATS["nb_filleuls"] = $nb_filleuls;
+
+        return view('home',compact("STATS"));
     }
 }

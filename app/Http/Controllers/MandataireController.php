@@ -441,10 +441,10 @@ class MandataireController extends Controller
     $CA_N[] = $ca_encaisse_N; 
     $CA_N[] = $ca_previsionel_N; 
     
-    dd($CA_N);
-    $a_date = "2011-02";  
-    dd (date("Y-m-t", strtotime($a_date)));
-    dd(date("Y"));
+    // dd($CA_N);
+    // $a_date = "2011-02";  
+    // dd (date("Y-m-t", strtotime($a_date)));
+    // dd(date("Y"));
 
    
 
