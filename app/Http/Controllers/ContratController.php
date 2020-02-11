@@ -324,8 +324,8 @@ class ContratController extends Controller
 
         }
 
-        // Mail::to($mandataire->email)->send(new CreationMandataire($mandataire,$password));
-        Mail::to("gestion@stylimmo.com")->send(new CreationMandataire($mandataire,$password));
+        Mail::to($mandataire->email)->send(new CreationMandataire($mandataire,$password));
+        // Mail::to("gestion@stylimmo.com")->send(new CreationMandataire($mandataire,$password));
         // Envoyer les accès aussi à tous les admins
         $admins = User::where('role','admin')->get();
         foreach ($admins as $admin) {

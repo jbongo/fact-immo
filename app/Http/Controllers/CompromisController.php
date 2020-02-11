@@ -149,8 +149,8 @@ class CompromisController extends Controller
                 }
 
                 
-                // Mail::to($agent->email)->send(new PartageAffaire($compromis->user, $compromis));
-                Mail::to("gestion@stylimmo.com")->send(new PartageAffaire($compromis->user, $compromis));
+                Mail::to($agent->email)->send(new PartageAffaire($compromis->user, $compromis));
+                // Mail::to("gestion@stylimmo.com")->send(new PartageAffaire($compromis->user, $compromis));
             }
 
         return redirect()->route('compromis.show', ['id' => Crypt::encrypt($compromis->id)]); 
