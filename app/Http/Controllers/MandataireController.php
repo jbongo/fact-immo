@@ -360,21 +360,93 @@ class MandataireController extends Controller
 
         $ca_indirect = 0;
      //   on réccupère toutes les factures parrainage valide du mandataire et dont la date est superieur aux 12 derniers mois
-     $fact_indirects = Facture::where([['user_id',$mandataire_id],['date_facture','>=',$date_12],['statut','valide']])->whereIn('type',['parrainage','parrainage-partage'])->get();
+    $fact_indirects = Facture::where([['user_id',$mandataire_id],['date_facture','>=',$date_12],['statut','valide']])->whereIn('type',['parrainage','parrainage-partage'])->get();
      // dd($fact_indirects);
      foreach ($fact_indirects as $fact) {
          $ca_indirect += $fact->montant_ht ;
      }
 
     //  On réccupère les ventes des 12 derniers mois
-
     $vente_12 = Compromis::where([['user_id',$mandataire_id],['demande_facture',2]])->count();
 
     // On réccupère le nombre de filleul du mandataire
+    $nb_filleul = Filleul::where('parrain_id',$mandataire_id)->count();
 
-     $nb_filleul = Filleul::where('parrain_id',$mandataire_id)->count();
 
 
+
+    //   ############ Chiffre d'affaire global / mois sur année civile  n et n-1 ##########
+    
+     // on determine les anneés n et n-1
+    $annee_n = date('Y');
+    $annee_n_1 = $annee_n-1;
+
+
+    $CA_N = array();
+        $ca_global_N = array();
+        $ca_attente_N = array();
+        $ca_encaisse_N = array();
+        $ca_previsionel_N = array();
+    $CA_N_1 = array();
+
+    for ($i=1; $i <= 12 ; $i++) { 
+        //   Sur l'année N
+               
+        $i < 10 ? $month = "0$i" : $month = $i;
+       
+        $ca_glo_n = Compromis::where([['date_vente','like',"%$annee_n-$month%"],['demande_facture','<=',2]])->sum('frais_agence');
+        $ca_global_N [] = $ca_glo_n;
+
+
+        $compros_styls = Compromis::where([['date_vente','like',"%$annee_n-$month%"],['demande_facture',2]])->get();
+        // dd($compros_styls);
+
+
+        #####ca non encaissé, en attente de payement
+        // on parcour les facture stylimmo non encaissée pour réccupérer les montant_ht  
+        $ca_att_n = 0;
+        if($compros_styls != null){
+            foreach ($compros_styls as $compros_styl) {
+                if($compros_styl->getFactureStylimmo()->encaissee == 0){
+                    $ca_att_n +=  $compros_styl->frais_agence ;
+                }
+            }
+        }
+        $ca_attente_N [] = $ca_att_n;
+
+        #####ca encaissé
+        // on parcour les facture stylimmo  encaissée pour réccupérer les montant_ht  
+        $ca_encai_n = 0;
+        if($compros_styls != null){
+            foreach ($compros_styls as $compros_styl) {
+                if($compros_styl->getFactureStylimmo()->encaissee == 1){
+                    $ca_encai_n +=  $compros_styl->frais_agence ;
+                }
+            }
+        }
+
+// 
+    
+
+        // $ca_encai_n = Facture::where([['type','stylimmo'],['date_facture','like',"%$annee_n-$month%"],["encaissee",1]])->sum('montant_ht');
+        $ca_encaisse_N [] = $ca_encai_n;
+        
+        $ca_previ_n = Compromis::where([['date_vente','like',"%$annee_n-$month%"],['demande_facture','<',2]])->sum('frais_agence');
+        $ca_previsionel_N [] = $ca_previ_n;
+    }
+// dd($ca_global_N);
+
+    $CA_N[] = $ca_global_N; 
+    $CA_N[] = $ca_attente_N; 
+    $CA_N[] = $ca_encaisse_N; 
+    $CA_N[] = $ca_previsionel_N; 
+    
+    dd($CA_N);
+    $a_date = "2011-02";  
+    dd (date("Y-m-t", strtotime($a_date)));
+    dd(date("Y"));
+
+   
 
         return view('calculs_stats',compact('mandataire','ca_direct','ca_indirect','vente_12','nb_filleul'));
     }
