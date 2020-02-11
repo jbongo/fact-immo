@@ -9,6 +9,7 @@ use App\Compromis;
 use App\Contrat;
 use App\Filleul;
 use App\Facture;
+use App\User;
 use Config;
 class AppServiceProvider extends ServiceProvider
 {
@@ -176,8 +177,22 @@ class AppServiceProvider extends ServiceProvider
             // dd (date("Y-m-t", strtotime($a_date)));
             // dd(date("Y"));
         
+
+            $STATS = array();
+            $nb_affaires = Compromis::count();
+            $nb_mandataires = User::where('role','mandataire')->count();
+            $nb_filleuls = Filleul::count();
+        
+        
+            $STATS["nb_affaires"] = $nb_affaires;
+            $STATS["nb_mandataires"] = $nb_mandataires;
+            $STATS["nb_filleuls"] = $nb_filleuls;
+
+
+
             Config::set('stats.CA_N',$CA_N);
             Config::set('stats.CA_N_1',$CA_N_1);
+            Config::set('stats.STATS',$STATS);
             
 
 

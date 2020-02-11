@@ -28,16 +28,16 @@ class HomeController extends Controller
     {
     //     ############ Infos de stats ##########
 
-    $STATS = array();
-    $nb_affaires = Compromis::count();
-    $nb_mandataires = User::where('role','mandataire')->count();
-    $nb_filleuls = Filleul::count();
+    // $STATS = array();
+    // $nb_affaires = Compromis::count();
+    // $nb_mandataires = User::where('role','mandataire')->count();
+    // $nb_filleuls = Filleul::count();
 
 
-    $STATS["nb_affaires"] = $nb_affaires;
-    $STATS["nb_mandataires"] = $nb_mandataires;
-    $STATS["nb_filleuls"] = $nb_filleuls;
+    // $STATS["nb_affaires"] = $nb_affaires;
+    // $STATS["nb_mandataires"] = $nb_mandataires;
+    // $STATS["nb_filleuls"] = $nb_filleuls;
 
-        return view('home',compact("STATS"));
+        return view('home');
     }
 }
