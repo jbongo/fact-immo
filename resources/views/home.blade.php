@@ -662,7 +662,7 @@ var ctx = document.getElementById("barChart");
         },
         options: {
             scales: {
-                xAxes: [{ overlaping: true }],
+              
                 yAxes: [{
                     ticks: {
                         beginAtZero: true
@@ -676,7 +676,7 @@ var ctx = document.getElementById("barChart");
     
 //bar chart ANNEE N-1
 var ctx = document.getElementById("barChart_n_1");
-//    ctx.height = 200;
+   ctx.height = 80;
     var myChart = new Chart(ctx, { 
         type: 'bar',
         data: {
@@ -714,7 +714,7 @@ var ctx = document.getElementById("barChart_n_1");
         },
         options: {
             scales: {
-                xAxes: [{ overlaping: true }],
+              
                 yAxes: [{
                     ticks: {
                         beginAtZero: true
