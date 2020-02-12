@@ -36,7 +36,28 @@ class ParametreController extends Controller
      */
     public function store_parametre_generaux(Request $request)
     {
+
+        // dd($request->all());
     
+        $comm_parrain = array();
+
+        $comm_parrain["p_1_1"] = $request->p_1_1;
+        $comm_parrain["p_1_2"] = $request->p_1_2;
+        $comm_parrain["p_1_3"] = $request->p_1_3;
+        $comm_parrain["p_1_n"] = $request->p_1_n;
+        $comm_parrain["p_2_1"] = $request->p_2_1;
+        $comm_parrain["p_2_2"] = $request->p_2_2;
+        $comm_parrain["p_2_3"] = $request->p_2_3;
+        $comm_parrain["p_2_n"] = $request->p_2_n;
+        $comm_parrain["p_3_1"] = $request->p_3_1;
+        $comm_parrain["p_3_2"] = $request->p_3_2;
+        $comm_parrain["p_3_3"] = $request->p_3_3;
+        $comm_parrain["p_3_n"] = $request->p_3_n;
+
+        $comm_parrain = serialize($comm_parrain);
+
+        dd($comm_parrain);
+
     $tva = Tva::create([
         "tva_actuelle" => $request->tva_actuelle,
         "date_debut_tva_actuelle" => $request->date_debut_tva_actuelle,

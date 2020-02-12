@@ -24,6 +24,7 @@ class CreateParametreTable extends Migration
             $table->string('code_postal')->nullable();
             $table->string('ville')->nullable();
             $table->double('ca_imposable')->nullable();
+            $table->text('comm_parrain')->nullable();
             $table->timestamps();
         });
     }
