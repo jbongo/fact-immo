@@ -56,7 +56,7 @@ class ParametreController extends Controller
 
         $comm_parrain = serialize($comm_parrain);
 
-        dd($comm_parrain);
+        // dd($comm_parrain);
 
     $tva = Tva::create([
         "tva_actuelle" => $request->tva_actuelle,
@@ -78,6 +78,7 @@ class ParametreController extends Controller
         "code_postal" => $request->code_postal,
         "ville" => $request->ville,
         "ca_imposable" => $request->ca_imposable,
+        "comm_parrain" => $comm_parrain,
     ]);
 
 
