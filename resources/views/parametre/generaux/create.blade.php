@@ -107,11 +107,11 @@
                                             </div>
                                            
 
-                                            <div class="form-group row" style="text-align: center;">
+                                            {{-- <div class="form-group row" style="text-align: center;">
                                                 <div class="col-lg-8 ml-auto"> 
                                                     <button style="background-color:#ffc107; color:white" class="btn  btn-flat btn-addon btn-sm m-b-10 m-l-5  " title="Ajouter la prochaine TVA"  id="add_tva"><i class="ti-plus"></i>Ajouter TVA</button>
                                                 </div>
-                                            </div>
+                                            </div> --}}
                                             @if(1==1)
                                             <div class="form-group row">
                                                 <label class="col-lg-4 col-form-label" for="tva_prochaine">Prochaine TVA <span class="text-danger">*</span></label>
@@ -163,7 +163,7 @@
 
                 <br>
 <br>
-                {{-- ####### INFO TVA #######--}}
+                {{-- ####### INFO PARRAINAGE #######--}}
                 <div class="panel-body" >
                     <fieldset class="col-md-12">
                         <legend>Infos Commission de parrainage</legend>
@@ -206,7 +206,6 @@
                                                             <td><input type="number" style="background-color:#ecf0f9" min="0" max="50" class="form-control" value="" id="p_3_2" name="p_3_2" required></td>
                                                             <td><input type="number" style="background-color:#ecf0f9" min="0" max="50" class="form-control" value="" id="p_3_3" name="p_3_3" required></td>
                                                             <td><input type="number" style="background-color:#ecf0f9" min="0" max="50" class="form-control" value="" id="p_3_n" name="p_3_n" required></td>
-                                                            
                                                         </tr>
                                                        
                                                     </tbody>

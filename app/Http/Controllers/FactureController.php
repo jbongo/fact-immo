@@ -1305,11 +1305,11 @@ public function valider_honoraire($action, $facture_id)
         $facture->update();
         
 
-        return $facture->reglee.'';
+        // return $facture->reglee.'';
     //    ************* Creer un mail pour notifier le mandataire
         // Mail::to("gestion@stylimmo.com")->send(new EncaissementFacture($facture));
 
-        // return redirect()->route('facture.index')->with('ok', __("Facture $facture->numero reglée")  );
+        return redirect()->route('facture.index')->with('ok', __("Facture $facture->numero reglée")  );
         
     }
     

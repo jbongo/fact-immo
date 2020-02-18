@@ -161,11 +161,80 @@
                             </div>
                         </div>
                     </fieldset>
-                <div>
+                </div>
+<br><br>
+                {{-- ####### INFO PARRAINAGE #######--}}
+                <div class="panel-body" >
+                    <fieldset class="col-md-12">
+                        <legend>Infos Commission de parrainage</legend>
+                        <div class="panel panel-warning">
+                            <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-lg-12 col-md-12 col-sm-12">
+
+                                            <div class="table-responsive">
+                                                <table class="table table-bordered">
+                                                    <thead>
+                                                        <tr>
+                                                            
+                                                            <th>Année</th>
+                                                            <th>1er filleul</th>
+                                                            <th>2<sup> ème</sup> filleul</th>
+                                                            <th>3<sup> ème</sup> filleul</th>
+                                                            <th>n<sup> ème</sup> filleul</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <th class="color-primary" scope="row">1</th>
+                                                            <td><input type="number" style="background-color:#ecf0f9;" min="0" max="50" class="form-control" value="{{$comm_parrain['p_1_1']}}" id="p_1_1" name="p_1_1" required>                                                            </td>
+                                                            <td><input type="number" style="background-color:#ecf0f9" min="0" max="50" class="form-control" value="{{$comm_parrain['p_1_2']}}" id="p_1_2" name="p_1_2" required></td>
+                                                            <td><input type="number" style="background-color:#ecf0f9" min="0" max="50" class="form-control" value="{{$comm_parrain['p_1_3']}}" id="p_1_3" name="p_1_3" required></td>
+                                                            <td><input type="number" style="background-color:#ecf0f9" min="0" max="50" class="form-control" value="{{$comm_parrain['p_1_n']}}" id="p_1_n" name="p_1_n" required></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th class="color-primary" scope="row">2</th>
+                                                            <td><input type="number" style="background-color:#ecf0f9" min="0" max="50" class="form-control" value="{{$comm_parrain['p_2_1']}}" id="p_2_1" name="p_2_1" required></td>
+                                                            <td><input type="number" style="background-color:#ecf0f9" min="0" max="50" class="form-control" value="{{$comm_parrain['p_2_2']}}" id="p_2_2" name="p_2_2" required></td>
+                                                            <td><input type="number" style="background-color:#ecf0f9" min="0" max="50" class="form-control" value="{{$comm_parrain['p_2_3']}}" id="p_2_3" name="p_2_3" required></td>
+                                                            <td><input type="number" style="background-color:#ecf0f9" min="0" max="50" class="form-control" value="{{$comm_parrain['p_2_n']}}" id="p_2_n" name="p_2_n" required></td>
+                                                            
+                                                        </tr>
+                                                        <tr>
+                                                            <th class="color-primary" scope="row">3</th>
+                                                            <td><input type="number" style="background-color:#ecf0f9" min="0" max="50" class="form-control" value="{{$comm_parrain['p_3_1']}}" id="p_3_1" name="p_3_1" required></td>
+                                                            <td><input type="number" style="background-color:#ecf0f9" min="0" max="50" class="form-control" value="{{$comm_parrain['p_3_2']}}" id="p_3_2" name="p_3_2" required></td>
+                                                            <td><input type="number" style="background-color:#ecf0f9" min="0" max="50" class="form-control" value="{{$comm_parrain['p_3_3']}}" id="p_3_3" name="p_3_3" required></td>
+                                                            <td><input type="number" style="background-color:#ecf0f9" min="0" max="50" class="form-control" value="{{$comm_parrain['p_3_n']}}" id="p_3_n" name="p_3_n" required></td>
+                                                            
+                                                        </tr>
+                                                        
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+
+                                        
+                                        
+                                    </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                
+
+                
+                </div>
 
                
-                </div>
+               
             </div>
+
+
+
+
+
+
+
 
             <div class="form-group row" style="text-align: center; margin-top: 50px;">
                 <div class="col-lg-8 ml-auto">

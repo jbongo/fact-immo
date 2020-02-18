@@ -56,8 +56,10 @@
                                                 <input type="checkbox" {{$check_p}} data-toggle="toggle" id="a_parrain" name="a_parrain" data-off="Non" data-on="Oui" data-onstyle="success" data-offstyle="danger">
                                             </div>
                                      
+                                            <div id="parrain-id">
+
                                             
-                                                <div class="form-group row" id="parrain-id">
+                                                <div class="form-group row">
                                                 <label class="col-lg-4 col-form-label" for="parrain_id">Choisir le parrain</label>
                                                     <div class="col-lg-8">
                                                         <select class="selectpicker col-lg-6" id="parrain_id" name="parrain_id" data-live-search="true" data-style="btn-warning btn-rounded">
@@ -70,7 +72,14 @@
                                                         </select>
                                                     </div>
                                                 </div>
-                                       
+                                                <div class="form-group row">
+                                                    <label class="col-lg-6 col-form-label" for="a_condition_parrain">Appliquer des conditions au parrain ?</label>
+                                                    <div class="col-lg-6">
+                                                        <input type="checkbox" checked data-toggle="toggle" id="a_condition_parrain" name="a_condition_parrain" data-off="Non" data-on="Oui" data-onstyle="success" data-offstyle="danger">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                                
                                             
                                            
 
@@ -80,13 +89,13 @@
                                             <div class="form-group row">
                                                 <label class="col-lg-4 col-form-label" for="date_entree">Date d'entrée<span class="text-danger">*</span></label>
                                                 <div class="col-lg-4">
-                                                    <input type="date" class="form-control" value="{{$contrat->date_entree}}" id="date_entree" name="date_entree" required>
+                                                    <input type="date" class="form-control" value="{{$contrat->date_entree->format('Y-m-d')}}" id="date_entree" name="date_entree" required>
                                                 </div>
                                             </div>
                                             <div class="form-group row">
                                                 <label class="col-lg-4 col-form-label" for="date_debut">Date de début d'activité<span class="text-danger">*</span></label>
                                                 <div class="col-lg-4">
-                                                    <input type="date" class="form-control" value="{{$contrat->date_deb_activite}}" id="date_debut" name="date_debut" required>
+                                                    <input type="date" class="form-control" value="{{$contrat->date_deb_activite->format('Y-m-d')}}" id="date_debut" name="date_debut" required>
                                                 </div>
                                             </div>
                                         </div>
@@ -265,12 +274,12 @@
                                     </div>
                                     <div class="col-lg-6 col-md-6 col-sm-6">
                                        
-                                        <div class="form-group row">
+                                        {{-- <div class="form-group row">
                                             <label class="col-lg-6 col-form-label" for="duree_gratuite_expert">Durée de la gratuité (mois)<span class="text-danger">*</span></label>
                                             <div class="col-lg-4 col-md-4 col-sm-4 ">
                                                 <input type="number" class="form-control" id="duree_gratuite_expert" name="duree_gratuite_expert" min="0" value="{{$contrat->duree_gratuite_expert}}" required>
                                             </div>
-                                        </div>
+                                        </div> --}}
                                     </div>
                                 </div>
 
@@ -362,7 +371,7 @@
 
                                         <div class="col-lg-12" id="expert-par">
                                             <div class="panel panel-default m-t-15">
-                                                <div class="panel-heading-default"><strong>Paramètres du pack expert</strong></div>
+                                                <div class="panel-heading-default"><strong>conditions du pack expert</strong></div>
                                                 <div class="panel-body">
                                                     <strong>Pour garder le pourcentage de départ défini en haut à l'année N voici les conditions à réaliser sur l'année N-1:
                                                     <br>
@@ -381,6 +390,12 @@
                                                                 <label class="col-lg-6 col-md-6 col-sm-6 col-form-label" for="nombre_mini_filleul">Nombre minimum de filleuls parrainés</label>
                                                                 <div class="col-lg-4 col-md-4 col-sm-4 ">
                                                                     <input class="form-control" type="number" min="0" value="{{$contrat->nombre_mini_filleul}}" id="nombre_mini_filleul" name="nombre_mini_filleul" required>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group row">
+                                                                <label class="col-lg-6 col-form-label" for="a_condition_expert">Appliquer ces conditions au mandataire ?</label>
+                                                                <div class="col-lg-6">
+                                                                    <input type="checkbox" checked data-toggle="toggle" id="a_condition_expert" name="a_condition_expert" data-off="Non" data-on="Oui" data-onstyle="success" data-offstyle="danger">
                                                                 </div>
                                                             </div>
                                                         </div>

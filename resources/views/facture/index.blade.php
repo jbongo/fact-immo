@@ -225,7 +225,11 @@ if($("#date_encaissement").val() != ""){
  
       if($("#date_reglement").val() != ""){
 
-     
+         $.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+});
          $.ajax({
                type: "POST",
                url: "regler/factures-honoraire/"+facture_id ,

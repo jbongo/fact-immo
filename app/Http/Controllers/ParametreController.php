@@ -24,7 +24,8 @@ class ParametreController extends Controller
         if($parametre == null){
             return view ('parametre.generaux.create');
         }else{
-            return view ('parametre.generaux.edit', compact(['parametre']));
+            $comm_parrain = unserialize($parametre['comm_parrain']);
+            return view ('parametre.generaux.edit', compact(['parametre','comm_parrain']));
         }
     }
 
@@ -81,6 +82,7 @@ class ParametreController extends Controller
         "comm_parrain" => $comm_parrain,
     ]);
 
+     return redirect('parametre/generaux/create');
 
     }
 
@@ -93,10 +95,9 @@ class ParametreController extends Controller
     public function update_parametre_generaux(Request $request)
     {
     
-
     $parametre = Parametre::first();
 
-    $tva = Tva::where('tva_id',$parametre->tva_id)->first();
+    $tva = Tva::where('id',$parametre->tva_id)->first();
     $tva->tva_actuelle = $request->tva_actuelle;
     $tva->date_debut_tva_actuelle = $request->date_debut_tva_actuelle;
     $tva->date_fin_tva_actuelle = $request->date_fin_tva_actuelle;
@@ -104,6 +105,24 @@ class ParametreController extends Controller
     $tva->date_debut_tva_prochaine = $request->date_debut_tva_prochaine;
 
     $tva->update();
+
+
+    $comm_parrain = array();
+
+        $comm_parrain["p_1_1"] = $request->p_1_1;
+        $comm_parrain["p_1_2"] = $request->p_1_2;
+        $comm_parrain["p_1_3"] = $request->p_1_3;
+        $comm_parrain["p_1_n"] = $request->p_1_n;
+        $comm_parrain["p_2_1"] = $request->p_2_1;
+        $comm_parrain["p_2_2"] = $request->p_2_2;
+        $comm_parrain["p_2_3"] = $request->p_2_3;
+        $comm_parrain["p_2_n"] = $request->p_2_n;
+        $comm_parrain["p_3_1"] = $request->p_3_1;
+        $comm_parrain["p_3_2"] = $request->p_3_2;
+        $comm_parrain["p_3_3"] = $request->p_3_3;
+        $comm_parrain["p_3_n"] = $request->p_3_n;
+
+        $comm_parrain = serialize($comm_parrain);
 
 
     $parametre->raison_sociale = $request->raison_sociale;
@@ -114,8 +133,11 @@ class ParametreController extends Controller
     $parametre->code_postal = $request->code_postal;
     $parametre->ville = $request->ville;
     $parametre->ca_imposable = $request->ca_imposable;
+    $parametre->comm_parrain = $comm_parrain;
    
+
     $parametre->update();
+    return redirect('parametre/generaux/create');
 
     }
 

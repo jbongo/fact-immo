@@ -27,7 +27,9 @@ class CreateContratTable extends Migration
             $table->boolean('est_demarrage_starter')->default(false);
             $table->boolean('a_parrain')->default(false);
             $table->integer('parrain_id')->nullable();
+            $table->boolean('a_condition_parrain')->default(true);
 
+            
             // Commission direct pack starter
             $table->double('pourcentage_depart_starter')->nullable();
             $table->integer('duree_max_starter')->nullable();
@@ -38,15 +40,16 @@ class CreateContratTable extends Migration
             //  Commission direct pack expert
             $table->double('pourcentage_depart_expert')->nullable();
             $table->integer('duree_max_starter_expert')->nullable();
-            $table->integer('duree_gratuite_expert')->nullable();
+            // $table->integer('duree_gratuite_expert')->nullable();
             $table->boolean('a_palier_expert')->nullable();
             $table->text('palier_expert')->nullable();
             $table->integer('nombre_vente_min')->nullable();
             $table->integer('nombre_mini_filleul')->nullable();
             $table->double('chiffre_affaire_mini')->nullable();
             $table->double('a_soustraitre')->nullable();
+            $table->boolean('a_condition_expert')->default(true);
 
-
+            
             // parrainage
             $table->double('prime_forfaitaire')->nullable();
 
@@ -54,6 +57,9 @@ class CreateContratTable extends Migration
             $table->integer('packpub_id')->nullable();
 
             $table->boolean('est_modele')->default(false);
+
+            
+            
 
 
             $table->timestamps();

@@ -20,9 +20,11 @@ class CreateFilleulsTable extends Migration
             $table->integer('rang')->nullable();
             $table->double('pourcentage')->default(5);
             $table->boolean('expire')->default(false);
+            $table->integer('cycle')->default(1);
             $table->timestamps();
         });
     }
+
 
     /**
      * Reverse the migrations.

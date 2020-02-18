@@ -179,9 +179,9 @@
                 <h4 class="modal-title">Date de règlement</h4>
               </div>
               <div class="modal-body">
-                <p><form action="" method="get" id="form_regler">
+              <p><form action="{{route('facture.regler_facture_honoraire',Crypt::encrypt($facture->id))}}" method="post" id="form_regler">
                         <div class="modal-body">
-                          
+                          @csrf
                                 <div class="">
                                     <div class="form-group row">
                                         <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="date_reglement">Date de règlement <span class="text-danger">*</span> </label>
