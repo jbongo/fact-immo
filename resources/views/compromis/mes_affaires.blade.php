@@ -23,7 +23,7 @@
                                     @endif
                                     <th>@lang('Facture Stylimmo')</th>
                                     <th>@lang('Mandat')</th>
-                                    <th>@lang('Vendeur')</th>
+                                    <th>@lang('Charge')</th>
                                     <th>@lang('Commission')</th>
                                     {{-- <th>@lang('Date Mandat')</th> --}}
                                     <th>@lang('Partage')</th>
@@ -65,7 +65,11 @@
                                         <strong> {{$compromi->numero_mandat}}</strong> 
                                     </td>     
                                     <td width="15%" style="{{$grise}}" >
-                                        <strong>{{ substr($compromi->nom_vendeur,0,50)}}</strong> 
+                                        @if($compromi->charge == "vendeur")
+                                            <strong>{{ substr($compromi->nom_vendeur,0,50)}}</strong> 
+                                        @else
+                                            <strong>{{ substr($compromi->nom_acquereur,0,50)}}</strong> 
+                                        @endif
                                     </td>
                                     
                                     <td  style="{{$grise}}">
