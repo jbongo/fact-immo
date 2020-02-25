@@ -14,7 +14,7 @@
                                        
                                         <th>@lang('Facture Stylimmo')</th>
                                         <th>@lang('Mandat')</th>
-                                        <th>@lang('Vendeur')</th>
+                                        <th>@lang('Charge')</th>
                                         @if(auth()->user()->role == "admin")
                                         <th>@lang('Mandataire')</th>
                                         @endif
@@ -49,7 +49,11 @@
 
                                         </td>
                                         <td  style="">
-                                            <span class="color-warning">{{$facture->compromis->nom_vendeur}}</span>   
+                                            @if($compromi->charge == "vendeur")
+                                                <strong>{{ substr($facture->compromis->nom_vendeur,0,50)}}</strong> 
+                                            @else
+                                                <strong>{{ substr($facture->compromis->nom_acquereur,0,50)}}</strong> 
+                                            @endif   
                                         </td>
                                         @if(auth()->user()->role == "admin")
                                         <td width="" >

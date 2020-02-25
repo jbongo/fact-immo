@@ -41,7 +41,7 @@
 
                                     <tr>
                                         <td  >
-                                            @if($facture->staut != "en attente de validation")
+                                            @if($facture->statut != "en attente de validation")
                                             <label class="color-info">{{$facture->numero}} </label> 
                                             @endif
                                         </td>
@@ -179,7 +179,7 @@
                 <h4 class="modal-title">Date de règlement</h4>
               </div>
               <div class="modal-body">
-              <p><form action="{{route('facture.regler_facture_honoraire',Crypt::encrypt($facture->id))}}" method="post" id="form_regler">
+              <p><form action="{{route('facture.regler_facture_honoraire',Crypt::encrypt($facture->id)) }}" method="post" id="form_regler">
                         <div class="modal-body">
                           @csrf
                                 <div class="">
