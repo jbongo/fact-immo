@@ -520,6 +520,19 @@ Détail de l'affaire @if(auth::user()->role =="admin") de {{$compromis->user->no
                                             {{-- @endif                 --}}
             
                                         </div>
+
+                                        <div class="row">
+                                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                                <div class="form-group ">
+                                                    <label class=" col-lg-7 col-md-7 col-sm-7 " for="observation">Observations </span></label>
+                                                    <div class=" col-lg-12 col-md-12 col-sm-12 ">
+                                                        <textarea class="form-control"  name="observation" id="observation" cols="50" rows="5" required>{{ $compromis->description_bien }}</textarea>
+                                                        <span id="rchars" style="color:#2805B8">180</span> <span style="color:#2805B8"> Caractères restants </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
     
                                 </div>
                             </div>
