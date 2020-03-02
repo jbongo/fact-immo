@@ -144,7 +144,7 @@ class CompromisController extends Controller
                 'numero_mandat' => 'unique:compromis',
             ]);
 
-            
+            // dd($request->all());
             $compromis = Compromis::create([
                 "user_id"=> Auth::user()->id,
                 "est_partage_agent"=>$request->partage == "Non" ? false : true,

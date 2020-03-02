@@ -15,7 +15,7 @@ Ajout d'une affaire
 			<div class="col-lg-10">
 			</div>
 			<div class="card-body">
-                <form class="form-valide3" action="{{ route('compromis.add') }}" method="post">
+                <form class="form-valide3" enctype="multipart/form-data" action="{{ route('compromis.add') }}" method="post">
                     {{ csrf_field() }}
                     <div class="panel-body">
                         <fieldset class="col-md-12">
@@ -431,12 +431,35 @@ Ajout d'une affaire
                                         
                                         <div class="col-lg-4 col-md-4 col-sm-4">
                                             <div class="form-group">
-                                                <label for="date_vente">Date provisoire de la Vente </label>
-                                                <input class="form-control" type="date" value="" id="date_vente" name="date_vente" >
+                                                <label for="date_vente">Date provisoire de la Vente <span class="text-danger">*</span> </label>
+                                                <input class="form-control" type="date" value="" id="date_vente" name="date_vente"  required>
                                             </div>
                                         </div>
 
                                     </div>
+
+                                    <div class="row">
+                                 
+                                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                                <div class="form-group ">
+                                                    <label class=" col-lg-7 col-md-7 col-sm-7 " for="observation">Observations </span></label>
+                                                    <div class=" col-lg-12 col-md-12 col-sm-12 ">
+                                                        <textarea class="form-control"  name="observation" id="observation" cols="50" rows="5" required></textarea>
+                                                        
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                                <div class="form-group">
+                                                    <label for="pdf_compromis">Fichier pdf du compromis <span class="text-danger">*</span> </label>
+                                                    <input class="form-control" type="file" value="" id="pdf_compromis" name="pdf_compromis"  required>
+                                                </div>
+                                            </div>
+
+                                    </div>
+
+                                    
                                     
                             </div>
                         </div>
