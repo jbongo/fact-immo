@@ -72,10 +72,17 @@
                                                         </select>
                                                     </div>
                                                 </div>
+                                                
+                                                @php
+                                                    $check_parr =  ($contrat->a_condition_parrain == true) ? "checked" : "unchecked";
+                                                @endphp
+                                              
                                                 <div class="form-group row">
                                                     <label class="col-lg-6 col-form-label" for="a_condition_parrain">Appliquer des conditions au parrain ?</label>
                                                     <div class="col-lg-6">
-                                                        <input type="checkbox" checked data-toggle="toggle" id="a_condition_parrain" name="a_condition_parrain" data-off="Non" data-on="Oui" data-onstyle="success" data-offstyle="danger">
+
+                                                        <input type="checkbox" {{$check_parr}} data-toggle="toggle" id="a_condition_parrain" name="a_condition_parrain" data-off="Non" data-on="Oui" data-onstyle="success" data-offstyle="danger">
+                                                   
                                                     </div>
                                                 </div>
                                             </div>
@@ -392,10 +399,13 @@
                                                                     <input class="form-control" type="number" min="0" value="{{$contrat->nombre_mini_filleul}}" id="nombre_mini_filleul" name="nombre_mini_filleul" required>
                                                                 </div>
                                                             </div>
+                                                            @php
+                                                                $check_exp =  ($contrat->a_condition_expert == true) ? "checked" : "unchecked";
+                                                            @endphp
                                                             <div class="form-group row">
                                                                 <label class="col-lg-6 col-form-label" for="a_condition_expert">Appliquer ces conditions au mandataire ?</label>
                                                                 <div class="col-lg-6">
-                                                                    <input type="checkbox" checked data-toggle="toggle" id="a_condition_expert" name="a_condition_expert" data-off="Non" data-on="Oui" data-onstyle="success" data-offstyle="danger">
+                                                                    <input type="checkbox" {{$check_exp}} data-toggle="toggle" id="a_condition_expert" name="a_condition_expert" data-off="Non" data-on="Oui" data-onstyle="success" data-offstyle="danger">
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -696,6 +706,8 @@
             "ca_depart_sty" : $('#ca_depart_sty').val(),
             "est_starter" : $("#est_starter").prop('checked'),   
             "a_parrain" : $("#a_parrain").prop('checked') ,
+            "a_condition_parrain" : $("#a_condition_parrain").prop('checked') ,
+            
             "parrain_id" : $('#parrain_id').val(),         
            
 
@@ -713,6 +725,7 @@
             "chiffre_affaire" : $('#chiffre_affaire').val(),
             "nombre_mini_filleul" : $('#nombre_mini_filleul').val(),
             "a_soustraitre" : $('#a_soustraitre').val(),
+            "a_condition_expert" : $("#a_condition_expert").prop('checked'),
             "prime_max_forfait_parrain" : $('#prime_max_forfait').val(),
             "pack_pub" : $('#pack_pub').val(),
 
@@ -739,7 +752,7 @@
                             // window.location.href = "{{route('mandataire.index')}}";
                         })
                         setInterval(() => {
-                            window.location.href = "{{route('mandataire.show',Crypt::encrypt($contrat->user->id))}}";
+                            // window.location.href = "{{route('mandataire.show',Crypt::encrypt($contrat->user->id))}}";
                             
                         }, 5);
                 },

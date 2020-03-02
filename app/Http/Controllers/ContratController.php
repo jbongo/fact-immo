@@ -139,6 +139,7 @@ class ContratController extends Controller
         $contrat->nombre_mini_filleul = $request->nombre_mini_filleul;
         $contrat->chiffre_affaire_mini = $request->chiffre_affaire;
         $contrat->a_soustraitre = $request->a_soustraitre;
+        $contrat->a_condition_expert = $request->a_condition_expert == "true" ? true : false;
 
         $contrat->prime_forfaitaire = $request->prime_max_forfait_parrain;
         $contrat->packpub_id = $request->pack_pub;  
@@ -232,6 +233,7 @@ class ContratController extends Controller
 
         $contrat->a_parrain = $request->a_parrain == "true" ? true : false;
         $contrat->parrain_id = $request->a_parrain== "true" ? $request->parrain_id : null;
+        $contrat->a_condition_parrain = $request->a_condition_parrain == "true" ? true : false;
         // dd("nooo");
         $contrat->update();
 
@@ -309,6 +311,8 @@ class ContratController extends Controller
             "est_demarrage_starter"=>  $request->est_starter == "true" ? true : false,
             "a_parrain"=>$request->a_parrain == "true" ? true : false,
             "parrain_id"=>$request->a_parrain== "true" ? $request->parrain_id : null,
+            "a_condition_parrain"=>$request->a_condition_parrain == "true" ? true : false,
+
             
             // Commission direct pack starter          
             "pourcentage_depart_starter"=>$request->pourcentage_depart_starter,
@@ -328,6 +332,7 @@ class ContratController extends Controller
             "nombre_mini_filleul"=>$request->nombre_mini_filleul,
             "chiffre_affaire_mini"=>$request->chiffre_affaire,
             "a_soustraitre"=>$request->a_soustraitre,
+            "a_condition_expert"=>$request->a_condition_expert == "true" ? true : false,
 
             "prime_forfaitaire"=>$request->prime_max_forfait_parrain,
             "packpub_id"=>$request->pack_pub,

@@ -54,6 +54,12 @@ class ParametreController extends Controller
         $comm_parrain["p_3_2"] = $request->p_3_2;
         $comm_parrain["p_3_3"] = $request->p_3_3;
         $comm_parrain["p_3_n"] = $request->p_3_n;
+        $comm_parrain["seuil_parr_1"] = $request->seuil_parr_1;
+        $comm_parrain["seuil_fill_1"] = $request->seuil_fill_1;
+        $comm_parrain["seuil_parr_2"] = $request->seuil_parr_2;
+        $comm_parrain["seuil_fill_2"] = $request->seuil_fill_2;
+        $comm_parrain["seuil_parr_3"] = $request->seuil_parr_3;
+        $comm_parrain["seuil_fill_3"] = $request->seuil_fill_3;
 
         $comm_parrain = serialize($comm_parrain);
 
@@ -121,7 +127,13 @@ class ParametreController extends Controller
         $comm_parrain["p_3_2"] = $request->p_3_2;
         $comm_parrain["p_3_3"] = $request->p_3_3;
         $comm_parrain["p_3_n"] = $request->p_3_n;
-
+        $comm_parrain["seuil_parr_1"] = $request->seuil_parr_1;
+        $comm_parrain["seuil_fill_1"] = $request->seuil_fill_1;
+        $comm_parrain["seuil_parr_2"] = $request->seuil_parr_2;
+        $comm_parrain["seuil_fill_2"] = $request->seuil_fill_2;
+        $comm_parrain["seuil_parr_3"] = $request->seuil_parr_3;
+        $comm_parrain["seuil_fill_3"] = $request->seuil_fill_3;
+        
         $comm_parrain = serialize($comm_parrain);
 
 

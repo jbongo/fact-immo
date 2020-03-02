@@ -666,6 +666,7 @@
             "ca_depart_sty" : $('#ca_depart_sty').val(),
             "est_starter" : $("#est_starter").prop('checked'),            
             "a_parrain" : $("#a_parrain").prop('checked') ,
+            "a_condition_parrain" : $("#a_condition_parrain").prop('checked') ,
             "parrain_id" : $('#parrain_id').val(),
 
             "pourcentage_depart_starter" : $('#pourcentage_depart_starter').val(),
@@ -682,6 +683,8 @@
             "chiffre_affaire" : $('#chiffre_affaire').val(),
             "nombre_mini_filleul" : $('#nombre_mini_filleul').val(),
             "a_soustraitre" : $('#a_soustraitre').val(),
+            "a_condition_expert" : $("#a_condition_expert").prop('checked'),
+            
             "prime_max_forfait_parrain" : $('#prime_max_forfait').val(),
             "pack_pub" : $('#pack_pub').val(),
 

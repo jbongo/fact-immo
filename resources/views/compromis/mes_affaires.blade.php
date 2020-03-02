@@ -82,15 +82,22 @@
                                             @if(auth::user()->role == "admin")
                                             {{-- <span class="badge badge-success">Oui</span> --}}
                                             
-                                            <strong> <a href="{{route('switch_user',Crypt::encrypt($compromi->getPartage()->id) )}}" data-toggle="tooltip" title="@lang('Se connecter en tant que ') {{$compromi->getPartage()->nom}}">{{$compromi->getPartage()->nom}} {{$compromi->getPartage()->prenom}}<i style="font-size: 17px" class="material-icons color-success">person_pin</i></a> </strong> 
-
+                                            @if($compromi->getPartage()!= null)
+                                                <strong> <a href="{{route('switch_user',Crypt::encrypt($compromi->getPartage()->id) )}}" data-toggle="tooltip" title="@lang('Se connecter en tant que ') {{$compromi->getPartage()->nom}}">{{$compromi->getPartage()->nom}} {{$compromi->getPartage()->prenom}}<i style="font-size: 17px" class="material-icons color-success">person_pin</i></a> </strong> 
                                             @else 
-                                                @if ($compromi->getPartage()->id == auth::user()->id)
-                                                    <strong> <a >{{$compromi->user->nom}} {{$compromi->user->prenom}}</a> </strong>
+                                                <strong> <a  data-toggle="tooltip" title="@lang('Agence / Agent externe au réseau STYL\'IMMO') ">{{$compromi->nom_agent}} </a> </strong> 
+                                            @endif
+                                            @else 
+                                                @if($compromi->getPartage() != null)
+                                                    @if ($compromi->getPartage()->id == auth::user()->id)
+                                                        <strong> <a >{{$compromi->user->nom}} {{$compromi->user->prenom}}</a> </strong>
+                                                    @else 
+                                                        <strong> <a >{{$compromi->getPartage()->nom}} {{$compromi->getPartage()->prenom}}</a> </strong>
+                                                    @endif
                                                 @else 
-                                                    <strong> <a >{{$compromi->getPartage()->nom}} {{$compromi->getPartage()->prenom}}</a> </strong>
-                                                @endif
+                                                    {{$compromi->nom_agent}}
 
+                                                @endif
 
                                             @endif
 
