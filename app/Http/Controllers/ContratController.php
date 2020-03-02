@@ -132,13 +132,14 @@ class ContratController extends Controller
         // Commission direct pack expert          
         $contrat->pourcentage_depart_expert = $request->pourcentage_depart_expert;
         $contrat->duree_max_starter_expert = $request->duree_max_starter;
-        $contrat->duree_gratuite_expert = $request->duree_gratuite_expert;
+        // $contrat->duree_gratuite_expert = $request->duree_gratuite_expert;
         $contrat->a_palier_expert = $request->check_palier_expert == "true" ? true : false;
         $contrat->palier_expert = $request->palier_expert;
         $contrat->nombre_vente_min = $request->nombre_vente_min;
         $contrat->nombre_mini_filleul = $request->nombre_mini_filleul;
         $contrat->chiffre_affaire_mini = $request->chiffre_affaire;
         $contrat->a_soustraitre = $request->a_soustraitre;
+        $contrat->a_condition_expert = $request->a_condition_expert == "true" ? true : false;
 
         $contrat->prime_forfaitaire = $request->prime_max_forfait_parrain;
         $contrat->packpub_id = $request->pack_pub;  
@@ -232,6 +233,7 @@ class ContratController extends Controller
 
         $contrat->a_parrain = $request->a_parrain == "true" ? true : false;
         $contrat->parrain_id = $request->a_parrain== "true" ? $request->parrain_id : null;
+        $contrat->a_condition_parrain = $request->a_condition_parrain == "true" ? true : false;
         // dd("nooo");
         $contrat->update();
 
@@ -309,6 +311,8 @@ class ContratController extends Controller
             "est_demarrage_starter"=>  $request->est_starter == "true" ? true : false,
             "a_parrain"=>$request->a_parrain == "true" ? true : false,
             "parrain_id"=>$request->a_parrain== "true" ? $request->parrain_id : null,
+            "a_condition_parrain"=>$request->a_condition_parrain == "true" ? true : false,
+
             
             // Commission direct pack starter          
             "pourcentage_depart_starter"=>$request->pourcentage_depart_starter,
@@ -320,7 +324,7 @@ class ContratController extends Controller
             // Commission direct pack expert          
             "pourcentage_depart_expert"=>$request->pourcentage_depart_expert,
             "duree_max_starter_expert"=>$request->duree_max_expert,
-            "duree_gratuite_expert"=>$request->duree_gratuite_expert,
+            // "duree_gratuite_expert"=>$request->duree_gratuite_expert,
             "a_palier_expert"=>$request->check_palier_expert == "true" ? true : false,
             "palier_expert"=>$request->palier_expert,
 
@@ -328,6 +332,7 @@ class ContratController extends Controller
             "nombre_mini_filleul"=>$request->nombre_mini_filleul,
             "chiffre_affaire_mini"=>$request->chiffre_affaire,
             "a_soustraitre"=>$request->a_soustraitre,
+            "a_condition_expert"=>$request->a_condition_expert == "true" ? true : false,
 
             "prime_forfaitaire"=>$request->prime_max_forfait_parrain,
             "packpub_id"=>$request->pack_pub,
@@ -468,7 +473,7 @@ class ContratController extends Controller
             // Commission direct pack expert          
             "pourcentage_depart_expert"=>$request->pourcentage_depart_expert,
             "duree_max_starter_expert"=>$request->duree_max_starter,
-            "duree_gratuite_expert"=>$request->duree_gratuite_expert,
+            // "duree_gratuite_expert"=>$request->duree_gratuite_expert,
             "a_palier_expert"=>$request->check_palier_expert == "true" ? true : false,
             "palier_expert"=>$request->palier_expert,
 
@@ -518,7 +523,7 @@ class ContratController extends Controller
         // Commission direct pack expert          
         $modele->pourcentage_depart_expert = $request->pourcentage_depart_expert;
         $modele->duree_max_starter_expert = $request->duree_max_starter;
-        $modele->duree_gratuite_expert = $request->duree_gratuite_expert;
+        // $modele->duree_gratuite_expert = $request->duree_gratuite_expert;
         $modele->a_palier_expert = $request->check_palier_expert == "true" ? true : false;
         $modele->palier_expert = $request->palier_expert;
         $modele->nombre_vente_min = $request->nombre_vente_min;

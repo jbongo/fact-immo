@@ -7,6 +7,7 @@ use App\Compromis;
 use Auth;
 use App\User;
 use App\Filleul;
+use App\Parametre;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\PartageAffaire;
@@ -20,6 +21,11 @@ class CompromisController extends Controller
     public function index()
     {
 
+  
+    
+        $parametre = Parametre::first();
+        // dd($parametre);
+      
         $compromis = array();
         if(Auth::user()->role =="admin") {
             $compromis = Compromis::where('je_renseigne_affaire',true)->latest()->get();
@@ -27,14 +33,81 @@ class CompromisController extends Controller
         }else{
             $compromis = Compromis::where([['user_id',Auth::user()->id],['je_renseigne_affaire',true]])->orWhere('agent_id',Auth::user()->id)->latest()->get();
             
+        
             // On réccupère l'id des filleuls pour retrouver leurs affaires
             $filleuls = Filleul::where([['parrain_id',Auth::user()->id],['expire',false]])->select('user_id')->get()->toArray();
             $fill_ids = array();
             foreach ($filleuls as $fill) {
+
                 $fill_ids[]= $fill['user_id'];
             }
-      
+
+// ##################### TESTS   #########
+
+
+            
+        // on determine le ca du parrain = ca_parrain + ca_parrain_partage (concerne les afaires su'il a partagé, il faut donc deduire en fonction de son pourcentage de partage)
+           
+            // $CA_parrain_partage_pas = 0;
+            
+            // $CA_parrain_partage = 0;
+            //     $ca_parrain_partage_porte = 0;
+            //     $ca_parrain_partage_porte_pas = 0;
+
+           
+
+
+
+// ##################### FIN TESTS   #########
+
+
+
+
+
+
+
+
+
+
+
+            // ########### Mise en place des conditions de parrainnage ############
+            // Vérifier le CA du parrain et du filleul sur les 12 derniers mois précédents la date de vente et qui respectent les critères et vérifier s'il sont à jour dans le reglèmement de leur factures stylimmo 
+            // Dans cette partie on détermine le jour exaxt de il y'a 12 mois avant la date de vente
+           
+         
             $compromisParrain = Compromis::whereIn('user_id',$fill_ids )->orWhereIn('agent_id',$fill_ids )->latest()->get();
+            $valide_compro_id = array();
+
+            foreach ($fill_ids as $fill_id) {
+                
+                if($compromisParrain != null){
+                    foreach ($compromisParrain as $compro_parrain) {
+    
+                        $date_vente = $compro_parrain->date_vente->format('Y-m-d');
+                        // date_12 est la date exacte 1 ans avant la data de vente
+                        $date_12 =  strtotime( $date_vente. " -1 year"); 
+                        $date_12 = date('Y-m-d',$date_12);
+    
+                       $ca_parrain =  Compromis::getCAStylimmo(Auth::user()->id,$date_12 ,$date_vente);
+    
+                    $id_filleul = 
+                       $ca_filleul =  Compromis::getCAStylimmo(Auth::user()->id,$date_12 ,$date_vente);
+    
+                    }
+                }
+    
+            }
+           
+
+
+
+
+
+
+
+
+      
+
 
             //  dd($fill_ids);
         return view ('compromis.index',compact('compromis','compromisParrain','fill_ids'));
@@ -71,7 +144,7 @@ class CompromisController extends Controller
                 'numero_mandat' => 'unique:compromis',
             ]);
 
-            
+            // dd($request->all());
             $compromis = Compromis::create([
                 "user_id"=> Auth::user()->id,
                 "est_partage_agent"=>$request->partage == "Non" ? false : true,

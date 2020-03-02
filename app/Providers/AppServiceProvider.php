@@ -46,7 +46,7 @@ class AppServiceProvider extends ServiceProvider
 
                 // Dans cette partie on détermine le jour exaxt de il y'a 12 mois
                 $today = date("Y-m-d");//  aujourd'hui 
-                $date = strtotime( date("Y-m-d", strtotime($today)) . " -1 year");    // aujourd'hui  - 1 ans   
+                $date = strtotime( $today. " -1 year");    // aujourd'hui  - 1 ans   
         
                 $date_12 = date("Y-m-d",$date);
         

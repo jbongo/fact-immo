@@ -75,10 +75,11 @@
                                     <td > 
                                         @if ($compromi->cloture_affaire == 0 && $compromi->demande_facture == 2)
                                             <span class="color-success">En attente de cloture de l'affaire</span>   
+                                        {{-- @elseif($compromi->cloture_affaire == 1 && ($compromi->facture_honoraire_cree == true || $compromi->facture_honoraire_partage_cree == true)) --}}
                                         @elseif($compromi->cloture_affaire == 1 && ($compromi->facture_honoraire_cree == true || $compromi->facture_honoraire_partage_cree == true))
                                             <a target="blank" href="{{route('facture.preparer_facture_honoraire_parrainage',Crypt::encrypt($compromi->id))}}" data-toggle="tooltip" title="@lang('Note honoraire  ')"><i class="large material-icons color-danger">insert_drive_file</i></a> 
-                                        @elseif($compromi->cloture_affaire == 1 && ($compromi->facture_honoraire_cree == false && $compromi->facture_honoraire_partage_cree ==  false) )
-                                            <span class="color-success">En attente de la création de note honoraire (commission agence)</span>      
+                                        {{-- @elseif($compromi->cloture_affaire == 1 && ($compromi->facture_honoraire_cree == false && $compromi->facture_honoraire_partage_cree ==  false) )
+                                            <span class="color-success">En attente de la création de note honoraire (commission agence)</span>       --}}
                                         @endif
                                     </td>
                                     <td width="15%">

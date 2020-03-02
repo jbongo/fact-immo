@@ -178,10 +178,13 @@
                                                         <tr>
                                                             
                                                             <th>Année</th>
-                                                            <th>1er filleul</th>
+                                                            <th>1<sup> er</sup> filleul</th>
                                                             <th>2<sup> ème</sup> filleul</th>
                                                             <th>3<sup> ème</sup> filleul</th>
                                                             <th>n<sup> ème</sup> filleul</th>
+                                                            <th  style="background-color:#928E81" >&nbsp;</th>
+                                                            <th>Seuil (CA)  parrain</th>
+                                                            <th>Seuil (CA)  filleul</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -191,6 +194,9 @@
                                                             <td><input type="number" style="background-color:#ecf0f9" min="0" max="50" class="form-control" value="{{$comm_parrain['p_1_2']}}" id="p_1_2" name="p_1_2" required></td>
                                                             <td><input type="number" style="background-color:#ecf0f9" min="0" max="50" class="form-control" value="{{$comm_parrain['p_1_3']}}" id="p_1_3" name="p_1_3" required></td>
                                                             <td><input type="number" style="background-color:#ecf0f9" min="0" max="50" class="form-control" value="{{$comm_parrain['p_1_n']}}" id="p_1_n" name="p_1_n" required></td>
+                                                            <td>&nbsp;</td>
+                                                            <td><input type="number" style="background-color:#FFF8DC " min="0"  class="form-control" value="{{$comm_parrain['seuil_parr_1']}}" id="seuil_parr_1" name="seuil_parr_1" required></td>
+                                                            <td><input type="number" style="background-color:#FFF8DC" min="0"  class="form-control" value="{{$comm_parrain['seuil_fill_1']}}" id="seuil_fill_1" name="seuil_fill_1" required></td>
                                                         </tr>
                                                         <tr>
                                                             <th class="color-primary" scope="row">2</th>
@@ -198,6 +204,9 @@
                                                             <td><input type="number" style="background-color:#ecf0f9" min="0" max="50" class="form-control" value="{{$comm_parrain['p_2_2']}}" id="p_2_2" name="p_2_2" required></td>
                                                             <td><input type="number" style="background-color:#ecf0f9" min="0" max="50" class="form-control" value="{{$comm_parrain['p_2_3']}}" id="p_2_3" name="p_2_3" required></td>
                                                             <td><input type="number" style="background-color:#ecf0f9" min="0" max="50" class="form-control" value="{{$comm_parrain['p_2_n']}}" id="p_2_n" name="p_2_n" required></td>
+                                                            <td>&nbsp;</td>
+                                                            <td><input type="number" style="background-color:#FFF8DC" min="0"  class="form-control" value="{{$comm_parrain['seuil_parr_2']}}" id="seuil_parr_2" name="seuil_parr_2" required></td>
+                                                            <td><input type="number" style="background-color:#FFF8DC" min="0"  class="form-control" value="{{$comm_parrain['seuil_fill_2']}}" id="seuil_fill_2" name="seuil_fill_2" required></td>
                                                             
                                                         </tr>
                                                         <tr>
@@ -206,6 +215,9 @@
                                                             <td><input type="number" style="background-color:#ecf0f9" min="0" max="50" class="form-control" value="{{$comm_parrain['p_3_2']}}" id="p_3_2" name="p_3_2" required></td>
                                                             <td><input type="number" style="background-color:#ecf0f9" min="0" max="50" class="form-control" value="{{$comm_parrain['p_3_3']}}" id="p_3_3" name="p_3_3" required></td>
                                                             <td><input type="number" style="background-color:#ecf0f9" min="0" max="50" class="form-control" value="{{$comm_parrain['p_3_n']}}" id="p_3_n" name="p_3_n" required></td>
+                                                            <td>&nbsp;</td>
+                                                            <td><input type="number" style="background-color:#FFF8DC" min="0"  class="form-control" value="{{$comm_parrain['seuil_parr_3']}}" id="seuil_parr_3" name="seuil_parr_3" required></td>
+                                                            <td><input type="number" style="background-color:#FFF8DC" min="0"  class="form-control" value="{{$comm_parrain['seuil_fill_3']}}" id="seuil_fill_3" name="seuil_fill_3" required></td>
                                                             
                                                         </tr>
                                                         
