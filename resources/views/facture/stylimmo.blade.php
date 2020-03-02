@@ -49,7 +49,7 @@
 
                                         </td>
                                         <td  style="">
-                                            @if($compromi->charge == "vendeur")
+                                            @if($facture->compromis->charge == "vendeur")
                                                 <strong>{{ substr($facture->compromis->nom_vendeur,0,50)}}</strong> 
                                             @else
                                                 <strong>{{ substr($facture->compromis->nom_acquereur,0,50)}}</strong> 
@@ -68,10 +68,10 @@
                                             <label class="color-info">{{$facture->type}} </label> 
                                         </td> --}}
                                         <td  width="" >
-                                        {{number_format($facture->montant_ht,'2','.',' ')}}
+                                        {{number_format($facture->montant_ht,'2','.','')}}
                                         </td>
                                         <td  width="" >
-                                        {{number_format($facture->montant_ttc,'2','.',' ')}}
+                                        {{number_format($facture->montant_ttc,'2','.','')}}
                                         </td>
                                         {{-- <td  width="" class="color-info">
                                                 {{$facture->created_at->format('d/m/Y')}}

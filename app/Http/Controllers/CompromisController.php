@@ -181,6 +181,7 @@ class CompromisController extends Controller
                 "net_vendeur"=>$request->net_vendeur,
                 "scp_notaire"=>$request->scp_notaire,
                 "date_vente"=>$request->date_vente,
+                "date_signature"=>$request->date_signature,
                 "observations"=>$request->observations,
                 
                 
@@ -189,7 +190,7 @@ class CompromisController extends Controller
                 $filename = 'pdf_compromis_'.$compromis->id.'.pdf';
                 $compromis->pdf_compromis = $filename;
                 // return response()->download(storage_path('app/pdf_compromis/pdf_compro.pdf'));
-                $request->pdf_compromis->storeAs('pdf_compromis',$filename);
+                $request->pdf_compromis->storeAs('public/pdf_compromis',$filename);
                 $compromis->update();
         }else{
             $request->validate([
@@ -238,7 +239,7 @@ class CompromisController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Afficher le compromis
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -254,6 +255,23 @@ class CompromisController extends Controller
         return view('compromis.show', compact('compromis','agents','agence'));
     }
 
+     /**
+     *Télécharger le fichier pdf du compromis.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function telecharger_pdf_compromis($id)
+    {
+        
+        $compromis = Compromis::where('id',$id)->first();
+        
+
+        return response()->download(storage_path('app/public/pdf_compromis/'.$compromis->pdf_compromis));
+ 
+    }
+
+    
     /**
      * Show the form for editing the specified resource.
      *
@@ -274,11 +292,12 @@ class CompromisController extends Controller
      */
     public function update(Request $request, Compromis $compromis)
     {
-        // dd($request);
+ 
         if($request->partage == "Non"  || ($request->partage == "Oui" &&  $request->je_porte_affaire == "Oui" ) ){
             if($request->numero_mandat != $compromis->numero_mandat){
                 $request->validate([
                     'numero_mandat' => 'required|numeric|unique:compromis',
+                   
                 ]);
             }
             $compromis->est_partage_agent = $request->partage == "Non" ? false : true;
@@ -311,6 +330,26 @@ class CompromisController extends Controller
             $compromis->net_vendeur = $request->net_vendeur;
             $compromis->scp_notaire = $request->scp_notaire;
             $compromis->date_vente = $request->date_vente;
+            $compromis->date_signature = $request->date_signature;
+            $compromis->observations = $request->observations;
+
+
+            if($request->hasFile('pdf_compromis')){
+
+                $request->validate([
+                    'pdf_compromis' => 'mimes:pdf',
+                ]);
+                $filename = 'pdf_compromis_'.$compromis->id.'.pdf';
+              
+                $request->pdf_compromis->storeAs('public/pdf_compromis',$filename);
+                $compromis->pdf_compromis = $filename;
+       
+              
+
+            }
+
+
+           
 
         }else{
 
@@ -333,7 +372,9 @@ class CompromisController extends Controller
 
         
         $compromis->update();
-        return redirect()->route('compromis.index')->with('ok', __('compromis modifié')  );
+        $mandat = $compromis->numero_mandat;
+    
+        return redirect()->route('compromis.index')->with('ok', __("compromis modifié (mandat $mandat) ")  );
     }
 
 

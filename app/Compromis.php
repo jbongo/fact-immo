@@ -8,7 +8,7 @@ class Compromis extends Model
 {
     //
     protected $guarded =[];
-    protected $dates = ['date_vente','date_mandat'];
+    protected $dates = ['date_vente','date_mandat','date_signature'];
 
 
     public function  user(){

@@ -422,21 +422,30 @@ Ajout d'une affaire
                                             </div>
                                         </div>
 
-                                        <div class="col-lg-6 col-md-6 col-sm-6">
+                                    </div>
+                                    <div class="row">
+
+                                        <div class="col-lg-4 col-md-4 col-sm-4">
+                                           <div class="form-group">
+                                               <label for="scp_notaire">SCP Notaire <span class="text-danger">*</span> </label>
+                                               <input class="form-control" type="texte" value="{{old('scp_notaire')}}" id="scp_notaire" name="scp_notaire" required>
+                                           </div>
+                                       </div>
+                                       
+                                       <div class="col-lg-4 col-md-4 col-sm-4">
+                                           <div class="form-group">
+                                               <label for="date_vente">Date provisoire de la Vente <span class="text-danger">*</span> </label>
+                                               <input class="form-control" type="date" value="" id="date_vente" name="date_vente"  required>
+                                           </div>
+                                       </div>
+                                       <div class="col-lg-4 col-md-4 col-sm-4">
                                             <div class="form-group">
-                                                <label for="scp_notaire">SCP Notaire <span class="text-danger">*</span> </label>
-                                                <input class="form-control" type="texte" value="{{old('scp_notaire')}}" id="scp_notaire" name="scp_notaire" required>
-                                            </div>
-                                        </div>
-                                        
-                                        <div class="col-lg-6 col-md-6 col-sm-6">
-                                            <div class="form-group">
-                                                <label for="date_vente">Date provisoire de la Vente <span class="text-danger">*</span> </label>
-                                                <input class="form-control" type="date" value="" id="date_vente" name="date_vente"  required>
+                                                <label for="date_signature">Date de signature du compromis  </label>
+                                                <input class="form-control" type="date" value="" id="date_signature" name="date_signature"  required>
                                             </div>
                                         </div>
 
-                                    </div>
+                                   </div>
 
                                     <div class="row">
                                  
@@ -472,7 +481,7 @@ Ajout d'une affaire
 			<div class="form-validation">				
                 <div class="form-group row" style="text-align: center; margin-top: 50px;">
                     <div class="col-lg-8 ml-auto">
-                        <button class="btn btn-danger btn-flat btn-addon btn-lg m-b-10 m-l-5 "><i class="ti-file"></i>Enregistrer</button>
+                        <button class="btn btn-danger btn-flat btn-addon btn-lg m-b-10 m-l-5 " id="enregistrer"><i class="ti-file"></i>Enregistrer</button>
                     </div>
                 </div>				
             </div>
@@ -485,6 +494,44 @@ Ajout d'une affaire
 @stop
 @section('js-content')
 
+{{-- enregistrement charge / adresse obligatoire --}}
+
+<script>
+    $('#adresse1_vendeur').attr('required', 'required');
+    $('#code_postal_vendeur').attr('required', 'required');
+    $('#ville_vendeur').attr('required', 'required');
+    
+    $('#charge').on('change',function(){
+
+      if($('#charge').val() == "Vendeur"){
+
+            $('#adresse1_vendeur').attr('required', 'required');
+            $('#code_postal_vendeur').attr('required', 'required');
+            $('#ville_vendeur').attr('required', 'required');
+
+            $('#adresse1_acquereur').removeAttr('required');
+            $('#code_postal_acquereur').removeAttr('required');
+            $('#ville_acquereur').removeAttr('required');
+
+            swal("L'adresse du vendeur est obligatoire");
+
+
+      }else{
+            $('#adresse1_acquereur').attr('required', 'required');
+            $('#code_postal_acquereur').attr('required', 'required');
+            $('#ville_acquereur').attr('required', 'required');
+
+            $('#adresse1_vendeur').removeAttr('required');
+            $('#code_postal_vendeur').removeAttr('required');
+            $('#ville_vendeur').removeAttr('required');
+
+            swal("L'adresse de l'acquéreur est obligatoire");
+
+      }
+        
+    });
+
+</script>
 <script>
 
   // Acquereur Vendeur

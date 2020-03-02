@@ -12,7 +12,7 @@
     <link href="{{ asset('css/lib/font-awesome.min.css')}}" rel="stylesheet">
     <link href="{{ asset('css/lib/themify-icons.css')}}" rel="stylesheet">
     {{-- <link href="{{ asset('css/lib/owl.carousel.min.css')}}" rel="stylesheet" /> --}}
-    <link href="{{ asset('css/lib/owl.theme.default.min.css')}}" rel="stylesheet" />
+    {{-- <link href="{{ asset('css/lib/owl.theme.default.min.css')}}" rel="stylesheet" /> --}}
     {{-- <link href="{{ asset('css/lib/weather-icons.css')}}" rel="stylesheet" /> --}}
     <link href="{{ asset('css/lib/menubar/sidebar.css')}}" rel="stylesheet">
     <link href="{{ asset('css/lib/bootstrap.min.css')}}" rel="stylesheet">

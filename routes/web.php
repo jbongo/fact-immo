@@ -33,11 +33,14 @@ Route::middleware('auth')->group(function(){
     Route::get('/compromis/create','CompromisController@create')->name('compromis.create');
     Route::post('/compromis/add','CompromisController@store')->name('compromis.add');
     Route::get('/compromis/show/{id}','CompromisController@show')->name('compromis.show');
+    Route::get('/compromis/telecharger_pdf_compromis/{id}','CompromisController@telecharger_pdf_compromis')->name('compromis.telecharger_pdf_compromis');
     Route::put('/compromis/edit/{compromis}','CompromisController@edit')->name('compromis.edit');
     Route::post('/compromis/update/{compromis}','CompromisController@update')->name('compromis.update');
     Route::delete('/compromis/delete/{compromis}','CompromisController@destroy')->name('compromis.delete');
     Route::delete('/compromis/archive/{compromis}','CompromisController@archive')->name('compromis.archive');
     Route::get('/compromis/cloturer/{compromis}','CompromisController@cloturer')->name('compromis.cloturer');
+
+    
 
     // demandes factures stylimmo
     

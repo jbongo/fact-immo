@@ -32,7 +32,7 @@ Détail de l'affaire @if(auth::user()->role =="admin") de {{$compromis->user->no
             <br><br><hr>
 			<div class="card-body">
                 
-                <form class="form-valide3" action="{{ route('compromis.update',$compromis->id) }}" method="post">
+                <form class="form-valide3" action="{{ route('compromis.update',$compromis->id) }}" enctype="multipart/form-data" method="post">
                         {{ csrf_field() }}
                         <div class="panel-body">
                             <fieldset class="col-md-12">
@@ -462,24 +462,24 @@ Détail de l'affaire @if(auth::user()->role =="admin") de {{$compromis->user->no
                                 <div class="panel-body">                      
     
                                         <div class="row">
-                                            <div class="col-lg-3 col-md-3 col-sm-3">
+                                            <div class="col-lg-4 col-md-4 col-sm-4">
                                                 <div class="form-group row" id="parrain-id">
-                                                    <label class="col-lg-8 col-form-label" for="parr-id">Net Vendeur</label>
-                                                    <div class="col-lg-8">
+                                                    <label class="" for="parr-id">Net Vendeur</label>
+                                                    
                                                         <input type="number" class="form-control" id="net_vendeur" name="net_vendeur" value="{{ $compromis->net_vendeur}}" required>                                                    
-                                                    </div>
+                                                   
                                                 </div>
                                             </div>
-                                            <div class="col-lg-3 col-md-3 col-sm-3">
+                                            <div class="col-lg-4 col-md-4 col-sm-4">
                                                 <div class="form-group">
                                                     <label for="frais_agence">Frais d'agence</label>
                                                     <input class="form-control" min="0" type="number" value="{{ $compromis->frais_agence}}" id="frais_agence" name="frais_agence" >
                                                 </div>
                                             </div>
-                                            <div class="col-lg-3 col-md-3 col-sm-3">
+                                            <div class="col-lg-4 col-md-4 col-sm-4">
                                                 <div class="form-group row" id="parrain-id">
-                                                    <label class="col-lg-8 col-form-label" for="charge_qui">Charge </label>
-                                                    <div class="col-lg-8">
+                                                    <label class="" for="charge_qui">Charge </label>
+                                                    <div >
                                                         <select class="col-lg-6 form-control" id="charge_qui" name="charge"  >
                                                             @php
                                                                 if ($compromis->charge == "Vendeur"){
@@ -498,27 +498,38 @@ Détail de l'affaire @if(auth::user()->role =="admin") de {{$compromis->user->no
                                                     </div>
                                                 </div>
                                             </div>
-                                            
-                                            <div class="col-lg-3 col-md-3 col-sm-3">
+            
+                                        </div>
+
+                                        <div class="row">
+
+                                            <div class="col-lg-4 col-md-4 col-sm-4">
                                                 <div class="form-group row" id="parrain-id">
-                                                    <label class="col-lg-8 col-form-label" for="parr-id">SCP Notaire</label>
-                                                    <div class="col-lg-8">
+                                                    <label class="" for="parr-id">SCP Notaire</label>
+                                                  
                                                         <input type="text" class="form-control" id="scp_notaire" name="scp_notaire" value="{{ $compromis->scp_notaire}}">                                                    
-                                                    </div>
+                                                    
                                                 </div>
                                             </div>
                                             
 
                                             {{-- @if ($compromis->date_vente != null) --}}
                                                 
-                                            <div class="col-lg-3 col-md-3 col-sm-3">
+                                            <div class="col-lg-4 col-md-4 col-sm-4">
                                                 <div class="form-group">
                                                     <label for="date_vente">Date exacte Vente </label>
                                                     <input class="form-control" type="date" @if($compromis->date_vente != null)  value="{{ $compromis->date_vente->format('Y-m-d')}}" @endif id="date_vente" name="date_vente" >
                                                 </div>
                                             </div>
                                             {{-- @endif                 --}}
-            
+
+                                            <div class="col-lg-4 col-md-4 col-sm-4">
+                                                <div class="form-group">
+                                                    <label for="date_signature">Date de signature du compromis  </label>
+                                                    <input class="form-control" type="date"  @if($compromis->date_signature != null)  value="{{ $compromis->date_signature->format('Y-m-d')}}" @endif id="date_signature" name="date_signature"  >
+                                                </div>
+                                            </div>
+
                                         </div>
 
                                         <div class="row">
@@ -527,8 +538,25 @@ Détail de l'affaire @if(auth::user()->role =="admin") de {{$compromis->user->no
                                                     <label class=" col-lg-7 col-md-7 col-sm-7 " for="observation">Observations </span></label>
                                                     <div class=" col-lg-12 col-md-12 col-sm-12 ">
                                                         <textarea class="form-control"  name="observation" id="observation" cols="50" rows="5" required>{{ $compromis->description_bien }}</textarea>
-                                                        <span id="rchars" style="color:#2805B8">180</span> <span style="color:#2805B8"> Caractères restants </span>
                                                     </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                                <div class="form-group">
+                                                    <label >Fichier pdf du compromis </label>
+                                                    <input class="form-control" type="file" value="" id="pdf_compromis" name="pdf_compromis"  >
+                                                    @if($compromis->pdf_compromis != null)
+                                                        <a class="btn btn-danger btn-sm" href="{{route('compromis.telecharger_pdf_compromis', $compromis->id)}}" id="telecharger_pdf_compromis">Télécharger</a>
+                                                    
+                                                        <a class="btn btn-success btn-sm" id="modifier_pdf_compromis">Modifier</a>
+                                                    @endif
+                                                    @if ($errors->has('pdf_compromis'))
+                                                        <br>
+                                                        <div class="alert alert-warning ">
+                                                            <strong>{{$errors->first('pdf_compromis')}}</strong> 
+                                                        </div>
+                                                    @endif
                                                 </div>
                                             </div>
 
@@ -553,6 +581,43 @@ Détail de l'affaire @if(auth::user()->role =="admin") de {{$compromis->user->no
 </div>
 @stop
 @section('js-content')
+
+<script>
+    $('#adresse1_vendeur').attr('required', 'required');
+    $('#code_postal_vendeur').attr('required', 'required');
+    $('#ville_vendeur').attr('required', 'required');
+    
+    $('#charge').on('change',function(){
+
+      if($('#charge').val() == "Vendeur"){
+
+            $('#adresse1_vendeur').attr('required', 'required');
+            $('#code_postal_vendeur').attr('required', 'required');
+            $('#ville_vendeur').attr('required', 'required');
+
+            $('#adresse1_acquereur').removeAttr('required');
+            $('#code_postal_acquereur').removeAttr('required');
+            $('#ville_acquereur').removeAttr('required');
+
+            swal("L'adresse du vendeur est obligatoire");
+
+
+      }else{
+            $('#adresse1_acquereur').attr('required', 'required');
+            $('#code_postal_acquereur').attr('required', 'required');
+            $('#ville_acquereur').attr('required', 'required');
+
+            $('#adresse1_vendeur').removeAttr('required');
+            $('#code_postal_vendeur').removeAttr('required');
+            $('#ville_vendeur').removeAttr('required');
+
+            swal("L'adresse de l'acquéreur est obligatoire");
+
+      }
+        
+    });
+
+</script>
 
 <script>
 $('input').attr('readonly',true);
@@ -646,11 +711,31 @@ $("#hors_reseau").change(function(){
 
      {{-- Limite pour le textarea --}}
 
-     <script>
-        var maxLength = 180;
-             $('textarea').keyup(function() {
-             var textlen = maxLength - $(this).val().length;
-             $('#rchars').text(textlen);
-             });
-        </script>
+<script>
+var maxLength = 180;
+        $('textarea').keyup(function() {
+        var textlen = maxLength - $(this).val().length;
+        $('#rchars').text(textlen);
+        });
+</script>
+
+{{-- BOUTON TELECHARGER COMPROMIS --}}
+<script>
+   
+
+    var pdf_compromis = "{{ $compromis->pdf_compromis}}";
+    console.log(pdf_compromis);
+    
+    if(pdf_compromis != ""){
+        $('#pdf_compromis').hide();
+    }
+
+$('#modifier_pdf_compromis').click(function (){
+    $('#pdf_compromis').show();
+    $('#modifier_pdf_compromis').hide();
+    $('#telecharger_pdf_compromis').hide();
+
+});
+
+</script>
 @endsection

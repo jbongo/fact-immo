@@ -56,7 +56,8 @@ class CreateCompromisTable extends Migration
             $table->double('frais_agence')->nullable();
             $table->string('scp_notaire')->nullable();
             $table->date('date_vente')->nullable();
-
+            $table->date('date_signature')->nullable();
+            
             // demande facture
         // 0 = facture non demandée, 1= facture demandée en attente de validation, 2 = demande traitée par stylimmo
             $table->boolean('demande_facture')->default(false); 

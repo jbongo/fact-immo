@@ -69,10 +69,10 @@
                                             <label class="color-info">{{$facture->type}} </label> 
                                         </td>
                                         <td   >
-                                        {{number_format($facture->montant_ht,2,'.',' ')}} €
+                                        {{number_format($facture->montant_ht,2,'.','')}} €
                                         </td>
                                         <td   >
-                                        {{number_format($facture->montant_ttc,2,'.',' ')}} €
+                                        {{number_format($facture->montant_ttc,2,'.','')}} €
                                         </td>
                                         {{-- <td   class="color-info">
                                                 {{$facture->created_at->format('d/m/Y')}}
