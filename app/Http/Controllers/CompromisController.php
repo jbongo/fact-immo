@@ -142,9 +142,10 @@ class CompromisController extends Controller
         if($request->partage == "Non"  || ($request->partage == "Oui" &&  $request->je_porte_affaire == "on" ) ){
             $request->validate([
                 'numero_mandat' => 'unique:compromis',
+                'pdf_compromis' => 'file:pdf'
             ]);
 
-            // dd($request->all());
+
             $compromis = Compromis::create([
                 "user_id"=> Auth::user()->id,
                 "est_partage_agent"=>$request->partage == "Non" ? false : true,
@@ -180,9 +181,16 @@ class CompromisController extends Controller
                 "net_vendeur"=>$request->net_vendeur,
                 "scp_notaire"=>$request->scp_notaire,
                 "date_vente"=>$request->date_vente,
+                "observations"=>$request->observations,
                 
                 
                 ]);
+
+                $filename = 'pdf_compromis_'.$compromis->id.'.pdf';
+                $compromis->pdf_compromis = $filename;
+                // return response()->download(storage_path('app/pdf_compromis/pdf_compro.pdf'));
+                $request->pdf_compromis->storeAs('pdf_compromis',$filename);
+                $compromis->update();
         }else{
             $request->validate([
                 'numero_mandat_porte_pas' => 'unique:compromis',

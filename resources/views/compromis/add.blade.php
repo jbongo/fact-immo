@@ -422,14 +422,14 @@ Ajout d'une affaire
                                             </div>
                                         </div>
 
-                                        <div class="col-lg-4 col-md-4 col-sm-4">
+                                        <div class="col-lg-6 col-md-6 col-sm-6">
                                             <div class="form-group">
                                                 <label for="scp_notaire">SCP Notaire <span class="text-danger">*</span> </label>
                                                 <input class="form-control" type="texte" value="{{old('scp_notaire')}}" id="scp_notaire" name="scp_notaire" required>
                                             </div>
                                         </div>
                                         
-                                        <div class="col-lg-4 col-md-4 col-sm-4">
+                                        <div class="col-lg-6 col-md-6 col-sm-6">
                                             <div class="form-group">
                                                 <label for="date_vente">Date provisoire de la Vente <span class="text-danger">*</span> </label>
                                                 <input class="form-control" type="date" value="" id="date_vente" name="date_vente"  required>
@@ -442,9 +442,9 @@ Ajout d'une affaire
                                  
                                             <div class="col-lg-6 col-md-6 col-sm-6">
                                                 <div class="form-group ">
-                                                    <label class=" col-lg-7 col-md-7 col-sm-7 " for="observation">Observations </span></label>
+                                                    <label class=" col-lg-7 col-md-7 col-sm-7 " for="observations">Observations </span></label>
                                                     <div class=" col-lg-12 col-md-12 col-sm-12 ">
-                                                        <textarea class="form-control"  name="observation" id="observation" cols="50" rows="5" required></textarea>
+                                                        <textarea class="form-control"  name="observations" id="observations" cols="50" rows="5" required></textarea>
                                                         
                                                     </div>
                                                 </div>
@@ -452,8 +452,8 @@ Ajout d'une affaire
 
                                             <div class="col-lg-6 col-md-6 col-sm-6">
                                                 <div class="form-group">
-                                                    <label for="pdf_compromis">Fichier pdf du compromis <span class="text-danger">*</span> </label>
-                                                    <input class="form-control" type="file" value="" id="pdf_compromis" name="pdf_compromis"  required>
+                                                    <label for="pdf_compromis">Fichier pdf du compromis </label>
+                                                    <input class="form-control" type="file" value="" id="pdf_compromis" name="pdf_compromis"  >
                                                 </div>
                                             </div>
 

@@ -76,6 +76,9 @@ class CreateCompromisTable extends Migration
             $table->boolean('facture_honoraire_partage_cree')->default(false);
             $table->boolean('facture_honoraire_partage_porteur_cree')->default(false);
             $table->boolean('cloture_affaire')->default(false);
+            $table->text('observations')->nullable(); 
+            $table->string('pdf_compromis')->nullable(); 
+
 
             
             $table->timestamps();
