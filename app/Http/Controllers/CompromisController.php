@@ -24,7 +24,10 @@ class CompromisController extends Controller
   
     
         $parametre = Parametre::first();
-        // dd($parametre);
+        $comm_parrain = unserialize($parametre->comm_parrain) ;
+
+dd($comm_parrain);
+
       
         $compromis = array();
         if(Auth::user()->role =="admin") {
@@ -78,25 +81,82 @@ class CompromisController extends Controller
             $compromisParrain = Compromis::whereIn('user_id',$fill_ids )->orWhereIn('agent_id',$fill_ids )->latest()->get();
             $valide_compro_id = array();
 
-            // foreach ($fill_ids as $fill_id) {
+            foreach ($fill_ids as $fill_id) {
                 
-            //     if($compromisParrain != null){
-            //         foreach ($compromisParrain as $compro_parrain) {
+                if($compromisParrain != null){
+                    foreach ($compromisParrain as $compro_parrain) {
     
-            //             $date_vente = $compro_parrain->date_vente->format('Y-m-d');
-            //             // date_12 est la date exacte 1 ans avant la data de vente
-            //             $date_12 =  strtotime( $date_vente. " -1 year"); 
-            //             $date_12 = date('Y-m-d',$date_12);
+                        $date_vente = $compro_parrain->date_vente->format('Y-m-d');
+                        // date_12 est la date exacte 1 ans avant la data de vente
+                        $date_12 =  strtotime( $date_vente. " -1 year"); 
+                        $date_12 = date('Y-m-d',$date_12);
     
-            //            $ca_parrain =  Compromis::getCAStylimmo(Auth::user()->id,$date_12 ,$date_vente);
+                        $ca_parrain =  Compromis::getCAStylimmo(Auth::user()->id,$date_12 ,$date_vente);
+                        
+                    //     On determine le filleul qui est  porteur  ou partage de l'affaire
+                        $id_filleul_porteur = $compro_parrain->user_id;                      
+                        $id_filleul_partage = $compro_parrain->agent_id;
+
+                    // ## On dertermine le ca du filleul ou des filleuls si 2 filleuls partagent l'affaire
+                        
+                        if($id_filleul_porteur != null && in_array($id_filleul_porteur, $fill_ids)) {
+                            $ca_filleul_porteur = Compromis::getCAStylimmo($id_filleul_porteur, $date_12, $date_vente);
+                            $filleul_porteur = Filleul::where('user_id',$id_filleul_porteur)->first();
+
+                            // on vérifie si le ca depasse le seuil demandé SI LA CONDITION EST ACTIVEE
+
+                                // 1 on determine l'ancieneté du filleul
+                                $date_deb_activ =  strtotime($filleul_porteur->user->contrat->date_deb_activite);
+                                              
+                                $today = strtotime (date('Y-m-d'));
+                                $anciennete_porteur = $today - $date_deb_activ;
+
+                                if($anciennete_porteur > 365*86400 && $anciennete_porteur <= 365*86400*2){
+                                    $seuil_porteur = $comm_parrain["seuil_fill_1"];
+                                    $seuil_parrain = $comm_parrain["seuil_parr_1"];
+                                }
+                                //si ancienneté est compris entre 2 et 3 ans
+                                elseif($anciennete_porteur > 365*86400*2 && $anciennete_porteur <= 365*86400*3){
+                                    $seuil_porteur = $comm_parrain["seuil_fill_2"];
+                                    $seuil_arrainr = $comm_parrain["seuil_parr_2"];
+                                }
+                                // ancienneté sup à 3 ans
+                                else{
+                                    $seuil_porteur = $comm_parrain["seuil_fill_3"];
+                                    $seuil_parrain = $comm_parrain["seuil_parr_3"];
+                                }
+
+                                // On  n'a les seuils et les ca on peut maintenant faire les comparaisons
+                            
+                                
+
+                        }
+
+
+
+                        if($id_filleul_partage != null && in_array($id_filleul_partage, $fill_ids)) {
+                            $ca_filleul_partage = Compromis::getCAStylimmo($id_filleul_partage, $date_12, $date_vente);
+                        }
+                    
+
+
+                    // ## On determine le seuil (CA) du parrain et du ou des filleuls 
+
+
+
+                    // ## On compare le seuil et le CA du parrain et du ou des filleuls pour voir s'ils respectent les crtières pour que le parrain touche la com de parrainage
+
+
+                    //    $anciennete_filleul = dat
+                    //    if()
+
+
+                       $ca_filleul =  Compromis::getCAStylimmo(Auth::user()->id,$date_12 ,$date_vente);
     
-            //         $id_filleul = 
-            //            $ca_filleul =  Compromis::getCAStylimmo(Auth::user()->id,$date_12 ,$date_vente);
+                    }
+                }
     
-            //         }
-            //     }
-    
-            // }
+            }
            
 
 
