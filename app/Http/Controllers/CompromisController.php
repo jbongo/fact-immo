@@ -78,25 +78,25 @@ class CompromisController extends Controller
             $compromisParrain = Compromis::whereIn('user_id',$fill_ids )->orWhereIn('agent_id',$fill_ids )->latest()->get();
             $valide_compro_id = array();
 
-            foreach ($fill_ids as $fill_id) {
+            // foreach ($fill_ids as $fill_id) {
                 
-                if($compromisParrain != null){
-                    foreach ($compromisParrain as $compro_parrain) {
+            //     if($compromisParrain != null){
+            //         foreach ($compromisParrain as $compro_parrain) {
     
-                        $date_vente = $compro_parrain->date_vente->format('Y-m-d');
-                        // date_12 est la date exacte 1 ans avant la data de vente
-                        $date_12 =  strtotime( $date_vente. " -1 year"); 
-                        $date_12 = date('Y-m-d',$date_12);
+            //             $date_vente = $compro_parrain->date_vente->format('Y-m-d');
+            //             // date_12 est la date exacte 1 ans avant la data de vente
+            //             $date_12 =  strtotime( $date_vente. " -1 year"); 
+            //             $date_12 = date('Y-m-d',$date_12);
     
-                       $ca_parrain =  Compromis::getCAStylimmo(Auth::user()->id,$date_12 ,$date_vente);
+            //            $ca_parrain =  Compromis::getCAStylimmo(Auth::user()->id,$date_12 ,$date_vente);
     
-                    $id_filleul = 
-                       $ca_filleul =  Compromis::getCAStylimmo(Auth::user()->id,$date_12 ,$date_vente);
+            //         $id_filleul = 
+            //            $ca_filleul =  Compromis::getCAStylimmo(Auth::user()->id,$date_12 ,$date_vente);
     
-                    }
-                }
+            //         }
+            //     }
     
-            }
+            // }
            
 
 
