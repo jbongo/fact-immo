@@ -26,9 +26,6 @@ class CompromisController extends Controller
         $parametre = Parametre::first();
         $comm_parrain = unserialize($parametre->comm_parrain) ;
 
-dd($comm_parrain);
-
-      
         $compromis = array();
         if(Auth::user()->role =="admin") {
             $compromis = Compromis::where('je_renseigne_affaire',true)->latest()->get();
@@ -66,13 +63,6 @@ dd($comm_parrain);
 
 
 
-
-
-
-
-
-
-
             // ########### Mise en place des conditions de parrainnage ############
             // Vérifier le CA du parrain et du filleul sur les 12 derniers mois précédents la date de vente et qui respectent les critères et vérifier s'il sont à jour dans le reglèmement de leur factures stylimmo 
             // Dans cette partie on détermine le jour exaxt de il y'a 12 mois avant la date de vente
@@ -81,7 +71,7 @@ dd($comm_parrain);
             $compromisParrain = Compromis::whereIn('user_id',$fill_ids )->orWhereIn('agent_id',$fill_ids )->latest()->get();
             $valide_compro_id = array();
 
-            foreach ($fill_ids as $fill_id) {
+            // foreach ($fill_ids as $fill_id) {
                 
                 if($compromisParrain != null){
                     foreach ($compromisParrain as $compro_parrain) {
@@ -98,37 +88,44 @@ dd($comm_parrain);
                         $id_filleul_partage = $compro_parrain->agent_id;
 
                     // ## On dertermine le ca du filleul ou des filleuls si 2 filleuls partagent l'affaire
-                        
+
                         if($id_filleul_porteur != null && in_array($id_filleul_porteur, $fill_ids)) {
                             $ca_filleul_porteur = Compromis::getCAStylimmo($id_filleul_porteur, $date_12, $date_vente);
                             $filleul_porteur = Filleul::where('user_id',$id_filleul_porteur)->first();
 
                             // on vérifie si le ca depasse le seuil demandé SI LA CONDITION EST ACTIVEE
+                            if($filleul_porteur->user->contrat->a_condition_parrain == true){
 
+                           
                                 // 1 on determine l'ancieneté du filleul
-                                $date_deb_activ =  strtotime($filleul_porteur->user->contrat->date_deb_activite);
-                                              
+                                $date_deb_activ =  strtotime($filleul_porteur->user->contrat->date_deb_activite);                                              
                                 $today = strtotime (date('Y-m-d'));
                                 $anciennete_porteur = $today - $date_deb_activ;
 
-                                if($anciennete_porteur > 365*86400 && $anciennete_porteur <= 365*86400*2){
+                                if($anciennete_porteur <= 365*86400){
                                     $seuil_porteur = $comm_parrain["seuil_fill_1"];
                                     $seuil_parrain = $comm_parrain["seuil_parr_1"];
                                 }
-                                //si ancienneté est compris entre 2 et 3 ans
-                                elseif($anciennete_porteur > 365*86400*2 && $anciennete_porteur <= 365*86400*3){
+                                //si ancienneté est compris entre 1 et 2ans
+                                elseif($anciennete_porteur > 365*86400 && $anciennete_porteur <= 365*86400*2){
                                     $seuil_porteur = $comm_parrain["seuil_fill_2"];
-                                    $seuil_arrainr = $comm_parrain["seuil_parr_2"];
+                                    $seuil_parrain = $comm_parrain["seuil_parr_2"];
                                 }
-                                // ancienneté sup à 3 ans
+                                // ancienneté sup à 2 ans
                                 else{
                                     $seuil_porteur = $comm_parrain["seuil_fill_3"];
                                     $seuil_parrain = $comm_parrain["seuil_parr_3"];
                                 }
 
-                                // On  n'a les seuils et les ca on peut maintenant faire les comparaisons
+                                // On  n'a les seuils et les ca on peut maintenant faire les comparaisons                                
+                                if($ca_filleul_porteur >= $seuil_porteur && $ca_parrain >= $seuil_parrain ){
+                                    $valide_compro_id [] = $compro_parrain->numero_mandat;
+                                }
                             
-                                
+                            }
+                            else{
+                                $valide_compro_id [] = $compro_parrain->numero_mandat;
+                            }
 
                         }
 
@@ -136,41 +133,62 @@ dd($comm_parrain);
 
                         if($id_filleul_partage != null && in_array($id_filleul_partage, $fill_ids)) {
                             $ca_filleul_partage = Compromis::getCAStylimmo($id_filleul_partage, $date_12, $date_vente);
+                            $filleul_partage = Filleul::where('user_id',$id_filleul_partage)->first();
+                            
+                            // on vérifie si le ca depasse le seuil demandé SI LA CONDITION EST ACTIVEE
+                            if($filleul_partage->user->contrat->a_condition_parrain == true){
+
+                           
+                                // 1 on determine l'ancieneté du filleul
+                                $date_deb_activ =  strtotime($filleul_partage->user->contrat->date_deb_activite);                                              
+                                $today = strtotime (date('Y-m-d'));
+                                $anciennete_partage = $today - $date_deb_activ;
+
+                                if($anciennete_partage <= 365*86400){
+                                    $seuil_partage = $comm_parrain["seuil_fill_1"];
+                                    $seuil_parrain = $comm_parrain["seuil_parr_1"];
+                                }
+                                //si ancienneté est compris entre 1 et 2 ans
+                                elseif($anciennete_partage > 365*86400 && $anciennete_partage <= 365*86400*2){
+                                    $seuil_partage = $comm_parrain["seuil_fill_2"];
+                                    $seuil_parrain = $comm_parrain["seuil_parr_2"];
+                                }
+                                // ancienneté sup à 2 ans
+                                else{
+                                    $seuil_partage = $comm_parrain["seuil_fill_3"];
+                                    $seuil_parrain = $comm_parrain["seuil_parr_3"];
+                                }
+
+                                // On  n'a les seuils et les ca on peut maintenant faire les comparaisons                                
+                                if($ca_filleul_partage >= $seuil_partage && $ca_parrain >= $seuil_parrain ){
+                                    $valide_compro_id [] = $compro_parrain->numero_mandat;
+                                }
+                            
+                            }
+                            else{
+                                $valide_compro_id [] = $compro_parrain->numero_mandat;
+                            }
                         }
                     
 
 
-                    // ## On determine le seuil (CA) du parrain et du ou des filleuls 
-
-
-
-                    // ## On compare le seuil et le CA du parrain et du ou des filleuls pour voir s'ils respectent les crtières pour que le parrain touche la com de parrainage
-
-
-                    //    $anciennete_filleul = dat
-                    //    if()
-
-
-                       $ca_filleul =  Compromis::getCAStylimmo(Auth::user()->id,$date_12 ,$date_vente);
+                        $ca_filleul =  Compromis::getCAStylimmo(Auth::user()->id,$date_12 ,$date_vente);
     
                     }
                 }
     
-            }
+            // }
            
 
 
 
+// ###################
 
 
+                $valide_compro_id = array_unique ($valide_compro_id);
+                //  dd($valide_compro_id);
 
-
-
-      
-
-
-            //  dd($fill_ids);
-        return view ('compromis.index',compact('compromis','compromisParrain','fill_ids'));
+        return view ('compromis.index',compact('compromis','compromisParrain','fill_ids','valide_compro_id'));
 
         }
         //  dd($compromis);
@@ -247,10 +265,17 @@ dd($comm_parrain);
                 
                 ]);
 
-                $filename = 'pdf_compromis_'.$compromis->id.'.pdf';
-                $compromis->pdf_compromis = $filename;
-                // return response()->download(storage_path('app/pdf_compromis/pdf_compro.pdf'));
-                $request->pdf_compromis->storeAs('public/pdf_compromis',$filename);
+                if($request->hasFile('pdf_compromis')){
+
+                    $request->validate([
+                        'pdf_compromis' => 'mimes:pdf',
+                    ]);
+                    $filename = 'pdf_compromis_'.$compromis->id.'.pdf';
+                    $compromis->pdf_compromis = $filename;
+                    // return response()->download(storage_path('app/pdf_compromis/pdf_compro.pdf'));
+                    $request->pdf_compromis->storeAs('public/pdf_compromis',$filename);
+                }
+               
                 $compromis->update();
         }else{
             $request->validate([
@@ -352,6 +377,7 @@ dd($comm_parrain);
      */
     public function update(Request $request, Compromis $compromis)
     {
+        // dd("ddd");
  
         if($request->partage == "Non"  || ($request->partage == "Oui" &&  $request->je_porte_affaire == "Oui" ) ){
             if($request->numero_mandat != $compromis->numero_mandat){
@@ -363,6 +389,10 @@ dd($comm_parrain);
             $compromis->est_partage_agent = $request->partage == "Non" ? false : true;
             $compromis->type_affaire = $request->type_affaire;
             $compromis->nom_agent = $request->nom_agent;
+
+            $compromis->agent_id = $request->agent_id;
+            $compromis->pourcentage_agent = $request->pourcentage_agent;
+
             $compromis->description_bien = $request->description_bien;
             $compromis->code_postal_bien = $request->code_postal_bien;
             $compromis->ville_bien = $request->ville_bien;

@@ -79,7 +79,7 @@ class AppServiceProvider extends ServiceProvider
                 $i < 10 ? $month = "0$i" : $month = $i;
                
                 $ca_glo_n = Compromis::where('date_vente','like',"%$annee_n-$month%")->sum('frais_agence');
-                $ca_global_N [] = $ca_glo_n;
+                $ca_global_N [] = round($ca_glo_n/1.2,2);
         
         
                 $compros_styls = Compromis::where([['date_vente','like',"%$annee_n-$month%"],['demande_facture',2]])->get();
@@ -94,7 +94,7 @@ class AppServiceProvider extends ServiceProvider
                         }
                     }
                 }
-                $ca_attente_N [] = $ca_att_n;
+                $ca_attente_N [] = round($ca_att_n/1.2,2);
         
                 #####ca encaissé
                 // on parcour les facture stylimmo  encaissée pour réccupérer les montant_ht  
@@ -108,10 +108,10 @@ class AppServiceProvider extends ServiceProvider
                 }
         
                 // $ca_encai_n = Facture::where([['type','stylimmo'],['date_facture','like',"%$annee_n-$month%"],["encaissee",1]])->sum('montant_ht');
-                $ca_encaisse_N [] = $ca_encai_n;
+                $ca_encaisse_N [] = round($ca_encai_n/1.2,2);
                 
                 $ca_previ_n = Compromis::where([['date_vente','like',"%$annee_n-$month%"],['demande_facture','<',2]])->sum('frais_agence');
-                $ca_previsionel_N [] = $ca_previ_n;
+                $ca_previsionel_N [] = round($ca_previ_n/1.2,2);
 
             }
 
@@ -121,7 +121,7 @@ class AppServiceProvider extends ServiceProvider
                 $i < 10 ? $month = "0$i" : $month = $i;
                
                 $ca_glo_n_1 = Compromis::where('date_vente','like',"%$annee_n_1-$month%")->sum('frais_agence');
-                $ca_global_N_1 [] = $ca_glo_n_1;
+                $ca_global_N_1 [] = round($ca_glo_n_1/1.2,2);
         
         
                 $compros_styls_n_1 = Compromis::where([['date_vente','like',"%$annee_n_1-$month%"],['demande_facture',2]])->get();
@@ -136,7 +136,7 @@ class AppServiceProvider extends ServiceProvider
                         }
                     }
                 }
-                $ca_attente_N_1 [] = $ca_att_n_1;
+                $ca_attente_N_1 [] = round($ca_att_n_1/1.2,2);
         
                 #####ca encaissé
                 // on parcour les facture stylimmo  encaissée pour réccupérer les montant_ht  
@@ -150,10 +150,10 @@ class AppServiceProvider extends ServiceProvider
                 }
         
                 // $ca_encai_n = Facture::where([['type','stylimmo'],['date_facture','like',"%$annee_n-$month%"],["encaissee",1]])->sum('montant_ht');
-                $ca_encaisse_N_1 [] = $ca_encai_n_1;
+                $ca_encaisse_N_1 [] = round($ca_encai_n_1/1.2,2);
                 
                 $ca_previ_n_1 = Compromis::where([['date_vente','like',"%$annee_n_1-$month%"],['demande_facture','<',2]])->sum('frais_agence');
-                $ca_previsionel_N_1 [] = $ca_previ_n_1;
+                $ca_previsionel_N_1 [] = round($ca_previ_n_1/1.2,2);
 
             }
 
@@ -181,19 +181,19 @@ class AppServiceProvider extends ServiceProvider
             $STATS = array();
             $nb_affaires = Compromis::count();
             $nb_mandataires = User::where('role','mandataire')->count();
-            $nb_filleuls = Filleul::count();
-        
+            $nb_filleuls = Filleul::where('expire',0)->count();
+      
         
             $STATS["nb_affaires"] = $nb_affaires;
             $STATS["nb_mandataires"] = $nb_mandataires;
             $STATS["nb_filleuls"] = $nb_filleuls;
 
-
-
+            
             Config::set('stats.CA_N',$CA_N);
             Config::set('stats.CA_N_1',$CA_N_1);
             Config::set('stats.STATS',$STATS);
             
+            // dd(config('stats.STATS'));
 
 
 

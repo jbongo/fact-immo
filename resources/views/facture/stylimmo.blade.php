@@ -49,7 +49,7 @@
 
                                         </td>
                                         <td  style="">
-                                            @if($facture->compromis->charge == "vendeur")
+                                            @if($facture->compromis->charge == "Vendeur")
                                                 <strong>{{ substr($facture->compromis->nom_vendeur,0,50)}}</strong> 
                                             @else
                                                 <strong>{{ substr($facture->compromis->nom_acquereur,0,50)}}</strong> 

@@ -122,8 +122,8 @@
 </table>
 
 <br>
-
-@if($facture != null )
+{{-- {{dd($facture)}} --}}
+@if($facture != null && $result['respect_condition'] == true )
 <table style="height: 47px; width: 672px;">
     <tbody>
         <tr>
@@ -135,7 +135,7 @@
         <tr>
             <td style="width: 400px;">&nbsp;</td>
             <td style="width: 153px;">T.V.A 20% :</td>
-            <td style="width: 231px;">{{number_format($facture->montant_ttc,'2','.',' ') - $facture->montant_ht}} &euro;</td>
+            <td style="width: 231px;">{{number_format($facture->montant_ttc- $facture->montant_ht,'2','.',' ') }} &euro;</td>
         </tr>
         <tr><td>&nbsp;</td> <td>&nbsp;</td> </tr>
 
@@ -158,7 +158,43 @@
     </tbody>
 
 </table>
+@endif 
+<br>
+{{-- Si les conditions de parrainnage sont respectées --}}
+@if($result['respect_condition'] == false)
+
+<span style="color:#ff0080">VOUS NE RESPECTEZ PAS LES CONDITIONS DE PARRAINNAGE </span> <hr>
+
+
+<table style="height: 47px; width: 800px;"  border="1">
+    <tbody>
+    <tr style="height: 47px; width: 800px; background-color:#C4C4C4;color: green; " >
+    <td style="width: 96px;">&nbsp;</td>
+    <td style="width: 96px;">Chiffre d'affaires réalisé </td>
+    <td style="width: 96px;">Chiffre d'affaires requis </td>
+    <td style="width: 97px;">Facture Pub </td>
+    </tr>
+    <tr>
+    <td style="width: 96px;">{{$parrain->nom }} {{$parrain->prenom}} (parrain) </td>
+    <td style="width: 96px;"><span @if($result['ca_parrain'] < $result['seuil_parrain'])  style="background-color:#FD9090;color: #fffffff; " @endif> {{number_format($result["ca_parrain"],'2','.',' ')}} &euro; </span></td>
+    <td style="width: 96px;">{{number_format($result["seuil_parrain"],'2','.',' ') }} &euro;</td>
+    <td style="width: 97px;">Pas pris en compte</td>
+    </tr>
+    <tr>
+    <td style="width: 96px;">{{$filleul->nom }} {{$filleul->prenom}} (filleul) </td>
+    <td style="width: 96px;"><span @if($result['ca_filleul'] < $result['seuil_filleul'])  style="background-color:#FD9090;color: #ff; " @endif> {{number_format($result["ca_filleul"],'2','.',' ') }} &euro; </span></td>
+    <td style="width: 96px;">{{number_format($result["seuil_filleul"],'2','.',' ') }} &euro;</td>
+    <td style="width: 97px;">Pas pris en compte</td>
+    </tr>
+    </tbody>
+    </table>
+    <br>
+<span style="color:#8000ff">Chiffre d'affaires sur la période du  {{$result["date_12"] }}  au {{$compromis->date_vente->format('d/m/Y')}} (Les 12 mois précedents la date de vente)</span> 
+
+
 @endif
+<br>
+
 
 <br>
 

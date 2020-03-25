@@ -441,7 +441,7 @@ Ajout d'une affaire
                                        <div class="col-lg-4 col-md-4 col-sm-4">
                                             <div class="form-group">
                                                 <label for="date_signature">Date de signature du compromis  </label>
-                                                <input class="form-control" type="date" value="" id="date_signature" name="date_signature"  required>
+                                                <input class="form-control" type="date" value="" id="date_signature" name="date_signature"  >
                                             </div>
                                         </div>
 
@@ -453,7 +453,7 @@ Ajout d'une affaire
                                                 <div class="form-group ">
                                                     <label class=" col-lg-7 col-md-7 col-sm-7 " for="observations">Observations </span></label>
                                                     <div class=" col-lg-12 col-md-12 col-sm-12 ">
-                                                        <textarea class="form-control"  name="observations" id="observations" cols="50" rows="5" required></textarea>
+                                                        <textarea class="form-control"  name="observations" id="observations" cols="50" rows="5" ></textarea>
                                                         
                                                     </div>
                                                 </div>

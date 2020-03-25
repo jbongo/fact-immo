@@ -130,7 +130,7 @@
             </div>
             <div class="stat-content">
                 <div class="stat-heading color-primary"><strong>Affaires</strong></div>
-                <div class="stat-text">{{config('STATS["nb_affaires"]')}}</div>
+                <div class="stat-text">{{config('stats.STATS')["nb_affaires"]}}</div>
             </div>
         </div>
     </div>
@@ -143,7 +143,7 @@
             </div>
             <div class="stat-content">
                 <div class="stat-heading color-success"><strong>Mandataires</strong></div>
-                <div class="stat-text">{{config('STATS["nb_mandataires"]') }}</div>
+                <div class="stat-text">{{config('stats.STATS')["nb_mandataires"] }}</div>
             </div>
         </div>
     </div>
@@ -169,7 +169,7 @@
             </div>
             <div class="stat-content">
                 <div class="stat-heading color-primary"><strong>Parrainages</strong></div>
-                <div class="stat-text">{{config('STATS["nb_filleuls"]')}}</div>
+                <div class="stat-text">{{config('stats.STATS')["nb_filleuls"]}}</div>
             </div>
         </div>
     </div>
@@ -177,7 +177,7 @@
 </div>
 
 </div>
-
+{{-- {{dd(config('stats.STATS')["nb_filleuls"])}} --}}
 @else 
 
 
