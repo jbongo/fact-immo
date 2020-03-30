@@ -69,7 +69,7 @@
                                         <strong> @if($compromi->date_vente != null)   {{$compromi->date_vente->format("M-Y")}} @endif</strong> 
                                     </td>    
                                     <td width="15%" style="{{$grise}}" >
-                                        @if($compromi->charge == "vendeur")
+                                        @if($compromi->charge == "Vendeur")
                                             <strong>{{ substr($compromi->nom_vendeur,0,50)}}</strong> 
                                         @else
                                             <strong>{{ substr($compromi->nom_acquereur,0,50)}}</strong> 
