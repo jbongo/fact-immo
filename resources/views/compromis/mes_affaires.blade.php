@@ -21,10 +21,11 @@
                                     @if(Auth()->user()->role == "mandataire")
                                     <th>@lang('porte l\'affaire')</th>
                                     @endif
-                                    <th>@lang('Facture Stylimmo')</th>
+                                    <th>@lang('Numero Styl')</th>
                                     <th>@lang('Mandat')</th>
+                                    <th>@lang('Date vente')</th>
                                     <th>@lang('Charge')</th>
-                                    <th>@lang('Commission')</th>
+                                    <th>@lang('Comm')</th>
                                     {{-- <th>@lang('Date Mandat')</th> --}}
                                     <th>@lang('Partage')</th>
                                     <th>@lang('Facture Styl')</th>
@@ -63,7 +64,10 @@
                                     </td>
                                     <td  style="color: #e05555;{{$grise}}">
                                         <strong> {{$compromi->numero_mandat}}</strong> 
-                                    </td>     
+                                    </td> 
+                                    <td >
+                                        <strong> @if($compromi->date_vente != null)   {{$compromi->date_vente->format("M-Y")}} @endif</strong> 
+                                    </td>    
                                     <td width="15%" style="{{$grise}}" >
                                         @if($compromi->charge == "vendeur")
                                             <strong>{{ substr($compromi->nom_vendeur,0,50)}}</strong> 
@@ -73,7 +77,12 @@
                                     </td>
                                     
                                     <td  style="{{$grise}}">
-                                        {{number_format($compromi->frais_agence,'2','.',' ')}} €   
+                                        @php
+                                            $com = ($compromi->frais_agence / 1000) . ' K';
+                                        
+                                        @endphp
+                                        {{$com}} €
+                                        {{-- {{number_format($compromi->frais_agence,'2','.',' ')}} €    --}}
                                     </td>
                                     {{-- <td  style="{{$grise}}">
                                    @if($compromi->date_mandat != null) {{$compromi->date_mandat->format('d/m/Y')}} @endif  
