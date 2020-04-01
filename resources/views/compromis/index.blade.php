@@ -67,7 +67,7 @@
       
     };
  
-    periode = setInterval(clignotement, 1500);
+    periode = setInterval(clignotement, 4000);
  
  </script>
 <script>

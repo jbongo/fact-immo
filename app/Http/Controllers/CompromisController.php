@@ -11,6 +11,8 @@ use App\Parametre;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\PartageAffaire;
+use App\Mail\ModifCompromis;
+
 class CompromisController extends Controller
 {
    /**
@@ -391,7 +393,6 @@ class CompromisController extends Controller
             $compromis->nom_agent = $request->nom_agent;
 
             $compromis->agent_id = $request->agent_id;
-            $compromis->pourcentage_agent = $request->pourcentage_agent;
 
             $compromis->description_bien = $request->description_bien;
             $compromis->code_postal_bien = $request->code_postal_bien;
@@ -419,7 +420,25 @@ class CompromisController extends Controller
             $compromis->charge = $request->charge;
             $compromis->net_vendeur = $request->net_vendeur;
             $compromis->scp_notaire = $request->scp_notaire;
-            $compromis->date_vente = $request->date_vente;
+
+            // Modification de la date de vente et notification par mail
+           if($compromis->date_vente != null){
+                if($compromis->date_vente->format('Y-m-d') != $request->date_vente){
+                    
+                    Mail::to("gestion@stylimmo.com")->send(new ModifCompromis($compromis, $request,"admin"));
+                }
+           }else{
+                $compromis->date_vente = $request->date_vente;
+           }
+
+           if ($compromis->est_partage_agent == true && $compromis->agent_id != null){
+                $user_partage = User::where("id",$compromis->agent_id)->first();
+                Mail::to($user_partage->email)->send(new ModifCompromis($compromis, $request,"mandataire"));
+
+           }
+           $compromis->date_vente = $request->date_vente;
+           $compromis->pourcentage_agent = $request->pourcentage_agent;
+
             $compromis->date_signature = $request->date_signature;
             $compromis->observations = $request->observations;
 

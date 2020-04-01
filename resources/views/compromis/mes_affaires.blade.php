@@ -70,11 +70,11 @@
                                             $mois = ['','Jan','Fév','Mar','Avr','Mai','Juin','Juil','Août','Sep','Oct','Nov','Déc'];
                                         @endphp 
                                         @if($compromi->date_vente != null)
-                                            @if(strtotime($compromi->date_vente->format('d-m-Y')) > strtotime(date("d-m-Y") ))
+                                            @if(strtotime($compromi->date_vente->format('d-m-Y')) > strtotime(date("d-m-Y")) || $compromi->demande_facture > 0)
 
                                             <strong> @if($compromi->date_vente != null) {{$mois[ (int)$compromi->date_vente->format("m")]}} - {{$compromi->date_vente->format("Y")}} @endif</strong> 
                                             @else 
-                                            <strong>  <label class="danger" style="background-color:#FF0633;color:white;visibility:visible;">@if($compromi->date_vente != null) {{$mois[ (int)$compromi->date_vente->format("m")]}} - {{$compromi->date_vente->format("Y")}} @endif !!! &nbsp;&nbsp;</label>  </strong> 
+                                            <strong>  <label class="danger" title="La date de vente prévue est dépassée. Vous pouvez la modifier dans votre affaire" style="background-color:#FF0633;color:white;visibility:visible;">@if($compromi->date_vente != null) {{$mois[ (int)$compromi->date_vente->format("m")]}} - {{$compromi->date_vente->format("Y")}} @endif !!! &nbsp;&nbsp;</label>  </strong> 
                                             @endif 
                                         @endif
                                     </td>    
