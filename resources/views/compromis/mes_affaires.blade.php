@@ -69,12 +69,14 @@
                                         @php
                                             $mois = ['','Jan','Fév','Mar','Avr','Mai','Juin','Juil','Août','Sep','Oct','Nov','Déc'];
                                         @endphp 
-                                        @if(strtotime($compromi->date_vente->format('d-m-Y')) > strtotime(date("d-m-Y") ))
+                                        @if($compromi->date_vente != null)
+                                            @if(strtotime($compromi->date_vente->format('d-m-Y')) > strtotime(date("d-m-Y") ))
 
-                                        <strong> @if($compromi->date_vente != null) {{$mois[ (int)$compromi->date_vente->format("m")]}} - {{$compromi->date_vente->format("Y")}} @endif</strong> 
-                                        @else 
-                                        <strong>  <label class="danger" style="background-color:#FF0633;color:white;visibility:visible;">@if($compromi->date_vente != null) {{$mois[ (int)$compromi->date_vente->format("m")]}} - {{$compromi->date_vente->format("Y")}} @endif !!! &nbsp;&nbsp;</label>  </strong> 
-                                        @endif 
+                                            <strong> @if($compromi->date_vente != null) {{$mois[ (int)$compromi->date_vente->format("m")]}} - {{$compromi->date_vente->format("Y")}} @endif</strong> 
+                                            @else 
+                                            <strong>  <label class="danger" style="background-color:#FF0633;color:white;visibility:visible;">@if($compromi->date_vente != null) {{$mois[ (int)$compromi->date_vente->format("m")]}} - {{$compromi->date_vente->format("Y")}} @endif !!! &nbsp;&nbsp;</label>  </strong> 
+                                            @endif 
+                                        @endif
                                     </td>    
                                     <td width="15%" style="{{$grise}}" >
                                         @if($compromi->charge == "Vendeur")
