@@ -49,6 +49,27 @@
     </div>
 @endsection
 @section('js-content')
+<script type="text/javascript">
+    var clignotement = function(){
+ 
+       var element = document.getElementsByClassName('danger');
+    
+ 
+       Array.prototype.forEach.call(element, function(el) {
+          if (el.style.visibility=='visible'){
+             el.style.visibility='hidden';
+          }
+          else{
+             el.style.visibility='visible';
+          }
+      });
+      
+      
+    };
+ 
+    periode = setInterval(clignotement, 1500);
+ 
+ </script>
 <script>
 
 $(function() {
