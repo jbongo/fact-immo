@@ -45,6 +45,34 @@
 </div>
 {{-- ######## --}}
 
+{{--  CA ANNEE N --}}
+<div class="row" >
+      
+    <div class="col-lg-12">
+        <div class="card alert">
+            <div class="card-header">
+                <h4>Légende </h4>
+                
+               
+            </div>
+            <div class="sales-chart">
+                <button style="background-color:#ff1a1a; width:50px; height:20px"></button> <span style="font-family: Montserrat; font-size:16px; font-weight:bold; ">Général :</span> <span style="font-family: Montserrat; font-size:13px;  "> Toutes les affaires</span> 
+                <button style="background-color:#6eff1a ; width:50px; height:20px"></button> <span style="font-family: Montserrat; font-size:16px; font-weight:bold; ">Encaissé :</span></span> <span style="font-family: Montserrat; font-size:13px;  "> Les affaires avec facture Styl'immo encaissée</span>  <br>
+                <button style="background-color:#e6e6e6; width:50px; height:20px"></button> <span style="font-family: Montserrat; font-size:16px; font-weight:bold; ">En attente :</span> </span> <span style="font-family: Montserrat; font-size:13px;  "> Les affaires avec facture Styl'immo non encaissée</span>
+                <button style="background-color:#0ad2ff; width:50px; height:20px"></button> <span style="font-family: Montserrat; font-size:16px; font-weight:bold; ">Prévisionnel :</span> </span> <span style="font-family: Montserrat; font-size:13px;  "> Les affaires sans facture Styl'immo</span> <hr>
+                <a href="{{route('compromis_type.index')}}" class="btn btn-danger btn-rounded btn-addon btn-xs m-b-10 m-l-5"><i class="ti-folder"></i>@lang('Voir les affaires')</a>
+
+            </div>
+        </div>
+    </div>
+   
+     
+  
+</div>
+
+
+
+
 {{-- CA ANNEE N-1 --}}
 <div class="row" >
       

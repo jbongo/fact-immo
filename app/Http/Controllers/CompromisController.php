@@ -8,6 +8,7 @@ use Auth;
 use App\User;
 use App\Filleul;
 use App\Parametre;
+use App\Facture;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\PartageAffaire;
@@ -515,4 +516,61 @@ class CompromisController extends Controller
 
         return redirect()->route('compromis.index')->with('ok', __("Affaire cloturée (mandat $compromis->numero_mandat)  "));
     }
+
+  
+    /**
+     * Cloturer une affaire
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index_type_compromis()
+    {
+        //
+        
+        $compromis = Compromis::where('id',5)->first();
+        $tab_compromisEncaissee_id = array();
+        $tab_compromisEnattente_id = array();
+        $tab_compromisPrevisionnel_id = array();
+
+        $compromisEncaissee_id = Facture::where([['encaissee',1],['type','stylimmo']])->select('compromis_id')->get();
+        $compromisEnattente_id = Facture::where([['encaissee',0],['type','stylimmo']])->select('compromis_id')->get();
+        // $compromisPrevisionnel_id = Facture::where([['encaissee',1],['type','stylimmo']])->select('compromis_id')->get();
+
+        foreach ($compromisEncaissee_id as $encaiss) {
+           $tab_compromisEncaissee_id[] = $encaiss["compromis_id"];
+        }
+        foreach ($compromisEnattente_id as $attente) {
+            $tab_compromisEnattente_id[] = $attente["compromis_id"];
+         }
+        //  foreach ($compromisPrevisionnel_id as $previ) {
+        //     $tab_compromisPrevisionnel_id[] = $previ["compromis_id"];
+        //  }
+        // dd($tab_compromisEncaissee_id);
+
+        
+        if(auth::user()->role == "admin"){
+            $compromisEncaissee = Compromis::whereIn('id',$tab_compromisEncaissee_id)->get();
+            $compromisEnattente = Compromis::whereIn('id',$tab_compromisEnattente_id)->get();
+            $compromisPrevisionnel = Compromis::where('demande_facture','<',2)->get();
+        }else{
+            $compromisEncaissee = Compromis::whereIn('id',$tab_compromisEncaissee_id)->where(function($query){
+                $query->where('user_id',auth::user()->id)
+                ->orWhere('agent_id',auth::user()->id);
+            })->get();
+
+            $compromisEnattente = Compromis::whereIn('id',$tab_compromisEnattente_id)->where(function($query){
+                $query->where('user_id',auth::user()->id)
+                ->orWhere('agent_id',auth::user()->id);
+            })->get();
+
+
+            $compromisPrevisionnel = Compromis::where('demande_facture','<',2)->where(function($query){
+                $query->where('user_id',auth::user()->id)
+                ->orWhere('agent_id',auth::user()->id);
+            })->get();
+        }
+
+        return view('compromis.type_affaire.index', compact('compromisEncaissee','compromisEnattente','compromisPrevisionnel'));
+    }
+
 }

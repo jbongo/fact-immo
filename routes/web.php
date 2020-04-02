@@ -39,6 +39,9 @@ Route::middleware('auth')->group(function(){
     Route::delete('/compromis/delete/{compromis}','CompromisController@destroy')->name('compromis.delete');
     Route::delete('/compromis/archive/{compromis}','CompromisController@archive')->name('compromis.archive');
     Route::get('/compromis/cloturer/{compromis}','CompromisController@cloturer')->name('compromis.cloturer');
+    // type affaire
+    Route::get('/compromis/type','CompromisController@index_type_compromis')->name('compromis_type.index');
+
 
     
 
