@@ -132,10 +132,9 @@ Route::middleware('auth')->group(function(){
         return view('home');
     });
     Route::get('/home', 'HomeController@index')->name('home');       
+    Route::get('/', 'HomeController@index')->name('home');       
   
-    Route::get('test', function () {
-        return view('email.creation_mandataire');
-    });
+    
 
     // Se connecter sur une autre session utilisateur
 

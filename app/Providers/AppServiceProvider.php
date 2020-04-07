@@ -66,12 +66,14 @@ class AppServiceProvider extends ServiceProvider
                 $ca_global_N = array();
                 $ca_attente_N = array();
                 $ca_encaisse_N = array();
-                $ca_previsionel_N = array();
+                $ca_sous_offre_N = array();
+                $ca_sous_compromis_N = array();
             $CA_N_1 = array();
                 $ca_global_N_1 = array();
                 $ca_attente_N_1 = array();
                 $ca_encaisse_N_1 = array();
-                $ca_previsionel_N_1 = array();
+                $ca_sous_offre_N_1 = array();
+                $ca_sous_compromis_N_1 = array();
         
             //  ######## Sur l'année N ##########
             for ($i=1; $i <= 12 ; $i++) {                
@@ -110,8 +112,11 @@ class AppServiceProvider extends ServiceProvider
                 // $ca_encai_n = Facture::where([['type','stylimmo'],['date_facture','like',"%$annee_n-$month%"],["encaissee",1]])->sum('montant_ht');
                 $ca_encaisse_N [] = round($ca_encai_n/1.2,2);
                 
-                $ca_previ_n = Compromis::where([['date_vente','like',"%$annee_n-$month%"],['demande_facture','<',2]])->sum('frais_agence');
-                $ca_previsionel_N [] = round($ca_previ_n/1.2,2);
+                $ca_sous_offre_n = Compromis::where([['date_vente','like',"%$annee_n-$month%"],['demande_facture','<',2],['pdf_compromis',null]])->sum('frais_agence');
+                $ca_sous_offre_N [] = round($ca_sous_offre_n/1.2,2);
+
+                $ca_sous_compromis_n = Compromis::where([['date_vente','like',"%$annee_n-$month%"],['demande_facture','<',2],['pdf_compromis','<>',null]])->sum('frais_agence');
+                $ca_sous_compromis_N [] = round($ca_sous_compromis_n/1.2,2);
 
             }
 
@@ -152,8 +157,14 @@ class AppServiceProvider extends ServiceProvider
                 // $ca_encai_n = Facture::where([['type','stylimmo'],['date_facture','like',"%$annee_n-$month%"],["encaissee",1]])->sum('montant_ht');
                 $ca_encaisse_N_1 [] = round($ca_encai_n_1/1.2,2);
                 
-                $ca_previ_n_1 = Compromis::where([['date_vente','like',"%$annee_n_1-$month%"],['demande_facture','<',2]])->sum('frais_agence');
-                $ca_previsionel_N_1 [] = round($ca_previ_n_1/1.2,2);
+                // $ca_previ_n_1 = Compromis::where([['date_vente','like',"%$annee_n_1-$month%"],['demande_facture','<',2]])->sum('frais_agence');
+                // $ca_previsionel_N_1 [] = round($ca_previ_n_1/1.2,2);
+
+                $ca_sous_offre_n_1 = Compromis::where([['date_vente','like',"%$annee_n_1-$month%"],['demande_facture','<',2],['pdf_compromis',null]])->sum('frais_agence');
+                $ca_sous_offre_N_1 [] = round($ca_sous_offre_n_1/1.2,2);
+
+                $ca_sous_compromis_n_1 = Compromis::where([['date_vente','like',"%$annee_n_1-$month%"],['demande_facture','<',2],['pdf_compromis','<>',null]])->sum('frais_agence');
+                $ca_sous_compromis_N_1 [] = round($ca_sous_compromis_n_1/1.2,2);
 
             }
 
@@ -165,12 +176,14 @@ class AppServiceProvider extends ServiceProvider
             $CA_N[] = $ca_global_N; 
             $CA_N[] = $ca_attente_N; 
             $CA_N[] = $ca_encaisse_N; 
-            $CA_N[] = $ca_previsionel_N; 
+            $CA_N[] = $ca_sous_offre_N; 
+            $CA_N[] = $ca_sous_compromis_N; 
 
             $CA_N_1[] = $ca_global_N_1; 
             $CA_N_1[] = $ca_attente_N_1; 
             $CA_N_1[] = $ca_encaisse_N_1; 
-            $CA_N_1[] = $ca_previsionel_N_1; 
+            $CA_N_1[] = $ca_sous_offre_N_1; 
+            $CA_N_1[] = $ca_sous_compromis_N_1; 
             
             // dd($CA_N);
             // $a_date = "2011-02";  

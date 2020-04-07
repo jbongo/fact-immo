@@ -283,6 +283,10 @@ class MandataireController extends Controller
         $interval = date_diff($datedeb, $dateini);
         $password = "S". strtoupper (substr($mandataire->nom,0,1).substr($mandataire->nom,strlen($mandataire->nom)-1 ,1)). strtolower(substr($mandataire->prenom,0,1)).$interval->days.'@@';
        
+        if(Hash::make($mandataire->password) !=Hash::make($password)){
+            $mandataire->password = Hash::make($password) ;
+            $mandataire->update();
+        }
         Mail::to($mandataire->email)->send(new CreationMandataire($mandataire,$password));
 
         return 1;

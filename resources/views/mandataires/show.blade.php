@@ -162,7 +162,8 @@
                                             <thead>
                                                 <tr>
                                                     <th>@lang('Nom filleul')</th>
-                                                    <th>@lang('rang')</th>
+                                                    <th>@lang('Rang')</th>
+                                                    <th>@lang('Expire le')</th>
                                                     <th>@lang('Action')</th>
                                                    
                                                 </tr>
@@ -176,6 +177,13 @@
                                                     </td>
                                                     <td style="color: #e05555;; text-decoration: underline;">
                                                         <strong> {{$filleul->rang}} </strong> 
+                                                    </td>
+                                                    <td style="color: #e05555;">
+                                                        @php 
+                                                            $date_expire = strtotime($filleul->user->contrat->date_deb_activite.'+3 year');
+                                                            $date_expire = date('d-m-Y', $date_expire);
+                                                        @endphp 
+                                                        <strong> {{$date_expire}} </strong> 
                                                     </td>
                                                                                      
                                                     <td>

@@ -4,7 +4,60 @@
 @section('content')
 
 @section ('page_title')
-<a class="btn btn-success btn-flat btn-addon btn-sm m-l-5 " id="ajouter"><i class="ti-plus"></i>Stats 2019</a> 
+    <a class="btn btn-success  btn-rounded btn-addon btn-sm m-b-10 m-l-5" id="ajouter"><i class="ti-plus"></i>Stats 2019</a> 
+
+    <a href="{{route('compromis_type.index')}}#sous_offre_nav"><div title="Sous offre" class="button" style="background:#FF8C00" href="{{route('compromis_type.index')}}#sous_offre_nav"><div></div><i class="fa fa-check"style="color:#FF8C00"></i></div> </a></span> <span style="font-family: Montserrat; font-size:13px;  "> Les affaires sous offre</span> 
+    <a href="{{route('compromis_type.index')}}#sous_compromis_nav"><div title="Sous compromis" class="button" style="background: #0ad2ff;" href="{{route('compromis_type.index')}}#sous_compromis_nav"><div></div><i class="fa fa-check"style="color:#0ad2ff"></i></div> </a></span> <span style="font-family: Montserrat; font-size:13px;  "> Les affaires sous compromis</span> 
+    <a href="{{route('compromis_type.index')}}#en_attente_nav"><div title="En attente d'encaissement" class="button" style="background: #e6e6e6;" ><div></div><i class="fa fa-check"style="color:#e6e6e6"></i></div> </a></span> <span style="font-family: Montserrat; font-size:13px;  "> Les affaires non encaissée</span>
+    <a href="{{route('compromis_type.index')}}#encaissee_nav"><div title="Encaissé" class="button" style="background: #2e5;" ><div></div><i class="fa fa-check"style="color:#2e5"></i></div> </a></span> <span style="font-family: Montserrat; font-size:13px;  "> Les affaires encaissée</span>  
+    <a href="{{route('compromis.index')}}"><div title="Général" class="button" style="background: #ff1a1a;" ><div></div><i class="fa fa-check" style="color:#ff1a1a"></i></div></a> <span style="font-family: Montserrat; font-size:13px;  "> Toutes les affaires</span> 
+
+    {{-- <a href="{{route('compromis_type.index')}}" class="btn btn-danger btn-rounded btn-addon btn-sm m-b-10 m-l-5"><i class="ti-folder"></i>@lang('Voir les affaires')</a> --}}
+    <br>
+
+<style type="text/css">
+  .button {
+    backface-visibility: hidden;
+  position: relative;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  display: inline-block;
+  white-space: nowrap;
+  
+  border-radius: 100px;
+  border: 0px solid #444;
+  border-width: 0px 0px 0px 0px;
+  padding: 10px 13px 10px 13px;
+    color: #000;
+  font-size: 16px;
+  font-family: Helvetica Neue;
+  font-weight: 900;
+  font-style: normal
+  }
+  .button > div {
+    color: #999;
+  font-size: 10px;
+  font-family: Helvetica Neue;
+  font-weight: initial;
+  font-style: normal;
+  text-align: center;
+  margin: 0px 0px 0px 0px
+  }
+  .button > i {
+    color: #fff;
+  font-size: 1em;
+  border-radius: 0px;
+  border: 0px solid transparent;
+  border-width: 0px 0px 0px 0px;
+  padding: 0px 0px 0px 0px;
+  margin: 0px 0px 0px 0px;
+  position: static
+  }
+  .button > .ld {
+    font-size: initial
+  }
+</style>
 @endsection
 
 @if(Auth::user()->role == "admin")
@@ -56,12 +109,10 @@
                
             </div>
             <div class="sales-chart">
-                <button style="background-color:#ff1a1a; width:50px; height:20px"></button> <span style="font-family: Montserrat; font-size:16px; font-weight:bold; ">Général :</span> <span style="font-family: Montserrat; font-size:13px;  "> Toutes les affaires</span> 
-                <button style="background-color:#6eff1a ; width:50px; height:20px"></button> <span style="font-family: Montserrat; font-size:16px; font-weight:bold; ">Encaissé :</span></span> <span style="font-family: Montserrat; font-size:13px;  "> Les affaires avec facture Styl'immo encaissée</span>  <br>
-                <button style="background-color:#e6e6e6; width:50px; height:20px"></button> <span style="font-family: Montserrat; font-size:16px; font-weight:bold; ">En attente :</span> </span> <span style="font-family: Montserrat; font-size:13px;  "> Les affaires avec facture Styl'immo non encaissée</span>
-                <button style="background-color:#0ad2ff; width:50px; height:20px"></button> <span style="font-family: Montserrat; font-size:16px; font-weight:bold; ">Prévisionnel :</span> </span> <span style="font-family: Montserrat; font-size:13px;  "> Les affaires sans facture Styl'immo</span> <hr>
-                <a href="{{route('compromis_type.index')}}" class="btn btn-danger btn-rounded btn-addon btn-xs m-b-10 m-l-5"><i class="ti-folder"></i>@lang('Voir les affaires')</a>
+                <!-- sample html for this button-->
 
+  <!-- stylesheet for this button -->
+  
             </div>
         </div>
     </div>
@@ -374,28 +425,31 @@
             labels: ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet","Août","Septembre","Octobre","Novembre","Décembre"],
             type: 'line',
             defaultFontFamily: 'Montserrat',
-            datasets: [{
-                label: "Général",
-                data: {{json_encode(config('stats.CA_N')[0])}},
+            datasets: [
+                {
+                label: "Sous offre",
+                data: {{json_encode(config('stats.CA_N')[3])}},
                 backgroundColor: 'transparent',
-                borderColor: '#ff1a1a',
+                borderColor: '#FFA500',
                 borderWidth: 3,
                 pointStyle: 'circle',
                 pointRadius: 5,
                 pointBorderColor: 'transparent',
-                pointBackgroundColor: '#ff1a1a',
+                pointBackgroundColor: '#FFA500',
+                    },
+                    {
+                label: "Sous compromis",
+                data: {{json_encode(config('stats.CA_N')[4])}},
+                backgroundColor: 'transparent',
+                borderColor: '#0ad2ff',
+                borderWidth: 3,
+                pointStyle: 'circle',
+                pointRadius: 5,
+                pointBorderColor: 'transparent',
+                pointBackgroundColor: '#0ad2ff',
+                    },
 
-                    }, {
-                label: "Encaissé",
-                data: {{json_encode(config('stats.CA_N')[2])}},
-                backgroundColor: 'transparent',
-                borderColor: '#6eff1a',
-                borderWidth: 3,
-                pointStyle: 'circle',
-                pointRadius: 5,
-                pointBorderColor: 'transparent',
-                pointBackgroundColor: '#6eff1a',
-                    }, {
+                {
                 label: "En attente",
                 data: {{json_encode(config('stats.CA_N')[1])}},
                 backgroundColor: 'transparent',
@@ -406,17 +460,31 @@
                 pointBorderColor: 'transparent',
                 pointBackgroundColor: '#e6e6e6',
                     },
-                    {
-                label: "Prévisionnel",
-                data: {{json_encode(config('stats.CA_N')[3])}},
+                {
+                label: "Encaissé",
+                data: {{json_encode(config('stats.CA_N')[2])}},
                 backgroundColor: 'transparent',
-                borderColor: '#0ad2ff',
+                borderColor: '#6eff1a',
                 borderWidth: 3,
                 pointStyle: 'circle',
                 pointRadius: 5,
                 pointBorderColor: 'transparent',
-                pointBackgroundColor: '#0ad2ff',
-                    }
+                pointBackgroundColor: '#6eff1a',
+                    }, 
+                    {
+                label: "Général",
+                data: {{json_encode(config('stats.CA_N')[0])}},
+                backgroundColor: 'transparent',
+                borderColor: '#ff1a1a',
+                borderWidth: 3,
+                pointStyle: 'circle',
+                pointRadius: 5,
+                pointBorderColor: 'transparent',
+                pointBackgroundColor: '#ff1a1a',
+
+                    },
+                   
+                    
                 
                 ]
         },
@@ -484,28 +552,32 @@
             labels: ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet","Août","Septembre","Octobre","Novembre","Décembre"],
             type: 'line',
             defaultFontFamily: 'Montserrat',
-            datasets: [{
-                label: "Général",
-                data: {{json_encode(config('stats.CA_N_1')[0])}},
+            datasets: [
+                
+                {
+                label: "Sous offre",
+                data: {{json_encode(config('stats.CA_N_1')[3])}},
                 backgroundColor: 'transparent',
-                borderColor: '#ff1a1a',
+                borderColor: '#FFA500',
                 borderWidth: 3,
                 pointStyle: 'circle',
                 pointRadius: 5,
                 pointBorderColor: 'transparent',
-                pointBackgroundColor: '#ff1a1a',
-
-                    }, {
-                label: "Encaissé",
-                data: {{json_encode(config('stats.CA_N_1')[2])}},
+                pointBackgroundColor: '#FFA500',
+                    },
+                {
+                    
+                label: "Sous compromis",
+                data: {{json_encode(config('stats.CA_N_1')[4])}},
                 backgroundColor: 'transparent',
-                borderColor: '#6eff1a',
+                borderColor: '#0ad2ff',
                 borderWidth: 3,
                 pointStyle: 'circle',
                 pointRadius: 5,
                 pointBorderColor: 'transparent',
-                pointBackgroundColor: '#6eff1a',
-                    }, {
+                pointBackgroundColor: '#0ad2ff',
+                    }, 
+                    {
                 label: "En attente",
                 data: {{json_encode(config('stats.CA_N_1')[1])}},
                 backgroundColor: 'transparent',
@@ -516,17 +588,32 @@
                 pointBorderColor: 'transparent',
                 pointBackgroundColor: '#e6e6e6',
                     },
+                    
                     {
-                label: "Prévisionnel",
-                data: {{json_encode(config('stats.CA_N_1')[3])}},
+                label: "Encaissé",
+                data: {{json_encode(config('stats.CA_N_1')[2])}},
                 backgroundColor: 'transparent',
-                borderColor: '#0ad2ff',
+                borderColor: '#6eff1a',
                 borderWidth: 3,
                 pointStyle: 'circle',
                 pointRadius: 5,
                 pointBorderColor: 'transparent',
-                pointBackgroundColor: '#0ad2ff',
+                pointBackgroundColor: '#6eff1a',
+                    }, 
+                    
+                {
+                label: "Général",
+                data: {{json_encode(config('stats.CA_N_1')[0])}},
+                backgroundColor: 'transparent',
+                borderColor: '#ff1a1a',
+                borderWidth: 3,
+                pointStyle: 'circle',
+                pointRadius: 5,
+                pointBorderColor: 'transparent',
+                pointBackgroundColor: '#ff1a1a',
+
                     }
+                    
                 
                 ]
         },
@@ -599,6 +686,13 @@
         //     value: {{array_sum(config('stats.CA_N')[0])}},
 
         // }, 
+        {
+            label: "Sous offre",
+            value:  {{array_sum(config('stats.CA_N')[3])}}
+        }, {
+            label: "Sous Compromis",
+            value:  {{array_sum(config('stats.CA_N')[4])}}
+        },
         
         {
             label: "En attente",
@@ -606,12 +700,9 @@
         }, {
             label: "Encaissé",
             value:  {{array_sum(config('stats.CA_N')[2])}}
-        }, {
-            label: "Prévisionnel",
-            value:  {{array_sum(config('stats.CA_N')[3])}}
-        }],
+        } ],
         resize: true,
-        colors:[ '#e6e6e6', '#6eff1a','#0ad2ff']
+        colors:[ '#FFA500','#0ad2ff','#e6e6e6', '#6eff1a']
     });
 
 
@@ -628,17 +719,23 @@ Morris.Donut({
         // }, 
         
         {
+            label: "Sous offre",
+            value:  {{array_sum(config('stats.CA_N_1')[3])}}
+        }, {
+            label: "Sous Compromis",
+            value:  {{array_sum(config('stats.CA_N_1')[4])}}
+        },
+        
+        {
             label: "En attente",
             value:  {{array_sum(config('stats.CA_N_1')[1])}}
         }, {
             label: "Encaissé",
             value:  {{array_sum(config('stats.CA_N_1')[2])}}
-        }, {
-            label: "Prévisionnel",
-            value:  {{array_sum(config('stats.CA_N_1')[3])}}
         }],
         resize: true,
-        colors:[ '#e6e6e6', '#6eff1a','#0ad2ff']
+        colors:[ '#FFA500','#0ad2ff','#e6e6e6', '#6eff1a']
+
     });
 
 </script>
@@ -658,34 +755,44 @@ var ctx = document.getElementById("barChart");
         data: {
             labels: ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet","Août","Septembre","Octobre","Novembre","Décembre"],
             datasets: [
+
                 {
-                    label: "Général",
-                    data: {{json_encode(config('stats.CA_N')[0])}},
-                    borderColor: "rgba(255, 26, 26, 1)",
+                    label: "Sous offre",
+                    data: {{json_encode(config('stats.CA_N')[3])}},
+                    borderColor: "#FFA500",
                     borderWidth: "0",
-                    backgroundColor: "rgba(255, 26, 26, 1)"
-                            },
+                    backgroundColor: "#FFA500"
+                },
+                {
+                    label: "Sous compromis",
+                    data: {{json_encode(config('stats.CA_N')[4])}},
+                    borderColor: "rgba(10, 210, 255, 1)",
+                    borderWidth: "0",
+                    backgroundColor: "rgba(10, 210, 255, 1)"
+                },
+               
+                {
+                    label: "En attente",
+                    data: {{json_encode(config('stats.CA_N')[1])}},
+                    borderColor: "rgba(0,0,0,0.09)",
+                    borderWidth: "0",
+                    backgroundColor: "rgba(0,0,0,0.07)"
+                },
                 {
                     label: "Encaissé",
                     data: {{json_encode(config('stats.CA_N')[2])}},
                     borderColor: "rgba(110, 255, 26, 1)",
                     borderWidth: "0",
                     backgroundColor: "rgba(110, 255, 26, 1)"
-                            },
-                            {
-                    label: "En attente",
-                    data: {{json_encode(config('stats.CA_N')[1])}},
-                    borderColor: "rgba(0,0,0,0.09)",
+                },
+                {
+                    label: "Général",
+                    data: {{json_encode(config('stats.CA_N')[0])}},
+                    borderColor: "rgba(255, 26, 26, 1)",
                     borderWidth: "0",
-                    backgroundColor: "rgba(0,0,0,0.07)"
-                            },
-                            {
-                    label: "Prévisionnel",
-                    data: {{json_encode(config('stats.CA_N')[3])}},
-                    borderColor: "rgba(10, 210, 255, 1)",
-                    borderWidth: "0",
-                    backgroundColor: "rgba(10, 210, 255, 1)"
-                            }
+                    backgroundColor: "rgba(255, 26, 26, 1)"
+                }
+                            
                         ]
         },
         options: {
@@ -711,33 +818,41 @@ var ctx = document.getElementById("barChart_n_1");
             labels: ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet","Août","Septembre","Octobre","Novembre","Décembre"],
             datasets: [
                 {
-                    label: "Général",
-                    data: {{json_encode(config('stats.CA_N_1')[0])}},
-                    borderColor: "rgba(255, 26, 26, 1)",
+                    label: "Sous offre",
+                    data: {{json_encode(config('stats.CA_N_1')[3])}},
+                    borderColor: "#FFA500",
                     borderWidth: "0",
-                    backgroundColor: "rgba(255, 26, 26, 1)"
-                            },
+                    backgroundColor: "#FFA500"
+                },
+                {
+                    label: "Sous compromis",
+                    data: {{json_encode(config('stats.CA_N_1')[4])}},
+                    borderColor: "rgba(10, 210, 255, 1)",
+                    borderWidth: "0",
+                    backgroundColor: "rgba(10, 210, 255, 1)"
+                },
+               
+                {
+                    label: "En attente",
+                    data: {{json_encode(config('stats.CA_N_1')[1])}},
+                    borderColor: "rgba(0,0,0,0.09)",
+                    borderWidth: "0",
+                    backgroundColor: "rgba(0,0,0,0.07)"
+                },
                 {
                     label: "Encaissé",
                     data: {{json_encode(config('stats.CA_N_1')[2])}},
                     borderColor: "rgba(110, 255, 26, 1)",
                     borderWidth: "0",
                     backgroundColor: "rgba(110, 255, 26, 1)"
-                            },
-                            {
-                    label: "En attente",
-                    data: {{json_encode(config('stats.CA_N_1')[1])}},
-                    borderColor: "rgba(0,0,0,0.09)",
+                },
+                {
+                    label: "Général",
+                    data: {{json_encode(config('stats.CA_N_1')[0])}},
+                    borderColor: "rgba(255, 26, 26, 1)",
                     borderWidth: "0",
-                    backgroundColor: "rgba(0,0,0,0.07)"
-                            },
-                            {
-                    label: "Prévisionnel",
-                    data: {{json_encode(config('stats.CA_N_1')[3])}},
-                    borderColor: "rgba(10, 210, 255, 1)",
-                    borderWidth: "0",
-                    backgroundColor: "rgba(10, 210, 255, 1)"
-                            }
+                    backgroundColor: "rgba(255, 26, 26, 1)"
+                }
                         ]
         },
         options: {
