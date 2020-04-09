@@ -60,7 +60,7 @@
 </style>
 @endsection
 
-@if(Auth::user()->role == "admin")
+{{-- @if(Auth::user()->role == "admin") --}}
 
 {{--  CA ANNEE N --}}
 <div class="row" >
@@ -88,7 +88,7 @@
                 <div id="morris-donut-chart"></div>
             </div>
             <div>
-                <button style="background-color:#ff1a1a; width:50px; height:20px"></button> <span style="font-family: Montserrat; font-size:16px; font-weight:bold; ">Chiffre d'affaires Général : {{number_format( array_sum(config('stats.CA_N')[0]) ,0,'',',')}}</span> 
+                <button style="background-color:#ff1a1a; width:50px; height:20px"></button> <span style="font-family: Montserrat; font-size:16px; font-weight:bold; ">Chiffre d'affaires Général : {{number_format( array_sum(config('stats.CA_N')[0]) ,2,'.',',')}}</span> 
             </div>
         </div>
         
@@ -150,7 +150,7 @@
                 <div id="morris-donut-chart_n_1"></div>
             </div>
             <div>
-                <button style="background-color:#ff1a1a; width:50px; height:20px"></button> <span style="font-family: Montserrat; font-size:16px; font-weight:bold; ">Chiffre d'affaires Général : {{number_format( array_sum(config('stats.CA_N_1')[0]) ,0,'',',')}}</span> 
+                <button style="background-color:#ff1a1a; width:50px; height:20px"></button> <span style="font-family: Montserrat; font-size:16px; font-weight:bold; ">Chiffre d'affaires Général : {{number_format( array_sum(config('stats.CA_N_1')[0]) ,2,'.',',')}}</span> 
             </div>
         </div>
         
@@ -257,7 +257,7 @@
 
 </div>
 {{-- {{dd(config('stats.STATS')["nb_filleuls"])}} --}}
-@else 
+{{-- @else 
 
 
 
@@ -314,7 +314,7 @@
             </div>
         </div>
     </div>
-</div>
+</div> --}}
 {{-- 
 <div class="row">
     <div class="col-md-3">
@@ -372,7 +372,7 @@
 </div> --}}
 
 
-<div class="content-wrap">
+{{-- <div class="content-wrap">
         <div class="main">
             <div class="container-fluid">
        
@@ -407,8 +407,8 @@
                 </div>
             </div>
         </div>
-    </div>
-@endif
+    </div> --}}
+{{-- @endif --}}
 
 @stop
 @section('js-content')

@@ -10,6 +10,8 @@ use App\Contrat;
 use App\Filleul;
 use App\Facture;
 use App\User;
+use Auth;
+
 use Config;
 class AppServiceProvider extends ServiceProvider
 {
@@ -44,169 +46,267 @@ class AppServiceProvider extends ServiceProvider
          
 
 
-                // Dans cette partie on détermine le jour exaxt de il y'a 12 mois
-                $today = date("Y-m-d");//  aujourd'hui 
-                $date = strtotime( $today. " -1 year");    // aujourd'hui  - 1 ans   
+//                 // Dans cette partie on détermine le jour exaxt de il y'a 12 mois
+//                 $today = date("Y-m-d");//  aujourd'hui 
+//                 $date = strtotime( $today. " -1 year");    // aujourd'hui  - 1 ans   
         
-                $date_12 = date("Y-m-d",$date);
+//                 $date_12 = date("Y-m-d",$date);
         
 
         
         
         
         
-            //   ############ Chiffre d'affaire global / mois sur année civile  n et n-1 ##########
+//             //   ############ Chiffre d'affaire global / mois sur année civile  n et n-1 ##########
             
-             // on determine les anneés n et n-1
-            $annee_n = date('Y');
-            $annee_n_1 = $annee_n-1;
+//              // on determine les anneés n et n-1
+//             $annee_n = date('Y');
+//             $annee_n_1 = $annee_n-1;
         
         
-            $CA_N = array();
-                $ca_global_N = array();
-                $ca_attente_N = array();
-                $ca_encaisse_N = array();
-                $ca_sous_offre_N = array();
-                $ca_sous_compromis_N = array();
-            $CA_N_1 = array();
-                $ca_global_N_1 = array();
-                $ca_attente_N_1 = array();
-                $ca_encaisse_N_1 = array();
-                $ca_sous_offre_N_1 = array();
-                $ca_sous_compromis_N_1 = array();
-        
-            //  ######## Sur l'année N ##########
-            for ($i=1; $i <= 12 ; $i++) {                
+//             $CA_N = array();
+//                 $ca_global_N = array();
+//                 $ca_attente_N = array();
+//                 $ca_encaisse_N = array();
+//                 $ca_sous_offre_N = array();
+//                 $ca_sous_compromis_N = array();
+//             $CA_N_1 = array();
+//                 $ca_global_N_1 = array();
+//                 $ca_attente_N_1 = array();
+//                 $ca_encaisse_N_1 = array();
+//                 $ca_sous_offre_N_1 = array();
+//                 $ca_sous_compromis_N_1 = array();
+
+//      if(Auth::user()->role == "admin"){
+//             //  ######## Sur l'année N ##########
+//             for ($i=1; $i <= 12 ; $i++) {                
                        
-                $i < 10 ? $month = "0$i" : $month = $i;
+//                 $i < 10 ? $month = "0$i" : $month = $i;
                
-                $ca_glo_n = Compromis::where('date_vente','like',"%$annee_n-$month%")->sum('frais_agence');
-                $ca_global_N [] = round($ca_glo_n/1.2,2);
+//                 $ca_glo_n = Compromis::where('date_vente','like',"%$annee_n-$month%")->sum('frais_agence');
+//                 $ca_global_N [] = round($ca_glo_n/1.2,2);
         
         
-                $compros_styls = Compromis::where([['date_vente','like',"%$annee_n-$month%"],['demande_facture',2]])->get();
+//                 $compros_styls = Compromis::where([['date_vente','like',"%$annee_n-$month%"],['demande_facture',2]])->get();
         
-                #####ca non encaissé, en attente de payement
-                // on parcour les facture stylimmo non encaissée pour réccupérer les montant_ht  
-                $ca_att_n = 0;
-                if($compros_styls != null){
-                    foreach ($compros_styls as $compros_styl) {
-                        if($compros_styl->getFactureStylimmo()->encaissee == 0){
-                            $ca_att_n +=  $compros_styl->frais_agence ;
-                        }
-                    }
-                }
-                $ca_attente_N [] = round($ca_att_n/1.2,2);
+//                 #####ca non encaissé, en attente de payement
+//                 // on parcour les facture stylimmo non encaissée pour réccupérer les montant_ht  
+//                 $ca_att_n = 0;
+//                 if($compros_styls != null){
+//                     foreach ($compros_styls as $compros_styl) {
+//                         if($compros_styl->getFactureStylimmo()->encaissee == 0){
+//                             $ca_att_n +=  $compros_styl->frais_agence ;
+//                         }
+//                     }
+//                 }
+//                 $ca_attente_N [] = round($ca_att_n/1.2,2);
         
-                #####ca encaissé
-                // on parcour les facture stylimmo  encaissée pour réccupérer les montant_ht  
-                $ca_encai_n = 0;
-                if($compros_styls != null){
-                    foreach ($compros_styls as $compros_styl) {
-                        if($compros_styl->getFactureStylimmo()->encaissee == 1){
-                            $ca_encai_n +=  $compros_styl->frais_agence ;
-                        }
-                    }
-                }
+//                 #####ca encaissé
+//                 // on parcour les facture stylimmo  encaissée pour réccupérer les montant_ht  
+//                 $ca_encai_n = 0;
+//                 if($compros_styls != null){
+//                     foreach ($compros_styls as $compros_styl) {
+//                         if($compros_styl->getFactureStylimmo()->encaissee == 1){
+//                             $ca_encai_n +=  $compros_styl->frais_agence ;
+//                         }
+//                     }
+//                 }
         
-                // $ca_encai_n = Facture::where([['type','stylimmo'],['date_facture','like',"%$annee_n-$month%"],["encaissee",1]])->sum('montant_ht');
-                $ca_encaisse_N [] = round($ca_encai_n/1.2,2);
+//                 // $ca_encai_n = Facture::where([['type','stylimmo'],['date_facture','like',"%$annee_n-$month%"],["encaissee",1]])->sum('montant_ht');
+//                 $ca_encaisse_N [] = round($ca_encai_n/1.2,2);
                 
-                $ca_sous_offre_n = Compromis::where([['date_vente','like',"%$annee_n-$month%"],['demande_facture','<',2],['pdf_compromis',null]])->sum('frais_agence');
-                $ca_sous_offre_N [] = round($ca_sous_offre_n/1.2,2);
+//                 $ca_sous_offre_n = Compromis::where([['date_vente','like',"%$annee_n-$month%"],['demande_facture','<',2],['pdf_compromis',null]])->sum('frais_agence');
+//                 $ca_sous_offre_N [] = round($ca_sous_offre_n/1.2,2);
 
-                $ca_sous_compromis_n = Compromis::where([['date_vente','like',"%$annee_n-$month%"],['demande_facture','<',2],['pdf_compromis','<>',null]])->sum('frais_agence');
-                $ca_sous_compromis_N [] = round($ca_sous_compromis_n/1.2,2);
+//                 $ca_sous_compromis_n = Compromis::where([['date_vente','like',"%$annee_n-$month%"],['demande_facture','<',2],['pdf_compromis','<>',null]])->sum('frais_agence');
+//                 $ca_sous_compromis_N [] = round($ca_sous_compromis_n/1.2,2);
 
-            }
+//             }
 
-            //  ######## Sur l'année N-1 ##########
-            for ($i=1; $i <= 12 ; $i++) {                
+//             //  ######## Sur l'année N-1 ##########
+//             for ($i=1; $i <= 12 ; $i++) {                
                        
-                $i < 10 ? $month = "0$i" : $month = $i;
+//                 $i < 10 ? $month = "0$i" : $month = $i;
                
-                $ca_glo_n_1 = Compromis::where('date_vente','like',"%$annee_n_1-$month%")->sum('frais_agence');
-                $ca_global_N_1 [] = round($ca_glo_n_1/1.2,2);
+//                 $ca_glo_n_1 = Compromis::where('date_vente','like',"%$annee_n_1-$month%")->sum('frais_agence');
+//                 $ca_global_N_1 [] = round($ca_glo_n_1/1.2,2);
         
         
-                $compros_styls_n_1 = Compromis::where([['date_vente','like',"%$annee_n_1-$month%"],['demande_facture',2]])->get();
+//                 $compros_styls_n_1 = Compromis::where([['date_vente','like',"%$annee_n_1-$month%"],['demande_facture',2]])->get();
         
-                #####ca non encaissé, en attente de payement
-                // on parcour les facture stylimmo non encaissée pour réccupérer les montant_ht  
-                $ca_att_n_1 = 0;
-                if($compros_styls_n_1 != null){
-                    foreach ($compros_styls_n_1 as $compros_styl) {
-                        if($compros_styl->getFactureStylimmo()->encaissee == 0){
-                            $ca_att_n_1 +=  $compros_styl->frais_agence ;
-                        }
-                    }
-                }
-                $ca_attente_N_1 [] = round($ca_att_n_1/1.2,2);
+//                 #####ca non encaissé, en attente de payement
+//                 // on parcour les facture stylimmo non encaissée pour réccupérer les montant_ht  
+//                 $ca_att_n_1 = 0;
+//                 if($compros_styls_n_1 != null){
+//                     foreach ($compros_styls_n_1 as $compros_styl) {
+//                         if($compros_styl->getFactureStylimmo()->encaissee == 0){
+//                             $ca_att_n_1 +=  $compros_styl->frais_agence ;
+//                         }
+//                     }
+//                 }
+//                 $ca_attente_N_1 [] = round($ca_att_n_1/1.2,2);
         
-                #####ca encaissé
-                // on parcour les facture stylimmo  encaissée pour réccupérer les montant_ht  
-                $ca_encai_n_1 = 0;
-                if($compros_styls_n_1 != null){
-                    foreach ($compros_styls_n_1 as $compros_styl) {
-                        if($compros_styl->getFactureStylimmo()->encaissee == 1){
-                            $ca_encai_n_1 +=  $compros_styl->frais_agence ;
-                        }
-                    }
-                }
+//                 #####ca encaissé
+//                 // on parcour les facture stylimmo  encaissée pour réccupérer les montant_ht  
+//                 $ca_encai_n_1 = 0;
+//                 if($compros_styls_n_1 != null){
+//                     foreach ($compros_styls_n_1 as $compros_styl) {
+//                         if($compros_styl->getFactureStylimmo()->encaissee == 1){
+//                             $ca_encai_n_1 +=  $compros_styl->frais_agence ;
+//                         }
+//                     }
+//                 }
         
-                // $ca_encai_n = Facture::where([['type','stylimmo'],['date_facture','like',"%$annee_n-$month%"],["encaissee",1]])->sum('montant_ht');
-                $ca_encaisse_N_1 [] = round($ca_encai_n_1/1.2,2);
+//                 // $ca_encai_n = Facture::where([['type','stylimmo'],['date_facture','like',"%$annee_n-$month%"],["encaissee",1]])->sum('montant_ht');
+//                 $ca_encaisse_N_1 [] = round($ca_encai_n_1/1.2,2);
                 
-                // $ca_previ_n_1 = Compromis::where([['date_vente','like',"%$annee_n_1-$month%"],['demande_facture','<',2]])->sum('frais_agence');
-                // $ca_previsionel_N_1 [] = round($ca_previ_n_1/1.2,2);
+//                 // $ca_previ_n_1 = Compromis::where([['date_vente','like',"%$annee_n_1-$month%"],['demande_facture','<',2]])->sum('frais_agence');
+//                 // $ca_previsionel_N_1 [] = round($ca_previ_n_1/1.2,2);
 
-                $ca_sous_offre_n_1 = Compromis::where([['date_vente','like',"%$annee_n_1-$month%"],['demande_facture','<',2],['pdf_compromis',null]])->sum('frais_agence');
-                $ca_sous_offre_N_1 [] = round($ca_sous_offre_n_1/1.2,2);
+//                 $ca_sous_offre_n_1 = Compromis::where([['date_vente','like',"%$annee_n_1-$month%"],['demande_facture','<',2],['pdf_compromis',null]])->sum('frais_agence');
+//                 $ca_sous_offre_N_1 [] = round($ca_sous_offre_n_1/1.2,2);
 
-                $ca_sous_compromis_n_1 = Compromis::where([['date_vente','like',"%$annee_n_1-$month%"],['demande_facture','<',2],['pdf_compromis','<>',null]])->sum('frais_agence');
-                $ca_sous_compromis_N_1 [] = round($ca_sous_compromis_n_1/1.2,2);
+//                 $ca_sous_compromis_n_1 = Compromis::where([['date_vente','like',"%$annee_n_1-$month%"],['demande_facture','<',2],['pdf_compromis','<>',null]])->sum('frais_agence');
+//                 $ca_sous_compromis_N_1 [] = round($ca_sous_compromis_n_1/1.2,2);
 
-            }
+//             }
 
+//          } 
+//         else{
 
-
-
-        // dd($ca_global_N);
-        
-            $CA_N[] = $ca_global_N; 
-            $CA_N[] = $ca_attente_N; 
-            $CA_N[] = $ca_encaisse_N; 
-            $CA_N[] = $ca_sous_offre_N; 
-            $CA_N[] = $ca_sous_compromis_N; 
-
-            $CA_N_1[] = $ca_global_N_1; 
-            $CA_N_1[] = $ca_attente_N_1; 
-            $CA_N_1[] = $ca_encaisse_N_1; 
-            $CA_N_1[] = $ca_sous_offre_N_1; 
-            $CA_N_1[] = $ca_sous_compromis_N_1; 
+//             //  ######## Sur l'année N ##########
+//             for ($i=1; $i <= 12 ; $i++) {                
+                                
+//                 $i < 10 ? $month = "0$i" : $month = $i;
             
-            // dd($CA_N);
-            // $a_date = "2011-02";  
-            // dd (date("Y-m-t", strtotime($a_date)));
-            // dd(date("Y"));
+//                 $ca_glo_n = Compromis::where('date_vente','like',"%$annee_n-$month%")->sum('frais_agence');
+//                 $ca_global_N [] = round($ca_glo_n/1.2,2);
+
+
+//                 $compros_styls = Compromis::where([['date_vente','like',"%$annee_n-$month%"],['demande_facture',2]])->get();
+
+//                 #####ca non encaissé, en attente de payement
+//                 // on parcour les facture stylimmo non encaissée pour réccupérer les montant_ht  
+//                 $ca_att_n = 0;
+//                 if($compros_styls != null){
+//                     foreach ($compros_styls as $compros_styl) {
+//                         if($compros_styl->getFactureStylimmo()->encaissee == 0){
+//                             $ca_att_n +=  $compros_styl->frais_agence ;
+//                         }
+//                     }
+//                 }
+//                 $ca_attente_N [] = round($ca_att_n/1.2,2);
+
+//                 #####ca encaissé
+//                 // on parcour les facture stylimmo  encaissée pour réccupérer les montant_ht  
+//                 $ca_encai_n = 0;
+//                 if($compros_styls != null){
+//                     foreach ($compros_styls as $compros_styl) {
+//                         if($compros_styl->getFactureStylimmo()->encaissee == 1){
+//                             $ca_encai_n +=  $compros_styl->frais_agence ;
+//                         }
+//                     }
+//                 }
+
+//                 // $ca_encai_n = Facture::where([['type','stylimmo'],['date_facture','like',"%$annee_n-$month%"],["encaissee",1]])->sum('montant_ht');
+//                 $ca_encaisse_N [] = round($ca_encai_n/1.2,2);
+                
+//                 $ca_sous_offre_n = Compromis::where([['date_vente','like',"%$annee_n-$month%"],['demande_facture','<',2],['pdf_compromis',null]])->sum('frais_agence');
+//                 $ca_sous_offre_N [] = round($ca_sous_offre_n/1.2,2);
+
+//                 $ca_sous_compromis_n = Compromis::where([['date_vente','like',"%$annee_n-$month%"],['demande_facture','<',2],['pdf_compromis','<>',null]])->sum('frais_agence');
+//                 $ca_sous_compromis_N [] = round($ca_sous_compromis_n/1.2,2);
+
+//             }
+
+//             //  ######## Sur l'année N-1 ##########
+//             for ($i=1; $i <= 12 ; $i++) {                
+                    
+//                 $i < 10 ? $month = "0$i" : $month = $i;
+            
+//                 $ca_glo_n_1 = Compromis::where('date_vente','like',"%$annee_n_1-$month%")->sum('frais_agence');
+//                 $ca_global_N_1 [] = round($ca_glo_n_1/1.2,2);
+
+
+//                 $compros_styls_n_1 = Compromis::where([['date_vente','like',"%$annee_n_1-$month%"],['demande_facture',2]])->get();
+
+//                 #####ca non encaissé, en attente de payement
+//                 // on parcour les facture stylimmo non encaissée pour réccupérer les montant_ht  
+//                 $ca_att_n_1 = 0;
+//                 if($compros_styls_n_1 != null){
+//                     foreach ($compros_styls_n_1 as $compros_styl) {
+//                         if($compros_styl->getFactureStylimmo()->encaissee == 0){
+//                             $ca_att_n_1 +=  $compros_styl->frais_agence ;
+//                         }
+//                     }
+//                 }
+//                 $ca_attente_N_1 [] = round($ca_att_n_1/1.2,2);
+
+//                 #####ca encaissé
+//                 // on parcour les facture stylimmo  encaissée pour réccupérer les montant_ht  
+//                 $ca_encai_n_1 = 0;
+//                 if($compros_styls_n_1 != null){
+//                     foreach ($compros_styls_n_1 as $compros_styl) {
+//                         if($compros_styl->getFactureStylimmo()->encaissee == 1){
+//                             $ca_encai_n_1 +=  $compros_styl->frais_agence ;
+//                         }
+//                     }
+//                 }
+
+//                 // $ca_encai_n = Facture::where([['type','stylimmo'],['date_facture','like',"%$annee_n-$month%"],["encaissee",1]])->sum('montant_ht');
+//                 $ca_encaisse_N_1 [] = round($ca_encai_n_1/1.2,2);
+                
+//                 // $ca_previ_n_1 = Compromis::where([['date_vente','like',"%$annee_n_1-$month%"],['demande_facture','<',2]])->sum('frais_agence');
+//                 // $ca_previsionel_N_1 [] = round($ca_previ_n_1/1.2,2);
+
+//                 $ca_sous_offre_n_1 = Compromis::where([['date_vente','like',"%$annee_n_1-$month%"],['demande_facture','<',2],['pdf_compromis',null]])->sum('frais_agence');
+//                 $ca_sous_offre_N_1 [] = round($ca_sous_offre_n_1/1.2,2);
+
+//                 $ca_sous_compromis_n_1 = Compromis::where([['date_vente','like',"%$annee_n_1-$month%"],['demande_facture','<',2],['pdf_compromis','<>',null]])->sum('frais_agence');
+//                 $ca_sous_compromis_N_1 [] = round($ca_sous_compromis_n_1/1.2,2);
+
+// }
+
+
+// }
+
+
+//         // dd($ca_global_N);
+        
+//             $CA_N[] = $ca_global_N; 
+//             $CA_N[] = $ca_attente_N; 
+//             $CA_N[] = $ca_encaisse_N; 
+//             $CA_N[] = $ca_sous_offre_N; 
+//             $CA_N[] = $ca_sous_compromis_N; 
+
+//             $CA_N_1[] = $ca_global_N_1; 
+//             $CA_N_1[] = $ca_attente_N_1; 
+//             $CA_N_1[] = $ca_encaisse_N_1; 
+//             $CA_N_1[] = $ca_sous_offre_N_1; 
+//             $CA_N_1[] = $ca_sous_compromis_N_1; 
+            
+//             // dd($CA_N);
+//             // $a_date = "2011-02";  
+//             // dd (date("Y-m-t", strtotime($a_date)));
+//             // dd(date("Y"));
         
 
-            $STATS = array();
-            $nb_affaires = Compromis::count();
-            $nb_mandataires = User::where('role','mandataire')->count();
-            $nb_filleuls = Filleul::where('expire',0)->count();
+//             $STATS = array();
+//             $nb_affaires = Compromis::count();
+//             $nb_mandataires = User::where('role','mandataire')->count();
+//             $nb_filleuls = Filleul::where('expire',0)->count();
       
         
-            $STATS["nb_affaires"] = $nb_affaires;
-            $STATS["nb_mandataires"] = $nb_mandataires;
-            $STATS["nb_filleuls"] = $nb_filleuls;
+//             $STATS["nb_affaires"] = $nb_affaires;
+//             $STATS["nb_mandataires"] = $nb_mandataires;
+//             $STATS["nb_filleuls"] = $nb_filleuls;
 
             
-            Config::set('stats.CA_N',$CA_N);
-            Config::set('stats.CA_N_1',$CA_N_1);
-            Config::set('stats.STATS',$STATS);
+//             Config::set('stats.CA_N',$CA_N);
+//             Config::set('stats.CA_N_1',$CA_N_1);
+//             Config::set('stats.STATS',$STATS);
             
-            // dd(config('stats.STATS'));
+//             // dd(config('stats.STATS'));
 
 
 
