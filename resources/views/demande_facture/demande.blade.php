@@ -17,7 +17,7 @@ Demande de facture  | {{ substr($compromis->description_bien,0,150) }}...
 			<strong> {{ session('ok') }}</strong>
 		</div>
         @endif
-        <form class="form-valide3" action="{{route('facture.demander_facture', Crypt::encrypt($compromis->id) )}}" method="post">
+        <form class="form-valide3" action="{{route('facture.demander_facture', Crypt::encrypt($compromis->id) )}}" method="post" enctype="multipart/form-data">
                 {{ csrf_field() }}
 		<div class="card">
 			
@@ -34,12 +34,47 @@ Demande de facture  | {{ substr($compromis->description_bien,0,150) }}...
                             </div>
                         </div>
                     </div>
+                    @if($compromis->pdf_compromis == null)
+                        <label class="text-warning" >Compromis signé obligatoire</label>
+                        <div class="row">
+                                    
+                            <div class="col-lg-4 col-md-4 col-sm-6">
+                                <div class="form-group">
+                                    <label for="date_signature">Date de signature du compromis  </label>
+                                    <input class="form-control" type="date" value="{{old('date_signature')}}" id="date_signature" name="date_signature" required >
+                                    {{-- <div id="label_pdf_compromis" class="alert alert-warning" style="color: #1e003c;" role="alert">Le champs Date de signature du compromis devient obligatoire quand vous renseignez le fichier (compromis signé) </div> --}}
+                                    @if ($errors->has('date_signature'))
+                                        <br>
+                                        <div class="alert alert-warning ">
+                                            <strong>{{$errors->first('date_signature')}}</strong> 
+                                        </div>
+                                    @endif
+                                </div>
+                            </div>
 
+                            <div class="col-lg-4 col-md-4 col-sm-6">
+                                <div class="form-group">
+                                    <label for="pdf_compromis">Fichier pdf du compromis </label>
+                                    <input class="form-control" type="file"  id="pdf_compromis" name="pdf_compromis" required >
+                                    
+                                    @if ($errors->has('pdf_compromis'))
+                                        <br>
+                                        <div class="alert alert-warning ">
+                                            <strong>{{$errors->first('pdf_compromis')}}</strong> 
+                                        </div>
+                                    @endif
+
+                                </div>
+                            </div>
+
+                        </div>
+
+                    @endif
+                    <hr>
                     <div class="col-lg-10"> 
                         <button id="demander_facture" class="btn btn-danger btn-flat btn-addon btn-sm m-b-10 m-l-5 submit" href="" ><i class="ti-file"></i>Demander Facture stylimmo</button>
                     <a class="btn btn-primary btn-flat btn-addon btn-sm m-b-10 m-l-5 submit" target="_blank" href="{{route('facture.generer_facture_stylimmo',Crypt::encrypt($compromis->id) )}}" ><i class="ti-file"></i>Prévisualiser Facture stylimmo</a>
                     </div>
-                    <hr>
     <br><br>
                 <div class="panel-body">
                     <fieldset class="col-md-12">
@@ -136,8 +171,6 @@ $('#demander_facture').click(function(e){
 });
 
 </script>
-
-
 
 
 

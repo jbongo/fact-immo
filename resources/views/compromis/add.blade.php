@@ -463,6 +463,8 @@ Ajout d'une affaire
                                                 <div class="form-group">
                                                     <label for="pdf_compromis">Fichier pdf du compromis </label>
                                                     <input class="form-control" type="file" value="" id="pdf_compromis" name="pdf_compromis"  >
+                                                    <div id="label_pdf_compromis" class="alert alert-warning" style="color: #1e003c;" role="alert">Le champs Date de signature du compromis devient obligatoire quand vous renseignez le fichier (compromis signé) </div>
+
                                                 </div>
                                             </div>
 
@@ -813,6 +815,21 @@ $('#type_affaire').on('change',function(){
     }
 })
 </script>
+{{-- Si le compromis signé est renseigné, rendrre la date de signature obligatoire --}}
 
+
+<script>
+    $('#label_pdf_compromis').hide();
+ $("#pdf_compromis").change(function(e){
+        if(e.target.value != ""){
+            $('#date_signature').attr("required","required");
+            $('#label_pdf_compromis').slideDown();
+        }else{
+            $('#date_signature').removeAttr("required");
+            $('#label_pdf_compromis').slideUp();
+        }
+    });
+
+</script>
 
 @endsection

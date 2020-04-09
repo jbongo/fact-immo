@@ -141,6 +141,22 @@ class FactureController extends Controller
 
         $compromis = Compromis::where('id',Crypt::decrypt($compromis_id))->first();
         $compromis->date_vente = $request->date_vente;
+
+        // Si le compromis est ajouté lors de la demande
+        if($request->hasFile('pdf_compromis') ){
+            $request->validate([
+                'date_signature' => 'required',
+                'pdf_compromis' => 'mimes:pdf'
+            ]);
+
+            $filename = 'pdf_compromis_'.$compromis->id.'.pdf';
+            $compromis->pdf_compromis = $filename;
+            // return response()->download(storage_path('app/pdf_compromis/pdf_compro.pdf'));
+            $request->pdf_compromis->storeAs('public/pdf_compromis',$filename);
+        }
+        
+        $compromis->date_signature = $request->date_signature;
+
         // 0 = facture non demandée, 1= facture demandée en attente de validation, 2 = demande traitée par stylimmo
         $compromis->demande_facture = 1;
 

@@ -431,7 +431,7 @@ Détail de l'affaire @if(auth::user()->role =="admin") de {{$compromis->user->no
                                         <div class="row">
                                             <div class="col-lg-6 col-md-6 col-sm-6">
                                                 <div class="form-group row" id="parrain-id">
-                                                    <label class="col-lg-8 col-form-label" for="numero_mandat">Numéro Mandat</label>
+                                                    <label class="col-lg-8 col-form-label" for="numero_mandat">Numéro Mandat</label>  <span class="text-danger">*</span></label>
                                                     <div class="col-lg-8">
                                                         <input type="number" min="10000" max="99999" class="form-control" id="numero_mandat" value="{{ $compromis->numero_mandat}}" name="numero_mandat" required>
                                                     </div>
@@ -445,7 +445,7 @@ Détail de l'affaire @if(auth::user()->role =="admin") de {{$compromis->user->no
                                             </div>
                                             <div class="col-lg-6 col-md-6 col-sm-6">
                                                 <div class="form-group row" id="parrain-id">
-                                                    <label class="col-lg-8 col-form-label" for="date_mandat">Date Mandat</label>
+                                                    <label class="col-lg-8 col-form-label" for="date_mandat">Date Mandat</label>  <span class="text-danger">*</span></label>
                                                     <div class="col-lg-8">
                                                         <input type="date" class="form-control" id="date_mandat" @if($compromis->date_mandat != null)  value="{{ $compromis->date_mandat->format('Y-m-d')}}" @endif name="date_mandat" required>                                                    
                                                     </div>
@@ -468,7 +468,7 @@ Détail de l'affaire @if(auth::user()->role =="admin") de {{$compromis->user->no
                                         <div class="row">
                                             <div class="col-lg-4 col-md-4 col-sm-4">
                                                 <div class="form-group row" id="parrain-id">
-                                                    <label class="" for="parr-id">Net Vendeur</label>
+                                                    <label class="" for="parr-id">Net Vendeur</label>  <span class="text-danger">*</span></label>
                                                     
                                                         <input type="number" class="form-control" id="net_vendeur" name="net_vendeur" value="{{ $compromis->net_vendeur}}" required>                                                    
                                                    
@@ -476,15 +476,15 @@ Détail de l'affaire @if(auth::user()->role =="admin") de {{$compromis->user->no
                                             </div>
                                             <div class="col-lg-4 col-md-4 col-sm-4">
                                                 <div class="form-group">
-                                                    <label for="frais_agence">Frais d'agence</label>
-                                                    <input class="form-control" min="0" type="number" value="{{ $compromis->frais_agence}}" id="frais_agence" name="frais_agence" >
+                                                    <label for="frais_agence">Frais d'agence</label> <span class="text-danger">*</span></label>
+                                                    <input class="form-control" min="0" type="number" value="{{ $compromis->frais_agence}}" id="frais_agence" name="frais_agence" required>
                                                 </div>
                                             </div>
                                             <div class="col-lg-4 col-md-4 col-sm-4">
                                                 <div class="form-group row" id="parrain-id">
-                                                    <label class="" for="charge_qui">Charge </label>
+                                                    <label class="" for="charge_qui">Charge </label>  <span class="text-danger">*</span></label>
                                                     <div >
-                                                        <select class="col-lg-6 form-control" id="charge_qui" name="charge"  >
+                                                        <select class="col-lg-6 form-control" id="charge_qui" name="charge"  required>
                                                             @php
                                                                 if ($compromis->charge == "Vendeur"){
                                                                     $premier = "Vendeur";
@@ -509,9 +509,9 @@ Détail de l'affaire @if(auth::user()->role =="admin") de {{$compromis->user->no
 
                                             <div class="col-lg-4 col-md-4 col-sm-4">
                                                 <div class="form-group row" id="parrain-id">
-                                                    <label class="" for="parr-id">SCP Notaire</label>
+                                                    <label class="" for="parr-id">SCP Notaire</label> <span class="text-danger">*</span></label>
                                                   
-                                                        <input type="text" class="form-control" id="scp_notaire" name="scp_notaire" value="{{ $compromis->scp_notaire}}">                                                    
+                                                        <input type="text" class="form-control" id="scp_notaire" name="scp_notaire" value="{{ $compromis->scp_notaire}}" required>                                                    
                                                     
                                                 </div>
                                             </div>
@@ -521,8 +521,8 @@ Détail de l'affaire @if(auth::user()->role =="admin") de {{$compromis->user->no
                                                 
                                             <div class="col-lg-4 col-md-4 col-sm-4">
                                                 <div class="form-group">
-                                                    <label for="date_vente">Date exacte Vente </label>
-                                                    <input class="form-control" type="date" @if($compromis->date_vente != null)  value="{{ $compromis->date_vente->format('Y-m-d')}}" @endif id="date_vente" name="date_vente" >
+                                                    <label for="date_vente">Date exacte Vente </label> <span class="text-danger">*</span></label>
+                                                    <input class="form-control" type="date" @if($compromis->date_vente != null)  value="{{ $compromis->date_vente->format('Y-m-d')}}" @endif id="date_vente" name="date_vente"  required>
                                                 </div>
                                             </div>
                                             {{-- @endif                 --}}
@@ -561,6 +561,8 @@ Détail de l'affaire @if(auth::user()->role =="admin") de {{$compromis->user->no
                                                             <strong>{{$errors->first('pdf_compromis')}}</strong> 
                                                         </div>
                                                     @endif
+                                                    <div id="label_pdf_compromis" class="alert alert-warning" style="color: #1e003c;" role="alert">Le champs Date de signature du compromis devient obligatoire quand vous renseignez le fichier (compromis signé) </div>
+
                                                 </div>
                                             </div>
 
@@ -740,6 +742,21 @@ $('#modifier_pdf_compromis').click(function (){
     $('#telecharger_pdf_compromis').hide();
 
 });
+
+</script>
+
+{{-- Si le compromis signé est renseigné, rendrre la date de signature obligatoire --}}
+<script>
+    $('#label_pdf_compromis').hide();
+ $("#pdf_compromis").change(function(e){
+        if(e.target.value != ""){
+            $('#date_signature').attr("required","required");
+            $('#label_pdf_compromis').slideDown();
+        }else{
+            $('#date_signature').removeAttr("required");
+            $('#label_pdf_compromis').slideUp();
+        }
+    });
 
 </script>
 @endsection
