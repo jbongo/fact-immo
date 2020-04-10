@@ -250,7 +250,7 @@
 
             <div class="form-group row" style="text-align: center; margin-top: 50px;">
                 <div class="col-lg-8 ml-auto">
-                    <button class="btn btn-danger btn-flat btn-addon btn-lg m-b-10 m-l-5  " id="sauvegarder"><i class="ti-save"></i>Sauvegarder</button>
+                    <button class="btn btn-danger btn-flat btn-addon btn-lg m-b-10 m-l-5  " id="sauvegarder" style="position: fixed;bottom: 10px; z-index:1 ;" ><i class="ti-save"></i>Sauvegarder</button>
                 </div>
             </div>
 

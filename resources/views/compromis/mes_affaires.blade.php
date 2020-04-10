@@ -74,7 +74,7 @@
 
                                             <strong> @if($compromi->date_vente != null) {{$mois[ (int)$compromi->date_vente->format("m")]}} - {{$compromi->date_vente->format("Y")}} @endif</strong> 
                                             @else 
-                                            <strong>  <label class="danger" title="La date de vente prévue est dépassée. Vous pouvez la modifier dans votre affaire" style="background-color:#FF0633;color:white;visibility:visible;">@if($compromi->date_vente != null) {{$mois[ (int)$compromi->date_vente->format("m")]}} - {{$compromi->date_vente->format("Y")}} @endif !!! &nbsp;&nbsp;</label>  </strong> 
+                                            <strong>  <label title="La date de vente prévue est dépassée. Vous pouvez la modifier dans votre affaire" style="background-color:#FF0633;color:white;visibility:visible;">@if($compromi->date_vente != null) {{$mois[ (int)$compromi->date_vente->format("m")]}} - {{$compromi->date_vente->format("Y")}} @endif !!! &nbsp;&nbsp;</label>  </strong> 
                                             @endif 
                                         @endif
                                     </td>    

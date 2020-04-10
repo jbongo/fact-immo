@@ -239,7 +239,7 @@ Modifier mandataire {{$mandataire->nom}}
                   
                   <div class="form-group row" style="text-align: center; margin-top: 50px;">
                      <div class="col-lg-8 ml-auto">
-                        <button class="btn btn-success btn-flat btn-addon btn-lg m-b-10 m-l-5 submit" id="ajouter"><i class="ti-save"></i>Sauvegarder</button>
+                        <button class="btn btn-success btn-flat btn-addon btn-lg m-b-10 m-l-5 submit" id="ajouter" ><i class="ti-save"></i>Sauvegarder</button>
                      <a  href="{{route('mandataire.index')}}" class="btn btn-default btn-flat btn-addon btn-lg m-b-10 m-l-5 submit" id="ajouter"><i class="ti-close"></i>Annuler</a >
                      </div>
                   </div>

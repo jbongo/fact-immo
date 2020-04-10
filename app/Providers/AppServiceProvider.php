@@ -11,7 +11,7 @@ use App\Filleul;
 use App\Facture;
 use App\User;
 use Auth;
-
+    
 use Config;
 class AppServiceProvider extends ServiceProvider
 {

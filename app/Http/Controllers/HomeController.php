@@ -336,7 +336,7 @@ class HomeController extends Controller
                             $compro_compromis_porte_n = Compromis::where([['date_vente','like',"%$annee_n-$month%"],['user_id',Auth::id()],['est_partage_agent',true],['demande_facture','<',2],['pdf_compromis','<>',null]])->get();
                             
                             foreach ($compro_compromis_porte_n as $compro) {
-                                $ca_offre_compromis_n += $compro->frais_agence * $compro->pourcentage_agent/100 ;
+                                $ca_compromis_porte_n += $compro->frais_agence * $compro->pourcentage_agent/100 ;
                             }
 
                             // CA Sous compromis partagé et ne porte pas affaire
