@@ -162,7 +162,7 @@ class FactureController extends Controller
 
         $compromis->update();
 
-        $nb_demande_facture =  Compromis::where('demande_facture',1)->count();
+        $nb_demande_facture =  Compromis::where([['demande_facture',1],['archive',false]])->count();
 
 
         // dd($nb_demande_facture);
@@ -190,7 +190,7 @@ class FactureController extends Controller
     public  function demandes_stylimmo()
     {
         
-        $compromis = Compromis::where('demande_facture', 1)->get();
+        $compromis = Compromis::where([['demande_facture', 1],['archive',false]])->get();
         return view ('demande_facture.index',compact('compromis'));
     }
 
@@ -321,7 +321,7 @@ public  function valider_facture_stylimmo( Request $request, $compromis)
     $facture->update();
     $compromis->update();
 
-    $nb_demande_facture =  Compromis::where('demande_facture',1)->count();
+    $nb_demande_facture =  Compromis::where([['demande_facture',1],['archive',false]])->count();
     $admins = User::where('role','admin')->get();
 
     foreach ($admins as $admin) {

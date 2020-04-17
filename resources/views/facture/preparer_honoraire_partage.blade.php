@@ -88,7 +88,7 @@
             <td style="width: 423px;"><span style="text-decoration: underline;"><strong>R&eacute;f.</strong></span><strong>:&nbsp;</strong>&nbsp; Mandat N&deg;&nbsp; {{$compromis->numero_mandat}}&nbsp; du : {{ Carbon\Carbon::parse($compromis->date_mandat)->format('d/m/Y')}}</td>
             <td style="width: 260px;height:35px"></td>
         </tr>
-        @if(auth::user()->role !="admin")       
+        @if(Auth()->user()->role !="admin")       
         <tr>
             <td style="width: 423px;"><span style="text-decoration: underline;"><strong>Mandataire avec qui je partage:</strong> </span> &nbsp; {{$mandataire_partage->nom}} {{$mandataire_partage->prenom}}&nbsp;</td>
             <td style="width: 260px;height:35px"></td>
@@ -98,7 +98,7 @@
             <td style="width: 423px;"><span style="text-decoration: underline;"><strong>Frais d'agence:</strong> </span> &nbsp; {{ number_format($compromis->frais_agence, 2, '.', ' ') }} € &nbsp;</td>
             <td style="width: 260px;height:35px"></td>
         </tr>
-            @if(auth::user()->role !="admin")
+            @if(Auth()->user()->role !="admin")
         <tr>
             <td style="width: 423px;"><span style="text-decoration: underline;"><strong>Mon pourcentage de partage:</strong> </span> &nbsp; {{$pourcentage_partage}} %&nbsp; soit ({{ number_format($compromis->frais_agence * $pourcentage_partage /100, 2, '.', ' ')  }} €) </td>
             <td style="width: 260px;height:35px"></td>
@@ -109,7 +109,7 @@
 <br>
 <table style="height: 66px; width: 50%">
     <tbody>
-            @if(auth::user()->role !="admin")
+            @if(Auth()->user()->role !="admin")
          <tr>
             <td style="width: 48px;">&nbsp;</td>
             <td style="width: 428px;"><span style="text-decoration: underline;"><strong>Commission:</strong></span>&nbsp;&nbsp;&nbsp;&nbsp; <span style="color:mediumblue"> {{$mandataire->commission}} %</td>

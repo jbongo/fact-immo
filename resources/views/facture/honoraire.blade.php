@@ -106,7 +106,7 @@
                                         {{-- @if($facture->type == "stylimmo") --}}
                                         <td  >
                                             @if($facture->reglee == 0)
-                                                @if(auth::user()->role == "admin")
+                                                @if(Auth()->user()->role == "admin")
                                                     <button data-toggle="modal" @if($facture->compromis->getFactureStylimmo()->encaissee == 0 )disabled style="background:#bdbdbd" @endif data-target="#myModal" id="{{Crypt::encrypt($facture->id)}}"  class="btn btn-success btn-flat btn-addon  m-b-10 m-l-5 payer" ><i class="ti-wallet"></i>Payer</button>
                                                 @else 
                                                     <label class="color-danger">Non réglée </label> 

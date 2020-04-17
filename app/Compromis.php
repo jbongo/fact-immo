@@ -47,11 +47,11 @@ class Compromis extends Model
 
 
         // On determnine le CA des affaires non partagée
-        $CA_partage_pas = Compromis::where([['user_id',$mandataire_id],['est_partage_agent',0],['cloture_affaire',1]])->whereBetween('date_vente',[$date_deb, $date_fin])->sum('frais_agence');
+        $CA_partage_pas = Compromis::where([['user_id',$mandataire_id],['est_partage_agent',0],['cloture_affaire',1],['archive',false]])->whereBetween('date_vente',[$date_deb, $date_fin])->sum('frais_agence');
 
         // On détermine le CA des affaires partagées 
-        $compros_partage_porte = Compromis::where([['user_id',$mandataire_id],['est_partage_agent',1],['cloture_affaire',1]])->whereBetween('date_vente',[$date_deb, $date_fin])->get();
-        $compros_partage_porte_pas = Compromis::where([['agent_id',$mandataire_id],['est_partage_agent',1],['cloture_affaire',1]])->whereBetween('date_vente',[$date_deb, $date_fin])->get();
+        $compros_partage_porte = Compromis::where([['user_id',$mandataire_id],['est_partage_agent',1],['cloture_affaire',1],['archive',false]])->whereBetween('date_vente',[$date_deb, $date_fin])->get();
+        $compros_partage_porte_pas = Compromis::where([['agent_id',$mandataire_id],['est_partage_agent',1],['cloture_affaire',1],['archive',false]])->whereBetween('date_vente',[$date_deb, $date_fin])->get();
 
         foreach ($compros_partage_porte as $cppp) {
             $ca_partage_porte += $cppp->frais_agence * ($cppp->pourcentage_agent / 100 );

@@ -4,7 +4,7 @@
     $curent_url = explode("/", $curent_url);
 
 
-    $li_home = $li_mandataire = $li_affaire = $li_facture = $li_facture_gestion = $li_facture_demande = $li_parametre = $li_parametre_modele = $li_parametre_pub = $li_parametre_generaux= "";
+    $li_home = $li_mandataire = $li_affaire = $li_affaire_archive=  $li_facture = $li_facture_gestion = $li_facture_demande = $li_parametre = $li_parametre_modele = $li_parametre_pub = $li_parametre_generaux= "";
     
     switch ($curent_url[1]) {
         case 'home':       
@@ -14,7 +14,9 @@
             $li_mandataire = "active";
             break;
         case 'compromis':
-            $li_affaire = "active";
+        if(sizeof($curent_url) < 3){
+            $li_affaire = "active open";
+        }
             break;
         case 'factures':
             $li_facture= "active open";
@@ -43,7 +45,12 @@
                 break;
             case 'generaux':
                 $li_parametre_generaux = "active";
-                break;    
+                break;
+            case 'archive' :
+                if($curent_url[1] == "compromis"){
+                    $li_affaire_archive = "active open";
+                }
+            break;
             
             default:
                 // dd("default");
@@ -74,7 +81,13 @@
                     </li>
 
                 @endif
-                <li class="{{ $li_affaire}}"><a href="{{route('compromis.index')}}" ><i class="large material-icons" style="font-size:20px;">folder_open</i>  Affaires </a></li>
+                <li class="{{$li_affaire}} {{$li_affaire_archive}}"><a class="sidebar-sub-toggle" href="" ><i class="large material-icons" style="font-size:20px;">folder_open</i>  Affaires <span class="sidebar-collapse-icon ti-angle-down"></span> </a>
+                    <ul>
+                        <li class="{{ $li_affaire}}" ><a href="{{route('compromis.index')}}">Gestion</a></li>
+                        <li class="{{$li_affaire_archive}}" ><a href="{{route('compromis.archive')}}">Archives</a></li>
+                    
+                    </ul>
+                </li>
                 
                 <li class="{{$li_facture}} {{$li_facture_demande}}" ><a  class="sidebar-sub-toggle"><i class="large material-icons">description</i> Factures @if($nb_notif > 0 && Auth()->user()->role == "admin") <span class="badge badge-danger">{{$nb_notif}}</span> @endif<span class="sidebar-collapse-icon ti-angle-down"></span></a>
                     <ul>
@@ -93,7 +106,7 @@
                     
                     @if (Auth()->user()->role == "admin")
                     
-                <li class="{{$li_parametre}}"><a  class="sidebar-sub-toggle"><i class="large material-icons" style="font-size:20px;">build</i> Paramètres <span class="sidebar-collapse-icon ti-angle-down"></span></a>
+                    <li class="{{$li_parametre}}"><a  class="sidebar-sub-toggle"><i class="large material-icons" style="font-size:20px;">build</i> Paramètres <span class="sidebar-collapse-icon ti-angle-down"></span></a>
                         <ul>
                             {{-- <li><a href="page-login.html">Info Entreprise</a></li> --}}
                             <li class="{{$li_parametre_generaux}}"><a href="{{route('parametre_generaux.create')}}">Généraux</a></li>

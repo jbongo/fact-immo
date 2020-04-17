@@ -71,65 +71,6 @@
  
  </script>
 <script>
-
-$(function() {
-            $.ajaxSetup({
-                headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
-            })
-            $('[data-toggle="tooltip"]').tooltip()
-            $('body').on('click','a.delete',function(e) {
-                let that = $(this)
-                e.preventDefault()
-                const swalWithBootstrapButtons = swal.mixin({
-                    confirmButtonClass: 'btn btn-success',
-                    cancelButtonClass: 'btn btn-danger',
-                    buttonsStyling: false,
-                })
-        swalWithBootstrapButtons({
-            title: '@lang('Vraiment archiver cette affaire  ?')',
-            type: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#DD6B55',
-            confirmButtonText: '@lang('Oui')',
-            cancelButtonText: '@lang('Non')',
-            
-        }).then((result) => {
-            if (result.value) {
-                $('[data-toggle="tooltip"]').tooltip('hide')
-                    $.ajax({                        
-                        url: that.attr('href'),
-                        type: 'PUT'
-                    })
-                    .done(function () {
-                            that.parents('tr').remove()
-                    })
-
-                swalWithBootstrapButtons(
-                'Archivé!',
-                'Le compromis a bien été archivé.',
-                'success'
-                )
-                
-                
-            } else if (
-                // Read more about handling dismissals
-                result.dismiss === swal.DismissReason.cancel
-            ) {
-                swalWithBootstrapButtons(
-                'Annulé',
-                'Le compromis n\'a pas été archivé :)',
-                'error'
-                )
-            }
-        })
-            })
-        })
-
-
-
-
-
-
         // ######### Cloturer une affaire
 
 
@@ -193,5 +134,49 @@ $(function() {
         })
             })
         })
+    </script>
+
+    {{-- Archiver une affaire --}}
+    <script>
+
+$('.archiver').on('click',function(e){
+      archive_id = $(this).attr('id');
+   });
+   
+   
+
+$('#valider_archive').on('click',function(e){
+ e.preventDefault();
+
+if($("#motif_archive").val() != ""){
+
+    $.ajaxSetup({
+                headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
+            })
+   $.ajax({
+
+         type: "POST",
+         url: "compromis/archiver/"+archive_id ,
+         data:  $("#form_archive").serialize(),
+         success: function (result) {
+            swal(
+                'Archivée',
+                'Vous retrouverez votre affaire dans les archives!',
+                'success'
+            )
+            .then(function() {
+                window.location.href = "{{route('compromis.index')}}";
+            })
+        
+         },
+         error: function(error){
+            console.log(error);
+            
+         }
+   });
+}
+
+
+});
     </script>
 @endsection

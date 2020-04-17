@@ -79,6 +79,8 @@ class CreateCompromisTable extends Migration
             $table->boolean('cloture_affaire')->default(false);
             $table->text('observations')->nullable(); 
             $table->string('pdf_compromis')->nullable(); 
+            $table->boolean('archive')->default(false);
+            $table->string('motif_archive')->nullable();
 
 
             

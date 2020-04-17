@@ -5,7 +5,7 @@
 @if ($compromis->facture_stylimmo_valide == true)
 Facture N° {{$facture->numero}}
 @else 
-    @if(auth::user()->role == "admin")
+    @if(Auth()->user()->role == "admin")
         Valider la facture {{$numero}}
     @else 
         Prévisualisation 
@@ -38,7 +38,7 @@ Facture N° {{$facture->numero}}
                <a href="{{route('facture.telecharger_pdf_facture_stylimmo', Crypt::encrypt($compromis->id))}}"  class="btn btn-default btn-flat btn-addon  m-b-10 m-l-5 " id="ajouter"><i class="ti-download"></i>Télécharger</a>
             </div>
             @else 
-            @if(auth::user()->role == "admin")
+            @if(Auth()->user()->role == "admin")
             <div class="col-lg-4 col-md-4  col-sm-5 ml-auto">
                 <form action="{{route('facture.valider_facture_stylimmo', Crypt::encrypt($compromis->id))}}" method="get">
                         <div class="row">
@@ -123,7 +123,7 @@ Facture N° {{$facture->numero}}
     <tbody>
         <tr>
             <td style="width: 343px;"><span style="color: #ff0000;">Merci d'indiquer le num&eacute;ro de facture en r&eacute;f&eacute;rence du virement.</span></td>
-            <td style="width: 344px;"><span style="text-decoration: underline; font-size:20px"><strong>FACTURE N&deg; @if(auth::user()->role == "admin") @if ($compromis->facture_stylimmo_valide == true)  {{$facture->numero}} @else {{$numero}}</strong></span>@endif @else xxxx @endif</td>
+            <td style="width: 344px;"><span style="text-decoration: underline; font-size:20px"><strong>FACTURE N&deg; @if(Auth()->user()->role == "admin") @if ($compromis->facture_stylimmo_valide == true)  {{$facture->numero}} @else {{$numero}}</strong></span>@endif @else xxxx @endif</td>
         </tr>
     </tbody>
 </table>

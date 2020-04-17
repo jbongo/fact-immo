@@ -45,7 +45,7 @@
                                     @if(Auth()->user()->role == "mandataire")
                                     <td >
                 
-                                        @if($compromi_previ->je_porte_affaire == 0  || $compromi_previ->agent_id == auth::user()->id)
+                                        @if($compromi_previ->je_porte_affaire == 0  || $compromi_previ->agent_id == Auth()->user()->id)
                                             <span class="badge badge-danger">Non</span>
                                             {{-- @php  $grise = "background-color:#EDECE7"; @endphp --}}
                                         @else
@@ -102,7 +102,7 @@
                                         @if($compromi_previ->est_partage_agent == 0)
                                             <span class="badge badge-danger">Non</span>
                                         @else
-                                            @if(auth::user()->role == "admin")
+                                            @if(Auth()->user()->role == "admin")
                                             {{-- <span class="badge badge-success">Oui</span> --}}
                                             
                                             @if($compromi_previ->getPartage()!= null)
@@ -112,7 +112,7 @@
                                             @endif
                                             @else 
                                                 @if($compromi_previ->getPartage() != null)
-                                                    @if ($compromi_previ->getPartage()->id == auth::user()->id)
+                                                    @if ($compromi_previ->getPartage()->id == Auth()->user()->id)
                                                         <strong> <a >{{$compromi_previ->user->nom}} {{$compromi_previ->user->prenom}}</a> </strong>
                                                     @else 
                                                         <strong> <a >{{$compromi_previ->getPartage()->nom}} {{$compromi_previ->getPartage()->prenom}}</a> </strong>
@@ -128,7 +128,7 @@
 
                                     </td>        
                                     <td  style="{{$grise}}">
-                                        @if($compromi_previ->je_porte_affaire == 1 && $compromi_previ->agent_id != auth::user()->id)
+                                        @if($compromi_previ->je_porte_affaire == 1 && $compromi_previ->agent_id != Auth()->user()->id)
                                             @if($compromi_previ->demande_facture == 0 )
                                                 <span><a class="btn btn-default" href="{{route('facture.demander_facture',Crypt::encrypt($compromi_previ->id))}}" data-toggle="tooltip" title="@lang(' ddddd')">demander facture styl</a> </span>
                                             @elseif($compromi_previ->demande_facture == 1)
@@ -141,11 +141,11 @@
                                   
                                     <td width="15%">
                                             <a href="{{route('compromis.show',Crypt::encrypt($compromi_previ->id))}}" data-toggle="tooltip" title="@lang('Détails  ')"><i class="large material-icons color-info">visibility</i></a> 
-                                            @if ($compromi_previ->cloture_affaire == 0 && $compromi_previ->demande_facture == 2 && $compromi_previ->agent_id != auth::user()->id)
+                                            @if ($compromi_previ->cloture_affaire == 0 && $compromi_previ->demande_facture == 2 && $compromi_previ->agent_id != Auth()->user()->id)
                                     <a class="cloturer" href="{{route('compromis.cloturer',Crypt::encrypt($compromi_previ->id))}}" data-toggle="tooltip" data-mandat="{{$compromi_previ->numero_mandat}}" title="@lang('Clôturer l\'affaire  ')"><i class="large material-icons color-danger">clear</i></a> 
                                             @elseif($compromi_previ->cloture_affaire == 1  )
-                                                @if(auth::user()->role != "admin"  )
-                                                    @if ($compromi_previ->je_porte_affaire == 0  || $compromi_previ->agent_id == auth::user()->id || ($compromi_previ->je_porte_affaire == 1 && $compromi_previ->est_partage_agent == 1) )
+                                                @if(Auth()->user()->role != "admin"  )
+                                                    @if ($compromi_previ->je_porte_affaire == 0  || $compromi_previ->agent_id == Auth()->user()->id || ($compromi_previ->je_porte_affaire == 1 && $compromi_previ->est_partage_agent == 1) )
                                                     <a target="blank" href="{{route('facture.preparer_facture_honoraire_partage',Crypt::encrypt($compromi_previ->id))}}" data-toggle="tooltip" title="@lang('Note honoraire  ')"><i class="large material-icons color-danger">insert_drive_file</i></a> 
 
                                                     @else 
@@ -155,7 +155,7 @@
                                                 @endif
                                             @endif
                                             
-                                        @if ($compromi_previ->agent_id != auth::user()->id && ($compromi_previ->facture_stylimmo_valide == false || auth::user()->role =="admin") )
+                                        @if ($compromi_previ->agent_id != Auth()->user()->id && ($compromi_previ->facture_stylimmo_valide == false || Auth()->user()->role =="admin") )
                                             <span><a href="{{route('compromis.show',Crypt::encrypt($compromi_previ->id))}}" data-toggle="tooltip" title="@lang('Modifier ') "><i class="large material-icons color-warning">edit</i></a></span>
                                             <span><a  href="{{route('compromis.archive',[$compromi_previ->id,1])}}" class="delete" data-toggle="tooltip" title="@lang('Archiver ') {{ $compromi_previ->nom }}"><i class="large material-icons color-danger">delete</i> </a></span>
                                         @endif

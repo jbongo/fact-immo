@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
 @section ('page_title')
-Détail de l'affaire @if(auth::user()->role =="admin") de {{$compromis->user->nom}} {{$compromis->user->prenom}} @endif
+Détail de l'affaire @if(Auth()->user()->role =="admin") de {{$compromis->user->nom}} {{$compromis->user->prenom}} @endif
 @endsection
 <style>
 
@@ -20,14 +20,16 @@ Détail de l'affaire @if(auth::user()->role =="admin") de {{$compromis->user->no
 		<div class="card">
           
 			<div class="col-lg-10">
-                @if ($compromis->demande_facture == 0 && (  ($compromis->est_partage_agent == 1 && $compromis->je_porte_affaire == 1) ||  ($compromis->est_partage_agent == 0) )  )
-                    @if($compromis->user_id == Auth::user()->id ||  auth::user()->role =="admin" )
-                        <a class="btn btn-danger btn-flat btn-addon btn-sm m-b-10 m-l-5 submit" href="{{route('facture.demander_facture', Crypt::encrypt($compromis->id) )}}"><i class="ti-file"></i>Demander Facture stylimmo</a>
+                @if($compromis->archive == false)
+                    @if ($compromis->demande_facture == 0 && (  ($compromis->est_partage_agent == 1 && $compromis->je_porte_affaire == 1) ||  ($compromis->est_partage_agent == 0) )  )
+                        @if($compromis->user_id == Auth()->user()->id ||  Auth()->user()->role =="admin" )
+                            <a class="btn btn-danger btn-flat btn-addon btn-sm m-b-10 m-l-5 submit" href="{{route('facture.demander_facture', Crypt::encrypt($compromis->id) )}}"><i class="ti-file"></i>Demander Facture stylimmo</a>
+                        @endif
                     @endif
-                @endif
-                @if ($compromis->demande_facture < 2 ||  auth::user()->role =="admin" )
-                    @if($compromis->user_id == Auth::user()->id ||  auth::user()->role =="admin" )
-                        <a class="btn btn-success btn-flat btn-addon btn-sm m-b-10 m-l-5  " id="modifier_compromis"><i class="ti-pencil-alt"></i>Modifier l'affaire</a>
+                    @if ($compromis->demande_facture < 2 ||  Auth()->user()->role =="admin" )
+                        @if($compromis->user_id == Auth()->user()->id ||  Auth()->user()->role =="admin" )
+                            <a class="btn btn-success btn-flat btn-addon btn-sm m-b-10 m-l-5  " id="modifier_compromis"><i class="ti-pencil-alt"></i>Modifier l'affaire</a>
+                        @endif
                     @endif
                 @endif
             
@@ -48,64 +50,66 @@ Détail de l'affaire @if(auth::user()->role =="admin") de {{$compromis->user->no
                                                 <div class="col-lg-4 col-md-4 col-sm-4">
                                                     <div class="form-group row" id="parrain-id">
                                                         <label class="col-lg-8 col-form-label" for="parr-id">Partage avec agence /agent ?</label>
-                                                        <input type="hidden" name="partage" value="{{ $compromis->est_partage_agent == 0 ? "Non":"Oui"}}">
+                                                        {{-- <input type="hidden" name="partage" value="{{ $compromis->est_partage_agent == 0 ? "Non":"Oui"}}"> --}}
                                                         <div class="col-lg-8">
-                                                            {{-- <select class="col-lg-6 form-control" id="parr-id" name="partage"  >
+                                                            <select class="col-lg-6 form-control" id="partage" name="partage"  >
                                                                 <option value="{{ $compromis->est_partage_agent == 0 ? "Non":"Oui"}}">{{ $compromis->est_partage_agent == 0 ? "Non":"Oui"}}</option>
                                                                 <option  value="Non" >Non</option>
                                                                 <option  value="Oui" >Oui</option>
-                                                            </select> --}}
+                                                            </select>
                                                                 
-                                                                <span style="color:slategray">{{ $compromis->est_partage_agent == 0 ? "Non":"Oui"}}</span>
+                                                                {{-- <span style="color:slategray">{{ $compromis->est_partage_agent == 0 ? "Non":"Oui"}}</span> --}}
                                                         </div>
                                                     </div>
                                                 </div>
                                             
                                             
-                                                @if ($compromis->est_partage_agent == 1)
+                                                {{-- @if ($compromis->est_partage_agent == 1) --}}
                                                     
-                                                
-                                                <div id="div_partage_agent_oui">
-                                                        <div class="col-lg-4 col-md-4 col-sm-4">
-                                                            <div class="form-group row" id="div_hors_reseau">                                                
-                                                                <label class="col-lg-8 col-md-8 col-sm-8 col-form-label" for="hors_reseau">Agence/Agent réseau ? <span class="text-danger">*</span></label>
-                                                                <div class="col-lg-6 col-md-6 col-sm-6 ">
-                                                                    {{-- <select class="js-select2 form-control" id="hors_reseau" name="hors_reseau" required>
-                                                                        <option value="{{$compromis->partage_reseau ==  true ? "Oui" : "Non"}}">{{$compromis->partage_reseau ==  true ? "Oui" : "Non"}}</option>
-                                                                        <option value="Non">Oui</option>
-                                                                        <option value="Oui">Non</option>
-                                                                    </select> --}}
-                                                                <span style="color:slategray">{{$compromis->partage_reseau ==  true ? "Oui" : "Non"}}</span>
+                                                <div id="div_partage">
 
-                                                                </div>                                                
-                                                            </div>
-                                                        </div>
-                                                        @if ($compromis->partage_reseau == true && $compromis->agent_id !=null )
-                                                            
-                                                        <div class="col-lg-4 col-md-4 col-sm-4">
-                                                            <div class="form-group row" id="div_agent_reseau">
-                                                                <label class="col-lg-8 col-md-8 col-sm-8 col-form-label" for="agent_id">Choisir agent / agence <span class="text-danger">*</span> </label>
-                                                                <div class="col-lg-6 col-md-6 col-sm-6">
-                                                                    <select class="selectpicker " id="agent_id" name="agent_id" data-live-search="true" data-style="btn-warning btn-rounded" >
-                                                                        <option value="{{ $agence->id }}" data-tokens="{{ $agence->nom }} {{ $agence->prenom }}">{{ $agence->nom }} {{ $agence->prenom }}</option>                                                                    
-                                                                        @foreach ($agents as $agent )
-                                                                            <option value="{{ $agent->id }}" data-tokens="{{ $agent->nom }} {{ $agent->prenom }}">{{ $agent->nom }} {{ $agent->prenom }}</option>
-                                                                        @endforeach
-                                                                    </select>
+                                                
+                                                    <div id="div_partage_agent_oui">
+                                                            <div class="col-lg-4 col-md-4 col-sm-4">
+                                                                <div class="form-group row" id="div_hors_reseau">                                                
+                                                                    <label class="col-lg-8 col-md-8 col-sm-8 col-form-label" for="hors_reseau">Agence/Agent réseau ? <span class="text-danger">*</span></label>
+                                                                    <div class="col-lg-6 col-md-6 col-sm-6 ">
+                                                                        <select class="js-select2 form-control" id="hors_reseau" name="hors_reseau" required>
+                                                                            <option value="{{$compromis->partage_reseau ==  true ? "Non" : "Oui"}}">{{$compromis->partage_reseau ==  true ? "Oui" : "Non"}}</option>
+                                                                            <option value="Non">Oui</option>
+                                                                            <option value="Oui">Non</option>
+                                                                        </select>
+                                                                    {{-- <span style="color:slategray">{{$compromis->partage_reseau ==  true ? "Oui" : "Non"}}</span> --}}
+
+                                                                    </div>                                                
                                                                 </div>
                                                             </div>
-                                                        </div>
-
-                                                        @else 
-
-                                                        <div class="col-lg-4 col-md-4 col-sm-4">
-                                                            <div class="form-group" id="div_agent_hors_reseau">
-                                                                <label for="nom_agent">Nom Agence/Agent <span class="text-danger">*</span></label>
-                                                                <input class="form-control" type="text" value="{{old('nom_agent') ? old('nom_agent') : $compromis->nom_agent }}" id="nom_agent" name="nom_agent" required >
+                                                            {{-- @if ($compromis->partage_reseau == true && $compromis->agent_id !=null ) --}}
+                                                                
+                                                            <div class="col-lg-4 col-md-4 col-sm-4">
+                                                                <div class="form-group row" id="div_agent_reseau">
+                                                                    <label class="col-lg-8 col-md-8 col-sm-8 col-form-label" for="agent_id">Choisir agent / agence <span class="text-danger">*</span> </label>
+                                                                    <div class="col-lg-6 col-md-6 col-sm-6">
+                                                                        <select class="selectpicker " id="agent_id" name="agent_id" data-live-search="true" data-style="btn-warning btn-rounded" >
+                                                                        @if($agence != null)  <option value="{{ $agence->id }}" data-tokens="{{ $agence->nom }} {{ $agence->prenom }}">{{ $agence->nom }} {{ $agence->prenom }}</option>  @endif                                                                  
+                                                                            @foreach ($agents as $agent )
+                                                                                <option value="{{ $agent->id }}" data-tokens="{{ $agent->nom }} {{ $agent->prenom }}">{{ $agent->nom }} {{ $agent->prenom }}</option>
+                                                                            @endforeach
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
                                                             </div>
+
+                                                            {{-- @else  --}}
+
+                                                            <div class="col-lg-4 col-md-4 col-sm-4">
+                                                                <div class="form-group" id="div_agent_hors_reseau">
+                                                                    <label for="nom_agent">Nom Agence/Agent <span class="text-danger">*</span></label>
+                                                                    <input class="form-control" type="text" value="{{old('nom_agent') ? old('nom_agent') : $compromis->nom_agent }}  " id="nom_agent" name="nom_agent" required >
+                                                                </div>
+                                                            </div>
+                                                            {{-- @endif --}}
                                                         </div>
-                                                        @endif
-                                                    </div>
 
                                                         <div class="row">
                                                             <div class="col-lg-4 col-md-4 col-sm-4">
@@ -118,8 +122,8 @@ Détail de l'affaire @if(auth::user()->role =="admin") de {{$compromis->user->no
                                                             </div>
                     
                                                             
-                                                            <div class="col-lg-4 col-md-4 col-sm-4" id="div_je_porte_affaire">
-                                                                <div class="form-group row">
+                                                            {{-- <div class="col-lg-4 col-md-4 col-sm-4" id="div_je_porte_affaire">
+                                                                <div class="form-group row"> --}}
                                                                     {{-- @php
                                                                     if ($compromis->je_porte_affaire == 1){
                                                                         $check = "checked" ;         
@@ -128,7 +132,7 @@ Détail de l'affaire @if(auth::user()->role =="admin") de {{$compromis->user->no
                                                                         $check = "unchecked" ;   
                                                                         }
                                                                     @endphp --}}
-                                                                    <label class="col-lg-7 col-md-7 col-sm-7" for="je_porte_affaire">Je porte l'affaire</label> 
+                                                                    {{-- <label class="col-lg-7 col-md-7 col-sm-7" for="je_porte_affaire">Je porte l'affaire</label> 
                                                                     <div class="col-lg-6 col-md-6 col-sm-6">
                                                                         <input type="hidden" id="je_porte_affaire" name="je_porte_affaire" value="{{$compromis->je_porte_affaire ==  true ? "Oui" : "Non"}}">
                                                                         <span style="color:slategray">{{$compromis->je_porte_affaire ==  true ? "Oui" : "Non"}}</span>
@@ -136,7 +140,7 @@ Détail de l'affaire @if(auth::user()->role =="admin") de {{$compromis->user->no
                                                                     </div>
                                                                 </div>
                                                                 
-                                                            </div>
+                                                            </div> --}}
 
                                                             <div class="col-lg-4 col-md-4 col-sm-4" id="div_mandat_partage">
                                                                 @if ($compromis->je_porte_affaire == 0)
@@ -158,11 +162,11 @@ Détail de l'affaire @if(auth::user()->role =="admin") de {{$compromis->user->no
     
                                                         </div>
             
-                                                        
+                                                    </div>
                                                    
 {{-- xxxxxxxxxxxxxxxxxxxxxxxx --}}
 
-                                                @endif
+                                                {{-- @endif --}}
     
                                                 
                                             </div>
@@ -645,55 +649,25 @@ $('#modifier_compromis').click(function(){
 
 <script>
 
-    
-  // Acquereur Vendeur
-// $('#div_raison_sociale_vendeur').hide();
-// $('#div_raison_sociale_acquereur').hide();
-// $('#civilite_vendeur').change(function(){
-//     if($('#civilite_vendeur').val() =="M." || $('#civilite_vendeur').val() =="Mme"){
-//         $('#div_raison_sociale_vendeur').hide();
-//         $('#div_nom_vendeur').show();
-//         $('#div_prenom_vendeur').show();
-
-//     }else{
-
-//         $('#div_nom_vendeur').hide();
-//         $('#div_prenom_vendeur').hide();
-//         $('#div_raison_sociale_vendeur').show();
-//     }
-
-// });
-// $('#civilite_acquereur').change(function(){
-//     if($('#civilite_acquereur').val() =="M." || $('#civilite_acquereur').val() =="Mme"){
-//         $('#div_raison_sociale_acquereur').hide();
-//         $('#div_nom_acquereur').show();
-//         $('#div_prenom_acquereur').show();
-
-//     }else{
-
-//         $('#div_nom_acquereur').hide();
-//         $('#div_prenom_acquereur').hide();
-//         $('#div_raison_sociale_acquereur').show();
-//     }
-
-// });
-
-// Fin acquereur vendeur
 
 //######Info partage 
 
-/*$('#div_hors_reseau').hide();
-$('#div_agent_reseau').hide();
-$('#div_agent_hors_reseau').hide();
-$('#div_pourcentage_agent').hide();
-*/
+var partage = "{{ $compromis->est_partage_agent == 0 ? 0 : 1}}"
+if(partage == 0)  $("#div_partage").hide();
+
+var partage_reseau = "{{ $compromis->partage_reseau == 0 ? 0 : 1}}"
+partage_reseau == 1 ? $("#div_agent_hors_reseau").hide() :  $("#div_agent_reseau").hide();
+
+
 $("#partage").change(function(){
     if($('#partage').val() == "Oui"){
+        $("#div_partage").show();
         $('#div_hors_reseau').show();
         $('#div_agent_reseau').show();
         $('#div_pourcentage_agent').show();
 
     }else{
+        $("#div_partage").hide();
         $('#div_hors_reseau').hide();
         $('#div_agent_reseau').hide();
         $('#div_agent_hors_reseau').hide();
@@ -702,7 +676,7 @@ $("#partage").change(function(){
 });
 
 $("#hors_reseau").change(function(){
-    if($('#hors_reseau').val() == "Non"){
+    if($('#hors_reseau').val() == "Oui"){
         $('#div_agent_hors_reseau').show();
         $('#div_agent_reseau').hide();
 
@@ -730,7 +704,7 @@ var maxLength = 180;
    
 
     var pdf_compromis = "{{ $compromis->pdf_compromis}}";
-    console.log(pdf_compromis);
+    // console.log(pdf_compromis);
     
     if(pdf_compromis != ""){
         $('#pdf_compromis').hide();
@@ -759,4 +733,5 @@ $('#modifier_pdf_compromis').click(function (){
     });
 
 </script>
+
 @endsection

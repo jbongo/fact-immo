@@ -45,7 +45,7 @@
                                     @if(Auth()->user()->role == "mandataire")
                                     <td >
                 
-                                        @if($compromi->je_porte_affaire == 0  || $compromi->agent_id == auth::user()->id)
+                                        @if($compromi->je_porte_affaire == 0  || $compromi->agent_id == Auth()->user()->id)
                                             <span class="badge badge-danger">Non</span>
                                             {{-- @php  $grise = "background-color:#EDECE7"; @endphp --}}
                                         @else
@@ -102,17 +102,17 @@
                                         @if($compromi->est_partage_agent == 0)
                                             <span class="badge badge-danger">Non</span>
                                         @else
-                                            @if(auth::user()->role == "admin")
+                                            @if(Auth()->user()->role == "admin")
                                             {{-- <span class="badge badge-success">Oui</span> --}}
                                             
-                                            @if($compromi->getPartage()!= null)
+                                            @if($compromi->getPartage()!= null && $compromi->partage_reseau == 1) 
                                                 <strong> <a href="{{route('switch_user',Crypt::encrypt($compromi->getPartage()->id) )}}" data-toggle="tooltip" title="@lang('Se connecter en tant que ') {{$compromi->getPartage()->nom}}">{{$compromi->getPartage()->nom}} {{$compromi->getPartage()->prenom}}<i style="font-size: 17px" class="material-icons color-success">person_pin</i></a> </strong> 
                                             @else 
                                                 <strong> <a  data-toggle="tooltip" title="@lang('Agence / Agent externe au réseau STYL\'IMMO') ">{{$compromi->nom_agent}} </a> </strong> 
                                             @endif
                                             @else 
                                                 @if($compromi->getPartage() != null)
-                                                    @if ($compromi->getPartage()->id == auth::user()->id)
+                                                    @if ($compromi->getPartage()->id == Auth()->user()->id)
                                                         <strong> <a >{{$compromi->user->nom}} {{$compromi->user->prenom}}</a> </strong>
                                                     @else 
                                                         <strong> <a >{{$compromi->getPartage()->nom}} {{$compromi->getPartage()->prenom}}</a> </strong>
@@ -128,7 +128,7 @@
 
                                     </td>        
                                     <td  style="{{$grise}}">
-                                        @if($compromi->je_porte_affaire == 1 && $compromi->agent_id != auth::user()->id)
+                                        @if($compromi->je_porte_affaire == 1 && $compromi->agent_id != Auth()->user()->id)
                                             @if($compromi->demande_facture == 0 )
                                                 <span><a class="btn btn-default" href="{{route('facture.demander_facture',Crypt::encrypt($compromi->id))}}" data-toggle="tooltip" title="@lang(' ddddd')">demander facture styl</a> </span>
                                             @elseif($compromi->demande_facture == 1)
@@ -141,11 +141,11 @@
                                   
                                     <td width="15%">
                                             <a href="{{route('compromis.show',Crypt::encrypt($compromi->id))}}" data-toggle="tooltip" title="@lang('Détails  ')"><i class="large material-icons color-info">visibility</i></a> 
-                                            @if ($compromi->cloture_affaire == 0 && $compromi->demande_facture == 2 && $compromi->agent_id != auth::user()->id)
+                                            @if ($compromi->cloture_affaire == 0 && $compromi->demande_facture == 2 && $compromi->agent_id != Auth()->user()->id)
                                     <a class="cloturer" href="{{route('compromis.cloturer',Crypt::encrypt($compromi->id))}}" data-toggle="tooltip" data-mandat="{{$compromi->numero_mandat}}" title="@lang('Clôturer l\'affaire  ')"><i class="large material-icons color-danger">clear</i></a> 
                                             @elseif($compromi->cloture_affaire == 1  )
-                                                @if(auth::user()->role != "admin"  )
-                                                    @if ($compromi->je_porte_affaire == 0  || $compromi->agent_id == auth::user()->id || ($compromi->je_porte_affaire == 1 && $compromi->est_partage_agent == 1) )
+                                                @if(Auth()->user()->role != "admin"  )
+                                                    @if ($compromi->je_porte_affaire == 0  || $compromi->agent_id == Auth()->user()->id || ($compromi->je_porte_affaire == 1 && $compromi->est_partage_agent == 1) )
                                                     <a target="blank" href="{{route('facture.preparer_facture_honoraire_partage',Crypt::encrypt($compromi->id))}}" data-toggle="tooltip" title="@lang('Note honoraire  ')"><i class="large material-icons color-danger">insert_drive_file</i></a> 
 
                                                     @else 
@@ -155,9 +155,9 @@
                                                 @endif
                                             @endif
                                             
-                                        @if ($compromi->agent_id != auth::user()->id && ($compromi->facture_stylimmo_valide == false || auth::user()->role =="admin") )
+                                        @if ($compromi->agent_id != Auth()->user()->id && ($compromi->facture_stylimmo_valide == false || Auth()->user()->role =="admin") )
                                             <span><a href="{{route('compromis.show',Crypt::encrypt($compromi->id))}}" data-toggle="tooltip" title="@lang('Modifier ') "><i class="large material-icons color-warning">edit</i></a></span>
-                                            <span><a  href="{{route('compromis.archive',[$compromi->id,1])}}" class="delete" data-toggle="tooltip" title="@lang('Archiver ') {{ $compromi->nom }}"><i class="large material-icons color-danger">delete</i> </a></span>
+                                    <span><a data-toggle="modal" id="{{$compromi->id}}" data-target="#myModal2" href=""  class="archiver" data-toggle="tooltip" title="@lang('Archiver ') {{ $compromi->nom }}"><i class="large material-icons color-danger">delete</i> </a></span>
                                         @endif
                                     </td>
                                 </tr>
@@ -173,3 +173,61 @@
         </div>
     </div>
 </div>
+
+
+
+<!-- Modal archive de l'affaire -->
+<div class="modal fade" id="myModal2" role="dialog">
+    <div class="modal-dialog modal-xs">
+    
+        <!-- Modal content-->
+        <div class="modal-content col-lg-offset-4  col-md-offset-4 col-sm-offset-4 col-lg-4 col-md-4 col-sm-4">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Choisir la raison de l'archive</h4>
+            </div>
+            <div class="modal-body">
+                <form action="" method="post" id="form_archive">
+                    <div class="modal-body">
+                        
+                        <div class="">
+                            <div class="form-group row">
+                                <div class="col-lg-8 col-md-8 col-sm-8">
+                                   
+                                    <div>
+                                        <input type="radio" id="perte" name="motif_archive" value="Perte du mandat" checked>
+                                        <label for="perte">Perte du mandat</label>
+                                      </div>
+                                      
+                                      <div>
+                                        <input type="radio" id="retrait" name="motif_archive" value="Retrait de l'acquéreur ">
+                                        <label for="retrait">Retrait de l'acquéreur </label>
+                                      </div>
+                                      
+                                      <div>
+                                        <input type="radio" id="refus" name="motif_archive" value="Refus de finacement">
+                                        <label for="refus">Refus de finacement</label>
+                                      </div>
+                                      <div>
+                                        <input type="radio" id="deces" name="motif_archive" value="Décès">
+                                        <label for="deces">Décès</label>
+                                      </div>
+                                      <div>
+                                        <input type="radio" id="autre" name="motif_archive" value="Autre">
+                                        <label for="autre">Autre</label>
+                                      </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    
+                    </div>
+                    <div class="modal-footer">
+                        <input type="submit" class="btn btn-success" id="valider_archive"  value="Valider" />
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </form> 
+            </div>
+        </div>
+    </div>
+    </div>

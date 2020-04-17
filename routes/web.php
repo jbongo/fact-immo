@@ -37,7 +37,9 @@ Route::middleware('auth')->group(function(){
     Route::put('/compromis/edit/{compromis}','CompromisController@edit')->name('compromis.edit');
     Route::post('/compromis/update/{compromis}','CompromisController@update')->name('compromis.update');
     Route::delete('/compromis/delete/{compromis}','CompromisController@destroy')->name('compromis.delete');
-    Route::delete('/compromis/archive/{compromis}','CompromisController@archive')->name('compromis.archive');
+    Route::post('/compromis/archiver/{compromis}','CompromisController@archiver')->name('compromis.archiver');
+    Route::get('/compromis/archive','CompromisController@archive')->name('compromis.archive');
+    Route::post('/compromis/archive/restaurer/{compromis}','CompromisController@restaurer_archive')->name('compromis.archive.restaurer');
     Route::get('/compromis/cloturer/{compromis}','CompromisController@cloturer')->name('compromis.cloturer');
     // type affaire
     Route::get('/compromis/type','CompromisController@index_type_compromis')->name('compromis_type.index');

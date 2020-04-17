@@ -150,76 +150,54 @@ class ContratController extends Controller
 
         if($request->a_parrain == "true" &&  $contrat->a_parrain == false ){
            
-            // $nb_filleul = Filleul::where([ ['parrain_id',$request->parrain_id]])->count();
-    
-            // if($nb_filleul > 0){
-            //     $rang_filleuls = Filleul::where([['parrain_id',$request->parrain_id] ])->select('rang')->get()->toArray();
-            //     $rangs = array();
+                            
+            $nb_filleul = Filleul::where([ ['parrain_id',$request->parrain_id]])->count();
+            $parrain = User::where('id',$request->parrain_id)->first();
+        
+            // on détermine le nombre d'année depuis la date de début d'activité du parrain dans le but de determiner le cycle dans le quel nous somme
+            $nb_annee = intval( (strtotime(date('Y-m-d')) - strtotime($parrain->contrat->date_deb_activite->format('Y-m-d'))) / (86400 *365) ) ;
+            $cycle_actuel = intval($nb_annee / 3 ) + 1;
+        
+        
+        
+            $date_deb_parrain = $parrain->contrat->date_deb_activite;
 
-            //     foreach ($rang_filleuls as $rang_fill) {
-            //         $rangs[] = $rang_fill["rang"];
-            //     }
+            if($nb_filleul > 0){
 
-            //     $rang = max($rangs)+1;
-            // }else{
-            //     $rang = 1;
-            // }
-                
-            // Filleul::create([
-            //     "user_id" => $contrat->user->id,
-            //     "parrain_id" =>  $request->parrain_id,
-            //     "rang"=> $rang,
-            //     "expire" => false
-            // ]);
-
-                
-        $nb_filleul = Filleul::where([ ['parrain_id',$request->parrain_id]])->count();
-        $parrain = User::where('id',$request->parrain_id)->first();
-      
-        // on détermine le nombre d'année depuis la date de début d'activité du parrain dans le but de determiner le cycle dans le quel nous somme
-        $nb_annee = intval( (strtotime(date('Y-m-d')) - strtotime($parrain->contrat->date_deb_activite->format('Y-m-d'))) / (86400 *365) ) ;
-        $cycle_actuel = intval($nb_annee / 3 ) + 1;
-      
-    
-     
-        $date_deb_parrain = $parrain->contrat->date_deb_activite;
-
-        if($nb_filleul > 0){
-
-            // On détermine le rang du filleul dans le cycle
+                // On détermine le rang du filleul dans le cycle
 
 
-            $rang_filleuls = Filleul::where([['parrain_id',$request->parrain_id],['cycle',$cycle_actuel] ])->select('rang')->get()->toArray();
-            $rangs = array();
+                $rang_filleuls = Filleul::where([['parrain_id',$request->parrain_id],['cycle',$cycle_actuel] ])->select('rang')->get()->toArray();
+                $rangs = array();
 
-            foreach ($rang_filleuls as $rang_fill) {
-                $rangs[] = $rang_fill["rang"];
-            }
+                foreach ($rang_filleuls as $rang_fill) {
+                    $rangs[] = $rang_fill["rang"];
+                }
 
-            $rang = max($rangs)+1;
+                $rang = max($rangs)+1;
 
           
-        }else{
+                }else{
 
-            $rang = 1;
-            $cycle_actuel = 1;
-        }
-        $parametre = Parametre::first();
-        $comm_parrain = unserialize($parametre->comm_parrain) ;
+                    $rang = 1;
+                    $cycle_actuel = 1;
+                }
+                $parametre = Parametre::first();
+                $comm_parrain = unserialize($parametre->comm_parrain) ;
 
-        $r = $rang > 3 ? "n" : $rang ;
-        $pourcentage = $comm_parrain["p_1_".$r];
+                $r = $rang > 3 ? "n" : $rang ;
+                $pourcentage = $comm_parrain["p_1_".$r];
 
-        // dd($pourcentage);
-        // dd($cycle_actuel);
-        Filleul::create([
-            "user_id" => $contrat->user->id,
-            "parrain_id" =>  $request->parrain_id,
-            "rang"=> $rang,
-            "cycle"=> $cycle_actuel,
-            "pourcentage"=> $pourcentage,
-            "expire" => false
-        ]);
+                // dd($pourcentage);
+                // dd($cycle_actuel);
+                Filleul::create([
+                    "user_id" => $contrat->user->id,
+                    "parrain_id" =>  $request->parrain_id,
+                    "rang"=> $rang,
+                    "cycle"=> $cycle_actuel,
+                    "pourcentage"=> $pourcentage,
+                    "expire" => false
+                ]);
 
 
         } elseif($request->a_parrain == "true" &&  $contrat->a_parrain == true ){
@@ -227,6 +205,10 @@ class ContratController extends Controller
 
             $filleul->parrain_id = $request->parrain_id;
             $filleul->update();
+        }elseif($request->a_parrain == "false" &&  $contrat->a_parrain == true ){
+            $filleul = Filleul::where('user_id',$contrat->user->id)->delete();
+
+           
         }
 
 
