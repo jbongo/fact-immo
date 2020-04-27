@@ -6,12 +6,13 @@
 @section ('page_title')
     <a class="btn btn-success  btn-rounded btn-addon btn-sm m-b-10 m-l-5" id="ajouter"><i class="ti-plus"></i>Stats 2019</a> 
 
-    <a href="{{route('compromis_type.index')}}#sous_offre_nav"><div title="Sous offre" class="button" style="background:#FF8C00" href="{{route('compromis_type.index')}}#sous_offre_nav"><div></div><i class="fa fa-check"style="color:#FF8C00"></i></div> </a></span> <span style="font-family: Montserrat; font-size:13px;  "> Les affaires sous offre</span> 
-    <a href="{{route('compromis_type.index')}}#sous_compromis_nav"><div title="Sous compromis" class="button" style="background: #0ad2ff;" href="{{route('compromis_type.index')}}#sous_compromis_nav"><div></div><i class="fa fa-check"style="color:#0ad2ff"></i></div> </a></span> <span style="font-family: Montserrat; font-size:13px;  "> Les affaires sous compromis</span> 
-    <a href="{{route('compromis_type.index')}}#en_attente_nav"><div title="En attente d'encaissement" class="button" style="background: #e6e6e6;" ><div></div><i class="fa fa-check"style="color:#e6e6e6"></i></div> </a></span> <span style="font-family: Montserrat; font-size:13px;  "> Les affaires non encaissée</span>
-    <a href="{{route('compromis_type.index')}}#encaissee_nav"><div title="Encaissé" class="button" style="background: #2e5;" ><div></div><i class="fa fa-check"style="color:#2e5"></i></div> </a></span> <span style="font-family: Montserrat; font-size:13px;  "> Les affaires encaissée</span>  
-    <a href="{{route('compromis.index')}}"><div title="Général" class="button" style="background: #ff1a1a;" ><div></div><i class="fa fa-check" style="color:#ff1a1a"></i></div></a> <span style="font-family: Montserrat; font-size:13px;  "> Toutes les affaires</span> 
-
+    <a href="{{route('compromis.index')}}#sous_offre_nav"><div title="Sous offre" class="button" style="background:#FF8C00;" href="{{route('compromis.index')}}#sous_offre_nav"><div  style=" color:black;font-family: Montserrat; font-size:15px;" >{{config('stats.STATS')["nb_sous_offre_N"]}}</div></div> </a></span> <span style="font-family: Montserrat; font-size:13px;  "> Les affaires sous offre</span> 
+    <a href="{{route('compromis.index')}}#sous_compromis_nav"><div title="Sous compromis" class="button" style="background: #0ad2ff;" href="{{route('compromis.index')}}#sous_compromis_nav"><div  style=" color:black;font-family: Montserrat; font-size:15px;" >{{config('stats.STATS')["nb_sous_compromis_N"]}}</div></div> </a></span> <span style="font-family: Montserrat; font-size:13px;  "> Les affaires sous compromis</span> 
+    <a href="{{route('compromis.index')}}#en_attente_nav"><div title="En attente d'encaissement" class="button" style="background: #e6e6e6;" ><div><div  style=" color:black;font-family: Montserrat; font-size:15px;" >{{config('stats.STATS')["nb_en_attente_N"]}}</div></div></div> </a></span> <span style="font-family: Montserrat; font-size:13px;  "> Les affaires non encaissée</span>
+    <a href="{{route('compromis.index')}}#encaissee_nav"><div title="Encaissé" class="button" style="background: #2e5;" ><div><div  style=" color:black;font-family: Montserrat; font-size:15px;" >{{config('stats.STATS')["nb_encaisse_N"]}}</div></div></div> </a></span> <span style="font-family: Montserrat; font-size:13px;  "> Les affaires encaissée</span>  
+    <a href="{{route('compromis.index')}}"><div title="Général" class="button" style="background: #ff1a1a;" ><div><div  style=" color:black;font-family: Montserrat; font-size:15px;" >{{config('stats.STATS')["nb_global_N"]}}</div></div></div></a> <span style="font-family: Montserrat; font-size:13px;  "> Toutes les affaires</span> 
+ 
+ 
     {{-- <a href="{{route('compromis_type.index')}}" class="btn btn-danger btn-rounded btn-addon btn-sm m-b-10 m-l-5"><i class="ti-folder"></i>@lang('Voir les affaires')</a> --}}
     <br>
 

@@ -67,6 +67,12 @@ class HomeController extends Controller
                 $ca_sous_offre_N_1 = array();
                 $ca_sous_compromis_N_1 = array();
 
+                $nb_global_N = 0;
+                $nb_sous_offre_N = 0;
+                $nb_sous_compromis_N = 0;
+                $nb_en_attente_N = 0;
+                $nb_encaisse_N = 0;
+
      if(Auth::user()->role == "admin"){
             //  ######## Sur l'année N ##########
             for ($i=1; $i <= 12 ; $i++) {                
@@ -74,6 +80,7 @@ class HomeController extends Controller
                 $i < 10 ? $month = "0$i" : $month = $i;
                
                 $ca_glo_n = Compromis::where([['date_vente','like',"%$annee_n-$month%"],['archive',false]])->sum('frais_agence');
+                $nb_global_N += Compromis::where([['date_vente','like',"%$annee_n-$month%"],['archive',false]])->count();
                 $ca_global_N [] = round($ca_glo_n/1.2,2);
         
         
@@ -86,6 +93,7 @@ class HomeController extends Controller
                     foreach ($compros_styls as $compros_styl) {
                         if($compros_styl->getFactureStylimmo()->encaissee == 0){
                             $ca_att_n +=  $compros_styl->frais_agence ;
+                            $nb_en_attente_N++;
                         }
                     }
                 }
@@ -98,6 +106,7 @@ class HomeController extends Controller
                     foreach ($compros_styls as $compros_styl) {
                         if($compros_styl->getFactureStylimmo()->encaissee == 1){
                             $ca_encai_n +=  $compros_styl->frais_agence ;
+                            $nb_encaisse_N++;
                         }
                     }
                 }
@@ -106,12 +115,17 @@ class HomeController extends Controller
                 $ca_encaisse_N [] = round($ca_encai_n/1.2,2);
                 
                 $ca_sous_offre_n = Compromis::where([['date_vente','like',"%$annee_n-$month%"],['demande_facture','<',2],['pdf_compromis',null],['archive',false]])->sum('frais_agence');
+                $nb_sous_offre_N += Compromis::where([['date_vente','like',"%$annee_n-$month%"],['demande_facture','<',2],['pdf_compromis',null],['archive',false]])->count();
+                
                 $ca_sous_offre_N [] = round($ca_sous_offre_n/1.2,2);
 
                 $ca_sous_compromis_n = Compromis::where([['date_vente','like',"%$annee_n-$month%"],['demande_facture','<',2],['pdf_compromis','<>',null],['archive',false]])->sum('frais_agence');
+                $nb_sous_compromis_N += Compromis::where([['date_vente','like',"%$annee_n-$month%"],['demande_facture','<',2],['pdf_compromis','<>',null],['archive',false]])->count();
+                
                 $ca_sous_compromis_N [] = round($ca_sous_compromis_n/1.2,2);
 
             }
+            
 
             //  ######## Sur l'année N-1 ##########
             for ($i=1; $i <= 12 ; $i++) {                
@@ -574,6 +588,12 @@ class HomeController extends Controller
       
         
             $STATS["nb_affaires"] = $nb_affaires;
+            $STATS["nb_global_N"] = $nb_global_N;
+            $STATS["nb_sous_offre_N"] = $nb_sous_offre_N;
+            $STATS["nb_sous_compromis_N"] = $nb_sous_compromis_N;
+            $STATS["nb_en_attente_N"] = $nb_en_attente_N;
+            $STATS["nb_encaisse_N"] = $nb_encaisse_N;
+        
             $STATS["nb_mandataires"] = $nb_mandataires;
             $STATS["nb_filleuls"] = $nb_filleuls;
 

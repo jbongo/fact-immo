@@ -123,9 +123,10 @@ class FactureController extends Controller
      */
     public function demander_facture($compromis_id)
     {
-
+    
         $compromis = Compromis::where('id',Crypt::decrypt($compromis_id))->first();
-        return view ('demande_facture.demande',compact('compromis'));  
+        $mandataire = User::where('id',$compromis->user_id)->first();
+        return view ('demande_facture.demande',compact('compromis','mandataire'));  
         // return redirect()->route('compromis.index')->with('ok', __('compromis modifié')  );
 
     }
@@ -139,6 +140,7 @@ class FactureController extends Controller
     public function store_demande_facture(Request $request, $compromis_id)
     {
 
+    
         $compromis = Compromis::where('id',Crypt::decrypt($compromis_id))->first();
         $compromis->date_vente = $request->date_vente;
 

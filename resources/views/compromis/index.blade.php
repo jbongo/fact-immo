@@ -25,9 +25,13 @@
                     <!-- Navigation Buttons -->
                     <div class="col-lg-12 col-md-12 col-sm-12">
                        <ul class="nav nav-pills nav-tabs" id="myTabs">
-                          <li id="li_stylimmo" class="active"><a href="#stylimmo" data-toggle="pill"> <i class="material-icons" style="font-size: 15px;">file_download</i> @if (Auth()->user()->role == "mandataire") Mes @endif Affaires </a></li>
-                         @if(Auth()->user()->role == "mandataire") <li id="li_caracteristique_nav"><a href="#caracteristique_nav" data-toggle="pill"> <i class="material-icons" style="font-size: 15px;">file_download</i> @lang('Affaires de mes filleuls ')</a></li>  @endif                       
+                          <li id="li_stylimmo"  class="active"><a href="#stylimmo" data-toggle="pill"> <i class="material-icons" style="font-size: 15px;">file_download</i> @if (Auth()->user()->role == "mandataire") Mes @endif Affaires </a></li>
+                         @if(Auth()->user()->role == "mandataire") <li id="li_caracteristique_nav" ><a href="#caracteristique_nav" data-toggle="pill"> <i class="material-icons" style="font-size: 15px;">file_download</i> @lang('Affaires de mes filleuls ')</a></li>  @endif                       
                          
+                         <li id="li_sous_offre_nav" style="background-color: #FFA500;" class=""><a href="#sous_offre_nav" data-toggle="pill"> <i class="material-icons" style="font-size: 15px;">trending_up</i> Sous offre</a></li>                       
+                         <li id="li_sous_compromis_nav" style="background-color: #0ad2ff;" ><a href="#sous_compromis_nav" data-toggle="pill"> <i class="material-icons" style="font-size: 15px;">trending_up</i> Sous compromis</a></li>                       
+                         <li id="li_en_attente_nav" style="background-color: #e6e6e6;" ><a href="#en_attente_nav" data-toggle="pill"> <i class="material-icons" style="font-size: 15px;">timer</i> En attente d'encaissement</a></li>                       
+                         <li id="li_encaissee_nav" style="background-color: #6eff1a;"><a href="#encaissee_nav" data-toggle="pill"> <i class="material-icons" style="font-size: 15px;">account_balance_wallet</i>  Encaissées </a></li>
                        </ul>
                     </div>
                     <!-- Content -->
@@ -37,6 +41,10 @@
                              <div class="tab-content">
                                 <div class="tab-pane active" id="stylimmo"> @include('compromis.mes_affaires')</div>
                                @if(Auth()->user()->role == "mandataire") <div class="tab-pane" id="caracteristique_nav">@include('compromis.affaires_parrainee')</div>@endif
+                               <div class="tab-pane " id="sous_offre_nav"> @include('compromis.type_affaire.sous_offre')</div>
+                                 <div class="tab-pane " id="sous_compromis_nav"> @include('compromis.type_affaire.sous_compromis')</div>
+                                 <div class="tab-pane " id="en_attente_nav"> @include('compromis.type_affaire.en_attente')</div>
+                                <div class="tab-pane " id="encaissee_nav"> @include('compromis.type_affaire.encaissee')</div>
                                
                              </div>
                           </div>
@@ -179,4 +187,17 @@ if($("#motif_archive").val() != ""){
 
 });
     </script>
+
+    {{-- Envois sur la tabulation en fonction de l'ancre dasn l'url #aaa --}}
+<script type="text/javascript">
+    $(document).ready(function(){
+        var anchorHash = window.location.href.toString();
+        if( anchorHash.lastIndexOf('#') != -1 ) {
+            anchorHash = anchorHash.substr(anchorHash.lastIndexOf('#'));
+            if( $('a[href="'+ anchorHash +'"]').length > 0 ) {
+                $('a[href="'+ anchorHash +'"]').trigger('click');
+            }
+        }
+    });
+</script>
 @endsection

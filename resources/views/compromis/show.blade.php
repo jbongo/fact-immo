@@ -535,6 +535,8 @@ Détail de l'affaire @if(Auth()->user()->role =="admin") de {{$compromis->user->
                                                 <div class="form-group">
                                                     <label for="date_signature">Date de signature du compromis  </label>
                                                     <input class="form-control" type="date"  @if($compromis->date_signature != null)  value="{{ $compromis->date_signature->format('Y-m-d')}}" @endif id="date_signature" name="date_signature"  >
+                                                    <div id="label_pdf_compromis" class="alert alert-warning" style="color: #1e003c;" role="alert">Le champs Date de signature du compromis devient obligatoire quand vous renseignez le fichier (compromis signé) </div>
+                                                    
                                                 </div>
                                             </div>
 
@@ -565,7 +567,6 @@ Détail de l'affaire @if(Auth()->user()->role =="admin") de {{$compromis->user->
                                                             <strong>{{$errors->first('pdf_compromis')}}</strong> 
                                                         </div>
                                                     @endif
-                                                    <div id="label_pdf_compromis" class="alert alert-warning" style="color: #1e003c;" role="alert">Le champs Date de signature du compromis devient obligatoire quand vous renseignez le fichier (compromis signé) </div>
 
                                                 </div>
                                             </div>

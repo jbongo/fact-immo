@@ -442,6 +442,8 @@ Ajout d'une affaire
                                             <div class="form-group">
                                                 <label for="date_signature">Date de signature du compromis  </label>
                                                 <input class="form-control" type="date" value="" id="date_signature" name="date_signature"  >
+                                                <div id="label_pdf_compromis" class="alert alert-warning" style="color: #1e003c;" role="alert">Le champs Date de signature du compromis devient obligatoire quand vous renseignez le fichier (compromis signé) </div>
+
                                             </div>
                                         </div>
 
@@ -463,8 +465,7 @@ Ajout d'une affaire
                                                 <div class="form-group">
                                                     <label for="pdf_compromis">Fichier pdf du compromis </label>
                                                     <input class="form-control" type="file" value="" id="pdf_compromis" name="pdf_compromis"  >
-                                                    <div id="label_pdf_compromis" class="alert alert-warning" style="color: #1e003c;" role="alert">Le champs Date de signature du compromis devient obligatoire quand vous renseignez le fichier (compromis signé) </div>
-
+                                                    <div id="" class="alert alert-info" style="color: #1e003c;" role="alert"> Pour que l'affaire passe sous compromis, il rajouter le fichier. Ajouter le fichier 10 jours max après la signature </div>
                                                 </div>
                                             </div>
 

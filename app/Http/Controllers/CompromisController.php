@@ -29,6 +29,58 @@ class CompromisController extends Controller
         $parametre = Parametre::first();
         $comm_parrain = unserialize($parametre->comm_parrain) ;
 
+        // TYPE AFFAIRE
+
+                        
+        $tab_compromisEncaissee_id = array();
+        $tab_compromisEnattente_id = array();
+        $tab_compromisPrevisionnel_id = array();
+
+        $compromisEncaissee_id = Facture::where([['encaissee',1],['type','stylimmo']])->select('compromis_id')->get();
+        $compromisEnattente_id = Facture::where([['encaissee',0],['type','stylimmo']])->select('compromis_id')->get();
+        // $compromisPrevisionnel_id = Facture::where([['encaissee',1],['type','stylimmo']])->select('compromis_id')->get();
+
+        foreach ($compromisEncaissee_id as $encaiss) {
+        $tab_compromisEncaissee_id[] = $encaiss["compromis_id"];
+        }
+        foreach ($compromisEnattente_id as $attente) {
+            $tab_compromisEnattente_id[] = $attente["compromis_id"];
+        }
+        //  foreach ($compromisPrevisionnel_id as $previ) {
+        //     $tab_compromisPrevisionnel_id[] = $previ["compromis_id"];
+        //  }
+        // dd($tab_compromisEncaissee_id);
+
+
+        if(auth::user()->role == "admin"){
+            $compromisEncaissee = Compromis::whereIn('id',$tab_compromisEncaissee_id)->where('archive',false)->get();
+            $compromisEnattente = Compromis::whereIn('id',$tab_compromisEnattente_id)->where('archive',false)->get();
+            $compromisSousOffre = Compromis::where([['demande_facture','<',2],['pdf_compromis',null],['archive',false]])->get();
+            $compromisSousCompromis = Compromis::where([['demande_facture','<',2],['pdf_compromis','<>',null],['archive',false]])->get();
+        }else{
+            $compromisEncaissee = Compromis::whereIn('id',$tab_compromisEncaissee_id)->where('archive',false)->where(function($query){
+                $query->where('user_id',auth::user()->id)
+                ->orWhere('agent_id',auth::user()->id);
+            })->get();
+
+            $compromisEnattente = Compromis::whereIn('id',$tab_compromisEnattente_id)->where('archive',false)->where(function($query){
+                $query->where('user_id',auth::user()->id)
+                ->orWhere('agent_id',auth::user()->id);
+            })->get();
+
+
+            $compromisSousOffre = Compromis::where([['demande_facture','<',2],['pdf_compromis',null],['archive',false]])->where(function($query){
+                $query->where('user_id',auth::user()->id)
+                ->orWhere('agent_id',auth::user()->id);
+            })->get();
+
+            $compromisSousCompromis = Compromis::where([['demande_facture','<',2],['pdf_compromis','<>',null],['archive',false]])->where(function($query){
+                $query->where('user_id',auth::user()->id)
+                ->orWhere('agent_id',auth::user()->id);
+            })->get();
+        }
+// FIN TYPE AFFAIRE
+
         $compromis = array();
         if(Auth::user()->role =="admin") {
             $compromis = Compromis::where([['je_renseigne_affaire',true],['archive',false]])->latest()->get();
@@ -83,7 +135,7 @@ class CompromisController extends Controller
                 ->orWhereIn('agent_id',$fill_ids );
             })->latest()->get();
             $valide_compro_id = array();
-
+        
             // foreach ($fill_ids as $fill_id) {
                 
                 if($compromisParrain != null){
@@ -201,11 +253,21 @@ class CompromisController extends Controller
                 $valide_compro_id = array_unique ($valide_compro_id);
                 //  dd($valide_compro_id);
 
-        return view ('compromis.index',compact('compromis','compromisParrain','fill_ids','valide_compro_id'));
+
+
+
+
+
+
+
+
+
+
+        return view ('compromis.index',compact('compromis','compromisParrain','fill_ids','valide_compro_id','compromisEncaissee','compromisEnattente','compromisSousOffre','compromisSousCompromis'));
 
         }
         //  dd($compromis);
-        return view ('compromis.index',compact('compromis','compromisParrain'));
+        return view ('compromis.index',compact('compromis','compromisParrain','compromisEncaissee','compromisEnattente','compromisSousOffre','compromisSousCompromis'));
     }
 
     /**
@@ -538,7 +600,7 @@ class CompromisController extends Controller
     {
         //
         
-        $compromis = Compromis::where('id',5)->first();
+       
         $tab_compromisEncaissee_id = array();
         $tab_compromisEnattente_id = array();
         $tab_compromisPrevisionnel_id = array();
