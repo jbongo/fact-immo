@@ -126,7 +126,9 @@ class FactureController extends Controller
     
         $compromis = Compromis::where('id',Crypt::decrypt($compromis_id))->first();
         $mandataire = User::where('id',$compromis->user_id)->first();
-        return view ('demande_facture.demande',compact('compromis','mandataire'));  
+        $numero = Facture::where([ ['type','stylimmo']])->max('numero') + 1;
+
+        return view ('demande_facture.demande',compact('compromis','mandataire','numero'));  
         // return redirect()->route('compromis.index')->with('ok', __('compromis modifié')  );
 
     }
@@ -683,7 +685,7 @@ public  function preparer_facture_honoraire_parrainage($compromis)
 
 
 
-// Factures de parrainage dans le cas d'un partage en tre deux mandataires
+// Factures de parrainage dans le cas d'un partage entre deux mandataires
 public  function preparer_facture_honoraire_parrainage_partage(Compromis $compromis )
 {
     // if($compromis->parrain_partage_id != null){
@@ -691,6 +693,9 @@ public  function preparer_facture_honoraire_parrainage_partage(Compromis $compro
         $filleul = Filleul::where([ ['parrain_id',$compromis->parrain_partage_id],['user_id', $compromis->agent_id] ])->first();
     // }
 
+// xxxxxxxxxxxxxxxxxxxxxx
+
+//     dd($compromis->user_id);
     $parrain_id = $filleul->parrain_id ; 
     $pourcentage_parrain = $filleul->pourcentage; 
 

@@ -1,7 +1,7 @@
 @component('mail::message')
 Bonjour,
 
-Le mandat {{$compromis->numero_mandat}} vient d'être modifié. <hr><br>
+L'affaire saisie par {{$compromis->user->prenom}} {{$compromis->user->nom}} avec le mandat {{$compromis->numero_mandat}} vient d'être modifié. <hr><br>
 
 <span style="color:#540F99 ;">
 {{-- @if ($compromis->est_partage_agent == true &&  $compromis->je_porte_affaire == true) --}}

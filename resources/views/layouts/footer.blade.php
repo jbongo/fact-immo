@@ -91,10 +91,10 @@
         }); 
          // mandataire
          var table = $('#example2').DataTable({
-            paging: false,
-            "order": [],
             
-
+            "order": [],
+            "iDisplayLength": 50,
+        
             "language": {
             "decimal":        "",
             "emptyTable":     "Aucune donnée disponible dans le tableau",
@@ -119,8 +119,9 @@
         });       
         // mandataire
         var table = $('#example3').DataTable({
-            paging: false,
+            
             "order": [],
+            "iDisplayLength": 50,
             
 
             "language": {
@@ -147,8 +148,10 @@
         });       
             // mandataire
             var table = $('#example4').DataTable({
-            paging: false,
+            
             "order": [],
+            "iDisplayLength": 50,
+
             
 
             "language": {

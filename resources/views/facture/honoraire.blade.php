@@ -23,9 +23,9 @@
                                         <th>@lang('Montant TTC ')</th>
                                         {{-- <th>@lang('Date Facture')</th> --}}
                                         <th>@lang('Date de l\'acte')</th>
-                                        <th>Validation</th>
-                                        <th>@lang('Paiement')</th>
                                         <th>@lang('Etat (Fac Stylimmo)')</th>
+                                        <th>Validation (Fac honoraire)</th>
+                                        <th>@lang('Paiement')</th>
 
                                         {{-- @if(auth()->user()->role == "admin")
                                         <th>@lang('Encaissement')</th>
@@ -83,16 +83,22 @@
                                                 {{$facture->compromis->date_vente->format('d/m/Y')}} 
                                             </label> 
                                         </td>
-
+                                        <td  >
+                                            @if($facture->compromis->getFactureStylimmo()->encaissee == 0 )
+                                                <label class="color-danger" ><strong> Non encaissée </strong> </label>                                            
+                                            @else 
+                                                <label class="color-primary"><strong> Encaissée </strong></label> 
+                                            @endif 
+                                        </td>
                                         <td  >
                                             @if($facture->statut == "valide" && $facture->numero != null )
-                                                <label class="color-primary" ><strong> Bon à payer</strong> </label>                                            
+                                                <label class="color-primary" ><strong> Validée</strong> </label>                                            
                                             @elseif($facture->statut == "en attente de validation" && $facture->numero != null) 
                                                 <label class="color-default"><strong> En attente de validation </strong></label> 
                                             @elseif($facture->statut == "refuse" && $facture->numero != null) 
                                                 <label class="color-success"><strong>Réfusée </strong></label>
                                             @else
-                                                <label class="color-danger"><strong>Non valide </strong></label> 
+                                                <label class="color-danger"><strong>Non validée </strong></label> 
 
                                             @endif 
                                         </td>
@@ -107,8 +113,8 @@
                                         <td  >
                                             @if($facture->reglee == 0)
                                                 @if(Auth()->user()->role == "admin")
-                                                    <button data-toggle="modal" @if($facture->compromis->getFactureStylimmo()->encaissee == 0 )disabled style="background:#bdbdbd" @endif data-target="#myModal" id="{{Crypt::encrypt($facture->id)}}"  class="btn btn-success btn-flat btn-addon  m-b-10 m-l-5 payer" ><i class="ti-wallet"></i>Payer</button>
-                                                @else 
+                                                    <button data-toggle="modal" @if($facture->compromis->getFactureStylimmo()->encaissee == 0 || $facture->statut != "valide")disabled style="background:#bdbdbd" @endif data-target="#myModal" id="{{Crypt::encrypt($facture->id)}}"  class="btn btn-success btn-flat btn-addon  m-b-10 m-l-5 payer" ><i class="ti-wallet"></i>A payer</button>
+                                                @else
                                                     <label class="color-danger">Non réglée </label> 
                                                 @endif
                                             @else 
@@ -116,13 +122,7 @@
                                             @endif 
                                         </td>
 
-                                        <td  >
-                                            @if($facture->compromis->getFactureStylimmo()->encaissee == 0 )
-                                                <label class="color-danger" ><strong> Non encaissée </strong> </label>                                            
-                                            @else 
-                                                <label class="color-primary"><strong> Encaissée </strong></label> 
-                                            @endif 
-                                        </td>
+                                        
                                         
                                         
                                         <td  >
@@ -135,7 +135,7 @@
                                                     <a target="blank" href="{{route('facture.preparer_facture_honoraire_parrainage',Crypt::encrypt($facture->compromis->id))}}" data-toggle="tooltip" title="@lang('Note honoraire  ')"><i class="large material-icons color-danger">insert_drive_file</i></a> 
                                                 
                                                 @elseif($facture->type == "parrainage_partage")
-                                                    <a target="blank" href="{{route('facture.preparer_facture_honoraire_parrainage_partage',$facture->compromis->id)}}" data-toggle="tooltip" title="@lang('Note honoraire  ')"><i class="large material-icons color-danger">insert_drive_file</i></a> 
+                                                    <a target="blank" href="{{route('facture.preparer_facture_honoraire_parrainage',Crypt::encrypt($facture->compromis->id))}}" data-toggle="tooltip" title="@lang('Note honoraire  ')"><i class="large material-icons color-danger">insert_drive_file</i></a> 
                                                 @else 
                                                     <a target="blank" href="{{route('facture.preparer_facture_honoraire',Crypt::encrypt($facture->compromis->id))}}" data-toggle="tooltip" title="@lang('Note honoraire  ')"><i class="large material-icons color-danger">insert_drive_file</i></a> 
                                                     
