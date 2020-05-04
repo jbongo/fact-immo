@@ -196,13 +196,19 @@
 <br>
 
 
-<br>
+<hr>
 
+@if($facture != null && $result['respect_condition'] != false)
+    @if($facture->statut != "valide")
+        {{-- <a href="{{route('facture.generer_honoraire_create', Crypt::encrypt($facture->id))}}" class="btn btn-default btn-rounded btn-addon btn-sm m-b-10 m-l-5"><i class="ti-loop"></i>Générer la facture</a> --}}
+        <a href="{{route('facture.create_upload_pdf_honoraire', Crypt::encrypt($facture->id))}}" class="btn btn-danger btn-rounded btn-addon btn-sm m-b-10 m-l-5"><i class="ti-upload"></i>Ajouter ma facture</a>
+    @endif    
 
+@endif
 
 <hr>
 <div style="text-align: center; font-size: 11px; margin-right: 25%; margin-left: 25%; margin-top: 20px;">
-    <p><strong>{{$filleul->nom}} {{$filleul->prenom}}</strong> &nbsp; - &nbsp;<strong> SIRET : {{$filleul->siret}} </strong> &nbsp; &nbsp; <strong>{{$filleul->adresse}} {{$filleul->code_postal}} {{$filleul->ville}}</strong>
+    <p><strong>{{$parrain->nom}} {{$parrain->prenom}}</strong> &nbsp; - &nbsp;<strong> SIRET : {{$parrain->siret}} </strong> &nbsp; &nbsp; <strong>{{$parrain->adresse}} {{$parrain->code_postal}} {{$parrain->ville}}</strong>
     </p>
 </div>
 

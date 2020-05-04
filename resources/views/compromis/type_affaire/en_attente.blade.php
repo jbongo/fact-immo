@@ -25,7 +25,7 @@
                                     <th>@lang('Mandat')</th>
                                     <th>@lang('Date vente')</th>
                                     <th>@lang('Charge')</th>
-                                    <th>@lang('Comm')</th>
+                                    <th>@lang('Comm HT')</th>
                                     {{-- <th>@lang('Date Mandat')</th> --}}
                                     <th>@lang('Partage')</th>
                                     <th>@lang('Facture Styl')</th>
@@ -88,8 +88,7 @@
                                     
                                     <td  style="{{$grise}}">
                                         @php
-                                            $com = ($compromi_attente->frais_agence / 1000) . ' K';
-                                        
+                                            $com = number_format($compromi_attente->frais_agence / (1000*1.2), '2','.',',') . ' K';
                                         @endphp
                                         {{$com}} €
                                         {{-- {{number_format($compromi_attente->frais_agence,'2','.',' ')}} €    --}}

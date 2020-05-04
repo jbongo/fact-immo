@@ -19,7 +19,7 @@
                                     <th>@lang('Filleul')</th>
                                     <th>@lang('Numéro Mandat')</th>
                                     <th>@lang('Vendeur')</th>
-                                    <th>@lang('Commission')</th>
+                                    <th>@lang('Comm HT')</th>
                                     {{-- <th>@lang('Date mandat')</th> --}}
                                     <th>@lang('Partage')</th>
                                     <th>@lang('Facture Styl')</th>
@@ -48,7 +48,12 @@
                                         <span class="color-warning">{{$compromi->nom_vendeur}}</span>   
                                     </td>
                                     <td  style="{{$grise}}">
-                                        <span class="color-success">{{number_format($compromi->frais_agence,'2','.',' ')}} €</span>   
+
+                                        @php
+                                            $com = number_format($compromi->frais_agence / (1000*1.2), '2','.',',') . ' K';
+                                            
+                                        @endphp
+                                        <span class="color-success">{{$com}} €</span>   
                                     </td>
                                  
                                     {{-- <td  style="{{$grise}}">
@@ -80,12 +85,11 @@
                                                 <span class="color-primary">En attente de la facture stylimmo</span>   
 
                                             @elseif($compromi->cloture_affaire == 1 /* && ($compromi->facture_honoraire_cree == true || $compromi->facture_honoraire_partage_cree == true)*/)
-                                                <a target="blank" href="{{route('facture.preparer_facture_honoraire_parrainage',Crypt::encrypt($compromi->id))}}" data-toggle="tooltip" title="@lang('Note honoraire  ')"><i class="large material-icons color-danger">insert_drive_file</i></a> 
-                                            {{-- @elseif($compromi->cloture_affaire == 1 && ($compromi->facture_honoraire_cree == false && $compromi->facture_honoraire_partage_cree ==  false) )
-                                                <span class="color-success">En attente de la création de note honoraire (commission agence)</span>       --}}
+                                                <a target="blank" href="{{route('facture.preparer_facture_honoraire_parrainage',Crypt::encrypt($compromi->id))}}" data-toggle="tooltip" title="@lang('Note honoraire  ')"><i class="large material-icons color-danger">insert_drive_file</i>
                                                 @if(in_array($compromi->numero_mandat, $valide_compro_id) == false)                                                
                                                     <span class="color-danger">Vous ne remplissez pas les conditions</span>  
                                                 @endif
+                                                </a>
                                             @endif
                                         
                                     </td>

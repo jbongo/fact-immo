@@ -98,7 +98,7 @@
                                             @elseif($facture->statut == "refuse" && $facture->numero != null) 
                                                 <label class="color-success"><strong>Réfusée </strong></label>
                                             @else
-                                                <label class="color-danger"><strong>Non validée </strong></label> 
+                                                <label class="color-danger"><strong>Non ajoutée </strong></label> 
 
                                             @endif 
                                         </td>

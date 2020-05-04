@@ -1,7 +1,7 @@
 @extends('layouts.app') 
 @section('content') 
-@section ('page_title') 
-    Ajouter votre facture <span class="color-warning"> {{$facture->compromis_id}} </span> 
+@section ('page_title') default
+    Ajouter votre facture -- <span class="color-warning">   <span class="color-primary">type :</span> {{$facture->type}} | <span class="color-primary"> montant ht : </span> {{$facture->montant_ht}} |  <span class="color-primary">mandat :</span> {{$facture->compromis->numero_mandat}} </span> 
 @endsection
 <div class="row">
     <div class="col-lg-12">
