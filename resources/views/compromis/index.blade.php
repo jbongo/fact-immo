@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
     @section ('page_title')
-    Affaires
+    Affaires @if($page_filleul != null) de mes filleuls @endif
     @endsection
 
     <div class="row"> 
@@ -25,8 +25,12 @@
                     <!-- Navigation Buttons -->
                     <div class="col-lg-12 col-md-12 col-sm-12">
                        <ul class="nav nav-pills nav-tabs" id="myTabs">
-                          <li id="li_stylimmo"  class="active"><a href="#stylimmo" data-toggle="pill"> <i class="material-icons" style="font-size: 15px;">file_download</i> @if (Auth()->user()->role == "mandataire") Mes @endif Affaires </a></li>
-                         @if(Auth()->user()->role == "mandataire") <li id="li_caracteristique_nav" ><a href="#caracteristique_nav" data-toggle="pill"> <i class="material-icons" style="font-size: 15px;">file_download</i> @lang('Affaires de mes filleuls ')</a></li>  @endif                       
+                          @if($page_filleul ==null) 
+                            <li id="li_stylimmo"  class="active"><a href="#stylimmo" data-toggle="pill"> <i class="material-icons" style="font-size: 15px;">file_download</i> @if (Auth()->user()->role == "mandataire") Mes @endif Affaires </a></li>
+                          @else 
+                                @if(Auth()->user()->role == "mandataire") <li id="li_caracteristique_nav" class="active" ><a href="#caracteristique_nav" data-toggle="pill"> <i class="material-icons" style="font-size: 15px;">file_download</i> @lang('Affaires de mes filleuls ')</a></li>  @endif                       
+                          
+                          @endif
                          
                          <li id="li_sous_offre_nav" style="background-color: #FFA500;" class=""><a href="#sous_offre_nav" data-toggle="pill"> <i class="material-icons" style="font-size: 15px;">trending_up</i> Sous offre</a></li>                       
                          <li id="li_sous_compromis_nav" style="background-color: #0ad2ff;" ><a href="#sous_compromis_nav" data-toggle="pill"> <i class="material-icons" style="font-size: 15px;">trending_up</i> Sous compromis</a></li>                       
@@ -39,8 +43,11 @@
                        <div class="card">
                           <div class="card-body">
                              <div class="tab-content">
+                            @if($page_filleul ==null) 
                                 <div class="tab-pane active" id="stylimmo"> @include('compromis.mes_affaires')</div>
-                               @if(Auth()->user()->role == "mandataire") <div class="tab-pane" id="caracteristique_nav">@include('compromis.affaires_parrainee')</div>@endif
+                            @else
+                               @if(Auth()->user()->role == "mandataire") <div class="tab-pane active" id="caracteristique_nav">@include('compromis.affaires_parrainee')</div>@endif
+                            @endif
                                <div class="tab-pane " id="sous_offre_nav"> @include('compromis.type_affaire.sous_offre')</div>
                                  <div class="tab-pane " id="sous_compromis_nav"> @include('compromis.type_affaire.sous_compromis')</div>
                                  <div class="tab-pane " id="en_attente_nav"> @include('compromis.type_affaire.en_attente')</div>

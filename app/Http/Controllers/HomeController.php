@@ -196,6 +196,7 @@ class HomeController extends Controller
                 $ca_glo_porte_n = 0;
                 $compro_glo_porte_n = Compromis::where([['date_vente','like',"%$annee_n-$month%"],['user_id',Auth::id()],['est_partage_agent',true],['archive',false]])->get();
                 $nb_global_N += Compromis::where([['date_vente','like',"%$annee_n-$month%"],['user_id',Auth::id()],['est_partage_agent',true],['archive',false]])->count();
+                $nb_global_N += Compromis::where([['date_vente','like',"%$annee_n-$month%"],['agent_id',Auth::id()],['est_partage_agent',true],['archive',false]])->count();
                 
                 foreach ($compro_glo_porte_n as $compro) {
                     $ca_glo_porte_n += $compro->frais_agence * $compro->pourcentage_agent/100 ;
@@ -619,12 +620,12 @@ class HomeController extends Controller
             $STATS["nb_mandataires"] = $nb_mandataires;
             $STATS["nb_filleuls"] = $nb_filleuls;
 
-            
+           
             Config::set('stats.CA_N',$CA_N);
             Config::set('stats.CA_N_1',$CA_N_1);
             Config::set('stats.STATS',$STATS);
             
-            // dd(config('stats.STATS'));
+            //  dd( $STATS);
 
 
 

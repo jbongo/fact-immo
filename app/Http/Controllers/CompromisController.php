@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\PartageAffaire;
 use App\Mail\ModifCompromis;
-
+use Illuminate\Support\Facades\Route;
 class CompromisController extends Controller
 {
    /**
@@ -24,12 +24,26 @@ class CompromisController extends Controller
     public function index()
     {
 
-  
-    
+    $page_filleul=null;
+    if(Route::currentRouteName() == "compromis.filleul.index"){
+        $page_filleul = "page_filleul";
+    }
         $parametre = Parametre::first();
         $comm_parrain = unserialize($parametre->comm_parrain) ;
+        if(auth::user()->role == "admin"){
+            $page_filleul = null;
+        }
 
-        // TYPE AFFAIRE
+         // On réccupère l'id des filleuls pour retrouver leurs affaires
+         $filleuls = Filleul::where([['parrain_id',Auth::user()->id],['expire',false]])->select('user_id')->get()->toArray();
+         $fill_ids = array();
+         foreach ($filleuls as $fill) {
+
+             $fill_ids[]= $fill['user_id'];
+         }
+
+        
+        //########## TYPE AFFAIRE
 
                         
         $tab_compromisEncaissee_id = array();
@@ -46,10 +60,7 @@ class CompromisController extends Controller
         foreach ($compromisEnattente_id as $attente) {
             $tab_compromisEnattente_id[] = $attente["compromis_id"];
         }
-        //  foreach ($compromisPrevisionnel_id as $previ) {
-        //     $tab_compromisPrevisionnel_id[] = $previ["compromis_id"];
-        //  }
-        // dd($tab_compromisEncaissee_id);
+       
 
 
         if(auth::user()->role == "admin"){
@@ -58,28 +69,39 @@ class CompromisController extends Controller
             $compromisSousOffre = Compromis::where([['demande_facture','<',2],['pdf_compromis',null],['archive',false]])->get();
             $compromisSousCompromis = Compromis::where([['demande_facture','<',2],['pdf_compromis','<>',null],['archive',false]])->get();
         }else{
+
+            // On reccupère les affaires du mandataire ou de ses filleuls
+            
+            $this->users_id []=  auth::user()->id;
+            // Si le paramètre filleul existe, alors nous somme sur la page du filleul
+            if($page_filleul != "mes_filleuls"){
+               $this->users_id =  $fill_ids;
+            }
+           
+           
+
             $compromisEncaissee = Compromis::whereIn('id',$tab_compromisEncaissee_id)->where('archive',false)->where(function($query){
-                $query->where('user_id',auth::user()->id)
-                ->orWhere('agent_id',auth::user()->id);
+                $query->whereIn('user_id',$this->users_id)
+                ->orWhereIn('agent_id',$this->users_id);
             })->get();
 
             $compromisEnattente = Compromis::whereIn('id',$tab_compromisEnattente_id)->where('archive',false)->where(function($query){
-                $query->where('user_id',auth::user()->id)
-                ->orWhere('agent_id',auth::user()->id);
+                $query->whereIn('user_id',$this->users_id)
+                ->orWhereIn('agent_id',$this->users_id);
             })->get();
 
 
             $compromisSousOffre = Compromis::where([['demande_facture','<',2],['pdf_compromis',null],['archive',false]])->where(function($query){
-                $query->where('user_id',auth::user()->id)
-                ->orWhere('agent_id',auth::user()->id);
+                $query->whereIn('user_id',$this->users_id)
+                ->orWhereIn('agent_id',$this->users_id);
             })->get();
 
             $compromisSousCompromis = Compromis::where([['demande_facture','<',2],['pdf_compromis','<>',null],['archive',false]])->where(function($query){
-                $query->where('user_id',auth::user()->id)
-                ->orWhere('agent_id',auth::user()->id);
+                $query->whereIn('user_id',$this->users_id)
+                ->orWhereIn('agent_id',$this->users_id);
             })->get();
         }
-// FIN TYPE AFFAIRE
+// ############ FIN TYPE AFFAIRE
 
         $compromis = array();
         if(Auth::user()->role =="admin") {
@@ -89,33 +111,7 @@ class CompromisController extends Controller
             $compromis = Compromis::where([['user_id',Auth::user()->id],['je_renseigne_affaire',true],['archive',false]])->orWhere('agent_id',Auth::user()->id)->latest()->get();
             
         
-            // On réccupère l'id des filleuls pour retrouver leurs affaires
-            $filleuls = Filleul::where([['parrain_id',Auth::user()->id],['expire',false]])->select('user_id')->get()->toArray();
-            $fill_ids = array();
-            foreach ($filleuls as $fill) {
-
-                $fill_ids[]= $fill['user_id'];
-            }
-
-// ##################### TESTS   #########
-
-
-            
-        // on determine le ca du parrain = ca_parrain + ca_parrain_partage (concerne les afaires su'il a partagé, il faut donc deduire en fonction de son pourcentage de partage)
            
-            // $CA_parrain_partage_pas = 0;
-            
-            // $CA_parrain_partage = 0;
-            //     $ca_parrain_partage_porte = 0;
-            //     $ca_parrain_partage_porte_pas = 0;
-
-           
-
-
-
-// ##################### FIN TESTS   #########
-
-
 
 
             // ########### Mise en place des conditions de parrainnage ############
@@ -263,11 +259,11 @@ class CompromisController extends Controller
 
 
 
-        return view ('compromis.index',compact('compromis','compromisParrain','fill_ids','valide_compro_id','compromisEncaissee','compromisEnattente','compromisSousOffre','compromisSousCompromis'));
+        return view ('compromis.index',compact('compromis','compromisParrain','fill_ids','valide_compro_id','compromisEncaissee','compromisEnattente','compromisSousOffre','compromisSousCompromis','page_filleul'));
 
         }
         //  dd($compromis);
-        return view ('compromis.index',compact('compromis','compromisParrain','compromisEncaissee','compromisEnattente','compromisSousOffre','compromisSousCompromis'));
+        return view ('compromis.index',compact('compromis','compromisParrain','compromisEncaissee','compromisEnattente','compromisSousOffre','compromisSousCompromis','page_filleul'));
     }
 
     /**

@@ -83,7 +83,13 @@
                 @endif
                 <li class="{{$li_affaire}} {{$li_affaire_archive}}"><a class="sidebar-sub-toggle" href="" ><i class="large material-icons" style="font-size:20px;">folder_open</i>  Affaires <span class="sidebar-collapse-icon ti-angle-down"></span> </a>
                     <ul>
+                        @if(Auth()->user()->role == "admin")
                         <li class="{{ $li_affaire}}" ><a href="{{route('compromis.index')}}">Gestion</a></li>
+                        @else 
+                        <li class="{{ $li_affaire}}" ><a href="{{route('compromis.index')}}">Mes affaires</a></li>
+                        <li class="{{ $li_affaire}}" ><a href="{{route('compromis.filleul.index')}}">Affaires de mes filleuls</a></li>
+
+                        @endif
                         <li class="{{$li_affaire_archive}}" ><a href="{{route('compromis.archive')}}">Archives</a></li>
                     
                     </ul>

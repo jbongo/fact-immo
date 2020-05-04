@@ -30,6 +30,7 @@ Route::middleware('auth')->group(function(){
   
     // compromis
     Route::get('/compromis','CompromisController@index')->name('compromis.index');
+    Route::get('/compromis/page_filleul','CompromisController@index')->name('compromis.filleul.index');
     Route::get('/compromis/create','CompromisController@create')->name('compromis.create');
     Route::post('/compromis/add','CompromisController@store')->name('compromis.add');
     Route::get('/compromis/show/{id}','CompromisController@show')->name('compromis.show');
