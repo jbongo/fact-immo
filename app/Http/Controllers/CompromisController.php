@@ -580,7 +580,7 @@ class CompromisController extends Controller
         $id = Crypt::decrypt($compromis);
         $compromis = Compromis::where('id',$id)->first();
 
-        $compromis->cloture_affaire = true;
+        $compromis->cloture_affaire = 1;
         $compromis->update();
 
         return redirect()->route('compromis.index')->with('ok', __("Affaire cloturée (mandat $compromis->numero_mandat)  "));

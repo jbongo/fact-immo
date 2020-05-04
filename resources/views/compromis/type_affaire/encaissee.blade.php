@@ -140,9 +140,16 @@
                                   
                                     <td width="15%">
                                             <a href="{{route('compromis.show',Crypt::encrypt($compromi_enc->id))}}" data-toggle="tooltip" title="@lang('Détails  ')"><i class="large material-icons color-info">visibility</i></a> 
+                                            @if ($compromi_enc->agent_id != Auth()->user()->id && ($compromi_enc->facture_stylimmo_valide == false || Auth()->user()->role =="admin") )
+                                                @if($page_filleul == null)
+                                                    <span><a href="{{route('compromis.show',Crypt::encrypt($compromi_enc->id))}}" data-toggle="tooltip" title="@lang('Modifier ') "><i class="large material-icons color-warning">edit</i></a></span>
+                                                    {{-- <span><a  href="{{route('compromis.archive',[$compromi_enc->id,1])}}" class="delete" data-toggle="tooltip" title="@lang('Archiver ') {{ $compromi_enc->nom }}"><i class="large material-icons color-danger">thumb_down_alt</i> </a></span> --}}
+                                            
+                                                @endif
+                                            @endif
                                             @if($page_filleul == null)
                                                 @if ($compromi_enc->cloture_affaire == 0 && $compromi_enc->demande_facture == 2 && $compromi_enc->agent_id != Auth()->user()->id)
-                                                    <a class="cloturer" href="{{route('compromis.cloturer',Crypt::encrypt($compromi_enc->id))}}" data-toggle="tooltip" data-mandat="{{$compromi_enc->numero_mandat}}" title="@lang('Clôturer l\'affaire  ')"><i class="large material-icons color-danger">clear</i></a> 
+                                                    <a class="cloturer" href="{{route('compromis.cloturer',Crypt::encrypt($compromi_enc->id))}}" data-toggle="tooltip" data-mandat="{{$compromi_enc->numero_mandat}}" title="@lang('Réitérer l\'affaire  ')"><i class="large material-icons color-success">thumb_up_alt</i></a> 
                                                 @elseif($compromi_enc->cloture_affaire == 1  )
                                                     @if(Auth()->user()->role != "admin"  )
                                                         @if ($compromi_enc->je_porte_affaire == 0  || $compromi_enc->agent_id == Auth()->user()->id || ($compromi_enc->je_porte_affaire == 1 && $compromi_enc->est_partage_agent == 1) )
@@ -156,13 +163,13 @@
                                                 @endif
                                             @endif
                                             
-                                        @if ($compromi_enc->agent_id != Auth()->user()->id && ($compromi_enc->facture_stylimmo_valide == false || Auth()->user()->role =="admin") )
+                                        {{-- @if ($compromi_enc->agent_id != Auth()->user()->id && ($compromi_enc->facture_stylimmo_valide == false || Auth()->user()->role =="admin") )
                                             @if($page_filleul == null)
                                                 <span><a href="{{route('compromis.show',Crypt::encrypt($compromi_enc->id))}}" data-toggle="tooltip" title="@lang('Modifier ') "><i class="large material-icons color-warning">edit</i></a></span>
-                                                <span><a  href="{{route('compromis.archive',[$compromi_enc->id,1])}}" class="delete" data-toggle="tooltip" title="@lang('Archiver ') {{ $compromi_enc->nom }}"><i class="large material-icons color-danger">delete</i> </a></span>
+                                                <span><a  data-target="#myModal2"  data-toggle="modal" id="{{$compromi_enc->id}}"  class="archiver" href=""  data-toggle="tooltip" title="@lang('Archiver ') {{ $compromi_enc->nom }}"><i class="large material-icons color-danger">thumb_down_alt</i> </a></span>
                                         
                                             @endif
-                                        @endif
+                                        @endif --}}
                                     </td>
                                 </tr>
                         @endforeach

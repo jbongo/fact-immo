@@ -61,6 +61,67 @@
 
             </div>
         </div>
+
+
+
+<!-- Modal archive de l'affaire -->
+<div class="modal fade" id="myModal2" role="dialog">
+    <div class="modal-dialog modal-xs">
+    
+        <!-- Modal content-->
+        <div class="modal-content col-lg-offset-4  col-md-offset-4 col-sm-offset-4 col-lg-4 col-md-4 col-sm-4">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Choisir la raison de l'archive</h4>
+            </div>
+            <div class="modal-body">
+                <form action="" method="post" id="form_archive">
+                    <div class="modal-body">
+                        
+                        <div class="">
+                            <div class="form-group row">
+                                <div class="col-lg-8 col-md-8 col-sm-8">
+                                   
+                                    <div>
+                                        <input type="radio" id="perte" name="motif_archive" value="Perte du mandat" checked>
+                                        <label for="perte">Perte du mandat</label>
+                                      </div>
+                                      
+                                      <div>
+                                        <input type="radio" id="retrait" name="motif_archive" value="Retrait de l'acquéreur ">
+                                        <label for="retrait">Retrait de l'acquéreur </label>
+                                      </div>
+                                      
+                                      <div>
+                                        <input type="radio" id="refus" name="motif_archive" value="Refus de finacement">
+                                        <label for="refus">Refus de finacement</label>
+                                      </div>
+                                      <div>
+                                        <input type="radio" id="deces" name="motif_archive" value="Décès">
+                                        <label for="deces">Décès</label>
+                                      </div>
+                                      <div>
+                                        <input type="radio" id="autre" name="motif_archive" value="Autre">
+                                        <label for="autre">Autre</label>
+                                      </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    
+                    </div>
+                    <div class="modal-footer">
+                        <input type="submit" class="btn btn-success" id="valider_archive"  value="Valider" />
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </form> 
+            </div>
+        </div>
+    </div>
+    </div>
+
+
+
     </div>
 @endsection
 @section('js-content')
@@ -86,7 +147,7 @@
  
  </script>
 <script>
-        // ######### Cloturer une affaire
+        // ######### Réitérer une affaire
 
 
         $(function() {
@@ -104,7 +165,7 @@
 })
 
         swalWithBootstrapButtons({
-            title: 'Confirmez-vous la clôture de cette affaire (Mandat '+that.attr("data-mandat")+' )  ?',
+            title: 'Confirmez-vous la réitération de cette affaire (Mandat '+that.attr("data-mandat")+' )  ?',
             type: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#DD6B55',
@@ -129,8 +190,8 @@
                     })
 
                 swalWithBootstrapButtons(
-                'Cloturé!',
-                'L\'affaire a bien été clôturée.',
+                'Réitérée!',
+                'L\'affaire a bien été réitérée.',
                 'success'
                 )
                 
@@ -141,7 +202,7 @@
             ) {
                 swalWithBootstrapButtons(
                 'Annulé',
-                'L\'affaire n\'a pas été clôturée.',
+                'L\'affaire n\'a pas été réitérée.',
               
                 'error'
                 )
