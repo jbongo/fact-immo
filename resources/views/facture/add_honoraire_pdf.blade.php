@@ -100,7 +100,7 @@
                                         <div class="form-group row">
                                             <label class="col-lg-6 col-md-6 col-sm-6col-form-label" for="file">Ajouter la facture</label>
                                             <div class="col-lg-6 col-md-6 col-sm-6">
-                                                <input type="file" class="form-control"  id="file"  name="file"  required>
+                                                <input type="file" accept=".pdf" class="form-control"  id="file"  name="file"  required>
                                             </div>
                                              @if ($errors->has('file'))
                                                 <br>

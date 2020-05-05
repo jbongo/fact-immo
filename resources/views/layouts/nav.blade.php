@@ -103,7 +103,7 @@
                         @endif
                         
                         @if (Auth()->user()->role == "admin")
-                        <li class="{{$li_facture_demande}}" ><a  href="{{route('facture.honoraire_a_valider')}}" >  @if($nb > 0) <span class="badge badge-danger">{{$nb}}</span> @endif A valider </a></li>
+                        <li class="{{$li_facture_demande}}" ><a  href="{{route('facture.honoraire_a_valider')}}" >  @if($nb > 0) <span class="badge badge-danger">{{$nb}}</span> @endif Fac H à valider </a></li>
                         @endif
                         {{-- <li><a href="#">Avoir</a></li> --}}
                     </ul>

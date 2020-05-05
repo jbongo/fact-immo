@@ -19,7 +19,7 @@
                                     <th>@lang('Filleul')</th>
                                     <th>@lang('Numéro Mandat')</th>
                                     <th>@lang('Vendeur')</th>
-                                    <th>@lang('Comm HT')</th>
+                                    <th>@lang('Comm')</th>
                                     {{-- <th>@lang('Date mandat')</th> --}}
                                     <th>@lang('Partage')</th>
                                     <th>@lang('Facture Styl')</th>
@@ -50,7 +50,7 @@
                                     <td  style="{{$grise}}">
 
                                         @php
-                                            $com = number_format($compromi->frais_agence / (1000*1.2), '2','.',',') . ' K';
+                                            $com = number_format($compromi->frais_agence / 1000, '2','.',',') . ' K';
                                             
                                         @endphp
                                         <span class="color-success">{{$com}} €</span>   
