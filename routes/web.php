@@ -92,7 +92,8 @@ Route::middleware('auth')->group(function(){
     Route::get('facture/honoraire/a_valider/','FactureController@honoraire_a_valider')->name('facture.honoraire_a_valider'); 
     //Telecharger les factures
     Route::get('telecharger/pdf/factures/{facture_id}','FactureController@download_pdf_facture')->name('facture.telecharger_pdf_facture'); //ok
-    
+    // Recalculer une note d'honoraire
+    Route::get('facture/honoraire/recalculer/{facture_id}','FactureController@recalculer_honoraire')->name('facture.recalculer_honoraire'); 
     
 
 

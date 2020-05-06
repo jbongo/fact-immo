@@ -300,7 +300,7 @@ Demande de facture  | {{ substr($compromis->description_bien,0,150) }}...
                             <div class="col-lg-4 col-md-4 col-sm-6">
                                 <div class="form-group">
                                     <label for="pdf_compromis">Fichier pdf du compromis </label>
-                                    <input class="form-control" type="file"  id="pdf_compromis" name="pdf_compromis" required >
+                                    <input class="form-control"  type="file" accept=".pdf" id="pdf_compromis" name="pdf_compromis" required >
                                     
                                     @if ($errors->has('pdf_compromis'))
                                         <br>

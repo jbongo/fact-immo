@@ -159,6 +159,7 @@ class FactureController extends Controller
             $request->pdf_compromis->storeAs('public/pdf_compromis',$filename);
         }
         
+        // dd($compromis);
         $compromis->date_signature = $request->date_signature;
 
         // 0 = facture non demandée, 1= facture demandée en attente de validation, 2 = demande traitée par stylimmo
@@ -194,7 +195,8 @@ class FactureController extends Controller
     public  function demandes_stylimmo()
     {
         
-        $compromis = Compromis::where([['demande_facture', 1],['archive',false]])->get();
+        $compromis = Compromis::where([['demande_facture', 1],['archive',0]])->get();
+        // dd($compromis);
         return view ('demande_facture.index',compact('compromis'));
     }
 
@@ -829,18 +831,18 @@ public  function preparer_facture_honoraire_partage($compromis,$mandataire_id = 
 {
     $compromis = Compromis::where('id', Crypt::decrypt($compromis))->first();
 
-    if($compromis->je_porte_affaire == 1 && $compromis->est_partage_agent == 1 && Auth()->user()->id == $compromis->user_id){
+    if($compromis->je_porte_affaire == 1 && $compromis->est_partage_agent == 1 && (Auth()->user()->id == $compromis->user_id || $mandataire_id == $compromis->user_id  )){
 
         $mandataire_partage = User::where('id',$compromis->agent_id)->first();
         $mandataire = $compromis->user;
         $pourcentage_partage = $compromis->pourcentage_agent;
     }else{
-//  dd("je ne partage pas");
-        $mandataire_partage = User::where('id',$compromis->agent_id)->first();
-        $mandataire = $compromis->user; 
+//  ; // plutot je ne porte pas
+
+        $mandataire_partage = $compromis->user;
+        $mandataire = User::where('id',$compromis->agent_id)->first();
         $pourcentage_partage = 100 - $compromis->pourcentage_agent;    
     }
-    // dd('stop');
 
    
     $factureStylimmo = Facture::where([ ['type','stylimmo'],['compromis_id',$compromis->id]])->first();
@@ -865,7 +867,7 @@ public  function preparer_facture_honoraire_partage($compromis,$mandataire_id = 
 
     // Calcul de la commission
     $niveau_actuel = $this->calcul_niveau($paliers, $mandataire->chiffre_affaire_sty);
-    if($compromis->je_porte_affaire == 1 && $compromis->est_partage_agent == 1 && Auth()->user()->id == $compromis->user_id){
+    if($compromis->je_porte_affaire == 1 && $compromis->est_partage_agent == 1 && (Auth()->user()->id == $compromis->user_id || $mandataire_id == $compromis->user_id) ){
         // facture du mandataire qui porte l'affaire
         if($compromis->facture_honoraire_partage_porteur_cree == false ){
             $montant_vnt_ht = ($compromis->frais_agence/1.2) ;
@@ -907,10 +909,10 @@ public  function preparer_facture_honoraire_partage($compromis,$mandataire_id = 
         
 
         }else{
-          
-          
+            // dd('stop');
+
                 $facture = Facture::where([ ['type','partage'],['user_id',$mandataire->id],['compromis_id',$compromis->id]])->first();
-         
+        //  dd($mandataireid);
             $formule = unserialize( $facture->formule);
         }
     }
@@ -963,8 +965,7 @@ public  function preparer_facture_honoraire_partage($compromis,$mandataire_id = 
             }else{
                 
                 $facture = Facture::where([ ['type','partage'],['user_id',$mandataire_id],['compromis_id',$compromis->id]])->first();
-                // dd($compromis->id);
-
+               
             }
             $formule = unserialize( $facture->formule);
         }
@@ -1465,5 +1466,75 @@ public function valider_honoraire($action, $facture_id)
         return redirect()->route('facture.index')->with('ok', __("Facture $facture->numero reglée")  );
         
     }
+
+
+    /**
+         * Recalculer une note d'honoraire
+         *
+         * @return \Illuminate\Http\Response
+     */
+    public function recalculer_honoraire($facture_id)
+    {
+        $facture = Facture::where('id',Crypt::decrypt($facture_id))->first();
+      
+        $compromis = $facture->compromis;
+
+        $mandataire = $facture->user;
+        
+        
+        // Pour recalculer il faut faire une remise à zéro dans le compromis, puis supprimer la facture et la recalculer
+
+
+        /* --- remise à zéro en fonction du type de facture
+            honoraire 
+                - facture_honoraire_cree
+            partage 
+                - facture_honoraire_partage_cree  
+                - facture_honoraire_partage_porteur_cree
+
+            parrainage 
+                - facture_honoraire_parrainage_cree
+
+            parrainage_partage
+                - facture_honoraire_parrainage_partage_cree
+        */
+
+        if($facture->type == "honoraire"){
+            $compromis->facture_honoraire_cree = 0 ;
+
+        }elseif($facture->type == "partage"){
+                // le mandataire qui porte l'affaire
+                if($mandataire->id == $compromis->user_id){
+                    $compromis->facture_honoraire_partage_porteur_cree = 0 ;
+            // dd('partage 1 ');
+
+                }
+                // le mandataire qui ne porte pas l'affaire
+                else{
+                    $compromis->facture_honoraire_partage_cree = 0 ;
+            // dd('partage 2');
+
+                    
+                }
+        }elseif($facture->type == "parrainage"){
+            $compromis->facture_honoraire_parrainage_cree = 0 ;
+
+        }elseif($facture->type == "parrainage_partage"){
+            $compromis->facture_honoraire_parrainage_partage_cree = 0 ;
+
+        }else{
+            return  redirect()->back()->with("ok", "La note d'honoraire n'a pas été recalculée");
+        }
+        
+        
+        $compromis->update();
+
+        $facture->delete();
+
+
+        return redirect()->back()->with("ok", "La note d'honoraire a été recalculée");
+    }
+
+    
     
 }

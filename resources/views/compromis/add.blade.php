@@ -464,7 +464,7 @@ Ajout d'une affaire
                                             <div class="col-lg-6 col-md-6 col-sm-6">
                                                 <div class="form-group">
                                                     <label for="pdf_compromis">Fichier pdf du compromis </label>
-                                                    <input class="form-control" type="file" value="" id="pdf_compromis" name="pdf_compromis"  >
+                                                    <input class="form-control" accept=".pdf" type="file" value="" id="pdf_compromis" name="pdf_compromis"  >
                                                     <div id="" class="alert alert-info" style="color: #1e003c;" role="alert"> Pour que l'affaire passe sous compromis, il rajouter le fichier. Ajouter le fichier 10 jours max après la signature </div>
                                                 </div>
                                             </div>

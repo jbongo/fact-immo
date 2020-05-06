@@ -558,7 +558,7 @@ Détail de l'affaire de {{$compromis->user->prenom}} {{$compromis->user->nom}}
                                             <div class="col-lg-6 col-md-6 col-sm-6">
                                                 <div class="form-group">
                                                     <label >Fichier pdf du compromis </label>
-                                                    <input class="form-control" type="file" value="" id="pdf_compromis" name="pdf_compromis"  >
+                                                    <input class="form-control" accept=".pdf" type="file" value="" id="pdf_compromis" name="pdf_compromis"  >
                                                     @if($compromis->pdf_compromis != null)
                                                         <a class="btn btn-danger btn-sm" href="{{route('compromis.telecharger_pdf_compromis', $compromis->id)}}" id="telecharger_pdf_compromis">Télécharger</a>
                                                     

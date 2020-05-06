@@ -122,14 +122,31 @@ class ContratController extends Controller
         $contrat->est_demarrage_starter = $request->est_starter == "true" ? true : false;
         
         
-        // Commission direct pack starter          
+        // Commission direct pack starter 
+        $mandataire =  $contrat->user;
+ 
+     
+        if($contrat->user->pack_actuel == "starter" && $contrat->pourcentage_depart_starter != $request->pourcentage_depart_starter){
+            $mandataire->commission = $request->pourcentage_depart_starter;
+            $mandataire->chiffre_affaire = 0;
+            $mandataire->chiffre_affaire_sty = 0;
+            $mandataire->update();
+           
+        }         
         $contrat->pourcentage_depart_starter = $request->pourcentage_depart_starter;
         $contrat->duree_max_starter = $request->duree_max_starter;
         $contrat->duree_gratuite_starter = $request->duree_gratuite_starter;
         $contrat->a_palier_starter = $request->check_palier_starter == "true" ? true : false;
         $contrat->palier_starter = $request->palier_starter;
 
-        // Commission direct pack expert          
+        // Commission direct pack expert    
+        if($contrat->user->pack_actuel== "expert" && $contrat->pourcentage_depart_expert != $request->pourcentage_depart_expert){
+            $mandataire->commission = $request->pourcentage_depart_expert;
+            $mandataire->chiffre_affaire = 0;
+            $mandataire->chiffre_affaire_sty = 0;
+            $mandataire->update();
+            
+        }       
         $contrat->pourcentage_depart_expert = $request->pourcentage_depart_expert;
         $contrat->duree_max_starter_expert = $request->duree_max_starter;
         // $contrat->duree_gratuite_expert = $request->duree_gratuite_expert;

@@ -65,7 +65,11 @@
 
          </div>
                <hr>
-
+    @if(Auth()->user()->role == "admin" && $facture != null )
+        @if(!in_array($facture->statut, ["valide","en attente de validation"]) )
+            <a href="{{route('facture.recalculer_honoraire',Crypt::encrypt($facture->id))}}" class="btn btn-danger btn-flat btn-addon btn-lg m-b-10 m-l-5 submit" id="ajouter"><i class="ti-reload"></i>Recalculer</a>
+        @endif
+    @endif
 
 <table style="height: 59px; width: 311px;">
     <tbody>
