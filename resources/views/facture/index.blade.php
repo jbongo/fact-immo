@@ -104,7 +104,7 @@
    });
 
 $('#valider_encaissement').on('click',function(e){
-// e.preventDefault();
+e.preventDefault();
 
 if($("#date_encaissement").val() != ""){
 
