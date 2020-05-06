@@ -117,7 +117,7 @@
                                         @if(auth()->user()->role == "admin")
                                         <td width="" >
                                             @if($facture->encaissee == 0)
-                                            <button   data-toggle="modal" data-target="#myModal2" class="btn btn-success btn-flat btn-addon  m-b-10 m-l-5 encaisser" id="{{$facture->id}}"><i class="ti-wallet"></i>Encaisser</button>
+                                            <button   data-toggle="modal" data-target="#myModal2" class="btn btn-success btn-flat btn-addon  m-b-10 m-l-5 encaisser" id="{{$facture->id}}"><i class="ti-wallet"></i>Encaisser - {{$facture->id}}</button>
                                             @else 
                                             <label class="color-danger"> @if($facture->date_encaissement != null) encaissée le {{$facture->date_encaissement->format('d/m/Y')}} @else encaissée @endif  </label> 
                                             @endif 
