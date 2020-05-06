@@ -423,7 +423,7 @@ public  function valider_facture_stylimmo( Request $request, $compromis)
            $facture->encaissee = true;
            $facture->date_encaissement = $request->date_encaissement;
            $facture->update();
-        //    dd($facture);
+           dd($facture);
    
    
            // dd('ddd');
