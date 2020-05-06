@@ -115,7 +115,7 @@ if($("#date_encaissement").val() != ""){
          data:  $("#form_encaissement").serialize(),
          success: function (result) {
             console.log(result); 
-            document.location.reload();
+            // document.location.reload();
          },
          error: function(error){
             console.log(error);
