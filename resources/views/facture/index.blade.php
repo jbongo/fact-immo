@@ -99,7 +99,7 @@
 {{-- href="{{route('facture.encaisser_facture_stylimmo', Crypt::encrypt($facture->id))}}" --}}
 
 <script>
-   console.log("ddddddddddddddddddd");
+   // console.log("ddddddddddddddddddd");
    $('.encaisser').on('click',function(e){
       facture_id = $(this).attr('id');
       console.log(facture_id);
@@ -108,7 +108,7 @@
    });
 
 $('#valider_encaissement').on('click',function(e){
-e.preventDefault();
+// e.preventDefault();
 
 if($("#date_encaissement").val() != ""){
 
