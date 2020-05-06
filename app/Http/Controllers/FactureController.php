@@ -423,11 +423,11 @@ public  function valider_facture_stylimmo( Request $request, $compromis)
            $facture->encaissee = true;
            $facture->date_encaissement = $request->date_encaissement;
            $facture->update();
-           // dd($facture);
+        //    dd($facture);
    
    
            // dd('ddd');
-           Mail::to($facture->compromis->user->email)->send(new EncaissementFacture($facture));
+        //    Mail::to($facture->compromis->user->email)->send(new EncaissementFacture($facture));
         //    Mail::to("gestion@stylimmo.com")->send(new EncaissementFacture($facture));
    
            return redirect()->route('facture.index')->with('ok', __("Facture ". $facture->numero ." encaissée, le mandataire a été notifié")  );
