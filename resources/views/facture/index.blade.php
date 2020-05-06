@@ -101,6 +101,8 @@
 <script>
    $('.encaisser').on('click',function(e){
       facture_id = $(this).attr('id');
+      console.log(facture_id);
+      
    });
 
 $('#valider_encaissement').on('click',function(e){
