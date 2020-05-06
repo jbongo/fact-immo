@@ -837,7 +837,7 @@ public  function preparer_facture_honoraire_partage($compromis,$mandataire_id = 
         $mandataire = $compromis->user;
         $pourcentage_partage = $compromis->pourcentage_agent;
     }else{
-//  ; // plutot je ne porte pas
+// mandataire qui ne porte  pas l'affaire
 
         $mandataire_partage = $compromis->user;
         $mandataire = User::where('id',$compromis->agent_id)->first();
