@@ -64,7 +64,7 @@
                                             <div class="form-group row">
                                                 <label class="col-lg-4 col-form-label" for="montant_ht">Montant HT <span class="text-danger">*</span></label>
                                                 <div class="col-lg-6">
-                                                <input type="number" class="form-control" value="{{old('montant_ht')}}"  id="montant_ht" name="montant_ht" required>
+                                                <input type="number" class="form-control" min="0" step="0.01" value="{{old('montant_ht')}}"  id="montant_ht" name="montant_ht" required>
                                                 </div>
                                                  @if ($errors->has('montant_ht'))
                                                     <br>
