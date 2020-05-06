@@ -99,10 +99,10 @@
 {{-- href="{{route('facture.encaisser_facture_stylimmo', Crypt::encrypt($facture->id))}}" --}}
 
 <script>
+   console.log("ddddddddddddddddddd");
    $('.encaisser').on('click',function(e){
       facture_id = $(this).attr('id');
       console.log(facture_id);
-      console.log("ddddddddddddddddddd");
       
       
    });
