@@ -53,7 +53,7 @@
                         <div class="modal-content col-lg-offset-4  col-md-offset-4 col-sm-offset-4 col-lg-4 col-md-4 col-sm-4">
                            <div class="modal-header">
                               <button type="button" class="close" data-dismiss="modal">&times;</button>
-                              <h4 class="modal-title">Date de d'encaissement</h4>
+                              <h4 class="modal-title">Date d'encaissement</h4>
                            </div>
                            <div class="modal-body">
                               <form action="" method="get" id="form_encaissement">
@@ -99,16 +99,16 @@
 {{-- href="{{route('facture.encaisser_facture_stylimmo', Crypt::encrypt($facture->id))}}" --}}
 
 <script>
-   console.log("ddddddddddddddddddd");
+
    $('.encaisser').on('click',function(e){
       facture_id = $(this).attr('id');
-      console.log(facture_id);
+  
       
       
    });
 
 $('#valider_encaissement').on('click',function(e){
-e.preventDefault();
+// e.preventDefault();
 
 if($("#date_encaissement").val() != ""){
 
