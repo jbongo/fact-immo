@@ -100,14 +100,19 @@
 
 <script>
 
+function getId(id){
+   facture_id = id;
+   console.log(id);
+   
+}
 
 
-   $('.encaisser').click(function(){
-      facture_id = $(this).attr('data-id');
-      console.log("okok");
+   // $('.encaisser').click(function(){
+   //    facture_id = $(this).attr('data-id');
+   //    console.log("okok");
       
-      console.log(facture_id);
-   })
+   //    console.log(facture_id);
+   // })
       
       
       
