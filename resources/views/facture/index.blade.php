@@ -120,7 +120,7 @@ $('#valider_encaissement').on('click',function(e){
  e.preventDefault();
 
 if($("#date_encaissement").val() != ""){
-   console.log(id+'xxx');
+   console.log(facture_id+'xxx');
 
 
    $.ajax({
