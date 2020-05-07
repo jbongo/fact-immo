@@ -152,6 +152,32 @@
                                 </div>
                      </div>
                   </div>
+
+
+            @if($parrain != null)
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="media">
+                                <div class="media-left media-middle">
+                                    <i class="ti-id-badge f-s-48 color-danger m-r-15"></i>
+                                </div>
+                                <div class="media-body">
+                                    <h4>Parrain</h4>
+                                    <p><label class="color-primary">{{$parrain->nom}} {{$parrain->prenom}}</label> </p>
+                                </div>
+                                {{-- <div class="media-right media-middle f-s-30">
+                                    18000
+                                </div> --}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            @endif
+
+                  
                     @if($nb_filleul > 0)
                     <div class="panel panel-default lobipanel-basic">
                         <div class="panel-heading">Filleuls.</div>
