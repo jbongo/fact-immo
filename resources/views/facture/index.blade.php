@@ -124,7 +124,6 @@ if($("#date_encaissement").val() != ""){
    });
 }
 
-
 });
 
 
