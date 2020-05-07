@@ -100,6 +100,8 @@
 
 <script>
 
+
+
    $('.encaisser').click(function(){
       facture_id = $(this).attr('data-id');
       console.log("okok");
