@@ -102,6 +102,7 @@
 
 function getId(id){
    facture_id = id;
+   console.log(id);
    
 }
 
@@ -116,9 +117,10 @@ function getId(id){
       
       
 $('#valider_encaissement').on('click',function(e){
-//  e.preventDefault();
+ e.preventDefault();
 
 if($("#date_encaissement").val() != ""){
+   console.log(id+'xxx');
 
 
    $.ajax({
@@ -127,7 +129,7 @@ if($("#date_encaissement").val() != ""){
          data:  $("#form_encaissement").serialize(),
          success: function (result) {
             console.log(result); 
-            // document.location.reload();
+            document.location.reload();
          },
          error: function(error){
             console.log(error);
