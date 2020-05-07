@@ -96,13 +96,11 @@
 
 
 {{-- ##### Encaissement de la facture stylimmo --}}
-{{-- href="{{route('facture.encaisser_facture_stylimmo', Crypt::encrypt($facture->id))}}" --}}
-
 <script>
 
 function getId(id){
    facture_id = id;
-   console.log(id);
+   // console.log(id);
    
 }
 
@@ -117,22 +115,34 @@ function getId(id){
       
       
 $('#valider_encaissement').on('click',function(e){
- e.preventDefault();
+  e.preventDefault();
 
 if($("#date_encaissement").val() != ""){
-   console.log(facture_id+'xxx');
-
+  
 
    $.ajax({
          type: "GET",
          url: "encaisser/factures-stylimmo/"+facture_id ,
          data:  $("#form_encaissement").serialize(),
          success: function (result) {
-            console.log(result); 
-            document.location.reload();
+                  swal(
+                     'Encaissée',
+                     'Vous avez encaissé la facture '+result,
+                     'success'
+                  )
+                  .then(function() {
+                     window.location.href = "{{route('facture.index')}}";
+                  })
          },
          error: function(error){
-            console.log(error);
+            swal(
+                     'Echec',
+                     'la facture '+error+' n\'a pas été encaissée',
+                     'error'
+                  )
+                  .then(function() {
+                     window.location.href = "{{route('facture.index')}}";
+                  })
             
          }
    });
@@ -140,66 +150,6 @@ if($("#date_encaissement").val() != ""){
 
 });
 
-
-      // $(function() {
-      //    $.ajaxSetup({
-      //       headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
-      //    })
-      //    $('[data-toggle="tooltip"]').tooltip()
-      //    $('a.encaisser').on('click',function(e) {
-      //       let that = $(this)
-      //       e.preventDefault()
-      //       const swalWithBootstrapButtons = swal.mixin({
-      //       confirmButtonClass: 'btn btn-success',
-      //       cancelButtonClass: 'btn btn-danger',
-      //       buttonsStyling: false,
-      //       })
-
-      // swalWithBootstrapButtons({
-      //    title: '@lang('Voulez-vous vraiment continuer ?')',
-      //    type: 'warning',
-      //    showCancelButton: true,
-      //    confirmButtonColor: '#DD6B55',
-      //    confirmButtonText: '@lang('Oui')',
-      //    cancelButtonText: '@lang('Non')',
-         
-      // }).then((result) => {
-      //    if (result.value) {
-      //       $('[data-toggle="tooltip"]').tooltip('hide')
-      //             $.ajax({                        
-      //                url: that.attr('href'),
-      //                type: 'GET',
-      //                success: function(data){
-      //                  document.location.reload();
-      //                },
-      //                error : function(data){
-      //                   console.log(data);
-      //                }
-      //             })
-      //             .done(function () {
-                        
-      //             })
-
-      //       swalWithBootstrapButtons(
-      //       'Encaissée!',
-      //       'Le mandatataire sera notifié par mail.',
-      //       'success'
-      //       )
-            
-            
-      //    } else if (
-      //       // Read more about handling dismissals
-      //       result.dismiss === swal.DismissReason.cancel
-      //    ) {
-      //       swalWithBootstrapButtons(
-      //       'Annulé',
-      //       'Aucune modification effectuée :)',
-      //       'error'
-      //       )
-      //    }
-      // })
-      //    })
-      // })
 </script>
 {{-- Alertes paiement  --}}
 <script type="text/javascript">
@@ -226,14 +176,21 @@ if($("#date_encaissement").val() != ""){
 
 {{--  Reglement de la facture stylimmo--}}
 <script>
-   $('.payer').on('click',function(e){
+   // $('.payer').on('click',function(e){
+   //    facture_id = $(this).attr('id');  
+   //    console.log(facture_id);
+   // });
 
-      facture_id = $(this).attr('id');
+   function getIdPayer(id){
+      facture_id = id;
+      // console.log(id);
       
-   });
+   }
+
+
 
    $('#valider_reglement').on('click',function(e){
-      // e.preventDefault();
+       e.preventDefault();
  
       if($("#date_reglement").val() != ""){
 
@@ -243,15 +200,30 @@ if($("#date_encaissement").val() != ""){
     }
 });
          $.ajax({
-               type: "POST",
+               type: "GET",
                url: "regler/factures-honoraire/"+facture_id ,
                data:  $("#form_regler").serialize(),
                success: function (result) {
-                  console.log(result); 
-                  document.location.reload();
+                  swal(
+                     'Réglée',
+                     'Vous avez reglé la facture ',
+                     'success'
+                  )
+                  .then(function() {
+                     window.location.href = "{{route('facture.index')}}";
+                  })
                },
                error: function(error){
                   console.log(error);
+                  
+                  swal(
+                           'Echec',
+                           'la facture  n\'a pas été reglé '+error,
+                           'error'
+                        )
+                        .then(function() {
+                           window.location.href = "{{route('facture.index')}}";
+                        })
                   
                }
          });

@@ -429,8 +429,8 @@ public  function valider_facture_stylimmo( Request $request, $compromis)
            // dd('ddd');
         //    Mail::to($facture->compromis->user->email)->send(new EncaissementFacture($facture));
         //    Mail::to("gestion@stylimmo.com")->send(new EncaissementFacture($facture));
-   
-           return redirect()->route('facture.index')->with('ok', __("Facture ". $facture->numero ." encaissée, le mandataire a été notifié")  );
+           return $facture->numero ;
+        //    return redirect()->route('facture.index')->with('ok', __("Facture ". $facture->numero ." encaissée, le mandataire a été notifié")  );
            
        }
 
