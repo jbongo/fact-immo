@@ -48,6 +48,7 @@ class CreateContratTable extends Migration
             $table->double('chiffre_affaire_mini')->nullable();
             $table->double('a_soustraitre')->nullable();
             $table->boolean('a_condition_expert')->default(true);
+            $table->boolean('est_soumis_tva')->default(true);
 
             
             // parrainage

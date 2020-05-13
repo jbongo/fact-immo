@@ -9,6 +9,7 @@ use App\User;
 use App\Filleul;
 use App\Parametre;
 use App\Facture;
+use App\Avoir;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\PartageAffaire;
@@ -467,16 +468,16 @@ class CompromisController extends Controller
             $compromis->description_bien = $request->description_bien;
             $compromis->code_postal_bien = $request->code_postal_bien;
             $compromis->ville_bien = $request->ville_bien;
+
             $compromis->civilite_vendeur = $request->civilite_vendeur;
             $compromis->nom_vendeur = $request->nom_vendeur;
-            // $compromis->prenom_vendeur = $request->prenom_vendeur;
             $compromis->adresse1_vendeur = $request->adresse1_vendeur;
             $compromis->adresse2_vendeur = $request->adresse2_vendeur;
             $compromis->code_postal_vendeur = $request->code_postal_vendeur;
             $compromis->ville_vendeur = $request->ville_vendeur;
+
             $compromis->civilite_acquereur = $request->civilite_acquereur;
             $compromis->nom_acquereur = $request->nom_acquereur;
-            // $compromis->prenom_acquereur = $request->prenom_acquereur;
             $compromis->adresse1_acquereur = $request->adresse1_acquereur;
             $compromis->adresse2_acquereur = $request->adresse2_acquereur;
             $compromis->code_postal_acquereur = $request->code_postal_acquereur;
@@ -552,6 +553,13 @@ class CompromisController extends Controller
         
         $compromis->update();
         $mandat = $compromis->numero_mandat;
+
+        // Création de l'avoir si la facture stylimmo a déjà été crée 
+        // if($compromis->facture_stylimmo_valide == true){
+            
+
+        // }
+
     
         return redirect()->route('compromis.index')->with('ok', __("compromis modifié (mandat $mandat) ")  );
     }
@@ -694,6 +702,25 @@ class CompromisController extends Controller
         }
         return view ('compromis.archive',compact('compromis'));
 
+
+    }
+
+    /**
+     * Créer un avoir
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function creer_avoir(Compromis $compromis)
+    {
+        $compromis->a_avoir = true;
+        Avoir::create([
+            "numero" =>  $numero,
+            "facture_id" =>$compromis->getFactureStylimmo()->id,
+            "date" => date()
+        ]);
+        
+        return "".$compromis->update();
 
     }
 

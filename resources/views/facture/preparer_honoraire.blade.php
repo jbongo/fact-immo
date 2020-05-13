@@ -184,7 +184,7 @@
         </tr>
         @endif
         <tr><td>&nbsp;</td> <td>&nbsp;</td> </tr>
-        @if(($facture->user->chiffre_affaire >= 35200 && $facture->user->statut == "auto-entrepreneur") || $facture->user->statut!="auto-entrepreneur" )
+        @if(($facture->montant_ttc > $facture->montant_ht && $facture->user->statut == "auto-entrepreneur") || $facture->user->statut!="auto-entrepreneur" )
         <tr>
             <td style="width: 400px;">&nbsp;</td>
             <td style="width: 153px;">T.V.A 20% :</td>
@@ -206,7 +206,7 @@
         @endif
        
         <tr><td>&nbsp;</td> <td>&nbsp;</td> </tr>
-        @if(($facture->user->chiffre_affaire >= 35200 && $facture->user->statut == "auto-entrepreneur") || $facture->user->statut!="auto-entrepreneur" )
+        @if(($facture->montant_ttc > $facture->montant_ht && $facture->user->statut == "auto-entrepreneur") || $facture->user->statut!="auto-entrepreneur" )
 
         <tr>
             <td style="width: 400px;">&nbsp;</td>
@@ -221,12 +221,12 @@
 <table style="height: 42px; width: 50%;">
     <tbody>
         <tr style="height: 25px;">
-            <td style="width: 349px; height: 25px;">Valeur en votre aimable r&egrave;glement de :</td>
-            @if(($facture->user->chiffre_affaire >= 35200 && $facture->user->statut == "auto-entrepreneur") || $facture->user->statut!="auto-entrepreneur") 
+            <td style="width: 349px; height: 25px;">Vous recevrez un montant net de  :</td>
+            @if(($facture->montant_ttc > $facture->montant_ht && $facture->user->statut == "auto-entrepreneur") || $facture->user->statut!="auto-entrepreneur") 
 
-            <td style="width: 117px; height: 25px;">{{number_format($facture->montant_ttc ,2,'.',' ')}} &euro; TTC</td>
+            <td style="width: 117px; height: 25px;">{{number_format($facture->montant_ttc ,2,'.',' ')}} &euro; </td>
             @else 
-            <td style="width: 117px; height: 25px;">{{number_format($facture->montant_ht ,2,'.',' ')}} &euro; HT</td>
+            <td style="width: 117px; height: 25px;">{{number_format($facture->montant_ht ,2,'.',' ')}} &euro; </td>
 
             @endif
             <td style="width: 177px; height: 25px;"></td>

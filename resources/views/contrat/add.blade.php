@@ -105,6 +105,15 @@
                                             </div>
                                             
                                         </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-6">
+                                            <div class="form-group row">
+                                                <label class="col-lg-6 col-form-label" for="est_soumis_tva">Le mandataire est soumis à la TVA ?</label>
+                                                <div class="col-lg-6">
+                                                    <input type="checkbox" checked data-toggle="toggle" id="est_soumis_tva" name="est_soumis_tva" data-off="Non" data-on="Oui" data-onstyle="success" data-offstyle="danger">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
                                     </div>
                             </div>
                         </div>
@@ -668,7 +677,9 @@
             "a_parrain" : $("#a_parrain").prop('checked') ,
             "a_condition_parrain" : $("#a_condition_parrain").prop('checked') ,
             "parrain_id" : $('#parrain_id').val(),
+            "est_soumis_tva" : $("#est_soumis_tva").prop('checked') ,
 
+            
             "pourcentage_depart_starter" : $('#pourcentage_depart_starter').val(),
             "duree_max_starter" : $('#duree_max_starter').val(),
             "duree_gratuite_starter" : $('#duree_gratuite_starter').val(),

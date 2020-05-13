@@ -231,6 +231,7 @@ class ContratController extends Controller
 
 
         $contrat->a_parrain = $request->a_parrain == "true" ? true : false;
+        $contrat->est_soumis_tva = $request->est_soumis_tva == "true" ? true : false;
         $contrat->parrain_id = $request->a_parrain== "true" ? $request->parrain_id : null;
         $contrat->a_condition_parrain = $request->a_condition_parrain == "true" ? true : false;
         // dd("nooo");
@@ -311,6 +312,7 @@ class ContratController extends Controller
             "a_parrain"=>$request->a_parrain == "true" ? true : false,
             "parrain_id"=>$request->a_parrain== "true" ? $request->parrain_id : null,
             "a_condition_parrain"=>$request->a_condition_parrain == "true" ? true : false,
+            "est_soumis_tva"=>$request->est_soumis_tva == "true" ? true : false,
 
             
             // Commission direct pack starter          
