@@ -94,10 +94,12 @@ Route::middleware('auth')->group(function(){
     Route::get('telecharger/pdf/factures/{facture_id}','FactureController@download_pdf_facture')->name('facture.telecharger_pdf_facture'); //ok
     // Recalculer une note d'honoraire
     Route::get('facture/honoraire/recalculer/{facture_id}','FactureController@recalculer_honoraire')->name('facture.recalculer_honoraire'); 
+     // Recalculer pour chacun des mandataires les CA stylimmo
+    Route::get('ca/stylimmo/recalculer/','FactureController@recalculer_les_ca_styl')->name('facture.recalculer_les_ca_styl'); 
     
 
 
-
+    
      
     // Contrat 
     Route::get('/contrat/create/{user_id}','ContratController@create')->name('contrat.create');

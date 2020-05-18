@@ -116,7 +116,7 @@ Détail de l'affaire de {{$compromis->user->prenom}} {{$compromis->user->nom}}
                                                                 <div class="form-group" id="div_pourcentage_agent">
                                                                     <label class="col-lg-8 col-md-8 col-sm-8 col-form-label" for="pourcentage_agent"> @if(Auth()->user()->id == $compromis->user->id) Mon % de partage @else % de partage de {{$compromis->user->prenom}} {{$compromis->user->nom}}     @endif <span class="text-danger">*</span></label>
                                                                     <div class="col-lg-6 col-md-6 col-sm-6 ">
-                                                                        <input class="form-control" type="number" min="0" max="100" value="{{old('pourcentage_agent') ? old('pourcentage_agent') : $compromis->pourcentage_agent}}" id="pourcentage_agent" name="pourcentage_agent" required>
+                                                                        <input class="form-control" type="number" min="0" max="100" value="{{$compromis->pourcentage_agent != null ? $compromis->pourcentage_agent : 0}}" id="pourcentage_agent" name="pourcentage_agent" required>
                                                                     </div>
                                                                 </div>
                                                             </div>

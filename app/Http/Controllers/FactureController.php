@@ -1635,6 +1635,82 @@ public function valider_honoraire($action, $facture_id)
         return redirect()->back()->with("ok", "La note d'honoraire a été recalculée");
     }
 
-    
+    /**
+         * Recalculer pour chacun des mandataires les CA stylimmo
+         *
+         * @return \Illuminate\Http\Response
+     */
+    public function recalculer_les_ca_styl()
+    {
+       
+        // On reccuperere tous les mandataires 
+
+        $mandataires = User::where('role','mandataire')->get();
+        $deb_annee = date("Y")."-01-01";
+
+        // pour chaque mandataire on calcul le ca styl et on le met à jour  dans la table des mandataires 
+        foreach ($mandataires as $mandataire ) {
+             // CA encaissé non partagé
+
+             $compro_encaisse_partage_pas_n = Compromis::where([['user_id',$mandataire->id],['est_partage_agent',false],['demande_facture',2],['archive',false]])->get();
+             $ca_encaisse_partage_pas_n = 0;
+             if($compro_encaisse_partage_pas_n != null){                
+                 foreach ($compro_encaisse_partage_pas_n as $compros_encaisse) {
+                     if($compros_encaisse->getFactureStylimmo()->encaissee == 1 && $compros_encaisse->getFactureStylimmo()->date_encaissement->format("Y-m-d") >= $deb_annee){
+                         $ca_encaisse_partage_pas_n +=  $compros_encaisse->getFactureStylimmo()->montant_ttc;
+                        // echo  $mandataire->id == 11 ?  '<br/>'.$compros_encaisse->getFactureStylimmo()->montant_ttc : null ;
+                     }
+                }
+                
+            }
+         
+             // CA encaissé partagé et porte affaire
+             $compro_encaisse_porte_n = Compromis::where([['user_id',$mandataire->id],['est_partage_agent',true],['demande_facture',2],['archive',false]])->get();
+             $ca_encaisse_porte_n = 0;
+
+                 if($compro_encaisse_porte_n != null){
+                     foreach ($compro_encaisse_porte_n as $compros_encaisse) {
+                         if($compros_encaisse->getFactureStylimmo()->encaissee == 1 && $compros_encaisse->getFactureStylimmo()->date_encaissement->format("Y-m-d") >= $deb_annee){
+                             $ca_encaisse_porte_n +=  $compros_encaisse->frais_agence * $compros_encaisse->pourcentage_agent/100;
+                             echo  $mandataire->id == 11 ?  '<br/>'.$compros_encaisse->getFactureStylimmo()->montant_ttc : null ;
+                         }
+                     }
+                 }
+
+echo "<hr/> xxxxxxxxxxxxxxxxxxxxxxxxx";
+             // CA encaissé partagé et ne porte pas affaire
+  
+             $compro_encaisse_porte_pas_n = Compromis::where([['agent_id',$mandataire->id],['est_partage_agent',true],['demande_facture',2],['archive',false]])->get();
+             $ca_encaisse_porte_pas_n = 0;
+
+                 if($compro_encaisse_porte_pas_n != null){
+                     foreach ($compro_encaisse_porte_pas_n as $compros_encaisse) {
+                         if($compros_encaisse->getFactureStylimmo()->encaissee == 1 && $compros_encaisse->getFactureStylimmo()->date_encaissement->format("Y-m-d") >= $deb_annee){
+                             $ca_encaisse_porte_pas_n +=  $compros_encaisse->frais_agence * (100-$compros_encaisse->pourcentage_agent)/100;
+                             echo  $mandataire->id == 11 ?  '<br/>'.$compros_encaisse->getFactureStylimmo()->montant_ttc : null ;
+                         }
+                     }
+                 }
+
+          
+             
+             $ca_encaisse_N [] = round(($ca_encaisse_partage_pas_n+$ca_encaisse_porte_n+$ca_encaisse_porte_pas_n)/1.2,2);
+             
+
+         
+        }
+
+
+        dd($mandataires);
+
+        
+
+
+
+
+
+        return "OK";
+    }
+
     
 }
