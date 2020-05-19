@@ -113,6 +113,14 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-6">
+                                            <div class="form-group row">
+                                                <label class="col-lg-6 col-form-label" for="deduis_jeton">Le mandataire déduit des jetons ?</label>
+                                                <div class="col-lg-6">
+                                                    <input type="checkbox" checked data-toggle="toggle" id="deduis_jeton" name="deduis_jeton" data-off="Non" data-on="Oui" data-onstyle="success" data-offstyle="danger">
+                                                </div>
+                                            </div>
+                                        </div>
                                         
                                     </div>
                             </div>

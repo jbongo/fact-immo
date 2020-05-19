@@ -99,7 +99,7 @@ Ajout d'une affaire
                                             </div>
                                             <div class="alert alert-success" style="color:red;" id="div_partage_porte_alert">
                                                 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                                                <strong>Info !</strong> Si portez l'affaire, c'est vous qui ferez la demande de facture stylimmo .
+                                                <strong>Info !</strong> Si vous portez l'affaire, c'est vous qui ferez la demande de facture STYL'IMMO .
                                             </div>
                                         </div>
 

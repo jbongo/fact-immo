@@ -1658,7 +1658,7 @@ public function valider_honoraire($action, $facture_id)
                  foreach ($compro_encaisse_partage_pas_n as $compros_encaisse) {
                      if($compros_encaisse->getFactureStylimmo()->encaissee == 1 && $compros_encaisse->getFactureStylimmo()->date_encaissement->format("Y-m-d") >= $deb_annee){
                          $ca_encaisse_partage_pas_n +=  $compros_encaisse->getFactureStylimmo()->montant_ttc;
-                        // echo  $mandataire->id == 11 ?  '<br/>'.$compros_encaisse->getFactureStylimmo()->montant_ttc : null ;
+                         echo  $mandataire->id == 12 ?  "<br/>".$compros_encaisse->numero_mandat." np".$compros_encaisse->getFactureStylimmo()->montant_ttc : null ;
                      }
                 }
                 
@@ -1672,12 +1672,12 @@ public function valider_honoraire($action, $facture_id)
                      foreach ($compro_encaisse_porte_n as $compros_encaisse) {
                          if($compros_encaisse->getFactureStylimmo()->encaissee == 1 && $compros_encaisse->getFactureStylimmo()->date_encaissement->format("Y-m-d") >= $deb_annee){
                              $ca_encaisse_porte_n +=  $compros_encaisse->frais_agence * $compros_encaisse->pourcentage_agent/100;
-                             echo  $mandataire->id == 11 ?  '<br/>'.$compros_encaisse->getFactureStylimmo()->montant_ttc : null ;
+                             echo  $mandataire->id == 12 ?  '<br/> pp  '.$compros_encaisse->numero_mandat.'--'.$compros_encaisse->getFactureStylimmo()->montant_ttc * $compros_encaisse->pourcentage_agent/100: null ;
                          }
                      }
                  }
 
-echo "<hr/> xxxxxxxxxxxxxxxxxxxxxxxxx";
+
              // CA encaissé partagé et ne porte pas affaire
   
              $compro_encaisse_porte_pas_n = Compromis::where([['agent_id',$mandataire->id],['est_partage_agent',true],['demande_facture',2],['archive',false]])->get();
@@ -1687,21 +1687,24 @@ echo "<hr/> xxxxxxxxxxxxxxxxxxxxxxxxx";
                      foreach ($compro_encaisse_porte_pas_n as $compros_encaisse) {
                          if($compros_encaisse->getFactureStylimmo()->encaissee == 1 && $compros_encaisse->getFactureStylimmo()->date_encaissement->format("Y-m-d") >= $deb_annee){
                              $ca_encaisse_porte_pas_n +=  $compros_encaisse->frais_agence * (100-$compros_encaisse->pourcentage_agent)/100;
-                             echo  $mandataire->id == 11 ?  '<br/>'.$compros_encaisse->getFactureStylimmo()->montant_ttc : null ;
+                             echo  $mandataire->id == 12 ?  '<br/>ppp  '.$compros_encaisse->numero_mandat.'--'.$compros_encaisse->getFactureStylimmo()->montant_ttc* (100-$compros_encaisse->pourcentage_agent)/100 : null ;
                          }
                      }
                  }
 
           
              
-             $ca_encaisse_N [] = round(($ca_encaisse_partage_pas_n+$ca_encaisse_porte_n+$ca_encaisse_porte_pas_n)/1.2,2);
-             
+             $ca_encaisse_N = round(($ca_encaisse_partage_pas_n+$ca_encaisse_porte_n+$ca_encaisse_porte_pas_n)/1.2,2);
 
+             $mandataire->chiffre_affaire_sty = $ca_encaisse_N ;
+             $mandataire->update();
+       
+       // $mandataire->id == 12 ?   dd($ca_encaisse_N) : null;
          
         }
 
 
-        dd($mandataires);
+        // dd($mandataires);
 
         
 

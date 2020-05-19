@@ -49,6 +49,7 @@ class CreateContratTable extends Migration
             $table->double('a_soustraitre')->nullable();
             $table->boolean('a_condition_expert')->default(true);
             $table->boolean('est_soumis_tva')->default(true);
+            $table->boolean('deduis_jeton')->default(true);
 
             
             // parrainage

@@ -134,6 +134,17 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-6">
+                                            @php
+                                                $check_deduis =  ($contrat->deduis_jeton == true) ? "checked" : "unchecked";
+                                            @endphp
+                                            <div class="form-group row">
+                                                <label class="col-lg-6 col-form-label" for="deduis_jeton">Le mandataire déduit des jetons ?</label>
+                                                <div class="col-lg-6">
+                                                    <input type="checkbox" {check_deduis} data-toggle="toggle" id="deduis_jeton" name="deduis_jeton" data-off="Non" data-on="Oui" data-onstyle="success" data-offstyle="danger">
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                             </div>
                         </div>

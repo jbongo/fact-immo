@@ -11,7 +11,7 @@
                             <div class="panel-body">
 
                     <div class="table-responsive" >
-                        <table  id="example" class=" table student-data-table  table-striped table-hover dt-responsive display    "  style="width:100%">
+                        <table  id="example"class="table table-striped table-bordered nowrap"  style="width:100%">
                             <thead>
                                 {{-- table table-striped table-hover dt-responsive display nowrap --}}
                                 <tr>

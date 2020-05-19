@@ -36,8 +36,14 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
     {{-- <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script> --}}
     <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/fixedheader/3.1.7/js/dataTables.fixedHeader.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.4/js/dataTables.responsive.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.4/js/responsive.bootstrap.min.js"></script>
     <script>
+        $(document).ready(function() {
         var table = $('#example').DataTable({
+           responsive: true,
             "order": [],
             "iDisplayLength": 50,
             "language": {
@@ -59,9 +65,13 @@
                 "next":       "Suivant",
                 "previous":   "Précédent"
             },
+           
    
             }
         });
+         new $.fn.dataTable.FixedHeader( table );
+        });
+
         var table1 = $('#example1').DataTable({
             "order": [],
             "iDisplayLength": 50,
