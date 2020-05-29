@@ -2,10 +2,10 @@
 
 @section('content')
    @section ('page_title')
-      Note honoraire <span class="color-danger">(commission agence / partage)</span> | {{$facture->user->nom}} {{$facture->user->prenom}}
+      Note honoraire <span class="color-danger">(commission agence / partage)</span> | {{$mandataire->nom}} {{$mandataire->prenom}}
    @endsection
 <div class="row"> 
-       
+      
       <div class="col-lg-12">
               @if (session('ok'))
      
@@ -15,52 +15,59 @@
               </div>
            @endif       
           <div class="card alert">
+              {{-- {{dd($compromis)}} --}}
          <div class="row">
-            @if ($mandataire->statut == "auto-entrepreneur" && $compromis->facture_honoraire_partage_cree == false)
-           <br><br>
-               <div class="row">
-                  <div class="col-lg-6 col-md-6 col-sm-6">
-                     <span > <strong> Jetons restant : </strong></span>&nbsp;&nbsp;  <span class="color-warning"> <strong> {{$mandataire->nb_mois_pub_restant}}</strong></span> <br>
-                     <span > <strong> Année concernée : </strong></span> &nbsp;&nbsp; <span class="color-warning"> <strong> {{date('Y')}}</strong></span> <br>
-                  </div>
-                  <div class="col-lg-6 col-md-6 col-sm-6"></div>
-               </div> <br>
+             {{-- {{dd($compromis )}} --}}
+         
+                @if (($mandataire->id == $compromis->user_id && $mandataire->contrat->deduis_jeton == true && $compromis->facture_honoraire_partage_porteur_cree == false && $mandataire->nb_mois_pub_restant > 0)
+                || ($mandataire->id == $compromis->agent_id && $mandataire->contrat->deduis_jeton == true && $compromis->facture_honoraire_partage_cree == false && $mandataire->nb_mois_pub_restant > 0)
+                )
+                {{-- {{dd($mandataire->contrat->deduis_jeton == true && $compromis->facture_honoraire_partage_cree == false)}} --}}
+            <br><br>
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <span > <strong> Jetons restant : </strong></span>&nbsp;&nbsp;  <span class="color-warning"> <strong> {{$mandataire->nb_mois_pub_restant}}</strong></span> <br>
+                        <span > <strong> Année concernée : </strong></span> &nbsp;&nbsp; <span class="color-warning"> <strong> {{date('Y')}}</strong></span> <br>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6"></div>
+                </div> <br>
 
-               <div class="row">
-                  <div class="col-lg-8 col-md-8 col-sm-8">
-                        <form class="form-valide form-horizontal" action="{{ route('facture.deduire_pub_facture_honoraire',Crypt::encrypt($compromis->id) ) }}" method="post">
-                              {{ csrf_field() }}
-                            <div class="row">
+                <div class="row">
+                    <div class="col-lg-8 col-md-8 col-sm-8">
+                            <form class="form-valide form-horizontal" action="{{ route('facture.deduire_pub_facture_honoraire_partage', [Crypt::encrypt($compromis->id)] ) }}" method="post">
+                                {{ csrf_field() }}
+                                <div class="row">
 
-                                <hr>
-                                <div class="col-lg-9 col-md-9 col-sm-9">
-                                    <div class="form-group row">
-                                        <label class="col-lg-6 col-md-6 col-sm-6 control-label" for="nb_mois_deduire">Nombre de jetons à utiliser<span class="text-danger">*</span> </label>
-                                        <div class="col-lg-3 col-md-3 col-sm-3">
-                                        <input type="number" max="{{$mandataire->nb_mois_pub_restant}}" min="0" class="form-control {{ $errors->has('nb_mois_deduire') ? ' is-invalid' : '' }}" value="{{old('nb_mois_deduire')}}" id="nb_mois_deduire" name="nb_mois_deduire" required >
-                                           @if ($errors->has('nb_mois_deduire'))
-                                           <br>
-                                           <div class="alert alert-warning ">
-                                              <strong>{{$errors->first('nb_mois_deduire')}}</strong> 
-                                           </div>
-                                           @endif   
+                                    <hr>
+                                    <div class="col-lg-9 col-md-9 col-sm-9">
+                                        <div class="form-group row">
+                                            <label class="col-lg-6 col-md-6 col-sm-6 control-label" for="nb_mois_deduire">Nombre de jetons à utiliser<span class="text-danger">*</span> </label>
+                                            <div class="col-lg-3 col-md-3 col-sm-3">
+                                            <input type="number" max="{{$mandataire->nb_mois_pub_restant}}" min="0" class="form-control {{ $errors->has('nb_mois_deduire') ? ' is-invalid' : '' }}" value="{{old('nb_mois_deduire')}}" id="nb_mois_deduire" name="nb_mois_deduire" required >
+                                            @if ($errors->has('nb_mois_deduire'))
+                                            <br>
+                                            <div class="alert alert-warning ">
+                                                <strong>{{$errors->first('nb_mois_deduire')}}</strong> 
+                                            </div>
+                                            @endif   
+                                            </div>
                                         </div>
-                                     </div>
+                                    </div>
+        
                                 </div>
-       
-                              </div>
-                           
-                              <div class="form-group row" style="text-align: center; ">
-                                 <div class="col-lg-6 col-md-6 col-sm-6">
-                                    <button class="btn btn-success btn-flat btn-addon btn-md m-b-10 m-l-5 submit" id="ajouter"><i class="ti-plus"></i>Enregistrer</button>
-                                 </div>
-                              </div>
-                           </form>
-                  </div>
-                  <div class="col-lg-4 col-md-4 col-sm-4"></div>
-               </div>
+                            
+                                <div class="form-group row" style="text-align: center; ">
+                                    <div class="col-lg-6 col-md-6 col-sm-6">
+                                        <button class="btn btn-success btn-flat btn-addon btn-md m-b-10 m-l-5 submit" id="ajouter"><i class="ti-plus"></i>Enregistrer</button>
+                                    </div>
+                                </div>
+                            </form>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-4"></div>
+                </div>
 
-            @endif
+                @endif
+           
 
          </div>
                <hr>
@@ -168,15 +175,38 @@
             <td style="width: 231px;">{{ number_format($formu[0], 2, '.', ' ') }} &euro; * {{$formu[1]/100}}</td>
         </tr>
         @endforeach
-        
         <tr>
             <td style="width: 400px;">&nbsp; </td>
-            <td style="width: 153px;"><hr style="border-top: 1px solid red;">TOTAL H.T :</td>
-            <td style="width: 231px;"><hr style="border-top: 1px solid red;">{{ number_format($facture->montant_ht, 2, '.', ' ') }} &euro;</td>
+            <td style="width: 153px;"><hr style="border-top: 1px solid red;"> </td>
+            <td style="width: 231px;"><hr style="border-top: 1px solid red;"></td>
+        </tr>
+
+    @php
+        $montant_pub_deduis =  0;   
+    @endphp
+
+       @php $montant_pub_deduis = $facture->nb_mois_deduis * $mandataire->contrat->packpub->tarif @endphp  
+       @if ($facture->user->contrat->deduis_jeton == true ||  $facture->nb_mois_deduis > 0 )
+           <tr>
+               <td style="width: 400px;">&nbsp;</td>
+               <td style="width: 153px;">Jetons déduis :</td>
+               <td style="width: 231px;">- {{ number_format($montant_pub_deduis, 2, '.', ' ') }} &euro;</td>
+           </tr>
+       <tr><td>&nbsp;</td></tr>
+
+       @else   
+       <tr><td>&nbsp;</td></tr>
+       <tr><td>&nbsp;</td></tr>
+       @endif
+
+        <tr>
+            <td style="width: 400px;">&nbsp; </td>
+            <td style="width: 153px;">TOTAL H.T :</td>
+            <td style="width: 231px;">{{ number_format($facture->montant_ht, 2, '.', ' ') }} &euro;</td>
         </tr>
         <tr><td>&nbsp;</td> <td>&nbsp;</td> </tr>
 
-        @if(($facture->montant_ttc > $facture->montant_ht && $facture->user->statut == "auto-entrepreneur") || $facture->user->statut!="auto-entrepreneur")
+        @if($facture->montant_ttc > $facture->montant_ht)
 
         <tr>
             <td style="width: 400px;">&nbsp;</td>
@@ -186,34 +216,30 @@
         <tr><td>&nbsp;</td> <td>&nbsp;</td> </tr>
         @endif
 
-
-        @php
-         $montant_pub_deduis =  0;   
-        @endphp
-
-    @if ($facture->nb_mois_deduis > 0)
-        @php $montant_pub_deduis = $facture->nb_mois_deduis * $mandataire->contrat->packpub->tarif @endphp
-        <tr>
-            <td style="width: 400px;">&nbsp;</td>
-            <td style="width: 153px;">Jetons déduis :</td>
-            <td style="width: 231px;">- {{ number_format($montant_pub_deduis, 2, '.', ' ') }} &euro;</td>
-        </tr>
-        @endif
-       @if(($facture->user->chiffre_affaire >= 35200 && $facture->user->statut == "auto-entrepreneur") || $facture->user->statut!="auto-entrepreneur")
-        <tr><td>&nbsp;</td> <td>&nbsp;</td> </tr>
+        {{-- @if(($facture->user->chiffre_affaire >= 35200 && $facture->user->statut == "auto-entrepreneur") || $facture->user->statut!="auto-entrepreneur") --}}
+        @if($facture->montant_ttc > 0 )
+        {{-- <tr><td>&nbsp;</td> <td>&nbsp;</td> </tr> --}}
         <tr>
             <td style="width: 400px;">&nbsp;</td>
             <td style="width: 153px;">TOTAL T.T.C:</td>
             <td style="width: 231px;">{{ number_format($facture->montant_ttc - $montant_pub_deduis, 2, '.', ' ') }} &euro;</td>
         </tr>
-        @endif
-        @if(($facture->montant_ttc > $facture->montant_ht && $facture->user->statut == "auto-entrepreneur") || $facture->user->statut!="auto-entrepreneur")
-        <tr>
-            <td style="width: 400px;">&nbsp;</td>
-            <td style="width: 353px; color:brown">Vous n'êtes pas soumis à la TVA </td>
-            <td style="width: 31px;"></td>
-        </tr>
-        <tr><td>&nbsp;</td> <td>&nbsp;</td> </tr>
+        @else
+            @if($facture->user->contrat->est_soumis_tva == false )
+                <tr>
+                    <td style="width: 400px;">&nbsp;</td>
+                    <td style="width: 353px; color:brown">Vous n'êtes pas soumis à la TVA </td>
+                    <td style="width: 31px;"></td>
+                </tr>
+                <tr><td>&nbsp;</td> <td>&nbsp;</td> </tr>
+            @else 
+                <tr>
+                    <td style="width: 400px;">&nbsp;</td>
+                    <td style="width: 353px; color:brown">Vous n'etiez pas soumis à la TVA au moment du calcul ({{$facture->created_at->format('d-m-Y')}}) </td>
+                    <td style="width: 31px;"></td>
+                </tr>
+                <tr><td>&nbsp;</td> <td>&nbsp;</td> </tr>
+            @endif
 
         @endif
 
@@ -225,7 +251,7 @@
     <tbody>
         <tr style="height: 25px;">
             <td style="width: 349px; height: 25px;">Vous recevrez un montant net de :</td>
-                @if(($facture->montant_ttc > $facture->montant_ht && $facture->user->statut == "auto-entrepreneur") || $facture->user->statut!="auto-entrepreneur")
+                @if($facture->montant_ttc > $facture->montant_ht )
                     <td style="width: 117px; height: 25px;">{{  number_format($facture->montant_ttc- $montant_pub_deduis, 2, '.', ' ')  }} &euro; </td>
                 @else 
                     <td style="width: 117px; height: 25px;">{{  number_format($facture->montant_ht- $montant_pub_deduis, 2, '.', ' ')  }} &euro; </td>
@@ -236,17 +262,18 @@
     </tbody>
 
 </table>
-@endif
+
 
 <br>
 
 <hr>
 
-@if($facture->statut != "valide")
-    {{-- <a href="{{route('facture.generer_honoraire_create', Crypt::encrypt($facture->id))}}" class="btn btn-default btn-rounded btn-addon btn-sm m-b-10 m-l-5"><i class="ti-loop"></i>Générer la facture</a> --}}
-    <a href="{{route('facture.create_upload_pdf_honoraire', Crypt::encrypt($facture->id))}}" class="btn btn-danger btn-rounded btn-addon btn-sm m-b-10 m-l-5"><i class="ti-upload"></i>Ajouter ma facture</a>
-@endif          
+    @if($facture->statut != "valide")
+        {{-- <a href="{{route('facture.generer_honoraire_create', Crypt::encrypt($facture->id))}}" class="btn btn-default btn-rounded btn-addon btn-sm m-b-10 m-l-5"><i class="ti-loop"></i>Générer la facture</a> --}}
+        <a href="{{route('facture.create_upload_pdf_honoraire', Crypt::encrypt($facture->id))}}" class="btn btn-danger btn-rounded btn-addon btn-sm m-b-10 m-l-5"><i class="ti-upload"></i>Ajouter ma facture</a>
+    @endif          
 
+@endif
 <hr>
 
 <div style="text-align: center; font-size: 11px; margin-right: 25%; margin-left: 25%; margin-top: 20px;">
@@ -259,11 +286,16 @@
           </div>
       </div>
 </div>
+@if ($facture !=null ) **{{$facture->id}}** @endif
+
 @endsection
 @section('js-content')
     <script>
     // $('.price')    nb = 1580000;
     // alert(nb.toLocaleString());
+
+console.log("***statut mand :{{$mandataire->statut}}***");
+console.log("***mand id :{{$mandataire->id}}***");
 
     </script>
 @endsection

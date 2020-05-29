@@ -686,7 +686,8 @@
             "a_condition_parrain" : $("#a_condition_parrain").prop('checked') ,
             "parrain_id" : $('#parrain_id').val(),
             "est_soumis_tva" : $("#est_soumis_tva").prop('checked') ,
-
+            "deduis_jeton" : $("#deduis_jeton").prop('checked') ,
+            
             
             "pourcentage_depart_starter" : $('#pourcentage_depart_starter').val(),
             "duree_max_starter" : $('#duree_max_starter').val(),

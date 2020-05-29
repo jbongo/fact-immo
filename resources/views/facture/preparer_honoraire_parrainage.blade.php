@@ -65,11 +65,11 @@
 
          </div>
                <hr>
-    @if(Auth()->user()->role == "admin" && $facture != null )
+    {{-- @if(Auth()->user()->role == "admin" && $facture != null )
         @if(!in_array($facture->statut, ["valide","en attente de validation"]) )
             <a href="{{route('facture.recalculer_honoraire',Crypt::encrypt($facture->id))}}" class="btn btn-danger btn-flat btn-addon btn-lg m-b-10 m-l-5 submit" id="ajouter"><i class="ti-reload"></i>Recalculer</a>
         @endif
-    @endif
+    @endif --}}
 
 <table style="height: 59px; width: 311px;">
     <tbody>
@@ -136,7 +136,7 @@
                 <td style="width: 231px;">{{number_format($facture->montant_ht,'2','.',' ')}} &euro;</td>
             </tr>
             <tr><td>&nbsp;</td> <td>&nbsp;</td> </tr>
-        @if(($facture->montant_ttc > $facture->montant_ht && $facture->user->statut == "auto-entrepreneur") || $facture->user->statut!="auto-entrepreneur")
+        @if($facture->montant_ttc > $facture->montant_ht )
         
             <tr>
                 <td style="width: 400px;">&nbsp;</td>
@@ -149,6 +149,23 @@
                 <td style="width: 153px;">TOTAL T.T.C:</td>
                 <td style="width: 231px;">{{number_format($facture->montant_ttc,'2','.',' ')}} &euro;</td>
             </tr>
+
+        @else   
+            @if($facture->user->contrat->est_soumis_tva == false )
+                <tr>
+                    <td style="width: 400px;">&nbsp;</td>
+                    <td style="width: 353px; color:brown">Vous n'êtes pas soumis à la TVA </td>
+                    <td style="width: 31px;"></td>
+                </tr>
+                <tr><td>&nbsp;</td> <td>&nbsp;</td> </tr>
+            @else 
+                <tr>
+                    <td style="width: 400px;">&nbsp;</td>
+                    <td style="width: 353px; color:brown">Vous n'etiez pas soumis à la TVA au moment du calcul ({{$facture->created_at->format('d-m-Y')}}) </td>
+                    <td style="width: 31px;"></td>
+                </tr>
+                <tr><td>&nbsp;</td> <td>&nbsp;</td> </tr>
+            @endif
         @endif
     </tbody>
 </table>
@@ -158,10 +175,10 @@
     <tbody>
         <tr style="height: 25px;">
             <td style="width: 349px; height: 25px;">Vous recevrez un montant net de :</td>
-                @if(($facture->montant_ttc > $facture->montant_ht && $facture->user->statut == "auto-entrepreneur") || $facture->user->statut!="auto-entrepreneur")
-                    <td style="width: 117px; height: 25px;">{{  number_format($facture->montant_ttc- $montant_pub_deduis, 2, '.', ' ')  }} &euro; </td>
+                @if($facture->montant_ttc > $facture->montant_ht )
+                    <td style="width: 117px; height: 25px;">{{  number_format($facture->montant_ttc, 2, '.', ' ')  }} &euro; </td>
                 @else 
-                    <td style="width: 117px; height: 25px;">{{  number_format($facture->montant_ht- $montant_pub_deduis, 2, '.', ' ')  }} &euro; </td>
+                    <td style="width: 117px; height: 25px;">{{  number_format($facture->montant_ht, 2, '.', ' ')  }} &euro; </td>
                 @endif
 
             <td style="width: 177px; height: 25px;"></td>

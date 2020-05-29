@@ -141,7 +141,7 @@
                                             <div class="form-group row">
                                                 <label class="col-lg-6 col-form-label" for="deduis_jeton">Le mandataire déduit des jetons ?</label>
                                                 <div class="col-lg-6">
-                                                    <input type="checkbox" {check_deduis} data-toggle="toggle" id="deduis_jeton" name="deduis_jeton" data-off="Non" data-on="Oui" data-onstyle="success" data-offstyle="danger">
+                                                    <input type="checkbox" {{$check_deduis}} data-toggle="toggle" id="deduis_jeton" name="deduis_jeton" data-off="Non" data-on="Oui" data-onstyle="success" data-offstyle="danger">
                                                 </div>
                                             </div>
                                         </div>
@@ -730,6 +730,7 @@
             "a_parrain" : $("#a_parrain").prop('checked') ,
             "a_condition_parrain" : $("#a_condition_parrain").prop('checked') ,
             "est_soumis_tva" : $("#est_soumis_tva").prop('checked') ,
+            "deduis_jeton" : $("#deduis_jeton").prop('checked') ,
             
             "parrain_id" : $('#parrain_id').val(),         
            

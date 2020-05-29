@@ -69,7 +69,6 @@
    
             }
         });
-         new $.fn.dataTable.FixedHeader( table );
         });
 
         var table1 = $('#example1').DataTable({
