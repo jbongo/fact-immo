@@ -229,7 +229,7 @@
         </tr>
         @endif --}}
        
-        <tr><td>&nbsp;</td> <td>&nbsp;</td> </tr>
+    <tr><td>&nbsp;</td> <td>&nbsp; tvac  {{$facture->user->contrat->est_soumis_tva}}</td> </tr>
         @if($facture->montant_ttc > $facture->montant_ht )
 
         <tr>
