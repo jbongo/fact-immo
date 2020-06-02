@@ -383,13 +383,14 @@ public  function valider_facture_stylimmo( Request $request, $compromis)
         $mandataire = $compromis->user;
  
         $facture = Facture::where([ ['type','stylimmo'],['compromis_id',$compromis->id]])->first();
+        $filename = " F".$facture->numero." ".$facture->montant_ttc."€ ".strtoupper($mandataire->nom)." ".strtoupper(substr($mandataire->prenom,0,1)).".pdf" ;
     
         // dd('ddd');
         $pdf = PDF::loadView('facture.pdf_stylimmo',compact(['compromis','mandataire','facture']));
-        $path = storage_path('app/public/factures/facture.pdf');
+        $path = storage_path('app/public/factures/'.$filename);
         // $pdf->save($path);
         // $pdf->download($path);
-       return $pdf->download('facture.pdf');
+       return $pdf->download($filename);
       
     }
     
@@ -1626,9 +1627,11 @@ public function store_upload_pdf_honoraire(Request $request , $facture_id)
 
         if(!File::exists($path))
             File::makeDirectory($path, 0755, true);
+
+            $filename = strtoupper($facture->user->nom)." ".strtoupper(substr($facture->user->prenom,0,1))." F".$request->numero_facture." ".$request->montant_ht."€ F".$facture->compromis->getFactureStylimmo()->numero ;
  
-            $file->move($path,'facture_honoraire_'.$request->numero_facture.'.pdf');            
-            $path = $path.'/facture_honoraire_'.$request->numero_facture.'.pdf';
+            $file->move($path,$filename.'.pdf');            
+            $path = $path.'/'.$filename.'.pdf';
         
             $facture->url = $path;
             $facture->numero = $request->numero_facture;
