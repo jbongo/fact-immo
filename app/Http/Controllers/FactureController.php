@@ -532,6 +532,7 @@ public  function preparer_facture_honoraire($compromis)
         elseif($compromis->facture_honoraire_cree == false && $compromis->user->contrat->deduis_jeton == true){
             $facture = null;
             $formule = null;
+            
         }
         else{
             $facture = Facture::where([ ['type','honoraire'],['compromis_id',$compromis->id]])->first();
@@ -1165,7 +1166,20 @@ public  function deduire_pub_facture_honoraire(Request $request, $compromis)
     $niveau_actuel = $this->calcul_niveau($paliers, $mandataire->chiffre_affaire_sty);
     //  VERIFIER S'IL Y'A TVA OU PAS
     $tva = 1.2;
+    if($contrat->est_soumis_tva == false ){
 
+        if( $mandataire->statut == "auto-entrepeneur"){
+
+            if($chiffre_affaire_encai < 35200){
+                $tva = 1;
+            }else{
+                $contrat->est_soumis_tva = true;
+                $contrat->update();
+            }
+        }else{
+            $tva = 1;
+        }
+    }
     //PASSER LA COMMISSION DU MANDATAIRE EN PARAMETRE
     $montant_vnt_ht = ($compromis->frais_agence/$tva) ; 
     
