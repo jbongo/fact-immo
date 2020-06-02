@@ -477,7 +477,7 @@ public  function preparer_facture_honoraire($compromis)
 
         // On calcul le chiffre d'affaire encaissé du mandataire depuis le 1er janvier, pour voir s'il passe à la TVA
         $chiffre_affaire_encai = Facture::where('user_id',$mandataire->id)->whereIn('type',['honoraire','partage','parrainage','parrainage_partage'])->where('reglee',true)->where('date_reglement','>=',$deb_annee)->sum('montant_ht');
-dd("CA encaisse".$chiffre_affaire_encai);
+dd("CA encaisse e".$chiffre_affaire_encai);
         $tva = 1.2;
         // dd($chiffre_affaire_encai);
         if($contrat->est_soumis_tva == false ){
