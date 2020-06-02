@@ -32,7 +32,7 @@
                                         @endif --}}
 
                                         <th>@lang('Note honoraire')</th>
-                                        <th>@lang('Télécharger')</th>
+                                        {{-- <th>@lang('Télécharger')</th> --}}
 
                                     </tr>
                                 </thead>
@@ -41,9 +41,14 @@
 
                                     <tr>
                                         <td  >
-                                            @if($facture->statut != "en attente de validation")
-                                            <label class="color-info">{{$facture->numero}} </label> 
+                                            @if($facture->statut != "en attente de validation" && $facture->url != null) 
+                                            <label class="color-info"> </label> 
+                                                <a class="color-info" title="Télécharger la facture d'honoraire "  href="{{route('facture.telecharger_pdf_facture', Crypt::encrypt($facture->id))}}"  class="  m-b-10 m-l-5 " id="ajouter">{{$facture->numero}} <i class="ti-download"></i> </a>
+                                            @else 
+                                                <label class="color-danger" ><strong> Non dispo </strong> </label>
                                             @endif
+
+                                           
                                         </td>
                                         <td  >
                                             {{-- <label class="color-info">{{$facture->compromis->getFactureStylimmo()->numero}} </label>  --}}
@@ -146,13 +151,7 @@
                                             @endif --}}
                                         </td> 
 
-                                        <td width="" >     
-                                            @if($facture->url != null)                                       
-                                                <a href="{{route('facture.telecharger_pdf_facture', Crypt::encrypt($facture->id))}}"  class=" btn btn-warning btn-flat btn-addon m-b-10 m-l-5 " id="telecharger"><i class="ti-download"></i> Télécharger</a>
-                                            @else 
-                                                <label class="color-danger" ><strong> Non disponible </strong> </label>                                            
-                                            @endif
-                                        </td>
+                                  
                                     </tr> 
                                
                             @endforeach
