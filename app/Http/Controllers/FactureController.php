@@ -1171,17 +1171,17 @@ public  function deduire_pub_facture_honoraire(Request $request, $compromis)
         if( $mandataire->statut == "auto-entrepeneur"){
 
             if($chiffre_affaire_encai < 35200){
-                $tva = 1;
+                $tva = 0;
             }else{
                 $contrat->est_soumis_tva = true;
                 $contrat->update();
             }
         }else{
-            $tva = 1;
+            $tva = 0;
         }
     }
     //PASSER LA COMMISSION DU MANDATAIRE EN PARAMETRE
-    $montant_vnt_ht = ($compromis->frais_agence/$tva) ; 
+    $montant_vnt_ht = ($compromis->frais_agence/1.2) ; 
     
     // PASSER LE TYPE DE LA FACTYPE EN PARAMETRE
 
