@@ -546,11 +546,11 @@ public  function preparer_facture_honoraire($compromis)
 }
 
 // Préparation de la facture d'honoraire du parrain  / *************revoir pour ajouter la formule de calcul par niveau***************
-public  function preparer_facture_honoraire_parrainage($compromis)
+public  function preparer_facture_honoraire_parrainage($compromis_id, $id_parrain = null)
 {
 
-    $compromis = Compromis::where('id', Crypt::decrypt($compromis))->first();
-
+    $compromis = Compromis::where('id',Crypt::decrypt($compromis_id))->first();
+    // dd($compromis->est_partage_agent == true);
     $deux_filleuls = false;
     //  On détermine le filleul ou les filleuls s'il y'a partage entre les filleuls (même parrain)
     if($compromis->est_partage_agent == true){
@@ -566,33 +566,86 @@ public  function preparer_facture_honoraire_parrainage($compromis)
             // si les 2 filleuls ont le même parrain
             if($filleul1->parrain_id == $filleul2->parrain_id  ){
                 $deux_filleuls= true;
-                dd("2 filleuls");
+                // dd("2 filleuls");
 
-                // 
+                //  On determine le pourcentage parrain pour chaque filleul
+
+               
+                $pourcentage_parrain1 =  Filleul::where('user_id',$filleul1->id)->select('pourcentage')->first();
+                $pourcentage_parrain1 = $pourcentage_parrain1['pourcentage'];
+
+                $pourcentage_parrain2 =  Filleul::where('user_id',$filleul2->id)->select('pourcentage')->first();
+                $pourcentage_parrain2 = $pourcentage_parrain2['pourcentage'];
 
 
-#######################################################
+                         
+                $frais_agence1 = $compromis->frais_agence * $compromis->pourcentage_agent/100 ;
+                $frais_agence2 = $compromis->frais_agence * (100 - $compromis->pourcentage_agent) /100 ;
+                
+                
+
+                 // On determine le parrain 
+                $parrain = User::where('id',$filleul1->parrain_id)->first();
+                $deb_annee = date("Y")."-01-01";
+
+            // on determine les chiffres d'affaires encaissé du parrain depuis le 1er janvier, pour voir s'il est soumis à la TVA
+                $chiffre_affaire_parrain_encai = Facture::where('user_id',$parrain->id)->whereIn('type',['honoraire','partage','parrainage','parrainage_partage'])->where('reglee',true)->where('date_reglement','>=',$deb_annee)->sum('montant_ht');
+            
+            //    on reccupere le contrat du parrain
+                $contrat = $parrain->contrat;
+                $tva = 1.2;
+                    
+                if($contrat->est_soumis_tva == false){
+                
+                    if($chiffre_affaire_parrain_encai < 35200){
+                        $tva = 0;
+                    }else{
+                        $contrat->est_soumis_tva = true;
+                        $contrat->update();
+                    }
+
+                }
+
+                // On determine les montants ttc et ht du parrain pour chacun de ses filleuls 
+                $montant_ht1 = round ( ($frais_agence1 * $pourcentage_parrain1/100 )/1.2,2);
+                $montant_ttc1 = round( $frais_agence1 * $pourcentage_parrain1/100,2);
+
+                $montant_ht2 = round ( ($frais_agence2 * $pourcentage_parrain2/100 )/1.2,2);
+                $montant_ttc2 = round( $frais_agence2 * $pourcentage_parrain2/100,2);
+
+                // on determine les droits de parrainage du parrain pour chacun de ses filleuls
+
+                $result1 = Filleul::droitParrainage($parrain->id, $filleul1->user_id, $compromis->id);
+                $result2 = Filleul::droitParrainage($parrain->id, $filleul2->user_id, $compromis->id);
 
 
+        #############################################
+
+
+        dd($result1);
 
 
             } //Si les 2 n'ont pas le même parrain
             else{
+            // dd('pas le meme parrain');
+
                 // il faut mettre un params parrain_id, au cas où c'est l'admin qui fait la note, (cas de recalcul)
-                $filleul_id =  $filleul1->parrain_id == auth::id() ? $filleul1->user_id : $filleul2->user_id ;
+                if($id_parrain != null){
+                    $filleul_id =  $filleul1->parrain_id == $id_parrain ? $filleul1->user_id : $filleul2->user_id ;
+                }else{
+                    $filleul_id =  $filleul1->parrain_id == auth::id() ? $filleul1->user_id : $filleul2->user_id ;
+                }
 
                 $filleul = User::where('id',$filleul_id)->first();
                 $pourcentage_parrain =  Filleul::where('user_id',$filleul->id)->select('pourcentage')->first();
                 $pourcentage_parrain = $pourcentage_parrain['pourcentage'];
 
                 // lorsque le filleul porte l'affaire
-                if($filleul->id == $compromis->user_id){
-                    
+                if($filleul->id == $compromis->user_id){                    
                     $frais_agence = $compromis->frais_agence * $compromis->pourcentage_agent/100 ;
                 }
                 // lorsque le filleul ne porte pas l'affaire
                 else{
-
                     $frais_agence = $compromis->frais_agence * (100 - $compromis->pourcentage_agent) /100 ;
                 }
                 
@@ -618,18 +671,21 @@ public  function preparer_facture_honoraire_parrainage($compromis)
 
                 }
 
-                $montant_ht = round ( ($frais_agence * $pourcentage_parrain/100 )/$tva ,2);
+                $montant_ht = round ( ($frais_agence * $pourcentage_parrain/100 )/1.2,2);
                 $montant_ttc = round( $frais_agence * $pourcentage_parrain/100,2);
 
-                $result = Filleul::droitParrainage(Auth::id(), $filleul->id, $compromis->id);
+                $result = Filleul::droitParrainage($parrain->id, $filleul->id, $compromis->id);
 
             }
             
 
+        // Un seul parrain
         }else{
+            // dd('1 seul parr');
             // on continue avec l'unique filleul
             if($filleul1 != null){
                 // Lorsque le filleul porte l'affaire
+                // dd('porte ');
 
                 $filleul = User::where('id',$filleul1->user_id)->first();
                 $pourcentage_parrain =  Filleul::where('user_id',$filleul->id)->select('pourcentage')->first();
@@ -658,7 +714,7 @@ public  function preparer_facture_honoraire_parrainage($compromis)
                 }
 
                 $frais_agence = $compromis->frais_agence * $compromis->pourcentage_agent/100 ;
-                $montant_ht = round ( ($frais_agence * $pourcentage_parrain/100 )/$tva ,2);
+                $montant_ht = round ( ($frais_agence * $pourcentage_parrain/100 )/1.2 ,2);
                 $montant_ttc = round( $frais_agence * $pourcentage_parrain/100,2);
                 // dd("unique filleul 1 ");
 
@@ -668,7 +724,7 @@ public  function preparer_facture_honoraire_parrainage($compromis)
                 $pourcentage_parrain =  Filleul::where('user_id',$filleul->id)->select('pourcentage')->first();
                 $pourcentage_parrain = $pourcentage_parrain['pourcentage']; 
 
-
+// dd('porte pas');
                 // On determine le parrain 
                 $parrain_id =  Filleul::where('user_id',$filleul->id)->select('parrain_id')->first();    
                 $parrain = User::where('id',$parrain_id['parrain_id'])->first();
@@ -692,7 +748,7 @@ public  function preparer_facture_honoraire_parrainage($compromis)
 
 
                 $frais_agence = $compromis->frais_agence * (100 - $compromis->pourcentage_agent) /100 ;
-                $montant_ht = round ( ($frais_agence * $pourcentage_parrain/100 )/$tva ,2);
+                $montant_ht = round ( ($frais_agence * $pourcentage_parrain/100 )/1.2 ,2);
                 $montant_ttc = round( $frais_agence * $pourcentage_parrain/100,2);
                 // dd($montant_ttc);
                 //  dd("unique filleul 2 ");
@@ -700,17 +756,17 @@ public  function preparer_facture_honoraire_parrainage($compromis)
 
             }
 
-            $result = Filleul::droitParrainage(Auth::id(), $filleul->id, $compromis->id);
-          
+            $result = Filleul::droitParrainage($parrain->id, $filleul->id, $compromis->id);
+        //   dd($result);
 
         }
         
 
 
-
+// filleul sans partage
     }else{
 
-        //  dd("un filleul sans partage");
+        //   dd("un filleul sans partage");
         $filleul = User::where('id',$compromis->user_id)->first();
         $pourcentage_parrain =  Filleul::where('user_id',$filleul->id)->select('pourcentage')->first();
         $pourcentage_parrain = $pourcentage_parrain['pourcentage'];
@@ -719,7 +775,8 @@ public  function preparer_facture_honoraire_parrainage($compromis)
         $parrain_id =  Filleul::where('user_id',$filleul->id)->select('parrain_id')->first();    
         $parrain = User::where('id',$parrain_id['parrain_id'])->first();
         $deb_annee = date("Y")."-01-01";
-    // on determine le chiffre d'affaire encaissé du parrain depuis le 1er janvier, pour voir s'il est soumis à la TVA
+      
+    // on determine le chiffre d'affaire ht encaissé du parrain depuis le 1er janvier, pour voir s'il est soumis à la TVA
         $chiffre_affaire_parrain_encai = Facture::where('user_id',$parrain->id)->whereIn('type',['honoraire','partage','parrainage','parrainage_partage'])->where('reglee',true)->where('date_reglement','>=',$deb_annee)->sum('montant_ht');
     //    on reccupere le contrat du parrain
         $contrat = $parrain->contrat;
@@ -736,10 +793,11 @@ public  function preparer_facture_honoraire_parrainage($compromis)
 
         }
         
-        $montant_ht = round ( ($compromis->frais_agence*$pourcentage_parrain/100 )/$tva ,2);
+        $montant_ht = round ( ($compromis->frais_agence*$pourcentage_parrain/100 )/1.2 ,2);
         $montant_ttc = round( $compromis->frais_agence*$pourcentage_parrain/100,2);
 
         $result = Filleul::droitParrainage($parrain->id, $filleul->id, $compromis->id);
+        
 
     }
 
@@ -771,8 +829,8 @@ public  function preparer_facture_honoraire_parrainage($compromis)
             ]);
             // on incremente le chiffre d'affaire du parrain
             // dd($parrain);
-            $parrain->chiffre_affaire += $facture->montant_ttc ; 
-            $parrain->update(); 
+            // $parrain->chiffre_affaire += $facture->montant_ttc ; 
+            // $parrain->update(); 
             
             $compromis->facture_honoraire_parrainage_cree = true;
             $compromis->update();
@@ -781,7 +839,7 @@ public  function preparer_facture_honoraire_parrainage($compromis)
 
             }
         }else{
-            $facture = Facture::where([ ['type','parrainage'],['compromis_id',$compromis->id]])->first();
+            $facture = Facture::where([ ['type','parrainage'],['user_id',$parrain->id],['compromis_id',$compromis->id]])->first();
 
         }
 
@@ -1839,13 +1897,13 @@ public function valider_honoraire($action, $facture_id)
     public function recalculer_honoraire($facture_id)
     {
         $facture = Facture::where('id',Crypt::decrypt($facture_id))->first();
-       
+
         $compromis = $facture->compromis;
         
         $mandataire = $facture->user;
         $mandataire->nb_mois_pub_restant += $facture->nb_mois_deduis;
         $mandataire->update();
-        // dd($mandataire->id);
+        
         
         
         // Pour recalculer il faut faire une remise à zéro dans le compromis, puis supprimer la facture et la recalculer

@@ -68,7 +68,7 @@ Route::middleware('auth')->group(function(){
     Route::get('/factures/packpub','FactureController@packpub')->name('facture.packpub');
     //  factures honoraire
     Route::get('preparer/factures-honoraire/{compromis}','FactureController@preparer_facture_honoraire')->name('facture.preparer_facture_honoraire');//ok
-    Route::get('preparer/factures-honoraire-parrainage/{compromis}','FactureController@preparer_facture_honoraire_parrainage')->name('facture.preparer_facture_honoraire_parrainage');//ok
+    Route::get('preparer/factures-honoraire-parrainage/{compromis}/{parrain_id?}','FactureController@preparer_facture_honoraire_parrainage')->name('facture.preparer_facture_honoraire_parrainage');//ok
     // Parrain du partage
     Route::get('preparer/factures-honoraire-parrainage-partage/{compromis}','FactureController@preparer_facture_honoraire_parrainage_partage')->name('facture.preparer_facture_honoraire_parrainage_partage');//ok
     Route::get('preparer/factures-honoraire-partage/{compromis}/{mandataire_id?}','FactureController@preparer_facture_honoraire_partage')->name('facture.preparer_facture_honoraire_partage');//ok
