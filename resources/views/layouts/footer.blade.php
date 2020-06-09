@@ -43,6 +43,36 @@
     <script>
         $(document).ready(function() {
         var table = $('#example').DataTable({
+        //    responsive: true,
+            "order": [],
+            "iDisplayLength": 50,
+            "language": {
+            "decimal":        "",
+            "emptyTable":     "Aucune donnée disponible dans le tableau",
+            "info":           "Affichage _START_ à _END_ sur _TOTAL_ lignes",
+            "infoEmpty":      "Affichage 0 à 0 sur 0 lignes",
+            "infoFiltered":   "(filtrés sur _MAX_ total lignes)",
+            "infoPostFix":    "",
+            "thousands":      ",",
+            "lengthMenu":     "Voir _MENU_ lignes",
+        
+           
+            "search":         "Rechercher:",
+            "zeroRecords":    "Aucune donnée trouvée",
+            "paginate": {
+                "first":      "First",
+                "last":       "Last",
+                "next":       "Suivant",
+                "previous":   "Précédent"
+            },
+           
+   
+            }
+        });
+        });
+
+        $(document).ready(function() {
+        var table = $('#example0').DataTable({
            responsive: true,
             "order": [],
             "iDisplayLength": 50,
@@ -70,6 +100,7 @@
             }
         });
         });
+      
 
         var table1 = $('#example1').DataTable({
             "order": [],

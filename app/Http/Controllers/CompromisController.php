@@ -131,6 +131,19 @@ class CompromisController extends Controller
                 $query->whereIn('user_id',$fill_ids )
                 ->orWhereIn('agent_id',$fill_ids );
             })->latest()->get();
+            
+            $filleuls = Filleul::where([['parrain_id',Auth::user()->id],['expire',false]])->select('user_id')->get()->toArray();
+            $fill_ids = array();
+            foreach ($filleuls as $fill) {
+                $fill_ids[]= $fill['user_id'];
+            }
+
+            $filleul1s = Compromis::where('archive',false)->whereIn('user_id',$fill_ids )->get();
+            $filleul2s = Compromis::where('archive',false)->whereIn('agent_id',$fill_ids )->get();
+
+            $compromisParrain = $filleul2s->concat($filleul1s);
+            // dd($compromisParrain);
+
             $valide_compro_id = array();
         
             // foreach ($fill_ids as $fill_id) {

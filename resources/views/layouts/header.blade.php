@@ -21,12 +21,18 @@
     {{-- <link href="{{ asset('css/dropzone.css')}}" rel="stylesheet">
     <link href="{{ asset('css/dropzone-custom.css')}}" rel="stylesheet"> --}}
     <link href="{{ asset('css/lib/sweetalert/sweetalert.css')}}" rel="stylesheet">
-    <link href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap.min.css" rel="stylesheet">
-    <link href="{{ asset('css/lib/data-table/data-table.css')}}" rel="stylesheet">
     {{-- <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"> --}}
     <link href="https://cdn.datatables.net/fixedheader/3.1.7/css/fixedHeader.bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.datatables.net/responsive/2.2.4/css/responsive.bootstrap.min.css" rel="stylesheet">
+
+    <link href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/responsive/2.2.5/css/responsive.dataTables.min.css" rel="stylesheet">
    
+
+
+    
+
+
 
     <link href="{{ asset('css/lib/select2/select2.min.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{asset('css/lib/bootstrap-select.min.css')}}">
