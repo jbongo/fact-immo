@@ -141,8 +141,19 @@ class CompromisController extends Controller
             $filleul1s = Compromis::where('archive',false)->whereIn('user_id',$fill_ids )->get();
             $filleul2s = Compromis::where('archive',false)->whereIn('agent_id',$fill_ids )->get();
 
+            $id_fill1 = array();
+            foreach ($filleul1s as $fill1) {
+               $id_fill1[] = $fill1->id;
+            }
+            $id_fill2 = array();
+            foreach ($filleul2s as $fill2) {
+               $id_fill2[] = $fill2->id;
+            }
+
             $compromisParrain = $filleul2s->concat($filleul1s);
-            // dd($compromisParrain);
+            // $compro = array_intersect($id_fill1, $id_fill2);
+            // dd($compro);
+            // dd($compromisParrain->toArray());
 
             $valide_compro_id = array();
         

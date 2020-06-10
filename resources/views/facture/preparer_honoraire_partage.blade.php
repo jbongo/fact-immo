@@ -72,11 +72,34 @@
          </div>
                <hr>
 
-    @if(Auth()->user()->role == "admin" && $facture != null )
-        {{-- @if(!in_array($facture->statut, ["valide","en attente de validation"]) ) --}}
-            <a href="{{route('facture.recalculer_honoraire',Crypt::encrypt($facture->id))}}" class="btn btn-danger btn-flat btn-addon btn-lg m-b-10 m-l-5 submit" id="ajouter"><i class="ti-reload"></i>Recalculer</a>
-        {{-- @endif --}}
-    @endif
+               <div class="row">
+                   <div class="col-md-4"> @if(Auth()->user()->role == "admin" && $facture != null )
+                        {{-- @if(!in_array($facture->statut, ["valide","en attente de validation"]) ) --}}
+                            <a href="{{route('facture.recalculer_honoraire',Crypt::encrypt($facture->id))}}" class="btn btn-danger btn-flat btn-addon btn-lg m-b-10 m-l-5 submit" id="ajouter"><i class="ti-reload"></i>Recalculer</a>
+                        {{-- @endif --}}
+                    @endif 
+                </div>
+                   <div class="col-md-4">
+                    @if($facture != null)
+                        @if($facture->statut == "valide" && $facture->url != null)
+                            <a class="color-info" title="Télécharger la facture d'honoraire "  href="{{route('facture.telecharger_pdf_facture', Crypt::encrypt($facture->id))}}"  class="  m-b-10 m-l-5 " id="ajouter">Télécharger Fac: {{$facture->numero}} <i class="ti-download"></i> </a>
+                        @elseif($facture->statut == "en attente de validation")
+                            <label class="color-danger" ><strong> Facture en attente de validation </strong> &nbsp; </label>
+                            <a href="{{route('facture.valider_honoraire', [1,Crypt::encrypt($facture->id)] )}}"  class="btn btn-success btn-flat btn-addon  m-b-10 m-l-5 valider" id="valider"><i class="ti-check"></i>Valider</a>
+                            <a href="{{route('facture.valider_honoraire', [0,Crypt::encrypt($facture->id)] )}}"  class="btn btn-danger btn-flat btn-addon  m-b-10 m-l-5 refuser" id="refuser"><i class="ti-close"></i>Réfuser</a>
+                        @elseif($facture->statut == "refuse")
+                            <label class="color-danger" ><strong> Facture réfusée </strong> </label>
+                        @else
+                        <label class="color-danger" ><strong> Facture non Ajoutée </strong> </label>
+
+                        @endif  
+                    @endif
+                   </div>
+               </div>
+   
+
+
+
 <table style="height: 59px; width: 311px;">
     <tbody>
         <tr>
@@ -99,34 +122,34 @@
             <td style="width: 423px;"><span style="text-decoration: underline;"><strong>R&eacute;f.</strong></span><strong>:&nbsp;</strong>&nbsp; Mandat N&deg;&nbsp; {{$compromis->numero_mandat}}&nbsp; du : {{ Carbon\Carbon::parse($compromis->date_mandat)->format('d/m/Y')}}</td>
             <td style="width: 260px;height:35px"></td>
         </tr>
-        @if(Auth()->user()->role !="admin")       
+        {{-- @if(Auth()->user()->role !="admin")        --}}
         <tr>
             <td style="width: 423px;"><span style="text-decoration: underline;"><strong>Mandataire avec qui je partage:</strong> </span> &nbsp; {{$mandataire_partage->nom}} {{$mandataire_partage->prenom}}&nbsp;</td>
             <td style="width: 260px;height:35px"></td>
         </tr>
-        @endif
+        {{-- @endif --}}
         <tr>
             <td style="width: 423px;"><span style="text-decoration: underline;"><strong>Frais d'agence:</strong> </span> &nbsp; {{ number_format($compromis->frais_agence, 2, '.', ' ') }} € &nbsp;</td>
             <td style="width: 260px;height:35px"></td>
         </tr>
-            @if(Auth()->user()->role !="admin")
+            {{-- @if(Auth()->user()->role !="admin") --}}
         <tr>
             <td style="width: 423px;"><span style="text-decoration: underline;"><strong>Mon pourcentage de partage:</strong> </span> &nbsp; {{$pourcentage_partage}} %&nbsp; soit ({{ number_format($compromis->frais_agence * $pourcentage_partage /100, 2, '.', ' ')  }} €) </td>
             <td style="width: 260px;height:35px"></td>
         </tr>
-        @endif
+        {{-- @endif --}}
     </tbody>
 </table>
 <br>
 <table style="height: 66px; width: 50%">
     <tbody>
-            @if(Auth()->user()->role !="admin")
+            {{-- @if(Auth()->user()->role !="admin") --}}
          <tr>
             <td style="width: 48px;">&nbsp;</td>
             <td style="width: 428px;"><span style="text-decoration: underline;"><strong>Commission:</strong></span>&nbsp;&nbsp;&nbsp;&nbsp; <span style="color:mediumblue"> {{$mandataire->commission}} %</td>
             <td style="width: 391px; height:35px"></td>
          </tr>
-         @endif
+         {{-- @endif --}}
         <tr>
             <td style="width: 48px;">&nbsp;</td>
             <td style="width: 428px;"><span style="text-decoration: underline;"><strong>Vendeur:</strong></span> &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:mediumblue">
@@ -297,5 +320,142 @@
 console.log("***statut mand :{{$mandataire->statut}}***");
 console.log("***mand id :{{$mandataire->id}}***");
 
+    </script>
+
+    
+<script>
+
+    //###Valider la facture      
+    
+        $(function() {
+           $.ajaxSetup({
+              headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
+           })
+           
+          
+           $('[data-toggle="tooltip"]').tooltip()
+           $('body').on('click','a.valider',function(e) {
+              let that = $(this)
+          
+              e.preventDefault()
+              const swalWithBootstrapButtons = swal.mixin({
+              confirmButtonClass: 'btn btn-success',
+              cancelButtonClass: 'btn btn-danger',
+              buttonsStyling: false,
+              })
+    
+        swalWithBootstrapButtons({
+           title: '@lang('Voulez-vous vraiment valider la facture ?')',
+           type: 'warning',
+           showCancelButton: true,
+           confirmButtonColor: '#DD6B55',
+           confirmButtonText: '@lang('Oui')',
+           cancelButtonText: '@lang('Non')',
+           
+        }).then((result) => {
+           if (result.value) {
+              $('[data-toggle="tooltip"]').tooltip('hide')
+                    $.ajax({                        
+                       url: that.attr('href'),
+                       type: 'GET',
+                       success: function(data){
+                         document.location.reload();
+                       },
+                       error : function(data){
+                          console.log(data);
+                       }
+                    })
+                    .done(function () {
+                          
+                    })
+    
+              swalWithBootstrapButtons(
+              'Validée!',
+              'Le mandatataire sera notifié par mail.',
+              'success'
+              )
+              
+              
+           } else if (
+              // Read more about handling dismissals
+              result.dismiss === swal.DismissReason.cancel
+           ) {
+              swalWithBootstrapButtons(
+              'Annulé',
+              'Aucune validation effectuée :)',
+              'error'
+              )
+           }
+        })
+           })
+        })
+    
+    
+    
+    // ###  Refuser la facture
+    
+    
+        $(function() {
+           $.ajaxSetup({
+              headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
+           })
+           
+          
+           $('[data-toggle="tooltip"]').tooltip()
+           $('body').on('click','a.refuser',function(e) {
+              let that = $(this)
+          
+              e.preventDefault()
+              const swalWithBootstrapButtons = swal.mixin({
+              confirmButtonClass: 'btn btn-success',
+              cancelButtonClass: 'btn btn-danger',
+              buttonsStyling: false,
+              })
+    
+        swalWithBootstrapButtons({
+           title: '@lang('Voulez-vous vraiment réfuser la facture ?')',
+           type: 'warning',
+           showCancelButton: true,
+           confirmButtonColor: '#DD6B55',
+           confirmButtonText: '@lang('Oui')',
+           cancelButtonText: '@lang('Non')',
+           
+        }).then((result) => {
+           if (result.value) {
+              $('[data-toggle="tooltip"]').tooltip('hide')
+                    $.ajax({                        
+                       url: that.attr('href'),
+                       type: 'GET',
+                       success: function(data){
+                         document.location.reload();
+                       },
+                       error : function(data){
+                          console.log(data);
+                       }
+                    })
+                    .done(function () {
+                          
+                    })
+    
+              swalWithBootstrapButtons(
+              'Réfusée!',
+              'Le mandatataire sera notifié par mail.',
+              'success'
+              )
+              
+              
+           } else if (
+              // Read more about handling dismissals
+              result.dismiss === swal.DismissReason.cancel
+           ) {
+              swalWithBootstrapButtons(
+              'Annulé',
+              'Aucune action effectuée :)',
+              'error'
+              )
+           }
+        })
+           })
+        })
     </script>
 @endsection

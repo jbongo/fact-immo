@@ -617,6 +617,45 @@ public  function preparer_facture_honoraire_parrainage($compromis_id, $id_parrai
 
                 $result1 = Filleul::droitParrainage($parrain->id, $filleul1->user_id, $compromis->id);
                 $result2 = Filleul::droitParrainage($parrain->id, $filleul2->user_id, $compromis->id);
+                
+                
+            
+            
+                if($compromis->facture_honoraire_parrainage_cree == false ){
+
+                    // FACTURE PARRAINAGE DU FILLEUL QUI PORTE L'AFFAIRE 1
+                    // Si toutes les conditions pour toucher le parrainnage sont respectées
+                    if($result1["respect_condition"] == true){
+            
+                        // calcul du montant ht et ttc
+                        
+                        $facture = Facture::create([
+                            "numero"=> null,
+                            "user_id"=> $parrain->id,
+                            "compromis_id"=> $compromis->id,
+                            "type"=> "parrainage",
+                            "encaissee"=> false,
+                            "montant_ht"=>  $montant_ht,
+                            "montant_ttc"=> $montant_ttc,
+                        ]);
+                        // on incremente le chiffre d'affaire du parrain
+                        // dd($parrain);
+                        // $parrain->chiffre_affaire += $facture->montant_ttc ; 
+                        // $parrain->update(); 
+                        
+                        $compromis->facture_honoraire_parrainage_cree = true;
+                        $compromis->update();
+                        }else{
+                        $facture = null;
+            
+                        }
+                    }else{
+                        $facture = Facture::where([ ['type','parrainage'],['user_id',$parrain->id],['compromis_id',$compromis->id]])->first();
+            
+                    }
+
+
+                    // FACTURE PARRAINAGE DU FILLEUL QUI NE PORTE L'AFFAIRE 2
 
 
         #############################################

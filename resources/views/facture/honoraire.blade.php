@@ -24,7 +24,7 @@
                                         {{-- <th>@lang('Date Facture')</th> --}}
                                         <th>@lang('Date de l\'acte')</th>
                                         <th>@lang('Etat (Fac Stylimmo)')</th>
-                                        <th>Validation (Fac honoraire)</th>
+                                        {{-- <th>Validation (Fac honoraire)</th> --}}
                                         <th>@lang('Paiement')</th>
 
                                         {{-- @if(auth()->user()->role == "admin")
@@ -40,7 +40,7 @@
                                     @foreach ($factureHonoraires as $facture)
 
                                     <tr>
-                                        <td  >
+                                        {{-- <td  >
                                             @if($facture->statut != "en attente de validation" && $facture->url != null) 
                                             <label class="color-info"> </label> 
                                                 <a class="color-info" title="Télécharger la facture d'honoraire "  href="{{route('facture.telecharger_pdf_facture', Crypt::encrypt($facture->id))}}"  class="  m-b-10 m-l-5 " id="ajouter">{{$facture->numero}} <i class="ti-download"></i> </a>
@@ -49,7 +49,24 @@
                                             @endif
 
                                            
+                                        </td> --}}
+
+                                        <td  >
+                                            @if($facture->statut == "valide" && $facture->numero != null )
+                                                <a class="color-info" title="Télécharger la facture d'honoraire "  href="{{route('facture.telecharger_pdf_facture', Crypt::encrypt($facture->id))}}"  class="  m-b-10 m-l-5 " id="ajouter">{{$facture->numero}} <i class="ti-download"></i> </a>                                        
+                                            @elseif($facture->statut == "en attente de validation" && $facture->numero != null) 
+                                                <label class="color-default"><strong> En attente de validation </strong></label> 
+                                            @elseif($facture->statut == "refuse" && $facture->numero != null) 
+                                                <label class="color-success"><strong>Réfusée </strong></label>
+                                            @else
+                                                <label class="color-danger"><strong>Non ajoutée </strong></label> 
+
+                                            @endif 
                                         </td>
+
+
+
+
                                         <td  >
                                             {{-- <label class="color-info">{{$facture->compromis->getFactureStylimmo()->numero}} </label>  --}}
                                         <a class="color-info" title="Télécharger la facture stylimmo"  href="{{route('facture.telecharger_pdf_facture_stylimmo', Crypt::encrypt($facture->compromis->id))}}"  class="  m-b-10 m-l-5 " id="ajouter">{{$facture->compromis->getFactureStylimmo()->numero}}  <i class="ti-download"></i> </a>
@@ -95,18 +112,7 @@
                                                 <label class="color-primary"><strong> Encaissée </strong></label> 
                                             @endif 
                                         </td>
-                                        <td  >
-                                            @if($facture->statut == "valide" && $facture->numero != null )
-                                                <label class="color-primary" ><strong> Validée</strong> </label>                                            
-                                            @elseif($facture->statut == "en attente de validation" && $facture->numero != null) 
-                                                <label class="color-default"><strong> En attente de validation </strong></label> 
-                                            @elseif($facture->statut == "refuse" && $facture->numero != null) 
-                                                <label class="color-success"><strong>Réfusée </strong></label>
-                                            @else
-                                                <label class="color-danger"><strong>Non ajoutée </strong></label> 
-
-                                            @endif 
-                                        </td>
+                                  
 
                                         {{--  paiement--}}
                                         @php
