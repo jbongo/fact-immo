@@ -151,9 +151,10 @@ class CompromisController extends Controller
             }
 
             $compromisParrain = $filleul2s->concat($filleul1s);
-            // $compro = array_intersect($id_fill1, $id_fill2);
-            // dd($compro);
-            // dd($compromisParrain->toArray());
+            $compro_ids1 = array_intersect($id_fill1, $id_fill2);
+            $compro_ids2 = $compro_ids1;
+            // dd($compro_ids2);
+           
 
             $valide_compro_id = array();
         
@@ -284,7 +285,7 @@ class CompromisController extends Controller
 
 
 
-        return view ('compromis.index',compact('compromis','compromisParrain','fill_ids','valide_compro_id','compromisEncaissee','compromisEnattente','compromisSousOffre','compromisSousCompromis','page_filleul'));
+        return view ('compromis.index',compact('compromis','compromisParrain','fill_ids','compro_ids1','compro_ids2','valide_compro_id','compromisEncaissee','compromisEnattente','compromisSousOffre','compromisSousCompromis','page_filleul'));
 
         }
         //  dd($compromis);

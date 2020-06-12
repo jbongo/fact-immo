@@ -67,10 +67,10 @@
                <hr>
     @if(Auth()->user()->role == "admin" && $facture != null )
 
-        @if(!in_array($facture->statut, ["valide","en attente de validation"]) )
+        {{-- @if(!in_array($facture->statut, ["valide","en attente de validation"]) ) --}}
 
             <a href="{{route('facture.recalculer_honoraire',Crypt::encrypt($facture->id))}}" class="btn btn-danger btn-flat btn-addon btn-lg m-b-10 m-l-5 submit" id="ajouter"><i class="ti-reload"></i>Recalculer</a>
-        @endif
+        {{-- @endif --}}
     @endif
 
 <table style="height: 59px; width: 311px;">
@@ -100,7 +100,18 @@
             <td style="width: 260px; height:35px"></td>
         </tr>
         <tr>
-            <td style="width: 423px;"><span style="text-decoration: underline;"><strong>Commission agence:</strong></span> &nbsp;  <span class="color-warning"> {{number_format($compromis->frais_agence,'2','.',' ')}} €&nbsp; </span></td>
+            <td style="width: 423px;"><span style="text-decoration: underline;"><strong>Commission agence:</strong></span> &nbsp;  <span class="color-warning">
+                @if($compromis->est_partage_agent == false)
+                 {{number_format($compromis->frais_agence,'2','.',' ')}} €&nbsp; 
+                 @else
+                    @if($compromis->user_id == $filleul->id)
+                        {{number_format($compromis->frais_agence * $compromis->pourcentage_agent/100,'2','.',' ')}} €&nbsp; (soit {{$compromis->pourcentage_agent}} % de {{$compromis->frais_agence}} €)
+                    @else
+                        {{number_format($compromis->frais_agence * (100 - $compromis->pourcentage_agent) /100,'2','.',' ')}} €&nbsp; (soit {{$compromis->pourcentage_agent}} % de {{$compromis->frais_agence}} €)
+                    @endif
+
+                 @endif
+                </span></td>
             <td style="width: 260px; height:35px"></td>
         </tr>
     </tbody>

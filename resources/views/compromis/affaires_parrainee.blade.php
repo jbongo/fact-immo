@@ -18,11 +18,11 @@
 
                                     <th>@lang('Filleul')</th>
                                     <th>@lang('Numéro Mandat')</th>
+                                    <th>@lang('Facture Styl')</th>
                                     <th>@lang('Vendeur')</th>
                                     <th>@lang('Comm')</th>
                                     {{-- <th>@lang('Date mandat')</th> --}}
                                     <th>@lang('Partage')</th>
-                                    <th>@lang('Facture Styl')</th>
                                     <th>@lang('Note honoraire')</th>
 
                                     <th>@lang('Action') </th>
@@ -30,18 +30,53 @@
                             </thead>
                             <tbody>
                                 @foreach ($compromisParrain as $compromi)
+                                @php 
+                                $type_user = "";
+                                    if(in_array($compromi->id, $compro_ids1) && in_array($compromi->id, $compro_ids2)){
+                                        $type_user = "porteur";
+                                        $key = array_search($compromi->id, $compro_ids1);
+                                        unset($compro_ids1[$key]);                                        
+
+                                    }elseif(!in_array($compromi->id, $compro_ids1) && in_array($compromi->id, $compro_ids2)){
+                                        $type_user = "partage";
+                                    }
+                                @endphp
                                 <tr>
                                     
+                                @if($type_user == "")
                                     <td >
                                         @if(in_array($compromi->user_id,$fill_ids) )
                                         <span>{{$compromi->user->nom}} {{$compromi->user->prenom}}</span>
                                         @else 
                                         <span>{{$compromi->getPartage()->nom}} {{$compromi->getPartage()->prenom}}</span>
                                         @endif
-                                    </td>   
+                                    </td> 
+                                @elseif($type_user == "porteur") 
+                               
+                                    <td >
+                                        <span>{{$compromi->user->nom}} {{$compromi->user->prenom}}</span>
+                                    </td> 
+                                @elseif($type_user == "partage")
+                                <td >
+                                    <span>{{$compromi->getPartage()->nom}} {{$compromi->getPartage()->prenom}}</span>
+                                </td> 
+                                @endif
+                                    
+                                    
                                     <td  style="color: #e05555;{{$grise}}">
                                         <strong> {{$compromi->numero_mandat}}</strong> 
-                                    </td>     
+                                    </td>    
+                                    <td  style="{{$grise}}">
+                                        @if($compromi->je_porte_affaire == 1)
+                                            @if($compromi->demande_facture < 2)
+                                                <span class="color-warning">En attente..</span>                                            
+                                            @else 
+                                          
+                                            <a class="color-info" title="Télécharger la facture stylimmo"  href="{{route('facture.telecharger_pdf_facture_stylimmo', Crypt::encrypt($compromi->id))}}"  class="  m-b-10 m-l-5 " id="ajouter">{{$compromi->getFactureStylimmo()->numero}}  <i class="ti-download"></i> </a>
+                                                
+                                            @endif
+                                        @endif
+                                    </td>        
                                    
                                     
                                     <td  style="">
@@ -68,24 +103,23 @@
                                         @endif
 
                                     </td>        
-                                    <td  style="{{$grise}}">
-                                        @if($compromi->je_porte_affaire == 1)
-                                            @if($compromi->demande_facture < 2)
-                                                <span class="color-warning">En attente..</span>                                            
-                                            @else 
-                                            <a href="{{route('facture.telecharger_pdf_facture_stylimmo', Crypt::encrypt($compromi->id))}}"  class="btn btn-warning btn-flat btn-addon  m-b-10 m-l-5 " id="ajouter"><i class="ti-download"></i>Télécharger</a>
-                                            @endif
-                                        @endif
-                                    </td>                                
+                                                             
                                     <td> 
                                             @if ($compromi->cloture_affaire == 0 && $compromi->demande_facture == 2)
-                                                <span class="color-success">En attente... Votre filleul doit cloturer l'affaire</span>   
+                                                <span class="color-success">En attente... Votre filleul doit réitérer l'affaire</span>   
                                             {{-- @elseif($compromi->cloture_affaire == 1 && ($compromi->facture_honoraire_cree == true || $compromi->facture_honoraire_partage_cree == true)) --}}
                                             @elseif($compromi->cloture_affaire == 0 && $compromi->demande_facture < 2)
                                                 <span class="color-primary">En attente de la facture stylimmo</span>   
 
                                             @elseif($compromi->cloture_affaire == 1 /* && ($compromi->facture_honoraire_cree == true || $compromi->facture_honoraire_partage_cree == true)*/)
+
+                                            @if($type_user == "") 
                                                 <a target="blank" href="{{route('facture.preparer_facture_honoraire_parrainage',Crypt::encrypt($compromi->id))}}" data-toggle="tooltip" title="@lang('Note honoraire  ')"><i class="large material-icons color-danger">insert_drive_file</i>
+                                            @elseif($type_user == "porteur") 
+                                                <a target="blank" href="{{route('facture.preparer_facture_honoraire_parrainage',[Crypt::encrypt($compromi->id), $compromi->user_id])}}" data-toggle="tooltip" title="@lang('Note honoraire  ')"><i class="large material-icons color-danger">insert_drive_file</i>
+                                            @elseif($type_user == "partage") 
+                                                <a target="blank" href="{{route('facture.preparer_facture_honoraire_parrainage',[Crypt::encrypt($compromi->id),$compromi->agent_id])}}" data-toggle="tooltip" title="@lang('Note honoraire  ')"><i class="large material-icons color-danger">insert_drive_file</i>
+                                            @endif
                                                 @if(in_array($compromi->numero_mandat, $valide_compro_id) == false)                                                
                                                     <span class="color-danger">Vous ne remplissez pas les conditions</span>  
                                                 @endif
