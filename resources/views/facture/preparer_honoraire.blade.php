@@ -80,9 +80,11 @@
                          <a class="color-info" title="Télécharger la facture d'honoraire "  href="{{route('facture.telecharger_pdf_facture', Crypt::encrypt($facture->id))}}"  class="  m-b-10 m-l-5 " id="ajouter">Télécharger Fac: {{$facture->numero}} <i class="ti-download"></i> </a>
                      @elseif($facture->statut == "en attente de validation")
                          <label class="color-danger" ><strong> Facture en attente de validation </strong> &nbsp;  </label> 
-                         <a href="{{route('facture.valider_honoraire', [1,Crypt::encrypt($facture->id)] )}}"  class="btn btn-success btn-flat btn-addon  m-b-10 m-l-5 valider" id="valider"><i class="ti-check"></i>Valider</a>
-                         <a href="{{route('facture.valider_honoraire', [0,Crypt::encrypt($facture->id)] )}}"  class="btn btn-danger btn-flat btn-addon  m-b-10 m-l-5 refuser" id="refuser"><i class="ti-close"></i>Réfuser</a>
-                     @elseif($facture->statut == "refuse")
+                         @if(Auth()->user()->role == "admin")
+                            <a href="{{route('facture.valider_honoraire', [1,Crypt::encrypt($facture->id)] )}}"  class="btn btn-success btn-flat btn-addon  m-b-10 m-l-5 valider" id="valider"><i class="ti-check"></i>Valider</a>
+                            <a href="{{route('facture.valider_honoraire', [0,Crypt::encrypt($facture->id)] )}}"  class="btn btn-danger btn-flat btn-addon  m-b-10 m-l-5 refuser" id="refuser"><i class="ti-close"></i>Réfuser</a>
+                        @endif
+                    @elseif($facture->statut == "refuse")
                          <label class="color-danger" ><strong> Facture réfusée </strong> </label>
                      @else
                      <label class="color-danger" ><strong> Facture non Ajoutée </strong> </label>
