@@ -4,13 +4,31 @@
 @section('content')
 
 @section ('page_title')
-    <a class="btn btn-success  btn-rounded btn-addon btn-sm m-b-10 m-l-5" id="ajouter"><i class="ti-plus"></i>Stats 2020 </a> 
+    {{-- <a class="btn btn-success  btn-rounded btn-addon btn-sm m-b-10 m-l-5" id="ajouter"><i class="ti-plus"></i>Stats {{config('stats.STATS.annee')}} </a>  --}}
+    <label>Modifier l'année</label>
+    <div class="row">
+        <div class="col-md-2">
+  
+    <select name="annee" id="annee" class="form-control">
+            @for ($an = 2017; $an <= date('Y') ; $an++)
+                @if($an == config('stats.STATS.annee'))
+                    <option selected="selected" value="{{config('stats.STATS.annee')}}">{{config('stats.STATS.annee')}}</option>
+                @else
+                    <option value="{{$an}}">{{$an}} </option>
 
-    <a href="{{route('compromis.index','from_dashboard')}}#sous_offre_nav"><div title="Sous offre" class="button" style="background:#FF8C00;" href="{{route('compromis.index')}}#sous_offre_nav"><div  style=" color:black;font-family: Montserrat; font-size:13px;" >{{config('stats.STATS')["nb_sous_offre_N"]}}</div></div> </a></span> <span style="font-family: Montserrat; font-size:13px;  "> Les affaires sous offre</span> 
-    <a href="{{route('compromis.index', 'from_dashboard')}}#sous_compromis_nav"><div title="Sous compromis" class="button" style="background: #0ad2ff;" href="{{route('compromis.index')}}#sous_compromis_nav"><div  style=" color:black;font-family: Montserrat; font-size:13px;" >{{config('stats.STATS')["nb_sous_compromis_N"]}}</div></div> </a></span> <span style="font-family: Montserrat; font-size:13px;  "> Les affaires sous compromis</span> 
-    <a href="{{route('compromis.index', 'from_dashboard')}}#en_attente_nav"><div title="En attente d'encaissement" class="button" style="background: #e6e6e6;" ><div><div  style=" color:black;font-family: Montserrat; font-size:13px;" >{{config('stats.STATS')["nb_en_attente_N"]}}</div></div></div> </a></span> <span style="font-family: Montserrat; font-size:13px;  "> Les affaires non encaissée</span>
-    <a href="{{route('compromis.index', 'from_dashboard')}}#encaissee_nav"><div title="Encaissé" class="button" style="background: #2e5;" ><div><div  style=" color:black;font-family: Montserrat; font-size:13px;" >{{config('stats.STATS')["nb_encaisse_N"]}}</div></div></div> </a></span> <span style="font-family: Montserrat; font-size:13px;  "> Les affaires encaissée</span>  
-    <a href="{{route('compromis.index', 'from_dashboard')}}"><div title="Général" class="button" style="background: #ff1a1a;" ><div><div  style=" color:black;font-family: Montserrat; font-size:13px;" >{{config('stats.STATS')["nb_global_N"]}}</div></div></div></a> <span style="font-family: Montserrat; font-size:13px;  "> Toutes les affaires</span> 
+                @endif
+            @endfor
+
+    </select>
+
+        </div>
+    </div>
+
+    <a href="{{route('compromis.index_from_dashboard',config('stats.STATS.annee'))}}#sous_offre_nav"><div title="Sous offre" class="button" style="background:#FF8C00;" href="{{route('compromis.index')}}#sous_offre_nav"><div  style=" color:black;font-family: Montserrat; font-size:13px;" >{{config('stats.STATS')["nb_sous_offre_N"]}}</div></div> </a></span> <span style="font-family: Montserrat; font-size:13px;  "> Les affaires sous offre</span> 
+    <a href="{{route('compromis.index_from_dashboard',config('stats.STATS.annee'))}}#sous_compromis_nav"><div title="Sous compromis" class="button" style="background: #0ad2ff;" href="{{route('compromis.index')}}#sous_compromis_nav"><div  style=" color:black;font-family: Montserrat; font-size:13px;" >{{config('stats.STATS')["nb_sous_compromis_N"]}}</div></div> </a></span> <span style="font-family: Montserrat; font-size:13px;  "> Les affaires sous compromis</span> 
+    <a href="{{route('compromis.index_from_dashboard',config('stats.STATS.annee'))}}#en_attente_nav"><div title="En attente d'encaissement" class="button" style="background: #e6e6e6;" ><div><div  style=" color:black;font-family: Montserrat; font-size:13px;" >{{config('stats.STATS')["nb_en_attente_N"]}}</div></div></div> </a></span> <span style="font-family: Montserrat; font-size:13px;  "> Les affaires non encaissées</span>
+    <a href="{{route('compromis.index_from_dashboard',config('stats.STATS.annee'))}}#encaissee_nav"><div title="Encaissé" class="button" style="background: #2e5;" ><div><div  style=" color:black;font-family: Montserrat; font-size:13px;" >{{config('stats.STATS')["nb_encaisse_N"]}}</div></div></div> </a></span> <span style="font-family: Montserrat; font-size:13px;  "> Les affaires encaissées</span>  
+    <a href="{{route('compromis.index_from_dashboard',config('stats.STATS.annee'))}}"><div title="Général" class="button" style="background: #ff1a1a;" ><div><div  style=" color:black;font-family: Montserrat; font-size:13px;" >{{config('stats.STATS')["nb_global_N"]}}</div></div></div></a> <span style="font-family: Montserrat; font-size:13px;  "> Toutes les affaires</span> 
  
  
     {{-- <a href="{{route('compromis_type.index')}}" class="btn btn-danger btn-rounded btn-addon btn-sm m-b-10 m-l-5"><i class="ti-folder"></i>@lang('Voir les affaires')</a> --}}
@@ -69,7 +87,7 @@
     <div class="col-lg-8">
         <div class="card alert">
             <div class="card-header">
-                <h4>Chiffre d'affaires 2020 </h4>
+                <h4>Chiffre d'affaires {{config('stats.STATS.annee')}}  </h4>
                 {{-- <div class="card-header-right-icon">
                     <ul>
                         <li class="card-close" data-dismiss="alert"><i class="ti-close"></i></li>
@@ -85,7 +103,7 @@
     <div class="col-lg-4" >
         <div class="card" style="height: 100%; ">
             <div class="card-body">
-                <h4 class="card-title">Chiffre d'affaire annuel (2020)</h4>
+                <h4 class="card-title">Chiffre d'affaire annuel {{config('stats.STATS.annee')}} </h4>
                 <div id="morris-donut-chart"></div>
             </div>
             <div>
@@ -126,19 +144,19 @@
 
 
 {{-- CA ANNEE N-1 --}}
-<div class="row" >
+{{-- <div class="row" >
       
     <div class="col-lg-8">
         <div class="card alert">
             <div class="card-header">
-                <h4>Chiffre d'affaires 2019 </h4>
+                <h4>Chiffre d'affaires 2019 </h4> --}}
                 {{-- <div class="card-header-right-icon">
                     <ul>
                         <li class="card-close" data-dismiss="alert"><i class="ti-close"></i></li>
                         <li class="doc-link"><a href="#"><i class="ti-link"></i></a></li>
                     </ul>
                 </div> --}}
-            </div>
+            {{-- </div>
             <div class="sales-chart_n_1">
                 <canvas id="sales-chart_n_1"></canvas>
             </div>
@@ -158,7 +176,7 @@
     </div>
      
   
-</div>
+</div> --}}
 {{-- ##################### --}}
 
 
@@ -170,7 +188,7 @@
         <div class="panel">
             <div class="panel-heading">
                 <div class="panel-title">
-                    <h4>Chiffre d'affaires mensuels 2020</h4>
+                    <h4>Chiffre d'affaires mensuels {{config('stats.STATS.annee')}} </h4>
                 </div>
             </div>
             <div class="panel-body">
@@ -183,7 +201,7 @@
 
 {{-- Chiffre d'affaires mensuels N-1 BAR --}}
 
-<div class="row">
+{{-- <div class="row">
     <!-- Bar Chart -->
        <div class="col-sm-12 col-md-12">
            <div class="panel">
@@ -197,7 +215,7 @@
                </div>
            </div>
        </div>
-   </div>
+   </div> --}}
 
 {{-- ############# --}}
 
@@ -710,34 +728,34 @@
 // #################
 
 // Morris donut chart ANNEE N-1
-Morris.Donut({
-        element: 'morris-donut-chart_n_1',
-        data: [
-        //     {
-        //     label: "Général",
-        //     value: {{array_sum(config('stats.CA_N')[0])}},
+// Morris.Donut({
+//         element: 'morris-donut-chart_n_1',
+//         data: [
+//         //     {
+//         //     label: "Général",
+//         //     value: {{array_sum(config('stats.CA_N')[0])}},
 
-        // }, 
+//         // }, 
         
-        {
-            label: "Sous offre",
-            value:  {{array_sum(config('stats.CA_N_1')[3])}}
-        }, {
-            label: "Sous Compromis",
-            value:  {{array_sum(config('stats.CA_N_1')[4])}}
-        },
+//         {
+//             label: "Sous offre",
+//             value:  {{array_sum(config('stats.CA_N_1')[3])}}
+//         }, {
+//             label: "Sous Compromis",
+//             value:  {{array_sum(config('stats.CA_N_1')[4])}}
+//         },
         
-        {
-            label: "En attente",
-            value:  {{array_sum(config('stats.CA_N_1')[1])}}
-        }, {
-            label: "Encaissé",
-            value:  {{array_sum(config('stats.CA_N_1')[2])}}
-        }],
-        resize: true,
-        colors:[ '#FFA500','#0ad2ff','#e6e6e6', '#6eff1a']
+//         {
+//             label: "En attente",
+//             value:  {{array_sum(config('stats.CA_N_1')[1])}}
+//         }, {
+//             label: "Encaissé",
+//             value:  {{array_sum(config('stats.CA_N_1')[2])}}
+//         }],
+//         resize: true,
+//         colors:[ '#FFA500','#0ad2ff','#e6e6e6', '#6eff1a']
 
-    });
+//     });
 
 </script>
 
@@ -868,5 +886,17 @@ var ctx = document.getElementById("barChart_n_1");
         }
     });
 
+</script>
+
+
+<script>
+
+    $('#annee').on('change',function(){
+
+    var annee = $('#annee').val();
+      window.location.href = "/home/"+annee;
+    // console.log( $('#annee').val());
+    
+    })
 </script>
 @endsection

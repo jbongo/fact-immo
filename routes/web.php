@@ -28,8 +28,9 @@ Route::middleware('auth')->group(function(){
         Route::get('/mandataire/send-access/{mandataire_id}/{contrat_id}','MandataireController@send_access')->name('mandataire.send_access');
 
   
-    // compromis
-    Route::get('/compromis/{from_dashboard?}','CompromisController@index')->name('compromis.index');
+    // compromis  
+    Route::get('/compromis','CompromisController@index')->name('compromis.index');
+    Route::get('/compromis/from_dashboard/{annee}','CompromisController@index_from_dashboard')->name('compromis.index_from_dashboard');
     Route::get('/compromis/page_filleul','CompromisController@index')->name('compromis.filleul.index');
     Route::get('/compromis/create','CompromisController@create')->name('compromis.create');
     Route::post('/compromis/add','CompromisController@store')->name('compromis.add');
@@ -138,7 +139,7 @@ Route::middleware('auth')->group(function(){
     Route::get('/', function () {
         return view('home');
     });
-    Route::get('/home', 'HomeController@index')->name('home');       
+    Route::get('/home/{annee?}', 'HomeController@index')->name('home');       
     Route::get('/', 'HomeController@index')->name('home');       
   
     

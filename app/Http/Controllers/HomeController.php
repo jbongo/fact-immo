@@ -30,7 +30,7 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index( $annee = null)
     {
     //     ############ Infos de stats ##########
 
@@ -49,8 +49,15 @@ class HomeController extends Controller
         
             //   ############ Chiffre d'affaire global / mois sur année civile  n et n-1 ##########
             
+            $annee = intval($annee);
+           
              // on determine les anneés n et n-1
-            $annee_n = date('Y');
+            if( is_int($annee) && $annee >= 2017){
+                $annee_n = $annee;
+            }else{
+                $annee_n = date('Y');
+            }
+            
             $annee_n_1 = $annee_n-1;
         
         
@@ -214,38 +221,43 @@ class HomeController extends Controller
         else{
             // CALCUL DES CA POUR LES MANDATAIRES
             $nb_global_N = 0;
+            $nb_sous_offre_n = 0;
             $nb_sous_offre_N = 0;
+            $nb_sous_compromis_n = 0;
             $nb_sous_compromis_N = 0;
+            $nb_en_attente_n = 0;
             $nb_en_attente_N = 0;
+            $nb_encaisse_n = 0;
             $nb_encaisse_N = 0;
+           
             //  ######## Sur l'année N ##########
             for ($i=1; $i <= 12 ; $i++) {                
                                 
                 $i < 10 ? $month = "0$i" : $month = $i;
             
-                // CA Global non partagé
-                $ca_glo_partage_pas_n = Compromis::where([['date_vente','like',"%$annee_n-$month%"],['user_id',Auth::id()],['est_partage_agent',false],['archive',false]])->sum('frais_agence');
-                $nb_global_N += Compromis::where([['date_vente','like',"%$annee_n-$month%"],['user_id',Auth::id()],['est_partage_agent',false],['archive',false]])->count();
+                // // CA Global non partagé
+                // $ca_glo_partage_pas_n = Compromis::where([['date_vente','like',"%$annee_n-$month%"],['user_id',Auth::id()],['est_partage_agent',false],['archive',false]])->sum('frais_agence');
+                // $nb_global_N += Compromis::where([['date_vente','like',"%$annee_n-$month%"],['user_id',Auth::id()],['est_partage_agent',false],['archive',false]])->count();
                 
-                // CA Global partagé et porte affaire
-                $ca_glo_porte_n = 0;
-                $compro_glo_porte_n = Compromis::where([['date_vente','like',"%$annee_n-$month%"],['user_id',Auth::id()],['est_partage_agent',true],['archive',false]])->get();
-                $nb_global_N += Compromis::where([['date_vente','like',"%$annee_n-$month%"],['user_id',Auth::id()],['est_partage_agent',true],['archive',false]])->count();
-                $nb_global_N += Compromis::where([['date_vente','like',"%$annee_n-$month%"],['agent_id',Auth::id()],['est_partage_agent',true],['archive',false]])->count();
+                // // CA Global partagé et porte affaire
+                // $ca_glo_porte_n = 0;
+                // $compro_glo_porte_n = Compromis::where([['date_vente','like',"%$annee_n-$month%"],['user_id',Auth::id()],['est_partage_agent',true],['archive',false]])->get();
+                // $nb_global_N += Compromis::where([['date_vente','like',"%$annee_n-$month%"],['user_id',Auth::id()],['est_partage_agent',true],['archive',false]])->count();
+                // $nb_global_N += Compromis::where([['date_vente','like',"%$annee_n-$month%"],['agent_id',Auth::id()],['est_partage_agent',true],['archive',false]])->count();
                 
-                foreach ($compro_glo_porte_n as $compro) {
-                    $ca_glo_porte_n += $compro->frais_agence * $compro->pourcentage_agent/100 ;
-                }
+                // foreach ($compro_glo_porte_n as $compro) {
+                //     $ca_glo_porte_n += $compro->frais_agence * $compro->pourcentage_agent/100 ;
+                // }
 
-                // CA Global partagé et ne porte pas affaire
-                $ca_glo_porte_pas_n = 0;
-                $compro_glo_porte_pas_n = Compromis::where([['date_vente','like',"%$annee_n-$month%"],['agent_id',Auth::id()],['est_partage_agent',true],['archive',false]])->get();
+                // // CA Global partagé et ne porte pas affaire
+                // $ca_glo_porte_pas_n = 0;
+                // $compro_glo_porte_pas_n = Compromis::where([['date_vente','like',"%$annee_n-$month%"],['agent_id',Auth::id()],['est_partage_agent',true],['archive',false]])->get();
                 
-                foreach ($compro_glo_porte_pas_n as $compro) {
-                    $ca_glo_porte_pas_n += $compro->frais_agence * (100-$compro->pourcentage_agent)/100 ;
-                }
+                // foreach ($compro_glo_porte_pas_n as $compro) {
+                //     $ca_glo_porte_pas_n += $compro->frais_agence * (100-$compro->pourcentage_agent)/100 ;
+                // }
                 
-                $ca_global_N [] = round(($ca_glo_partage_pas_n+$ca_glo_porte_n+$ca_glo_porte_pas_n)/1.2,2);
+                // $ca_global_N [] = round(($ca_glo_partage_pas_n+$ca_glo_porte_n+$ca_glo_porte_pas_n)/1.2,2);
 
 
 
@@ -254,37 +266,43 @@ class HomeController extends Controller
                 // on parcour les facture stylimmo non encaissée pour réccupérer les montant_ht  
                
 
-                $ca_att_n = 0;
-                if($compros_styls != null){
-                    foreach ($compros_styls as $compros_styl) {
-                        if($compros_styl->getFactureStylimmo()->encaissee == 0){
-                            $ca_att_n +=  $compros_styl->frais_agence ;
-                        }
-                    }
-                }
+                // $ca_att_n = 0;
+                // if($compros_styls != null){
+                //     foreach ($compros_styls as $compros_styl) {
+                //         if($compros_styl->getFactureStylimmo()->encaissee == 0){
+                //             $ca_att_n +=  $compros_styl->frais_agence ;
+                //         }
+                //     }
+                // }
+          
 
                                 // CA en attente non partagé
-                                $compro_attente_partage_pas_n = Compromis::where([['date_vente','like',"%$annee_n-$month%"],['user_id',Auth::id()],['est_partage_agent',false],['demande_facture',2],['archive',false]])->get();
+                                $compro_attente_partage_pas_n = Compromis::where([['user_id',Auth::id()],['est_partage_agent',false],['demande_facture',2],['archive',false]])->get();
                                     $ca_attente_partage_pas_n = 0;
                                     if($compro_attente_partage_pas_n != null){
+                                        // dd("dd");
                                         foreach ($compro_attente_partage_pas_n as $compros_att) {
-                                            if($compros_att->getFactureStylimmo()->encaissee == 0){
+                                            if($compros_att->getFactureStylimmo()->encaissee == 0 && $compros_att->getFactureStylimmo()->date_facture->format('m-Y') == "$month-$annee_n"){
                                                 $ca_attente_partage_pas_n +=  $compros_att->frais_agence ;
-                                                $nb_en_attente_N++;
+                                                $nb_en_attente_n++;                                             
+                                                $nb_en_attente_N++;                                             
                                             }
                                         }
                                     }
 
 
                                 // CA en attente partagé et porte affaire
-                                $compro_attente_porte_n = Compromis::where([['date_vente','like',"%$annee_n-$month%"],['user_id',Auth::id()],['est_partage_agent',true],['demande_facture',2],['archive',false]])->get();
+                                $compro_attente_porte_n = Compromis::where([['user_id',Auth::id()],['est_partage_agent',true],['demande_facture',2],['archive',false]])->get();
                                 $ca_attente_porte_n = 0;
 
                                     if($compro_attente_porte_n != null){
                                         foreach ($compro_attente_porte_n as $compros_att) {
-                                            if($compros_att->getFactureStylimmo()->encaissee == 0){
+                                            if($compros_att->getFactureStylimmo()->encaissee == 0 && $compros_att->getFactureStylimmo()->date_facture->format('m-Y') == "$month-$annee_n"){
                                                 $ca_attente_porte_n +=  $compros_att->frais_agence * $compros_att->pourcentage_agent/100;
+                                                $nb_en_attente_n++;
                                                 $nb_en_attente_N++;
+                                                // dd("$month-$annee");
+                                                
                                             }
                                         }
                                     }
@@ -292,34 +310,40 @@ class HomeController extends Controller
                 
                                 // CA en attente partagé et ne porte pas affaire
                      
-                                $compro_attente_porte_pas_n = Compromis::where([['date_vente','like',"%$annee_n-$month%"],['agent_id',Auth::id()],['est_partage_agent',true],['demande_facture',2],['archive',false]])->get();
+                                $compro_attente_porte_pas_n = Compromis::where([['agent_id',Auth::id()],['est_partage_agent',true],['demande_facture',2],['archive',false]])->get();
                                 $ca_attente_porte_pas_n = 0;
 
                                     if($compro_attente_porte_pas_n != null){
                                         foreach ($compro_attente_porte_pas_n as $compros_att) {
-                                            if($compros_att->getFactureStylimmo()->encaissee == 0){
+                                            if($compros_att->getFactureStylimmo()->encaissee == 0 && $compros_att->getFactureStylimmo()->date_facture->format('m-Y') == "$month-$annee_n"){
                                                 $ca_attente_porte_pas_n +=  $compros_att->frais_agence * (100-$compros_att->pourcentage_agent)/100;
+                                                $nb_en_attente_n++;
                                                 $nb_en_attente_N++;
+                                                // dd($nb_en_attente_N);
+                                               
                                             }
                                         }
                                     }
 
+                                    // dd($nb_en_attente_N);
                              
                                 
-                                $ca_attente_N [] = round(($ca_attente_partage_pas_n+$ca_attente_porte_n+$ca_attente_porte_pas_n)/1.2,2);
+                                $ca_attente_n = round(($ca_attente_partage_pas_n+$ca_attente_porte_n+$ca_attente_porte_pas_n)/1.2,2);
+                                $ca_attente_N [] = $ca_attente_n;
 
-
+                                    // dd($ca_attente_N);
 
                                 #####ca encaissé
 
                                 // CA encaissé non partagé
 
-                                $compro_encaisse_partage_pas_n = Compromis::where([['date_vente','like',"%$annee_n-$month%"],['user_id',Auth::id()],['est_partage_agent',false],['demande_facture',2],['archive',false]])->get();
+                                $compro_encaisse_partage_pas_n = Compromis::where([['user_id',Auth::id()],['est_partage_agent',false],['demande_facture',2],['archive',false]])->get();
                                 $ca_encaisse_partage_pas_n = 0;
                                 if($compro_encaisse_partage_pas_n != null){
                                     foreach ($compro_encaisse_partage_pas_n as $compros_encaisse) {
-                                        if($compros_encaisse->getFactureStylimmo()->encaissee == 1){
+                                        if($compros_encaisse->getFactureStylimmo()->encaissee == 1  && $compros_encaisse->getFactureStylimmo()->date_encaissement->format('m-Y') == "$month-$annee_n"){
                                             $ca_encaisse_partage_pas_n +=  $compros_encaisse->frais_agence ;
+                                            $nb_encaisse_n++;
                                             $nb_encaisse_N++;
                                         }
                                     }
@@ -328,13 +352,14 @@ class HomeController extends Controller
                             
 
                                 // CA encaissé partagé et porte affaire
-                                $compro_encaisse_porte_n = Compromis::where([['date_vente','like',"%$annee_n-$month%"],['user_id',Auth::id()],['est_partage_agent',true],['demande_facture',2],['archive',false]])->get();
+                                $compro_encaisse_porte_n = Compromis::where([['user_id',Auth::id()],['est_partage_agent',true],['demande_facture',2],['archive',false]])->get();
                                 $ca_encaisse_porte_n = 0;
 
                                     if($compro_encaisse_porte_n != null){
                                         foreach ($compro_encaisse_porte_n as $compros_encaisse) {
-                                            if($compros_encaisse->getFactureStylimmo()->encaissee == 1){
+                                            if($compros_encaisse->getFactureStylimmo()->encaissee == 1 && $compros_encaisse->getFactureStylimmo()->date_encaissement->format('m-Y') == "$month-$annee_n"){
                                                 $ca_encaisse_porte_n +=  $compros_encaisse->frais_agence * $compros_encaisse->pourcentage_agent/100;
+                                                $nb_encaisse_n++;
                                                 $nb_encaisse_N++;
                                             }
                                         }
@@ -343,13 +368,14 @@ class HomeController extends Controller
                 
                                 // CA encaissé partagé et ne porte pas affaire
                      
-                                $compro_encaisse_porte_pas_n = Compromis::where([['date_vente','like',"%$annee_n-$month%"],['agent_id',Auth::id()],['est_partage_agent',true],['demande_facture',2],['archive',false]])->get();
+                                $compro_encaisse_porte_pas_n = Compromis::where([['agent_id',Auth::id()],['est_partage_agent',true],['demande_facture',2],['archive',false]])->get();
                                 $ca_encaisse_porte_pas_n = 0;
 
                                     if($compro_encaisse_porte_pas_n != null){
                                         foreach ($compro_encaisse_porte_pas_n as $compros_encaisse) {
-                                            if($compros_encaisse->getFactureStylimmo()->encaissee == 1){
+                                            if($compros_encaisse->getFactureStylimmo()->encaissee == 1 && $compros_encaisse->getFactureStylimmo()->date_encaissement->format('m-Y') == "$month-$annee_n"){
                                                 $ca_encaisse_porte_pas_n +=  $compros_encaisse->frais_agence * (100-$compros_encaisse->pourcentage_agent)/100;
+                                                $nb_encaisse_n++;
                                                 $nb_encaisse_N++;
                                             }
                                         }
@@ -357,20 +383,23 @@ class HomeController extends Controller
 
                              
                                 
-                                $ca_encaisse_N [] = round(($ca_encaisse_partage_pas_n+$ca_encaisse_porte_n+$ca_encaisse_porte_pas_n)/1.2,2);
+                                $ca_encaisse_n = round(($ca_encaisse_partage_pas_n+$ca_encaisse_porte_n+$ca_encaisse_porte_pas_n)/1.2,2);
+                                $ca_encaisse_N [] = $ca_encaisse_n;
                                 
 
                             // CA SOUS OFFRE
                            
 
                             // CA Sous offre non partagé
-                            $ca_offre_partage_pas_n = Compromis::where([['date_vente','like',"%$annee_n-$month%"],['user_id',Auth::id()],['est_partage_agent',false],['demande_facture','<',2],['pdf_compromis',null],['archive',false]])->sum('frais_agence');
-                            $nb_sous_offre_N += Compromis::where([['date_vente','like',"%$annee_n-$month%"],['user_id',Auth::id()],['est_partage_agent',false],['demande_facture','<',2],['pdf_compromis',null],['archive',false]])->count();
+                            $ca_offre_partage_pas_n = Compromis::where([['created_at','like',"%$annee_n-$month%"],['user_id',Auth::id()],['est_partage_agent',false],['demande_facture','<',2],['pdf_compromis',null],['archive',false]])->sum('frais_agence');
+                            $nb_sous_offre_n += Compromis::where([['created_at','like',"%$annee_n-$month%"],['user_id',Auth::id()],['est_partage_agent',false],['demande_facture','<',2],['pdf_compromis',null],['archive',false]])->count();
+                            $nb_sous_offre_N += Compromis::where([['created_at','like',"%$annee_n-$month%"],['user_id',Auth::id()],['est_partage_agent',false],['demande_facture','<',2],['pdf_compromis',null],['archive',false]])->count();
 
                             // CA Sous offre partagé et porte affaire
                             $ca_offre_porte_n = 0;
-                            $compro_offre_porte_n = Compromis::where([['date_vente','like',"%$annee_n-$month%"],['user_id',Auth::id()],['est_partage_agent',true],['demande_facture','<',2],['pdf_compromis',null],['archive',false]])->get();
-                            $nb_sous_offre_N += Compromis::where([['date_vente','like',"%$annee_n-$month%"],['user_id',Auth::id()],['est_partage_agent',true],['demande_facture','<',2],['pdf_compromis',null],['archive',false]])->count();
+                            $compro_offre_porte_n = Compromis::where([['created_at','like',"%$annee_n-$month%"],['user_id',Auth::id()],['est_partage_agent',true],['demande_facture','<',2],['pdf_compromis',null],['archive',false]])->get();
+                            $nb_sous_offre_n += Compromis::where([['created_at','like',"%$annee_n-$month%"],['user_id',Auth::id()],['est_partage_agent',true],['demande_facture','<',2],['pdf_compromis',null],['archive',false]])->count();
+                            $nb_sous_offre_N += Compromis::where([['created_at','like',"%$annee_n-$month%"],['user_id',Auth::id()],['est_partage_agent',true],['demande_facture','<',2],['pdf_compromis',null],['archive',false]])->count();
                             
                             foreach ($compro_offre_porte_n as $compro) {
                                 $ca_offre_porte_n += $compro->frais_agence * $compro->pourcentage_agent/100 ;
@@ -378,14 +407,16 @@ class HomeController extends Controller
 
                             // CA Sous offre partagé et ne porte pas affaire
                             $ca_offre_porte_pas_n = 0;
-                            $compro_offre_porte_pas_n = Compromis::where([['date_vente','like',"%$annee_n-$month%"],['agent_id',Auth::id()],['est_partage_agent',true],['demande_facture','<',2],['pdf_compromis',null],['archive',false]])->get();
-                            $nb_sous_offre_N += Compromis::where([['date_vente','like',"%$annee_n-$month%"],['agent_id',Auth::id()],['est_partage_agent',true],['demande_facture','<',2],['pdf_compromis',null],['archive',false]])->count();
+                            $compro_offre_porte_pas_n = Compromis::where([['created_at','like',"%$annee_n-$month%"],['agent_id',Auth::id()],['est_partage_agent',true],['demande_facture','<',2],['pdf_compromis',null],['archive',false]])->get();
+                            $nb_sous_offre_n += Compromis::where([['created_at','like',"%$annee_n-$month%"],['agent_id',Auth::id()],['est_partage_agent',true],['demande_facture','<',2],['pdf_compromis',null],['archive',false]])->count();
+                            $nb_sous_offre_N += Compromis::where([['created_at','like',"%$annee_n-$month%"],['agent_id',Auth::id()],['est_partage_agent',true],['demande_facture','<',2],['pdf_compromis',null],['archive',false]])->count();
                             
                             foreach ($compro_offre_porte_pas_n as $compro) {
                                 $ca_offre_porte_pas_n += $compro->frais_agence * (100-$compro->pourcentage_agent)/100 ;
                             }
                             
-                            $ca_sous_offre_N [] = round(($ca_offre_partage_pas_n+$ca_offre_porte_n+$ca_offre_porte_pas_n)/1.2,2);
+                            $ca_sous_offre_n = round(($ca_offre_partage_pas_n+$ca_offre_porte_n+$ca_offre_porte_pas_n)/1.2,2);
+                            $ca_sous_offre_N [] = $ca_sous_offre_n;
 
 
 
@@ -397,14 +428,16 @@ class HomeController extends Controller
                            
 
                             // CA Sous compromis non partagé
-                            $ca_compromis_partage_pas_n = Compromis::where([['date_vente','like',"%$annee_n-$month%"],['user_id',Auth::id()],['est_partage_agent',false],['demande_facture','<',2],['pdf_compromis','<>',null],['archive',false],['archive',false],['archive',false]])->sum('frais_agence');
-                            $nb_sous_compromis_N += Compromis::where([['date_vente','like',"%$annee_n-$month%"],['user_id',Auth::id()],['est_partage_agent',false],['demande_facture','<',2],['pdf_compromis','<>',null],['archive',false],['archive',false],['archive',false]])->count();
+                            $ca_compromis_partage_pas_n = Compromis::where([['date_signature','like',"%$annee_n-$month%"],['user_id',Auth::id()],['est_partage_agent',false],['demande_facture','<',2],['pdf_compromis','<>',null],['archive',false],['archive',false],['archive',false]])->sum('frais_agence');
+                            $nb_sous_compromis_n += Compromis::where([['date_signature','like',"%$annee_n-$month%"],['user_id',Auth::id()],['est_partage_agent',false],['demande_facture','<',2],['pdf_compromis','<>',null],['archive',false],['archive',false],['archive',false]])->count();
+                            $nb_sous_compromis_N += Compromis::where([['date_signature','like',"%$annee_n-$month%"],['user_id',Auth::id()],['est_partage_agent',false],['demande_facture','<',2],['pdf_compromis','<>',null],['archive',false],['archive',false],['archive',false]])->count();
                            
 
                             // CA Sous compromis partagé et porte affaire
                             $ca_compromis_porte_n = 0;
-                            $compro_compromis_porte_n = Compromis::where([['date_vente','like',"%$annee_n-$month%"],['user_id',Auth::id()],['est_partage_agent',true],['demande_facture','<',2],['pdf_compromis','<>',null],['archive',false],['archive',false],['archive',false]])->get();
-                            $nb_sous_compromis_N += Compromis::where([['date_vente','like',"%$annee_n-$month%"],['user_id',Auth::id()],['est_partage_agent',true],['demande_facture','<',2],['pdf_compromis','<>',null],['archive',false],['archive',false],['archive',false]])->count();
+                            $compro_compromis_porte_n = Compromis::where([['date_signature','like',"%$annee_n-$month%"],['user_id',Auth::id()],['est_partage_agent',true],['demande_facture','<',2],['pdf_compromis','<>',null],['archive',false],['archive',false],['archive',false]])->get();
+                            $nb_sous_compromis_n += Compromis::where([['date_signature','like',"%$annee_n-$month%"],['user_id',Auth::id()],['est_partage_agent',true],['demande_facture','<',2],['pdf_compromis','<>',null],['archive',false],['archive',false],['archive',false]])->count();
+                            $nb_sous_compromis_N += Compromis::where([['date_signature','like',"%$annee_n-$month%"],['user_id',Auth::id()],['est_partage_agent',true],['demande_facture','<',2],['pdf_compromis','<>',null],['archive',false],['archive',false],['archive',false]])->count();
                             
                             foreach ($compro_compromis_porte_n as $compro) {
                                 $ca_compromis_porte_n += $compro->frais_agence * $compro->pourcentage_agent/100 ;
@@ -412,14 +445,29 @@ class HomeController extends Controller
 
                             // CA Sous compromis partagé et ne porte pas affaire
                             $ca_compromis_porte_pas_n = 0;
-                            $compro_compromis_porte_pas_n = Compromis::where([['date_vente','like',"%$annee_n-$month%"],['agent_id',Auth::id()],['est_partage_agent',true],['demande_facture','<',2],['pdf_compromis','<>',null],['archive',false],['archive',false],['archive',false]])->get();
-                            $nb_sous_compromis_N += Compromis::where([['date_vente','like',"%$annee_n-$month%"],['agent_id',Auth::id()],['est_partage_agent',true],['demande_facture','<',2],['pdf_compromis','<>',null],['archive',false],['archive',false],['archive',false]])->count();
+                            $compro_compromis_porte_pas_n = Compromis::where([['date_signature','like',"%$annee_n-$month%"],['agent_id',Auth::id()],['est_partage_agent',true],['demande_facture','<',2],['pdf_compromis','<>',null],['archive',false],['archive',false],['archive',false]])->get();
+                            $nb_sous_compromis_n += Compromis::where([['date_signature','like',"%$annee_n-$month%"],['agent_id',Auth::id()],['est_partage_agent',true],['demande_facture','<',2],['pdf_compromis','<>',null],['archive',false],['archive',false],['archive',false]])->count();
+                            $nb_sous_compromis_N += Compromis::where([['date_signature','like',"%$annee_n-$month%"],['agent_id',Auth::id()],['est_partage_agent',true],['demande_facture','<',2],['pdf_compromis','<>',null],['archive',false],['archive',false],['archive',false]])->count();
                             
                             foreach ($compro_compromis_porte_pas_n as $compro) {
                                 $ca_compromis_porte_pas_n += $compro->frais_agence * (100-$compro->pourcentage_agent)/100 ;
                             }
                             
-                            $ca_sous_compromis_N [] = round(($ca_compromis_partage_pas_n+$ca_compromis_porte_n+$ca_compromis_porte_pas_n)/1.2,2);
+                            $ca_sous_compromis_n = round(($ca_compromis_partage_pas_n+$ca_compromis_porte_n+$ca_compromis_porte_pas_n)/1.2,2);
+                            $ca_sous_compromis_N [] = $ca_sous_compromis_n;
+
+
+                            // CA GLOBAL 
+                            $ca_glo_n = $ca_encaisse_n + $ca_attente_n + $ca_sous_offre_n + $ca_sous_compromis_n;
+                            $ca_global_N [] = round($ca_glo_n/1.2,2);
+
+                            $nb_global_N += ( $nb_encaisse_n + $nb_en_attente_n + $nb_sous_compromis_n + $nb_sous_offre_n);       
+
+                            // on rénitiale les valeurs 
+                            $nb_sous_compromis_n = 0;
+                            $nb_encaisse_n = 0;
+                            $nb_en_attente_n = 0;
+                            $nb_sous_offre_n = 0;
 
             }
 
@@ -651,6 +699,7 @@ class HomeController extends Controller
             $STATS["nb_sous_compromis_N"] = $nb_sous_compromis_N;
             $STATS["nb_en_attente_N"] = $nb_en_attente_N;
             $STATS["nb_encaisse_N"] = $nb_encaisse_N;
+            $STATS["annee"] = $annee_n;
         
             $STATS["nb_mandataires"] = $nb_mandataires;
             $STATS["nb_filleuls"] = $nb_filleuls;
