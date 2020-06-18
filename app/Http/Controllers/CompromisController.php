@@ -317,7 +317,7 @@ class CompromisController extends Controller
             $compromisEncaissee = Compromis::whereIn('id',$tab_compromisEncaissee_id)->where('archive',false)->get();
             $compromisEnattente = Compromis::whereIn('id',$tab_compromisEnattente_id)->where('archive',false)->get();
             $compromisSousOffre = Compromis::where([['created_at','like',"%$annee%"],['demande_facture','<',2],['pdf_compromis',null],['archive',false]])->get();
-            $compromisSousCompromis = Compromis::where([['date_signature','like',"%$annee%"],['demande_facture','<',2],['pdf_compromis','<>',null],['archive',false]])->get();
+            $compromisSousCompromis = Compromis::where([['date_vente','like',"%$annee%"],['demande_facture','<',2],['pdf_compromis','<>',null],['archive',false]])->get();
         }else{
 
             // On reccupère les affaires du mandataire ou de ses filleuls

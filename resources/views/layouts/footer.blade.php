@@ -40,184 +40,7 @@
     <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap.min.js"></script>
     <script src="https://cdn.datatables.net/responsive/2.2.4/js/dataTables.responsive.min.js"></script>
     <script src="https://cdn.datatables.net/responsive/2.2.4/js/responsive.bootstrap.min.js"></script>
-    <script>
-        $(document).ready(function() {
-        var table = $('#example').DataTable({
-        //    responsive: true,
-            "order": [],
-            "iDisplayLength": 50,
-            "language": {
-            "decimal":        "",
-            "emptyTable":     "Aucune donnée disponible dans le tableau",
-            "info":           "Affichage _START_ à _END_ sur _TOTAL_ lignes",
-            "infoEmpty":      "Affichage 0 à 0 sur 0 lignes",
-            "infoFiltered":   "(filtrés sur _MAX_ total lignes)",
-            "infoPostFix":    "",
-            "thousands":      ",",
-            "lengthMenu":     "Voir _MENU_ lignes",
-        
-           
-            "search":         "Rechercher:",
-            "zeroRecords":    "Aucune donnée trouvée",
-            "paginate": {
-                "first":      "First",
-                "last":       "Last",
-                "next":       "Suivant",
-                "previous":   "Précédent"
-            },
-           
-   
-            }
-        });
-        });
-
-        $(document).ready(function() {
-        var table = $('#example0').DataTable({
-           responsive: true,
-            "order": [],
-            "iDisplayLength": 50,
-            "language": {
-            "decimal":        "",
-            "emptyTable":     "Aucune donnée disponible dans le tableau",
-            "info":           "Affichage _START_ à _END_ sur _TOTAL_ lignes",
-            "infoEmpty":      "Affichage 0 à 0 sur 0 lignes",
-            "infoFiltered":   "(filtrés sur _MAX_ total lignes)",
-            "infoPostFix":    "",
-            "thousands":      ",",
-            "lengthMenu":     "Voir _MENU_ lignes",
-        
-           
-            "search":         "Rechercher:",
-            "zeroRecords":    "Aucune donnée trouvée",
-            "paginate": {
-                "first":      "First",
-                "last":       "Last",
-                "next":       "Suivant",
-                "previous":   "Précédent"
-            },
-           
-   
-            }
-        });
-        });
-      
-
-        var table1 = $('#example1').DataTable({
-            "order": [],
-            "iDisplayLength": 50,
-
-            "language": {
-            "decimal":        "",
-            "emptyTable":     "Aucune donnée disponible dans le tableau",
-            "info":           "Affichage _START_ à _END_ sur _TOTAL_ lignes",
-            "infoEmpty":      "Affichage 0 à 0 sur 0 lignes",
-            "infoFiltered":   "(filtrés sur _MAX_ total lignes)",
-            "infoPostFix":    "",
-            "thousands":      ",",
-            "lengthMenu":     "Voir _MENU_ lignes",
-        
-           
-            "search":         "Rechercher:",
-            "zeroRecords":    "Aucune donnée trouvée",
-            "paginate": {
-                "first":      "First",
-                "last":       "Last",
-                "next":       "Suivant",
-                "previous":   "Précédent"
-            },
-   
-            }
-
-        }); 
-         // mandataire
-         var table = $('#example2').DataTable({
-            
-            "order": [],
-            "iDisplayLength": 50,
-        
-            "language": {
-            "decimal":        "",
-            "emptyTable":     "Aucune donnée disponible dans le tableau",
-            "info":           "Affichage _START_ à _END_ sur _TOTAL_ lignes",
-            "infoEmpty":      "Affichage 0 à 0 sur 0 lignes",
-            "infoFiltered":   "(filtrés sur _MAX_ total lignes)",
-            "infoPostFix":    "",
-            "thousands":      ",",
-            "lengthMenu":     "Voir _MENU_ lignes",
-        
-           
-            "search":         "Rechercher:",
-            "zeroRecords":    "Aucune donnée trouvée",
-            "paginate": {
-                "first":      "First",
-                "last":       "Last",
-                "next":       "Suivant",
-                "previous":   "Précédent"
-            },
-   
-            }
-        });       
-        // mandataire
-        var table = $('#example3').DataTable({
-            
-            "order": [],
-            "iDisplayLength": 50,
-            
-
-            "language": {
-            "decimal":        "",
-            "emptyTable":     "Aucune donnée disponible dans le tableau",
-            "info":           "Affichage _START_ à _END_ sur _TOTAL_ lignes",
-            "infoEmpty":      "Affichage 0 à 0 sur 0 lignes",
-            "infoFiltered":   "(filtrés sur _MAX_ total lignes)",
-            "infoPostFix":    "",
-            "thousands":      ",",
-            "lengthMenu":     "Voir _MENU_ lignes",
-        
-           
-            "search":         "Rechercher:",
-            "zeroRecords":    "Aucune donnée trouvée",
-            "paginate": {
-                "first":      "First",
-                "last":       "Last",
-                "next":       "Suivant",
-                "previous":   "Précédent"
-            },
-   
-            }
-        });       
-            // mandataire
-            var table = $('#example4').DataTable({
-            
-            "order": [],
-            "iDisplayLength": 50,
-
-            
-
-            "language": {
-            "decimal":        "",
-            "emptyTable":     "Aucune donnée disponible dans le tableau",
-            "info":           "Affichage _START_ à _END_ sur _TOTAL_ lignes",
-            "infoEmpty":      "Affichage 0 à 0 sur 0 lignes",
-            "infoFiltered":   "(filtrés sur _MAX_ total lignes)",
-            "infoPostFix":    "",
-            "thousands":      ",",
-            "lengthMenu":     "Voir _MENU_ lignes",
-        
-           
-            "search":         "Rechercher:",
-            "zeroRecords":    "Aucune donnée trouvée",
-            "paginate": {
-                "first":      "First",
-                "last":       "Last",
-                "next":       "Suivant",
-                "previous":   "Précédent"
-            },
-   
-            }
-        });      
-
-    </script>
+ 
 
 
 {{-- DASHBOARD --}}
@@ -253,8 +76,7 @@
 <script src="{{ asset('js/lib/chart-js/Chart.bundle.js') }}"></script>
 <!--depot-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
-<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js"></script>
+{{-- <script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js"></script> --}}
 <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
 <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.js"></script>
 <!--stack tables-->
@@ -266,6 +88,186 @@
 <!--calendar end-->
 <!--tokenfield-->
 {{-- <script src="{{ asset('js/lib/tokenfield/bootstrap-tokenfield.min.js') }}"></script> --}}
+
+
+<script>
+    $(document).ready(function() {
+    var table = $('#example').DataTable({
+    //    responsive: true,
+        "order": [],
+        "iDisplayLength": 50,
+        "language": {
+        "decimal":        "",
+        "emptyTable":     "Aucune donnée disponible dans le tableau",
+        "info":           "Affichage _START_ à _END_ sur _TOTAL_ lignes",
+        "infoEmpty":      "Affichage 0 à 0 sur 0 lignes",
+        "infoFiltered":   "(filtrés sur _MAX_ total lignes)",
+        "infoPostFix":    "",
+        "thousands":      ",",
+        "lengthMenu":     "Voir _MENU_ lignes",
+    
+       
+        "search":         "Rechercher:",
+        "zeroRecords":    "Aucune donnée trouvée",
+        "paginate": {
+            "first":      "First",
+            "last":       "Last",
+            "next":       "Suivant",
+            "previous":   "Précédent"
+        },
+       
+
+        }
+    });
+    });
+
+    $(document).ready(function() {
+    var table = $('#example0').DataTable({
+    //    responsive: true,
+        "order": [],
+        "iDisplayLength": 50,
+        "language": {
+        "decimal":        "",
+        "emptyTable":     "Aucune donnée disponible dans le tableau",
+        "info":           "Affichage _START_ à _END_ sur _TOTAL_ lignes",
+        "infoEmpty":      "Affichage 0 à 0 sur 0 lignes",
+        "infoFiltered":   "(filtrés sur _MAX_ total lignes)",
+        "infoPostFix":    "",
+        "thousands":      ",",
+        "lengthMenu":     "Voir _MENU_ lignes",
+    
+       
+        "search":         "Rechercher:",
+        "zeroRecords":    "Aucune donnée trouvée",
+        "paginate": {
+            "first":      "First",
+            "last":       "Last",
+            "next":       "Suivant",
+            "previous":   "Précédent"
+        },
+       
+
+        }
+    });
+    });
+  
+
+    var table1 = $('#example1').DataTable({
+        "order": [],
+        "iDisplayLength": 50,
+
+        "language": {
+        "decimal":        "",
+        "emptyTable":     "Aucune donnée disponible dans le tableau",
+        "info":           "Affichage _START_ à _END_ sur _TOTAL_ lignes",
+        "infoEmpty":      "Affichage 0 à 0 sur 0 lignes",
+        "infoFiltered":   "(filtrés sur _MAX_ total lignes)",
+        "infoPostFix":    "",
+        "thousands":      ",",
+        "lengthMenu":     "Voir _MENU_ lignes",
+    
+       
+        "search":         "Rechercher:",
+        "zeroRecords":    "Aucune donnée trouvée",
+        "paginate": {
+            "first":      "First",
+            "last":       "Last",
+            "next":       "Suivant",
+            "previous":   "Précédent"
+        },
+
+        }
+
+    }); 
+     // mandataire
+     var table = $('#example2').DataTable({
+        
+        "order": [],
+        "iDisplayLength": 50,
+    
+        "language": {
+        "decimal":        "",
+        "emptyTable":     "Aucune donnée disponible dans le tableau",
+        "info":           "Affichage _START_ à _END_ sur _TOTAL_ lignes",
+        "infoEmpty":      "Affichage 0 à 0 sur 0 lignes",
+        "infoFiltered":   "(filtrés sur _MAX_ total lignes)",
+        "infoPostFix":    "",
+        "thousands":      ",",
+        "lengthMenu":     "Voir _MENU_ lignes",
+    
+       
+        "search":         "Rechercher:",
+        "zeroRecords":    "Aucune donnée trouvée",
+        "paginate": {
+            "first":      "First",
+            "last":       "Last",
+            "next":       "Suivant",
+            "previous":   "Précédent"
+        },
+
+        }
+    });       
+    // mandataire
+    var table = $('#example3').DataTable({
+        
+        "order": [],
+        "iDisplayLength": 50,
+        
+
+        "language": {
+        "decimal":        "",
+        "emptyTable":     "Aucune donnée disponible dans le tableau",
+        "info":           "Affichage _START_ à _END_ sur _TOTAL_ lignes",
+        "infoEmpty":      "Affichage 0 à 0 sur 0 lignes",
+        "infoFiltered":   "(filtrés sur _MAX_ total lignes)",
+        "infoPostFix":    "",
+        "thousands":      ",",
+        "lengthMenu":     "Voir _MENU_ lignes",
+    
+       
+        "search":         "Rechercher:",
+        "zeroRecords":    "Aucune donnée trouvée",
+        "paginate": {
+            "first":      "First",
+            "last":       "Last",
+            "next":       "Suivant",
+            "previous":   "Précédent"
+        },
+
+        }
+    });       
+        // mandataire
+        var table = $('#example4').DataTable({
+        
+        "order": [],
+        "iDisplayLength": 50,
+
+        
+
+        "language": {
+        "decimal":        "",
+        "emptyTable":     "Aucune donnée disponible dans le tableau",
+        "info":           "Affichage _START_ à _END_ sur _TOTAL_ lignes",
+        "infoEmpty":      "Affichage 0 à 0 sur 0 lignes",
+        "infoFiltered":   "(filtrés sur _MAX_ total lignes)",
+        "infoPostFix":    "",
+        "thousands":      ",",
+        "lengthMenu":     "Voir _MENU_ lignes",
+    
+       
+        "search":         "Rechercher:",
+        "zeroRecords":    "Aucune donnée trouvée",
+        "paginate": {
+            "first":      "First",
+            "last":       "Last",
+            "next":       "Suivant",
+            "previous":   "Précédent"
+        },
+
+        }
+    });      
+
+</script>
     @yield('js-content')
 </body>
 
