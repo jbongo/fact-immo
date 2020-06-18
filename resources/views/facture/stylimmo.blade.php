@@ -50,9 +50,9 @@
                                         </td>
                                         <td  style="">
                                             @if($facture->compromis->charge == "Vendeur")
-                                                <strong>{{ substr($facture->compromis->nom_vendeur,0,50)}}</strong> 
+                                                <strong>{{ substr($facture->compromis->nom_vendeur,0,20)}}</strong> 
                                             @else
-                                                <strong>{{ substr($facture->compromis->nom_acquereur,0,50)}}</strong> 
+                                                <strong>{{ substr($facture->compromis->nom_acquereur,0,20)}}</strong> 
                                             @endif   
                                         </td>
                                         @if(auth()->user()->role == "admin")

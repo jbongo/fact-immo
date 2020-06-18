@@ -78,11 +78,11 @@
                                             @endif 
                                         @endif
                                     </td>    
-                                    <td width="15%" style="{{$grise}}" >
+                                    <td width="10%" style="{{$grise}}" >
                                         @if($compromi_sous_compro->charge == "Vendeur")
-                                            <strong>{{ substr($compromi_sous_compro->nom_vendeur,0,50)}}</strong> 
+                                            <strong>{{ substr($compromi_sous_compro->nom_vendeur,0,20)}}</strong> 
                                         @else
-                                            <strong>{{ substr($compromi_sous_compro->nom_acquereur,0,50)}}</strong> 
+                                            <strong>{{ substr($compromi_sous_compro->nom_acquereur,0,20)}}</strong> 
                                         @endif 
                                     </td>
                                     
