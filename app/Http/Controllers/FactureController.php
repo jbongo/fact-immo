@@ -24,7 +24,7 @@ use Illuminate\Support\Facades\Storage;
 class FactureController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Afficher toutes les factures
      *
      * @return \Illuminate\Http\Response
      */
@@ -49,71 +49,6 @@ class FactureController extends Controller
         return view ('facture.index',compact(['factureHonoraires','factureStylimmos']));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 
     /**
      * demande de facture stylimmo par le mandataire
@@ -191,7 +126,12 @@ class FactureController extends Controller
 
 
 
-// ################
+
+/**
+ *  lister les demandes de facture stylimmo
+ *
+ * @return \Illuminate\Http\Response
+*/
     public  function demandes_stylimmo()
     {
         
@@ -200,7 +140,13 @@ class FactureController extends Controller
         return view ('demande_facture.index',compact('compromis'));
     }
 
-    //################
+   
+/**
+ *  Afficher la demande de facture stylimmo
+ *
+ * @param  string  $compromis
+ * @return \Illuminate\Http\Response
+*/
 
     public  function show_demande_stylimmo($compromis)
     {
@@ -210,7 +156,13 @@ class FactureController extends Controller
     }
 
 
-//############
+
+/**
+ *  validation de la facture stylimmo
+ *
+ * @param  string  $compromis
+ * @return \Illuminate\Http\Response
+*/
 public  function valider_facture_stylimmo( Request $request, $compromis)
 {
     $numero = Facture::where([ ['type','stylimmo']])->max('numero') ;
@@ -342,7 +294,13 @@ public  function valider_facture_stylimmo( Request $request, $compromis)
     
 }
 
-//############
+
+/**
+ *  Générer une facture stylimmo
+ *
+ * @param  string  $compromis
+ * @return \Illuminate\Http\Response
+*/
     public  function generer_facture_stylimmo($compromis)
     {
         
@@ -351,18 +309,6 @@ public  function valider_facture_stylimmo( Request $request, $compromis)
         $facture = Facture::where([ ['type','stylimmo'],['compromis_id',$compromis->id]])->first();
 
         $numero = "";
-        // $nb_numeros_facture = Facture::where([ ['type','stylimmo']])->select('numero')->count();
-        
-        // if($nb_numeros_facture > 0){
-        //     $numeros_facture = Facture::where([ ['type','stylimmo']])->select('numero')->get()->toArray();
-        //     $numeros = array();
-    
-        //     foreach ($numeros_facture as $num) {
-        //         $numeros[] = $num["numero"];
-        //     }
-    
-        //     $numero = max($numeros)+1;
-        // }
         
         $numero = Facture::where([ ['type','stylimmo']])->max('numero') + 1;
         $lastdate = Facture::where('numero',$numero-1)->select('date_facture')->first();
@@ -374,8 +320,13 @@ public  function valider_facture_stylimmo( Request $request, $compromis)
       
     }
 
-  
-    //###### telecharger facture stylimmo
+/**
+ *  telecharger facture stylimmo
+ *
+ * @param  string  $compromis_id
+ * @return \Illuminate\Http\Response
+*/
+
     public  function download_pdf_facture_stylimmo($compromis_id)
     {
 
@@ -394,7 +345,13 @@ public  function valider_facture_stylimmo( Request $request, $compromis)
       
     }
     
-    //###### envoyer facture stylimmo au mandataire
+/**
+ *  Envoyer facture stylimmo au mandataire
+ *
+ * @param  string  $facture_id
+ * @return \Illuminate\Http\Response
+*/
+
     public  function envoyer_facture_stylimmo($facture_id)
     {
 
@@ -414,32 +371,42 @@ public  function valider_facture_stylimmo( Request $request, $compromis)
         
     }
 
-       //###### enaisser la facture stylimmo
-       public  function encaisser_facture_stylimmo($facture_id, Request $request)
-       {
-   
-   
-           $facture = Facture::where('id', $facture_id)->first();
+/**
+ *  enaisser la facture stylimmo
+ *
+ * @param  int  $facture
+ * @return \Illuminate\Http\Response
+*/
+      
+    public  function encaisser_facture_stylimmo($facture_id, Request $request)
+    {
+
+
+        $facture = Facture::where('id', $facture_id)->first();
+    
+        $facture->encaissee = true;
+        $facture->date_encaissement = $request->date_encaissement;
+        $facture->update();
+
+        Mail::to($facture->compromis->user->email)->send(new EncaissementFacture($facture));
+    //    Mail::to("gestion@stylimmo.com")->send(new EncaissementFacture($facture));
+        return $facture->numero ;
+    //    return redirect()->route('facture.index')->with('ok', __("Facture ". $facture->numero ." encaissée, le mandataire a été notifié")  );
         
-           $facture->encaissee = true;
-           $facture->date_encaissement = $request->date_encaissement;
-           $facture->update();
-        //    dd($facture);
-   
-   
-           // dd('ddd');
-           Mail::to($facture->compromis->user->email)->send(new EncaissementFacture($facture));
-        //    Mail::to("gestion@stylimmo.com")->send(new EncaissementFacture($facture));
-           return $facture->numero ;
-        //    return redirect()->route('facture.index')->with('ok', __("Facture ". $facture->numero ." encaissée, le mandataire a été notifié")  );
-           
-       }
+    }
 
 
 
 //    ############ FACTURES D'HONORAIRES ############
 
-// Préparation de la facture d'honoraire
+
+/**
+ *  Préparation de la facture d'honoraire
+ *
+ * @param  int  $compromis
+ * @return \Illuminate\Http\Response
+*/
+
 public  function preparer_facture_honoraire($compromis)
 {
     
@@ -448,8 +415,6 @@ public  function preparer_facture_honoraire($compromis)
     
     $contrat = $mandataire->contrat;
     
-
-
     // On se positionne sur le pack actuel
     if($mandataire->pack_actuel == "starter"){
         $pourcent_dep =  $contrat->pourcentage_depart_starter;
@@ -545,7 +510,13 @@ public  function preparer_facture_honoraire($compromis)
     
 }
 
-// Préparation de la facture d'honoraire du parrain  / *************revoir pour ajouter la formule de calcul par niveau***************
+
+/**
+ *  Préparation de la facture d'honoraire du parrain 
+ *
+ * @param  string  $compromis
+ * @return \Illuminate\Http\Response
+*/
 public  function preparer_facture_honoraire_parrainage($compromis_id, $id_parrain = null)
 {
 
@@ -888,78 +859,78 @@ public  function preparer_facture_honoraire_parrainage($compromis_id, $id_parrai
 
 
 
-// Factures de parrainage dans le cas d'un partage entre deux mandataires
-public  function preparer_facture_honoraire_parrainage_partage(Compromis $compromis )
-{
-    // if($compromis->parrain_partage_id != null){
+// // Factures de parrainage dans le cas d'un partage entre deux mandataires
+// public  function preparer_facture_honoraire_parrainage_partage(Compromis $compromis )
+// {
+//     // if($compromis->parrain_partage_id != null){
 
-        $filleul = Filleul::where([ ['parrain_id',$compromis->parrain_partage_id],['user_id', $compromis->agent_id] ])->first();
-    // }
+//         $filleul = Filleul::where([ ['parrain_id',$compromis->parrain_partage_id],['user_id', $compromis->agent_id] ])->first();
+//     // }
 
-// xxxxxxxxxxxxxxxxxxxxxx
+// // xxxxxxxxxxxxxxxxxxxxxx
 
-//     dd($compromis->user_id);
-    $parrain_id = $filleul->parrain_id ; 
-    $pourcentage_parrain = $filleul->pourcentage; 
+// //     dd($compromis->user_id);
+//     $parrain_id = $filleul->parrain_id ; 
+//     $pourcentage_parrain = $filleul->pourcentage; 
 
 
-    $parrain = User::where('id',$parrain_id)->first();
+//     $parrain = User::where('id',$parrain_id)->first();
 
-    // On vérifie si filleul est le porteur d'affaire
-    if($compromis->user_id == $filleul->user_id){
-        // On fait la facture du parrain de celui qui a crée l'affaire
-        if($compromis->facture_honoraire_parrainage_cree == false ){
-            $tva = 1.2;
+//     // On vérifie si filleul est le porteur d'affaire
+//     if($compromis->user_id == $filleul->user_id){
+//         // On fait la facture du parrain de celui qui a crée l'affaire
+//         if($compromis->facture_honoraire_parrainage_cree == false ){
+//             $tva = 1.2;
             
-            $facture = Facture::create([
-                "numero"=> null,
-                "user_id"=> $parrain->id,
-                "compromis_id"=> $compromis->id,
-                "type"=> "parrainage",
-                "encaissee"=> false,
-                "montant_ht"=>  round ( ( ($compromis->frais_agence * $compromis->pourcentage_agent/100) *$pourcentage_parrain/100 )/$tva ,2),
-                "montant_ttc"=> round( ($compromis->frais_agence * $compromis->pourcentage_agent/100) *$pourcentage_parrain/100,2),
-            ]);
-            // dd($facture);
-            // on incremente le chiffre d'affaire du parrain
-            $parrain->chiffre_affaire += $facture->montant_ttc ; 
-            $parrain->update(); 
+//             $facture = Facture::create([
+//                 "numero"=> null,
+//                 "user_id"=> $parrain->id,
+//                 "compromis_id"=> $compromis->id,
+//                 "type"=> "parrainage",
+//                 "encaissee"=> false,
+//                 "montant_ht"=>  round ( ( ($compromis->frais_agence * $compromis->pourcentage_agent/100) *$pourcentage_parrain/100 )/$tva ,2),
+//                 "montant_ttc"=> round( ($compromis->frais_agence * $compromis->pourcentage_agent/100) *$pourcentage_parrain/100,2),
+//             ]);
+//             // dd($facture);
+//             // on incremente le chiffre d'affaire du parrain
+//             $parrain->chiffre_affaire += $facture->montant_ttc ; 
+//             $parrain->update(); 
             
-            $compromis->facture_honoraire_parrainage_cree = true;
-            $compromis->update();
-        }else{
-            $facture = Facture::where([ ['type','parrainage'],['compromis_id',$compromis->id]])->first();
-        }
-    // On vérifie si filleul est le partage
-    }elseif($compromis->agent_id == $filleul->user_id){
-        // On fait la facture du parrain du partage
-        if($compromis->facture_honoraire_parrainage_partage_cree == false ){
-            $tva = 1.2;
+//             $compromis->facture_honoraire_parrainage_cree = true;
+//             $compromis->update();
+//         }else{
+//             $facture = Facture::where([ ['type','parrainage'],['compromis_id',$compromis->id]])->first();
+//         }
+//     // On vérifie si filleul est le partage
+//     }elseif($compromis->agent_id == $filleul->user_id){
+//         // On fait la facture du parrain du partage
+//         if($compromis->facture_honoraire_parrainage_partage_cree == false ){
+//             $tva = 1.2;
             
-            $facture = Facture::create([
-                "numero"=> null,
-                "user_id"=> $parrain->id,
-                "compromis_id"=> $compromis->id,
-                "type"=> "parrainage_partage",
-                "encaissee"=> false,
-                "montant_ht"=>  round ( ( ($compromis->frais_agence * (100 - $compromis->pourcentage_agent)/100)*$pourcentage_parrain/100 )/$tva ,2),
-                "montant_ttc"=> round( ($compromis->frais_agence * (100 - $compromis->pourcentage_agent)/100)*$pourcentage_parrain/100,2),
-            ]);
-            // dd($facture);
-            // on incremente le chiffre d'affaire du parrain
-            $parrain->chiffre_affaire += $facture->montant_ttc ; 
-            $parrain->update(); 
+//             $facture = Facture::create([
+//                 "numero"=> null,
+//                 "user_id"=> $parrain->id,
+//                 "compromis_id"=> $compromis->id,
+//                 "type"=> "parrainage_partage",
+//                 "encaissee"=> false,
+//                 "montant_ht"=>  round ( ( ($compromis->frais_agence * (100 - $compromis->pourcentage_agent)/100)*$pourcentage_parrain/100 )/$tva ,2),
+//                 "montant_ttc"=> round( ($compromis->frais_agence * (100 - $compromis->pourcentage_agent)/100)*$pourcentage_parrain/100,2),
+//             ]);
+//             // dd($facture);
+//             // on incremente le chiffre d'affaire du parrain
+//             $parrain->chiffre_affaire += $facture->montant_ttc ; 
+//             $parrain->update(); 
             
-            $compromis->facture_honoraire_parrainage_partage_cree = true;
-            $compromis->update();
-        }else{
-            $facture = Facture::where([ ['type','parrainage_partage'],['compromis_id',$compromis->id]])->first();
-        }
-    }
+//             $compromis->facture_honoraire_parrainage_partage_cree = true;
+//             $compromis->update();
+//         }else{
+//             $facture = Facture::where([ ['type','parrainage_partage'],['compromis_id',$compromis->id]])->first();
+//         }
+//     }
 
-    return view ('facture.preparer_honoraire_parrainage',compact(['compromis','parrain','filleul','facture','pourcentage_parrain']));
+//     return view ('facture.preparer_honoraire_parrainage',compact(['compromis','parrain','filleul','facture','pourcentage_parrain']));
 
-}
+// }
 
 public  function store_facture_honoraire_parrainage(Compromis $compromis, Filleul $filleul)
 {
@@ -1011,8 +982,8 @@ public  function store_facture_honoraire_parrainage(Compromis $compromis, Filleu
             ]);
             // dd($facture);
             // on incremente le chiffre d'affaire du parrain
-            $parrain->chiffre_affaire += $facture->montant_ttc ; 
-            $parrain->update(); 
+            // $parrain->chiffre_affaire += $facture->montant_ttc ; 
+            // $parrain->update(); 
             
             $compromis->facture_honoraire_parrainage_partage_cree = true;
             $compromis->update();
@@ -1027,7 +998,14 @@ public  function store_facture_honoraire_parrainage(Compromis $compromis, Filleu
 }
 
 
-// Préparation de la facture d'honoraire pour le partage 
+/**
+ *  Préparation de la facture d'honoraire pour le partage 
+ *
+ * @param  string  $compromis
+ * @param  int  $mandataire_id
+ * @return \Illuminate\Http\Response
+*/
+
 public  function preparer_facture_honoraire_partage($compromis,$mandataire_id = null)
 {
 
@@ -1316,7 +1294,7 @@ public  function deduire_pub_facture_honoraire(Request $request, $compromis)
     $compromis->facture_honoraire_cree = true;
     $compromis->update();
     // on incremente le chiffre d'affaire et on modifie s'il le faut le pourcentage
-    $mandataire->chiffre_affaire += $formule[1];
+    // $mandataire->chiffre_affaire += $formule[1];
     // $mandataire->chiffre_affaire_sty += $compromis->frais_agence/$tva; // revoir cette partie, faut t-il utiliser le ht ou ttc des frais agence ?
     $niveau = $this->calcul_niveau($paliers, $mandataire->chiffre_affaire_sty );
     $mandataire->commission = $paliers[$niveau-1][1];
@@ -1518,6 +1496,11 @@ return view ('facture.preparer_honoraire_partage',compact(['compromis','factureS
 
 
      //    ######## FACTURE PAC PUB
+ /**
+ * Liste des factures de pack pub
+ *
+ * @return \Illuminate\Http\Response
+ */
 public  function packpub()
 {
     return view ('facture.pack_pub');
@@ -1541,14 +1524,18 @@ public function palier_unserialize($param)
     }
     // on divise le nouveau tableau de valeur en 4 tableau de même taille
     $chunk = array_chunk($array, 4);
-    // syupprime le premier tableau de notre tableau
-    // dd($chunk);
-    // array_shift($chunk);
 
     return $chunk;
 }
 
-// Calcul de la commission en fonction du palier, de la vente, du chiffre d'affaire styl et du niveau actuel
+
+/**
+ *  Calcul de la commission en fonction du palier, de la vente, du chiffre d'affaire styl et du niveau actuel
+ *
+ * @param  double  $montant_vnt, $ca
+ * @return \Illuminate\Http\Response
+*/
+
 public function calcul_com($palier, $montant_vnt_ht, $ca, $niveau)
 {
 
@@ -1887,7 +1874,13 @@ public function valider_honoraire($action, $facture_id)
         return view ('facture.generer_pdf_avoir',compact(['compromis','mandataire','facture','avoir']));
     }
 
-    //###### telecharger facture avoir
+/**
+ *  telecharger facture avoir
+ *
+ * @param  string  $avoir_id
+ * @return \Illuminate\Http\Response
+*/
+ 
     public  function download_pdf_avoir($avoir_id)
     {
 
@@ -1904,7 +1897,13 @@ public function valider_honoraire($action, $facture_id)
       
     }
 
-    //###### regler la note d'honoraire
+    
+/**
+ *  regler la note d'honoraire
+ *
+ * @param  string  $facture_id
+ * @return \Illuminate\Http\Response
+*/
     public  function regler_facture_honoraire(Request $request, $facture_id)
     {
 

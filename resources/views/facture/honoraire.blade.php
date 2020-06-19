@@ -109,7 +109,8 @@
                                             @if($facture->compromis->getFactureStylimmo()->encaissee == 0 )
                                                 <label class="color-danger" ><strong> Non encaissée </strong> </label>                                            
                                             @else 
-                                                <label class="color-primary"><strong> Encaissée </strong></label> 
+                                            <label class="color-danger"> @if($facture->compromis->getFactureStylimmo()->date_encaissement != null) encaissée le {{$facture->compromis->getFactureStylimmo()->date_encaissement->format('d/m/Y')}} @else encaissée @endif  </label> 
+                                                
                                             @endif 
                                         </td>
                                   

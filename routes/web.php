@@ -71,7 +71,7 @@ Route::middleware('auth')->group(function(){
     Route::get('preparer/factures-honoraire/{compromis}','FactureController@preparer_facture_honoraire')->name('facture.preparer_facture_honoraire');//ok
     Route::get('preparer/factures-honoraire-parrainage/{compromis}/{parrain_id?}','FactureController@preparer_facture_honoraire_parrainage')->name('facture.preparer_facture_honoraire_parrainage');//ok
     // Parrain du partage
-    Route::get('preparer/factures-honoraire-parrainage-partage/{compromis}','FactureController@preparer_facture_honoraire_parrainage_partage')->name('facture.preparer_facture_honoraire_parrainage_partage');//ok
+    // Route::get('preparer/factures-honoraire-parrainage-partage/{compromis}','FactureController@preparer_facture_honoraire_parrainage_partage')->name('facture.preparer_facture_honoraire_parrainage_partage');//ok
     Route::get('preparer/factures-honoraire-partage/{compromis}/{mandataire_id?}','FactureController@preparer_facture_honoraire_partage')->name('facture.preparer_facture_honoraire_partage');//ok
     Route::post('deduire-pub/factures-honoraire/{compromis}','FactureController@deduire_pub_facture_honoraire')->name('facture.deduire_pub_facture_honoraire');//ok
     Route::post('deduire-pub/factures-honoraire-partage/{compromis}/{mandataire_id?}','FactureController@deduire_pub_facture_honoraire_partage')->name('facture.deduire_pub_facture_honoraire_partage');//ok
