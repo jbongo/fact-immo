@@ -54,6 +54,8 @@ class CreateContratTable extends Migration
             
             // parrainage
             $table->double('prime_forfaitaire')->nullable();
+            $table->text('comm_parrain')->nullable();
+
 
             // Pack pub
             $table->integer('packpub_id')->nullable();

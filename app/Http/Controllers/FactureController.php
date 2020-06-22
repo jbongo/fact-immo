@@ -2090,14 +2090,29 @@ public function valider_honoraire($action, $facture_id)
 
         // dd($mandataires);
 
-        
-
-
-
-
-
         return "OK";
     }
 
+    
+    /**
+         * export de données pour les factures
+         *
+         * @return \Illuminate\Http\Response
+     */
+    public function export_facture()
+    {
+       
+        
+    
+        $factures = Facture::whereIn('type',['stylimmo'])->latest()->get();
+            
+       
+        // dd($factureStylimmos);
+        
+        return view ('facture.export',compact(['factures']));
+
+
+       
+    }
     
 }

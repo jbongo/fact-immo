@@ -32,7 +32,30 @@ class Compromis extends Model
         $facture = Facture::where([['compromis_id',$this->id],['type','stylimmo']])->first();
         return $facture;
     }
+    public function getHonoPorteur(){
 
+        $facture = Facture::where([['compromis_id',$this->id],['user_id',$this->user_id]])->whereIn('type',['honoraire','partage'])->first();
+        return $facture;
+    }
+
+    public function getHonoPartage(){
+
+        $facture = Facture::where([['compromis_id',$this->id],['user_id',$this->agent_id]])->whereIn('type',['partage'])->first();
+        return $facture;
+    }
+
+    public function getFactureParrainPorteur(){
+
+        $facture = Facture::where([['compromis_id',$this->id]])->whereIn('type',['parrainage'])->first();
+        return $facture;
+    }
+
+    public function getFactureParrainPartage(){
+
+        $facture = Facture::where([['compromis_id',$this->id]])->whereIn('type',['parrainage_partage'])->first();
+        return $facture;
+    }
+      
 
     // CALCULS DES CHIFFRES D'AFFAIRES
 

@@ -120,6 +120,8 @@
                             <li class="{{$li_parametre_pub}}"><a href="{{route('pack_pub.index')}}">Publicité</a></li>
                         </ul>
                     </li>
+                    <li class=""><a  href="{{route('export_facture.index')}}" class=""> <i class="large material-icons" style="font-size:20px;">vertical_align_center</i></i>Export   </a>
+                    </li>
                     @endif
                     <li><a href="{{ route('logout') }}"  onclick="event.preventDefault();
                      document.getElementById('logout-form').submit();" ><i class="large material-icons" style="font-size:20px;">close</i></i> Déconnexion</a></li>

@@ -133,6 +133,9 @@ Route::middleware('auth')->group(function(){
     Route::get('stats/mandataire/{mandataire_id}','MandataireController@stats_user')->name('stats_user');
     Route::post('stats/mandataire/{mandataire_id}','MandataireController@store_parrain')->name('store.parrain');
 
+    // ####### EXPORT FACTURE
+    Route::get('export/liste/','FactureController@export_facture')->name('export_facture.index');
+
 
 
 

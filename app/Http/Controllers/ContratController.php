@@ -236,6 +236,34 @@ class ContratController extends Controller
         $contrat->parrain_id = $request->a_parrain== "true" ? $request->parrain_id : null;
         $contrat->a_condition_parrain = $request->a_condition_parrain == "true" ? true : false;
         // dd("nooo");
+
+        
+    $comm_parrain = array();
+
+    $comm_parrain["p_1_1"] = $request->p_1_1;
+    $comm_parrain["p_1_2"] = $request->p_1_2;
+    $comm_parrain["p_1_3"] = $request->p_1_3;
+    $comm_parrain["p_1_n"] = $request->p_1_n;
+    $comm_parrain["p_2_1"] = $request->p_2_1;
+    $comm_parrain["p_2_2"] = $request->p_2_2;
+    $comm_parrain["p_2_3"] = $request->p_2_3;
+    $comm_parrain["p_2_n"] = $request->p_2_n;
+    $comm_parrain["p_3_1"] = $request->p_3_1;
+    $comm_parrain["p_3_2"] = $request->p_3_2;
+    $comm_parrain["p_3_3"] = $request->p_3_3;
+    $comm_parrain["p_3_n"] = $request->p_3_n;
+    $comm_parrain["seuil_parr_1"] = $request->seuil_parr_1;
+    $comm_parrain["seuil_fill_1"] = $request->seuil_fill_1;
+    $comm_parrain["seuil_parr_2"] = $request->seuil_parr_2;
+    $comm_parrain["seuil_fill_2"] = $request->seuil_fill_2;
+    $comm_parrain["seuil_parr_3"] = $request->seuil_parr_3;
+    $comm_parrain["seuil_fill_3"] = $request->seuil_fill_3;
+    
+    $comm_parrain = serialize($comm_parrain);
+
+    $contrat->comm_parrain = $comm_parrain;
+
+
         $contrat->update();
 
         return 1;
@@ -295,8 +323,35 @@ class ContratController extends Controller
     public function store(Request $request)
     {
       
-        // return $request->est_starter == "true" ? 1 : 0;
+      
         // parrainage
+
+        // On serialise les conditions de parrainnage
+
+        $comm_parrain = array();
+
+        $comm_parrain["p_1_1"] = $request->p_1_1;
+        $comm_parrain["p_1_2"] = $request->p_1_2;
+        $comm_parrain["p_1_3"] = $request->p_1_3;
+        $comm_parrain["p_1_n"] = $request->p_1_n;
+        $comm_parrain["p_2_1"] = $request->p_2_1;
+        $comm_parrain["p_2_2"] = $request->p_2_2;
+        $comm_parrain["p_2_3"] = $request->p_2_3;
+        $comm_parrain["p_2_n"] = $request->p_2_n;
+        $comm_parrain["p_3_1"] = $request->p_3_1;
+        $comm_parrain["p_3_2"] = $request->p_3_2;
+        $comm_parrain["p_3_3"] = $request->p_3_3;
+        $comm_parrain["p_3_n"] = $request->p_3_n;
+        $comm_parrain["seuil_parr_1"] = $request->seuil_parr_1;
+        $comm_parrain["seuil_fill_1"] = $request->seuil_fill_1;
+        $comm_parrain["seuil_parr_2"] = $request->seuil_parr_2;
+        $comm_parrain["seuil_fill_2"] = $request->seuil_fill_2;
+        $comm_parrain["seuil_parr_3"] = $request->seuil_parr_3;
+        $comm_parrain["seuil_fill_3"] = $request->seuil_fill_3;
+
+        $comm_parrain = serialize($comm_parrain);
+
+
         // return "".$request->forfait_administratif;
         Contrat::create([
               // infos basiques
@@ -339,6 +394,7 @@ class ContratController extends Controller
 
             "prime_forfaitaire"=>$request->prime_max_forfait_parrain,
             "packpub_id"=>$request->pack_pub,
+            "comm_parrain"=> $comm_parrain
 
         ]);
         // Génération du mot de passe
@@ -362,28 +418,6 @@ class ContratController extends Controller
         // Ajout du parrain
 
         if($request->a_parrain == "true" ){
-
-            // $nb_filleul = Filleul::where([ ['parrain_id',$request->parrain_id]])->count();
-    
-            // if($nb_filleul > 0){
-            //     $rang_filleuls = Filleul::where([['parrain_id',$request->parrain_id] ])->select('rang')->get()->toArray();
-            //     $rangs = array();
-
-            //     foreach ($rang_filleuls as $rang_fill) {
-            //         $rangs[] = $rang_fill["rang"];
-            //     }
-
-            //     $rang = max($rangs)+1;
-            // }else{
-            //     $rang = 1;
-            // }
-                
-            // Filleul::create([
-            //     "user_id" => Crypt::decrypt($request->user_id),
-            //     "parrain_id" =>  $request->parrain_id,
-            //     "rang"=> $rang,
-            //     "expire" => false
-            // ]);
 
 
             $nb_filleul = Filleul::where([ ['parrain_id',$request->parrain_id]])->count();
@@ -412,8 +446,8 @@ class ContratController extends Controller
                 $cycle_actuel = 1;
             }
 
-            $parametre = Parametre::first();
-            $comm_parrain = unserialize($parametre->comm_parrain) ;
+            // $parametre = Parametre::first();
+            // $comm_parrain = unserialize($parametre->comm_parrain) ;
 
             $r = $rang > 3 ? "n" : $rang ;
             $pourcentage = $comm_parrain["p_1_".$r];

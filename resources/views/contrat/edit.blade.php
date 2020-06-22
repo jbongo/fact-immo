@@ -467,6 +467,92 @@
                 </div>
                 <br>
 
+                
+                <div class="panel-body" id="parrainage_div">
+                    <fieldset class="col-md-12">
+                        <legend>Parrainage</legend>
+                        <div class="panel panel-warning">
+                            <div class="panel-body">
+
+                                <div class="row">
+                                                            <!-- /# column -->
+                        <div class="col-lg-12">
+                                <div class="card alert">
+                                    <div class="card-header">
+                                        <h4>&Eacute;volution de l'impact </h4>
+            
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                       
+                                                        <th>Année</th>
+                                                        <th>1er filleul</th>
+                                                        <th>2<sup> ème</sup> filleul</th>
+                                                        <th>3<sup> ème</sup> filleul</th>
+                                                        <th>n<sup> ème</sup> filleul</th>
+                                                        <th  style="background-color:#928E81" >&nbsp;</th>
+                                                        <th>Seuil (CA)  parrain</th>
+                                                        <th>Seuil (CA)  filleul</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <th class="color-primary" scope="row">1</th>
+                                                        <td><input type="number" style="background-color:#ecf0f9;" min="0" max="50" class="form-control" value="" id="p_1_1" name="p_1_1" required>                                                            </td>
+                                                        <td><input type="number" style="background-color:#ecf0f9" min="0" max="50" class="form-control" value="" id="p_1_2" name="p_1_2" required></td>
+                                                        <td><input type="number" style="background-color:#ecf0f9" min="0" max="50" class="form-control" value="" id="p_1_3" name="p_1_3" required></td>
+                                                        <td><input type="number" style="background-color:#ecf0f9" min="0" max="50" class="form-control" value="" id="p_1_n" name="p_1_n" required></td>
+                                                        <td>&nbsp;</td>
+                                                        <td><input type="number" style="background-color:#FFF8DC " min="0"  class="form-control"  name="seuil_parr_1" required></td>
+                                                        <td><input type="number" style="background-color:#FFF8DC" min="0"  class="form-control"  name="seuil_fill_1" required></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th class="color-primary" scope="row">2</th>
+                                                        <td><input type="number" style="background-color:#ecf0f9" min="0" max="50" class="form-control" value="" id="p_2_1" name="p_2_1" required></td>
+                                                        <td><input type="number" style="background-color:#ecf0f9" min="0" max="50" class="form-control" value="" id="p_2_2" name="p_2_2" required></td>
+                                                        <td><input type="number" style="background-color:#ecf0f9" min="0" max="50" class="form-control" value="" id="p_2_3" name="p_2_3" required></td>
+                                                        <td><input type="number" style="background-color:#ecf0f9" min="0" max="50" class="form-control" value="" id="p_2_n" name="p_2_n" required></td>
+                                                        <td>&nbsp;</td>
+                                                        <td><input type="number" style="background-color:#FFF8DC " min="0"  class="form-control"  name="seuil_parr_2" required></td>
+                                                        <td><input type="number" style="background-color:#FFF8DC" min="0"  class="form-control"  name="seuil_fill_2" required></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th class="color-primary" scope="row">3</th>
+                                                        <td><input type="number" style="background-color:#ecf0f9" min="0" max="50" class="form-control" value="" id="p_3_1" name="p_3_1" required></td>
+                                                        <td><input type="number" style="background-color:#ecf0f9" min="0" max="50" class="form-control" value="" id="p_3_2" name="p_3_2" required></td>
+                                                        <td><input type="number" style="background-color:#ecf0f9" min="0" max="50" class="form-control" value="" id="p_3_3" name="p_3_3" required></td>
+                                                        <td><input type="number" style="background-color:#ecf0f9" min="0" max="50" class="form-control" value="" id="p_3_n" name="p_3_n" required></td>
+                                                        <td>&nbsp;</td>
+                                                        <td><input type="number" style="background-color:#FFF8DC " min="0"  class="form-control"  name="seuil_parr_3" required></td>
+                                                        <td><input type="number" style="background-color:#FFF8DC" min="0"  class="form-control"  name="seuil_fill_3" required></td>
+                                                    </tr>
+                                                   
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                                    {{-- <div class="col-lg-6 col-md-6 col-sm-6">
+                                        <div class="form-group row" id="max-starter-parrent">
+                                            <label class="col-lg-6 col-md-6 col-sm-6 col-form-label col-form-label" for="prime_max_forfait">Prime forfaitaire si le parrain est à 100% (€)<span class="text-danger">*</span></label>
+                                            <div class="col-lg-4 col-md-4 col-sm-4">
+                                                <input type="number" class="form-control" id="prime_max_forfait" name="prime_max_forfait" min="0" value="200" required>
+                                            </div>
+                                        </div>
+                                    </div> --}}
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+                <br>
+
                 <div class="panel-body">
                     <fieldset class="col-md-12">
                         <legend>Pack pub</legend>
@@ -508,9 +594,10 @@
 
     if ("{{$contrat->a_parrain}}" == false){
          $('#parrain-id').hide();
+    $('#parrainage_div').hide();
+
          
     }
-    $('#parrainage_div').hide();
 
     $('#a_parrain').change(function(e) {
         e.preventDefault();
