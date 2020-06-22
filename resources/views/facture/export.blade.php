@@ -33,42 +33,48 @@
                             <thead>
                                 <tr>
                                    
-                                    <th>@lang('Facture Stylimmo')</th>
-                                    <th>@lang('Mandat')</th>
-                                    <th>@lang('Date fact')</th>
-                                    <th>@lang('Charge')</th>                                    
-                                    <th>@lang('Montant HT ')</th>
-                                    <th>@lang('Montant TTC ')</th>
-                                    <th>@lang('Date de la vente')</th>
-                                    <th>@lang('Alerte paiement')</th>
+                                    <th style="background: rgb(205, 216, 238);">@lang('Facture Stylimmo')</th>
+                                    <th style="background: rgb(205, 216, 238);">@lang('Mandat')</th>
+                                    <th style="background: rgb(205, 216, 238);">@lang('Date fact')</th>
+                                    <th style="background: rgb(205, 216, 238);">@lang('Charge')</th>                                    
+                                    <th style="background: rgb(205, 216, 238);">@lang('Montant HT ')</th>
+                                    <th style="background: rgb(205, 216, 238);">@lang('Montant TTC ')</th>
+                                    <th style="background: rgb(205, 216, 238);">@lang('Date de la vente')</th>
+                                    <th style="background: rgb(205, 216, 238);">@lang('Alerte paiement')</th>
                                     @if(auth()->user()->role == "admin")
-                                    <th>@lang('Encaissement')</th>
+                                    <th style="background: rgb(205, 216, 238);">@lang('Encaissement')</th>
                                     @endif
-                                    <th>@lang('Net vendeur')</th>
+                                    <th style="background: rgb(205, 216, 238);">@lang('Net vendeur')</th>
                                     
-                                    <th>@lang('Indépendant')</th>
-                                    <th>@lang('son %')</th>
-                                    <th>@lang('N° Fact Hono ')</th>
-                                    <th>@lang('Montant Ht Hono')</th>
-                                    <th>@lang('Montant Ttc Hono')</th>
-                                    <th>@lang('Hono réglé le')</th>
-                                    <th>@lang('Nom Parrain')</th>
-                                    <th>@lang('N° Hono parrain')</th>
-                                    <th>@lang('Montant Ht Parrain')</th>
-                                    <th>@lang('Montant Ttc Parrain')</th>
-                                    <th>@lang('Date règlement fact parrain')</th>
-                                    <th>@lang('Nom du partage')</th>
-                                    <th>@lang('son %')</th>
-                                    <th>@lang('N° Facture Hono partage')</th>
-                                    <th>@lang('Nb Pub déduite')</th>
-                                    <th>@lang('Montant Ht Hono ')</th>
-                                    <th>@lang('Montant Ttc Hono ')</th>
-                                    <th>@lang('Fact hono Reglé le ')</th>
-                                    <th>@lang('Parrain partage')</th>
-                                    <th>@lang('N° fact parrain')</th>
-                                    <th>@lang('Montant HT hono parrain')</th>
-                                    <th>@lang('Montant TTC hono parrain')</th>
-                                    <th>@lang('Réglé le ')</th>
+            
+                                    <th style="background: rgb(205, 216, 238);">@lang('Indépendant')</th>
+                                    <th style="background:rgb(205, 216, 238);">@lang('son %')</th>
+
+                                    <th style="background: rgb(223, 176, 211);">@lang('N° Fact Hono ')</th>
+                                    <th style="background: rgb(223, 176, 211);">@lang('Montant Ht Hono')</th>
+                                    <th style="background: rgb(223, 176, 211);">@lang('Montant Ttc Hono')</th>
+                                    <th style="background: rgb(223, 176, 211);">@lang('Hono réglé le')</th>
+
+                                    <th style="background: rgb(231, 218, 213);">@lang('Nom Parrain')</th>
+                                    <th style="background: rgb(231, 218, 213);">@lang('N° Hono parrain')</th>
+                                    <th style="background: rgb(231, 218, 213);">@lang('Montant Ht Parrain')</th>
+                                    <th style="background: rgb(231, 218, 213);">@lang('Montant Ttc Parrain')</th>
+                                    <th style="background: rgb(231, 218, 213);">@lang('Date règlement fact parrain')</th>
+
+
+                                    <th style="background: rgb(6, 133, 165);">@lang('Nom du partage')</th>
+                                    <th style="background: rgb(6, 133, 165);">@lang('son %')</th>
+                                    <th style="background: rgb(6, 133, 165);">@lang('N° Facture Hono partage')</th>
+                                    <th style="background: rgb(6, 133, 165);">@lang('Nb Pub déduite')</th>
+                                    <th style="background: rgb(6, 133, 165);">@lang('Montant Ht Hono ')</th>
+                                    <th style="background: rgb(6, 133, 165);">@lang('Montant Ttc Hono ')</th>
+                                    <th style="background: rgb(6, 133, 165);">@lang('Fact hono Reglé le ')</th>
+
+                                    <th style="background: rgb(140, 221, 201);">@lang('Parrain partage')</th>
+                                    <th style="background: rgb(140, 221, 201);">@lang('N° fact parrain')</th>
+                                    <th style="background: rgb(140, 221, 201);">@lang('Montant HT hono parrain')</th>
+                                    <th style="background: rgb(140, 221, 201);">@lang('Montant TTC hono parrain')</th>
+                                    <th style="background: rgb(140, 221, 201);">@lang('Réglé le ')</th>
                                   
 
 
@@ -80,12 +86,12 @@
                                 <tr>
                                     <td width="" >
                                         
-                                    <a class="color-info" title="Télécharger la facture stylimmo" href="{{route('facture.telecharger_pdf_facture_stylimmo', Crypt::encrypt($facture->compromis->id))}}"  class="  m-b-10 m-l-5 " id="ajouter">{{$facture->numero}}  <i class="ti-download"></i> </a>
+                                    <a class="color-info" title="Télécharger la facture stylimmo" href="{{route('facture.telecharger_pdf_facture_stylimmo', Crypt::encrypt($facture->compromis->id))}}"  class="  m-b-10 m-l-5 " id="ajouter">{{$facture->numero}}  </a>
 
                                     </td>
                                     <td width="" >
                                         {{-- <label class="color-info">{{$facture->compromis->numero_mandat}} </label>  --}}
-                                    <label class="color-info"><a href="{{route('compromis.show',Crypt::encrypt($facture->compromis->id) )}}" target="_blank" title="@lang('voir l\'affaire  ') ">{{$facture->compromis->numero_mandat}}  <i style="font-size: 17px" class="material-icons color-success">account_balance</i></a></label>
+                                    <label class="color-info"><a href="{{route('compromis.show',Crypt::encrypt($facture->compromis->id) )}}" target="_blank" title="@lang('voir l\'affaire  ') ">{{$facture->compromis->numero_mandat}}  </a></label>
 
                                     </td>
                                     {{-- Date facture --}}
@@ -140,9 +146,9 @@
                                     @if(auth()->user()->role == "admin")
                                     <td width="" >
                                         @if($facture->encaissee == 0)
-                                        <button   data-toggle="modal" data-target="#myModal2" class="btn btn-success btn-flat btn-addon  m-b-10 m-l-5 encaisser" onclick="getId({{$facture->id}})"  id="{{$facture->id}}"><i class="ti-wallet"></i>Encaisser</button>
+                                        
                                         @else 
-                                        <label class="color-danger"> @if($facture->date_encaissement != null) encaissée le {{$facture->date_encaissement->format('d/m/Y')}} @else encaissée @endif  </label> 
+                                        <label class="color-danger"> @if($facture->date_encaissement != null) {{$facture->date_encaissement->format('d/m/Y')}} @else  @endif  </label> 
                                         @endif 
                                     </td>
                                     @endif
@@ -156,7 +162,7 @@
                                   <td width="" >
                                     <label class="color-info">
                                         @if($facture->user !=null)
-                                        <a href="{{route('switch_user',Crypt::encrypt($facture->user->id) )}}" data-toggle="tooltip" title="@lang('Se connecter en tant que ') {{$facture->user->nom}}">{{$facture->user->nom}} {{$facture->user->prenom}}<i style="font-size: 17px" class="material-icons color-success">person_pin</i></a>  
+                                        <a href="{{route('switch_user',Crypt::encrypt($facture->user->id) )}}" data-toggle="tooltip" title="@lang('Se connecter en tant que ') {{$facture->user->nom}}">{{$facture->user->nom}} {{$facture->user->prenom}}</a>  
                                        @endif
                                     </label> 
                                 </td>
