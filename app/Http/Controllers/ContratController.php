@@ -85,8 +85,10 @@ class ContratController extends Controller
         
         $palier_starter =  $contrat != null ?  $this->palier_unserialize($contrat->palier_starter) : null;
         $palier_expert =  $contrat != null ? $this->palier_unserialize($contrat->palier_expert) : null;
+        $comm_parrain = unserialize($contrat->comm_parrain ); 
 
-        return view ('contrat.edit', compact(['packs_pub','parrain','parrains','contrat','palier_starter','palier_expert']));
+    
+        return view ('contrat.edit', compact(['packs_pub','parrain','parrains','contrat','palier_starter','palier_expert','comm_parrain']));
   
     }
 

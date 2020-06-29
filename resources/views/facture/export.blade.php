@@ -162,7 +162,7 @@
                                   <td width="" >
                                     <label class="color-info">
                                         @if($facture->user !=null)
-                                        <a href="{{route('switch_user',Crypt::encrypt($facture->user->id) )}}" data-toggle="tooltip" title="@lang('Se connecter en tant que ') {{$facture->user->nom}}">{{$facture->user->nom}} {{$facture->user->prenom}}</a>  
+                                        <a href="{{route('switch_user',Crypt::encrypt($facture->user->id) )}}" data-toggle="tooltip" title="@lang('Se connecter en tant que ') {{$facture->user->nom}}"><strong>  {{ strtoupper($facture->user->nom ) }} {{substr($facture->user->prenom,0,1)}} </strong></a>  
                                        @endif
                                     </label> 
                                 </td>
@@ -177,7 +177,7 @@
                                     <td width=""  > @if($facture->compromis->getHonoPorteur() != null && $facture->compromis->getHonoPorteur()->date_reglement != null ) {{$facture->compromis->getHonoPorteur()->date_reglement->format('d/m/Y')}}  @endif </td>
                                     
                                     {{-- PARRAIN DE CELUI QUI PORTE L'AFFAIRE --}}
-                                    <td width=""  >  @if($facture->compromis->getFactureParrainPorteur() != null && $facture->compromis->getFactureParrainPorteur()->user!= null ) {{$facture->compromis->getFactureParrainPorteur()->user->nom }} {{$facture->compromis->getFactureParrainPorteur()->user->prenom }}  @endif </td>
+                                    <td width=""  >  @if($facture->compromis->getFactureParrainPorteur() != null && $facture->compromis->getFactureParrainPorteur()->user!= null ) <strong>  {{ strtoupper($facture->compromis->getFactureParrainPorteur()->user->nom) }} {{substr($facture->compromis->getFactureParrainPorteur()->user->prenom,0,1)}} </strong>  @endif </td>
                                     <td width=""  >  @if($facture->compromis->getFactureParrainPorteur() != null ) {{$facture->compromis->getFactureParrainPorteur()->numero }}  @endif  </td>
                                     <td width=""  >   @if($facture->compromis->getFactureParrainPorteur() != null ) {{number_format($facture->compromis->getFactureParrainPorteur()->montant_ht,'2','.','')}}   @endif  </td>
                                     <td width=""  >   @if($facture->compromis->getFactureParrainPorteur() != null ) {{number_format($facture->compromis->getFactureParrainPorteur()->montant_ttc,'2','.','')}}   @endif  </td>                                  
@@ -185,7 +185,7 @@
                                     
                                     {{-- LE MANDATAIRE QUI PARTAGE L'AFFAIRE --}}
                                     
-                                    <td width=""  >  @if($facture->compromis->getHonoPartage() != null && $facture->compromis->getHonoPartage()->user!= null ) {{$facture->compromis->getHonoPartage()->user->nom }} {{$facture->compromis->getHonoPartage()->user->prenom }}  @endif </td>
+                                    <td width=""  >  @if($facture->compromis->getHonoPartage() != null && $facture->compromis->getHonoPartage()->user!= null ) <strong>  {{ strtoupper($facture->compromis->getHonoPartage()->user->nom) }} {{substr($facture->compromis->getHonoPartage()->user->prenom,0,1)}} </strong>  @endif </td>
                                     <td width=""  >  @if($facture->compromis->getHonoPartage() != null ) {{100- $facture->compromis->pourcentage_agent }}  @endif  </td>
                                     <td width=""  >  @if($facture->compromis->getHonoPartage() != null ) {{$facture->compromis->getHonoPartage()->numero }}  @endif  </td>
                                     <td width=""  >  @if($facture->compromis->getHonoPartage() != null ) {{$facture->compromis->getHonoPartage()->nb_mois_deduis }}  @endif  </td>
@@ -194,7 +194,7 @@
                                     <td width=""  >  @if($facture->compromis->getHonoPartage() != null && $facture->compromis->getHonoPartage()->date_reglement != null ) {{$facture->compromis->getHonoPartage()->date_reglement->format('d/m/Y')}}  @endif  </td>
                                   
                                   {{-- LE  PARRAIN DU PARTAGE --}}
-                                  <td width=""  >  @if($facture->compromis->getFactureParrainPartage() != null && $facture->compromis->getFactureParrainPartage()->user!= null ) {{$facture->compromis->getFactureParrainPartage()->user->nom }} {{$facture->compromis->getFactureParrainPartage()->user->prenom }}  @endif </td>
+                                  <td width=""  >  @if($facture->compromis->getFactureParrainPartage() != null && $facture->compromis->getFactureParrainPartage()->user!= null ) <strong>  {{ strtoupper($facture->compromis->getFactureParrainPartage()->user->nom) }} {{substr($facture->compromis->getFactureParrainPartage()->user->prenom,0,1)}} </strong>  @endif </td>
                                   <td width=""  >  @if($facture->compromis->getFactureParrainPartage() != null ) {{$facture->compromis->getFactureParrainPartage()->numero }}  @endif  </td>
                                   <td width=""  >   @if($facture->compromis->getFactureParrainPartage() != null ) {{number_format($facture->compromis->getFactureParrainPartage()->montant_ht,'2','.','')}}   @endif  </td>
                                   <td width=""  >   @if($facture->compromis->getFactureParrainPartage() != null ) {{number_format($facture->compromis->getFactureParrainPartage()->montant_ttc,'2','.','')}}   @endif  </td>                                  

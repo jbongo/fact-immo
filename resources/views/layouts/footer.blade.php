@@ -141,8 +141,45 @@
         dom: 'Bfrtip',
         buttons: [
            
-            'excelHtml5',
-          
+            'excelHtml5',          
+            'pdfHtml5'
+        ],
+        "order": [],
+        "iDisplayLength": 50,
+        "language": {
+        "decimal":        "",
+        "emptyTable":     "Aucune donnée disponible dans le tableau",
+        "info":           "Affichage _START_ à _END_ sur _TOTAL_ lignes",
+        "infoEmpty":      "Affichage 0 à 0 sur 0 lignes",
+        "infoFiltered":   "(filtrés sur _MAX_ total lignes)",
+        "infoPostFix":    "",
+        "thousands":      ",",
+        "lengthMenu":     "Voir _MENU_ lignes",
+    
+       
+        "search":         "Rechercher:",
+        "zeroRecords":    "Aucune donnée trouvée",
+        "paginate": {
+            "first":      "First",
+            "last":       "Last",
+            "next":       "Suivant",
+            "previous":   "Précédent"
+        },
+       
+
+        }
+    });
+    });
+
+
+    
+    $(document).ready(function() {
+    var table = $('#example01').DataTable({
+    //    responsive: true,
+        dom: 'Bfrtip',
+        buttons: [
+           
+            'excelHtml5',          
             'pdfHtml5'
         ],
         "order": [],

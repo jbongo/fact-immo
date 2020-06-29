@@ -389,33 +389,33 @@
                                                 <tbody>
                                                     <tr>
                                                         <th class="color-primary" scope="row">1</th>
-                                                        <td><input type="number" style="background-color:#ecf0f9;" min="0" max="50" class="form-control" value="" id="p_1_1" name="p_1_1" required>                                                            </td>
-                                                        <td><input type="number" style="background-color:#ecf0f9" min="0" max="50" class="form-control" value="" id="p_1_2" name="p_1_2" required></td>
-                                                        <td><input type="number" style="background-color:#ecf0f9" min="0" max="50" class="form-control" value="" id="p_1_3" name="p_1_3" required></td>
-                                                        <td><input type="number" style="background-color:#ecf0f9" min="0" max="50" class="form-control" value="" id="p_1_n" name="p_1_n" required></td>
+                                                        <td><input type="number" style="background-color:#ecf0f9;" min="0" max="50" class="form-control" value="5" id="p_1_1" name="p_1_1" required>                                                            </td>
+                                                        <td><input type="number" style="background-color:#ecf0f9" min="0" max="50" class="form-control" value="5" id="p_1_2" name="p_1_2" required></td>
+                                                        <td><input type="number" style="background-color:#ecf0f9" min="0" max="50" class="form-control" value="5" id="p_1_3" name="p_1_3" required></td>
+                                                        <td><input type="number" style="background-color:#ecf0f9" min="0" max="50" class="form-control" value="5" id="p_1_n" name="p_1_n" required></td>
                                                         <td>&nbsp;</td>
-                                                        <td><input type="number" style="background-color:#FFF8DC " min="0"  class="form-control"  name="seuil_parr_1" required></td>
-                                                        <td><input type="number" style="background-color:#FFF8DC" min="0"  class="form-control"  name="seuil_fill_1" required></td>
+                                                        <td><input type="number" style="background-color:#FFF8DC " min="0"  class="form-control" value="0"  name="seuil_parr_1" required></td>
+                                                        <td><input type="number" style="background-color:#FFF8DC" min="0"  class="form-control"  value="0" name="seuil_fill_1" required></td>
                                                     </tr>
                                                     <tr>
                                                         <th class="color-primary" scope="row">2</th>
-                                                        <td><input type="number" style="background-color:#ecf0f9" min="0" max="50" class="form-control" value="" id="p_2_1" name="p_2_1" required></td>
-                                                        <td><input type="number" style="background-color:#ecf0f9" min="0" max="50" class="form-control" value="" id="p_2_2" name="p_2_2" required></td>
-                                                        <td><input type="number" style="background-color:#ecf0f9" min="0" max="50" class="form-control" value="" id="p_2_3" name="p_2_3" required></td>
-                                                        <td><input type="number" style="background-color:#ecf0f9" min="0" max="50" class="form-control" value="" id="p_2_n" name="p_2_n" required></td>
+                                                        <td><input type="number" style="background-color:#ecf0f9" min="0" max="50" class="form-control" value="3" id="p_2_1" name="p_2_1" required></td>
+                                                        <td><input type="number" style="background-color:#ecf0f9" min="0" max="50" class="form-control" value="4" id="p_2_2" name="p_2_2" required></td>
+                                                        <td><input type="number" style="background-color:#ecf0f9" min="0" max="50" class="form-control" value="5" id="p_2_3" name="p_2_3" required></td>
+                                                        <td><input type="number" style="background-color:#ecf0f9" min="0" max="50" class="form-control" value="5" id="p_2_n" name="p_2_n" required></td>
                                                         <td>&nbsp;</td>
-                                                        <td><input type="number" style="background-color:#FFF8DC " min="0"  class="form-control"  name="seuil_parr_2" required></td>
-                                                        <td><input type="number" style="background-color:#FFF8DC" min="0"  class="form-control"  name="seuil_fill_2" required></td>
+                                                        <td><input type="number" style="background-color:#FFF8DC " min="0"  class="form-control" value="30000" name="seuil_parr_2" required></td>
+                                                        <td><input type="number" style="background-color:#FFF8DC" min="0"  class="form-control" value="15000" name="seuil_fill_2" required></td>
                                                     </tr>
                                                     <tr>
                                                         <th class="color-primary" scope="row">3</th>
-                                                        <td><input type="number" style="background-color:#ecf0f9" min="0" max="50" class="form-control" value="" id="p_3_1" name="p_3_1" required></td>
-                                                        <td><input type="number" style="background-color:#ecf0f9" min="0" max="50" class="form-control" value="" id="p_3_2" name="p_3_2" required></td>
-                                                        <td><input type="number" style="background-color:#ecf0f9" min="0" max="50" class="form-control" value="" id="p_3_3" name="p_3_3" required></td>
-                                                        <td><input type="number" style="background-color:#ecf0f9" min="0" max="50" class="form-control" value="" id="p_3_n" name="p_3_n" required></td>
+                                                        <td><input type="number" style="background-color:#ecf0f9" min="0" max="50" class="form-control" value="1" id="p_3_1" name="p_3_1" required></td>
+                                                        <td><input type="number" style="background-color:#ecf0f9" min="0" max="50" class="form-control" value="3" id="p_3_2" name="p_3_2" required></td>
+                                                        <td><input type="number" style="background-color:#ecf0f9" min="0" max="50" class="form-control" value="5" id="p_3_3" name="p_3_3" required></td>
+                                                        <td><input type="number" style="background-color:#ecf0f9" min="0" max="50" class="form-control" value="5" id="p_3_n" name="p_3_n" required></td>
                                                         <td>&nbsp;</td>
-                                                        <td><input type="number" style="background-color:#FFF8DC " min="0"  class="form-control"  name="seuil_parr_3" required></td>
-                                                        <td><input type="number" style="background-color:#FFF8DC" min="0"  class="form-control"  name="seuil_fill_3" required></td>
+                                                        <td><input type="number" style="background-color:#FFF8DC " min="0"  class="form-control"   value="30000" name="seuil_parr_3" required></td>
+                                                        <td><input type="number" style="background-color:#FFF8DC" min="0"  class="form-control"  value="30000"  name="seuil_fill_3" required></td>
                                                     </tr>
                                                    
                                                 </tbody>

@@ -8,7 +8,7 @@
                                 <div class="panel-body">
 
                         <div class="table-responsive" >
-                            <table  id="example" class=" table student-data-table  table-striped table-hover dt-responsive display    "  style="width:100%"  >
+                            <table  id="example00" class=" table student-data-table  table-striped table-hover dt-responsive display    "  style="width:100%"  >
                                 <thead>
                                     <tr>
                                        
