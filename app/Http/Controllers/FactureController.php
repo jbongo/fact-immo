@@ -1258,7 +1258,7 @@ public  function deduire_pub_facture_honoraire(Request $request, $compromis)
     // PASSER LE TYPE DE LA FACTYPE EN PARAMETRE
 
 
-    if($compromis->facture_honoraire_cree == false && $mandataire->nb_mois_pub_restant > 0 ){
+    if($compromis->facture_honoraire_cree == false && $mandataire->nb_mois_pub_restant >= 0 ){
       
       
         $formule = $this->calcul_com($paliers, $montant_vnt_ht, $mandataire->chiffre_affaire_sty, $niveau_actuel-1, $mandataire);
