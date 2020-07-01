@@ -54,15 +54,22 @@ class CreateContratTable extends Migration
             
             // parrainage
             $table->double('prime_forfaitaire')->nullable();
+            $table->double('seuil_comm')->default(1500);
             $table->text('comm_parrain')->default('a:18:{s:5:"p_1_1";s:1:"5";s:5:"p_1_2";s:1:"5";s:5:"p_1_3";s:1:"5";s:5:"p_1_n";s:1:"5";s:5:"p_2_1";s:1:"3";s:5:"p_2_2";s:1:"4";s:5:"p_2_3";s:1:"5";s:5:"p_2_n";s:1:"5";s:5:"p_3_1";s:1:"1";s:5:"p_3_2";s:1:"3";s:5:"p_3_3";s:1:"5";s:5:"p_3_n";s:1:"5";s:12:"seuil_parr_1";s:1:"0";s:12:"seuil_fill_1";s:1:"0";s:12:"seuil_parr_2";s:5:"30000";s:12:"seuil_fill_2";s:5:"15000";s:12:"seuil_parr_3";s:5:"30000";s:12:"seuil_fill_3";s:5:"30000";}');
 
-
+        
             // Pack pub
             $table->integer('packpub_id')->nullable();
-
             $table->boolean('est_modele')->default(false);
 
-            
+            // Démission
+            $table->boolean('a_demission')->default(false);
+            $table->date('date_demission')->nullable();
+            $table->date('date_fin_preavis')->nullable();
+            $table->date('date_fin_droit_suite')->nullable();
+
+
+    
             
 
 

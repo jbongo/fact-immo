@@ -502,13 +502,13 @@
                                                     {{-- {{dd($comm_parrain)}} --}}
                                                     <tr>
                                                         <th class="color-primary" scope="row">1</th>
-                                                        <td><input type="number" style="background-color:#ecf0f9;" min="0" max="50" class="form-control" value="{{$comm_parrain['p_1_1']}}" id="p_1_1" name="p_1_1" required>                                                            </td>
+                                                        <td><input type="number" style="background-color:#ecf0f9;" min="0" max="50" class="form-control" value="{{$comm_parrain['p_1_1']}}" id="p_1_1" name="p_1_1" required>  </td>
                                                         <td><input type="number" style="background-color:#ecf0f9" min="0" max="50" class="form-control" value="{{$comm_parrain['p_1_2']}}" id="p_1_2" name="p_1_2" required></td>
                                                         <td><input type="number" style="background-color:#ecf0f9" min="0" max="50" class="form-control" value="{{$comm_parrain['p_1_3']}}" id="p_1_3" name="p_1_3" required></td>
                                                         <td><input type="number" style="background-color:#ecf0f9" min="0" max="50" class="form-control" value="{{$comm_parrain['p_1_n']}}" id="p_1_n" name="p_1_n" required></td>
                                                         <td>&nbsp;</td>
-                                                        <td><input type="number" style="background-color:#FFF8DC " min="0"  class="form-control" value="{{$comm_parrain['seuil_parr_1']}}" name="seuil_parr_1" required></td>
-                                                        <td><input type="number" style="background-color:#FFF8DC" min="0"  class="form-control" value="{{$comm_parrain['seuil_fill_1']}}" name="seuil_fill_1" required></td>
+                                                        <td><input type="number" style="background-color:#FFF8DC " min="0"  class="form-control" value="{{$comm_parrain['seuil_parr_1']}}" id="seuil_parr_1" name="seuil_parr_1" required></td>
+                                                        <td><input type="number" style="background-color:#FFF8DC" min="0"  class="form-control" value="{{$comm_parrain['seuil_fill_1']}}" id="seuil_fill_1" name="seuil_fill_1" required></td>
                                                     </tr>
                                                     <tr>
                                                         <th class="color-primary" scope="row">2</th>
@@ -517,8 +517,8 @@
                                                         <td><input type="number" style="background-color:#ecf0f9" min="0" max="50" class="form-control" value="{{$comm_parrain['p_2_3']}}" id="p_2_3" name="p_2_3" required></td>
                                                         <td><input type="number" style="background-color:#ecf0f9" min="0" max="50" class="form-control" value="{{$comm_parrain['p_2_n']}}" id="p_2_n" name="p_2_n" required></td>
                                                         <td>&nbsp;</td>
-                                                        <td><input type="number" style="background-color:#FFF8DC " min="0"  class="form-control" value="{{$comm_parrain['seuil_parr_2']}}" name="seuil_parr_2" required></td>
-                                                        <td><input type="number" style="background-color:#FFF8DC" min="0"  class="form-control" value="{{$comm_parrain['seuil_fill_2']}}" name="seuil_fill_2" required></td>
+                                                        <td><input type="number" style="background-color:#FFF8DC " min="0"  class="form-control" value="{{$comm_parrain['seuil_parr_2']}}" id="seuil_parr_2" name="seuil_parr_2" required></td>
+                                                        <td><input type="number" style="background-color:#FFF8DC" min="0"  class="form-control" value="{{$comm_parrain['seuil_fill_2']}}" id="seuil_fill_2" name="seuil_fill_2" required></td>
                                                     </tr>
                                                     <tr>
                                                         <th class="color-primary" scope="row">3</th>
@@ -527,8 +527,8 @@
                                                         <td><input type="number" style="background-color:#ecf0f9" min="0" max="50" class="form-control" value="{{$comm_parrain['p_3_3']}}" id="p_3_3" name="p_3_3" required></td>
                                                         <td><input type="number" style="background-color:#ecf0f9" min="0" max="50" class="form-control" value="{{$comm_parrain['p_3_n']}}" id="p_3_n" name="p_3_n" required></td>
                                                         <td>&nbsp;</td>
-                                                        <td><input type="number" style="background-color:#FFF8DC " min="0"  class="form-control" value="{{$comm_parrain['seuil_parr_3']}}" name="seuil_parr_3" required></td>
-                                                        <td><input type="number" style="background-color:#FFF8DC" min="0"  class="form-control" value="{{$comm_parrain['seuil_fill_3']}}" name="seuil_fill_3" required></td>
+                                                        <td><input type="number" style="background-color:#FFF8DC " min="0"  class="form-control" value="{{$comm_parrain['seuil_parr_3']}}" id="seuil_parr_3" name="seuil_parr_3" required></td>
+                                                        <td><input type="number" style="background-color:#FFF8DC" min="0"  class="form-control" value="{{$comm_parrain['seuil_fill_3']}}" id="seuil_fill_3" name="seuil_fill_3" required></td>
                                                     </tr>
                                                    
                                                 </tbody>
@@ -537,14 +537,14 @@
                                     </div>
                                 </div>
                             </div>
-                                    {{-- <div class="col-lg-6 col-md-6 col-sm-6">
-                                        <div class="form-group row" id="max-starter-parrent">
-                                            <label class="col-lg-6 col-md-6 col-sm-6 col-form-label col-form-label" for="prime_max_forfait">Prime forfaitaire si le parrain est à 100% (€)<span class="text-danger">*</span></label>
-                                            <div class="col-lg-4 col-md-4 col-sm-4">
-                                                <input type="number" class="form-control" id="prime_max_forfait" name="prime_max_forfait" min="0" value="200" required>
-                                            </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6">
+                                    <div class="form-group row" id="max-starter-parrent">
+                                        <label class="col-lg-6 col-md-6 col-sm-6 col-form-label col-form-label" for="seuil_comm">Seuil de la commission de parrainage<span class="text-danger">*</span></label>
+                                        <div class="col-lg-4 col-md-4 col-sm-4">
+                                            <input type="number" class="form-control" id="seuil_comm" name="seuil_comm" min="0" value="{{$contrat->seuil_comm}}" required>
                                         </div>
-                                    </div> --}}
+                                    </div>
+                                </div>
                                 </div>
 
 
@@ -593,7 +593,8 @@
                                         <div class="form-group row">
                                             <label class="col-lg-6 col-form-label" for="a_demission">Le mandataire démissionne ?</label>
                                             <div class="col-lg-6">
-                                            @php $check_demi = false ; @endphp
+                                            @php $check_demi =  ($contrat->a_demission == true) ? "checked" : "unchecked"; @endphp                                           
+
                                                 <input type="checkbox" {{$check_demi}} data-toggle="toggle" id="a_demission" name="a_demission" data-off="Non" data-on="Oui" data-onstyle="success" data-offstyle="danger">
                                            
                                             </div>
@@ -605,7 +606,7 @@
                                             <div class="form-group row">
                                                 <label class="col-lg-4 col-form-label" for="date_demission">Date de démission<span class="text-danger">*</span></label>
                                                 <div class="col-lg-4">
-                                                    <input type="date" class="form-control" value="@if($contrat->date_demission != null ){{$contrat->date_demission->format('Y-m-d')}} @endif" id="date_demission" name="date_demission" required>
+                                                    <input type="date" class="form-control" value="@if($contrat->date_demission != null ){{$contrat->date_demission->format('Y-m-d')}}@endif" id="date_demission" name="date_demission" >
                                                 </div>
                                             </div>
                                         </div>
@@ -614,7 +615,7 @@
                                             <div class="form-group row">
                                                 <label class="col-lg-4 col-form-label" for="date_fin_preavis">Date de fin de préavis<span class="text-danger">*</span></label>
                                                 <div class="col-lg-4">
-                                                    <input type="date" class="form-control" value="@if($contrat->date_fin_preavis != null ){{$contrat->date_fin_preavis->format('Y-m-d')}} @endif" id="date_fin_preavis" name="date_fin_preavis" required>
+                                                    <input type="date" class="form-control" value="@if($contrat->date_fin_preavis != null ){{$contrat->date_fin_preavis->format('Y-m-d')}}@endif" id="date_fin_preavis" name="date_fin_preavis" >
                                                 </div>
                                             </div>
                                         </div>
@@ -623,7 +624,7 @@
                                             <div class="form-group row">
                                                 <label class="col-lg-4 col-form-label" for="date_fin_droit_suite">Date fin de droit de suite<span class="text-danger">*</span></label>
                                                 <div class="col-lg-4">
-                                                    <input type="date" class="form-control" value="@if($contrat->date_fin_droit_suite != null ){{$contrat->date_fin_droit_suite->format('Y-m-d')}} @endif" id="date_fin_droit_suite" name="date_fin_droit_suite" required>
+                                                    <input type="date" class="form-control" value="@if($contrat->date_fin_droit_suite != null ){{$contrat->date_fin_droit_suite->format('Y-m-d')}}@endif" id="date_fin_droit_suite" name="date_fin_droit_suite" >
                                                 </div>
                                             </div>
                                         </div>
@@ -901,7 +902,41 @@
             "a_condition_expert" : $("#a_condition_expert").prop('checked'),
             "prime_max_forfait_parrain" : $('#prime_max_forfait').val(),
             "pack_pub" : $('#pack_pub').val(),
+            "p_1_1" : $('#p_1_1').val(),
+            "p_1_2" : $('#p_1_2').val(),
+            "p_1_3" : $('#p_1_3').val(),
+            "p_1_n" : $('#p_1_n').val(),
+            "seuil_parr_1" : $('#seuil_parr_1').val(),
+            "seuil_fill_1" : $('#seuil_fill_1').val(),
 
+            "p_2_1" : $('#p_2_1').val(),
+            "p_2_2" : $('#p_2_2').val(),
+            "p_2_3" : $('#p_2_3').val(),
+            "p_2_n" : $('#p_2_n').val(),
+            "seuil_parr_2" : $('#seuil_parr_2').val(),
+            "seuil_fill_2" : $('#seuil_fill_2').val(),
+
+            
+            "p_3_1" : $('#p_3_1').val(),
+            "p_3_2" : $('#p_3_2').val(),
+            "p_3_3" : $('#p_3_3').val(),
+            "p_3_n" : $('#p_3_n').val(),
+            "seuil_parr_3" : $('#seuil_parr_3').val(),
+            "seuil_fill_3" : $('#seuil_fill_3').val(),
+            "seuil_comm" : $('#seuil_comm').val(),
+
+            "a_demission" : $("#a_demission").prop('checked') ,
+            "date_demission" : $('#date_demission').val(),
+            "date_fin_preavis" : $('#date_fin_preavis').val(),
+            "date_fin_droit_suite" : $('#date_fin_droit_suite').val(),
+
+
+      
+                 
+
+
+  
+           
         }
           
         // console.log(data);

@@ -87,6 +87,7 @@ class ContratController extends Controller
         $palier_expert =  $contrat != null ? $this->palier_unserialize($contrat->palier_expert) : null;
         $comm_parrain = unserialize($contrat->comm_parrain ); 
 
+     
     
         return view ('contrat.edit', compact(['packs_pub','parrain','parrains','contrat','palier_starter','palier_expert','comm_parrain']));
   
@@ -237,7 +238,8 @@ class ContratController extends Controller
         $contrat->deduis_jeton = $request->deduis_jeton == "true" ? true : false;
         $contrat->parrain_id = $request->a_parrain== "true" ? $request->parrain_id : null;
         $contrat->a_condition_parrain = $request->a_condition_parrain == "true" ? true : false;
-        // dd("nooo");
+        
+    //    return $request->p_1_1;
 
         
     $comm_parrain = array();
@@ -264,9 +266,17 @@ class ContratController extends Controller
     $comm_parrain = serialize($comm_parrain);
 
     $contrat->comm_parrain = $comm_parrain;
+    $contrat->seuil_comm = $request->seuil_comm;
+    
 
+    // Démission
 
-        $contrat->update();
+    $contrat->a_demission = $request->a_demission == "true" ? true : false;
+    $contrat->date_demission = $request->date_demission;
+    $contrat->date_fin_preavis = $request->date_fin_preavis;
+    $contrat->date_fin_droit_suite = $request->date_fin_droit_suite;
+
+    $contrat->update();
 
         return 1;
                 
@@ -325,12 +335,12 @@ class ContratController extends Controller
     public function store(Request $request)
     {
       
-      
         // parrainage
 
         // On serialise les conditions de parrainnage
 
         $comm_parrain = array();
+
 
         $comm_parrain["p_1_1"] = $request->p_1_1;
         $comm_parrain["p_1_2"] = $request->p_1_2;
@@ -351,6 +361,7 @@ class ContratController extends Controller
         $comm_parrain["seuil_parr_3"] = $request->seuil_parr_3;
         $comm_parrain["seuil_fill_3"] = $request->seuil_fill_3;
 
+        // return ($comm_parrain);
         $comm_parrain = serialize($comm_parrain);
 
 
@@ -452,7 +463,10 @@ class ContratController extends Controller
             // $comm_parrain = unserialize($parametre->comm_parrain) ;
 
             $r = $rang > 3 ? "n" : $rang ;
-            $pourcentage = $comm_parrain["p_1_".$r];
+           
+
+            $comm  = unserialize($comm_parrain) ;
+            $pourcentage = $comm["p_1_".$r];
 
          
             Filleul::create([

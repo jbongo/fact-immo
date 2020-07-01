@@ -394,8 +394,8 @@
                                                         <td><input type="number" style="background-color:#ecf0f9" min="0" max="50" class="form-control" value="5" id="p_1_3" name="p_1_3" required></td>
                                                         <td><input type="number" style="background-color:#ecf0f9" min="0" max="50" class="form-control" value="5" id="p_1_n" name="p_1_n" required></td>
                                                         <td>&nbsp;</td>
-                                                        <td><input type="number" style="background-color:#FFF8DC " min="0"  class="form-control" value="0"  name="seuil_parr_1" required></td>
-                                                        <td><input type="number" style="background-color:#FFF8DC" min="0"  class="form-control"  value="0" name="seuil_fill_1" required></td>
+                                                        <td><input type="number" style="background-color:#FFF8DC " min="0"  class="form-control" value="0"  id="seuil_parr_1" name="seuil_parr_1" required></td>
+                                                        <td><input type="number" style="background-color:#FFF8DC" min="0"  class="form-control"  value="0" id="seuil_fill_1" name="seuil_fill_1" required></td>
                                                     </tr>
                                                     <tr>
                                                         <th class="color-primary" scope="row">2</th>
@@ -404,8 +404,8 @@
                                                         <td><input type="number" style="background-color:#ecf0f9" min="0" max="50" class="form-control" value="5" id="p_2_3" name="p_2_3" required></td>
                                                         <td><input type="number" style="background-color:#ecf0f9" min="0" max="50" class="form-control" value="5" id="p_2_n" name="p_2_n" required></td>
                                                         <td>&nbsp;</td>
-                                                        <td><input type="number" style="background-color:#FFF8DC " min="0"  class="form-control" value="30000" name="seuil_parr_2" required></td>
-                                                        <td><input type="number" style="background-color:#FFF8DC" min="0"  class="form-control" value="15000" name="seuil_fill_2" required></td>
+                                                        <td><input type="number" style="background-color:#FFF8DC " min="0"  class="form-control" value="30000" id="seuil_parr_2" name="seuil_parr_2" required></td>
+                                                        <td><input type="number" style="background-color:#FFF8DC" min="0"  class="form-control" value="15000" id="seuil_fill_2" name="seuil_fill_2" required></td>
                                                     </tr>
                                                     <tr>
                                                         <th class="color-primary" scope="row">3</th>
@@ -414,8 +414,8 @@
                                                         <td><input type="number" style="background-color:#ecf0f9" min="0" max="50" class="form-control" value="5" id="p_3_3" name="p_3_3" required></td>
                                                         <td><input type="number" style="background-color:#ecf0f9" min="0" max="50" class="form-control" value="5" id="p_3_n" name="p_3_n" required></td>
                                                         <td>&nbsp;</td>
-                                                        <td><input type="number" style="background-color:#FFF8DC " min="0"  class="form-control"   value="30000" name="seuil_parr_3" required></td>
-                                                        <td><input type="number" style="background-color:#FFF8DC" min="0"  class="form-control"  value="30000"  name="seuil_fill_3" required></td>
+                                                        <td><input type="number" style="background-color:#FFF8DC " min="0"  class="form-control"   value="30000" id="seuil_parr_3" name="seuil_parr_3" required></td>
+                                                        <td><input type="number" style="background-color:#FFF8DC" min="0"  class="form-control"  value="30000"  id="seuil_fill_3" name="seuil_fill_3" required></td>
                                                     </tr>
                                                    
                                                 </tbody>
@@ -424,14 +424,14 @@
                                     </div>
                                 </div>
                             </div>
-                                    {{-- <div class="col-lg-6 col-md-6 col-sm-6">
+                                    <div class="col-lg-6 col-md-6 col-sm-6">
                                         <div class="form-group row" id="max-starter-parrent">
-                                            <label class="col-lg-6 col-md-6 col-sm-6 col-form-label col-form-label" for="prime_max_forfait">Prime forfaitaire si le parrain est à 100% (€)<span class="text-danger">*</span></label>
+                                            <label class="col-lg-6 col-md-6 col-sm-6 col-form-label col-form-label" for="seuil_comm">Seuil de la commission de parrainage<span class="text-danger">*</span></label>
                                             <div class="col-lg-4 col-md-4 col-sm-4">
-                                                <input type="number" class="form-control" id="prime_max_forfait" name="prime_max_forfait" min="0" value="200" required>
+                                                <input type="number" class="form-control" id="seuil_comm" name="seuil_comm" min="0" value="1500" required>
                                             </div>
                                         </div>
-                                    </div> --}}
+                                    </div>
                                 </div>
 
 
@@ -717,6 +717,30 @@
             "prime_max_forfait_parrain" : $('#prime_max_forfait').val(),
             "pack_pub" : $('#pack_pub').val(),
 
+            "p_1_1" : $('#p_1_1').val(),
+            "p_1_2" : $('#p_1_2').val(),
+            "p_1_3" : $('#p_1_3').val(),
+            "p_1_n" : $('#p_1_n').val(),
+            "seuil_parr_1" : $('#seuil_parr_1').val(),
+            "seuil_fill_1" : $('#seuil_fill_1').val(),
+
+            "p_2_1" : $('#p_2_1').val(),
+            "p_2_2" : $('#p_2_2').val(),
+            "p_2_3" : $('#p_2_3').val(),
+            "p_2_n" : $('#p_2_n').val(),
+            "seuil_parr_2" : $('#seuil_parr_2').val(),
+            "seuil_fill_2" : $('#seuil_fill_2').val(),
+
+            
+            "p_3_1" : $('#p_3_1').val(),
+            "p_3_2" : $('#p_3_2').val(),
+            "p_3_3" : $('#p_3_3').val(),
+            "p_3_n" : $('#p_3_n').val(),
+            "seuil_parr_3" : $('#seuil_parr_3').val(),
+            "seuil_fill_3" : $('#seuil_fill_3').val(),
+
+            "seuil_comm" : $('#seuil_comm').val(),
+
         }
           
         // console.log(data);
@@ -739,13 +763,13 @@
                         .then(function() {
                             // window.location.href = "{{route('mandataire.index')}}";
                         })
-                        setInterval(() => {
-                            window.location.href = "{{route('mandataire.index')}}";
+                        // setInterval(() => {
+                        //     window.location.href = "{{route('mandataire.index')}}";
                             
-                        }, 5);
+                        // }, 5);
                 },
                 error: function(data) {
-                    // console.log(data);
+                    console.log(data);
                     
                     swal(
                         'Echec',
