@@ -125,23 +125,27 @@ if($("#date_encaissement").val() != ""){
          url: "encaisser/factures-stylimmo/"+facture_id ,
          data:  $("#form_encaissement").serialize(),
          success: function (result) {
+            console.log(result);
+            
                   swal(
                      'Encaissée',
                      'Vous avez encaissé la facture '+result,
                      'success'
                   )
                   .then(function() {
-                     window.location.href = "{{route('facture.index')}}";
+                     // window.location.href = "{{route('facture.index')}}";
                   })
          },
          error: function(error){
+            console.log(error);
+            
             swal(
                      'Echec',
                      'la facture '+error+' n\'a pas été encaissée',
                      'error'
                   )
                   .then(function() {
-                     window.location.href = "{{route('facture.index')}}";
+                     // window.location.href = "{{route('facture.index')}}";
                   })
             
          }

@@ -83,6 +83,11 @@ class CreateCompromisTable extends Migration
             $table->boolean('archive')->default(false);
             $table->string('motif_archive')->nullable();
 
+            // Validité parrainage
+            $table->integer('id_valide_parrain_porteur')->nullable();
+            $table->integer('id_valide_parrain_partage')->nullable();
+
+
 
             
             $table->timestamps();

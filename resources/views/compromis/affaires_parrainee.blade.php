@@ -105,26 +105,32 @@
                                     </td>        
                                                              
                                     <td> 
-                                            @if ($compromi->cloture_affaire == 0 && $compromi->demande_facture == 2)
-                                                <span class="color-success">En attente... Votre filleul doit réitérer l'affaire</span>   
-                                            {{-- @elseif($compromi->cloture_affaire == 1 && ($compromi->facture_honoraire_cree == true || $compromi->facture_honoraire_partage_cree == true)) --}}
-                                            @elseif($compromi->cloture_affaire == 0 && $compromi->demande_facture < 2)
-                                                <span class="color-primary">En attente de la facture stylimmo</span>   
 
-                                            @elseif($compromi->cloture_affaire == 1 /* && ($compromi->facture_honoraire_cree == true || $compromi->facture_honoraire_partage_cree == true)*/)
 
-                                            @if($type_user == "") 
+                                        @if ($compromi->demande_facture == 2)
+                                            @if($compromi->getFactureStylimmo()->encaissee == 0)
+                                            <span style="color: #0f0636">En attente... Facture STYL'IMMO non encaissée</span>   
+
+                                            @else
+                                                @if($type_user == "") 
                                                 <a target="blank" href="{{route('facture.preparer_facture_honoraire_parrainage',Crypt::encrypt($compromi->id))}}" data-toggle="tooltip" title="@lang('Note honoraire  ')"><i class="large material-icons color-danger">insert_drive_file</i>
-                                            @elseif($type_user == "porteur") 
-                                                <a target="blank" href="{{route('facture.preparer_facture_honoraire_parrainage',[Crypt::encrypt($compromi->id), $compromi->user_id])}}" data-toggle="tooltip" title="@lang('Note honoraire  ')"><i class="large material-icons color-danger">insert_drive_file</i>
-                                            @elseif($type_user == "partage") 
-                                                <a target="blank" href="{{route('facture.preparer_facture_honoraire_parrainage',[Crypt::encrypt($compromi->id),$compromi->agent_id])}}" data-toggle="tooltip" title="@lang('Note honoraire  ')"><i class="large material-icons color-danger">insert_drive_file</i>
-                                            @endif
+                                                @elseif($type_user == "porteur") 
+                                                    <a target="blank" href="{{route('facture.preparer_facture_honoraire_parrainage',[Crypt::encrypt($compromi->id), $compromi->user_id])}}" data-toggle="tooltip" title="@lang('Note honoraire  ')"><i class="large material-icons color-danger">insert_drive_file</i>
+                                                @elseif($type_user == "partage") 
+                                                    <a target="blank" href="{{route('facture.preparer_facture_honoraire_parrainage',[Crypt::encrypt($compromi->id),$compromi->agent_id])}}" data-toggle="tooltip" title="@lang('Note honoraire  ')"><i class="large material-icons color-danger">insert_drive_file</i>
+                                               
+                                                @endif
+                                                </a>
                                                 @if(in_array($compromi->numero_mandat, $valide_compro_id) == false)                                                
                                                     <span class="color-danger">Vous ne remplissez pas les conditions</span>  
                                                 @endif
-                                                </a>
+
                                             @endif
+                                        
+                                        @else
+                                            <span class="color-primary">Facture STYL'IMMO non disponible</span>   
+                                            
+                                        @endif
                                         
                                     </td>
                                     <td width="15%">

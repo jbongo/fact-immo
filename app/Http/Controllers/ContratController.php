@@ -168,6 +168,29 @@ class ContratController extends Controller
         
         // Modif du parrain
 
+        $comm_parrain = array();
+
+        $comm_parrain["p_1_1"] = $request->p_1_1;
+        $comm_parrain["p_1_2"] = $request->p_1_2;
+        $comm_parrain["p_1_3"] = $request->p_1_3;
+        $comm_parrain["p_1_n"] = $request->p_1_n;
+        $comm_parrain["p_2_1"] = $request->p_2_1;
+        $comm_parrain["p_2_2"] = $request->p_2_2;
+        $comm_parrain["p_2_3"] = $request->p_2_3;
+        $comm_parrain["p_2_n"] = $request->p_2_n;
+        $comm_parrain["p_3_1"] = $request->p_3_1;
+        $comm_parrain["p_3_2"] = $request->p_3_2;
+        $comm_parrain["p_3_3"] = $request->p_3_3;
+        $comm_parrain["p_3_n"] = $request->p_3_n;
+        $comm_parrain["seuil_parr_1"] = $request->seuil_parr_1;
+        $comm_parrain["seuil_fill_1"] = $request->seuil_fill_1;
+        $comm_parrain["seuil_parr_2"] = $request->seuil_parr_2;
+        $comm_parrain["seuil_fill_2"] = $request->seuil_fill_2;
+        $comm_parrain["seuil_parr_3"] = $request->seuil_parr_3;
+        $comm_parrain["seuil_fill_3"] = $request->seuil_fill_3;
+        
+        $comm_parrain = serialize($comm_parrain);
+
         if($request->a_parrain == "true" &&  $contrat->a_parrain == false ){
            
                             
@@ -175,12 +198,11 @@ class ContratController extends Controller
             $parrain = User::where('id',$request->parrain_id)->first();
         
             // on détermine le nombre d'année depuis la date de début d'activité du parrain dans le but de determiner le cycle dans le quel nous somme
-            $nb_annee = intval( (strtotime(date('Y-m-d')) - strtotime($parrain->contrat->date_deb_activite->format('Y-m-d'))) / (86400 *365) ) ;
+            $date_ent =  $parrain->contrat->date_entree->format('Y-m-d') >= "2019-01-01" ?  $parrain->contrat->date_entree : "2019-01-01";
+            $nb_annee = intval( (strtotime(date('Y-m-d')) - strtotime($date_ent)) / (86400 *365) ) ;
             $cycle_actuel = intval($nb_annee / 3 ) + 1;
         
         
-        
-            $date_deb_parrain = $parrain->contrat->date_deb_activite;
 
             if($nb_filleul > 0){
 
@@ -202,11 +224,11 @@ class ContratController extends Controller
                     $rang = 1;
                     $cycle_actuel = 1;
                 }
-                $parametre = Parametre::first();
-                $comm_parrain = unserialize($parametre->comm_parrain) ;
+                // $parametre = Parametre::first();
+                $comm_parr= unserialize($comm_parrain) ;
 
                 $r = $rang > 3 ? "n" : $rang ;
-                $pourcentage = $comm_parrain["p_1_".$r];
+                $pourcentage = $comm_parr["p_1_".$r];
 
                 // dd($pourcentage);
                 // dd($cycle_actuel);
@@ -242,28 +264,7 @@ class ContratController extends Controller
     //    return $request->p_1_1;
 
         
-    $comm_parrain = array();
-
-    $comm_parrain["p_1_1"] = $request->p_1_1;
-    $comm_parrain["p_1_2"] = $request->p_1_2;
-    $comm_parrain["p_1_3"] = $request->p_1_3;
-    $comm_parrain["p_1_n"] = $request->p_1_n;
-    $comm_parrain["p_2_1"] = $request->p_2_1;
-    $comm_parrain["p_2_2"] = $request->p_2_2;
-    $comm_parrain["p_2_3"] = $request->p_2_3;
-    $comm_parrain["p_2_n"] = $request->p_2_n;
-    $comm_parrain["p_3_1"] = $request->p_3_1;
-    $comm_parrain["p_3_2"] = $request->p_3_2;
-    $comm_parrain["p_3_3"] = $request->p_3_3;
-    $comm_parrain["p_3_n"] = $request->p_3_n;
-    $comm_parrain["seuil_parr_1"] = $request->seuil_parr_1;
-    $comm_parrain["seuil_fill_1"] = $request->seuil_fill_1;
-    $comm_parrain["seuil_parr_2"] = $request->seuil_parr_2;
-    $comm_parrain["seuil_fill_2"] = $request->seuil_fill_2;
-    $comm_parrain["seuil_parr_3"] = $request->seuil_parr_3;
-    $comm_parrain["seuil_fill_3"] = $request->seuil_fill_3;
-    
-    $comm_parrain = serialize($comm_parrain);
+   
 
     $contrat->comm_parrain = $comm_parrain;
     $contrat->seuil_comm = $request->seuil_comm;
@@ -437,7 +438,7 @@ class ContratController extends Controller
             $parrain = User::where('id',$request->parrain_id)->first();
 
             // on détermine le nombre d'année depuis la date de début d'activité du parrain dans le but de determiner le cycle dans le quel nous somme
-            $nb_annee = intval( (strtotime(date('Y-m-d')) - strtotime($parrain->contrat->date_deb_activite->format('Y-m-d'))) / (86400 *365) ) ;
+            $nb_annee = intval( (strtotime(date('Y-m-d')) - strtotime($parrain->contrat->date_entree->format('Y-m-d'))) / (86400 *365) ) ;
             $cycle_actuel = intval($nb_annee / 3 ) + 1;
 
 

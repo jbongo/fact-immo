@@ -57,12 +57,12 @@ class EvolutionFilleul extends Command
         if($filleuls != null){
 
             foreach($filleuls as $filleul){
-                $date_deb =  strtotime($filleul->user->contrat->date_deb_activite);
+                $date_entree =  strtotime($filleul->user->contrat->date_entree);
                 $rang = $filleul->rang <= 3 ? $filleul->rang : 'n';
 
                 $today = strtotime (date('Y-m-d'));
-                $diff = $today - $date_deb;
-                // echo $today; 
+                $diff = $today - $date_entree;
+               echo  $today; 
 
                 // dd(strtotime("2020-01-02") - strtotime('2020-01-01'));
                 $trois_ans = 86400*365*3;

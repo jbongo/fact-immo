@@ -138,7 +138,10 @@ Route::middleware('auth')->group(function(){
 
 
 
+    // ###### tests cronjob
+    Route::get('pourcentage_parrain/','FilleulController@pourcentage_parrain')->name('filleul.pourcentage_parrain');
 
+    
     Route::get('/', function () {
         return view('home');
     });

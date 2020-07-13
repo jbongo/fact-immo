@@ -137,6 +137,7 @@
         
     </tbody>
 </table>
+{{-- {{dd($result)}} --}}
 
 <br>
 {{-- {{dd($facture)}} --}}
@@ -174,7 +175,7 @@
             @else 
                 <tr>
                     <td style="width: 400px;">&nbsp;</td>
-                    <td style="width: 353px; color:brown">Vous n'etiez pas soumis à la TVA au moment du calcul ({{$facture->created_at->format('d-m-Y')}}) </td>
+                <td style="width: 353px; color:brown">{{number_format($facture->montant_ttc,'2','.',' ')}}  Vous n'etiez pas soumis à la TVA au moment du calcul ({{$facture->created_at->format('d/m/Y')}}) </td>
                     <td style="width: 31px;"></td>
                 </tr>
                 <tr><td>&nbsp;</td> <td>&nbsp;</td> </tr>
@@ -197,47 +198,64 @@
             <td style="width: 177px; height: 25px;"></td>
         </tr>
     </tbody>
-
 </table>
 @endif 
 <br>
+<span  style="background-color:rgb(240, 215, 248);color: #ff; " > Votre plafond HT de parrainnage sur votre filleul: <strong>{{number_format($filleul->contrat->seuil_comm,'2','.',' ') }} &euro; </strong></span> <br>
+    <span @if($result['ca_comm_parr'] > $filleul->contrat->seuil_comm)  style="background-color: #FD9090;color: #ff; " @endif> Votre CA HT de parrainnage encaissé actuel sur votre filleul : <strong>{{number_format($result["ca_comm_parr"],'2','.',' ') }} &euro; </strong></span>
+   <br> <br> <span   style="color: rgb(107, 64, 64); " >  <strong>NB: Plafond sur la période du  </strong> <span   style="color: #ff0080; " >{{$result['date_anniv']}} </span><span   style="color: rgb(107, 64, 64); ; " > (date d'anniversaire du filleul)   au  </span> <span   style="color: #ff0080; " > {{$compromis->getFactureStylimmo()->date_encaissement->format('d/m/Y')}} </span> <span   style="color: rgb(107, 64, 64);  " > (date d'encaissement de la facture STYL'IMMO)  
+    </strong></span>
+ 
+ <hr>
 {{-- Si les conditions de parrainnage sont respectées --}}
 @if($result['respect_condition'] == false)
 
-<span style="color:#ff0080">VOUS NE RESPECTEZ PAS LES CONDITIONS DE PARRAINNAGE </span> <hr>
+    @if($result['a_demission_parrain'] == true)
+        <span style="color:#ff0080">VOUS AVEZ DÉMISSIONNÉ AVANT LA DATE D'ENCAISSEMENT DE LA FACTURE STYL'IMMO </span> <hr>
+        <span style="color:#1800a3">DATE DE DÉMISSION : {{$parrain->contrat->date_demission->format('d/m/Y')}}</span> <br>
+        <span style="color:#ff0080">DATE DE D'ENCAISSEMENT : {{$compromis->getFactureStylimmo()->date_encaissement->format('d/m/Y')}}  </span> <hr>
 
+    @elseif($result['a_demission_filleul'] == true)
+        <span style="color:#ff0080">VOTRE FILLEUL A DÉMISSIONNÉ AVANT LA DATE D'ENCAISSEMENT DE LA FACTURE STYL'IMMO </span> <hr>
+        <span style="color:#1800a3">DATE DE DÉMISSION : {{$filleul->contrat->date_demission->format('d/m/Y')}}</span> <br>
+        <span style="color:#1800a3">DATE DE D'ENCAISSEMENT : {{$compromis->getFactureStylimmo()->date_encaissement->format('d/m/Y')}} </span> <hr>
+    @else
 
-<table style="height: 47px; width: 800px;"  border="1">
-    <tbody>
-    <tr style="height: 47px; width: 800px; background-color:#C4C4C4;color: green; " >
-    <td style="width: 96px;">&nbsp;</td>
-    <td style="width: 96px;">Chiffre d'affaires réalisé </td>
-    <td style="width: 96px;">Chiffre d'affaires requis </td>
-    <td style="width: 97px;">Facture Pub </td>
-    </tr>
-    <tr>
-    <td style="width: 96px;">{{$parrain->nom }} {{$parrain->prenom}} (parrain) </td>
-    <td style="width: 96px;"><span @if($result['ca_parrain'] < $result['seuil_parrain'])  style="background-color:#FD9090;color: #fffffff; " @endif> {{number_format($result["ca_parrain"],'2','.',' ')}} &euro; </span></td>
-    <td style="width: 96px;">{{number_format($result["seuil_parrain"],'2','.',' ') }} &euro;</td>
-    <td style="width: 97px;">Pas pris en compte</td>
-    </tr>
-    <tr>
-    <td style="width: 96px;">{{$filleul->nom }} {{$filleul->prenom}} (filleul) </td>
-    <td style="width: 96px;"><span @if($result['ca_filleul'] < $result['seuil_filleul'])  style="background-color:#FD9090;color: #ff; " @endif> {{number_format($result["ca_filleul"],'2','.',' ') }} &euro; </span></td>
-    <td style="width: 96px;">{{number_format($result["seuil_filleul"],'2','.',' ') }} &euro;</td>
-    <td style="width: 97px;">Pas pris en compte</td>
-    </tr>
-    </tbody>
+    <span style="color:#ff0080">VOUS NE RESPECTEZ PAS LES CONDITIONS DE PARRAINNAGE </span> <hr>
+
+    
+
+    <table style="height: 47px; width: 800px;"  border="1">
+        <tbody>
+        <tr style="height: 47px; width: 800px; background-color:#C4C4C4;color: green; " >
+            <td style="width: 96px;">&nbsp;</td>
+            <td style="width: 96px;">Chiffre d'affaires réalisé </td>
+            <td style="width: 96px;">Chiffre d'affaires requis </td>
+            <td style="width: 97px;">Facture Pub </td>
+        </tr>
+        <tr>
+            <td style="width: 96px;">{{$parrain->nom }} {{$parrain->prenom}} (parrain) </td>
+            <td style="width: 96px;"><span @if($result['ca_parrain'] < $result['seuil_parrain'])  style="background-color:#FD9090;color: #fffffff; " @endif> {{number_format($result["ca_parrain"],'2','.',' ')}} &euro; </span></td>
+            <td style="width: 96px;">{{number_format($result["seuil_parrain"],'2','.',' ') }} &euro;</td>
+            <td style="width: 97px;">Pas pris en compte</td>
+        </tr>
+        <tr>
+            <td style="width: 96px;">{{$filleul->nom }} {{$filleul->prenom}} (filleul) </td>
+            <td style="width: 96px;"><span @if($result['ca_filleul'] < $result['seuil_filleul'])  style="background-color:#FD9090;color: #ff; " @endif> {{number_format($result["ca_filleul"],'2','.',' ') }} &euro; </span></td>
+            <td style="width: 96px;">{{number_format($result["seuil_filleul"],'2','.',' ') }} &euro;</td>
+            <td style="width: 97px;">Pas pris en compte</td>
+        </tr>
+     
+        </tbody>
     </table>
-    <br>
-<span style="color:#f81803f5">Chiffre d'affaires sur la période du  {{$result["date_12"] }}  au {{$compromis->date_vente->format('d/m/Y')}} (Les 12 mois précedents la date de vente)</span> 
+        <br>
+    <span style="color:#f81803f5">Chiffre d'affaires HT sur la période du  {{$result["date_12"] }}  au {{$compromis->getFactureStylimmo()->date_encaissement->format('d/m/Y')}}  (Les 12 mois précedents la date de d'encaissement de la facture STYL'IMMO)</span> 
 
-
+    @endif
 @endif
 <br>
 
 
-<hr>
 
 @if($facture != null && $result['respect_condition'] != false)
     @if($facture->statut != "valide")
@@ -252,8 +270,6 @@
     <p><strong>{{$parrain->nom}} {{$parrain->prenom}}</strong> &nbsp; - &nbsp;<strong> SIRET : {{$parrain->siret}} </strong> &nbsp; &nbsp; <strong>{{$parrain->adresse}} {{$parrain->code_postal}} {{$parrain->ville}}</strong>
     </p>
 </div>
-
-
 
           </div>
       </div>
