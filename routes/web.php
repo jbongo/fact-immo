@@ -61,6 +61,7 @@ Route::middleware('auth')->group(function(){
     Route::get('telecharger/pdf/factures-stylimmo/{compromis_id}','FactureController@download_pdf_facture_stylimmo')->name('facture.telecharger_pdf_facture_stylimmo'); //ok
     Route::get('envoyer/factures-stylimmo/{facture}','FactureController@envoyer_facture_stylimmo')->name('facture.envoyer_facture_stylimmo');//ok
     Route::get('encaisser/factures-stylimmo/{facture}','FactureController@encaisser_facture_stylimmo')->name('facture.encaisser_facture_stylimmo');//ok
+    Route::get('reencaisser/factures-stylimmo/','FactureController@reencaisser_facture_stylimmo')->name('facture.reencaisser_facture_stylimmo');//ok
     Route::get('regler/factures-honoraire/{facture}','FactureController@regler_facture_honoraire')->name('facture.regler_facture_honoraire');//ok
 
     // factures

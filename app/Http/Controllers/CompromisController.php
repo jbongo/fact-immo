@@ -171,7 +171,7 @@ class CompromisController extends Controller
                     foreach ($compromisParrain as $compro_parrain) {
 
                         if($compro_parrain->id_valide_parrain_porteur == Auth::user()->id || $compro_parrain->id_valide_parrain_partage == Auth::user()->id){
-                            $valide_compro_id [] = $compro_parrain->numero_mandat;
+                            $valide_compro_id [] = $compro_parrain->id;
 
                         }
 

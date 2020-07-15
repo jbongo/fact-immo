@@ -378,17 +378,18 @@ public  function valider_facture_stylimmo( Request $request, $compromis)
  * @return \Illuminate\Http\Response
 */
       
-    public  function encaisser_facture_stylimmo($facture_id, Request $request)
+    public  function encaisser_facture_stylimmo($facture_id,  $date_encaissement)
     {
 
 
         $facture = Facture::where('id', $facture_id)->first();
     
         $facture->encaissee = true;
-        $facture->date_encaissement = $request->date_encaissement;
+        $facture->date_encaissement = $date_encaissement;
+        // $facture->date_encaissement = $request->date_encaissement;
         $facture->update();
 
-        Mail::to($facture->compromis->user->email)->send(new EncaissementFacture($facture));
+        // Mail::to($facture->compromis->user->email)->send(new EncaissementFacture($facture));
     //    Mail::to("gestion@stylimmo.com")->send(new EncaissementFacture($facture));
     //    return redirect()->route('facture.index')->with('ok', __("Facture ". $facture->numero ." encaissée, le mandataire a été notifié")  );
 
@@ -505,10 +506,13 @@ public  function valider_facture_stylimmo( Request $request, $compromis)
                     
                     $touch_comm = "non";
                     // On  n'a les seuils et les ca on peut maintenant faire les comparaisons     ## // on rajoutera les conditions de pack pub                           
-                    if($ca_filleul1 >= $seuil_porteur && $ca_parrain1 >= $seuil_parrain && $ca_parrain_parrainage <= $mandataire1->contrat->seuil_comm &&  $a_demission_parrain == false &&  $a_demission_filleul == false  ){
+                    if($ca_filleul1 >= $seuil_porteur && $ca_parrain1 >= $seuil_parrain && $ca_parrain_parrainage < $mandataire1->contrat->seuil_comm &&  $a_demission_parrain == false &&  $a_demission_filleul == false  ){
                         $compromis->id_valide_parrain_porteur = $parrain1->id;
                         $compromis->update();
                         $touch_comm = "oui";
+                    }else{
+                        $compromis->id_valide_parrain_porteur = null;
+                        $compromis->update();
                     }
 
                     
@@ -596,6 +600,9 @@ public  function valider_facture_stylimmo( Request $request, $compromis)
                         $touch_comm = "oui";
                        
                         $compromis->id_valide_parrain_partage = $parrain2->id;
+                        $compromis->update();
+                    }else{
+                        $compromis->id_valide_parrain_partage = null;
                         $compromis->update();
                     }
                     $retour .= "parrain : ".$parrain2->nom.' '.$parrain2->prenom." ca parrain: ".$ca_parrain2." \n  filleul porteur: ".$mandataire2->nom.' '.$mandataire2->prenom." ca filleul porteur: ".$ca_filleul2." \n parrain touche comm ? : ".$touch_comm;
@@ -2397,17 +2404,32 @@ public function valider_honoraire($action, $facture_id)
     public function export_facture()
     {
        
-        
-    
         $factures = Facture::whereIn('type',['stylimmo'])->latest()->get();
             
        
         // dd($factureStylimmos);
         
         return view ('facture.export',compact(['factures']));
-
-
        
     }
-    
+    /**
+     *  enaisser la facture stylimmo
+     *
+     * @param  int  $facture
+     * @return \Illuminate\Http\Response
+    */
+        
+    public  function reencaisser_facture_stylimmo()
+    {
+
+        $factures = Facture::where([['type','stylimmo'],['encaissee',1]])->get();
+
+        foreach ($factures as $facture) {
+            
+            $this->encaisser_facture_stylimmo($facture->id,  $facture->date_encaissement);
+        }
+        // dd($factures);
+
+        return "ok";
+    }
 }

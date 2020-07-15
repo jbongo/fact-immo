@@ -121,7 +121,7 @@
                                                
                                                 @endif
                                                 </a>
-                                                @if(in_array($compromi->numero_mandat, $valide_compro_id) == false)                                                
+                                                @if(in_array($compromi->id, $valide_compro_id) == false)                                                
                                                     <span class="color-danger">Vous ne remplissez pas les conditions</span>  
                                                 @endif
 
