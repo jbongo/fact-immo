@@ -257,7 +257,7 @@
 
 
 
-@if($facture != null && $result['respect_condition'] != false)
+@if($facture != null && $result['respect_condition'] == true)
     @if($facture->statut != "valide")
         {{-- <a href="{{route('facture.generer_honoraire_create', Crypt::encrypt($facture->id))}}" class="btn btn-default btn-rounded btn-addon btn-sm m-b-10 m-l-5"><i class="ti-loop"></i>Générer la facture</a> --}}
         <a href="{{route('facture.create_upload_pdf_honoraire', Crypt::encrypt($facture->id))}}" class="btn btn-danger btn-rounded btn-addon btn-sm m-b-10 m-l-5"><i class="ti-upload"></i>Ajouter ma facture</a>
