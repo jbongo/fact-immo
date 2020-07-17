@@ -10,6 +10,7 @@ use App\Filleul;
 use App\Parametre;
 use App\Facture;
 use App\Avoir;
+use App\Historique;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\PartageAffaire;
@@ -418,6 +419,17 @@ class CompromisController extends Controller
                 // Mail::to("gestion@stylimmo.com")->send(new PartageAffaire($compromis->user, $compromis));
             }
 
+           if( session('is_switch') == true ){
+                $action = "a crée l'affaire $compromis->numero_mandat pour  ".Auth::user()->nom." ".Auth::user()->prenom;
+                $user_id = session('admin_id');
+           }else{
+                $action = Auth::user()->nom." ".Auth::user()->prenom." a crée l'affaire $compromis->numero_mandat";
+                $user_id = Auth::user()->id;
+           }
+          
+            Historique::createHistorique( $user_id,$compromis->id,"compromis",$action );
+            
+            
         return redirect()->route('compromis.show', ['id' => Crypt::encrypt($compromis->id)]); 
     }
 
@@ -586,9 +598,18 @@ class CompromisController extends Controller
 
         // }
 
+        if( session('is_switch') == true ){
+            $action = "a modifié l'affaire $compromis->numero_mandat pour  ".Auth::user()->nom." ".Auth::user()->prenom;
+            $user_id = session('admin_id');
+       }else{
+            $action = Auth::user()->nom." ".Auth::user()->prenom." a modifié l'affaire $compromis->numero_mandat";
+            $user_id = Auth::user()->id;
+       }
+      
+        Historique::createHistorique( $user_id,$compromis->id,"compromis",$action );
     
         return redirect()->route('compromis.index')->with('ok', __("compromis modifié (mandat $mandat) ")  );
-    }
+        }
 
 
     /**
@@ -616,6 +637,16 @@ class CompromisController extends Controller
 
         $compromis->cloture_affaire = 1;
         $compromis->update();
+
+        if( session('is_switch') == true ){
+            $action = "a réitéré l'affaire $compromis->numero_mandat pour  ".Auth::user()->nom." ".Auth::user()->prenom;
+            $user_id = session('admin_id');
+       }else{
+            $action = Auth::user()->nom." ".Auth::user()->prenom." a réitéré l'affaire $compromis->numero_mandat";
+            $user_id = Auth::user()->id;
+       }
+      
+        Historique::createHistorique( $user_id,$compromis->id,"compromis",$action );
 
         return redirect()->route('compromis.index')->with('ok', __("Affaire cloturée (mandat $compromis->numero_mandat)  "));
     }
@@ -692,6 +723,16 @@ class CompromisController extends Controller
     {
         $compromis->archive = true;
         $compromis->motif_archive = $request->motif_archive;
+
+        if( session('is_switch') == true ){
+            $action = "a archivé l'affaire $compromis->numero_mandat pour  ".Auth::user()->nom." ".Auth::user()->prenom;
+            $user_id = session('admin_id');
+       }else{
+            $action = Auth::user()->nom." ".Auth::user()->prenom." a archivé l'affaire $compromis->numero_mandat";
+            $user_id = Auth::user()->id;
+       }
+      
+        Historique::createHistorique( $user_id,$compromis->id,"compromis",$action );
         return "".$compromis->update();
 
     }
@@ -707,6 +748,16 @@ class CompromisController extends Controller
     {
         $compromis->archive = false;
         $compromis->motif_archive = null;
+
+        if( session('is_switch') == true ){
+            $action = "a restauré l'affaire $compromis->numero_mandat pour  ".Auth::user()->nom." ".Auth::user()->prenom;
+            $user_id = session('admin_id');
+       }else{
+            $action = Auth::user()->nom." ".Auth::user()->prenom." a restauré l'affaire $compromis->numero_mandat";
+            $user_id = Auth::user()->id;
+       }
+      
+        Historique::createHistorique( $user_id,$compromis->id,"compromis",$action );
         return "".$compromis->update();
 
     }

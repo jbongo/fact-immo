@@ -34,7 +34,7 @@
 
                 <div class="row">
                     <div class="col-lg-8 col-md-8 col-sm-8">
-                            <form class="form-valide form-horizontal" action="{{ route('facture.deduire_pub_facture_honoraire_partage', [Crypt::encrypt($compromis->id)] ) }}" method="post">
+                            <form class="form-valide form-horizontal" action="{{ route('facture.deduire_pub_facture_honoraire_partage', [Crypt::encrypt($compromis->id), $mandataire->id] ) }}" method="post">
                                 {{ csrf_field() }}
                                 <div class="row">
 

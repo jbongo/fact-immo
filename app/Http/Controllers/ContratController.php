@@ -9,9 +9,11 @@ use App\Packpub;
 use App\Contrat;
 use App\Filleul;
 use App\Parametre;
+use App\Historique;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\CreationMandataire;
 use Illuminate\Support\Facades\Hash;
+use Auth;
 
 
 
@@ -279,6 +281,12 @@ class ContratController extends Controller
 
     $contrat->update();
 
+
+        $action = Auth::user()->nom." ".Auth::user()->prenom." a modifié le contrat de $mandataire->nom $mandataire->prenom";
+        $user_id = Auth::user()->id;
+  
+        Historique::createHistorique( $user_id,$contrat->id,"contrat",$action );
+
         return 1;
                 
     }
@@ -367,7 +375,7 @@ class ContratController extends Controller
 
 
         // return "".$request->forfait_administratif;
-        Contrat::create([
+        $contrat = Contrat::create([
               // infos basiques
             "user_id" => Crypt::decrypt($request->user_id) ,
             "forfait_entree"=> $request->forfait_administratif + $request->forfait_carte_pro,
@@ -489,6 +497,14 @@ class ContratController extends Controller
             Mail::to($admin->email)->send(new CreationMandataire($mandataire,$password)); 
         }
 
+        
+        $action = Auth::user()->nom." ".Auth::user()->prenom." a crée le contrat de $mandataire->nom $mandataire->prenom";
+        $user_id = Auth::user()->id;
+  
+        Historique::createHistorique( $user_id,$contrat->id,"contrat",$action );
+
+     
+                
         return 1;
                 
     }

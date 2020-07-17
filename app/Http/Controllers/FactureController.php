@@ -18,7 +18,7 @@ use App\Mail\EncaissementFacture;
 use PDF;
 use Illuminate\Support\Facades\File ;
 use Illuminate\Support\Facades\Storage;
-
+use App\Historique;
 
 
 class FactureController extends Controller
@@ -67,6 +67,7 @@ class FactureController extends Controller
         // return redirect()->route('compromis.index')->with('ok', __('compromis modifié')  );
 
     }
+
 
     /**
      * demande de facture stylimmo par le mandataire
@@ -117,6 +118,15 @@ class FactureController extends Controller
         Mail::to("gestion@stylimmo.com")->send(new DemandeFactureStylimmo($compromis->user));
 
 
+       if( session('is_switch') == true ){
+            $action = "a demandé une facture pour l'affaire $compromis->numero_mandat pour  ".Auth::user()->nom." ".Auth::user()->prenom;
+            $user_id = session('admin_id');
+       }else{
+            $action = Auth::user()->nom." ".Auth::user()->prenom." a demandé une facture pour l'affaire  $compromis->numero_mandat";
+            $user_id = Auth::user()->id;
+       }
+      
+        Historique::createHistorique( $user_id,$compromis->id,"compromis",$action );
 
 
         // return view ('demande_facture.demande',compact('compromis'));    
@@ -127,11 +137,11 @@ class FactureController extends Controller
 
 
 
-/**
- *  lister les demandes de facture stylimmo
- *
- * @return \Illuminate\Http\Response
-*/
+    /**
+     *  lister les demandes de facture stylimmo
+     *
+     * @return \Illuminate\Http\Response
+    */
     public  function demandes_stylimmo()
     {
         
@@ -289,6 +299,13 @@ public  function valider_facture_stylimmo( Request $request, $compromis)
     
     Mail::to($mandataire->email)->send(new EnvoyerFactureStylimmoMandataire($mandataire,$facture));
     // Mail::to("gestion@stylimmo.com")->send(new EnvoyerFactureStylimmoMandataire($mandataire,$facture));
+
+
+        $action = Auth::user()->nom." ".Auth::user()->prenom." a validé la facture stylimmo $facture->numero";
+        $user_id = Auth::user()->id;
+
+  
+    Historique::createHistorique( $user_id,$facture->id,"facture",$action );
     
     return view ('facture.generer_stylimmo',compact(['compromis','mandataire','facture']))->with('ok', __('Facture envoyée au mandataire') );
     
@@ -610,6 +627,12 @@ public  function valider_facture_stylimmo( Request $request, $compromis)
 
         }
 
+        
+        $action = Auth::user()->nom." ".Auth::user()->prenom." a encaissé la facture stylimmo  $facture->numero";
+        $user_id = Auth::user()->id;
+    
+      
+        Historique::createHistorique( $user_id,$facture->id,"facture",$action );
 
         return   $retour;
 
@@ -1585,6 +1608,17 @@ public  function deduire_pub_facture_honoraire(Request $request, $compromis)
         
         $compromis->facture_honoraire_cree = true;
         $compromis->update();
+
+        if( session('is_switch') == true ){
+            $action = "a déduis $request->nb_mois_deduire mois de pub sur la facture $facture->numero pour  ".Auth::user()->nom." ".Auth::user()->prenom;
+            $user_id = session('admin_id');
+        }else{
+            $action = Auth::user()->nom." ".Auth::user()->prenom." a déduis $request->nb_mois_deduire mois de pub sur la facture  $facture->numero";
+            $user_id = Auth::user()->id;
+        }
+      
+        Historique::createHistorique( $user_id,$facture->id,"facture",$action );
+
     }else{
         $facture = Facture::where([ ['type','honoraire'],['compromis_id',$compromis->id]])->first();
         $formule = unserialize( $facture->formule);
@@ -1625,7 +1659,6 @@ public  function deduire_pub_facture_honoraire_partage(Request $request, $compro
 //  on doit verifier que facture_honoraire_cree est false avant les modifsxxxxxxxxxxxxxxxxxxxxxxxxxxx
 // If faut creer la facture avec champs nb_mois_deduis en +
 
-   
 
 $compromis = Compromis::where('id', Crypt::decrypt($compromis))->first();
 
@@ -1637,6 +1670,7 @@ if($compromis->je_porte_affaire == 1 && $compromis->est_partage_agent == 1 && (A
  
 }else{
 // mandataire qui ne porte  pas l'affaire
+
 
     $mandataire_partage = $compromis->user;
     $mandataire = User::where('id',$compromis->agent_id)->first();
@@ -1688,6 +1722,8 @@ if($contrat->est_soumis_tva == false ){
 }
 
 // Calcul de la commission
+// $chiffre_affaire_sty = getCAStylimmo($mandataire_id, $date_deb, $date_fin);
+
 $niveau_actuel = $this->calcul_niveau($paliers, $mandataire->chiffre_affaire_sty);
 
 // dd( $mandataire_id );
@@ -1745,7 +1781,7 @@ if($compromis->je_porte_affaire == 1 && $compromis->est_partage_agent == 1 && (A
 // facture du mandataire qui ne porte pas l'affaire
 else{
 
-   
+  
 
         $montant_vnt_ht = ($compromis->frais_agence/1.2) ;
         $formule = $this->calcul_com($paliers, $montant_vnt_ht*$pourcentage_partage/100, $mandataire->chiffre_affaire_sty, $niveau_actuel-1, $mandataire);
@@ -1789,6 +1825,16 @@ else{
 }
 //  dd($formule);
 
+if( session('is_switch') == true ){
+    $action = "a déduis $request->nb_mois_deduire mois de pub sur la facture $facture->type du mandat $compromis->numero_mandat pour  ".Auth::user()->nom." ".Auth::user()->prenom;
+    $user_id = session('admin_id');
+}else{
+    $proprietaire = $facture->user->nom." ".$facture->user->prenom ;
+    $action = Auth::user()->nom." ".Auth::user()->prenom." a déduis $request->nb_mois_deduire mois de pub sur la facture  $facture->type du mandat $compromis->numero_mandat appartenant à $proprietaire ";
+    $user_id = Auth::user()->id;
+}
+
+Historique::createHistorique( $user_id,$facture->id,"facture",$action );
 
 return view ('facture.preparer_honoraire_partage',compact(['compromis','factureStylimmo','mandataire','mandataire_partage','facture','pourcentage_partage','formule']));
 
@@ -1867,6 +1913,12 @@ public function calcul_com($palier, $montant_vnt_ht, $ca, $niveau)
     return $tabs;
 }
 
+
+/**
+ * Calcul du palier actuel du mandataire en fonction de son CA STYLIMMO encaissé
+ *
+ * @return \Illuminate\Http\Response
+ */
 public function calcul_niveau($paliers, $chiffre_affaire)
 {
     $niveau = 1;
@@ -2036,6 +2088,18 @@ public function store_upload_pdf_honoraire(Request $request , $facture_id)
             $facture->statut = "en attente de validation";
             $facture->update();
     }
+    
+    if( session('is_switch') == true ){
+        $action = "a ajouté la facture $facture->numero pour  ".Auth::user()->nom." ".Auth::user()->prenom;
+        $user_id = session('admin_id');
+   }else{
+        $action = Auth::user()->nom." ".Auth::user()->prenom." a ajouté la facture $facture->numero";
+        $user_id = Auth::user()->id;
+   }
+  
+    Historique::createHistorique( $user_id,$facture->id,"facture",$action );
+
+
     return redirect()->route('facture.index')->with('ok',__("Votre facture $facture->numero est attente de validation."));
     
 }
@@ -2076,9 +2140,21 @@ public function valider_honoraire($action, $facture_id)
     if($action == 1){
         $facture->statut = "valide";
         // ##### Notifier le mandataire par mail
+     
+            $action = Auth::user()->nom." ".Auth::user()->prenom." a validé la facture $facture->numero";
+            $user_id = Auth::user()->id;
+       
+      
+            Historique::createHistorique( $user_id,$facture->id,"facture",$action );
     }else{
         $facture->statut = "refuse";
         $facture->url = null;
+        
+            $action = Auth::user()->nom." ".Auth::user()->prenom." a réfusé la facture $facture->numero";
+            $user_id = Auth::user()->id;
+   
+      
+        Historique::createHistorique( $user_id,$facture->id,"facture",$action );
        
        if(file_exists($facture->url)) unlink($facture->url);
         // ##### Notifier le mandataire par mail
@@ -2220,6 +2296,12 @@ public function valider_honoraire($action, $facture_id)
         // return $facture->reglee.'';
     //    ************* Creer un mail pour notifier le mandataire
         // Mail::to("gestion@stylimmo.com")->send(new EncaissementFacture($facture));
+       
+            $action = Auth::user()->nom." ".Auth::user()->prenom." a réglé la facture $facture->numero";
+            $user_id = Auth::user()->id;
+     
+      
+        Historique::createHistorique( $user_id,$facture->id,"facture",$action );
 
         return redirect()->route('facture.index')->with('ok', __("Facture $facture->numero reglée")  );
         
@@ -2260,6 +2342,12 @@ public function valider_honoraire($action, $facture_id)
             parrainage_partage
                 - facture_honoraire_parrainage_partage_cree
         */
+       
+        $proprietaire = $facture->user->nom." ".$facture->user->prenom ;
+        $action = Auth::user()->nom." ".Auth::user()->prenom." a récalculé la facture  $facture->type du mandat $compromis->numero_mandat appartenant à $proprietaire ";
+        $user_id = Auth::user()->id;
+
+    Historique::createHistorique( $user_id,$facture->id,"facture",$action );
 
         if($facture->type == "honoraire"){
             $compromis->facture_honoraire_cree = 0 ;
@@ -2272,6 +2360,7 @@ public function valider_honoraire($action, $facture_id)
                 if($mandataire->id == $compromis->user_id){
                     $compromis->facture_honoraire_partage_porteur_cree = 0 ;
             // dd('partage 1 ');
+            
 
                 }
                 // le mandataire qui ne porte pas l'affaire
@@ -2312,7 +2401,8 @@ public function valider_honoraire($action, $facture_id)
             return  redirect()->back()->with("ok", "La note d'honoraire n'a pas été recalculée");
         }
         
-       
+
+        
         
         $compromis->update();
         $facture->delete();
@@ -2389,9 +2479,6 @@ public function valider_honoraire($action, $facture_id)
          
         }
 
-
-        // dd($mandataires);
-
         return "OK";
     }
 
@@ -2412,6 +2499,8 @@ public function valider_honoraire($action, $facture_id)
         return view ('facture.export',compact(['factures']));
        
     }
+
+
     /**
      *  enaisser la facture stylimmo
      *

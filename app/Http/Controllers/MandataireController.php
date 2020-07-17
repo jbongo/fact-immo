@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Crypt;
 use App\Mail\CreationMandataire;
 use Illuminate\Support\Facades\Mail;
 use Auth;
+use App\Historique;
 
 
 class MandataireController extends Controller
@@ -307,8 +308,15 @@ class MandataireController extends Controller
         session(['is_switch'=> true]);
         session(['admin_id'=> Auth::user()->id]);
 
-        Auth::login($user);
         
+        Historique::create([
+            "user_id"=> Auth::user()->id,
+            "ressource_id"=> Crypt::decrypt($user_id),
+            "ressource"=> "connexion",
+            "action"=> "s'est connecté en tant que $user->nom  $user->prenom",
+        ]);
+        Auth::login($user);
+
         return redirect('home');
        
 
