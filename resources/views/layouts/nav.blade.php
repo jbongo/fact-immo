@@ -121,6 +121,7 @@
                         </ul>
                     </li>
                     <li class=""><a  href="{{route('export_facture.index')}}" class=""> <i class="large material-icons" style="font-size:20px;">vertical_align_center</i></i>Export   </a>
+                    <li class=""><a  href="{{route('historique.index')}}" class=""> <i class="large material-icons" style="font-size:20px;">access_time</i></i>Historique   </a>
                     </li>
                     @endif
                     <li><a href="{{ route('logout') }}"  onclick="event.preventDefault();

@@ -150,6 +150,9 @@ Route::middleware('auth')->group(function(){
     Route::get('/', 'HomeController@index')->name('home');       
   
     
+    // historique
+    Route::get('/historiques', 'HistoriqueController@index')->name('historique.index');       
+
 
     // Se connecter sur une autre session utilisateur
 
