@@ -632,8 +632,10 @@ public  function valider_facture_stylimmo( Request $request, $compromis)
     
       
         Historique::createHistorique( $user_id,$facture->id,"facture",$action );
+        
+        return $facture->numero;
 
-       return redirect()->route('facture.index')->with('ok', __("Facture ". $facture->numero ." encaissée, le mandataire a été notifié")  );
+    //    return redirect()->route('facture.index')->with('ok', __("Facture ". $facture->numero ." encaissée, le mandataire a été notifié")  );
 
         // return   $retour;
 
