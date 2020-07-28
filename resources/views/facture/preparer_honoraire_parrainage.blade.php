@@ -114,6 +114,12 @@
             <td style="width: 423px;"><span style="text-decoration: underline;"><strong>R&eacute;f.</strong></span><strong>:&nbsp;</strong>&nbsp; Mandat N&deg;&nbsp; {{$compromis->numero_mandat}}&nbsp; du : {{ Carbon\Carbon::parse($compromis->date_mandat)->format('d/m/Y')}}</td>
             <td style="width: 260px;height:35px"></td>
         </tr>
+        @if($compromis->getFactureStylimmo())
+        <tr>           
+            <td style="width: 423px;"><span style="text-decoration: underline;"><strong>Facture stylimmo N&deg;:</strong> </span> &nbsp; {{$compromis->getFactureStylimmo()->numero}}&nbsp;</td>
+            <td style="width: 260px;height:35px"></td>
+        </tr>
+        @endif
         <tr>
             <td style="width: 423px;"><span style="text-decoration: underline;"><strong>Filleul:</strong></span> &nbsp;  <span class="color-warning"> {{$filleul->nom}} {{$filleul->prenom}}&nbsp; </span></td>
             <td style="width: 260px; height:35px"></td>
@@ -286,7 +292,8 @@
 
 <hr>
 <div style="text-align: center; font-size: 11px; margin-right: 25%; margin-left: 25%; margin-top: 20px;">
-    <p><strong>{{$parrain->nom}} {{$parrain->prenom}}</strong> &nbsp; - &nbsp;<strong> SIRET : {{$parrain->siret}} </strong> &nbsp; &nbsp; <strong>{{$parrain->adresse}} {{$parrain->code_postal}} {{$parrain->ville}}</strong>
+    <p><strong>{{$parrain->nom}} {{$parrain->prenom}}</strong> &nbsp; - &nbsp;<strong> SIRET : {{$parrain->siret}} </strong> &nbsp; &nbsp; <strong>{{$parrain->adresse}} {{$parrain->code_postal}} {{$parrain->ville}}</strong> 
+        @if($facture != null) {{$facture->id}} @endif
     </p>
 </div>
 

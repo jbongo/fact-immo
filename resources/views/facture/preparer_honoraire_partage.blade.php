@@ -124,6 +124,13 @@
             <td style="width: 423px;"><span style="text-decoration: underline;"><strong>R&eacute;f.</strong></span><strong>:&nbsp;</strong>&nbsp; Mandat N&deg;&nbsp; {{$compromis->numero_mandat}}&nbsp; du : {{ Carbon\Carbon::parse($compromis->date_mandat)->format('d/m/Y')}}</td>
             <td style="width: 260px;height:35px"></td>
         </tr>
+        @if($compromis->getFactureStylimmo())
+        <tr>
+            <td style="width: 423px;"><span style="text-decoration: underline;"><strong>Facture stylimmo N&deg;:</strong> </span> &nbsp; {{$compromis->getFactureStylimmo()->numero}}&nbsp;</td>
+
+            <td style="width: 260px;height:35px"></td>
+        </tr>
+        @endif
         {{-- @if(Auth()->user()->role !="admin")        --}}
         <tr>
             <td style="width: 423px;"><span style="text-decoration: underline;"><strong>Mandataire avec qui je partage:</strong> </span> &nbsp; {{$mandataire_partage->nom}} {{$mandataire_partage->prenom}}&nbsp;</td>

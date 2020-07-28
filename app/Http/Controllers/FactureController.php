@@ -15,6 +15,8 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\DemandeFactureStylimmo;
 use App\Mail\EnvoyerFactureStylimmoMandataire;
 use App\Mail\EncaissementFacture;
+use App\Mail\NotifierValidationHonoraire;
+
 use PDF;
 use Illuminate\Support\Facades\File ;
 use Illuminate\Support\Facades\Storage;
@@ -2147,6 +2149,7 @@ public function valider_honoraire($action, $facture_id)
             $action = Auth::user()->nom." ".Auth::user()->prenom." a validé la facture $facture->numero";
             $user_id = Auth::user()->id;
        
+            Mail::to($facture->user->email)->send(new NotifierValidationHonoraire($facture));
       
             Historique::createHistorique( $user_id,$facture->id,"facture",$action );
     }else{
@@ -2156,6 +2159,7 @@ public function valider_honoraire($action, $facture_id)
             $action = Auth::user()->nom." ".Auth::user()->prenom." a réfusé la facture $facture->numero";
             $user_id = Auth::user()->id;
    
+        Mail::to($facture->user->email)->send(new NotifierValidationHonoraire($facture));
       
         Historique::createHistorique( $user_id,$facture->id,"facture",$action );
        
