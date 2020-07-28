@@ -86,8 +86,8 @@ if( $compromis->getFactureStylimmo()->date_encaissement->format('Y-m-d') > $y_en
     $date_fin = $compromis->getFactureStylimmo()->date_encaissement->format('Y-m-d'); 
     $date_anniv = $m_d_entree_fr.'/'.($y_encaiss-1);
 }
-// calcul du de la comm recu par le parrain de date_deb à date_fin 
-$ca_comm_parr = Facture::where([['user_id',$parrain_id],['reglee',1]])->whereIn('type',['parrainage','parrainage_partage'])->whereBetween('date_reglement',[$date_deb,$date_fin])->sum('montant_ht');
+// calcul du de la comm recu par le parrain de date_deb à date_fin sur le filleul
+$ca_comm_parr = Facture::where([['user_id',$parrain_id],['filleul_id',$filleul_id],['reglee',1]])->whereIn('type',['parrainage','parrainage_partage'])->whereBetween('date_reglement',[$date_deb,$date_fin])->sum('montant_ht');
 
 
 

@@ -200,7 +200,7 @@
             @else 
                 <tr>
                     <td style="width: 400px;">&nbsp;</td>
-                <td style="width: 353px; color:brown">{{number_format($facture->montant_ttc,'2','.',' ')}}  Vous n'etiez pas soumis à la TVA au moment du calcul ({{$facture->created_at->format('d/m/Y')}}) </td>
+                <td style="width: 353px; color:brown"> Vous n'etiez pas soumis à la TVA au moment du calcul ({{$facture->created_at->format('d/m/Y')}}) </td>
                     <td style="width: 31px;"></td>
                 </tr>
                 <tr><td>&nbsp;</td> <td>&nbsp;</td> </tr>
@@ -293,7 +293,7 @@
 <hr>
 <div style="text-align: center; font-size: 11px; margin-right: 25%; margin-left: 25%; margin-top: 20px;">
     <p><strong>{{$parrain->nom}} {{$parrain->prenom}}</strong> &nbsp; - &nbsp;<strong> SIRET : {{$parrain->siret}} </strong> &nbsp; &nbsp; <strong>{{$parrain->adresse}} {{$parrain->code_postal}} {{$parrain->ville}}</strong> 
-        @if($facture != null) {{$facture->id}} @endif
+      
     </p>
 </div>
 
