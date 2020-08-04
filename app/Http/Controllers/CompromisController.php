@@ -488,7 +488,21 @@ class CompromisController extends Controller
     public function update(Request $request, Compromis $compromis)
     {
         // dd($request->all());
+
+        if($request->a_avoir == true && $compromis->getFactureStylimmo() != null ){
+            $facture = $compromis->getFactureStylimmo();
+             $motif = "Modification du compromis";
+             $numero = Facture::whereIn('type',['avoir','stylimmo'])->max('numero') + 1;
  
+            //  dd($facture);
+             $avoir = Facture::store_avoir($facture->id, $numero, $motif);
+             $action= "a généré une facture d'avoir pendant la modification de l'affaire ".$compromis->numero_mandat;
+             Historique::createHistorique( Auth::user()->id, $avoir->id,"facture",$action );
+        
+             
+        }
+
+
         if($request->partage == "Non"  || ($request->partage == "Oui" ) ){
             if($request->numero_mandat != $compromis->numero_mandat){
                 $request->validate([
@@ -605,8 +619,14 @@ class CompromisController extends Controller
             $action = Auth::user()->nom." ".Auth::user()->prenom." a modifié l'affaire $compromis->numero_mandat";
             $user_id = Auth::user()->id;
        }
+       Historique::createHistorique( $user_id,$compromis->id,"compromis",$action );
       
-        Historique::createHistorique( $user_id,$compromis->id,"compromis",$action );
+       if($request->a_avoir == true && $compromis->getFactureStylimmo() != null ){
+
+        return redirect()->route('facture.generer_avoir_stylimmo',[Crypt::encrypt($avoir->id)])->with('ok', __("compromis modifié (mandat $mandat) ")  );
+       
+            
+       }
     
         return redirect()->route('compromis.index')->with('ok', __("compromis modifié (mandat $mandat) ")  );
         }
@@ -723,6 +743,8 @@ class CompromisController extends Controller
     {
         $compromis->archive = true;
         $compromis->motif_archive = $request->motif_archive;
+        $compromis->demande_facture = 0;
+        $compromis->facture_stylimmo_valide = 0;
 
         if( session('is_switch') == true ){
             $action = "a archivé l'affaire $compromis->numero_mandat pour  ".Auth::user()->nom." ".Auth::user()->prenom;
@@ -733,6 +755,22 @@ class CompromisController extends Controller
        }
       
         Historique::createHistorique( $user_id,$compromis->id,"compromis",$action );
+
+        if($compromis->getFactureStylimmo() != null ){
+            $facture = $compromis->getFactureStylimmo();
+             $motif = "Archivage du compromis";
+             $numero = Facture::whereIn('type',['avoir','stylimmo'])->max('numero') + 1;
+ 
+            //  dd($facture);
+             $avoir = Facture::store_avoir($facture->id, $numero, $motif);
+             $action= "a généré une facture d'avoir pendant l'archivage de l'affaire ".$compromis->numero_mandat;
+             Historique::createHistorique( Auth::user()->id, $avoir->id,"facture",$action );
+        
+             $compromis->update();
+             return "avoir";
+             
+        }
+
         return "".$compromis->update();
 
     }

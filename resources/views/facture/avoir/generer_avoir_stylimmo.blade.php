@@ -2,20 +2,10 @@
 
 @section('content')
     @section ('page_title')
-@if ($compromis->facture_stylimmo_valide == true)
-Facture N° {{$facture->numero}}
-@else 
-    @if(Auth()->user()->role == "admin")
-        Valider la facture {{$numero}}
-    @else 
-        Prévisualisation 
-        <style type="text/css">
-        body {
-            background-color:#A7B9CB;
-        }
-        </style>
-    @endif
-@endif
+
+Avoir N° {{$avoir->numero}}
+
+
  @endsection
 
 <div class="row"> 
@@ -31,11 +21,11 @@ Facture N° {{$facture->numero}}
           <div class="card alert">
          <div class="row">
             @if ($compromis->facture_stylimmo_valide == true)
-            <div class="col-lg-3 col-md-3  col-sm-5 col-xs-8">
+            {{-- <div class="col-lg-3 col-md-3  col-sm-5 col-xs-8">
                <a  href="{{route('facture.envoyer_facture_stylimmo', Crypt::encrypt($facture->id))}}"  class="btn btn-danger btn-flat btn-addon  m-b-10 m-l-5 " id="ajouter"><i class="ti-email"></i>Renvoyer au mandataire</a>
-            </div>
+            </div> --}}
             <div class="col-lg-3 col-md-3 col-sm-6">
-               <a href="{{route('facture.telecharger_pdf_facture_stylimmo', Crypt::encrypt($compromis->id))}}"  class="btn btn-default btn-flat btn-addon  m-b-10 m-l-5 " id="ajouter"><i class="ti-download"></i>Télécharger</a>
+               <a href="{{route('facture.telecharger_pdf_avoir', Crypt::encrypt($avoir->id))}}"  class="btn btn-default btn-flat btn-addon  m-b-10 m-l-5 " id="ajouter"><i class="ti-download"></i>Télécharger</a>
             </div>
             @else 
             @if(Auth()->user()->role == "admin")
@@ -122,8 +112,12 @@ Facture N° {{$facture->numero}}
 <table style="height: 53px;" width="50%">
     <tbody>
         <tr>
-            <td style="width: 343px;"><span style="color: #ff0000;">Merci d'indiquer le num&eacute;ro de facture en r&eacute;f&eacute;rence du virement.</span></td>
-            <td style="width: 344px;"><span style="text-decoration: underline; font-size:20px"><strong>FACTURE N&deg; @if(Auth()->user()->role == "admin") @if ($compromis->facture_stylimmo_valide == true)  {{$facture->numero}} @else {{$numero}}</strong></span>@endif @else xxxx @endif</td>
+            <td style="width: 343px;"><span style="color: #ff0000;"></td>
+            <td style="width: 344px;"><span style="text-decoration: underline; font-size:20px"><strong>AVOIR N&deg; {{$avoir->numero}}</td>
+        </tr>
+        <tr>
+            <td style="width: 343px;"><span style="color: #ff0000;"></td>
+            <td style="width: 344px;"><span style="color: #ff0000;"><strong>Avoir sur la facture N° {{$facture->numero}} du {{$facture->date_facture->format('d/m/Y')}}</td>
         </tr>
     </tbody>
 </table>
@@ -200,17 +194,17 @@ Facture N° {{$facture->numero}}
         <tr>
             <td style="width: 400px;">&nbsp;</td>
             <td style="width: 153px;">TOTAL H.T :</td>
-            <td style="width: 231px;">{{number_format($compromis->frais_agence/1.2 ,2,',',' ')}} &euro;</td>
+            <td style="width: 231px;">{{number_format($facture->montant_ttc/1.2 ,2,',',' ')}} &euro;</td>
         </tr>
         <tr>
             <td style="width: 400px;">&nbsp;</td>
             <td style="width: 153px;">T.V.A 20% :</td>
-            <td style="width: 231px;">{{number_format(($compromis->frais_agence/1.2) *0.2,2,',',' ')}} &euro;</td>
+            <td style="width: 231px;">{{number_format(($facture->montant_ttc/1.2) *0.2,2,',',' ')}} &euro;</td>
         </tr>
         <tr>
             <td style="width: 400px;">&nbsp;</td>
             <td style="width: 153px;">TOTAL T.T.C :</td>
-            <td style="width: 231px;">{{number_format($compromis->frais_agence,2,',',' ')}} &euro;</td>
+            <td style="width: 231px;">{{number_format($facture->montant_ttc,2,',',' ')}} &euro;</td>
         </tr>
     </tbody>
 </table>
@@ -219,9 +213,9 @@ Facture N° {{$facture->numero}}
 <table style="height: 42px; width: 50%;">
     <tbody>
         <tr style="height: 25px;">
-            <td style="width: 349px; height: 25px;">Valeur en votre aimable r&egrave;glement de :</td>
-            <td style="width: 117px; height: 25px;">{{number_format($compromis->frais_agence,2,',',' ')}} &euro; TTC</td>
-            <td style="width: 177px; height: 25px;">@if ($compromis->facture_stylimmo_valide == true)<span style="color: #ff0000;font-size:17px">&nbsp;R&eacute;f &agrave; rappeler: {{$facture->numero}}</span>@endif</td>
+            <td style="width: 300px; height: 25px;">Valeur en votre aimable r&egrave;glement de :</td>
+            <td style="width: 117px; height: 25px;">{{number_format($facture->montant_ttc,2,',',' ')}}  &euro; TTC</td>
+            <td style="width: 177px; height: 25px;"></td>
         </tr>
     </tbody>
 

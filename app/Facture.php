@@ -20,8 +20,37 @@ class Facture extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function create_avoir ($facture_id){
+
+  /**
+     * sauvegarde de facture d'avoir
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public static function store_avoir ($facture_id, $numero, $motif){
+     
+
+        $facture = Facture::where('id',$facture_id)->first();
+
+        $avoir = Facture::create([
+            "numero"=> $numero,
+            "user_id"=> $facture->user_id,
+            "facture_id"=> $facture->id,
+            "compromis_id"=> $facture->compromis_id,
+            "type"=> "avoir",
+            "motif"=> $motif,
+            "encaissee"=> false,
+            "montant_ht"=>  $facture->montant_ht,
+            "montant_ttc"=> $facture->montant_ttc,
+            "date_facture"=> date('Y-m-d H:i:s'),
+
+        ]);
+
+        $facture->a_avoir = true;
+        $facture->update();
+
+        return $avoir;
         
+
     }
     public function avoir(){
         return $this->hasOne(Avoir::class);

@@ -63,7 +63,7 @@ class FactureController extends Controller
     
         $compromis = Compromis::where('id',Crypt::decrypt($compromis_id))->first();
         $mandataire = User::where('id',$compromis->user_id)->first();
-        $numero = Facture::where([ ['type','stylimmo']])->max('numero') + 1;
+        $numero = Facture::whereIn('type',['avoir','stylimmo'])->max('numero') + 1;
 
         return view ('demande_facture.demande',compact('compromis','mandataire','numero'));  
         // return redirect()->route('compromis.index')->with('ok', __('compromis modifié')  );
@@ -329,7 +329,8 @@ public  function valider_facture_stylimmo( Request $request, $compromis)
 
         $numero = "";
         
-        $numero = Facture::where([ ['type','stylimmo']])->max('numero') + 1;
+        $numero = Facture::whereIn('type',['avoir','stylimmo'])->max('numero') + 1;
+
         $lastdate = Facture::where('numero',$numero-1)->select('date_facture')->first();
             
 
@@ -353,14 +354,16 @@ public  function valider_facture_stylimmo( Request $request, $compromis)
         $mandataire = $compromis->user;
  
         $facture = Facture::where([ ['type','stylimmo'],['compromis_id',$compromis->id]])->first();
-        $filename = " F".$facture->numero." ".$facture->montant_ttc."€ ".strtoupper($mandataire->nom)." ".strtoupper(substr($mandataire->prenom,0,1)).".pdf" ;
+        $filename = "F".$facture->numero." ".$facture->montant_ttc."€ ".strtoupper($mandataire->nom)." ".strtoupper(substr($mandataire->prenom,0,1)).".pdf" ;
+        return response()->download($facture->url,$filename);
+        
     
         // dd('ddd');
-        $pdf = PDF::loadView('facture.pdf_stylimmo',compact(['compromis','mandataire','facture']));
-        $path = storage_path('app/public/factures/'.$filename);
-        // $pdf->save($path);
-        // $pdf->download($path);
-       return $pdf->download($filename);
+    //     $pdf = PDF::loadView('facture.pdf_stylimmo',compact(['compromis','mandataire','facture']));
+    //     $path = storage_path('app/public/factures/'.$filename);
+    //     // $pdf->save($path);
+    //     // $pdf->download($path);
+    //    return $pdf->download($filename);
       
     }
     
@@ -770,7 +773,7 @@ public  function preparer_facture_honoraire_parrainage($compromis_id, $id_parrai
 {
 
     $compromis = Compromis::where('id',Crypt::decrypt($compromis_id))->first();
-    // dd($compromis->est_partage_agent == true);
+    // dd($id_parrain);
     $deux_filleuls = false;
     //  On détermine le filleul ou les filleuls s'il y'a partage entre les filleuls (même parrain)
     if($compromis->est_partage_agent == true){
@@ -867,7 +870,7 @@ public  function preparer_facture_honoraire_parrainage($compromis_id, $id_parrai
                         $facture = Facture::create([
                             "numero"=> null,
                             "user_id"=> $parrain->id,
-                            "filleul_id"=> $id_parrain,
+                            "filleul_id"=> $filleul->id,
                             "compromis_id"=> $compromis->id,
                             "type"=> "parrainage",
                             "encaissee"=> false,
@@ -1141,6 +1144,7 @@ public  function preparer_facture_honoraire_parrainage($compromis_id, $id_parrai
             $facture = Facture::create([
                 "numero"=> null,
                 "user_id"=> $parrain_id['parrain_id'],
+                "filleul_id"=> $filleul->id,
                 "compromis_id"=> $compromis->id,
                 "type"=> "parrainage",
                 "encaissee"=> false,
@@ -1168,6 +1172,7 @@ public  function preparer_facture_honoraire_parrainage($compromis_id, $id_parrai
                 $facture = Facture::create([
                     "numero"=> null,
                     "user_id"=> $parrain_id['parrain_id'],
+                    "filleul_id"=> $filleul->id,
                     "compromis_id"=> $compromis->id,
                     "type"=> "parrainage",
                     "encaissee"=> false,
@@ -1189,79 +1194,6 @@ public  function preparer_facture_honoraire_parrainage($compromis_id, $id_parrai
 
 
 
-// // Factures de parrainage dans le cas d'un partage entre deux mandataires
-// public  function preparer_facture_honoraire_parrainage_partage(Compromis $compromis )
-// {
-//     // if($compromis->parrain_partage_id != null){
-
-//         $filleul = Filleul::where([ ['parrain_id',$compromis->parrain_partage_id],['user_id', $compromis->agent_id] ])->first();
-//     // }
-
-// // xxxxxxxxxxxxxxxxxxxxxx
-
-// //     dd($compromis->user_id);
-//     $parrain_id = $filleul->parrain_id ; 
-//     $pourcentage_parrain = $filleul->pourcentage; 
-
-
-//     $parrain = User::where('id',$parrain_id)->first();
-
-//     // On vérifie si filleul est le porteur d'affaire
-//     if($compromis->user_id == $filleul->user_id){
-//         // On fait la facture du parrain de celui qui a crée l'affaire
-//         if($compromis->facture_honoraire_parrainage_cree == false ){
-//             $tva = 1.2;
-            
-//             $facture = Facture::create([
-//                 "numero"=> null,
-//                 "user_id"=> $parrain->id,
-//                 "compromis_id"=> $compromis->id,
-//                 "type"=> "parrainage",
-//                 "encaissee"=> false,
-//                 "montant_ht"=>  round ( ( ($compromis->frais_agence * $compromis->pourcentage_agent/100) *$pourcentage_parrain/100 )/$tva ,2),
-//                 "montant_ttc"=> round( ($compromis->frais_agence * $compromis->pourcentage_agent/100) *$pourcentage_parrain/100,2),
-//             ]);
-//             // dd($facture);
-//             // on incremente le chiffre d'affaire du parrain
-//             $parrain->chiffre_affaire += $facture->montant_ttc ; 
-//             $parrain->update(); 
-            
-//             $compromis->facture_honoraire_parrainage_cree = true;
-//             $compromis->update();
-//         }else{
-//             $facture = Facture::where([ ['type','parrainage'],['compromis_id',$compromis->id]])->first();
-//         }
-//     // On vérifie si filleul est le partage
-//     }elseif($compromis->agent_id == $filleul->user_id){
-//         // On fait la facture du parrain du partage
-//         if($compromis->facture_honoraire_parrainage_partage_cree == false ){
-//             $tva = 1.2;
-            
-//             $facture = Facture::create([
-//                 "numero"=> null,
-//                 "user_id"=> $parrain->id,
-//                 "compromis_id"=> $compromis->id,
-//                 "type"=> "parrainage_partage",
-//                 "encaissee"=> false,
-//                 "montant_ht"=>  round ( ( ($compromis->frais_agence * (100 - $compromis->pourcentage_agent)/100)*$pourcentage_parrain/100 )/$tva ,2),
-//                 "montant_ttc"=> round( ($compromis->frais_agence * (100 - $compromis->pourcentage_agent)/100)*$pourcentage_parrain/100,2),
-//             ]);
-//             // dd($facture);
-//             // on incremente le chiffre d'affaire du parrain
-//             $parrain->chiffre_affaire += $facture->montant_ttc ; 
-//             $parrain->update(); 
-            
-//             $compromis->facture_honoraire_parrainage_partage_cree = true;
-//             $compromis->update();
-//         }else{
-//             $facture = Facture::where([ ['type','parrainage_partage'],['compromis_id',$compromis->id]])->first();
-//         }
-//     }
-
-//     return view ('facture.preparer_honoraire_parrainage',compact(['compromis','parrain','filleul','facture','pourcentage_parrain']));
-
-// }
-
 public  function store_facture_honoraire_parrainage(Compromis $compromis, Filleul $filleul)
 {
     
@@ -1281,6 +1213,7 @@ public  function store_facture_honoraire_parrainage(Compromis $compromis, Filleu
             $facture = Facture::create([
                 "numero"=> null,
                 "user_id"=> $parrain->id,
+                "filleul_id"=> $filleul->id,
                 "compromis_id"=> $compromis->id,
                 "type"=> "parrainage",
                 "encaissee"=> false,
@@ -1304,6 +1237,7 @@ public  function store_facture_honoraire_parrainage(Compromis $compromis, Filleu
             $facture = Facture::create([
                 "numero"=> null,
                 "user_id"=> $parrain->id,
+                "filleul_id"=> $filleul->id,
                 "compromis_id"=> $compromis->id,
                 "type"=> "parrainage_partage",
                 "encaissee"=> false,
@@ -2177,6 +2111,8 @@ public function valider_honoraire($action, $facture_id)
 
 
 
+
+
 // ############## FACTURES D'AVOIR ###############
 
     /**
@@ -2187,7 +2123,9 @@ public function valider_honoraire($action, $facture_id)
     public function create_avoir($facture_id)
     {
         $facture = Facture::where('id',  Crypt::decrypt($facture_id))->first();
-       return view('facture.add_avoir', compact('facture') );
+        $numero = Facture::whereIn('type', ['avoir','stylimmo'])->max('numero') + 1;
+
+       return view('facture.avoir.add_avoir', compact(['facture','numero']) );
     }
 
     /**
@@ -2199,29 +2137,24 @@ public function valider_honoraire($action, $facture_id)
     {
         
         $request->validate([
-            'montant' => 'required|numeric',
-            'date' => 'required|date',
-            'motif' => 'required|string',
+            'numero' => 'required|numeric|unique:factures',
+
         ]);
         
+       $avoir =  Facture::store_avoir($request->facture_id,$request->numero, $request->motif);
+      
+ 
         $facture = Facture::where('id',$request->facture_id)->first();
-        $avoir = Avoir::create([
-            "numero" => "av".$facture->numero,
-            "facture_id"=> $facture->id,
-            "montant"=> $request->montant,
-            "date"=> $request->date,
-            "motif"=> $request->motif,
-        ]);
+        $compromis = $facture->compromis;
+        $mandataire = $facture->user;
+        $numero = $request->numero;
+        
+            // return redirect()->route('facture.index')->with('ok', __('Avoir crée')  );
 
-        if($avoir != null ){
-            $facture->a_avoir = true;
-            $facture->update();
-            return redirect()->route('facture.index')->with('ok', __('Avoir crée')  );
-        }else{
-            return redirect()->route('facture.index')->with('ok', __('Avoir non crée')  );
+            return redirect()->route('facture.generer_avoir_stylimmo', Crypt::encrypt($avoir->id));
 
-        }
-       
+              
+        // return view ('facture.avoir.generer_avoir_stylimmo',compact(['compromis','numero','mandataire','facture']));
       
     }
 
@@ -2244,19 +2177,36 @@ public function valider_honoraire($action, $facture_id)
 
     
     /**
-     * construction de la vue pdf d'une facture d'avoir
+     * Visualisation de la facture d'avoir
      *
      * @return \Illuminate\Http\Response
      */
-    public function generer_pdf_avoir($facture_id)
+    public function generer_avoir_stylimmo($avoir_id)
     {
-        $avoir = Avoir::where('id',Crypt::decrypt($avoir_id))->first();
-        $facture = $avoir->facture ; 
+        $avoir = Facture::where('id',Crypt::decrypt($avoir_id))->first();
+        $facture = Facture::where('facture_id',$avoir->facture_id)->first() ; 
         $compromis = $facture->compromis;
         $mandataire = $compromis->user;
         
       
-        return view ('facture.generer_pdf_avoir',compact(['compromis','mandataire','facture','avoir']));
+        return view ('facture.avoir.generer_avoir_stylimmo',compact(['compromis','mandataire','facture','avoir']));
+    }
+
+    
+    /**
+     * construction de la vue pdf d'une facture d'avoir
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function generer_pdf_avoir($avoir_id)
+    {
+        $avoir = Facture::where('id',Crypt::decrypt($avoir_id))->first();
+        $facture = Facture::where('facture_id',$avoir->facture_id)->first() ; 
+        $compromis = $facture->compromis;
+        $mandataire = $facture->user;
+        
+      
+        return view ('facture.avoir.pdf_avoir_stylimmo',compact(['compromis','mandataire','facture','avoir']));
     }
 
 /**
@@ -2269,11 +2219,11 @@ public function valider_honoraire($action, $facture_id)
     public  function download_pdf_avoir($avoir_id)
     {
 
-        $avoir = Avoir::where('id', Crypt::decrypt($avoir_id))->first();
-        $facture = $avoir->facture;
+        $avoir = Facture::where('id', Crypt::decrypt($avoir_id))->first();
+        $facture = Facture::where('facture_id',$avoir->facture_id)->first();
         $compromis = $facture->compromis;
-        $mandataire = $compromis->user;
-        $pdf = PDF::loadView('facture.pdf_avoir',compact(['compromis','mandataire','facture','avoir']));
+        $mandataire = $facture->user;
+        $pdf = PDF::loadView('facture.avoir.pdf_avoir_stylimmo',compact(['compromis','mandataire','facture','avoir']));
         $path = storage_path('app/public/avoirs/avoir.pdf');
         $pdf->save($path);
     //    return  $pdf->download($path);

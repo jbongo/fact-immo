@@ -235,14 +235,27 @@ if($("#motif_archive").val() != ""){
          url: "compromis/archiver/"+archive_id ,
          data:  $("#form_archive").serialize(),
          success: function (result) {
-            swal(
+             if(result =="avoir"){
+                swal(
+                'Archivée, Avoir STYL\'IMMO généré',
+                'Vous retrouverez votre affaire dans les archives!',
+                'success'
+                )
+                .then(function() {
+                window.location.href = "{{route('compromis.index')}}";
+                })
+             }else{
+                swal(
                 'Archivée',
                 'Vous retrouverez votre affaire dans les archives!',
                 'success'
-            )
-            .then(function() {
-                window.location.href = "{{route('compromis.index')}}";
-            })
+                )
+                .then(function() {
+                    window.location.href = "{{route('compromis.index')}}";
+                })
+             }
+           
+            
         
          },
          error: function(error){

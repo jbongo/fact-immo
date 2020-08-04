@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
 @section ('page_title')
-Création de facture d'avoir <span class="color-warning">(AV{{ $facture->numero }})</span> 
+Création de facture d'avoir sur la facture STYL'IMMO  <span class="color-warning">({{ $facture->numero }})</span> 
 @endsection
 <div class="row">
    <div class="col-lg-12 col-md-12 col-sm-12">
@@ -13,7 +13,7 @@ Création de facture d'avoir <span class="color-warning">(AV{{ $facture->numero 
       @endif      
       <div class="card">
          <div class="col-lg-12">
-            <a href="{{route('pack_pub.index')}}" class="btn btn-warning btn-flat btn-addon m-b-10 m-l-5"><i class="ti-angle-double-left"></i>@lang('Liste des factures')</a>
+            <a href="{{route('facture.index')}}" class="btn btn-warning btn-flat btn-addon m-b-10 m-l-5"><i class="ti-angle-double-left"></i>@lang('Liste des factures')</a>
          </div>
          <div class="card-body">
             <div class="form-validation">
@@ -28,19 +28,19 @@ Création de facture d'avoir <span class="color-warning">(AV{{ $facture->numero 
 
                     <div class="col-lg-offset-2  col-md-offset-2 col-sm-offset-2 col-lg-4 col-md-4 col-sm-4">
                         <div class="form-group row">
-                            <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="montant">Montant de l'avoir<span class="text-danger">*</span> </label>
+                            <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="numero">Numéro de l'avoir<span class="text-danger">*</span> </label>
                             <div class="col-lg-8 col-md-8 col-sm-8">
-                               <input type="number" min="0" max="{{ $facture->montant_ttc }}" class="form-control {{ $errors->has('montant') ? ' is-invalid' : '' }}" value="{{old('montant')}}" id="montant" name="montant" required >
-                               @if ($errors->has('montant'))
+                               <input type="number"  class="form-control {{ $errors->has('numero') ? ' is-invalid' : '' }}" value="{{$numero}}" id="numero" name="numero" required >
+                               @if ($errors->has('numero'))
                                <br>
                                <div class="alert alert-warning ">
-                                  <strong>{{$errors->first('montant')}}</strong> 
+                                  <strong>{{$errors->first('numero')}}</strong> 
                                </div>
                                @endif   
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-4 col-md-4 col-sm-4">
+                    {{-- <div class="col-lg-4 col-md-4 col-sm-4">
                          <div class="form-group row">
                             <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="date">date <span class="text-danger">*</span></label>
                             <div class="col-lg-8 col-md-8 col-sm-8">
@@ -53,17 +53,17 @@ Création de facture d'avoir <span class="color-warning">(AV{{ $facture->numero 
                                @endif 
                             </div>
                          </div>
-                    </div>
+                    </div> --}}
                     
                     </div>
                     <div class="row">
 
                         <div class=" col-lg-8 col-md-8 col-sm-8">
                             <div class="form-group row">
-                                <label class="col-lg-5 col-md-5 col-sm-5 control-label" for="motif">Motifs de l'avoir <span class="text-danger">*</span></label>
+                                <label class="col-lg-5 col-md-5 col-sm-5 control-label" for="motif">Motifs de l'avoir </label>
                                 <div class="col-lg-7 col-md-7 col-sm-7">
-                                    <textarea  class="form-control {{ $errors->has('motif') ? ' is-invalid' : '' }}" value="{{old('motif')}}" name="motif" id="motif" cols="30" rows="10">
-
+                                    <textarea  class="form-control {{ $errors->has('motif') ? ' is-invalid' : '' }}" name="motif" id="motif" cols="30" rows="10">
+                                       {{old('motif') ? old('motif') : ''}}
                                     </textarea>
                                     @if ($errors->has('motif'))
                                     <br>

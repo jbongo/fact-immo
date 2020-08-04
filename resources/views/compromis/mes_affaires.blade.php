@@ -57,7 +57,7 @@
                                     </td>  
                                     @endif 
                                     <td width="" >
-                                        @if($compromi->getFactureStylimmo()!=null)
+                                        @if($compromi->getFactureStylimmo()!=null && $compromi->facture_stylimmo_valide != 0 )
                                         <a class="color-info" title="Télécharger la facture stylimmo"  href="{{route('facture.telecharger_pdf_facture_stylimmo', Crypt::encrypt($compromi->id))}}"  class="  m-b-10 m-l-5 " id="ajouter">{{$compromi->getFactureStylimmo()->numero}} <i class="ti-download"></i> </a>
                                         @else 
                                             <span class="color-warning">En attente ..</span>                                            
@@ -135,6 +135,7 @@
                                                 <span class="color-warning">En attente de validation..</span>                                            
                                             @else 
                                             <a href="{{route('facture.telecharger_pdf_facture_stylimmo', Crypt::encrypt($compromi->id))}}"  class="btn btn-warning btn-flat btn-addon  m-b-10 m-l-5 " id="ajouter"><i class="ti-download"></i>Télécharger</a>
+                                            <a href="{{$compromi->getFactureStylimmo()->url}}" >Téléchargerxxxx</a>
                                             @endif
                                         @endif
                                     </td>                                

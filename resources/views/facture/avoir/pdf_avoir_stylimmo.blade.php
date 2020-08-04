@@ -29,7 +29,7 @@
 <table style="height: 30px; width: 20%">
     <tbody>
         <tr>
-            <td style="width: 216px;">Bagnols sur C&egrave;ze, le @if($facture->date_facture != null) {{$facture->date_facture->format('d/m/Y')}} @else{{$facture->created_at->format('d/m/Y')}}  @endif</td>
+            <td style="width: 216px;">Bagnols sur C&egrave;ze, le @if($avoir->date_facture != null) {{$avoir->date_facture->format('d/m/Y')}} @else{{$avoir->created_at->format('d/m/Y')}}  @endif</td>
             {{-- <td style="width: 194px;"></td> --}}
         </tr>
     </tbody>
@@ -38,8 +38,12 @@
 <table style="height: 53px;" width="50%">
     <tbody>
         <tr>
-            <td style="width: 443px;"><span style="color: #ff0000;">Merci d'indiquer le num&eacute;ro de facture en r&eacute;f&eacute;rence du virement.</span></td>
-            <td style="width: 344px;"><span style="text-decoration: underline;font-size:20px"><strong>FACTURE D'AVOIR N&deg; {{$facture->numero}} EN REMBOURSEMENT DE LA FACTURE N&deg;  {{$facture->numero}}</strong></span></td>
+            <td style="width: 443px;"><span style="color: #ff0000;"></span></td>
+            <td style="width: 344px;"><span style="text-decoration: underline;font-size:20px"><strong>AVOIR N&deg; {{$avoir->numero}}</strong></span></td>
+        </tr>
+        <tr>
+            <td style="width: 343px;"><span style="color: #ff0000;"></td>
+            <td style="width: 344px;"><span style="color: #ff0000;"><strong>Avoir sur la facture N° {{$facture->numero}} du {{$facture->date_facture->format('d/m/Y')}}</td>
         </tr>
     </tbody>
 </table>
@@ -123,17 +127,17 @@
         <tr>
             <td style="width: 400px;">&nbsp;</td>
             <td style="width: 160px;">TOTAL H.T :</td>
-            <td style="width: 100px; text-align:right;" >- {{number_format($facture->montant_ht,2,',',' ')}} &euro;</td>
+            <td style="width: 100px; text-align:right;" > {{number_format($facture->montant_ht,2,',',' ')}} &euro;</td>
         </tr>
         <tr>
             <td style="width: 400px;">&nbsp;</td>
             <td style="width: 160px;">T.V.A 20% :</td>
-            <td style="width: 100px; text-align:right;" >- {{number_format($facture->montant_ht * 0.2,2,',',' ')}} &euro;</td>
+            <td style="width: 100px; text-align:right;" > {{number_format($facture->montant_ht * 0.2,2,',',' ')}} &euro;</td>
         </tr>
         <tr>
             <td style="width: 400px;">&nbsp;</td>
             <td style="width: 160px;">TOTAL T.T.C:</td>
-            <td style="width: 100px; text-align:right;" >- {{number_format($facture->montant_ttc,2,',',' ')}} &euro;</td>
+            <td style="width: 100px; text-align:right;" > {{number_format($facture->montant_ttc,2,',',' ')}} &euro;</td>
         </tr>
     </tbody>
 </table>
@@ -143,8 +147,8 @@
     <tbody>
         <tr style="height: 25px;">
             <td style="width: 300px; height: 25px;">Valeur en votre aimable r&egrave;glement de :</td>
-            <td style="width: 200px; height: 25px;">{{number_format($compromis->frais_agence,2,'.',' ')}} &euro; TTC</td>
-            <td style="width: 187px; height: 25px;"><span style="color: #ff0000; font-size:18px; font-weight:bold">&nbsp;R&eacute;f &agrave; rappeler: {{$facture->numero}}</span></td>
+            <td style="width: 200px; height: 25px;">{{number_format($facture->montant_ttc,2,',',' ')}}  &euro; TTC</td>
+            <td style="width: 187px; height: 25px;"></td>
         </tr>
     </tbody>
 

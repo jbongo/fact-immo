@@ -129,9 +129,9 @@
                                        {{-- Avoir --}}
                                         <td width="" >
                                             @if($facture->a_avoir == 0)
-                                                <a href="{{route('facture.avoir.create', Crypt::encrypt($facture->id))}}"  class="btn btn-info  btn-flat btn-addon  m-b-10 m-l-5 " id=""><i class="ti-link"></i>créer</a>
+                                                <a href="{{route('facture.avoir.create', Crypt::encrypt($facture->id))}}" target="_blank"  class="btn btn-info  btn-flat btn-addon  m-b-10 m-l-5 " id=""><i class="ti-link"></i>créer</a>
                                             @else
-                                                <a href="{{route('facture.avoir.show', Crypt::encrypt($facture->id))}}"  class="btn btn-danger btn-flat btn-addon m-b-10 m-l-5 " id=""><i class="ti-file"></i>Voir facture</a>
+                                                <a href="{{route('facture.generer_avoir_stylimmo', Crypt::encrypt($facture->id))}}"  class="btn btn-danger btn-flat btn-addon m-b-10 m-l-5 " id=""><i class="ti-file"></i>Voir facture</a>
                                             @endif
                                         </td>
                                     </tr> 

@@ -77,12 +77,17 @@ Route::middleware('auth')->group(function(){
     Route::post('deduire-pub/factures-honoraire/{compromis}','FactureController@deduire_pub_facture_honoraire')->name('facture.deduire_pub_facture_honoraire');//ok
     Route::post('deduire-pub/factures-honoraire-partage/{compromis}/{mandataire_id?}','FactureController@deduire_pub_facture_honoraire_partage')->name('facture.deduire_pub_facture_honoraire_partage');//ok
     // Route::get('generer/pdf/factures-honoraire/','FactureController@generer_pdf_facture_honoraire')->name('facture.pdf.generer_facture_honoraire');
+
+
     // Facture d'avoir
     Route::get('/factures/avoir/create/{facture_id}','FactureController@create_avoir')->name('facture.avoir.create');
     Route::post('/factures/avoir/store/','FactureController@store_avoir')->name('facture.avoir.store');
     Route::get('/factures/avoir/show/{facture_id}','FactureController@show_avoir')->name('facture.avoir.show');
-    Route::get('generer/pdf/avoir/','FactureController@generer_pdf_avoir')->name('facture.pdf.generer_avoir');
+    Route::get('generer/pdf/avoir/{facture_id}','FactureController@generer_pdf_avoir')->name('facture.pdf.generer_avoir');
+    Route::get('generer/avoir/stylimmo/{facture_id}','FactureController@generer_avoir_stylimmo')->name('facture.generer_avoir_stylimmo');
     Route::get('telecharger/pdf/avoir/{avoir_id}','FactureController@download_pdf_avoir')->name('facture.telecharger_pdf_avoir'); //ok
+
+
 
     // ## Creation des factures d'honoraires
     Route::get('facture/honoraire/generer/create/{facture_id}','FactureController@generer_facture_honoraire_create')->name('facture.generer_honoraire_create'); 

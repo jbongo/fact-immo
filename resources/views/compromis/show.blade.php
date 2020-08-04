@@ -38,7 +38,7 @@ Détail de l'affaire de {{$compromis->user->prenom}} {{$compromis->user->nom}}
             <br><br><hr>
 			<div class="card-body">
                 
-                <form class="form-valide3" action="{{ route('compromis.update',$compromis->id) }}" enctype="multipart/form-data" method="post">
+                <form class="form-valide" action="{{ route('compromis.update',$compromis->id) }}" enctype="multipart/form-data" method="post">
                         {{ csrf_field() }}
                         <div class="panel-body">
                             <fieldset class="col-md-12">
@@ -581,6 +581,12 @@ Détail de l'affaire de {{$compromis->user->prenom}} {{$compromis->user->nom}}
                         </fieldset>
                     </div>
                 @endif
+
+                @php $a_facture= false; if($compromis->getFactureStylimmo() != null) $a_facture = true; @endphp
+
+                <input type="hidden" id="a_facture" name="a_facture" value="{{$a_facture}}">
+                <input type="hidden" id="a_avoir" name="a_avoir" value="false">
+
                     <div class="form-validation">
                         <div class="form-group row" style="text-align: center; margin-top: 50px;">
                             <div class="col-lg-8 ml-auto">
@@ -588,6 +594,9 @@ Détail de l'affaire de {{$compromis->user->prenom}} {{$compromis->user->nom}}
                             </div>
                         </div>
                     </div>
+                    
+                    
+
                 </form>
 		</div>
 	</div>
@@ -597,6 +606,7 @@ Détail de l'affaire de {{$compromis->user->prenom}} {{$compromis->user->nom}}
 @section('js-content')
 
 <script>
+
     $('#adresse1_vendeur').attr('required', 'required');
     $('#code_postal_vendeur').attr('required', 'required');
     $('#ville_vendeur').attr('required', 'required');
@@ -738,4 +748,61 @@ $('#modifier_pdf_compromis').click(function (){
 
 </script>
 
+{{-- si le compromis a une facture stylimmo, on demande la s'il faut générer l'avoir --}}
+
+<script>
+ 
+        
+      
+
+
+            $.ajaxSetup({
+                headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
+            })
+            $('[data-toggle="tooltip"]').tooltip()
+
+            $('form').on('click','.enregistrer',function(e) {
+
+                if($('#a_facture').val() == true){
+
+                
+                let that = $(this)
+                e.preventDefault()
+                const swalWithBootstrapButtons = swal.mixin({
+                confirmButtonClass: 'btn btn-success',
+                cancelButtonClass: 'btn btn-danger',
+                buttonsStyling: false,
+                })
+
+            swalWithBootstrapButtons({
+                title: 'Voulez-vous générer un avoir ?',
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#DD6B55',
+                confirmButtonText: '@lang('Oui')',
+                cancelButtonText: '@lang('Non')',
+            
+            }).then((result) => {
+
+
+                if (result.value) {
+                    $('#a_avoir').val(true);
+                   
+                    
+                    $('.form-valide').submit();
+                    
+                } else if (result.dismiss === swal.DismissReason.cancel)
+                {
+                    $('.form-valide').submit();
+                
+                }
+
+            })
+            }
+            
+        })
+      
+
+
+</script>
 @endsection
