@@ -2186,8 +2186,24 @@ public function valider_honoraire($action, $facture_id)
         $avoir = Facture::where('id',Crypt::decrypt($avoir_id))->first();
         $facture = Facture::where('facture_id',$avoir->facture_id)->first() ; 
         $compromis = $facture->compromis;
-        $mandataire = $compromis->user;
+        $mandataire = $avoir->user;
+        $filename = "FAVOIR ".$avoir->numero." ".$avoir->montant_ttc."€ ".strtoupper($mandataire->nom)." ".strtoupper(substr($mandataire->prenom,0,1)).".pdf" ;
+
         
+          // on sauvegarde la facture dans le repertoire du mandataire
+            $path = storage_path('app/public/'.$mandataire->id.'/avoirs');
+
+            if(!File::exists($path))
+                File::makeDirectory($path, 0755, true);
+            
+            $pdf = PDF::loadView('facture.avoir.pdf_avoir_stylimmo',compact(['compromis','mandataire','facture','avoir']));
+            
+            $path = $path.'/'.$filename;
+            $pdf->save($path);
+            
+            $avoir->url = $path;
+            
+            $avoir->update();
       
         return view ('facture.avoir.generer_avoir_stylimmo',compact(['compromis','mandataire','facture','avoir']));
     }
@@ -2222,13 +2238,18 @@ public function valider_honoraire($action, $facture_id)
         $avoir = Facture::where('id', Crypt::decrypt($avoir_id))->first();
         $facture = Facture::where('facture_id',$avoir->facture_id)->first();
         $compromis = $facture->compromis;
-        $mandataire = $facture->user;
-        $pdf = PDF::loadView('facture.avoir.pdf_avoir_stylimmo',compact(['compromis','mandataire','facture','avoir']));
-        $path = storage_path('app/public/avoirs/avoir.pdf');
-        $pdf->save($path);
-    //    return  $pdf->download($path);
-        // dd('ddd');
-       return $pdf->download('facture.pdf');
+        $mandataire = $avoir->user;
+
+    
+        $filename = "FAVOIR".$avoir->numero." ".$avoir->montant_ttc."€ ".strtoupper($mandataire->nom)." ".strtoupper(substr($mandataire->prenom,0,1)).".pdf" ;
+        return response()->download($avoir->url,$filename);
+
+    //     $pdf = PDF::loadView('facture.avoir.pdf_avoir_stylimmo',compact(['compromis','mandataire','facture','avoir']));
+    //     $path = storage_path('app/public/avoirs/avoir.pdf');
+    //     $pdf->save($path);
+    // //    return  $pdf->download($path);
+    //     // dd('ddd');
+    //    return $pdf->download('facture.pdf');
       
     }
 

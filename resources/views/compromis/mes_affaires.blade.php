@@ -135,7 +135,7 @@
                                                 <span class="color-warning">En attente de validation..</span>                                            
                                             @else 
                                             <a href="{{route('facture.telecharger_pdf_facture_stylimmo', Crypt::encrypt($compromi->id))}}"  class="btn btn-warning btn-flat btn-addon  m-b-10 m-l-5 " id="ajouter"><i class="ti-download"></i>Télécharger</a>
-                                            <a href="{{$compromi->getFactureStylimmo()->url}}" >Téléchargerxxxx</a>
+                                         
                                             @endif
                                         @endif
                                     </td>                                

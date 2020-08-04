@@ -489,7 +489,7 @@ class CompromisController extends Controller
     {
         // dd($request->all());
 
-        if($request->a_avoir == true && $compromis->getFactureStylimmo() != null ){
+        if($request->a_avoir == "true" && $compromis->getFactureStylimmo() != null ){
             $facture = $compromis->getFactureStylimmo();
              $motif = "Modification du compromis";
              $numero = Facture::whereIn('type',['avoir','stylimmo'])->max('numero') + 1;
@@ -621,7 +621,7 @@ class CompromisController extends Controller
        }
        Historique::createHistorique( $user_id,$compromis->id,"compromis",$action );
       
-       if($request->a_avoir == true && $compromis->getFactureStylimmo() != null ){
+       if($request->a_avoir == "true" && $compromis->getFactureStylimmo() != null ){
 
         return redirect()->route('facture.generer_avoir_stylimmo',[Crypt::encrypt($avoir->id)])->with('ok', __("compromis modifié (mandat $mandat) ")  );
        
@@ -629,7 +629,7 @@ class CompromisController extends Controller
        }
     
         return redirect()->route('compromis.index')->with('ok', __("compromis modifié (mandat $mandat) ")  );
-        }
+    }
 
 
     /**
