@@ -53,6 +53,7 @@ class Facture extends Model
 
     }
     public function avoir(){
-        return $this->hasOne(Avoir::class);
+        // $avoir = Facture::
+        return $this->hasOne(Fac::class);
     }
 }
