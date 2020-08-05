@@ -400,7 +400,7 @@ public  function valider_facture_stylimmo( Request $request, $compromis)
  * @return \Illuminate\Http\Response
 */
       
-    public  function encaisser_facture_stylimmo($facture_id, Request $request )
+    public  function encaisser_facture_stylimmo($facture_id, $date_encaissement )
     {
 
 
@@ -408,10 +408,10 @@ public  function valider_facture_stylimmo( Request $request, $compromis)
     
         $facture->encaissee = true;
         // $facture->date_encaissement = $date_encaissement;
-        $facture->date_encaissement = $request->date_encaissement;
+        $facture->date_encaissement = $date_encaissement;
         $facture->update();
 
-        Mail::to($facture->compromis->user->email)->send(new EncaissementFacture($facture));
+        // Mail::to($facture->compromis->user->email)->send(new EncaissementFacture($facture));
     //    Mail::to("gestion@stylimmo.com")->send(new EncaissementFacture($facture));
 
 

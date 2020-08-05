@@ -582,9 +582,12 @@ Détail de l'affaire de {{$compromis->user->prenom}} {{$compromis->user->nom}}
                     </div>
                 @endif
 
-                @php $a_facture= false; if($compromis->getFactureStylimmo() != null) $a_facture = true; @endphp
+                @php
+                    $droit_avoir= false; 
+                    if($compromis->getFactureStylimmo() != null && $compromis->getFactureStylimmo()->encaissee == 0 && $compromis->cloture_affaire == 0) $droit_avoir = true; 
+                @endphp
 
-                <input type="hidden" id="a_facture" name="a_facture" value="{{$a_facture}}">
+                <input type="hidden" id="droit_avoir" name="droit_avoir" value="{{$droit_avoir}}">
                 <input type="hidden" id="a_avoir" name="a_avoir" value="false">
 
                     <div class="form-validation">
@@ -763,7 +766,7 @@ $('#modifier_pdf_compromis').click(function (){
 
             $('form').on('click','.enregistrer',function(e) {
 
-                if($('#a_facture').val() == true){
+                if($('#droit_avoir').val() == true){
 
                 
                 let that = $(this)
@@ -801,8 +804,6 @@ $('#modifier_pdf_compromis').click(function (){
             }
             
         })
-      
-
 
 </script>
 @endsection

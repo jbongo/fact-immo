@@ -30,6 +30,7 @@ class Compromis extends Model
     public function getFactureStylimmo(){
 
         $facture = Facture::where([['compromis_id',$this->id],['type','stylimmo']])->first();
+        // $facture = Facture::where([['compromis_id',$this->id],['type','stylimmo'],['a_avoir',false]])->first();
         return $facture;
     }
     public function getHonoPorteur(){
