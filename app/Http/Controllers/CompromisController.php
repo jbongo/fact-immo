@@ -317,9 +317,17 @@ class CompromisController extends Controller
         //  dd($request->all());
         // return $request->partage_reseau ;
 
-   // on force le format des dates à cause des vieux navigateurs
-   $date = date_create($request->date_mandat);
-   $date_mandat = $date->format('Y-m-d');
+
+    // on force le format des dates à cause des vieux navigateurs
+    $date = date_create($request->date_mandat);
+    $date_s = date_create($request->date_signature);
+    $date_v = date_create($request->date_vente);
+
+    
+    $date_mandat = $date->format('Y-m-d');
+    $date_signature = $date_s->format('Y-m-d');
+    $date_vente = $date_v->format('Y-m-d');
+     
     
 
         if($request->partage == "Non"  || ($request->partage == "Oui" &&  $request->je_porte_affaire == "on" ) ){
@@ -363,8 +371,8 @@ class CompromisController extends Controller
                 "charge"=>$request->charge,
                 "net_vendeur"=>$request->net_vendeur,
                 "scp_notaire"=>$request->scp_notaire,
-                "date_vente"=>$request->date_vente,
-                "date_signature"=>$request->date_signature,
+                "date_vente"=>$date_vente,
+                "date_signature"=>$date_signature,
                 "observations"=>$request->observations,
                 
                 
@@ -495,7 +503,13 @@ class CompromisController extends Controller
     {
         // on force le format des dates à cause des vieux navigateurs
         $date = date_create($request->date_mandat);
+        $date_s = date_create($request->date_signature);
+        $date_v = date_create($request->date_vente);
+
+        
         $date_mandat = $date->format('Y-m-d');
+        $date_signature = $date_s->format('Y-m-d');
+        $date_vente = $date_v->format('Y-m-d');
          
        
         if($request->a_avoir == "true" && $compromis->getFactureStylimmo() != null && $compromis->cloture_affaire == 0){
@@ -555,12 +569,12 @@ class CompromisController extends Controller
 
             // Modification de la date de vente et notification par mail
            if($compromis->date_vente != null){
-                if($compromis->date_vente->format('Y-m-d') != $request->date_vente){
+                if($compromis->date_vente->format('Y-m-d') != $date_vente){
                     
                     Mail::to("gestion@stylimmo.com")->send(new ModifCompromis($compromis, $request,"admin"));
                 }
            }else{
-                $compromis->date_vente = $request->date_vente;
+                $compromis->date_vente = $date_vente;
            }
 
            if ($compromis->est_partage_agent == true && $compromis->agent_id != null){
@@ -568,10 +582,10 @@ class CompromisController extends Controller
                 Mail::to($user_partage->email)->send(new ModifCompromis($compromis, $request,"mandataire"));
 
            }
-           $compromis->date_vente = $request->date_vente;
+           $compromis->date_vente = $date_vente;
            $compromis->pourcentage_agent = $request->pourcentage_agent;
 
-            $compromis->date_signature = $request->date_signature;
+            $compromis->date_signature = $date_signature;
             $compromis->observations = $request->observations;
 
 

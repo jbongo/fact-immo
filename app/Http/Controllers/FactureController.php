@@ -79,10 +79,19 @@ class FactureController extends Controller
      */
     public function store_demande_facture(Request $request, $compromis_id)
     {
+            // on force le format des dates à cause des vieux navigateurs
+           
+            $date_s = date_create($request->date_signature);
+            $date_v = date_create($request->date_vente);
+    
+            
+
+            $date_signature = $date_s->format('Y-m-d');
+            $date_vente = $date_v->format('Y-m-d');
 
     
         $compromis = Compromis::where('id',Crypt::decrypt($compromis_id))->first();
-        $compromis->date_vente = $request->date_vente;
+        $compromis->date_vente = $date_vente;
 
         // Si le compromis est ajouté lors de la demande
         if($request->hasFile('pdf_compromis') ){
@@ -98,7 +107,7 @@ class FactureController extends Controller
         }
         
         // dd($compromis);
-        $compromis->date_signature = $request->date_signature;
+        $compromis->date_signature = $date_signature;
 
         // 0 = facture non demandée, 1= facture demandée en attente de validation, 2 = demande traitée par stylimmo
         $compromis->demande_facture = 1;
@@ -1895,7 +1904,11 @@ public function calcul_niveau($paliers, $chiffre_affaire)
 public function generer_pdf_facture_honoraire(Request $request, $facture_id)
 {
 
-   
+       // on force le format des dates à cause des vieux navigateurs
+       $date = date_create($request->date);
+       $date = $date->format('Y-m-d');
+
+
     $facture = Facture::where('id',  Crypt::decrypt($facture_id))->first();
     $formule = unserialize( $facture->formule);
 // dd($facture->user);
@@ -1915,7 +1928,7 @@ public function generer_pdf_facture_honoraire(Request $request, $facture_id)
 
 
     $facture->numero = $request->numero ;
-    $facture->date_facture = $request->date ;
+    $facture->date_facture = $date ;
     $facture->statut = "valide";
 
     // on sauvegarde la facture dans le repertoire du mandataire
@@ -1982,7 +1995,11 @@ public function create_upload_pdf_honoraire($facture_id)
  */
 public function store_upload_pdf_honoraire(Request $request , $facture_id)
 {
-    
+        // on force le format des dates à cause des vieux navigateurs
+        $date = date_create($request->date_facture);
+        $date_facture = $date->format('Y-m-d');
+
+
     $facture = Facture::where('id',  Crypt::decrypt($facture_id))->first();
 
     $check_numero = Facture::where([['user_id',$facture->user_id],['numero',$request->numero_facture]])->first();
@@ -2023,7 +2040,7 @@ public function store_upload_pdf_honoraire(Request $request , $facture_id)
         
             $facture->url = $path;
             $facture->numero = $request->numero_facture;
-            $facture->date_facture = $request->date_facture;
+            $facture->date_facture = $date_facture;
             $facture->statut = "en attente de validation";
             $facture->update();
     }
