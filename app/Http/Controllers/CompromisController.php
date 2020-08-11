@@ -323,9 +323,15 @@ class CompromisController extends Controller
     $date_s = date_create($request->date_signature);
     $date_v = date_create($request->date_vente);
 
+    if($request->date_signature != null){
+        $date_s = date_create($request->date_signature);
+        $date_signature = $date_s->format('Y-m-d');
+    }else{
+        $date_signature = null;
+    }
+
     
     $date_mandat = $date->format('Y-m-d');
-    $date_signature = $date_s->format('Y-m-d');
     $date_vente = $date_v->format('Y-m-d');
      
     
@@ -503,14 +509,20 @@ class CompromisController extends Controller
     {
         // on force le format des dates à cause des vieux navigateurs
         $date = date_create($request->date_mandat);
-        $date_s = date_create($request->date_signature);
         $date_v = date_create($request->date_vente);
 
-        
-        $date_mandat = $date->format('Y-m-d');
-        $date_signature = $date_s->format('Y-m-d');
+        if($request->date_signature != null){
+            $date_s = date_create($request->date_signature);
+            $date_signature = $date_s->format('Y-m-d');
+        }else{
+            $date_signature = null;
+        }
+
+
+
         $date_vente = $date_v->format('Y-m-d');
-         
+        $date_mandat = $date->format('Y-m-d');
+ 
        
         if($request->a_avoir == "true" && $compromis->getFactureStylimmo() != null && $compromis->cloture_affaire == 0){
             $facture = $compromis->getFactureStylimmo();
