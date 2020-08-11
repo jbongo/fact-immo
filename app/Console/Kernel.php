@@ -24,8 +24,11 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('evolutionFilleul')
-                 ->hourly();
+        $schedule->command('command:evolutionFilleul')
+                 ->daily();
+        $schedule->command('command:updatetva')
+                 ->everyMinute();
+                 
     }
 
     /**

@@ -30,6 +30,7 @@
                                     {{-- <th>@lang('Date Mandat')</th> --}}
                                     <th>@lang('Partage')</th>
                                     <th>@lang('Facture Styl')</th>
+                                    <th>@lang('Etat facture')</th>
 
                                     <th>@lang('Action') </th>
                                 </tr>
@@ -138,7 +139,18 @@
                                          
                                             @endif
                                         @endif
-                                    </td>                                
+                                    </td>
+                                    <td  style="">
+                                        @if($compromi->getFactureStylimmo() !=null && $compromi->getFactureStylimmo()->encaissee == true )
+                                            {{-- @if($compromi->demande_facture == 0 ) --}}
+                                                <span style="color:#0ca558">Encaissée</span>
+                                                                                
+                                        @else 
+                                        <span style="color:#ff0633 ">Non encaissée </span>
+                                         
+                                            {{-- @endif --}}
+                                        @endif
+                                    </td>                                 
                                   
                                     <td width="15%">
                                             <a href="{{route('compromis.show',Crypt::encrypt($compromi->id))}}" data-toggle="tooltip" title="@lang('Détails  ')"><i class="large material-icons color-info">visibility</i></a> 

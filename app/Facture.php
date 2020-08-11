@@ -53,7 +53,9 @@ class Facture extends Model
 
     }
     public function avoir(){
-        // $avoir = Facture::
-        return $this->hasOne(Fac::class);
+        $avoir = Facture::where([['facture_id',$this->id,['type','avoir']]])->first();
+      
+      
+        return $avoir;
     }
 }

@@ -2184,7 +2184,7 @@ public function valider_honoraire($action, $facture_id)
     public function generer_avoir_stylimmo($avoir_id)
     {
         $avoir = Facture::where('id',Crypt::decrypt($avoir_id))->first();
-        $facture = Facture::where('facture_id',$avoir->facture_id)->first() ; 
+        $facture = Facture::where('id',$avoir->facture_id)->first() ; 
         $compromis = $facture->compromis;
         $mandataire = $avoir->user;
         $filename = "FAVOIR ".$avoir->numero." ".$avoir->montant_ttc."€ ".strtoupper($mandataire->nom)." ".strtoupper(substr($mandataire->prenom,0,1)).".pdf" ;
@@ -2217,7 +2217,7 @@ public function valider_honoraire($action, $facture_id)
     public function generer_pdf_avoir($avoir_id)
     {
         $avoir = Facture::where('id',Crypt::decrypt($avoir_id))->first();
-        $facture = Facture::where('facture_id',$avoir->facture_id)->first() ; 
+        $facture = Facture::where('id',$avoir->facture_id)->first() ; 
         $compromis = $facture->compromis;
         $mandataire = $facture->user;
         

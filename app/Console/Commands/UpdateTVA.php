@@ -37,8 +37,13 @@ class UpdateTVA extends Command
      */
     public function handle()
     {
-        $tva = TVA::all();
+        TVA::create([
+            "tva_actuelle"=>15,
+            "date_debut_tva_actuelle"=>date('Y-m-d'),
+            "date_fin_tva_actuelle"=>date('Y-m-d'),
+            "tva_prochaine"=>18,
+            "date_debut_tva_prochaine"=>date('Y-m-d'),
+        ]);
 
-        dd ($tva);
     }
 }

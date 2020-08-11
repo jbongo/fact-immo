@@ -219,11 +219,11 @@
                                                                     <input class="form-control" type="number" min="0" max="0" step="0.10" value="0" id="percent_starter1" name="percent_starter1" readonly>
                                                                 </div>
                                                                 <div class="form-group">
-                                                                    <label for="ca_min_starter1">CA min (€): </label>
+                                                                    <label for="ca_min_starter1">CA min (€) : </label>
                                                                     <input class="form-control" type="number" value="0" id="ca_min_starter1" name="ca_min_starter1" readonly>
                                                                 </div>
                                                                 <div class="form-group">
-                                                                    <label for="ca_max_starter1">CA max (€): </label>
+                                                                    <label for="ca_max_starter1">CA max (€) : </label>
                                                                     <input class="form-control" type="number" min="0" value="50000" id="ca_max_starter1" name="ca_max_starter1" />
                                                                 </div>
                                                             </div>
@@ -252,11 +252,11 @@
                                                                 <input class="form-control" type="number" min="0" max="{{$percent_diff}}" step="0.10" value="{{$pourcent_plus}}" id="percent_starter{{$niveau}}" name="percent_starter{{$niveau}}" >
                                                             </div>
                                                             <div class="form-group">
-                                                                <label for="ca_min_starter{{$niveau}}">CA min (€): </label>
+                                                                <label for="ca_min_starter{{$niveau}}">CA min (€) : </label>
                                                                 <input class="form-control" type="number" value="{{$ca_min}}" id="ca_min_starter{{$niveau}}" name="ca_min_starter{{$niveau}}" readonly >
                                                             </div>
                                                             <div class="form-group">
-                                                                <label for="ca_max_starter{{$niveau}}">CA max (€): </label>
+                                                                <label for="ca_max_starter{{$niveau}}">CA max (€) : </label>
                                                                 <input class="form-control" type="number" min="0" value="{{$ca_max}}" id="ca_max_starter{{$niveau}}" name="ca_max_starter{{$niveau}}" />
                                                             </div>
                                                             @if ($niveau == $nb_palier_starter+1 )
@@ -336,15 +336,15 @@
                                                                 <input class="form-control" type="text" value="1" id="level_expert1" name="level_expert1" readonly>
                                                             </div>
                                                             <div class="form-group">
-                                                                <label for="percent_expert1">% en +: </label>
+                                                                <label for="percent_expert1">% en + : </label>
                                                                 <input class="form-control" type="number" min="0" max="0" step="0.10" value="0" id="percent_expert1" name="percent_expert1" readonly>
                                                             </div>
                                                             <div class="form-group">
-                                                                <label for="ca_min_expert1">CA min (€): </label>
+                                                                <label for="ca_min_expert1">CA min (€) : </label>
                                                                 <input class="form-control" type="number" value="0" id="ca_min_expert1" name="ca_min_expert1" readonly>
                                                             </div>
                                                             <div class="form-group">
-                                                                <label for="ca_max_expert1">CA max (€): </label>
+                                                                <label for="ca_max_expert1">CA max (€) : </label>
                                                                 <input class="form-control" type="number" min="0" value="50000" id="ca_max_expert1" name="ca_max_expert1" />
                                                             </div>
                                                         </div>
@@ -373,11 +373,11 @@
                                                                 <input class="form-control" type="number" min="0" max="{{$percent_diff}}" step="0.10" value="{{$pourcent_plus}}" id="percent_expert{{$niveau}}" name="percent_expert{{$niveau}} " >
                                                             </div>
                                                             <div class="form-group">
-                                                                <label for="ca_min_expert{{$niveau}}">CA min (€): </label>
+                                                                <label for="ca_min_expert{{$niveau}}">CA min (€) : </label>
                                                                 <input class="form-control" type="number" value="{{$ca_min}}" id="ca_min_expert{{$niveau}}" name="ca_min_expert{{$niveau}}" readonly >
                                                             </div>
                                                             <div class="form-group">
-                                                                <label for="ca_max_expert{{$niveau}}">CA max (€): </label>
+                                                                <label for="ca_max_expert{{$niveau}}">CA max (€) : </label>
                                                                 <input class="form-control" type="number" min="0" value="{{$ca_max}}" id="ca_max_expert{{$niveau}}" name="ca_max_expert{{$niveau}}" />
                                                             </div>
                                                             @if ($niveau == $nb_palier_expert+1 )
