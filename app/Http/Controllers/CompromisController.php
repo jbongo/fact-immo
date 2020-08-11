@@ -316,6 +316,12 @@ class CompromisController extends Controller
     {
         //  dd($request->all());
         // return $request->partage_reseau ;
+
+   // on force le format des dates à cause des vieux navigateurs
+   $date = date_create($request->date_mandat);
+   $date_mandat = $date->format('Y-m-d');
+    
+
         if($request->partage == "Non"  || ($request->partage == "Oui" &&  $request->je_porte_affaire == "on" ) ){
             $request->validate([
                 'numero_mandat' => 'unique:compromis',
@@ -352,7 +358,7 @@ class CompromisController extends Controller
                 // "raison_sociale_vendeur"=>$request->raison_sociale_vendeur,
                 // "raison_sociale_acquereur"=>$request->raison_sociale_acquereur,
                 "numero_mandat"=>$request->numero_mandat,
-                "date_mandat"=>$request->date_mandat,
+                "date_mandat"=>$date_mandat,
                 "frais_agence"=>$request->frais_agence,
                 "charge"=>$request->charge,
                 "net_vendeur"=>$request->net_vendeur,
@@ -487,8 +493,11 @@ class CompromisController extends Controller
      */
     public function update(Request $request, Compromis $compromis)
     {
-        // dd($request->all());
-
+        // on force le format des dates à cause des vieux navigateurs
+        $date = date_create($request->date_mandat);
+        $date_mandat = $date->format('Y-m-d');
+         
+       
         if($request->a_avoir == "true" && $compromis->getFactureStylimmo() != null && $compromis->cloture_affaire == 0){
             $facture = $compromis->getFactureStylimmo();
              $motif = "Modification du compromis";
@@ -537,7 +546,7 @@ class CompromisController extends Controller
             // $compromis->raison_sociale_vendeur = $request->raison_sociale_vendeur;
             // $compromis->raison_sociale_acquereur = $request->raison_sociale_acquereur;
             $compromis->numero_mandat = $request->numero_mandat;
-            $compromis->date_mandat = $request->date_mandat;
+            $compromis->date_mandat = $date_mandat;
             $compromis->montant_deduis_net = $request->montant_deduis;
             $compromis->frais_agence = $request->frais_agence;
             $compromis->charge = $request->charge;
