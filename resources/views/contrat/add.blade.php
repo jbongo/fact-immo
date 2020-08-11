@@ -475,39 +475,18 @@
                                         </thead>
                                         <tbody>
                                             <tr>
-                                                <td  class="color-primary"><input type="text" style="background-color:#bbb97d;"  class="form-control" value="leboncoin" id="p_1" name="p_1" required></td>
+                                                <td  class="color-primary"><input type="text" style="background-color:#cccba6;"  class="form-control" value="leboncoin" id="p_1" name="p_1" required></td>
                                                 <td><input type="number" style="background-color:#ecf0f9;" min="0"  class="form-control" value="" id="qt_1" name="qt_1" required></td>
                                                 <td><input type="number" style="background-color:#ecf0f9" min="0"  class="form-control" value="" id="pa_1" name="pa_1" required></td>
-                                                <td><input type="number" style="background-color:#ecf0f9" min="0"  class="form-control" value="" id="pv_1" name="pv_1" required></td>
+                                                <td><input type="number" style="background-color:#ecf0f9" min="0"  class="form-control" value="" id="pv_1" name="pv_1" readonly></td>
                                             </tr>
-                                           
+                                            <button class="btn btn-warning add_field_button_starter" style="margin-bottom: 53px;">Ajouter une passerelle</button>
                                            
                                         </tbody>
                                     </table>
                                 </div>
 
-                                <div class="input_fields_wrap_starter">
-                                    <button class="btn btn-warning add_field_button_starter" style="margin-left: 53px;">Ajouter un niveau</button>
-                                    <div class="form-inline field1">
-                                        <div class="form-group">
-                                            <label for="level_starter1">Niveau: </label>
-                                            <input class="form-control" type="text" value="1" id="level_starter1" name="level_starter1" readonly>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="percent_starter1">% en + : </label>
-                                            <input class="form-control" type="number" min="0" max="0" step="0.10" value="0" id="percent_starter1" name="percent_starter1" readonly>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="ca_min_starter1">CA min (€): </label>
-                                            <input class="form-control" type="number" value="0" id="ca_min_starter1" name="ca_min_starter1" readonly>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="ca_max_starter1">CA max (€): </label>
-                                            <input class="form-control" type="number" min="0" value="50000" id="ca_max_starter1" name="ca_max_starter1" />
-                                        </div>
-                                    </div>
-                                </div>
-
+                               
                             </div>
                         </div>
                     </fieldset>

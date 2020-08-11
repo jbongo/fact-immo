@@ -323,11 +323,14 @@ class CompromisController extends Controller
     $date_s = date_create($request->date_signature);
     $date_v = date_create($request->date_vente);
 
-    if($request->date_signature != null){
+    if($request->date_signature != null && is_string($request->date_signature)  ){
         $date_s = date_create($request->date_signature);
         $date_signature = $date_s->format('Y-m-d');
+ 
     }else{
         $date_signature = null;
+       
+
     }
 
     
@@ -511,7 +514,7 @@ class CompromisController extends Controller
         $date = date_create($request->date_mandat);
         $date_v = date_create($request->date_vente);
 
-        if($request->date_signature != null){
+        if($request->date_signature != null  && is_string($request->date_signature)){
             $date_s = date_create($request->date_signature);
             $date_signature = $date_s->format('Y-m-d');
         }else{
