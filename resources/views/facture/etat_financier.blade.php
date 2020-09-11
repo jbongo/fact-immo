@@ -71,6 +71,9 @@ Etat financier
                                         if($etat['facture_styl']->date_encaissement >= $date_deb && $etat['facture_styl']->date_encaissement <= $date_fin ){
                                             $print = true;
                                         }
+                                        if($date_deb == null || $date_fin == null){
+                                            $print = true;
+                                        }
 
                                     @endphp
                                     <tr>
