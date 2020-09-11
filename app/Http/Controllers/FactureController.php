@@ -2550,7 +2550,7 @@ public function valider_honoraire($action, $facture_id)
                        
 
 
-                        if($compro->getFactureStylimmo()->date_encaissement >= $date_deb && $compro->getFactureStylimmo()->date_encaissement <= $date_fin )
+                        if( ($compro->getFactureStylimmo()->date_encaissement >= $date_deb && $compro->getFactureStylimmo()->date_encaissement <= $date_fin) || ($date_deb == null || $date_fin== null) )
                             $total_encaisse +=$compro->getFactureStylimmo()->montant_ttc ;
                     }
                 }
