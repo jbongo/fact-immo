@@ -46,7 +46,7 @@ class FactureController extends Controller
             $factureCommunications = Facture::where('user_id',auth()->user()->id)->whereIn('type',['pack_pub','carte_visite'])->latest()->get();
 
         }
-        // dd($factureStylimmos);
+        
         
         return view ('facture.index',compact(['factureHonoraires','factureStylimmos']));
     }
@@ -1851,8 +1851,8 @@ public function calcul_com($palier, $montant_vnt_ht, $ca, $niveau)
 
                $tab[] = array($diff,($palier[$i])[1]);
             
-               echo("Ajout à la commission:". ($diff / 100) * ($palier[$i])[1]);
-               echo("reste:". $montant_vnt_ht);
+            //    echo("Ajout à la commission:". ($diff / 100) * ($palier[$i])[1]);
+            //    echo("reste:". $montant_vnt_ht);
                $ca += $diff;
            }
        }
@@ -2515,5 +2515,54 @@ public function valider_honoraire($action, $facture_id)
         // dd($factures);
 
         return "ok";
+    }
+
+    /**
+     * etat financier
+     *
+     * @param  int  $compromis
+     * @return \Illuminate\Http\Response
+     */
+    public function etat_financier($date_deb = null, $date_fin = null)
+    {
+    
+        // etat financier
+
+        $compromis = Compromis::where([['archive','<', 1],['facture_stylimmo_valide', 1]])->get();
+        $etats = array();
+        $total_encaisse = 0;
+        $total_reste_a_payer = 0 ;
+        $total_tva_a_payer = 0 ;
+        
+        
+        
+        if($date_deb > $date_fin){
+            $dt = $date_deb;
+            $date_deb = $date_fin;
+            $date_fin = $dt;
+        }
+
+                foreach ($compromis as $compro) {
+                    if($compro->getFactureStylimmo()->encaissee == true){
+
+                        array_push($etats, $compro->etat_fin($date_deb,$date_fin)); 
+
+                       
+
+
+                        if($compro->getFactureStylimmo()->date_encaissement >= $date_deb && $compro->getFactureStylimmo()->date_encaissement <= $date_fin )
+                            $total_encaisse +=$compro->getFactureStylimmo()->montant_ttc ;
+                    }
+                }
+        
+                foreach ($etats as $etat) {
+                    $total_reste_a_payer += $etat['reste_a_regler'];
+                    $total_tva_a_payer += $etat['tva_a_regler'];
+                }
+
+       
+        return view ('facture.etat_financier',compact('etats','date_deb','date_fin','total_encaisse','total_reste_a_payer','total_tva_a_payer') );  
+        // return redirect()->route('compromis.index')->with('ok', __('compromis modifié')  );
+
     }
 }

@@ -4,7 +4,7 @@
     $curent_url = explode("/", $curent_url);
 
 
-    $li_home = $li_mandataire = $li_affaire = $li_affaire_archive=  $li_facture = $li_facture_gestion = $li_facture_demande = $li_parametre = $li_parametre_modele = $li_parametre_pub = $li_parametre_generaux= "";
+    $li_home = $li_mandataire = $li_affaire = $li_affaire_archive=  $li_facture = $li_facture_gestion = $li_facture_demande = $li_parametre = $li_parametre_modele = $li_parametre_fournisseur = $li_parametre_generaux= "";
     
     switch ($curent_url[1]) {
         case 'home':       
@@ -40,8 +40,8 @@
             case 'modele_contrat':       
                 $li_parametre_modele = "active";
                 break;
-            case 'pack_pub':
-                $li_parametre_pub = "active";
+            case 'fournisseur':
+                $li_parametre_fournisseur = "active";
                 break;
             case 'generaux':
                 $li_parametre_generaux = "active";
@@ -117,11 +117,12 @@
                             {{-- <li><a href="page-login.html">Info Entreprise</a></li> --}}
                             <li class="{{$li_parametre_generaux}}"><a href="{{route('parametre_generaux.create')}}">Généraux</a></li>
                             <li class="{{$li_parametre_modele}}"><a href="{{route('modele_contrat.create')}}">Modèle contrat</a></li>
-                            <li class="{{$li_parametre_pub}}"><a href="{{route('pack_pub.index')}}">Publicité</a></li>
+                            <li class="{{$li_parametre_fournisseur}}"><a href="{{route('fournisseur.index')}}">Fournisseur</a></li>
                         </ul>
                     </li>
                     <li class=""><a  href="{{route('export_facture.index')}}" class=""> <i class="large material-icons" style="font-size:20px;">vertical_align_center</i></i>Export   </a>
                     <li class=""><a  href="{{route('historique.index')}}" class=""> <i class="large material-icons" style="font-size:20px;">access_time</i></i>Historique   </a>
+                        <li class=""><a  href="{{route('etat_financier')}}" class=""> <i class="large material-icons" style="font-size:20px;">enhanced_encryption</i></i>Etat financier   </a>
                     </li>
                     @endif
                     <li><a href="{{ route('logout') }}"  onclick="event.preventDefault();

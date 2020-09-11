@@ -27,6 +27,9 @@
                                         <th>@lang('Alerte paiement')</th>
                                         @if(auth()->user()->role == "admin")
                                         <th>@lang('Encaissement')</th>
+
+                                        <th>@lang('Etat Affaire')</th>
+
                                         @endif
                                         {{-- @endif --}}
                                         {{-- <th>@lang('Télécharger')</th> --}}
@@ -122,10 +125,13 @@
                                             <label class="color-danger"> @if($facture->date_encaissement != null) encaissée le {{$facture->date_encaissement->format('d/m/Y')}} @else encaissée @endif  </label> 
                                             @endif 
                                         </td>
+                                        
+                                        <td width="" >
+                                            @if($facture->encaissee == true)
+                                            <a href="{{route('compromis.etat', Crypt::encrypt($facture->compromis->id))}}"  target="_blank"  class="btn btn-warning btn-flat btn-addon  m-b-10 m-l-5 " id="visualiser"><i class="ti-eye"></i>Visualiser</a>
+                                            @endif
+                                        </td> 
                                         @endif
-                                        {{-- <td width="" >
-                                            <a href="{{route('facture.telecharger_pdf_facture_stylimmo', Crypt::encrypt($facture->compromis->id))}}"  class="btn btn-warning btn-flat btn-addon  m-b-10 m-l-5 " id="telecharger"><i class="ti-download"></i>Télécharger</a>
-                                        </td>  --}}
                                        {{-- Avoir --}}
                                         <td width="" >
 

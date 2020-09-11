@@ -10,6 +10,7 @@ use App\Contrat;
 use App\Filleul;
 use App\Parametre;
 use App\Historique;
+use App\Article;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\CreationMandataire;
 use Illuminate\Support\Facades\Hash;
@@ -67,7 +68,9 @@ class ContratController extends Controller
         $modele = Contrat::where('est_modele',true)->first();
         $mandataire = User::where('id', Crypt::decrypt($user_id))->first();
         $packs_pub = Packpub::all();
-        return view ('contrat.add', compact(['parrains','user_id','packs_pub','modele','mandataire']));
+        $passerelles = Article::where('a_expire', 0)->get();
+
+        return view ('contrat.add', compact(['parrains','user_id','packs_pub','modele','mandataire','passerelles']));
     }
 
     /**
@@ -492,10 +495,10 @@ class ContratController extends Controller
         Mail::to($mandataire->email)->send(new CreationMandataire($mandataire,$password));
         // Mail::to("gestion@stylimmo.com")->send(new CreationMandataire($mandataire,$password));
         // Envoyer les accès aussi à tous les admins
-        $admins = User::where('role','admin')->get();
-        foreach ($admins as $admin) {
-            Mail::to($admin->email)->send(new CreationMandataire($mandataire,$password)); 
-        }
+        // $admins = User::where('role','admin')->get();
+        // foreach ($admins as $admin) {
+        //     Mail::to($admin->email)->send(new CreationMandataire($mandataire,$password)); 
+        // }
 
         
         $action = Auth::user()->nom." ".Auth::user()->prenom." a crée le contrat de $mandataire->nom $mandataire->prenom";

@@ -466,21 +466,30 @@
                                             <tr>
                                                
                                                 <th>Passerelle</th>
+                                                <th>Quantité restante</th>
                                                 <th>Quantité</th>
-                                                <th>Prix d'achat</th>
-                                                <th>Prix de vente</th>
+                                                {{-- <th>Prix de vente</th>  --}}
                                              
                                               
                                             </tr>
                                         </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td  class="color-primary"><input type="text" style="background-color:#cccba6;"  class="form-control" value="leboncoin" id="p_1" name="p_1" required></td>
-                                                <td><input type="number" style="background-color:#ecf0f9;" min="0"  class="form-control" value="" id="qt_1" name="qt_1" required></td>
+                                        <tbody class="input_fields_wrap_pub">
+                                            @foreach ($passerelles as $passerelle )
+                                                <tr>
+                                                <td  class="color-primary"><span style="color:#898855; font-weight: bold;" > {{$passerelle->fournisseur->nom}}</span></td>
+                                                    <td><span style="color:#898855; font-weight: bold;" > {{$passerelle->quantite}}</span></td>
                                                 <td><input type="number" style="background-color:#ecf0f9" min="0"  class="form-control" value="" id="pa_1" name="pa_1" required></td>
-                                                <td><input type="number" style="background-color:#ecf0f9" min="0"  class="form-control" value="" id="pv_1" name="pv_1" readonly></td>
+                                                    {{-- <td><input type="number" style="background-color:#ecf0f9" min="0"  class="form-control" value="" id="pv_1" name="pv_1" readonly></td> --}} 
+                                                </tr>
+                                            @endforeach
+                                            <tr>
+                                               
+                                                    <td colspan="2"><span  > <strong>TOTAL : </strong> </span></td>
+                                                    <td ><span  > <strong>xxx € </strong> </span></td>
+                                              
+                                                    
                                             </tr>
-                                            <button class="btn btn-warning add_field_button_starter" style="margin-bottom: 53px;">Ajouter une passerelle</button>
+                                            {{-- <button class="btn btn-warning add_field_button_pub" style="margin-bottom: 53px;">Ajouter une passerelle</button> --}}
                                            
                                         </tbody>
                                     </table>
@@ -695,9 +704,6 @@
 </script>
 
 {{-- Fin pack Expert --}}
-
-
-
 
 {{-- Envoi des données en ajax pour le stockage --}}
 <script>

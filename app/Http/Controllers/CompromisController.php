@@ -875,4 +875,23 @@ class CompromisController extends Controller
 
     }
 
+    /**
+     * Créer un avoir
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function etat_compromis($compromis)
+    {
+        $compromis = Compromis::where('id',Crypt::decrypt($compromis))->first();
+
+        $filleulPorteur = Filleul::where('user_id', $compromis->user_id )->first();
+        $filleulPartage = Filleul::where('user_id', $compromis->agent_id )->first();
+
+        $parrainPorteur=  $filleulPorteur !=null ? User::where('id',  $filleulPorteur->parrain_id)->first() : null;
+        $parrainPartage=  $filleulPartage !=null ? User::where('id',  $filleulPartage->parrain_id)->first() : null;
+
+        return view('compromis.etat',compact('compromis','parrainPorteur','parrainPartage'));
+    }
+
 }

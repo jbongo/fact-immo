@@ -43,6 +43,7 @@ Route::middleware('auth')->group(function(){
     Route::get('/compromis/archive','CompromisController@archive')->name('compromis.archive');
     Route::post('/compromis/archive/restaurer/{compromis}','CompromisController@restaurer_archive')->name('compromis.archive.restaurer');
     Route::get('/compromis/cloturer/{compromis}','CompromisController@cloturer')->name('compromis.cloturer');
+    Route::get('/compromis/etat/{compromis}','CompromisController@etat_compromis')->name('compromis.etat');
     // type affaire
     Route::get('/compromis/type','CompromisController@index_type_compromis')->name('compromis_type.index');
 
@@ -132,6 +133,26 @@ Route::middleware('auth')->group(function(){
     Route::get('parametre/generaux/create','ParametreController@create_parametre_generaux')->name('parametre_generaux.create');
     Route::post('parametre/generaux/store','ParametreController@store_parametre_generaux')->name('parametre_generaux.store');
     Route::post('parametre/generaux/update','ParametreController@update_parametre_generaux')->name('parametre_generaux.update');
+
+    // Forunisseur
+    Route::get('fournisseur/','FournisseurController@index')->name('fournisseur.index');
+    Route::get('fournisseur/edit/{fournisseur}','FournisseurController@edit')->name('fournisseur.edit');
+    Route::post('fournisseur/update/{fournisseur}','FournisseurController@update')->name('fournisseur.update');
+    Route::get('fournisseur/create','FournisseurController@create')->name('fournisseur.create');
+    Route::post('fournisseur/store','FournisseurController@store')->name('fournisseur.store');
+
+    // Article
+    Route::get('articles/{fournisseur}','ArticleController@index')->name('article.index');
+    Route::get('article/edit/{article}','ArticleController@edit')->name('article.edit');
+    Route::post('article/update/{article}','ArticleController@update')->name('article.update');
+    Route::get('article/create/{fournisseur}','ArticleController@create')->name('article.create');
+    Route::post('article/store','ArticleController@store')->name('article.store');
+
+    // Etat financier
+    Route::get('/etat-financier/{date_deb?}/{date_fin?}', 'FactureController@etat_financier')->name('etat_financier');       
+
+
+
 
 
     // ##### CALCUL STATS TEST
