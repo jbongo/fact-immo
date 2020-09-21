@@ -29,6 +29,10 @@ class Kernel extends ConsoleKernel
         $schedule->command('command:updatetva')
                  ->everyMinute();
                  
+        $schedule->command('command:cloturercompromis')
+                 ->daily();
+
+                 
     }
 
     /**
