@@ -2528,7 +2528,7 @@ public function valider_honoraire($action, $facture_id)
     
         // etat financier
 
-        $compromis = Compromis::where([['archive','<', 1],['facture_stylimmo_valide', 1]])->get();
+        $compromis = Compromis::where([['archive','<', 1],['cloture_affaire','<',2],['facture_stylimmo_valide', 1]])->get();
         $etats = array();
         $total_encaisse = 0;
         $total_reste_a_payer = 0 ;
