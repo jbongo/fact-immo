@@ -352,7 +352,7 @@
                                         </tr>
                                         <tr>
                                             <td>RESTE A REGLER</td>
-                                            <td> <span class="color-danger" style="font-size: 25px"> <strong> {{number_format($compromis->reste_a_regler() ,2)}} €  </strong></span></td>
+                                            <td> <span class="color-danger" style="font-size: 25px"> <strong> {{number_format($compromis->reste_a_regler()['reste_a_payer'] ,2)}} €  </strong></span></td>
                                             <td> <span class="color-danger" style="font-size: 25px"> <strong> {{number_format($compromis->getFactureStylimmo()->montant_ht * 0.2   - $compromis->total_du()['total_tva'] ,'2','.',' ')}} € </strong></span></td>
                                             <td></td>
                                                              
@@ -648,7 +648,6 @@
                 </div>
             </div>
 
-            RESTE A REGLER
 
             </div>
         </div>

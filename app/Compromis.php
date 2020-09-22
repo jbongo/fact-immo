@@ -325,7 +325,7 @@ class Compromis extends Model
                         else{
                             if( $result['ca_comm_parr'] + $montant_ht  > $filleul->contrat->seuil_comm ){
                                 $montant_ht = $filleul->contrat->seuil_comm - $result['ca_comm_parr'];
-                                $montant_ttc = $montant_ht*.12;
+                                $montant_ttc = $montant_ht*1.2;
                             }
                         }
                     
@@ -334,6 +334,7 @@ class Compromis extends Model
             // filleul sans partage
                 }else{ 
             
+
                     //   dd("un filleul sans partage");
                     $filleul = User::where('id',$compromis->user_id)->first();
                     $pourcentage_parrain =  Filleul::where('user_id',$filleul->id)->select('pourcentage')->first();
@@ -368,12 +369,11 @@ class Compromis extends Model
             
                     }
             
-               
-            
-            
-                    $montant_ht = round ( $compromis->frais_agence/1.2 ,2);
-                    $montant_ttc =  round( $montant_ht*$tva,2);
                 
+                     // On determine les montants ttc et ht du parrain 
+                     $frais_agence =  $compromis->frais_agence;
+                    $montant_ht = round ( ($frais_agence * $pourcentage_parrain/100 )/1.2,2);
+                    $montant_ttc = round($montant_ht*$tva,2);
                 
             
                     if($result['ca_comm_parr'] >= $filleul->contrat->seuil_comm ){
@@ -401,9 +401,11 @@ class Compromis extends Model
     
          if($contrat->est_soumis_tva == true ){
                 $montant_tva =  round ($montant_ht*0.2,2);
-            }else{
-                $montant_tva =  0;
-            }
+        }else{
+            $montant_tva =  0;
+        }
+
+
             
             return array("montant_ht"=> $montant_ht, "montant_tva"=> $montant_tva) ;
     }
@@ -473,7 +475,7 @@ class Compromis extends Model
                         else{
                             if( $result['ca_comm_parr'] + $montant_ht  > $filleul->contrat->seuil_comm ){
                                 $montant_ht = $filleul->contrat->seuil_comm - $result['ca_comm_parr'];
-                                $montant_ttc = $montant_ht*.12;
+                                $montant_ttc = $montant_ht*1.2;
                             }
                         }
             
