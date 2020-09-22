@@ -780,6 +780,8 @@ class CompromisController extends Controller
         $compromis->archive = true;
         $compromis->motif_archive = $request->motif_archive;
         $compromis->demande_facture = 0;
+
+
         $compromis->facture_stylimmo_valide = 0;
 
         if( session('is_switch') == true ){
@@ -799,6 +801,7 @@ class CompromisController extends Controller
  
             //  dd($facture);
              $avoir = Facture::store_avoir($facture->id, $numero, $motif);
+             
              $action= "a généré une facture d'avoir pendant l'archivage de l'affaire ".$compromis->numero_mandat;
              Historique::createHistorique( Auth::user()->id, $avoir->id,"facture",$action );
         

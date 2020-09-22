@@ -2527,7 +2527,7 @@ public function valider_honoraire($action, $facture_id)
     {
     
         // etat financier
-
+        ini_set('max_execution_time', 300);
         $compromis = Compromis::where([['archive','<', 1],['cloture_affaire','<',2],['facture_stylimmo_valide', 1]])->get();
         $etats = array();
         $total_encaisse = 0;
