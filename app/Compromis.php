@@ -227,8 +227,8 @@ class Compromis extends Model
                     }
                 }
 
-                // SI LE MANDATAIRE PORTEUR NE PARTAGE PAS
-                if($compromis->est_partage_agent == true ){
+                    // SI LE MANDATAIRE PORTEUR NE PARTAGE PAS
+                    if($compromis->est_partage_agent == true ){
 
                 
                         $montant_vnt_ht = ($compromis->frais_agence/1.2) ; 
@@ -281,6 +281,16 @@ class Compromis extends Model
                             $parrain_id =  Filleul::where('user_id',$filleul->id)->select('parrain_id')->first();    
                             $parrain = User::where('id',$parrain_id['parrain_id'])->first();
                             $deb_annee = date("Y")."-01-01";
+
+
+                             // On vérifie que le parrain a les droits de parrainage n'a pas dépassé le plafond de comm sur son filleul 
+                                        
+                                $result = Filleul::droitParrainage($parrain->id, $filleul->id, $compromis->id);
+
+                                if($result['respect_condition'] == false ) 
+                                    return array("montant_ht"=> 0, "montant_tva"=> 0) ;
+
+                                    
                         // on determine le chiffre d'affaire encaissé du parrain depuis le 1er janvier, pour voir s'il est soumis à la TVA
                             $chiffre_affaire_parrain_encai = Facture::where('user_id',$parrain->id)->whereIn('type',['honoraire','partage','parrainage','parrainage_partage'])->where('reglee',true)->where('date_reglement','>=',$deb_annee)->sum('montant_ht');
                         //    on reccupere le contrat du parrain
@@ -305,9 +315,7 @@ class Compromis extends Model
             
                     
             
-                        $result = Filleul::droitParrainage($parrain->id, $filleul->id, $compromis->id);
-                
-                        // On vérifie que le parrain n'a pas dépassé le plafond de comm sur son filleul 
+                        
                     
             
                         if($result['ca_comm_parr'] >= $filleul->contrat->seuil_comm ){
@@ -335,6 +343,13 @@ class Compromis extends Model
                     $parrain_id =  Filleul::where('user_id',$filleul->id)->select('parrain_id')->first();    
                     $parrain = User::where('id',$parrain_id['parrain_id'])->first();
                     $deb_annee = date("Y")."-01-01";
+
+                    // On vérifie que le parrain a les droits de parrainage n'a pas dépassé le plafond de comm sur son filleul 
+                                        
+                    $result = Filleul::droitParrainage($parrain->id, $filleul->id, $compromis->id);
+
+                    if($result['respect_condition'] == false ) 
+                        return array("montant_ht"=> 0, "montant_tva"=> 0) ;
                 
                 // on determine le chiffre d'affaire ht encaissé du parrain depuis le 1er janvier, pour voir s'il est soumis à la TVA
                     $chiffre_affaire_parrain_encai = Facture::where('user_id',$parrain->id)->whereIn('type',['honoraire','partage','parrainage','parrainage_partage'])->where('reglee',true)->where('date_reglement','>=',$deb_annee)->sum('montant_ht');
@@ -353,11 +368,9 @@ class Compromis extends Model
             
                     }
             
-                // On vérifie que le parrain n'a pas dépassé le plafond de comm sur son filleul 
-                    
-                    $result = Filleul::droitParrainage($parrain->id, $filleul->id, $compromis->id);
+               
             
-                    
+            
                     $montant_ht = round ( $compromis->frais_agence/1.2 ,2);
                     $montant_ttc =  round( $montant_ht*$tva,2);
                 
@@ -382,7 +395,7 @@ class Compromis extends Model
         }
         else{
 
-            return 0;
+            return array("montant_ht"=> 0, "montant_tva"=> 0) ;
         }
 
     
@@ -418,6 +431,15 @@ class Compromis extends Model
                             $parrain_id =  Filleul::where('user_id',$filleul->id)->select('parrain_id')->first();    
                             $parrain = User::where('id',$parrain_id['parrain_id'])->first();
                             $deb_annee = date("Y")."-01-01";
+
+                             // On vérifie que le parrain a les droits de parrainage n'a pas dépassé le plafond de comm sur son filleul 
+                                        
+                            $result = Filleul::droitParrainage($parrain->id, $filleul->id, $compromis->id);
+
+                            if($result['respect_condition'] == false ) 
+                                return array("montant_ht"=> 0, "montant_tva"=> 0) ;
+
+
                         // on determine le chiffre d'affaire encaissé du parrain depuis le 1er janvier, pour voir s'il est soumis à la TVA
                             $chiffre_affaire_parrain_encai = Facture::where('user_id',$parrain->id)->whereIn('type',['honoraire','partage','parrainage','parrainage_partage'])->where('reglee',true)->where('date_reglement','>=',$deb_annee)->sum('montant_ht');
                         //    on reccupere le contrat du parrain
@@ -441,9 +463,7 @@ class Compromis extends Model
                             // dd("unique filleul 1 ");
 
             
-                        $result = Filleul::droitParrainage($parrain->id, $filleul->id, $compromis->id);
-                
-                        // On vérifie que le parrain n'a pas dépassé le plafond de comm sur son filleul 
+                      
                     
             
                         if($result['ca_comm_parr'] >= $filleul->contrat->seuil_comm ){
@@ -461,7 +481,7 @@ class Compromis extends Model
                 }
         }
         else{
-            return 0;
+                 return array("montant_ht"=> 0, "montant_tva"=> 0) ;
         }
     
           if($contrat->est_soumis_tva == true ){
@@ -487,6 +507,7 @@ public function total_du(){
     if($compromis->getHonoPorteur() != null){
         $total_ht += $compromis->getHonoPorteur()->montant_ht;
         $total_tva += $compromis->getHonoPorteur()->montant_ttc > 0 ? $compromis->getHonoPorteur()->montant_ht * 0.2 : 0 ;
+
     }else{
         $total_ht += $compromis->getFactureHonoProvi()['montant_ht'];
         $total_tva += $compromis->getFactureHonoProvi()['montant_tva'];
@@ -501,6 +522,7 @@ public function total_du(){
     }
 
     if($compromis->getFactureParrainPorteur() != null){
+
         $total_ht += $compromis->getFactureParrainPorteur()->montant_ht;
         $total_tva += $compromis->getFactureParrainPorteur()->montant_ttc > 0 ? $compromis->getFactureParrainPorteur()->montant_ht * 0.2 : 0 ;
     }else{
@@ -530,6 +552,7 @@ public function reste_a_regler($date_deb =null, $date_fin = null){
 
     $tva_a_payer = $this->total_du()['total_tva'];
 
+
     $nodate = ($date_deb == null || $date_fin == null) ? true : false ;
 
     $reste = $this->total_du()['total_ht'] + $this->total_du()['total_tva'] ;
@@ -540,14 +563,14 @@ public function reste_a_regler($date_deb =null, $date_fin = null){
             $mtn_a_deduire = $compromis->getHonoPorteur()->montant_ttc > 0 ?  $compromis->getHonoPorteur()->montant_ttc :  $compromis->getHonoPorteur()->montant_ht; 
 
             if($nodate == false){
-                if(( $compromis->getHonoPorteur()->date_reglement->format('yy-m-d') >= $date_deb && $compromis->getHonoPorteur()->date_reglement->format('yy-m-d') <= $date_fin)){
+                if(($compromis->getHonoPorteur()->date_reglement->format('yy-m-d') <= $date_fin)){
 
                     $reste -= $mtn_a_deduire;
-                    $tva_a_payer -= $compromis->getHonoPorteur()->montant_ht *0.2 ; 
+                    $tva_a_payer -=  $compromis->getHonoPorteur()->montant_ttc > 0 ?  $compromis->getHonoPorteur()->montant_ht *0.2  : 0; 
                 }
             }else{
                 $reste -= $mtn_a_deduire;
-                $tva_a_payer -= $compromis->getHonoPorteur()->montant_ht *0.2 ; 
+                $tva_a_payer -= $compromis->getHonoPorteur()->montant_ttc > 0 ? $compromis->getHonoPorteur()->montant_ht *0.2  : 0; 
 
             }
         }
@@ -559,15 +582,15 @@ public function reste_a_regler($date_deb =null, $date_fin = null){
             $mtn_a_deduire = $compromis->getHonoPartage()->montant_ttc > 0 ?  $compromis->getHonoPartage()->montant_ttc :  $compromis->getHonoPartage()->montant_ht; 
 
             if($nodate == false){
-                if(( $compromis->getHonoPartage()->date_reglement->format('yy-m-d') >= $date_deb && $compromis->getHonoPartage()->date_reglement->format('yy-m-d') <= $date_fin)){
+                if(($compromis->getHonoPartage()->date_reglement->format('yy-m-d') <= $date_fin)){
 
                     $reste -= $mtn_a_deduire; 
-                    $tva_a_payer -= $compromis->getHonoPartage()->montant_ht *0.2 ; 
+                    $tva_a_payer -=  $compromis->getHonoPartage()->montant_ttc > 0 ? $compromis->getHonoPartage()->montant_ht *0.2 : 0 ; 
 
                 }
             }else{
                 $reste -= $mtn_a_deduire;
-                $tva_a_payer -= $compromis->getHonoPartage()->montant_ht *0.2 ; 
+                $tva_a_payer -=  $compromis->getHonoPartage()->montant_ttc > 0 ? $compromis->getHonoPartage()->montant_ht *0.2 : 0 ; 
 
             }
         }
@@ -579,15 +602,15 @@ public function reste_a_regler($date_deb =null, $date_fin = null){
             $mtn_a_deduire = $compromis->getFactureParrainPorteur()->montant_ttc > 0 ?  $compromis->getFactureParrainPorteur()->montant_ttc :  $compromis->getFactureParrainPorteur()->montant_ht; 
 
             if($nodate == false){
-                if(( $compromis->getFactureParrainPorteur()->date_reglement->format('yy-m-d') >= $date_deb && $compromis->getFactureParrainPorteur()->date_reglement->format('yy-m-d') <= $date_fin)){
+                if((  $compromis->getFactureParrainPorteur()->date_reglement->format('yy-m-d') <= $date_fin)){
 
                     $reste -= $mtn_a_deduire;
-                    $tva_a_payer -= $compromis->getFactureParrainPorteur()->montant_ht *0.2 ; 
+                    $tva_a_payer -= $compromis->getFactureParrainPorteur()->montant_ttc > 0 ? $compromis->getFactureParrainPorteur()->montant_ht *0.2 : 0 ; 
 
                 }
             }else{
                 $reste -= $mtn_a_deduire;
-                $tva_a_payer -= $compromis->getFactureParrainPorteur()->montant_ht *0.2 ; 
+                $tva_a_payer -= $compromis->getFactureParrainPorteur()->montant_ttc > 0 ? $compromis->getFactureParrainPorteur()->montant_ht *0.2 : 0 ; 
 
             }
         }
@@ -598,15 +621,15 @@ public function reste_a_regler($date_deb =null, $date_fin = null){
             $mtn_a_deduire = $compromis->getFactureParrainPartage()->montant_ttc > 0 ?  $compromis->getFactureParrainPartage()->montant_ttc :  $compromis->getFactureParrainPartage()->montant_ht; 
 
             if($nodate == false){
-                if(( $compromis->getFactureParrainPartage()->date_reglement->format('yy-m-d') >= $date_deb && $compromis->getFactureParrainPartage()->date_reglement->format('yy-m-d') <= $date_fin)){
+                if(( $compromis->getFactureParrainPartage()->date_reglement->format('yy-m-d') <= $date_fin)){
 
                     $reste -= $mtn_a_deduire;
-                    $tva_a_payer -= $compromis->getFactureParrainPartage()->montant_ht *0.2 ; 
+                    $tva_a_payer -= $compromis->getFactureParrainPartage()->montant_ttc > 0 ? $compromis->getFactureParrainPartage()->montant_ht *0.2 : 0 ; 
 
                 }
             }else{
                 $reste -= $mtn_a_deduire;
-                $tva_a_payer -= $compromis->getFactureParrainPartage()->montant_ht *0.2 ; 
+                $tva_a_payer -= $compromis->getFactureParrainPartage()->montant_ttc > 0 ? $compromis->getFactureParrainPartage()->montant_ht *0.2 : 0 ; 
 
             }
         }

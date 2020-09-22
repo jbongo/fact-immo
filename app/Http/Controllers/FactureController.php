@@ -2527,7 +2527,7 @@ public function valider_honoraire($action, $facture_id)
     {
     
         // etat financier
-        ini_set('max_execution_time', 300);
+        ini_set('max_execution_time', 500);
         $compromis = Compromis::where([['archive','<', 1],['cloture_affaire','<',2],['facture_stylimmo_valide', 1]])->get();
         $etats = array();
         $total_encaisse = 0;
@@ -2543,11 +2543,12 @@ public function valider_honoraire($action, $facture_id)
         }
 
                 foreach ($compromis as $compro) {
-                    if($compro->getFactureStylimmo()->encaissee == true){
+                    if($compro->getFactureStylimmo()->encaissee == true ){
 
                         array_push($etats, $compro->etat_fin($date_deb,$date_fin)); 
 
-                       
+                    //    if($compro->getFactureStylimmo()->numero == 16050)
+                    //         dd($compro->etat_fin($date_deb,$date_fin));
 
 
                         if( ($compro->getFactureStylimmo()->date_encaissement >= $date_deb && $compro->getFactureStylimmo()->date_encaissement <= $date_fin) || ($date_deb == null || $date_fin== null) )
