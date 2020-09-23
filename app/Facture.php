@@ -84,8 +84,11 @@ class Facture extends Model
     }
     public function avoir(){
         $avoir = Facture::where([['facture_id',$this->id,['type','avoir']]])->first();
-      
-      
+        return $avoir;
+    }
+
+    public function facture_avoir(){
+        $avoir = Facture::where([['id',$this->facture_id,['type','stylimmo']]])->first();
         return $avoir;
     }
 }

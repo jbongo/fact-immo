@@ -36,13 +36,13 @@ class FactureController extends Controller
         //
      
         if(auth()->user()->role == "admin"){
-            $factureStylimmos = Facture::whereIn('type',['stylimmo'])->latest()->get();
+            $factureStylimmos = Facture::whereIn('type',['stylimmo','avoir'])->latest()->get();
             $factureHonoraires = Facture::whereIn('type',['honoraire','partage','parrainage','parrainage_partage'])->latest()->get();
             $factureCommunications = Facture::where('type',['pack_pub','carte_visite'])->latest()->get();
             
         }else{
             $factureHonoraires = Facture::where('user_id',auth()->user()->id)->whereIn('type',['honoraire','partage','parrainage','parrainage_partage'])->latest()->get();
-            $factureStylimmos = Facture::where('user_id',auth()->user()->id)->where('type','stylimmo')->latest()->get();
+            $factureStylimmos = Facture::where('user_id',auth()->user()->id)->where('type','stylimmo','avoir')->latest()->get();
             $factureCommunications = Facture::where('user_id',auth()->user()->id)->whereIn('type',['pack_pub','carte_visite'])->latest()->get();
 
         }

@@ -80,18 +80,18 @@
                                         {{-- <td  width="" class="color-info">
                                                 {{$facture->created_at->format('d/m/Y')}}
                                         </td> --}}
-                                        @if($facture->type == "stylimmo")
+                                        {{-- @if($facture->type == "stylimmo") --}}
                                         <td width="" >
                                             <label class="color-info">
                                                 {{$facture->compromis->date_vente->format('d/m/Y')}} 
                                             </label> 
                                         </td>
 
-                                        @else 
+                                        {{-- @else 
                                         <td width="" style="background-color:#DCD6E1" >
                                             
                                         </td>
-                                        @endif
+                                        @endif --}}
                                         {{--  alert paiement--}}
                                         @php
                                             $interval = strtotime(date('Y-m-d')) - strtotime($facture->compromis->date_vente);
@@ -120,11 +120,23 @@
                                         {{-- encaissement seulement par admin --}}
                                         @if(auth()->user()->role == "admin")
                                         <td width="" >
-                                            @if($facture->encaissee == 0)
-                                            <button   data-toggle="modal" data-target="#myModal2" class="btn btn-success btn-flat btn-addon  m-b-10 m-l-5 encaisser" onclick="getId({{$facture->id}})"  id="{{$facture->id}}"><i class="ti-wallet"></i>Encaisser</button>
-                                            @else 
-                                            <label class="color-danger"> @if($facture->date_encaissement != null) encaissée le {{$facture->date_encaissement->format('d/m/Y')}} @else encaissée @endif  </label> 
-                                            @endif 
+                                            {{-- si c'est une facture d'avoir --}}
+                                            @if($facture->type == "avoir")
+                                                <label class="color-danger"> Avoir sur {{$facture->facture_avoir()->numero}}</label> 
+                                            @else
+                                                {{-- Si la facture stylimmo a un avoir --}}
+                                                @if($facture->a_avoir == 1 && $facture->avoir() != null)
+                                                    <label class="color-primary"> annulée par AV {{$facture->avoir()->numero}}</label> 
+
+                                                @else
+                                                    @if($facture->encaissee == 0)
+                                                    <button   data-toggle="modal" data-target="#myModal2" class="btn btn-success btn-flat btn-addon  m-b-10 m-l-5 encaisser" onclick="getId({{$facture->id}})"  id="{{$facture->id}}"><i class="ti-wallet"></i>Encaisser</button>
+                                                    @else 
+                                                    <label class="color-danger"> @if($facture->date_encaissement != null) encaissée le {{$facture->date_encaissement->format('d/m/Y')}} @else encaissée @endif  </label> 
+                                                    @endif 
+                                                @endif
+
+                                            @endif
                                         </td>
                                         
                                         <td width="" >
@@ -136,10 +148,12 @@
                                        {{-- Avoir --}}
                                         <td width="" >
 
-                                            @if($facture->a_avoir == 0 && $facture->encaissee == 0 && $facture->compromis->cloture_affaire == 0 && auth()->user()->role == "admin") 
-                                                <a href="{{route('facture.avoir.create', Crypt::encrypt($facture->id))}}" target="_blank"  class="btn btn-info  btn-flat btn-addon  m-b-10 m-l-5 " id=""><i class="ti-link"></i>créer</a>
-                                            @elseif($facture->a_avoir == 1 && $facture->avoir() != null)
-                                                <a href="{{route('facture.telecharger_pdf_avoir', Crypt::encrypt($facture->avoir()->id))}}"  class="btn btn-danger btn-flat btn-addon m-b-10 m-l-5 " id=""><i class="ti-download"></i>Télécharger avoir</a>
+                                            @if($facture->type != "avoir")
+                                                @if($facture->a_avoir == 0 && $facture->encaissee == 0 && $facture->compromis->cloture_affaire == 0 && auth()->user()->role == "admin") 
+                                                    <a href="{{route('facture.avoir.create', Crypt::encrypt($facture->id))}}" target="_blank"  class="btn btn-info  btn-flat btn-addon  m-b-10 m-l-5 " id=""><i class="ti-link"></i>créer</a>
+                                                @elseif($facture->a_avoir == 1 && $facture->avoir() != null)
+                                                    <a href="{{route('facture.telecharger_pdf_avoir', Crypt::encrypt($facture->avoir()->id))}}"  class="btn btn-danger btn-flat btn-addon m-b-10 m-l-5 " id=""><i class="ti-download"></i>avoir {{$facture->avoir()->numero}}</a>
+                                                @endif
                                             @endif
                                         </td>
                                     </tr> 
