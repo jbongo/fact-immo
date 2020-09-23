@@ -2557,8 +2557,11 @@ public function valider_honoraire($action, $facture_id)
                 }
         
                 foreach ($etats as $etat) {
-                    $total_reste_a_payer += $etat['reste_a_regler'];
-                    $total_tva_a_payer += $etat['tva_a_regler'];
+                    if( ($etat['facture_styl']->date_encaissement->format('Y-m-d') >= $date_deb && $etat['facture_styl']->date_encaissement->format('Y-m-d') <= $date_fin) || ($date_deb == null || $date_fin== null) ){
+                            $total_reste_a_payer += $etat['reste_a_regler'];
+                            $total_tva_a_payer += $etat['tva_a_regler'];
+                    }
+                  
                 }
 
        
