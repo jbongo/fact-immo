@@ -2525,10 +2525,10 @@ public function valider_honoraire($action, $facture_id)
      */
     public function etat_financier($date_deb = null, $date_fin = null)
     {
-    
+        // ,['cloture_affaire','<',2]
         // etat financier
         ini_set('max_execution_time', 500);
-        $compromis = Compromis::where([['archive','<', 1],['cloture_affaire','<',2],['facture_stylimmo_valide', 1]])->get();
+        $compromis = Compromis::where([['archive','<', 1],['facture_stylimmo_valide', 1]])->get();
         $etats = array();
         $total_encaisse = 0;
         $total_reste_a_payer = 0 ;
