@@ -282,6 +282,18 @@ class ContratController extends Controller
     $contrat->date_fin_preavis = $request->date_fin_preavis;
     $contrat->date_fin_droit_suite = $request->date_fin_droit_suite;
 
+    // date anniv pour jeton
+    $date_anniversaire = $request->date_debut;
+    $duree_max_starter = $request->duree_max_starter;
+
+    if($request->est_starter == "true"){
+        $date_anniversaire = date('Y-m-d', strtotime("+$duree_max_starter months", strtotime($request->date_debut)));
+
+    }
+
+    $contrat->date_anniversaire = $date_anniversaire;
+   
+
     $contrat->update();
 
 
@@ -377,6 +389,16 @@ class ContratController extends Controller
         $comm_parrain = serialize($comm_parrain);
 
 
+
+        $date_anniversaire = $request->date_debut;
+        $duree_max_starter = $request->duree_max_starter;
+
+        if($request->est_starter == "true"){
+            $date_anniversaire = date('Y-m-d', strtotime("+$duree_max_starter months", strtotime($request->date_debut)));
+
+        }      
+
+
         // return "".$request->forfait_administratif;
         $contrat = Contrat::create([
               // infos basiques
@@ -419,7 +441,9 @@ class ContratController extends Controller
 
             "prime_forfaitaire"=>$request->prime_max_forfait_parrain,
             "packpub_id"=>$request->pack_pub,
-            "comm_parrain"=> $comm_parrain
+            "comm_parrain"=> $comm_parrain,
+            "date_anniversaire"=> $date_anniversaire
+            
 
         ]);
         // Génération du mot de passe
@@ -637,4 +661,33 @@ class ContratController extends Controller
     {
         //
     }
+
+
+
+    /**
+     * Mettre à jour toutes les date d'anniversaire.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function maj_date_anniversaire()
+    {
+        $contrats = Contrat::all();
+
+        foreach ($contrats as $contrat) {
+            
+            $date_anniversaire = $contrat->date_deb_activite;
+            $duree_max_starter = $contrat->duree_max_starter;
+
+            if($contrat->est_demarrage_starter == true){
+                $date_anniversaire = date('Y-m-d', strtotime("+$duree_max_starter months", strtotime($contrat->date_deb_activite)));
+
+            }
+
+            $contrat->date_anniversaire = $date_anniversaire;
+            $contrat->update();
+
+
+        }
+    }
 }
+

@@ -130,7 +130,7 @@
                                         @if($compromi_attente->je_porte_affaire == 1 && $compromi_attente->agent_id != Auth()->user()->id)
                                             @if($compromi_attente->demande_facture == 0 )
                                                 @if($page_filleul == null)
-                                                <span><a class="btn btn-default" href="{{route('facture.demander_facture',Crypt::encrypt($compromi_attente->id))}}" data-toggle="tooltip" title="@lang(' ddddd')">demander facture styl</a> </span>
+                                                <span><a class="btn btn-default" href="{{route('facture.demander_facture',Crypt::encrypt($compromi_attente->id))}}" data-toggle="tooltip" title="@lang('')">demander facture styl</a> </span>
                                                 @else
                                                 <span class="color-default">En attente de demande..</span>                                            
                                                 @endif

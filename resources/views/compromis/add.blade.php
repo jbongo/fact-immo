@@ -18,6 +18,20 @@ Ajout d'une affaire
                 <form class="form-valide3" enctype="multipart/form-data" action="{{ route('compromis.add') }}" method="post">
                     {{ csrf_field() }}
                     <div class="panel-body">
+                    
+
+                        <div class="row">
+                            <div class="col-md-6 col-lg-6 col-sm-6">
+                                @if ($errors->has('numero_mandat'))
+                                <br>
+                                    <div class="alert alert-warning " style="color:black">
+                                        <strong>{{$errors->first('numero_mandat')}}, vérifiez vos affaires en cours ou archivées.</strong> 
+                                    </div>
+                                @endif
+        
+                            </div>
+                        </div>
+
                         <fieldset class="col-md-12">
                             <legend>Infos Partage</legend>
                             <div class="panel panel-warning">
@@ -362,8 +376,8 @@ Ajout d'une affaire
                                                 </div>
                                                 @if ($errors->has('numero_mandat'))
                                                     <br>
-                                                    <div class="alert alert-warning ">
-                                                        <strong>{{$errors->first('numero_mandat')}}</strong> 
+                                                    <div class="alert alert-warning " style="color:black">
+                                                        <strong>{{$errors->first('numero_mandat')}}, vérifiez vos affaires en cours ou archivées.</strong> 
                                                     </div>
                                                 @endif
                                             </div>

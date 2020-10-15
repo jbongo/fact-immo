@@ -131,7 +131,7 @@
                                             @if($compromi_attente->demande_facture == 0 )
                                                
                                             
-                                            <span><a class="btn btn-default" href="{{route('facture.demander_facture',Crypt::encrypt($compromi_attente->id))}}" data-toggle="tooltip" title="@lang(' ddddd')">demander facture styl</a> </span>
+                                            <span><a class="btn btn-default" href="{{route('facture.demander_facture',Crypt::encrypt($compromi_attente->id))}}" data-toggle="tooltip" title="@lang('')">demander facture styl</a> </span>
                                                 
                                                 
                                             @elseif($compromi_attente->demande_facture == 1)

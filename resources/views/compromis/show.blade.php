@@ -31,16 +31,34 @@ Détail de l'affaire de {{$compromis->user->prenom}} {{$compromis->user->nom}}
                             <a class="btn btn-success btn-flat btn-addon btn-sm m-b-10 m-l-5  " id="modifier_compromis"><i class="ti-pencil-alt"></i>Modifier l'affaire</a>
                         @endif
                     @endif
+
+                    @if ($compromis->demande_facture == 2 && (  ($compromis->est_partage_agent == 1 && $compromis->je_porte_affaire == 1) ||  ($compromis->est_partage_agent == 0) )  )
+                    @if($compromis->user_id == Auth()->user()->id )
+                        <span class="color-danger">La facture STYL'IMMO a déjà été générée, pour modifier les informations ci-dessous, veuillez les transmettre à </span> <strong> gestion@stylimmo.com </strong>
+                    @endif
+                @endif
                 @endif
             
             </div>
 
             <br><br><hr>
 			<div class="card-body">
-                
+               
                 <form class="form-valide" action="{{ route('compromis.update',$compromis->id) }}" enctype="multipart/form-data" method="post">
                         {{ csrf_field() }}
                         <div class="panel-body">
+
+                            <div class="row">
+                                <div class="col-md-6 col-lg-6 col-sm-6">
+                                    @if ($errors->has('numero_mandat'))
+                                    <br>
+                                        <div class="alert alert-warning " style="color:black">
+                                            <strong>{{$errors->first('numero_mandat')}}, vérifiez vos affaires en cours ou archivées.</strong> 
+                                        </div>
+                                    @endif
+            
+                                </div>
+                            </div>
                             <fieldset class="col-md-12">
                                 <legend>Infos Partage</legend>
                                 <div class="panel panel-warning">
@@ -91,7 +109,9 @@ Détail de l'affaire de {{$compromis->user->prenom}} {{$compromis->user->nom}}
                                                                     <label class="col-lg-8 col-md-8 col-sm-8 col-form-label" for="agent_id">Choisir agent / agence <span class="text-danger">*</span> </label>
                                                                     <div class="col-lg-6 col-md-6 col-sm-6">
                                                                         <select class="selectpicker " id="agent_id" name="agent_id" data-live-search="true" data-style="btn-warning btn-rounded" >
-                                                                        @if($agence != null)  <option value="{{ $agence->id }}" data-tokens="{{ $agence->nom }} {{ $agence->prenom }}">{{ $agence->nom }} {{ $agence->prenom }}</option>  @endif                                                                  
+                                                                        @if($agence != null)  <option value="{{ $agence->id }}" data-tokens="{{ $agence->nom }} {{ $agence->prenom }}">{{ $agence->nom }} {{ $agence->prenom }}</option>  @endif            
+                                                                        <option value="" data-tokens=""></option>
+
                                                                             @foreach ($agents as $agent )
                                                                                 <option value="{{ $agent->id }}" data-tokens="{{ $agent->nom }} {{ $agent->prenom }}">{{ $agent->nom }} {{ $agent->prenom }}</option>
                                                                             @endforeach

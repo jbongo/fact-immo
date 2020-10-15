@@ -112,7 +112,7 @@ class CompromisController extends Controller
             $compromis = Compromis::where([['je_renseigne_affaire',true],['archive',false]])->latest()->get();
             $compromisParrain = Compromis::where([['je_renseigne_affaire',true],['archive',false]])->latest()->get();
         }else{
-            $compromis = Compromis::where([['user_id',Auth::user()->id],['je_renseigne_affaire',true],['archive',false]])->orWhere('agent_id',Auth::user()->id)->latest()->get();
+            $compromis = Compromis::where([['user_id',Auth::user()->id],['je_renseigne_affaire',true],['archive',false]])->orWhere([['agent_id',Auth::user()->id],['archive',false]])->latest()->get();
             
         
            
@@ -532,8 +532,10 @@ class CompromisController extends Controller
              $motif = "Modification du compromis";
              $numero = Facture::whereIn('type',['avoir','stylimmo'])->max('numero') + 1;
  
-            //  dd($facture);
+            //   dd($numero);
              $avoir = Facture::store_avoir($facture->id, $numero, $motif);
+             $compromis->demande_facture = 0 ;
+             $compromis->facture_stylimmo_valide = 0 ;
              $action= "a généré une facture d'avoir pendant la modification de l'affaire ".$compromis->numero_mandat;
              Historique::createHistorique( Auth::user()->id, $avoir->id,"facture",$action );
         

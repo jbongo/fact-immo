@@ -258,11 +258,12 @@ public  function valider_facture_stylimmo( Request $request, $compromis)
 
     $tva = 1.2;
     // $numero = 1507;
-    $facture = Facture::where([ ['type','stylimmo'],['compromis_id',$compromis->id]])->first();
+    $facture = Facture::where([ ['type','stylimmo'],['compromis_id',$compromis->id],['a_avoir',false]])->first();
 
 
     // Si la facture n'est pas déjà crée
     if ($facture == null) {
+
             $facture = Facture::create([
             "numero"=> $numero,
             "user_id"=> $compromis->user_id,
@@ -274,49 +275,53 @@ public  function valider_facture_stylimmo( Request $request, $compromis)
             "date_facture"=> $request->date_facture,
 
         ]);
-        // $compromis->facture_honoraire_cree = true;
+
+        
+            $compromis->facture_stylimmo_valide = true;
+            $compromis->update();
+
+            // on sauvegarde la facture dans le repertoire du mandataire
+            $path = storage_path('app/public/'.$mandataire->id.'/factures');
+
+            if(!File::exists($path))
+                File::makeDirectory($path, 0755, true);
+            
+            $pdf = PDF::loadView('facture.pdf_stylimmo',compact(['compromis','mandataire','facture']));
+            $path = $path.'/facture_'.$facture->numero.'.pdf';
+            $pdf->save($path);
+            
+            $facture->url = $path;
+            $compromis->demande_facture = 2;
+            $facture->update();
+            $compromis->update();
+
+            $nb_demande_facture =  Compromis::where([['demande_facture',1],['archive',false]])->count();
+            $admins = User::where('role','admin')->get();
+
+            foreach ($admins as $admin) {
+                $admin->demande_facture = $nb_demande_facture;
+                $admin->update();
+            }
+            
+            Mail::to($mandataire->email)->send(new EnvoyerFactureStylimmoMandataire($mandataire,$facture));
+            // Mail::to("gestion@stylimmo.com")->send(new EnvoyerFactureStylimmoMandataire($mandataire,$facture));
+
+
+                $action = Auth::user()->nom." ".Auth::user()->prenom." a validé la facture stylimmo $facture->numero";
+                $user_id = Auth::user()->id;
+
+        
+            Historique::createHistorique( $user_id,$facture->id,"facture",$action );
+       
 
     }else{
         $facture = Facture::where([ ['type','stylimmo'],['compromis_id',$compromis->id]])->first();
+    // return view ('facture.generer_stylimmo',compact(['compromis','mandataire','facture']))->with('ok', __('Cette affaire a déjà une facture sans avoir') );
+
     }
     
     // fin save facture
 
-    $compromis->facture_stylimmo_valide = true;
-    $compromis->update();
-
-    // on sauvegarde la facture dans le repertoire du mandataire
-    $path = storage_path('app/public/'.$mandataire->id.'/factures');
-
-    if(!File::exists($path))
-        File::makeDirectory($path, 0755, true);
-    
-    $pdf = PDF::loadView('facture.pdf_stylimmo',compact(['compromis','mandataire','facture']));
-    $path = $path.'/facture_'.$facture->numero.'.pdf';
-    $pdf->save($path);
-    
-    $facture->url = $path;
-    $compromis->demande_facture = 2;
-    $facture->update();
-    $compromis->update();
-
-    $nb_demande_facture =  Compromis::where([['demande_facture',1],['archive',false]])->count();
-    $admins = User::where('role','admin')->get();
-
-    foreach ($admins as $admin) {
-        $admin->demande_facture = $nb_demande_facture;
-        $admin->update();
-    }
-    
-    Mail::to($mandataire->email)->send(new EnvoyerFactureStylimmoMandataire($mandataire,$facture));
-    // Mail::to("gestion@stylimmo.com")->send(new EnvoyerFactureStylimmoMandataire($mandataire,$facture));
-
-
-        $action = Auth::user()->nom." ".Auth::user()->prenom." a validé la facture stylimmo $facture->numero";
-        $user_id = Auth::user()->id;
-
-  
-    Historique::createHistorique( $user_id,$facture->id,"facture",$action );
     
     return view ('facture.generer_stylimmo',compact(['compromis','mandataire','facture']))->with('ok', __('Facture envoyée au mandataire') );
     
@@ -362,7 +367,7 @@ public  function valider_facture_stylimmo( Request $request, $compromis)
         $compromis = Compromis::where('id', Crypt::decrypt($compromis_id))->first();
         $mandataire = $compromis->user;
  
-        $facture = Facture::where([ ['type','stylimmo'],['compromis_id',$compromis->id]])->first();
+        $facture = Facture::where([ ['type','stylimmo'],['compromis_id',$compromis->id], ['a_avoir', false]])->first();
         $filename = "F".$facture->numero." ".$facture->montant_ttc."€ ".strtoupper($mandataire->nom)." ".strtoupper(substr($mandataire->prenom,0,1)).".pdf" ;
         return response()->download($facture->url,$filename);
         
@@ -741,8 +746,6 @@ public  function preparer_facture_honoraire($compromis)
         $compromis->facture_honoraire_cree = true;
         $compromis->update();
         // on incremente le chiffre d'affaire et on modifie s'il le faut le pourcentage
-        // $mandataire->chiffre_affaire += $formule[1];
-        // $mandataire->chiffre_affaire_sty += $compromis->frais_agence/1.2;
         $niveau = $this->calcul_niveau($paliers, $mandataire->chiffre_affaire_sty );
         $mandataire->commission = $paliers[$niveau-1][1];
         $mandataire->update();
@@ -1370,8 +1373,7 @@ public  function preparer_facture_honoraire_partage($compromis,$mandataire_id = 
             $compromis->update();
 
             // on incremente le chiffre d'affaire et on modifie s'il le faut le pourcentage
-            // $mandataire->chiffre_affaire += $formule[1];
-            // $mandataire->chiffre_affaire_sty += ($compromis->frais_agence/1.2)*$pourcentage_partage/100;
+       
             $niveau = $this->calcul_niveau($paliers, $mandataire->chiffre_affaire_sty );
             $mandataire->commission = $paliers[$niveau-1][1];
             $mandataire->update();
@@ -1427,8 +1429,7 @@ public  function preparer_facture_honoraire_partage($compromis,$mandataire_id = 
             $compromis->update();
 
             // on incremente le chiffre d'affaire et on modifie s'il le faut le pourcentage
-            // $mandataire->chiffre_affaire += $formule[1];
-            // $mandataire->chiffre_affaire_sty += ($compromis->frais_agence/1.2)*$pourcentage_partage/100;
+      
             $niveau = $this->calcul_niveau($paliers, $mandataire->chiffre_affaire_sty );
             $mandataire->commission = $paliers[$niveau-1][1];
             $mandataire->update();
@@ -1578,8 +1579,7 @@ public  function deduire_pub_facture_honoraire(Request $request, $compromis)
     $compromis->facture_honoraire_cree = true;
     $compromis->update();
     // on incremente le chiffre d'affaire et on modifie s'il le faut le pourcentage
-    // $mandataire->chiffre_affaire += $formule[1];
-    // $mandataire->chiffre_affaire_sty += $compromis->frais_agence/$tva; // revoir cette partie, faut t-il utiliser le ht ou ttc des frais agence ?
+
     $niveau = $this->calcul_niveau($paliers, $mandataire->chiffre_affaire_sty );
     $mandataire->commission = $paliers[$niveau-1][1];
     $mandataire->update();
@@ -1709,8 +1709,6 @@ if($compromis->je_porte_affaire == 1 && $compromis->est_partage_agent == 1 && (A
         $compromis->update();
 
         // on incremente le chiffre d'affaire et on modifie s'il le faut le pourcentage
-        // $mandataire->chiffre_affaire += $formule[1];
-        // $mandataire->chiffre_affaire_sty += ($compromis->frais_agence/1.2)*$pourcentage_partage/100;
         $niveau = $this->calcul_niveau($paliers, $mandataire->chiffre_affaire_sty );
         $mandataire->commission = $paliers[$niveau-1][1];
         $mandataire->update();
@@ -1756,8 +1754,7 @@ else{
         $compromis->update();
 
         // on incremente le chiffre d'affaire et on modifie s'il le faut le pourcentage
-        // $mandataire->chiffre_affaire += $formule[1];
-        // $mandataire->chiffre_affaire_sty += ($compromis->frais_agence/1.2)*$pourcentage_partage/100;
+
         $niveau = $this->calcul_niveau($paliers, $mandataire->chiffre_affaire_sty );
         $mandataire->commission = $paliers[$niveau-1][1];
         $mandataire->update();
@@ -2427,7 +2424,7 @@ public function valider_honoraire($action, $facture_id)
              $ca_encaisse_partage_pas_n = 0;
              if($compro_encaisse_partage_pas_n != null){                
                  foreach ($compro_encaisse_partage_pas_n as $compros_encaisse) {
-                     if($compros_encaisse->getFactureStylimmo()->encaissee == 1 && $compros_encaisse->getFactureStylimmo()->date_encaissement->format("Y-m-d") >= $deb_annee){
+                     if($compros_encaisse->getFactureStylimmo()->a_voir = false && $compros_encaisse->getFactureStylimmo()->encaissee == 1 && $compros_encaisse->getFactureStylimmo()->date_encaissement->format("Y-m-d") >= $deb_annee){
                          $ca_encaisse_partage_pas_n +=  $compros_encaisse->getFactureStylimmo()->montant_ttc;
                         //  echo  $mandataire->id == 12 ?  "<br/>".$compros_encaisse->numero_mandat." np".$compros_encaisse->getFactureStylimmo()->montant_ttc : null ;
                      }
@@ -2441,7 +2438,7 @@ public function valider_honoraire($action, $facture_id)
 
                  if($compro_encaisse_porte_n != null){
                      foreach ($compro_encaisse_porte_n as $compros_encaisse) {
-                         if($compros_encaisse->getFactureStylimmo()->encaissee == 1 && $compros_encaisse->getFactureStylimmo()->date_encaissement->format("Y-m-d") >= $deb_annee){
+                         if($compros_encaisse->getFactureStylimmo()->a_voir = false && $compros_encaisse->getFactureStylimmo()->encaissee == 1 && $compros_encaisse->getFactureStylimmo()->date_encaissement->format("Y-m-d") >= $deb_annee){
                              $ca_encaisse_porte_n +=  $compros_encaisse->frais_agence * $compros_encaisse->pourcentage_agent/100;
                             //  echo  $mandataire->id == 12 ?  '<br/> pp  '.$compros_encaisse->numero_mandat.'--'.$compros_encaisse->getFactureStylimmo()->montant_ttc * $compros_encaisse->pourcentage_agent/100: null ;
                          }
@@ -2456,7 +2453,7 @@ public function valider_honoraire($action, $facture_id)
 
                  if($compro_encaisse_porte_pas_n != null){
                      foreach ($compro_encaisse_porte_pas_n as $compros_encaisse) {
-                         if($compros_encaisse->getFactureStylimmo()->encaissee == 1 && $compros_encaisse->getFactureStylimmo()->date_encaissement->format("Y-m-d") >= $deb_annee){
+                         if($compros_encaisse->getFactureStylimmo()->a_voir = false && $compros_encaisse->getFactureStylimmo()->encaissee == 1 && $compros_encaisse->getFactureStylimmo()->date_encaissement->format("Y-m-d") >= $deb_annee){
                              $ca_encaisse_porte_pas_n +=  $compros_encaisse->frais_agence * (100-$compros_encaisse->pourcentage_agent)/100;
                             //  echo  $mandataire->id == 12 ?  '<br/>ppp  '.$compros_encaisse->numero_mandat.'--'.$compros_encaisse->getFactureStylimmo()->montant_ttc* (100-$compros_encaisse->pourcentage_agent)/100 : null ;
                          }

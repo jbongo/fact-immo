@@ -20,56 +20,57 @@ Avoir N° {{$avoir->numero}}
            @endif       
           <div class="card alert">
          <div class="row">
-            @if ($compromis->facture_stylimmo_valide == true)
-            {{-- <div class="col-lg-3 col-md-3  col-sm-5 col-xs-8">
-               <a  href="{{route('facture.envoyer_facture_stylimmo', Crypt::encrypt($facture->id))}}"  class="btn btn-danger btn-flat btn-addon  m-b-10 m-l-5 " id="ajouter"><i class="ti-email"></i>Renvoyer au mandataire</a>
-            </div> --}}
+            <div class="col-lg-3 col-md-3 col-sm-6">
+                <a href="{{route('facture.telecharger_pdf_avoir', Crypt::encrypt($avoir->id))}}"  class="btn btn-default btn-flat btn-addon  m-b-10 m-l-5 " id="ajouter"><i class="ti-download"></i>Télécharger</a>
+             </div>
+            {{-- @if ($compromis->facture_stylimmo_valide == true)
+           
             <div class="col-lg-3 col-md-3 col-sm-6">
                <a href="{{route('facture.telecharger_pdf_avoir', Crypt::encrypt($avoir->id))}}"  class="btn btn-default btn-flat btn-addon  m-b-10 m-l-5 " id="ajouter"><i class="ti-download"></i>Télécharger</a>
             </div>
             @else 
-            @if(Auth()->user()->role == "admin")
-            <div class="col-lg-4 col-md-4  col-sm-5 ml-auto">
-                <form action="{{route('facture.valider_facture_stylimmo', Crypt::encrypt($compromis->id))}}" method="get">
+                @if(Auth()->user()->role == "admin")
+                <div class="col-lg-4 col-md-4  col-sm-5 ml-auto">
+                    <form action="{{route('facture.valider_facture_stylimmo', Crypt::encrypt($compromis->id))}}" method="get">
+                            <div class="row">
+                                <div class="  col-lg-4 col-md-4 col-sm-6 col-xs-6">
+                                    <label for="numero">Numéro facture :</label>
+                                </div>
+                                <div class=" col-lg-4 col-md-4 col-sm-6 col-xs-6">
+                                    <label for="numero">Date facture :</label>
+                                </div>
+                            </div>
+                        
                         <div class="row">
-                            <div class="  col-lg-4 col-md-4 col-sm-6 col-xs-6">
-                                <label for="numero">Numéro facture :</label>
+                            <div class="form-group  col-lg-4 col-md-4 col-sm-6 col-xs-6">
+                                <div class="">  <input class="form-control " style="height:35px; border-color:royalblue" type="number" name="numero" id="numero" value="{{ old('numero') ? old('numero') : 55555}}" required> </div>
+                                @if ($errors->has('numero'))
+                                <br>
+                                <div class="alert alert-warning ">
+                                <strong>{{$errors->first('numero')}}</strong> 
+                                </div>
+                                @endif     
                             </div>
-                            <div class=" col-lg-4 col-md-4 col-sm-6 col-xs-6">
-                                <label for="numero">Date facture :</label>
+                            <div class="form-group col-lg-4 col-md-4 col-sm-6 col-xs-6">
+                            <div class="">  <input class="form-control " style="height:35px; border-color:royalblue" type="date"  name="date_facture" id="date_facture"  required> </div>
+                                @if ($errors->has('date_facture'))
+                                <br>
+                                <div class="alert alert-warning ">
+                                    <strong>{{$errors->first('date_facture')}}</strong> 
+                                </div>
+                                @endif     
                             </div>
                         </div>
+                        <div class="form-group  ">
+                            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
+                                <button  class="btn btn-default btn-flat btn-addon "  id="ajouter"><i class="ti-check"></i>Valider la facture</button>
+                            </div>
+                        </div>
+                    </form>
                     
-                    <div class="row">
-                        <div class="form-group  col-lg-4 col-md-4 col-sm-6 col-xs-6">
-                            <div class="">  <input class="form-control " style="height:35px; border-color:royalblue" type="number" name="numero" id="numero" value="{{ old('numero') ? old('numero') : $numero}}" required> </div>
-                            @if ($errors->has('numero'))
-                            <br>
-                            <div class="alert alert-warning ">
-                            <strong>{{$errors->first('numero')}}</strong> 
-                            </div>
-                            @endif     
-                        </div>
-                        <div class="form-group col-lg-4 col-md-4 col-sm-6 col-xs-6">
-                        <div class="">  <input class="form-control " style="height:35px; border-color:royalblue" type="date"  name="date_facture" id="date_facture"  required> </div>
-                            @if ($errors->has('date_facture'))
-                            <br>
-                            <div class="alert alert-warning ">
-                                <strong>{{$errors->first('date_facture')}}</strong> 
-                            </div>
-                            @endif     
-                        </div>
-                    </div>
-                    <div class="form-group  ">
-                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
-                            <button  class="btn btn-default btn-flat btn-addon "  id="ajouter"><i class="ti-check"></i>Valider la facture</button>
-                        </div>
-                    </div>
-                </form>
-                
-            </div>
-            @endif
-            @endif
+                </div>
+                @endif
+            @endif --}}
 
          </div>
                <hr>
@@ -117,7 +118,7 @@ Avoir N° {{$avoir->numero}}
         </tr>
         <tr>
             <td style="width: 343px;"><span style="color: #ff0000;"></td>
-            <td style="width: 344px;"><span style="color: #ff0000;"><strong>Avoir sur la facture N° cxxxx{{$facture->numero}} du {{$facture->date_facture->format('d/m/Y')}}</td>
+            <td style="width: 344px;"><span style="color: #ff0000;"><strong>Avoir sur la facture N° {{$facture->numero}} du {{$facture->date_facture->format('d/m/Y')}}</td>
         </tr>
     </tbody>
 </table>

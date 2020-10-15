@@ -69,45 +69,45 @@ class Filleul extends Model
                 $seuil_parrain = $comm_parrain["seuil_parr_3"];
             }
             $date_12 = strftime("%d/%m/%Y", strtotime($date_12)); 
-// dd($date_12);
+            // dd($date_12);
 
-// on vérifie que le parrain n'a pas dépassé le plafond de la commission de parrainage sur son filleul,  de la date d'anniversaire de sa date d'entrée jusqu'a la date d'encaissement
-$m_d_entree = $filleul->contrat->date_entree->format('m-d');
-$m_d_entree_fr = $filleul->contrat->date_entree->format('d/m');
-$y_encaiss = $compromis->getFactureStylimmo()->date_encaissement->format('Y');
+            // on vérifie que le parrain n'a pas dépassé le plafond de la commission de parrainage sur son filleul,  de la date d'anniversaire de sa date d'entrée jusqu'a la date d'encaissement
+            $m_d_entree = $filleul->contrat->date_entree->format('m-d');
+            $m_d_entree_fr = $filleul->contrat->date_entree->format('d/m');
+            $y_encaiss = $compromis->getFactureStylimmo()->date_encaissement->format('Y');
 
-// dd($y_encaiss.'-'.$m_d_entree);
-if( $compromis->getFactureStylimmo()->date_encaissement->format('Y-m-d') > $y_encaiss.'-'.$m_d_entree  ){
-    $date_deb = $y_encaiss.'-'.$m_d_entree ;
-    $date_fin = $compromis->getFactureStylimmo()->date_encaissement->format('Y-m-d');
-    $date_anniv = $m_d_entree_fr.'/'.$y_encaiss;
-}else{
-    $date_deb =  ($y_encaiss-1).'-'.$m_d_entree ;
-    $date_fin = $compromis->getFactureStylimmo()->date_encaissement->format('Y-m-d'); 
-    $date_anniv = $m_d_entree_fr.'/'.($y_encaiss-1);
-}
-// calcul du de la comm recu par le parrain de date_deb à date_fin sur le filleul
-$ca_comm_parr = Facture::where([['user_id',$parrain_id],['filleul_id',$filleul_id],['reglee',1]])->whereIn('type',['parrainage','parrainage_partage'])->whereBetween('date_reglement',[$date_deb,$date_fin])->sum('montant_ht');
+            // dd($y_encaiss.'-'.$m_d_entree);
+            if( $compromis->getFactureStylimmo()->date_encaissement->format('Y-m-d') > $y_encaiss.'-'.$m_d_entree  ){
+                $date_deb = $y_encaiss.'-'.$m_d_entree ;
+                $date_fin = $compromis->getFactureStylimmo()->date_encaissement->format('Y-m-d');
+                $date_anniv = $m_d_entree_fr.'/'.$y_encaiss;
+            }else{
+                $date_deb =  ($y_encaiss-1).'-'.$m_d_entree ;
+                $date_fin = $compromis->getFactureStylimmo()->date_encaissement->format('Y-m-d'); 
+                $date_anniv = $m_d_entree_fr.'/'.($y_encaiss-1);
+            }
+            // calcul du de la comm recu par le parrain de date_deb à date_fin sur le filleul
+            $ca_comm_parr = Facture::where([['user_id',$parrain_id],['filleul_id',$filleul_id],['reglee',1]])->whereIn('type',['parrainage','parrainage_partage'])->whereBetween('date_reglement',[$date_deb,$date_fin])->sum('montant_ht');
 
 
 
-// On vérifie que le parrain n'a pas démissionné à la date d'encaissement 
-$a_demission_parrain = false;
+            // On vérifie que le parrain n'a pas démissionné à la date d'encaissement 
+            $a_demission_parrain = false;
 
-if($parrain->contrat->a_demission == true  ){
-    if($parrain->contrat->date_demission <= $compromis->getFactureStylimmo()->date_encaissement ){
-        $a_demission_parrain = true;
-    }
-}
+            if($parrain->contrat->a_demission == true  ){
+                if($parrain->contrat->date_demission <= $compromis->getFactureStylimmo()->date_encaissement ){
+                    $a_demission_parrain = true;
+                }
+            }
 
-// On vérifie que le filleul n'a pas démissionné à la date d'encaissement 
-$a_demission_filleul = false;
+            // On vérifie que le filleul n'a pas démissionné à la date d'encaissement 
+            $a_demission_filleul = false;
 
-if($filleul->contrat->a_demission == true  ){
-    if($filleul->contrat->date_demission <= $compromis->getFactureStylimmo()->date_encaissement ){
-        $a_demission_filleul = true;
-    }
-}
+            if($filleul->contrat->a_demission == true  ){
+                if($filleul->contrat->date_demission <= $compromis->getFactureStylimmo()->date_encaissement ){
+                    $a_demission_filleul = true;
+                }
+            }
 
 
 

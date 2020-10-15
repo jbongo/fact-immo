@@ -116,6 +116,8 @@ Route::middleware('auth')->group(function(){
     Route::post('/contrat/add','ContratController@store')->name('contrat.add');
     Route::get('/contrat/edit/{contrat_id}','ContratController@edit')->name('contrat.edit');
     Route::post('/contrat/update/{contrat_id}','ContratController@update')->name('contrat.update');
+    Route::get('/contrat/maj_date_anniversaire/','ContratController@maj_date_anniversaire')->name('contrat.maj_date_anniversaire');
+
 
    
     // ##### PARAMETRE #######
