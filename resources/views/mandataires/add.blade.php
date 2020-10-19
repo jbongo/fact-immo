@@ -113,9 +113,9 @@ Ajout d'un mandataire
                            </div>
                         </div>
                          <div class="form-group row">
-                              <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="siret">Numéro SIRET <span class="text-danger">*</span></label>
+                              <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="siret">Numéro SIRET </label>
                               <div class="col-lg-8 col-md-8 col-sm-8">
-                                 <input type="text" class="form-control {{ $errors->has('siret') ? ' is-invalid' : '' }}" value="{{old('siret')}}" id="siret" name="siret" placeholder="Ex: 2561452136582" required >
+                                 <input type="text" class="form-control {{ $errors->has('siret') ? ' is-invalid' : '' }}" value="{{old('siret')}}" id="siret" name="siret" placeholder="Ex: 2561452136582"  >
                                  @if ($errors->has('siret'))
                                     <br>
                                     <div class="alert alert-warning ">

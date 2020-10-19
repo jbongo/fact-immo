@@ -101,7 +101,7 @@
                                             $diff_jours = $interval / 86400 ;
                                         @endphp
                                        
-                                        @if($facture->type == "stylimmo")
+                                        @if($facture->type == "stylimmo" && $facture->a_avoir == false)
                                         <td width="" >
                                             @if( $facture->encaissee == false && $diff_jours < 3)
                                                 <label  style="color:lime">En attente de paiement</label>

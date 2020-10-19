@@ -697,13 +697,15 @@ public  function preparer_facture_honoraire($compromis)
         $paliers[$i][1] = $p; 
     }
 
+    $chiffre_affaire_styl = $mandataire->chiffre_affaire_styl( $mandataire->date_anniv(), date('Y-m-d'));
+
     // Calcul de la commission
-    $niveau_actuel = $this->calcul_niveau($paliers, $mandataire->chiffre_affaire_sty);
+    $niveau_actuel = $this->calcul_niveau($paliers, $chiffre_affaire_styl);
 
     if($compromis->facture_honoraire_cree == false && $compromis->user->contrat->deduis_jeton == false ){
     
         $montant_vnt_ht = ($compromis->frais_agence/1.2) ; 
-        $formule = $this->calcul_com($paliers, $montant_vnt_ht, $mandataire->chiffre_affaire_sty, $niveau_actuel-1, $mandataire);
+        $formule = $this->calcul_com($paliers, $montant_vnt_ht, $chiffre_affaire_styl, $niveau_actuel-1, $mandataire);
         $deb_annee = date("Y")."-01-01";
 
         // On calcul le chiffre d'affaire encaissé du mandataire depuis le 1er janvier, pour voir s'il passe à la TVA
@@ -746,7 +748,7 @@ public  function preparer_facture_honoraire($compromis)
         $compromis->facture_honoraire_cree = true;
         $compromis->update();
         // on incremente le chiffre d'affaire et on modifie s'il le faut le pourcentage
-        $niveau = $this->calcul_niveau($paliers, $mandataire->chiffre_affaire_sty );
+        $niveau = $this->calcul_niveau($paliers, $chiffre_affaire_styl );
         $mandataire->commission = $paliers[$niveau-1][1];
         $mandataire->update();
 
@@ -1340,8 +1342,11 @@ public  function preparer_facture_honoraire_partage($compromis,$mandataire_id = 
         }
 
     }
+    
+    $chiffre_affaire_styl = $mandataire->chiffre_affaire_styl( $mandataire->date_anniv(), date('Y-m-d'));
+
     // Calcul de la commission
-    $niveau_actuel = $this->calcul_niveau($paliers, $mandataire->chiffre_affaire_sty);
+    $niveau_actuel = $this->calcul_niveau($paliers, $chiffre_affaire_styl);
 
     if($compromis->je_porte_affaire == 1 && $compromis->est_partage_agent == 1 && (Auth()->user()->id == $compromis->user_id || $mandataire_id == $compromis->user_id) ){
 
@@ -1349,7 +1354,7 @@ public  function preparer_facture_honoraire_partage($compromis,$mandataire_id = 
         if($compromis->facture_honoraire_partage_porteur_cree == false && ($mandataire->contrat->deduis_jeton == false || ($mandataire->contrat->deduis_jeton == true && $mandataire->nb_mois_pub_restant <= 0) ) ){
             $montant_vnt_ht = ($compromis->frais_agence/1.2) ;
             
-            $formule = $this->calcul_com($paliers, $montant_vnt_ht*$pourcentage_partage/100, $mandataire->chiffre_affaire_sty, $niveau_actuel-1, $mandataire);
+            $formule = $this->calcul_com($paliers, $montant_vnt_ht*$pourcentage_partage/100, $chiffre_affaire_styl, $niveau_actuel-1, $mandataire);
 
            
                 $montant_ht = round ( $formule[1] ,2) ;
@@ -1374,7 +1379,7 @@ public  function preparer_facture_honoraire_partage($compromis,$mandataire_id = 
 
             // on incremente le chiffre d'affaire et on modifie s'il le faut le pourcentage
        
-            $niveau = $this->calcul_niveau($paliers, $mandataire->chiffre_affaire_sty );
+            $niveau = $this->calcul_niveau($paliers, $chiffre_affaire_styl );
             $mandataire->commission = $paliers[$niveau-1][1];
             $mandataire->update();
 
@@ -1407,7 +1412,7 @@ public  function preparer_facture_honoraire_partage($compromis,$mandataire_id = 
         if($compromis->facture_honoraire_partage_cree == false && ($mandataire->contrat->deduis_jeton == false || ($mandataire->contrat->deduis_jeton == true && $mandataire->nb_mois_pub_restant <= 0) )){
             // dd("creer");
             $montant_vnt_ht = ($compromis->frais_agence/1.2) ;
-            $formule = $this->calcul_com($paliers, $montant_vnt_ht*$pourcentage_partage/100, $mandataire->chiffre_affaire_sty, $niveau_actuel-1, $mandataire);
+            $formule = $this->calcul_com($paliers, $montant_vnt_ht*$pourcentage_partage/100, $chiffre_affaire_styl, $niveau_actuel-1, $mandataire);
 
             
             $montant_ht = round ( $formule[1] ,2) ;
@@ -1430,7 +1435,7 @@ public  function preparer_facture_honoraire_partage($compromis,$mandataire_id = 
 
             // on incremente le chiffre d'affaire et on modifie s'il le faut le pourcentage
       
-            $niveau = $this->calcul_niveau($paliers, $mandataire->chiffre_affaire_sty );
+            $niveau = $this->calcul_niveau($paliers, $chiffre_affaire_styl );
             $mandataire->commission = $paliers[$niveau-1][1];
             $mandataire->update();
 
@@ -1508,8 +1513,10 @@ public  function deduire_pub_facture_honoraire(Request $request, $compromis)
         $paliers[$i][1] = $p; 
     }
 
+    $chiffre_affaire_styl = $mandataire->chiffre_affaire_styl( $mandataire->date_anniv(), date('Y-m-d'));
+
     // Calcul de la commission
-    $niveau_actuel = $this->calcul_niveau($paliers, $mandataire->chiffre_affaire_sty);
+    $niveau_actuel = $this->calcul_niveau($paliers, $chiffre_affaire_styl);
     //  VERIFIER S'IL Y'A TVA OU PAS
     $tva = 1.2;
     if($contrat->est_soumis_tva == false ){
@@ -1535,7 +1542,7 @@ public  function deduire_pub_facture_honoraire(Request $request, $compromis)
     if($compromis->facture_honoraire_cree == false && $mandataire->nb_mois_pub_restant >= 0 ){
       
       
-        $formule = $this->calcul_com($paliers, $montant_vnt_ht, $mandataire->chiffre_affaire_sty, $niveau_actuel-1, $mandataire);
+        $formule = $this->calcul_com($paliers, $montant_vnt_ht, $chiffre_affaire_styl, $niveau_actuel-1, $mandataire);
         // on deduis maintenant le montant des nb mois de pub
         $montant_ht = round ( ($formule[1] - ($contrat->packpub->tarif * $request->nb_mois_deduire) ) ,2) ;
         $montant_ttc = round ($montant_ht*$tva,2);
@@ -1580,7 +1587,7 @@ public  function deduire_pub_facture_honoraire(Request $request, $compromis)
     $compromis->update();
     // on incremente le chiffre d'affaire et on modifie s'il le faut le pourcentage
 
-    $niveau = $this->calcul_niveau($paliers, $mandataire->chiffre_affaire_sty );
+    $niveau = $this->calcul_niveau($paliers, $chiffre_affaire_styl );
     $mandataire->commission = $paliers[$niveau-1][1];
     $mandataire->update();
 
@@ -1672,7 +1679,9 @@ if($contrat->est_soumis_tva == false ){
 // Calcul de la commission
 // $chiffre_affaire_sty = getCAStylimmo($mandataire_id, $date_deb, $date_fin);
 
-$niveau_actuel = $this->calcul_niveau($paliers, $mandataire->chiffre_affaire_sty);
+$chiffre_affaire_styl = $mandataire->chiffre_affaire_styl( $mandataire->date_anniv(), date('Y-m-d'));
+
+$niveau_actuel = $this->calcul_niveau($paliers, $chiffre_affaire_styl);
 
 // dd( $mandataire_id );
 if($compromis->je_porte_affaire == 1 && $compromis->est_partage_agent == 1 && (Auth()->user()->id == $compromis->user_id || $mandataire_id == $compromis->user_id) ){
@@ -1681,7 +1690,7 @@ if($compromis->je_porte_affaire == 1 && $compromis->est_partage_agent == 1 && (A
     
         $montant_vnt_ht = ($compromis->frais_agence/1.2) ;
         
-        $formule = $this->calcul_com($paliers, $montant_vnt_ht*$pourcentage_partage/100, $mandataire->chiffre_affaire_sty, $niveau_actuel-1, $mandataire);
+        $formule = $this->calcul_com($paliers, $montant_vnt_ht*$pourcentage_partage/100, $chiffre_affaire_styl, $niveau_actuel-1, $mandataire);
 
       
             $montant_ht = round ( ($formule[1] - ($contrat->packpub->tarif * $request->nb_mois_deduire) ) ,2) ;
@@ -1709,7 +1718,7 @@ if($compromis->je_porte_affaire == 1 && $compromis->est_partage_agent == 1 && (A
         $compromis->update();
 
         // on incremente le chiffre d'affaire et on modifie s'il le faut le pourcentage
-        $niveau = $this->calcul_niveau($paliers, $mandataire->chiffre_affaire_sty );
+        $niveau = $this->calcul_niveau($paliers, $chiffre_affaire_styl );
         $mandataire->commission = $paliers[$niveau-1][1];
         $mandataire->update();
 
@@ -1730,7 +1739,7 @@ else{
   
 
         $montant_vnt_ht = ($compromis->frais_agence/1.2) ;
-        $formule = $this->calcul_com($paliers, $montant_vnt_ht*$pourcentage_partage/100, $mandataire->chiffre_affaire_sty, $niveau_actuel-1, $mandataire);
+        $formule = $this->calcul_com($paliers, $montant_vnt_ht*$pourcentage_partage/100, $chiffre_affaire_styl, $niveau_actuel-1, $mandataire);
 
         
         $montant_ht = round ( ($formule[1] - ($contrat->packpub->tarif * $request->nb_mois_deduire) ) ,2) ;
@@ -1755,7 +1764,7 @@ else{
 
         // on incremente le chiffre d'affaire et on modifie s'il le faut le pourcentage
 
-        $niveau = $this->calcul_niveau($paliers, $mandataire->chiffre_affaire_sty );
+        $niveau = $this->calcul_niveau($paliers, $chiffre_affaire_styl );
         $mandataire->commission = $paliers[$niveau-1][1];
         $mandataire->update();
 

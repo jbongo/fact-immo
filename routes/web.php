@@ -154,6 +154,10 @@ Route::middleware('auth')->group(function(){
     Route::get('/etat-financier/{date_deb?}/{date_fin?}', 'FactureController@etat_financier')->name('etat_financier');       
 
 
+    // Outil de calcul
+    Route::get('outil-calcul/', 'OutilcalculController@index')->name('outil_calcul.index');       
+    Route::post('outil-calcul/ca', 'OutilcalculController@ca')->name('outil_calcul.ca');       
+    Route::post('outil-calcul/ca-styl', 'OutilcalculController@ca_styl')->name('outil_calcul.ca_styl');       
 
 
 

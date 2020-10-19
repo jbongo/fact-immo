@@ -48,7 +48,7 @@ Demande de facture  | {{ substr($compromis->description_bien,0,150) }}...
                              <a href="{{route('facture.telecharger_pdf_facture_stylimmo', Crypt::encrypt($compromis->id))}}"  class="btn btn-default btn-flat btn-addon  m-b-10 m-l-5 " id="ajouter"><i class="ti-download"></i>Télécharger</a>
                           </div>
                           @else 
-                          @if(Auth()->user()->role == "admin")
+                          @if(Auth()->user()->role == "admin" && $compromis->demande_facture == 1)
                           <div class="col-lg-4 col-md-4  col-sm-5 ml-auto">
                               <form action="{{route('facture.valider_facture_stylimmo', Crypt::encrypt($compromis->id))}}" method="get">
                                       <div class="row">

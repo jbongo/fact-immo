@@ -83,7 +83,7 @@ class MandataireController extends Controller
             'statut' => 'required|string',
             'nom' => 'required|string|max:150',
             'prenom' => 'required',
-            'siret' => 'required|string',
+            'siret' => 'string',
             'email' => 'required|email|unique:users',
             'email_perso' => 'required|email|unique:users',
         ]);

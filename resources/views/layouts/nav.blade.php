@@ -4,11 +4,14 @@
     $curent_url = explode("/", $curent_url);
 
 
-    $li_home = $li_mandataire = $li_affaire = $li_affaire_archive=  $li_facture = $li_facture_gestion = $li_facture_demande = $li_parametre = $li_parametre_modele = $li_parametre_fournisseur = $li_parametre_generaux= "";
+    $li_home = $li_mandataire = $li_affaire = $li_affaire_archive=  $li_facture = $li_facture_gestion = $li_facture_demande = $li_parametre = $li_parametre_modele = $li_parametre_fournisseur = $li_parametre_generaux = $li_outil = "";
     
     switch ($curent_url[1]) {
         case 'home':       
             $li_home = "active";
+            break;
+        case 'outil-calcul':       
+            $li_outil = "active";
             break;
         case 'mandataires':
             $li_mandataire = "active";
@@ -125,6 +128,11 @@
                         <li class=""><a  href="{{route('etat_financier')}}" class=""> <i class="large material-icons" style="font-size:20px;">enhanced_encryption</i></i>Etat financier   </a>
                     </li>
                     @endif
+
+                    @if(Auth()->user()->role != "admin"  )
+                 <li  style="{{$li_home}} background: #ffad64" class="" ><a href="{{route('outil_calcul.index')}}" ><i class="large material-icons" style="font-size:20px;">iso</i> Outil de calcul </a></li>
+@endif
+
                     <li><a href="{{ route('logout') }}"  onclick="event.preventDefault();
                      document.getElementById('logout-form').submit();" ><i class="large material-icons" style="font-size:20px;">close</i></i> Déconnexion</a></li>
 
