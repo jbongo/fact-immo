@@ -32,6 +32,7 @@
                                         <th>@lang('Téléphone')</th>
                                         {{-- <th>@lang('Adresse')</th> --}}
                                         <th>@lang('Ville')</th>
+                                        <th>@lang('date anniv')</th>
                                         <th>@lang('Comm')</th>
                                         <th>@lang('CA HT en cours')</th>
                                         <th>@lang('Action')</th>
@@ -58,7 +59,10 @@
                                         </td> --}}
                                         <td>
                                             {{$mandataire->ville}}   
-                                        </td>                                        
+                                        </td>        
+                                        <td>
+                                            {{$mandataire->date_anniv()}}   
+                                        </td>                                  
                                         <td @if($mandataire->contrat== null) style="background:#757575; color:white" @endif>                                             
                                             <span class="color-success" >@if($mandataire->contrat!= null) {{$mandataire->commission}} % @else Pas de contrat @endif</span>
                                         </td>
