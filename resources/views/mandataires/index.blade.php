@@ -35,6 +35,7 @@
                                         <th>@lang('date anniv')</th>
                                         <th>@lang('Comm')</th>
                                         <th>@lang('CA HT en cours')</th>
+                                        <th>@lang('CA HT écart')</th>
                                         <th>@lang('Action')</th>
                                     </tr>
                                 </thead>
@@ -68,6 +69,9 @@
                                         </td>
                                         <td>                                             
                                             <span class="color-warning">{{number_format($mandataire->chiffre_affaire_styl($mandataire->date_anniv(), date('Y-m-d')),2,'.',' ')}} €</span>
+                                        </td>
+                                        <td>                                             
+                                            <span class="color-warning">{{number_format($mandataire->chiffre_affaire_styl("2020-01-01", $mandataire->date_anniv() ),2,'.',' ')}} €</span>
                                         </td>
                                         <td width="13%">
                                             <span><a href="{{route('mandataire.show',Crypt::encrypt($mandataire->id) )}}" data-toggle="tooltip" title="@lang('Détails de ') {{ $mandataire->nom }}"><i class="large material-icons color-info">visibility</i></a> </span>
