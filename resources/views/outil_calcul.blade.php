@@ -57,7 +57,7 @@
     
                             @else 
                             
-                            <input type="hidden"  name="user_id" id="user_id" value="25" class="form-control">
+                            <input type="hidden"  name="user_id" id="user_id" value="{{Auth::user()->id}}" class="form-control">
     
                             @endif
                         </div>
@@ -126,7 +126,7 @@
     
                             @else 
                             
-                            <input type="hidden"  name="user_id_styl" id="user_id_styl" value="25" class="form-control">
+                        <input type="hidden"  name="user_id_styl" id="user_id_styl" value="{{Auth::user()->id}}" class="form-control">
     
                             @endif
                         </div>

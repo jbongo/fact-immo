@@ -87,7 +87,7 @@
     <div class="col-lg-8">
         <div class="card alert">
             <div class="card-header">
-                <h4>Chiffre d'affaires {{config('stats.STATS.annee')}}  </h4>
+                <h4>Chiffre d'affaires Styl HT {{config('stats.STATS.annee')}}  </h4>
                 {{-- <div class="card-header-right-icon">
                     <ul>
                         <li class="card-close" data-dismiss="alert"><i class="ti-close"></i></li>
@@ -103,11 +103,11 @@
     <div class="col-lg-4" >
         <div class="card" style="height: 100%; ">
             <div class="card-body">
-                <h4 class="card-title">Chiffre d'affaire annuel {{config('stats.STATS.annee')}} </h4>
+                <h4 class="card-title">Chiffre d'affaires Styl HT annuel {{config('stats.STATS.annee')}} </h4>
                 <div id="morris-donut-chart"></div>
             </div>
             <div>
-                <button style="background-color:#ff1a1a; width:50px; height:20px"></button> <span style="font-family: Montserrat; font-size:16px; font-weight:bold; ">Chiffre d'affaires Général : {{number_format( array_sum(config('stats.CA_N')[0]) ,2,'.',',')}}</span> 
+                <button style="background-color:#ff1a1a; width:50px; height:20px"></button> <span style="font-family: Montserrat; font-size:16px; font-weight:bold; ">Chiffre d'affaires Styl HT Général : {{number_format( array_sum(config('stats.CA_N')[0]) ,2,'.',',')}}</span> 
             </div>
         </div>
         
@@ -145,7 +145,7 @@
 
 
 
-{{-- Chiffre d'affaires mensuels N BAR --}}
+{{-- Chiffre d'affaires Styl HT mensuels N BAR --}}
 
 <div class="row">
  <!-- Bar Chart -->
@@ -153,7 +153,7 @@
         <div class="panel">
             <div class="panel-heading">
                 <div class="panel-title">
-                    <h4>Chiffre d'affaires mensuels {{config('stats.STATS.annee')}} </h4>
+                    <h4>Chiffre d'affaires Styl HT mensuels {{config('stats.STATS.annee')}} </h4>
                 </div>
             </div>
             <div class="panel-body">
@@ -200,7 +200,7 @@
                 <i class="ti-money bg-warning"></i>
             </div>
             <div class="stat-content">
-                <div class="stat-heading color-primary"><strong>Chiffre d'affaires</strong></div>
+                <div class="stat-heading color-primary"><strong>Chiffre d'affaires Styl HT</strong></div>
                 <div class="stat-text">{{number_format( array_sum(config('stats.CA_N')[0]) ,2,',',' ')}}</div>
             </div>
         </div>
@@ -344,7 +344,7 @@
                     },
                     scaleLabel: {
                         display: true,
-                        labelString: "Chiffre d'affaires"
+                        labelString: "Chiffre d'affaires Styl HT"
                     }
                         }]
             },

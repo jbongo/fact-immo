@@ -165,6 +165,8 @@ class HomeController extends Controller
 
          } 
         else{
+
+           
             // CALCUL DES CA POUR LES MANDATAIRES
             $nb_global_N = 0;
             $nb_sous_offre_n = 0;
@@ -402,10 +404,10 @@ class HomeController extends Controller
                             $ca_sous_compromis_n = round(($ca_compromis_partage_pas_n+$ca_compromis_porte_n+$ca_compromis_porte_pas_n)/1.2,2);
                             $ca_sous_compromis_N [] = $ca_sous_compromis_n;
 
-
+                           
                             // CA GLOBAL 
                             $ca_glo_n = $ca_encaisse_n + $ca_attente_n + $ca_sous_offre_n + $ca_sous_compromis_n;
-                            $ca_global_N [] = round($ca_glo_n/1.2,2);
+                            $ca_global_N [] = round($ca_glo_n,2);
 
                             $nb_global_N += ( $nb_encaisse_n + $nb_en_attente_n + $nb_sous_compromis_n + $nb_sous_offre_n);       
 

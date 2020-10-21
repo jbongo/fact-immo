@@ -258,7 +258,7 @@ public  function valider_facture_stylimmo( Request $request, $compromis)
 
     $tva = 1.2;
     // $numero = 1507;
-    $facture = Facture::where([ ['type','stylimmo'],['compromis_id',$compromis->id],['a_avoir',false]])->first();
+    $facture = Facture::where([ ['type','stylimmo'],['compromis_id',$compromis->id]])->first();
 
 
     // Si la facture n'est pas déjà crée
@@ -697,14 +697,18 @@ public  function preparer_facture_honoraire($compromis)
         $paliers[$i][1] = $p; 
     }
 
-    $chiffre_affaire_styl = $mandataire->chiffre_affaire_styl( $mandataire->date_anniv(), date('Y-m-d'));
+    $chiffre_affaire_styl = $mandataire->chiffre_affaire_styl( $mandataire->date_anniv(), $compromis->getFactureStylimmo()->date_encaissement->format('Y-m-d'));
 
-    // Calcul de la commission
-    $niveau_actuel = $this->calcul_niveau($paliers, $chiffre_affaire_styl);
+   
 
     if($compromis->facture_honoraire_cree == false && $compromis->user->contrat->deduis_jeton == false ){
     
         $montant_vnt_ht = ($compromis->frais_agence/1.2) ; 
+         
+        // Calcul de la commission, on retire l'encaissé actuel pour ne pas faire de doublon pendant le calcul de com
+        $niveau_actuel = $this->calcul_niveau($paliers, ($chiffre_affaire_styl - $montant_vnt_ht ));
+
+    
         $formule = $this->calcul_com($paliers, $montant_vnt_ht, $chiffre_affaire_styl, $niveau_actuel-1, $mandataire);
         $deb_annee = date("Y")."-01-01";
 
@@ -749,6 +753,8 @@ public  function preparer_facture_honoraire($compromis)
         $compromis->update();
         // on incremente le chiffre d'affaire et on modifie s'il le faut le pourcentage
         $niveau = $this->calcul_niveau($paliers, $chiffre_affaire_styl );
+
+        // ENVOI MAIL SI COMMISSION EVOLUE ######################################################################################################################################### 
         $mandataire->commission = $paliers[$niveau-1][1];
         $mandataire->update();
 
@@ -1343,10 +1349,9 @@ public  function preparer_facture_honoraire_partage($compromis,$mandataire_id = 
 
     }
     
-    $chiffre_affaire_styl = $mandataire->chiffre_affaire_styl( $mandataire->date_anniv(), date('Y-m-d'));
+    $chiffre_affaire_styl = $mandataire->chiffre_affaire_styl( $mandataire->date_anniv(), $compromis->getFactureStylimmo()->date_encaissement->format('Y-m-d'));
 
-    // Calcul de la commission
-    $niveau_actuel = $this->calcul_niveau($paliers, $chiffre_affaire_styl);
+    
 
     if($compromis->je_porte_affaire == 1 && $compromis->est_partage_agent == 1 && (Auth()->user()->id == $compromis->user_id || $mandataire_id == $compromis->user_id) ){
 
@@ -1354,6 +1359,9 @@ public  function preparer_facture_honoraire_partage($compromis,$mandataire_id = 
         if($compromis->facture_honoraire_partage_porteur_cree == false && ($mandataire->contrat->deduis_jeton == false || ($mandataire->contrat->deduis_jeton == true && $mandataire->nb_mois_pub_restant <= 0) ) ){
             $montant_vnt_ht = ($compromis->frais_agence/1.2) ;
             
+            // Calcul de la commission, on retire l'encaissé actuel pour ne pas faire de doublon pendant le calcul de com
+            $niveau_actuel = $this->calcul_niveau($paliers, ($chiffre_affaire_styl - $montant_vnt_ht ));
+
             $formule = $this->calcul_com($paliers, $montant_vnt_ht*$pourcentage_partage/100, $chiffre_affaire_styl, $niveau_actuel-1, $mandataire);
 
            
@@ -1412,6 +1420,10 @@ public  function preparer_facture_honoraire_partage($compromis,$mandataire_id = 
         if($compromis->facture_honoraire_partage_cree == false && ($mandataire->contrat->deduis_jeton == false || ($mandataire->contrat->deduis_jeton == true && $mandataire->nb_mois_pub_restant <= 0) )){
             // dd("creer");
             $montant_vnt_ht = ($compromis->frais_agence/1.2) ;
+
+            // Calcul de la commission, on retire l'encaissé actuel pour ne pas faire de doublon pendant le calcul de com
+            $niveau_actuel = $this->calcul_niveau($paliers, ($chiffre_affaire_styl - $montant_vnt_ht ));
+
             $formule = $this->calcul_com($paliers, $montant_vnt_ht*$pourcentage_partage/100, $chiffre_affaire_styl, $niveau_actuel-1, $mandataire);
 
             
@@ -1513,10 +1525,9 @@ public  function deduire_pub_facture_honoraire(Request $request, $compromis)
         $paliers[$i][1] = $p; 
     }
 
-    $chiffre_affaire_styl = $mandataire->chiffre_affaire_styl( $mandataire->date_anniv(), date('Y-m-d'));
+    $chiffre_affaire_styl = $mandataire->chiffre_affaire_styl( $mandataire->date_anniv(), $compromis->getFactureStylimmo()->date_encaissement->format('Y-m-d'));
 
-    // Calcul de la commission
-    $niveau_actuel = $this->calcul_niveau($paliers, $chiffre_affaire_styl);
+   
     //  VERIFIER S'IL Y'A TVA OU PAS
     $tva = 1.2;
     if($contrat->est_soumis_tva == false ){
@@ -1536,6 +1547,10 @@ public  function deduire_pub_facture_honoraire(Request $request, $compromis)
     //PASSER LA COMMISSION DU MANDATAIRE EN PARAMETRE
     $montant_vnt_ht = ($compromis->frais_agence/1.2) ; 
     
+    // Calcul de la commission, on retire l'encaissé actuel pour ne pas faire de doublon pendant le calcul de com
+    $niveau_actuel = $this->calcul_niveau($paliers, ($chiffre_affaire_styl - $montant_vnt_ht ));
+
+
     // PASSER LE TYPE DE LA FACTYPE EN PARAMETRE
 
 
@@ -1634,7 +1649,7 @@ if($compromis->je_porte_affaire == 1 && $compromis->est_partage_agent == 1 && (A
 }
 
 
-$factureStylimmo = Facture::where([ ['type','stylimmo'],['compromis_id',$compromis->id]])->first();
+$factureStylimmo = Facture::where([ ['type','stylimmo'],['compromis_id',$compromis->id],['a_avoir', false]])->first();
 
 $contrat = $mandataire->contrat;
 
@@ -1679,9 +1694,8 @@ if($contrat->est_soumis_tva == false ){
 // Calcul de la commission
 // $chiffre_affaire_sty = getCAStylimmo($mandataire_id, $date_deb, $date_fin);
 
-$chiffre_affaire_styl = $mandataire->chiffre_affaire_styl( $mandataire->date_anniv(), date('Y-m-d'));
+$chiffre_affaire_styl = $mandataire->chiffre_affaire_styl( $mandataire->date_anniv(), $compromis->getFactureStylimmo()->date_encaissement->format('Y-m-d'));
 
-$niveau_actuel = $this->calcul_niveau($paliers, $chiffre_affaire_styl);
 
 // dd( $mandataire_id );
 if($compromis->je_porte_affaire == 1 && $compromis->est_partage_agent == 1 && (Auth()->user()->id == $compromis->user_id || $mandataire_id == $compromis->user_id) ){
@@ -1690,6 +1704,9 @@ if($compromis->je_porte_affaire == 1 && $compromis->est_partage_agent == 1 && (A
     
         $montant_vnt_ht = ($compromis->frais_agence/1.2) ;
         
+        // Calcul de la commission, on retire l'encaissé actuel pour ne pas faire de doublon pendant le calcul de com
+        $niveau_actuel = $this->calcul_niveau($paliers, ($chiffre_affaire_styl - $montant_vnt_ht ));
+
         $formule = $this->calcul_com($paliers, $montant_vnt_ht*$pourcentage_partage/100, $chiffre_affaire_styl, $niveau_actuel-1, $mandataire);
 
       
@@ -1739,6 +1756,10 @@ else{
   
 
         $montant_vnt_ht = ($compromis->frais_agence/1.2) ;
+
+        // Calcul de la commission, on retire l'encaissé actuel pour ne pas faire de doublon pendant le calcul de com
+        $niveau_actuel = $this->calcul_niveau($paliers, ($chiffre_affaire_styl - $montant_vnt_ht ));
+
         $formule = $this->calcul_com($paliers, $montant_vnt_ht*$pourcentage_partage/100, $chiffre_affaire_styl, $niveau_actuel-1, $mandataire);
 
         
@@ -1843,6 +1864,10 @@ public function calcul_com($palier, $montant_vnt_ht, $ca, $niveau)
 
     $commission = 0;
     $tab = array();
+    
+    // on retire l'encaissé actuel parcequ'il fait déjà partir du ca encaissé
+    $ca -= $montant_vnt_ht;
+    // dd($palier);
         // à partir du niveau actuell, on avance sur le palier
        for ($i=$niveau; $i<count($palier);$i++){
            if ($ca + $montant_vnt_ht <= ($palier[$i])[3] || $i == count($palier) - 1){

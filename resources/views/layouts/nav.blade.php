@@ -130,8 +130,8 @@
                     @endif
 
                     @if(Auth()->user()->role == "admin"  )
-                 <li  style="{{$li_home}} background: #ffad64" class="" ><a href="{{route('outil_calcul.index')}}" ><i class="large material-icons" style="font-size:20px;">iso</i> Outil de calcul </a></li>
-@endif
+                        <li  style="{{$li_home}} background:#ffad64" class="" ><a href="{{route('outil_calcul.index')}}" ><i class="large material-icons" style="font-size:20px;">iso</i> Outil de calcul </a></li>
+                    @endif
 
                     <li><a href="{{ route('logout') }}"  onclick="event.preventDefault();
                      document.getElementById('logout-form').submit();" ><i class="large material-icons" style="font-size:20px;">close</i></i> Déconnexion</a></li>

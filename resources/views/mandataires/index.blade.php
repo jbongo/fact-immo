@@ -33,7 +33,7 @@
                                         {{-- <th>@lang('Adresse')</th> --}}
                                         <th>@lang('Ville')</th>
                                         <th>@lang('Comm')</th>
-                                        <th>@lang('Chiffre d\'affaires Styl')</th>
+                                        <th>@lang('CA HT en cours')</th>
                                         <th>@lang('Action')</th>
                                     </tr>
                                 </thead>
@@ -63,7 +63,7 @@
                                             <span class="color-success" >@if($mandataire->contrat!= null) {{$mandataire->commission}} % @else Pas de contrat @endif</span>
                                         </td>
                                         <td>                                             
-                                            <span class="color-warning">{{number_format($mandataire->chiffre_affaire_sty,2,'.',' ')}} €</span>
+                                            <span class="color-warning">{{number_format($mandataire->chiffre_affaire_styl($mandataire->date_anniv(), date('Y-m-d')),2,'.',' ')}} €</span>
                                         </td>
                                         <td width="13%">
                                             <span><a href="{{route('mandataire.show',Crypt::encrypt($mandataire->id) )}}" data-toggle="tooltip" title="@lang('Détails de ') {{ $mandataire->nom }}"><i class="large material-icons color-info">visibility</i></a> </span>
