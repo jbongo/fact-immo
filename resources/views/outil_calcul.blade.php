@@ -15,8 +15,8 @@
              @endif       
             <div class="card alert">
             @if (Auth()->user()->role == "mandataire")
-                <a href="{{route('compromis.create')}}" class="btn btn-success btn-rounded btn-addon btn-sm m-b-10 m-l-5"><i class="ti-user"></i>@lang('Nouvelle affaire')</a>
-            <br><br>
+              <strong> Votre date d'anniversaire : <span class="color-danger">{{Auth()->user()->date_anniv()}}</span></strong>
+            <br><hr>
             @endif
                 <!-- table -->
                 
@@ -26,7 +26,7 @@
                 <div class="col-lg-6">
                     <div class="card alert">
                         <div class="card-header">
-                            <h4 class="m-l-5">Chiffre d'affaires réalisé</h4>
+                            <h4 class="m-l-5">Chiffre d'affaires HT réalisé  (encaissé)</h4>
                             <div class="card-header-right-icon">
                                 <ul>
                                     <li><i class="ti-reload"></i></li>
@@ -97,7 +97,7 @@
                 <div class="col-lg-6">
                     <div class="card alert">
                         <div class="card-header">
-                            <h4 class="m-l-5">Chiffre d'affaires STYL'IMMO (encaissé)</h4>
+                            <h4 class="m-l-5">Chiffre d'affaires HT STYL'IMMO (encaissé)</h4>
                             <div class="card-header-right-icon">
                                 <ul>
                                     <li><i class="ti-reload"></i></li>
@@ -208,7 +208,7 @@
                     type: 'POST',
                     data: {user_id, date_deb, date_fin},
                     success: function(data){
-                    $('#result').text(data);
+                    $('#result').text(data+" € HT");
                     },
                     error : function(data){
                     console.log(data);
@@ -246,7 +246,7 @@ $('#calculer_ca_styl').click(function(){
             data: {user_id, date_deb, date_fin},
             success: function(data){
             
-            $('#result_styl').text(data);
+            $('#result_styl').text(data+ " € HT");
          
 
             },
