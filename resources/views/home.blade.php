@@ -109,6 +109,13 @@
             <div>
                 <button style="background-color:#ff1a1a; width:50px; height:20px"></button> <span style="font-family: Montserrat; font-size:16px; font-weight:bold; ">Chiffre d'affaires Styl HT Général : {{number_format( array_sum(config('stats.CA_N')[0]) ,2,'.',',')}}</span> 
             </div>
+
+            @if(Auth::user()->role == "mandataire")
+            <div>
+                <button style="background-color:#66556f; width:50px; height:20px"></button> <span style="font-family: Montserrat; font-size:16px; font-weight:bold; ">Chiffre d'affaires Styl HT contractuel : {{number_format( Auth::user()->chiffre_affaire_styl(Auth::user()->date_anniv(), date('Y-m-d')) ,2,'.',',')}}</span> 
+            </div>
+            @endif
+
         </div>
         
     </div>
