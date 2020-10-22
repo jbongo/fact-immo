@@ -164,31 +164,32 @@
 
                                             @if ($compromi->cloture_affaire == 0 && $compromi->demande_facture == 2 && $compromi->agent_id != Auth()->user()->id)
                                             <a class="cloturer" href="{{route('compromis.cloturer',Crypt::encrypt($compromi->id))}}" data-toggle="tooltip" data-mandat="{{$compromi->numero_mandat}}" title="@lang('Réitérer l\'affaire  ')"> <img src="{{asset('images/logo-notaire.png')}}" width="25px" height="30px" alt=""> <!-- <i class="large material-icons color-success ">thumb_up_alt</i> --> </a> 
-                                            
-                                            @elseif($compromi->cloture_affaire == 1  )
+                                       
+                                            @elseif($compromi->cloture_affaire >= 1  )
                                                 @if(Auth()->user()->role != "admin"  )
-                                                @if ($compromi->demande_facture == 2)
-                                                    @if($compromi->getFactureStylimmo()->encaissee == 0)
-                                                        {{-- <span style="color: #0f0636">En attente... Facture STYL'IMMO non encaissée</span>  --}}
-                                                        <a target="blank" data-toggle="tooltip" title="@lang('En attente... Facture STYL\'IMMO non encaissée  ')"><i class="large material-icons color-default ">insert_drive_file</i></a> 
+                                                    @if ($compromi->demande_facture == 2)
+                                                        @if($compromi->getFactureStylimmo()->encaissee == 0)
+                                                            {{-- <span style="color: #0f0636">En attente... Facture STYL'IMMO non encaissée</span>  --}}
+                                                            <a target="blank" data-toggle="tooltip" title="@lang('En attente... Facture STYL\'IMMO non encaissée  ')"><i class="large material-icons color-default ">insert_drive_file</i></a> 
 
-        
-                                                    @else
+            
+                                                        @else
 
-                                                        @if ($compromi->je_porte_affaire == 0  || $compromi->agent_id == Auth()->user()->id || ($compromi->je_porte_affaire == 1 && $compromi->est_partage_agent == 1) )
-                                                        <a target="blank" href="{{route('facture.preparer_facture_honoraire_partage',Crypt::encrypt($compromi->id))}}" data-toggle="tooltip" title="@lang('Note honoraire  ')"><i class="large material-icons color-danger ">insert_drive_file</i></a> 
+                                                            @if ($compromi->je_porte_affaire == 0  || $compromi->agent_id == Auth()->user()->id || ($compromi->je_porte_affaire == 1 && $compromi->est_partage_agent == 1) )
+                                                            <a target="blank" href="{{route('facture.preparer_facture_honoraire_partage',Crypt::encrypt($compromi->id))}}" data-toggle="tooltip" title="@lang('Note honoraire  ')"><i class="large material-icons color-danger ">insert_drive_file</i></a> 
 
-                                                        @else 
-                                                        <a target="blank" href="{{route('facture.preparer_facture_honoraire',Crypt::encrypt($compromi->id))}}" data-toggle="tooltip" title="@lang('Note honoraire  ')"><i class="large material-icons color-danger">insert_drive_file</i></a> 
-                                                            
+                                                            @else 
+                                                            <a target="blank" href="{{route('facture.preparer_facture_honoraire',Crypt::encrypt($compromi->id))}}" data-toggle="tooltip" title="@lang('Note honoraire  ')"><i class="large material-icons color-danger">insert_drive_file</i></a> 
+                                                                
+                                                            @endif
                                                         @endif
-                                                    @endif
-                                            
-                                            @else
-                                            <a target="blank" data-toggle="tooltip" title="@lang('En attente... Facture STYL\'IMMO non encaissée  ')"><i class="large material-icons color-default ">insert_drive_file</i></a> 
+                                                
+                                                    @else
+                                                
+                                                        <a target="blank" data-toggle="tooltip" title="@lang('En attente... Facture STYL\'IMMO non encaissée  ')"><i class="large material-icons color-default ">insert_drive_file</i></a> 
  
                                                 
-                                            @endif
+                                                @endif
 
 
 
