@@ -107,16 +107,16 @@
                                             {{-- <span class="badge badge-success">Oui</span> --}}
                                             
                                             @if($compromi->getPartage()!= null && $compromi->partage_reseau == 1) 
-                                                <strong> <a href="{{route('switch_user',Crypt::encrypt($compromi->getPartage()->id) )}}" data-toggle="tooltip" title="@lang('Se connecter en tant que ') {{$compromi->getPartage()->nom}}">{{$compromi->getPartage()->nom}} {{$compromi->getPartage()->prenom}}<i style="font-size: 17px" class="material-icons color-success">person_pin</i></a> </strong> 
+                                                <strong> <a href="{{route('switch_user',Crypt::encrypt($compromi->getPartage()->id) )}}" data-toggle="tooltip" title="@lang('Se connecter en tant que ') {{$compromi->getPartage()->nom}}">{{$compromi->getPartage()->nom}} {{$compromi->getPartage()->prenom}} <i style="font-size: 17px" class="material-icons color-success">person_pin</i></a> </strong> 
                                             @else 
                                                 <strong> <a  data-toggle="tooltip" title="@lang('Agence / Agent externe au réseau STYL\'IMMO') ">{{$compromi->nom_agent}} </a> </strong> 
                                             @endif
                                             @else 
                                                 @if($compromi->getPartage() != null)
                                                     @if ($compromi->getPartage()->id == Auth()->user()->id)
-                                                        <strong> <a >{{$compromi->user->nom}} {{$compromi->user->prenom}}</a> </strong>
+                                    <strong> <a >{{$compromi->user->nom}} {{$compromi->user->prenom}} <span class="color-danger"> ({{$compromi->pourcentage_agent}} %) </span></a> </strong>
                                                     @else 
-                                                        <strong> <a >{{$compromi->getPartage()->nom}} {{$compromi->getPartage()->prenom}}</a> </strong>
+                                                        <strong> <a >{{$compromi->getPartage()->nom}} {{$compromi->getPartage()->prenom}}  <span class="color-danger"> ({{100-$compromi->pourcentage_agent}} %) </span></a> </strong>
                                                     @endif
                                                 @else 
                                                     {{$compromi->nom_agent}}
@@ -143,7 +143,7 @@
                                     <td  style="">
                                         @if($compromi->getFactureStylimmo() !=null && $compromi->getFactureStylimmo()->encaissee == true )
                                             {{-- @if($compromi->demande_facture == 0 ) --}}
-                                                <span style="color:#0ca558">Encaissée</span>
+                                    <span style="color:#0ca558"> Encaissée le {{ $compromi->getFactureStylimmo()->date_encaissement->format('d/m/Y')}}</span>
                                                                                 
                                         @else 
                                         <span style="color:#ff0633 ">Non encaissée </span>
