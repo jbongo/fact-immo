@@ -1480,7 +1480,12 @@ public  function preparer_facture_honoraire_partage($compromis,$mandataire_id = 
             }
         // dd($facture);
 
-            $formule = unserialize( $facture->formule);
+            if($facture != null){
+                $formule = unserialize( $facture->formule);
+            }
+            else{
+                $formule = null;
+            }
         }
 
     }
