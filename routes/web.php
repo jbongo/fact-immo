@@ -46,6 +46,12 @@ Route::middleware('auth')->group(function(){
     Route::get('/compromis/etat/{compromis}','CompromisController@etat_compromis')->name('compromis.etat');
     // type affaire
     Route::get('/compromis/type','CompromisController@index_type_compromis')->name('compromis_type.index');
+   
+    // Affaires cloturées
+    Route::get('/affaires-clotures','CompromisController@affaire_cloture')->name('compromis.affaire_cloture');
+
+    // Affaire en cour
+    Route::get('/affaires-en-cours','CompromisController@affaire_en_cour')->name('compromis.affaire_en_cour');
 
 
     

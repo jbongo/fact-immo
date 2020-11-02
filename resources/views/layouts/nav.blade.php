@@ -4,7 +4,7 @@
     $curent_url = explode("/", $curent_url);
 
 
-    $li_home = $li_mandataire = $li_affaire = $li_affaire_archive=  $li_facture = $li_facture_gestion = $li_facture_demande = $li_parametre = $li_parametre_modele = $li_parametre_fournisseur = $li_parametre_generaux = $li_outil = "";
+    $li_home = $li_mandataire = $li_affaire = $li_affaire_archive=  $li_facture = $li_facture_gestion = $li_facture_demande = $li_parametre = $li_parametre_modele = $li_parametre_fournisseur = $li_parametre_generaux = $li_outil = $li_affaire_en_cour = $li_affaire_cloture = "";
     
     switch ($curent_url[1]) {
         case 'home':       
@@ -21,6 +21,15 @@
             $li_affaire = "active open";
         }
             break;
+
+        case 'affaire-cloture':       
+            $li_affaire_cloture = "active";
+            break;
+
+        case 'affaire-en-cour':       
+            $li_affaire_en_cour = "active";
+            break;
+
         case 'factures':
             $li_facture= "active open";
             if( sizeof($curent_url) == 2 )
@@ -93,8 +102,10 @@
                         <li class="{{ $li_affaire}}" ><a href="{{route('compromis.filleul.index')}}">Affaires de mes filleuls</a></li>
 
                         @endif
+                        <li style=" background:#ffad64" class="{{$li_affaire_en_cour}}" ><a href="{{route('compromis.affaire_en_cour')}}">En cours</a></li>
+                        <li style=" background:#ffad64" class="{{$li_affaire_cloture}}" ><a href="{{route('compromis.affaire_cloture')}}">Cloturées</a></li>
                         <li class="{{$li_affaire_archive}}" ><a href="{{route('compromis.archive')}}">Archives</a></li>
-                    
+                        
                     </ul>
                 </li>
                 

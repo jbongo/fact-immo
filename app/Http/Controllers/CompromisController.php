@@ -280,7 +280,31 @@ class CompromisController extends Controller
 
 
 
+    /**
+     * Affaires cloturées
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function affaire_cloture()
+    {
+        $compromis = Compromis::where('cloture_affaire',2)->get();
 
+
+        return view('compromis.affaire_cloture',compact('compromis'));
+    }
+
+
+    /**
+     * Affaires en cour
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function affaire_en_cour()
+    {
+        $compromis = Compromis::where('cloture_affaire','<',2)->get();
+
+        return view('compromis.affaire_en_cour',compact('compromis'));
+    }
 
 
 

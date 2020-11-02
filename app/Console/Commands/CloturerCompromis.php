@@ -65,9 +65,11 @@ class CloturerCompromis extends Command
                 $hono_porteur_regle = 0;
             }
 
-            // Si le partage d'affaire est un filleul
+            // Si le porteur d'affaire est un filleul
 
-           if($compro->user->filleul !=null){
+            $filleulP = Filleul::where('user_id',$compro->user_id)->first();
+
+           if($filleulP !=null){
 
                  // On verifié si la facture parrainage du porteur d'affaire est reglée
                 if($compro->getFactureParrainPorteur() != null ){
@@ -77,7 +79,26 @@ class CloturerCompromis extends Command
                     }
 
                 }else{
-                    $hono_parrain_porteur_regle = 0;
+
+
+                    // On vérifie si le parrain a droit à la commission (1 -verfier dab si facture styl encaissée)
+
+                    if($compro->getFactureStylimmo() != null && $compro->getFactureStylimmo()->encaissee == true ){
+                        $result = Filleul::droitParrainage($filleulP->parrain_id, $filleulP->user_id, $compro->id);
+
+                        // Si le parrain ne respecte pas les conditions , on considère que sa commission a été reglé
+                        if($result['respect_condition'] == true ) 
+                            $hono_parrain_porteur_regle = 0;
+                    }else{
+                        $hono_parrain_porteur_regle = 0;
+
+                    }
+
+                   
+
+                   
+
+
                 }
 
            }
@@ -87,7 +108,7 @@ class CloturerCompromis extends Command
 
         // On vérifie s'il y'a partage
 
-        if($compro->parrain_partage_id != null){
+        if($compro->est_partage_agent != null){
 
              // On verifié si la facture hono du partage d'affaire est reglée
              if($compro->getHonoPartage() != null ){
@@ -100,9 +121,12 @@ class CloturerCompromis extends Command
                 $hono_partage_regle = 0;
             }
 
+            
             // Si le partage d'affaire est un filleul
 
-           if($compro->user->filleul !=null){
+            $filleul = Filleul::where('user_id',$compro->agent_id)->first();
+
+           if($filleul !=null){
 
                  // On verifié si la facture parrainage du partage d'affaire est reglée
                 if($compro->getFactureParrainPartage() != null ){
@@ -112,7 +136,23 @@ class CloturerCompromis extends Command
                     }
 
                 }else{
-                    $hono_parrain_partage_regle = 0;
+
+
+                    // On vérifie si le parrain a droit à la commission
+
+
+                    if($compro->getFactureStylimmo() != null && $compro->getFactureStylimmo()->encaissee == true ){
+                            
+                        $result = Filleul::droitParrainage($filleul->parrain_id, $filleul->user_id, $compro->id);
+
+                        // Si le parrain ne respecte pas les conditions , on considère que sa commission a été reglé
+                        if($result['respect_condition'] == true ) 
+                            $hono_parrain_partage_regle = 0;
+                    }else {
+                        $hono_parrain_partage_regle = 0;
+
+                    }
+                    
                 }
 
            }

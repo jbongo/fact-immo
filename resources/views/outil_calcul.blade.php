@@ -26,7 +26,7 @@
                 <div class="col-lg-6">
                     <div class="card alert">
                         <div class="card-header">
-                            <h4 class="m-l-5">Chiffre d'affaires HT réalisé  (encaissé)</h4>
+                            <h4 class="m-l-5">Votre chiffre d'affaires HT réalisé  (encaissé)</h4>
                             <div class="card-header-right-icon">
                                 <ul>
                                     <li><i class="ti-reload"></i></li>
