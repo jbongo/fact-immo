@@ -287,7 +287,13 @@ class CompromisController extends Controller
      */
     public function affaire_cloture()
     {
-        $compromis = Compromis::where([['cloture_affaire',2], ['archive', false]])->get();
+
+        if(Auth::user()->role == "admin"){
+            $compromis = Compromis::where([['cloture_affaire',2], ['archive', false]])->get();
+        }else {
+            $compromis = Compromis::where([['cloture_affaire',2], ['archive', false], ['user_id', Auth::user()->id]])->orWhere([['cloture_affaire',2], ['archive', false], ['agent_id', Auth::user()->id]])->get();
+
+        }
 
 
         return view('compromis.affaire_cloture',compact('compromis'));
@@ -301,8 +307,14 @@ class CompromisController extends Controller
      */
     public function affaire_en_cour()
     {
-        $compromis = Compromis::where([['cloture_affaire','<',2], ['archive', false]])->get();
+        // $compromis = Compromis::where([['cloture_affaire','<',2], ['archive', false]])->get();
 
+        if(Auth::user()->role == "admin"){
+            $compromis = Compromis::where([['cloture_affaire',2], ['archive', false]])->get();
+        }else {
+            $compromis = Compromis::where([['cloture_affaire','<',2], ['archive', false], ['user_id', Auth::user()->id]])->orWhere([['cloture_affaire','<',2], ['archive', false], ['agent_id', Auth::user()->id]])->get();
+
+        }
         return view('compromis.affaire_en_cour',compact('compromis'));
     }
 

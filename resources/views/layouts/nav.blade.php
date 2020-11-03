@@ -97,14 +97,13 @@
                     <ul>
                         @if(Auth()->user()->role == "admin")
                         <li class="{{ $li_affaire}}" ><a href="{{route('compromis.index')}}">Gestion</a></li>
-                        <li style=" background:#ffad64" class="{{$li_affaire_en_cour}}" ><a href="{{route('compromis.affaire_en_cour')}}">En cours</a></li>
-                        <li style=" background:#ffad64" class="{{$li_affaire_cloture}}" ><a href="{{route('compromis.affaire_cloture')}}">Cloturées</a></li>
                         @else 
                         <li class="{{ $li_affaire}}" ><a href="{{route('compromis.index')}}">Mes affaires</a></li>
                         <li class="{{ $li_affaire}}" ><a href="{{route('compromis.filleul.index')}}">Affaires de mes filleuls</a></li>
 
                         @endif
-                       
+                        <li style=" background:#ffad64" class="{{$li_affaire_en_cour}}" ><a href="{{route('compromis.affaire_en_cour')}}">En cours</a></li>
+                        <li style=" background:#ffad64" class="{{$li_affaire_cloture}}" ><a href="{{route('compromis.affaire_cloture')}}">Cloturées</a></li>
                         <li class="{{$li_affaire_archive}}" ><a href="{{route('compromis.archive')}}">Archives</a></li>
                         
                     </ul>

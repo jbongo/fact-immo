@@ -281,4 +281,45 @@ if($("#motif_archive").val() != ""){
         }
     });
 </script>
+
+
+{{-- Demandes de facture impossible si date de vente - today  > 15 jours --}}
+<script>
+
+$('.demander_facture').click(function(e){
+    e.preventDefault();
+
+// on reccupère la date today et la date de vente
+    var today = new Date();
+    today = (today.getMonth()+1)+'/'+today.getDate()+'/'+today.getFullYear();
+    date_vente = $(this).attr('date-vente');
+
+// On calcul la différence entre les deux dates
+    const dateT = new Date(today);
+    const dateV = new Date(date_vente);
+    const diffTime = Math.abs(dateV - dateT);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+    // console.log(diffTime + " milliseconds");
+    console.log(diffDays + " days");
+    console.log(date_vente );
+
+    if(diffDays > 15 ){
+
+        swal(
+                'Demande de facture impossible',
+                'La demande de facture ne peut être faite plus de 15 jours avant la date de vente: ( '+$(this).attr('date_vente')+' )',
+                'error'
+        )
+    // swal(diffDays +'jours')
+        
+    }
+    else{
+        window.location.href = $(this).attr('href');
+    }
+
+})
+
+
+
+</script>
 @endsection
