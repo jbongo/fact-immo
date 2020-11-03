@@ -86,8 +86,9 @@ class ParametreController extends Controller
         "ville" => $request->ville,
         "ca_imposable" => $request->ca_imposable,
         "comm_parrain" => $comm_parrain,
+        "nb_jour_max_demande" => $request->nb_jour_max_demande,
     ]);
-
+    
      return redirect('parametre/generaux/create');
 
     }
@@ -146,8 +147,9 @@ class ParametreController extends Controller
     $parametre->ville = $request->ville;
     $parametre->ca_imposable = $request->ca_imposable;
     $parametre->comm_parrain = $comm_parrain;
+    $parametre->nb_jour_max_demande = $request->nb_jour_max_demande;
    
-
+    
     $parametre->update();
     return redirect('parametre/generaux/create');
 

@@ -131,8 +131,9 @@
                                             @if($compromi_attente->demande_facture == 0 )
                                                
                                             
-                                            <span><a class="btn btn-default" href="{{route('facture.demander_facture',Crypt::encrypt($compromi_attente->id))}}" data-toggle="tooltip" title="@lang('')">demander facture styl</a> </span>
+                                            {{-- <span><a class="btn btn-default" href="{{route('facture.demander_facture',Crypt::encrypt($compromi_attente->id))}}" data-toggle="tooltip" title="@lang('')">demander facture styl</a> </span> --}}
                                                 
+                                    <span><a class="btn btn-default demander_facture" href="{{route('facture.demander_facture',Crypt::encrypt($compromi_attente->id))}}" data-toggle="tooltip" date_vente="{{$compromi_attente->date_vente->format('d/m/Y')}}" date-vente="{{$compromi_attente->date_vente->format('m/d/Y')}}" title="@lang('')">demander facture styl</a> </span>
                                                 
                                             @elseif($compromi_attente->demande_facture == 1)
                                                 <span class="color-warning">En attente de validation..</span>                                            

@@ -297,17 +297,20 @@ $('.demander_facture').click(function(e){
 // On calcul la différence entre les deux dates
     const dateT = new Date(today);
     const dateV = new Date(date_vente);
-    const diffTime = Math.abs(dateV - dateT);
+    const diffTime = dateV - dateT;
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
     // console.log(diffTime + " milliseconds");
-    console.log(diffDays + " days");
+    console.log(diffDays + " jours");
     console.log(date_vente );
 
-    if(diffDays > 15 ){
+const nb_jour_max_demande = "{{$nb_jour_max_demande}}";
+
+console.log(diffDays);
+    if(diffDays > nb_jour_max_demande  &&  diffDays > 0 ){
 
         swal(
                 'Demande de facture impossible',
-                'La demande de facture ne peut être faite plus de 15 jours avant la date de vente: ( '+$(this).attr('date_vente')+' )',
+                'La demande de facture ne peut être faite plus de '+nb_jour_max_demande+' jours avant la date de vente: ( '+$(this).attr('date_vente')+' )',
                 'error'
         )
     // swal(diffDays +'jours')

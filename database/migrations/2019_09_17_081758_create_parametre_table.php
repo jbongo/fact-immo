@@ -25,6 +25,8 @@ class CreateParametreTable extends Migration
             $table->string('ville')->nullable();
             $table->double('ca_imposable')->nullable();
             $table->text('comm_parrain')->nullable();
+            $table->integer('nb_jour_max_demande')->nullable();
+            
             $table->timestamps();
         });
     }

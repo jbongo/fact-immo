@@ -234,6 +234,40 @@
 
                
                 </div>
+
+
+                <br><br>
+                {{-- ####### INFO PARRAINAGE #######--}}
+                <div class="panel-body" >
+                    <fieldset class="col-md-12">
+                        <legend>Autres Paramètres</legend>
+                        <div class="panel panel-warning">
+                            <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-lg-12 col-md-12 col-sm-12">
+
+                                            <div class="col-lg-6 col-md-6 col-sm-6" id="nb_jour_max_demande">
+                                                <div class="form-group row">
+                                                    <label class="col-lg-4 col-form-label" for="nb_jour_max_demande">Nombre de jours maximum avant demande de facture </label>
+                                                    <div class="col-lg-4">
+                                                        <input type="number" style="background-color:#f3f3f3" class="form-control" value="" id="nb_jour_max_demande" name="nb_jour_max_demande" required >
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                        
+                                        
+                                    </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                
+
+                
+                </div>
+
             </div>
 
             <div class="form-group row" style="text-align: center; margin-top: 50px;">

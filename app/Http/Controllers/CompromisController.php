@@ -34,6 +34,8 @@ class CompromisController extends Controller
     }
         $parametre = Parametre::first();
         $comm_parrain = unserialize($parametre->comm_parrain) ;
+        $nb_jour_max_demande = $parametre->nb_jour_max_demande ;
+
         if(auth::user()->role == "admin"){
             $page_filleul = null;
         }
@@ -191,11 +193,11 @@ class CompromisController extends Controller
                 //  dd($valide_compro_id);
 
 
-        return view ('compromis.index',compact('compromis','compromisParrain','fill_ids','compro_ids1','compro_ids2','valide_compro_id','compromisEncaissee','compromisEnattente','compromisSousOffre','compromisSousCompromis','page_filleul'));
+        return view ('compromis.index',compact('compromis','compromisParrain','fill_ids','compro_ids1','compro_ids2','valide_compro_id','compromisEncaissee','compromisEnattente','compromisSousOffre','compromisSousCompromis','page_filleul','nb_jour_max_demande'));
 
         }
         //  dd($compromis);
-        return view ('compromis.index',compact('compromis','compromisParrain','compromisEncaissee','compromisEnattente','compromisSousOffre','compromisSousCompromis','page_filleul'));
+        return view ('compromis.index',compact('compromis','compromisParrain','compromisEncaissee','compromisEnattente','compromisSousOffre','compromisSousCompromis','page_filleul','nb_jour_max_demande'));
     }
 
 
@@ -274,7 +276,9 @@ class CompromisController extends Controller
         // }
       
         $compromis = $compromisEncaissee->concat($compromisEnattente)->concat($compromisSousOffre)->concat($compromisSousCompromis);
-        return view ('compromis.index_from_dash',compact('compromis','compromisEncaissee','compromisEnattente','compromisSousOffre','compromisSousCompromis','annee'));
+        $parametre = Parametre::first();     
+        $nb_jour_max_demande = $parametre->nb_jour_max_demande ;
+        return view ('compromis.index_from_dash',compact('compromis','compromisEncaissee','compromisEnattente','compromisSousOffre','compromisSousCompromis','annee','nb_jour_max_demande'));
        
     }
 
@@ -315,7 +319,10 @@ class CompromisController extends Controller
             $compromis = Compromis::where([['cloture_affaire','<',2], ['archive', false], ['user_id', Auth::user()->id]])->orWhere([['cloture_affaire','<',2], ['archive', false], ['agent_id', Auth::user()->id]])->get();
 
         }
-        return view('compromis.affaire_en_cour',compact('compromis'));
+        $parametre = Parametre::first();     
+        $nb_jour_max_demande = $parametre->nb_jour_max_demande ;
+        
+        return view('compromis.affaire_en_cour',compact('compromis','nb_jour_max_demande'));
     }
 
 
