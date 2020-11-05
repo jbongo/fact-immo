@@ -77,7 +77,7 @@ class MandataireController extends Controller
     public function store(Request $request)
     {
       
-        // dd( $password);
+         dd( $request);
         
         $request->validate([
             'statut' => 'required|string',

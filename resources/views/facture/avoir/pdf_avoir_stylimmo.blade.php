@@ -50,7 +50,9 @@
 <table style="height: 59px; width: 311px;">
     <tbody>
         <tr>
-            <td style="width: 158px;"><span style="text-decoration: underline;"><strong>TRANSACTION</strong></span></td>
+            {{-- <td style="width: 158px;"><span style="text-decoration: underline;"><strong>TRANSACTION</strong></span></td> --}}
+            <td style="width: 300px;"><span style="text-decoration: underline;"><strong>COMMISSION SUR TRANSACTION</strong></span></td>
+
             <td style="width: 143px;"><span style="text-decoration: underline;"><strong>{{strtoupper($compromis->type_affaire)}}</strong></span></td>
         </tr>
     </tbody>
@@ -60,7 +62,9 @@
     <tbody>
         <tr>
             <td style="width: 350px;">En l'&eacute;tude de Scp&nbsp; {{$compromis->scp_notaire}}</td>
-            <td style="width: 350px;">Pr&eacute;vue pour le : {{ Carbon\Carbon::parse($compromis->date_vente)->format('d/m/Y')}}</td>
+            {{-- <td style="width: 350px;">Pr&eacute;vue pour le : {{ Carbon\Carbon::parse($compromis->date_vente)->format('d/m/Y')}}</td> --}}
+            <td style="width: 350px;">&nbsp; </td>
+
         </tr>
     </tbody>
 </table>
@@ -164,9 +168,33 @@
                 <div><span style="text-decoration: underline;"><strong>Conditions de paiement:</strong></span></div>
                 
             </td>
-            <td style="width: 488px;">
+            <td style="width: 488px;  font-size: 12px;">
                
-                <div>Au plus tard le jour de la signature de l'acte athentique, par virement &agrave; la SARL&nbsp;V4F, en rappelant au moins sur l'objet du virement les r&eacute;f&eacute;rences de la facture.</div>
+                <div>Au plus tard le jour de la signature de l'acte authentique, par virement &agrave; <br> la SARL&nbsp;V4F, en rappelant au moins sur l'objet du virement les r&eacute;f&eacute;rences de la facture.</div>
+                
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 170px;">
+             
+                <div><span style="text-decoration: underline;"><strong>Intérêts de retard:</strong></span></div>
+                
+            </td>
+            <td style="width: 488px;  font-size: 12px;">
+               
+                <div> Au taux d'intérêt légal</div>
+                
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 300px;">
+             
+                <div><span style="text-decoration: underline;"><strong>Indemnité forfaitaire de recouvrement: </strong></span></div>
+                
+            </td>
+            <td style="width: 158px;  font-size: 12px;">
+               
+                <div>40 €</div>
                 
             </td>
         </tr>
@@ -178,7 +206,7 @@
     @page { margin: 50px 45px; }
     .footer {
         position: fixed;
-        bottom: -20px;
+        bottom: -15px;
         left: 0px; right: 0px;  height: 130px; 
         align-content: center;
     
@@ -205,8 +233,8 @@
             </tr>
         </tbody>
     </table> 
-    <div style="text-align: center; font-size: 11px; margin-right: 10%; margin-left: 10%; ">
-        <p><strong>SARL V4F</strong> - 115 Avenue de la Roquette - Zone Artisanale de Berret - 30200 BAGNOLS SUR CEZE Carte professionnelle N°1312T14 TVA in FR 67 800738478 - SIRET: 800 738 478 00018 - RCS NIMES 800 738 478
+    <div style="text-align: center; font-size: 11px; margin-right: 5%; margin-left: 5%; ">
+        <p><strong>SARL V4F</strong> - 115 Avenue de la Roquette - Zone Artisanale de Berret - 30200 BAGNOLS SUR CEZE <br> Capital social: 3000 € - Carte professionnelle N°1312T14 TVA in FR 67 800738478 - SIRET: 800 738 478 00018 - RCS NIMES 800 738 478
         </p>
     </div>
 </div>

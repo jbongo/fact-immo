@@ -130,7 +130,7 @@ Facture N° {{$facture->numero}}
 <table style="height: 59px; width: 311px;">
     <tbody>
         <tr>
-            <td style="width: 158px;"><span style="text-decoration: underline;"><strong>TRANSACTION</strong></span></td>
+            <td style="width: 158px;"><span style="text-decoration: underline;"><strong>COMMISSION SUR TRANSACTION</strong></span></td>
         <td style="width: 143px;"><span style="text-decoration: underline;"><strong> {{strtoupper($compromis->type_affaire)}}</strong></span></td>
         </tr>
     </tbody>
@@ -140,7 +140,9 @@ Facture N° {{$facture->numero}}
     <tbody>
         <tr>
             <td style="width: 423px;">En l'&eacute;tude de Scp&nbsp; {{$compromis->scp_notaire}}</td>
-            <td style="width: 260px;">  Pr&eacute;vue pour le : {{ Carbon\Carbon::parse($compromis->date_vente)->format('d/m/Y')}} </td>
+            <td style="width: 350px;">&nbsp; </td>
+
+            {{-- <td style="width: 260px;">  Pr&eacute;vue pour le : {{ Carbon\Carbon::parse($compromis->date_vente)->format('d/m/Y')}} </td> --}}
         </tr>
     </tbody>
 </table>
@@ -242,6 +244,30 @@ Facture N° {{$facture->numero}}
                 </div>
             </td>
         </tr>
+        <tr>
+            <td style="width: 170px;">
+             
+                <div><span style="text-decoration: underline;"><strong>Intérêts de retard:</strong></span></div>
+                
+            </td>
+            <td style="width: 488px;">
+               
+                <div> Taux légal</div>
+                
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 170px;">
+             
+                <div><span style="text-decoration: underline;"><strong>Indemnité forfaitaire de recouvrement: </strong></span></div>
+                
+            </td>
+            <td style="width: 488px;">
+               
+                <div>40 €</div>
+                
+            </td>
+        </tr>
     </tbody>
 </table>
 @endif
@@ -267,7 +293,7 @@ Facture N° {{$facture->numero}}
 
 <hr>
 <div style="text-align: center; font-size: 11px; margin-right: 20%; margin-left: 20%; margin-top: 20px;">
-    <p><strong>SARL V4F</strong> - 115 Avenue de la Roquette - Zone Artisanale de Berret - 30200 BAGNOLS SUR CEZE Carte professionnelle N°1312T14 TVA in FR 67 800738478 - SIRET: 800 738 478 00018 - RCS NIMES 800 738 478
+    <p><strong>SARL V4F</strong> - 115 Avenue de la Roquette - Zone Artisanale de Berret - 30200 BAGNOLS SUR CEZE <br> Capital social: 3000 € - Carte professionnelle N°1312T14 TVA in FR 67 800738478 - SIRET: 800 738 478 00018 - RCS NIMES 800 738 478
     </p>
 </div>
 
