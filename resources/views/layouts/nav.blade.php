@@ -4,7 +4,7 @@
     $curent_url = explode("/", $curent_url);
 
 
-    $li_home = $li_mandataire = $li_affaire = $li_affaire_archive=  $li_facture = $li_facture_gestion = $li_facture_demande = $li_parametre = $li_parametre_modele = $li_parametre_fournisseur = $li_parametre_generaux = $li_outil = $li_affaire_en_cour = $li_affaire_cloture = "";
+    $li_home = $li_mandataire = $li_affaire = $li_affaire_archive=  $li_facture = $li_facture_gestion = $li_facture_demande = $li_parametre = $li_parametre_modele = $li_parametre_fournisseur = $li_parametre_generaux = $li_outil = $li_affaire_toutes = $li_affaire_cloture = "";
     
     switch ($curent_url[1]) {
         case 'home':       
@@ -22,12 +22,14 @@
         }
             break;
 
-        case 'affaire-cloture':       
-            $li_affaire_cloture = "active";
+        case 'affaires-clotures':  
+         
+            $li_affaire_cloture = "active open";
             break;
 
-        case 'affaire-en-cour':       
-            $li_affaire_en_cour = "active";
+        case 'affaires-toutes':
+           
+            $li_affaire_toutes = "active open";
             break;
 
         case 'factures':
@@ -93,18 +95,18 @@
                     </li>
 
                 @endif
-                <li class="{{$li_affaire}} {{$li_affaire_archive}}"><a class="sidebar-sub-toggle" href="" ><i class="large material-icons" style="font-size:20px;">folder_open</i>  Affaires <span class="sidebar-collapse-icon ti-angle-down"></span> </a>
+                <li class="{{$li_affaire}} {{$li_affaire_archive}} {{$li_affaire_toutes}} {{$li_affaire_cloture}}"><a class="sidebar-sub-toggle" href="" ><i class="large material-icons" style="font-size:20px;">folder_open</i>  Affaires <span class="sidebar-collapse-icon ti-angle-down"></span> </a>
                     <ul>
                         @if(Auth()->user()->role == "admin")
-                        <li class="{{ $li_affaire}}" ><a href="{{route('compromis.index')}}">Gestion</a></li>
+                        <li class="{{ $li_affaire}}" ><a href="{{route('compromis.index')}}">En cours</a></li>
                         @else 
-                        <li class="{{ $li_affaire}}" ><a href="{{route('compromis.index')}}">Mes affaires</a></li>
+                        <li class="{{ $li_affaire}}" ><a href="{{route('compromis.index')}}">Mes affaires en cours</a></li>
                         <li class="{{ $li_affaire}}" ><a href="{{route('compromis.filleul.index')}}">Affaires de mes filleuls</a></li>
 
                         @endif
-                        <li style=" background:#ffad64" class="{{$li_affaire_en_cour}}" ><a href="{{route('compromis.affaire_en_cour')}}">En cours</a></li>
-                        <li style=" background:#ffad64" class="{{$li_affaire_cloture}}" ><a href="{{route('compromis.affaire_cloture')}}">Cloturées</a></li>
+                        <li  class="{{$li_affaire_cloture}}" ><a href="{{route('compromis.affaire_cloture')}}">Cloturées</a></li>
                         <li class="{{$li_affaire_archive}}" ><a href="{{route('compromis.archive')}}">Archives</a></li>
+                        <li  class="{{$li_affaire_toutes}}" ><a href="{{route('compromis.affaire_toutes')}}">Toutes les affaires</a></li>
                         
                     </ul>
                 </li>
@@ -141,7 +143,7 @@
                     @endif
 
                     {{-- @if(Auth()->user()->role == "admin"  ) --}}
-                        <li  style=" background:#ffad64" class="" ><a href="{{route('outil_calcul.index')}}" ><i class="large material-icons" style="font-size:20px;">iso</i> Outil de calcul </a></li>
+                        <li  style=" background:#aeefec" class="" ><a href="{{route('outil_calcul.index')}}" ><i class="large material-icons" style="font-size:20px;">iso</i> Outil de calcul </a></li>
                     {{-- @endif --}}
 
                     <li><a href="{{ route('logout') }}"  onclick="event.preventDefault();

@@ -70,9 +70,9 @@ class CompromisController extends Controller
 
 
         if(auth::user()->role == "admin"){
-            $compromisEncaissee = Compromis::whereIn('id',$tab_compromisEncaissee_id)->where('archive',false)->get();
-            $compromisEnattente = Compromis::whereIn('id',$tab_compromisEnattente_id)->where('archive',false)->get();
-            $compromisSousOffre = Compromis::where([['demande_facture','<',2],['pdf_compromis',null],['archive',false]])->get();
+            $compromisEncaissee = Compromis::whereIn('id',$tab_compromisEncaissee_id)->where([['archive',false],['cloture_affaire','<',2]])->get();
+            $compromisEnattente = Compromis::whereIn('id',$tab_compromisEnattente_id)->where([['archive',false],['cloture_affaire','<',2]])->get();
+            $compromisSousOffre = Compromis::where([['demande_facture','<',2],['pdf_compromis',null],['archive',false],['cloture_affaire','<',2]])->get();
             $compromisSousCompromis = Compromis::where([['demande_facture','<',2],['pdf_compromis','<>',null],['archive',false]])->get();
         }else{
 
@@ -86,35 +86,35 @@ class CompromisController extends Controller
            
            
 
-            $compromisEncaissee = Compromis::whereIn('id',$tab_compromisEncaissee_id)->where('archive',false)->where(function($query){
-                $query->whereIn('user_id',$this->users_id)
-                ->orWhereIn('agent_id',$this->users_id);
+            $compromisEncaissee = Compromis::whereIn('id',$tab_compromisEncaissee_id)->where([['archive',false],['cloture_affaire','<',2]])->where(function($query){
+                $query->where('user_id', auth::user()->id)
+                ->orWhere('agent_id', auth::user()->id);
             })->get();
 
-            $compromisEnattente = Compromis::whereIn('id',$tab_compromisEnattente_id)->where('archive',false)->where(function($query){
-                $query->whereIn('user_id',$this->users_id)
-                ->orWhereIn('agent_id',$this->users_id);
+            $compromisEnattente = Compromis::whereIn('id',$tab_compromisEnattente_id)->where([['archive',false],['cloture_affaire','<',2]])->where(function($query){
+                $query->where('user_id', auth::user()->id)
+                ->orWhere('agent_id', auth::user()->id);
             })->get();
 
 
-            $compromisSousOffre = Compromis::where([['demande_facture','<',2],['pdf_compromis',null],['archive',false]])->where(function($query){
-                $query->whereIn('user_id',$this->users_id)
-                ->orWhereIn('agent_id',$this->users_id);
+            $compromisSousOffre = Compromis::where([['demande_facture','<',2],['pdf_compromis',null],['archive',false],['cloture_affaire','<',2]])->where(function($query){
+                $query->where('user_id', auth::user()->id)
+                ->orWhere('agent_id', auth::user()->id);
             })->get();
 
-            $compromisSousCompromis = Compromis::where([['demande_facture','<',2],['pdf_compromis','<>',null],['archive',false]])->where(function($query){
-                $query->whereIn('user_id',$this->users_id)
-                ->orWhereIn('agent_id',$this->users_id);
+            $compromisSousCompromis = Compromis::where([['demande_facture','<',2],['pdf_compromis','<>',null],['archive',false],['cloture_affaire','<',2]])->where(function($query){
+                $query->where('user_id', auth::user()->id)
+                ->orWhere('agent_id', auth::user()->id);
             })->get();
         }
 // ############ FIN TYPE AFFAIRE
 
         $compromis = array();
         if(Auth::user()->role =="admin") {
-            $compromis = Compromis::where([['je_renseigne_affaire',true],['archive',false]])->latest()->get();
-            $compromisParrain = Compromis::where([['je_renseigne_affaire',true],['archive',false]])->latest()->get();
+            $compromis = Compromis::where([['je_renseigne_affaire',true],['archive',false],['cloture_affaire','<',2]])->latest()->get();
+            $compromisParrain = Compromis::where([['je_renseigne_affaire',true],['archive',false],['cloture_affaire','<',2]])->latest()->get();
         }else{
-            $compromis = Compromis::where([['user_id',Auth::user()->id],['je_renseigne_affaire',true],['archive',false]])->orWhere([['agent_id',Auth::user()->id],['archive',false]])->latest()->get();
+            $compromis = Compromis::where([['user_id',Auth::user()->id],['je_renseigne_affaire',true],['archive',false],['cloture_affaire','<',2]])->orWhere([['agent_id',Auth::user()->id],['archive',false]])->latest()->get();
             
         
            
@@ -245,24 +245,24 @@ class CompromisController extends Controller
            
 
             $compromisEncaissee = Compromis::whereIn('id',$tab_compromisEncaissee_id)->where('archive',false)->where(function($query){
-                $query->whereIn('user_id',$this->users_id)
-                ->orWhereIn('agent_id',$this->users_id);
+                $query->where('user_id',auth::user()->id)
+                ->orWhere('agent_id',auth::user()->id);
             })->get();
 
             $compromisEnattente = Compromis::whereIn('id',$tab_compromisEnattente_id)->where('archive',false)->where(function($query){
-                $query->whereIn('user_id',$this->users_id)
-                ->orWhereIn('agent_id',$this->users_id);
+                $query->where('user_id',auth::user()->id)
+                ->orWhere('agent_id',auth::user()->id);
             })->get();
 
 
             $compromisSousOffre = Compromis::where([['demande_facture','<',2],['pdf_compromis',null],['archive',false]])->where(function($query){
-                $query->whereIn('user_id',$this->users_id)
-                ->orWhereIn('agent_id',$this->users_id);
+                $query->where('user_id',auth::user()->id)
+                ->orWhere('agent_id',auth::user()->id);
             })->get();
 
             $compromisSousCompromis = Compromis::where([['demande_facture','<',2],['pdf_compromis','<>',null],['archive',false]])->where(function($query){
-                $query->whereIn('user_id',$this->users_id)
-                ->orWhereIn('agent_id',$this->users_id);
+                $query->where('user_id',auth::user()->id)
+                ->orWhere('agent_id',auth::user()->id);
             })->get();
         }
 // ############ FIN TYPE AFFAIRE
@@ -305,24 +305,24 @@ class CompromisController extends Controller
 
 
     /**
-     * Affaires en cour
+     * Toutes les affaires
      *
      * @return \Illuminate\Http\Response
      */
-    public function affaire_en_cour()
+    public function affaire_toutes()
     {
         // $compromis = Compromis::where([['cloture_affaire','<',2], ['archive', false]])->get();
 
         if(Auth::user()->role == "admin"){
-            $compromis = Compromis::where([['cloture_affaire',2], ['archive', false]])->get();
+            $compromis = Compromis::where([ ['archive', false]])->get();
         }else {
-            $compromis = Compromis::where([['cloture_affaire','<',2], ['archive', false], ['user_id', Auth::user()->id]])->orWhere([['cloture_affaire','<',2], ['archive', false], ['agent_id', Auth::user()->id]])->get();
+            $compromis = Compromis::where([ ['archive', false], ['user_id', Auth::user()->id]])->orWhere([['archive', false], ['agent_id', Auth::user()->id]])->get();
 
         }
         $parametre = Parametre::first();     
         $nb_jour_max_demande = $parametre->nb_jour_max_demande ;
         
-        return view('compromis.affaire_en_cour',compact('compromis','nb_jour_max_demande'));
+        return view('compromis.affaire_toutes',compact('compromis','nb_jour_max_demande'));
     }
 
 

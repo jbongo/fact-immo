@@ -43,7 +43,7 @@
         </tr>
         <tr>
             <td style="width: 343px;"><span style="color: #ff0000;"></td>
-            <td style="width: 344px;"><span style="color: #ff0000;"><strong>Avoir sur la facture N° {{$facture->numero}} du {{$facture->date_facture->format('d/m/Y')}}</td>
+            <td style="width: 344px;"><span style="color: #ff0000; font-size:12px"><strong>Avoir sur la facture N° {{$facture->numero}} du {{$facture->date_facture->format('d/m/Y')}}</td>
         </tr>
     </tbody>
 </table>

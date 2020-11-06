@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
     @section ('page_title')
-    Affaires en cours
+    Toutes les affaires
     @endsection
 
     <div class="row"> 

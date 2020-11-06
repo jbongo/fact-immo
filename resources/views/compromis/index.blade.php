@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
     @section ('page_title')
-    Affaires @if($page_filleul != null) de mes filleuls @endif
+    Affaires en cours @if($page_filleul != null) de mes filleuls @endif
     @endsection
 
     <div class="row"> 
@@ -14,7 +14,7 @@
                 </div>
              @endif       
             <div class="card alert">
-            @if (Auth()->user()->role == "mandataire")
+            @if (Auth()->user()->role == "mandataire" && $page_filleul ==null)
                 <a href="{{route('compromis.create')}}" class="btn btn-success btn-rounded btn-addon btn-sm m-b-10 m-l-5"><i class="ti-user"></i>@lang('Nouvelle affaire')</a>
             <br><br>
             @endif
@@ -27,15 +27,16 @@
                        <ul class="nav nav-pills nav-tabs" id="myTabs">
                           @if($page_filleul ==null) 
                             <li id="li_stylimmo"  class="active"><a href="#stylimmo" data-toggle="pill"> <i class="material-icons" style="font-size: 15px;">file_download</i> @if (Auth()->user()->role == "mandataire") Mes @endif Affaires </a></li>
+                            <li id="li_sous_offre_nav" style="background-color: #FFA500;" class=""><a href="#sous_offre_nav" data-toggle="pill"> <i class="material-icons" style="font-size: 15px;">trending_up</i> Sous offre</a></li>                       
+                            <li id="li_sous_compromis_nav" style="background-color: #0ad2ff;" ><a href="#sous_compromis_nav" data-toggle="pill"> <i class="material-icons" style="font-size: 15px;">trending_up</i> Sous compromis</a></li>                       
+                            <li id="li_en_attente_nav" style="background-color: #e6e6e6;" ><a href="#en_attente_nav" data-toggle="pill"> <i class="material-icons" style="font-size: 15px;">timer</i> En attente d'encaissement</a></li>                       
+                            <li id="li_encaissee_nav" style="background-color: #6eff1a;"><a href="#encaissee_nav" data-toggle="pill"> <i class="material-icons" style="font-size: 15px;">account_balance_wallet</i>  Encaissées </a></li>
                           @else 
                                 @if(Auth()->user()->role == "mandataire") <li id="li_caracteristique_nav" class="active" ><a href="#caracteristique_nav" data-toggle="pill"> <i class="material-icons" style="font-size: 15px;">file_download</i> @lang('Affaires de mes filleuls ')</a></li>  @endif                       
                           
                           @endif
                          
-                         <li id="li_sous_offre_nav" style="background-color: #FFA500;" class=""><a href="#sous_offre_nav" data-toggle="pill"> <i class="material-icons" style="font-size: 15px;">trending_up</i> Sous offre</a></li>                       
-                         <li id="li_sous_compromis_nav" style="background-color: #0ad2ff;" ><a href="#sous_compromis_nav" data-toggle="pill"> <i class="material-icons" style="font-size: 15px;">trending_up</i> Sous compromis</a></li>                       
-                         <li id="li_en_attente_nav" style="background-color: #e6e6e6;" ><a href="#en_attente_nav" data-toggle="pill"> <i class="material-icons" style="font-size: 15px;">timer</i> En attente d'encaissement</a></li>                       
-                         <li id="li_encaissee_nav" style="background-color: #6eff1a;"><a href="#encaissee_nav" data-toggle="pill"> <i class="material-icons" style="font-size: 15px;">account_balance_wallet</i>  Encaissées </a></li>
+                       
                        </ul>
                     </div>
                     <!-- Content -->

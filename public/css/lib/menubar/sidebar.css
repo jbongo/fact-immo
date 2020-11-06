@@ -105,7 +105,7 @@
 .sidebar .nano-content>ul li:hover>a,
 .sidebar .nano-content>ul li.active>a,
 .sidebar .nano-content>ul li.open>a {
-    color: #03A9F5;
+    color: #f5035d;
     position: relative;
 }
 
@@ -142,7 +142,7 @@ html.rtl .sidebar .nano-content>ul>li>a {
 .sidebar .nano-content>ul>li.active>a,
 .sidebar .nano-content>ul>li.open>a,
 .sidebar .nano-content>ul>li>ul {
-    background: #fff;
+    background: #f9f7f7;
 }
 
 .sidebar .nano-content>ul>li>ul>li.label,
