@@ -4,7 +4,7 @@
     $curent_url = explode("/", $curent_url);
 
 
-    $li_home = $li_mandataire = $li_affaire = $li_affaire_archive=  $li_facture = $li_facture_gestion = $li_facture_demande = $li_parametre = $li_parametre_modele = $li_parametre_fournisseur = $li_parametre_generaux = $li_outil = $li_affaire_toutes = $li_affaire_cloture = "";
+    $li_home = $li_mandataire = $li_affaire = $li_affaire_filleul = $li_affaire_archive=  $li_facture = $li_facture_gestion = $li_facture_demande = $li_facture_a_payer = $li_parametre = $li_parametre_modele = $li_parametre_fournisseur = $li_parametre_generaux = $li_outil = $li_affaire_toutes = $li_affaire_cloture = "";
     
     switch ($curent_url[1]) {
         case 'home':       
@@ -65,7 +65,18 @@
                     $li_affaire_archive = "active open";
                 }
             break;
+            case 'page_filleul' :
+                if($curent_url[1] == "compromis"){
+                    $li_affaire_filleul = "active open";
+                }
+            break;
+            case 'a_payer' :
+                if($curent_url[1] == "facture"){
+                    $li_facture_a_payer = "active open";
+                }
+            break;
             
+        
             default:
                 // dd("default");
                 break;
@@ -74,7 +85,7 @@
 
     //  Factures honoraires en attente de validation 
     $nb = App\Facture::where('statut','en attente de validation')->get()->count();
-
+    $nb_a_payer= 0;
     $nb_notif =  auth()->user()->demande_facture + $nb ;
     
 
@@ -95,13 +106,13 @@
                     </li>
 
                 @endif
-                <li class="{{$li_affaire}} {{$li_affaire_archive}} {{$li_affaire_toutes}} {{$li_affaire_cloture}}"><a class="sidebar-sub-toggle" href="" ><i class="large material-icons" style="font-size:20px;">folder_open</i>  Affaires <span class="sidebar-collapse-icon ti-angle-down"></span> </a>
+                <li class="{{$li_affaire}} {{$li_affaire_archive}} {{$li_affaire_toutes}} {{$li_affaire_cloture}} {{ $li_affaire_filleul}}"><a class="sidebar-sub-toggle" href="" ><i class="large material-icons" style="font-size:20px;">folder_open</i>  Affaires <span class="sidebar-collapse-icon ti-angle-down"></span> </a>
                     <ul>
                         @if(Auth()->user()->role == "admin")
                         <li class="{{ $li_affaire}}" ><a href="{{route('compromis.index')}}">En cours</a></li>
                         @else 
                         <li class="{{ $li_affaire}}" ><a href="{{route('compromis.index')}}">Mes affaires en cours</a></li>
-                        <li class="{{ $li_affaire}}" ><a href="{{route('compromis.filleul.index')}}">Affaires de mes filleuls</a></li>
+                        <li class="{{ $li_affaire_filleul}}" ><a href="{{route('compromis.filleul.index')}}">Affaires de mes filleuls</a></li>
 
                         @endif
                         <li  class="{{$li_affaire_cloture}}" ><a href="{{route('compromis.affaire_cloture')}}">Cloturées</a></li>
@@ -111,7 +122,7 @@
                     </ul>
                 </li>
                 
-                <li class="{{$li_facture}} {{$li_facture_demande}}" ><a  class="sidebar-sub-toggle"><i class="large material-icons">description</i> Factures @if($nb_notif > 0 && Auth()->user()->role == "admin") <span class="badge badge-danger">{{$nb_notif}}</span> @endif<span class="sidebar-collapse-icon ti-angle-down"></span></a>
+                <li class="{{$li_facture}} {{$li_facture_demande}} {{$li_facture_a_payer}}" ><a  class="sidebar-sub-toggle"><i class="large material-icons">description</i> Factures @if($nb_notif > 0 && Auth()->user()->role == "admin") <span class="badge badge-danger">{{$nb_notif}}</span> @endif<span class="sidebar-collapse-icon ti-angle-down"></span></a>
                     <ul>
                         <li class="{{$li_facture_gestion}}" ><a href="{{route('facture.index')}}">Gestion</a></li>
                         @if (Auth()->user()->role == "admin")
@@ -120,6 +131,7 @@
                         
                         @if (Auth()->user()->role == "admin")
                         <li class="{{$li_facture_demande}}" ><a  href="{{route('facture.honoraire_a_valider')}}" >  @if($nb > 0) <span class="badge badge-danger">{{$nb}}</span> @endif Fac H à valider </a></li>
+                        <li class="{{$li_facture_a_payer}}" ><a  href="{{route('facture.honoraire_a_payer')}}" >  @if($nb_a_payer > 0) <span class="badge badge-warning">{{$nb_a_payer}}</span> @endif Fac H à payer </a></li>
                         @endif
                         {{-- <li><a href="#">Avoir</a></li> --}}
                     </ul>

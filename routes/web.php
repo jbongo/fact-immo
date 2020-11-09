@@ -112,7 +112,9 @@ Route::middleware('auth')->group(function(){
      // Recalculer pour chacun des mandataires les CA stylimmo
     Route::get('ca/stylimmo/recalculer/','FactureController@recalculer_les_ca_styl')->name('facture.recalculer_les_ca_styl'); 
     
-
+     // Factures d'honoraires à payer
+     Route::get('facture/honoraire/a-payer/','FactureController@honoraire_a_payer')->name('facture.honoraire_a_payer'); 
+    
 
     
      
