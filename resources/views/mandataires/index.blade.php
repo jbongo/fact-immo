@@ -28,14 +28,15 @@
                                     <tr>
                                         <th>@lang('Nom')</th>
                                         <th>@lang('Statut')</th>
+                                        <th>@lang('TVA')</th>
+                                        <th>@lang('Jeton')</th>
                                         <th>@lang('Email')</th>
                                         <th>@lang('Téléphone')</th>
                                         {{-- <th>@lang('Adresse')</th> --}}
-                                        <th>@lang('Ville')</th>
                                         <th>@lang('date anniv')</th>
                                         <th>@lang('Comm')</th>
                                         <th>@lang('CA HT en cours')</th>
-                                        <th>@lang('CA HT écart')</th>
+                                     
                                         <th>@lang('Action')</th>
                                     </tr>
                                 </thead>
@@ -50,6 +51,29 @@
                                         {{$mandataire->statut}} 
                                         </td>
                                         <td style="color: #32ade1; text-decoration: underline;">
+                                            @if($mandataire->contrat != null)
+                                                @if($mandataire->contrat->est_soumis_tva == true)
+                                                    <span class="badge badge-success">Oui</span>
+                                                @else 
+                                                    <span class="badge badge-danger">Non</span>
+                                                @endif
+                                               
+                                            @endif
+                                        </td>
+                                        <td style="color: #32ade1;  ">
+                                            @if($mandataire->contrat != null)
+                                                @if($mandataire->contrat->deduis_jeton == true)
+                                                <a class="badge badge-default"><i style="font-size: 15px" class="material-icons color-success ">launch</i>  <span style="font-size: 22px"> {{$mandataire->nb_mois_pub_restant}} </span></a>
+                                                @else 
+                                                    <span class="badge badge-danger">Non</span>
+                                                @endif
+
+
+                                                  
+                                            @endif
+                                            
+                                        </td>
+                                        <td style="color: #32ade1; text-decoration: underline;">
                                         <strong>{{$mandataire->email}}</strong> 
                                         </td>
                                         <td style="color: #e05555;; text-decoration: underline;">
@@ -58,9 +82,7 @@
                                         {{-- <td>
                                             {{$mandataire->adresse}} 
                                         </td> --}}
-                                        <td>
-                                            {{$mandataire->ville}}   
-                                        </td>        
+                                        
                                         <td>
                                             {{$mandataire->date_anniv()}}   
                                         </td>                                  
@@ -70,9 +92,7 @@
                                         <td>                                             
                                             <span class="color-warning">{{number_format($mandataire->chiffre_affaire_styl($mandataire->date_anniv(), date('Y-m-d')),2,'.',' ')}} €</span>
                                         </td>
-                                        <td>                                             
-                                            <span class="color-warning">{{number_format($mandataire->chiffre_affaire_styl("2020-01-01", $mandataire->date_anniv() ),2,'.',' ')}} €</span>
-                                        </td>
+                                      
                                         <td width="13%">
                                             <span><a href="{{route('mandataire.show',Crypt::encrypt($mandataire->id) )}}" data-toggle="tooltip" title="@lang('Détails de ') {{ $mandataire->nom }}"><i class="large material-icons color-info">visibility</i></a> </span>
                                             <span><a href="{{route('mandataire.edit',Crypt::encrypt($mandataire->id) )}}" data-toggle="tooltip" title="@lang('Modifier ') {{ $mandataire->nom }}"><i class="large material-icons color-warning">edit</i></a></span>
