@@ -30,7 +30,7 @@
                                         <th>@lang('Statut')</th>
                                         <th>@lang('TVA')</th>
                                         <th>@lang('Jeton')</th>
-                                        <th>@lang('Email')</th>
+                                        {{-- <th>@lang('Email')</th> --}}
                                         <th>@lang('Téléphone')</th>
                                         {{-- <th>@lang('Adresse')</th> --}}
                                         <th>@lang('date anniv')</th>
@@ -73,9 +73,9 @@
                                             @endif
                                             
                                         </td>
-                                        <td style="color: #32ade1; text-decoration: underline;">
+                                        {{-- <td style="color: #32ade1; text-decoration: underline;">
                                         <strong>{{$mandataire->email}}</strong> 
-                                        </td>
+                                        </td> --}}
                                         <td style="color: #e05555;; text-decoration: underline;">
                                             <strong> {{$mandataire->telephone1}} </strong> 
                                         </td>
