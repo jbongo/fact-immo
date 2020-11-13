@@ -63,7 +63,7 @@
                                         <td style="color: #32ade1;  ">
                                             @if($mandataire->contrat != null)
                                                 @if($mandataire->contrat->deduis_jeton == true)
-                                                <a class="badge badge-default"><i style="font-size: 15px" class="material-icons color-success ">launch</i>  <span style="font-size: 22px"> {{$mandataire->nb_mois_pub_restant}} </span></a>
+                                        <a href="{{route('mandataire.historique_jeton', Crypt::encrypt($mandataire->id))}}" class="badge badge-default"><i style="font-size: 15px" class="material-icons color-success ">launch</i>  <span style="font-size: 22px"> {{$mandataire->nb_mois_pub_restant}} </span></a>
                                                 @else 
                                                     <span class="badge badge-danger">Non</span>
                                                 @endif

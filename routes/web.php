@@ -99,7 +99,7 @@ Route::middleware('auth')->group(function(){
     // ## Creation des factures d'honoraires
     Route::get('facture/honoraire/generer/create/{facture_id}','FactureController@generer_facture_honoraire_create')->name('facture.generer_honoraire_create'); 
     Route::get('facture/honoraire/generer-pdf/{facture_id}','FactureController@generer_pdf_facture_honoraire')->name('facture.generer_pdf_honoraire'); 
-    // Ajout d'une factue d'honoraire 
+    // Ajout d'une facture d'honoraire 
     Route::get('facture/honoraire/upload/create/{facture_id}','FactureController@create_upload_pdf_honoraire')->name('facture.create_upload_pdf_honoraire'); 
     Route::post('facture/honoraire/upload/store/{facture_id}','FactureController@store_upload_pdf_honoraire')->name('facture.store_upload_pdf_honoraire'); 
     Route::get('facture/honoraire/valider/{action}/{facture_id}','FactureController@valider_honoraire')->name('facture.valider_honoraire'); 
@@ -116,8 +116,17 @@ Route::middleware('auth')->group(function(){
      Route::get('facture/honoraire/a-payer/','FactureController@honoraire_a_payer')->name('facture.honoraire_a_payer'); 
     
 
+    //  Creation de factures libres
+    Route::get('facture/ajouter-libre/','FactureController@create_libre')->name('facture.create_libre'); 
+    Route::post('facture/add-libre/','FactureController@store_libre')->name('facture.store_libre'); 
+    Route::get('facture/edit-libre/{facture_id}','FactureController@edit_libre')->name('facture.edit_libre'); 
+    Route::post('facture/update-libre/{facture_id}','FactureController@update_libre')->name('facture.update_libre'); 
     
-     
+    Route::get('telecharger/pdf/factures-autre/{facture_id}','FactureController@download_pdf_facture_autre')->name('facture.telecharger_pdf_facture_autre'); //ok
+    Route::get('generer/pdf/factures-autre/{facture_id}','FactureController@generer_pdf_facture_autre')->name('facture.generer_pdf_facture_autre'); //ok
+    
+
+
     // Contrat 
     Route::get('/contrat/create/{user_id}','ContratController@create')->name('contrat.create');
     Route::get('/contrat/model/create/{user_id}','ContratController@model_create')->name('contrat.model_create');
@@ -198,5 +207,12 @@ Route::middleware('auth')->group(function(){
 
     Route::get('/switch/{user_id}','MandataireController@switch_user')->name('switch_user');
     Route::get('/unswitch','MandataireController@unswitch_user')->name('unswitch_user');
+
+    //Historique JETON DES MANDATAIRES 
+
+    Route::get('/historique-jeton/{user_id}','MandataireController@historique_jeton')->name('mandataire.historique_jeton');
+
+
+
 });
 

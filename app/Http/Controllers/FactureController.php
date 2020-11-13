@@ -36,13 +36,13 @@ class FactureController extends Controller
         //
      
         if(auth()->user()->role == "admin"){
-            $factureStylimmos = Facture::whereIn('type',['stylimmo','avoir'])->latest()->get();
+            $factureStylimmos = Facture::whereIn('type',['stylimmo','avoir','pack_pub','carte_visite','communication','autre'])->latest()->get();
             $factureHonoraires = Facture::whereIn('type',['honoraire','partage','parrainage','parrainage_partage'])->latest()->get();
             $factureCommunications = Facture::where('type',['pack_pub','carte_visite'])->latest()->get();
             
         }else{
             $factureHonoraires = Facture::where('user_id',auth()->user()->id)->whereIn('type',['honoraire','partage','parrainage','parrainage_partage'])->latest()->get();
-            $factureStylimmos = Facture::where('user_id',auth()->user()->id)->where('type','stylimmo','avoir')->latest()->get();
+            $factureStylimmos = Facture::where('user_id',auth()->user()->id)->where('type',['stylimmo','avoir','pack_pub','carte_visite','communication','autre'])->latest()->get();
             $factureCommunications = Facture::where('user_id',auth()->user()->id)->whereIn('type',['pack_pub','carte_visite'])->latest()->get();
 
         }
@@ -63,7 +63,7 @@ class FactureController extends Controller
     
         $compromis = Compromis::where('id',Crypt::decrypt($compromis_id))->first();
         $mandataire = User::where('id',$compromis->user_id)->first();
-        $numero = Facture::whereIn('type',['avoir','stylimmo'])->max('numero') + 1;
+        $numero = Facture::whereIn('type',['avoir','stylimmo','pack_pub','carte_visite','communication','autre'])->max('numero') + 1;
 
         return view ('demande_facture.demande',compact('compromis','mandataire','numero'));  
         // return redirect()->route('compromis.index')->with('ok', __('compromis modifié')  );
@@ -343,7 +343,7 @@ public  function valider_facture_stylimmo( Request $request, $compromis)
 
         $numero = "";
         
-        $numero = Facture::whereIn('type',['avoir','stylimmo'])->max('numero') + 1;
+        $numero = Facture::whereIn('type',['avoir','stylimmo','pack_pub','carte_visite','communication','autre'])->max('numero') + 1;
 
         $lastdate = Facture::where('numero',$numero-1)->select('date_facture')->first();
             
@@ -425,7 +425,9 @@ public  function valider_facture_stylimmo( Request $request, $compromis)
         $facture->date_encaissement = $request->date_encaissement;
         $facture->update();
 
-        Mail::to($facture->compromis->user->email)->send(new EncaissementFacture($facture));
+        if($facture->compromis != null){
+            Mail::to($facture->compromis->user->email)->send(new EncaissementFacture($facture));
+        }
     //    Mail::to("gestion@stylimmo.com")->send(new EncaissementFacture($facture));
 
 
@@ -450,201 +452,206 @@ public  function valider_facture_stylimmo( Request $request, $compromis)
 
     $compromis = $facture->compromis;
 
-    // si l'affaire est partagée, on va vérifier si les mandataires ont un parrain
-    // if($compromis->est_partage_agent == true){
 
-        $filleul1 = Filleul::where([['user_id',$compromis->user_id],['expire',0]])->first();
+    if($compromis != null)
+    {
+            // si l'affaire est partagée, on va vérifier si les mandataires ont un parrain
+            // if($compromis->est_partage_agent == true){
 
-        $filleul2 = $compromis->agent_id != null ? Filleul::where([['user_id',$compromis->agent_id],['expire',0]])->first() : null;
-      
+                $filleul1 = Filleul::where([['user_id',$compromis->user_id],['expire',0]])->first();
 
-        $date_encaissement = $facture->date_encaissement->format('Y-m-d');
+                $filleul2 = $compromis->agent_id != null ? Filleul::where([['user_id',$compromis->agent_id],['expire',0]])->first() : null;
+            
 
-        // date_12 est la date exacte 1 ans avant la date d'encaissment
-        $date_12 =  strtotime( $date_encaissement. " -1 year"); 
-        $date_12 = date('Y-m-d',$date_12);
+                $date_encaissement = $facture->date_encaissement->format('Y-m-d');
 
-        $deb_annee = date("Y")."-01-01";
+                // date_12 est la date exacte 1 ans avant la date d'encaissment
+                $date_12 =  strtotime( $date_encaissement. " -1 year"); 
+                $date_12 = date('Y-m-d',$date_12);
 
- $retour = "";
-        // Si le porteur de l'affaire à un parrain
-        if($filleul1 != null ){
+                $deb_annee = date("Y")."-01-01";
 
-            $mandataire1 = $filleul1->user ;
-            $parrain1 = User::where('id',$filleul1->parrain_id)->first();
+        $retour = "";
+                // Si le porteur de l'affaire à un parrain
+                if($filleul1 != null ){
 
-            $ca_parrain1 =  Compromis::getCAStylimmo($parrain1->id,$date_12 ,$date_encaissement);
-            $ca_filleul1 =  Compromis::getCAStylimmo($mandataire1->id,$date_12 ,$date_encaissement);
+                    $mandataire1 = $filleul1->user ;
+                    $parrain1 = User::where('id',$filleul1->parrain_id)->first();
 
-            // on calcul le chiffre affaire de parrainage du parrain 
+                    $ca_parrain1 =  Compromis::getCAStylimmo($parrain1->id,$date_12 ,$date_encaissement);
+                    $ca_filleul1 =  Compromis::getCAStylimmo($mandataire1->id,$date_12 ,$date_encaissement);
+
+                    // on calcul le chiffre affaire de parrainage du parrain 
 
 
-            $comm_parrain1 = unserialize($mandataire1->contrat->comm_parrain);
-
-               
-                    // 1 on determine l'ancieneté du filleul1
-                    
-                    $dt_ent =  $mandataire1->contrat->date_entree->format('Y-m-d') >= "2019-01-01" ?  $mandataire1->contrat->date_entree : "2019-01-01";
-                    $date_entree =  strtotime($dt_ent);  
-
-                    $today = strtotime (date('Y-m-d'));
-                    $anciennete_porteur = $today - $date_entree;
-
-                    if($anciennete_porteur <= 365*86400){
-                        $seuil_porteur = $comm_parrain1["seuil_fill_1"];
-                        $seuil_parrain = $comm_parrain1["seuil_parr_1"];
-                    }
-                    //si ancienneté est compris entre 1 et 2ans
-                    elseif($anciennete_porteur > 365*86400 && $anciennete_porteur <= 365*86400*2){
-                        $seuil_porteur = $comm_parrain1["seuil_fill_2"];
-                        $seuil_parrain = $comm_parrain1["seuil_parr_2"];
-                    }
-                    // ancienneté sup à 2 ans
-                    else{
-                        $seuil_porteur = $comm_parrain1["seuil_fill_3"];
-                        $seuil_parrain = $comm_parrain1["seuil_parr_3"];
-                    }
-
-                    // on vérifie que le parrain n'a pas dépassé le plafond de la commission de parrainage sur son filleul,  de la date d'anniversaire de sa date d'entrée jusqu'a la date d'encaissement
-                    $m_d_entree = $mandataire1->contrat->date_entree->format('m-d');
-                    $y_encaiss = $compromis->getFactureStylimmo()->date_encaissement->format('Y');
-
-                    // dd($y_encaiss.'-'.$m_d_entree);
-                    if( $compromis->getFactureStylimmo()->date_encaissement->format('Y-m-d') > $y_encaiss.'-'.$m_d_entree  ){
-                        $date_deb = $y_encaiss.'-'.$m_d_entree ;
-                        $date_fin = $compromis->getFactureStylimmo()->date_encaissement->format('Y-m-d');
-                    }else{
-                        $date_deb =  ($y_encaiss-1).'-'.$m_d_entree ;
-                        $date_fin = $compromis->getFactureStylimmo()->date_encaissement->format('Y-m-d'); 
-                    }
-                    // calcul du de la comm recu par le parrain de date_deb à date_fin 
-                    $ca_parrain_parrainage = Facture::where([['user_id',$parrain1->id],['reglee',1]])->whereIn('type',['parrainage','parrainage_partage'])->whereBetween('date_reglement',[$date_deb,$date_fin])->sum('montant_ht');
-              
-                    
-                    // On vérifie que le parrain n'a pas démissionné à la date d'encaissement 
-                    $a_demission_parrain = false;
-
-                    if($parrain1->contrat->a_demission == true  ){
-                        if($parrain1->contrat->date_demission <= $compromis->getFactureStylimmo()->date_encaissement ){
-                            $a_demission_parrain = true;
-                        }
-                    }
-
-                    // On vérifie que le filleul n'a pas démissionné à la date d'encaissement 
-                    $a_demission_filleul = false;
-
-                    if($mandataire1->contrat->a_demission == true  ){
-                        if($mandataire1->contrat->date_demission <= $compromis->getFactureStylimmo()->date_encaissement ){
-                            $a_demission_filleul = true;
-                        }
-                    }
-                    
-                    $touch_comm = "non";
-                    // On  n'a les seuils et les ca on peut maintenant faire les comparaisons     ## // on rajoutera les conditions de pack pub                           
-                    if($ca_filleul1 >= $seuil_porteur && $ca_parrain1 >= $seuil_parrain && $ca_parrain_parrainage < $mandataire1->contrat->seuil_comm &&  $a_demission_parrain == false &&  $a_demission_filleul == false  ){
-                        $compromis->id_valide_parrain_porteur = $parrain1->id;
-                        $compromis->update();
-                        $touch_comm = "oui";
-                    }else{
-                        $compromis->id_valide_parrain_porteur = null;
-                        $compromis->update();
-                    }
+                    $comm_parrain1 = unserialize($mandataire1->contrat->comm_parrain);
 
                     
-                    $retour .= "parrain : ".$parrain1->nom.' '.$parrain1->prenom." ca parrain: ".$ca_parrain1." \n  filleul porteur: ".$mandataire1->nom.' '.$mandataire1->prenom." ca filleul porteur: ".$ca_filleul1." \n parrain touche comm ? : ".$touch_comm;
-                
-        }
+                            // 1 on determine l'ancieneté du filleul1
+                            
+                            $dt_ent =  $mandataire1->contrat->date_entree->format('Y-m-d') >= "2019-01-01" ?  $mandataire1->contrat->date_entree : "2019-01-01";
+                            $date_entree =  strtotime($dt_ent);  
 
-       
+                            $today = strtotime (date('Y-m-d'));
+                            $anciennete_porteur = $today - $date_entree;
 
-        // Si le partage a un parrain
-        if($filleul2!= null){
+                            if($anciennete_porteur <= 365*86400){
+                                $seuil_porteur = $comm_parrain1["seuil_fill_1"];
+                                $seuil_parrain = $comm_parrain1["seuil_parr_1"];
+                            }
+                            //si ancienneté est compris entre 1 et 2ans
+                            elseif($anciennete_porteur > 365*86400 && $anciennete_porteur <= 365*86400*2){
+                                $seuil_porteur = $comm_parrain1["seuil_fill_2"];
+                                $seuil_parrain = $comm_parrain1["seuil_parr_2"];
+                            }
+                            // ancienneté sup à 2 ans
+                            else{
+                                $seuil_porteur = $comm_parrain1["seuil_fill_3"];
+                                $seuil_parrain = $comm_parrain1["seuil_parr_3"];
+                            }
 
-            $mandataire2 = $filleul2->user ;
-            $parrain2 = User::where('id',$filleul2->parrain_id)->first();
+                            // on vérifie que le parrain n'a pas dépassé le plafond de la commission de parrainage sur son filleul,  de la date d'anniversaire de sa date d'entrée jusqu'a la date d'encaissement
+                            $m_d_entree = $mandataire1->contrat->date_entree->format('m-d');
+                            $y_encaiss = $compromis->getFactureStylimmo()->date_encaissement->format('Y');
 
-            // Chiffre d'affaire du filleul et son parrain sur 1 ans avant la date d'encaissement,  
-            $ca_parrain2 =  Compromis::getCAStylimmo($parrain2->id,$date_12 ,$date_encaissement);
-            $ca_filleul2 =  Compromis::getCAStylimmo($mandataire2->id,$date_12 ,$date_encaissement);
+                            // dd($y_encaiss.'-'.$m_d_entree);
+                            if( $compromis->getFactureStylimmo()->date_encaissement->format('Y-m-d') > $y_encaiss.'-'.$m_d_entree  ){
+                                $date_deb = $y_encaiss.'-'.$m_d_entree ;
+                                $date_fin = $compromis->getFactureStylimmo()->date_encaissement->format('Y-m-d');
+                            }else{
+                                $date_deb =  ($y_encaiss-1).'-'.$m_d_entree ;
+                                $date_fin = $compromis->getFactureStylimmo()->date_encaissement->format('Y-m-d'); 
+                            }
+                            // calcul du de la comm recu par le parrain de date_deb à date_fin 
+                            $ca_parrain_parrainage = Facture::where([['user_id',$parrain1->id],['reglee',1]])->whereIn('type',['parrainage','parrainage_partage'])->whereBetween('date_reglement',[$date_deb,$date_fin])->sum('montant_ht');
+                    
+                            
+                            // On vérifie que le parrain n'a pas démissionné à la date d'encaissement 
+                            $a_demission_parrain = false;
 
-            $comm_parrain2 = unserialize($mandataire2->contrat->comm_parrain);
+                            if($parrain1->contrat->a_demission == true  ){
+                                if($parrain1->contrat->date_demission <= $compromis->getFactureStylimmo()->date_encaissement ){
+                                    $a_demission_parrain = true;
+                                }
+                            }
 
-               
-                    // 1 on determine l'ancieneté du filleul1
-                  
-                    $dt_ent =  $mandataire2->contrat->date_entree->format('Y-m-d') >= "2019-01-01" ?  $mandataire2->contrat->date_entree : "2019-01-01";
-                    $date_entree =  strtotime($dt_ent);                                              
-                    $today = strtotime (date('Y-m-d'));
-                    $anciennete_partage = $today - $date_entree;
+                            // On vérifie que le filleul n'a pas démissionné à la date d'encaissement 
+                            $a_demission_filleul = false;
 
-                    if($anciennete_partage <= 365*86400){
-                        $seuil_partage = $comm_parrain2["seuil_fill_1"];
-                        $seuil_parrain = $comm_parrain2["seuil_parr_1"];
-                    }
-                    //si ancienneté est compris entre 1 et 2ans
-                    elseif($anciennete_partage > 365*86400 && $anciennete_partage <= 365*86400*2){
-                        $seuil_partage = $comm_parrain2["seuil_fill_2"];
-                        $seuil_parrain = $comm_parrain2["seuil_parr_2"];
-                    }
-                    // ancienneté sup à 2 ans
-                    else{
-                        $seuil_partage = $comm_parrain2["seuil_fill_3"];
-                        $seuil_parrain = $comm_parrain2["seuil_parr_3"];
-                    }
+                            if($mandataire1->contrat->a_demission == true  ){
+                                if($mandataire1->contrat->date_demission <= $compromis->getFactureStylimmo()->date_encaissement ){
+                                    $a_demission_filleul = true;
+                                }
+                            }
+                            
+                            $touch_comm = "non";
+                            // On  n'a les seuils et les ca on peut maintenant faire les comparaisons     ## // on rajoutera les conditions de pack pub                           
+                            if($ca_filleul1 >= $seuil_porteur && $ca_parrain1 >= $seuil_parrain && $ca_parrain_parrainage < $mandataire1->contrat->seuil_comm &&  $a_demission_parrain == false &&  $a_demission_filleul == false  ){
+                                $compromis->id_valide_parrain_porteur = $parrain1->id;
+                                $compromis->update();
+                                $touch_comm = "oui";
+                            }else{
+                                $compromis->id_valide_parrain_porteur = null;
+                                $compromis->update();
+                            }
+
+                            
+                            $retour .= "parrain : ".$parrain1->nom.' '.$parrain1->prenom." ca parrain: ".$ca_parrain1." \n  filleul porteur: ".$mandataire1->nom.' '.$mandataire1->prenom." ca filleul porteur: ".$ca_filleul1." \n parrain touche comm ? : ".$touch_comm;
+                        
+                }
+
+            
+
+                // Si le partage a un parrain
+                if($filleul2!= null){
+
+                    $mandataire2 = $filleul2->user ;
+                    $parrain2 = User::where('id',$filleul2->parrain_id)->first();
+
+                    // Chiffre d'affaire du filleul et son parrain sur 1 ans avant la date d'encaissement,  
+                    $ca_parrain2 =  Compromis::getCAStylimmo($parrain2->id,$date_12 ,$date_encaissement);
+                    $ca_filleul2 =  Compromis::getCAStylimmo($mandataire2->id,$date_12 ,$date_encaissement);
+
+                    $comm_parrain2 = unserialize($mandataire2->contrat->comm_parrain);
 
                     
-                    // on vérifie que le parrain n'a pas dépassé le plafond de la commission de parrainage sur son filleul,  de la date d'anniversaire de sa date d'entrée jusqu'a la date d'encaissement
+                            // 1 on determine l'ancieneté du filleul1
+                        
+                            $dt_ent =  $mandataire2->contrat->date_entree->format('Y-m-d') >= "2019-01-01" ?  $mandataire2->contrat->date_entree : "2019-01-01";
+                            $date_entree =  strtotime($dt_ent);                                              
+                            $today = strtotime (date('Y-m-d'));
+                            $anciennete_partage = $today - $date_entree;
 
-                    $m_d_entree = $mandataire2->contrat->date_entree->format('m-d');
-                    $y_encaiss = $compromis->getFactureStylimmo()->date_encaissement->format('Y');
+                            if($anciennete_partage <= 365*86400){
+                                $seuil_partage = $comm_parrain2["seuil_fill_1"];
+                                $seuil_parrain = $comm_parrain2["seuil_parr_1"];
+                            }
+                            //si ancienneté est compris entre 1 et 2ans
+                            elseif($anciennete_partage > 365*86400 && $anciennete_partage <= 365*86400*2){
+                                $seuil_partage = $comm_parrain2["seuil_fill_2"];
+                                $seuil_parrain = $comm_parrain2["seuil_parr_2"];
+                            }
+                            // ancienneté sup à 2 ans
+                            else{
+                                $seuil_partage = $comm_parrain2["seuil_fill_3"];
+                                $seuil_parrain = $comm_parrain2["seuil_parr_3"];
+                            }
 
-                    // dd($y_encaiss.'-'.$m_d_entree);
-                    if( $compromis->getFactureStylimmo()->date_encaissement->format('Y-m-d') > $y_encaiss.'-'.$m_d_entree  ){
-                        $date_deb = $y_encaiss.'-'.$m_d_entree ;
-                        $date_fin = $compromis->getFactureStylimmo()->date_encaissement->format('Y-m-d');
-                    }else{
-                        $date_deb =  ($y_encaiss-1).'-'.$m_d_entree ;
-                        $date_fin = $compromis->getFactureStylimmo()->date_encaissement->format('Y-m-d'); 
-                    }
-                    // calcul du de la comm recu par le parrain de date_deb à date_fin 
-                    $ca_parrain_parrainage = Facture::where([['user_id',$parrain2->id],['reglee',1]])->whereIn('type',['parrainage','parrainage_partage'])->whereBetween('date_reglement',[$date_deb,$date_fin])->sum('montant_ht');
+                            
+                            // on vérifie que le parrain n'a pas dépassé le plafond de la commission de parrainage sur son filleul,  de la date d'anniversaire de sa date d'entrée jusqu'a la date d'encaissement
 
-                    // On vérifie que le parrain n'a pas démissionné à la date d'encaissement 
-                    $a_demission_parrain = false;
+                            $m_d_entree = $mandataire2->contrat->date_entree->format('m-d');
+                            $y_encaiss = $compromis->getFactureStylimmo()->date_encaissement->format('Y');
 
-                    if($parrain2->contrat->a_demission == true  ){
-                        if($parrain2->contrat->date_demission <= $compromis->getFactureStylimmo()->date_encaissement ){
-                            $a_demission_parrain = true;
-                        }
-                    }
+                            // dd($y_encaiss.'-'.$m_d_entree);
+                            if( $compromis->getFactureStylimmo()->date_encaissement->format('Y-m-d') > $y_encaiss.'-'.$m_d_entree  ){
+                                $date_deb = $y_encaiss.'-'.$m_d_entree ;
+                                $date_fin = $compromis->getFactureStylimmo()->date_encaissement->format('Y-m-d');
+                            }else{
+                                $date_deb =  ($y_encaiss-1).'-'.$m_d_entree ;
+                                $date_fin = $compromis->getFactureStylimmo()->date_encaissement->format('Y-m-d'); 
+                            }
+                            // calcul du de la comm recu par le parrain de date_deb à date_fin 
+                            $ca_parrain_parrainage = Facture::where([['user_id',$parrain2->id],['reglee',1]])->whereIn('type',['parrainage','parrainage_partage'])->whereBetween('date_reglement',[$date_deb,$date_fin])->sum('montant_ht');
 
-                    // On vérifie que le filleul n'a pas démissionné à la date d'encaissement 
-                    $a_demission_filleul = false;
+                            // On vérifie que le parrain n'a pas démissionné à la date d'encaissement 
+                            $a_demission_parrain = false;
 
-                    if($mandataire2->contrat->a_demission == true  ){
-                        if($mandataire2->contrat->date_demission <= $compromis->getFactureStylimmo()->date_encaissement ){
-                            $a_demission_filleul = true;
-                        }
-                    }
+                            if($parrain2->contrat->a_demission == true  ){
+                                if($parrain2->contrat->date_demission <= $compromis->getFactureStylimmo()->date_encaissement ){
+                                    $a_demission_parrain = true;
+                                }
+                            }
 
+                            // On vérifie que le filleul n'a pas démissionné à la date d'encaissement 
+                            $a_demission_filleul = false;
 
-
-                    $touch_comm = "non";
-                    // On  n'a les seuils et les ca on peut maintenant faire les comparaisons     ## // on rajoutera les conditions de pack pub                           
-                    if($ca_filleul2 >= $seuil_partage && $ca_parrain2 >= $seuil_parrain && $ca_parrain_parrainage < $mandataire2->contrat->seuil_comm  &&  $a_demission_parrain == false &&  $a_demission_filleul == false ){
-                        $touch_comm = "oui";
-                       
-                        $compromis->id_valide_parrain_partage = $parrain2->id;
-                        $compromis->update();
-                    }else{
-                        $compromis->id_valide_parrain_partage = null;
-                        $compromis->update();
-                    }
-                    $retour .= "parrain : ".$parrain2->nom.' '.$parrain2->prenom." ca parrain: ".$ca_parrain2." \n  filleul porteur: ".$mandataire2->nom.' '.$mandataire2->prenom." ca filleul porteur: ".$ca_filleul2." \n parrain touche comm ? : ".$touch_comm;
+                            if($mandataire2->contrat->a_demission == true  ){
+                                if($mandataire2->contrat->date_demission <= $compromis->getFactureStylimmo()->date_encaissement ){
+                                    $a_demission_filleul = true;
+                                }
+                            }
 
 
-        }
 
+                            $touch_comm = "non";
+                            // On  n'a les seuils et les ca on peut maintenant faire les comparaisons     ## // on rajoutera les conditions de pack pub                           
+                            if($ca_filleul2 >= $seuil_partage && $ca_parrain2 >= $seuil_parrain && $ca_parrain_parrainage < $mandataire2->contrat->seuil_comm  &&  $a_demission_parrain == false &&  $a_demission_filleul == false ){
+                                $touch_comm = "oui";
+                            
+                                $compromis->id_valide_parrain_partage = $parrain2->id;
+                                $compromis->update();
+                            }else{
+                                $compromis->id_valide_parrain_partage = null;
+                                $compromis->update();
+                            }
+                            $retour .= "parrain : ".$parrain2->nom.' '.$parrain2->prenom." ca parrain: ".$ca_parrain2." \n  filleul porteur: ".$mandataire2->nom.' '.$mandataire2->prenom." ca filleul porteur: ".$ca_filleul2." \n parrain touche comm ? : ".$touch_comm;
+
+
+                }
+
+
+    }
         
         $action = Auth::user()->nom." ".Auth::user()->prenom." a encaissé la facture stylimmo  $facture->numero";
         $user_id = Auth::user()->id;
@@ -2176,7 +2183,7 @@ public function valider_honoraire($action, $facture_id)
     public function create_avoir($facture_id)
     {
         $facture = Facture::where('id',  Crypt::decrypt($facture_id))->first();
-        $numero = Facture::whereIn('type', ['avoir','stylimmo'])->max('numero') + 1;
+        $numero = Facture::whereIn('type', ['avoir','stylimmo','pack_pub','carte_visite','communication','autre'])->max('numero') + 1;
 
        return view('facture.avoir.add_avoir', compact(['facture','numero']) );
     }
@@ -2605,4 +2612,227 @@ public function valider_honoraire($action, $facture_id)
         // return redirect()->route('compromis.index')->with('ok', __('compromis modifié')  );
 
     }
+
+
+    
+    /**
+     *  Créer une facture stylimmo libre
+     *
+     * @return \Illuminate\Http\Response
+    */
+    public  function create_libre()
+    {
+        $mandataires = User::where('role', 'mandataire')->orderBy('nom')->get();
+        $numero = Facture::whereIn('type',['avoir','stylimmo','pack_pub','carte_visite','communication','autre'])->max('numero') + 1;
+        return view ('facture.add',compact('numero','mandataires'));
+    }
+
+
+    /**
+     *  Ajouter une facture stylimmo libre
+     *
+     * @return \Illuminate\Http\Response
+    */
+    public  function store_libre(Request $request)
+    {
+       
+       
+       if($request->destinataire_est_mandataire ){
+            $request->validate([
+                'numero' => 'required|numeric|unique:factures',
+                'type' => 'required',
+                'description_produit' => 'required',
+            ]);
+
+            $destinataire_est_mandataire = true;
+
+        $user_id = $request->mandataire_id;
+       }else{
+
+            $request->validate([
+                'numero' => 'required|numeric|unique:factures',
+                'type' => 'required',
+                'destinataire' => 'required',
+                'description_produit' => 'required',
+            ]);
+            
+            $user_id = null;
+            $destinataire_est_mandataire = false;
+
+       }
+
+       $facture = Facture::create([
+            "numero"=> $request->numero,
+            "user_id"=> $user_id,
+           
+            "type"=> $request->type,
+            "encaissee"=> false,
+            "montant_ht"=>  $request->montant_ht,
+            "montant_ttc"=> $request->montant_ht * 1.2,
+            "date_facture"=> $request->date_facture,
+            "destinataire_est_mandataire"=> $destinataire_est_mandataire,
+            "destinataire"=> $request->destinataire,
+            "description_produit"=> $request->description_produit,
+       ]);
+       
+       
+        return view ('facture.generer_facture_autre',compact('facture'));
+    }
+
+
+
+    /**
+     *  Modifier une facture stylimmo libre
+     *
+     * @return \Illuminate\Http\Response
+    */
+    public  function edit_libre($facture_id)
+    {
+       
+
+        $facture = Facture::where('id', crypt::decrypt($facture_id))->first();
+        $mandataires = User::where('role', 'mandataire')->orderBy('nom')->get();
+       
+        
+        return view ('facture.edit',compact('mandataires','facture'));
+
+    }
+
+    /**
+     *  Modifier une facture stylimmo libre
+     *
+     * @return \Illuminate\Http\Response
+    */
+    public  function update_libre(Request $request, $facture_id)
+    {
+       
+
+        $facture = Facture::where('id', crypt::decrypt($facture_id))->first();
+        
+
+        if($request->numero != $facture->numero){
+            $request->validate([
+                'numero' => 'required|numeric|unique:factures',
+            ]);
+        }
+      
+        
+        if($request->destinataire_est_mandataire ){
+
+
+            $request->validate([
+                'type' => 'required',
+                'description_produit' => 'required',
+            ]);
+
+            $destinataire_est_mandataire = true;
+            $user_id = $request->mandataire_id;
+
+
+       }else{
+
+            $request->validate([
+                'type' => 'required',
+                'destinataire' => 'required',
+                'description_produit' => 'required',
+            ]);
+            
+            $user_id = null;
+            $destinataire_est_mandataire = false;
+
+       }
+
+
+            $facture->numero = $request->numero;
+            $facture->user_id = $user_id;
+           
+            $facture->type = $request->type;
+
+            $facture->montant_ht =  $request->montant_ht;
+            $facture->montant_ttc = $request->montant_ht * 1.2;
+            $facture->date_facture = $request->date_facture;
+            $facture->destinataire_est_mandataire = $destinataire_est_mandataire;
+            $facture->destinataire = $request->destinataire;
+            $facture->description_produit = $request->description_produit;
+
+
+            $facture->update();
+       
+        
+        return view ('facture.generer_facture_autre',compact('facture'));
+
+
+    }
+        
+    /**
+     *  telecharger facture autre
+     *
+     * @param  string  $compromis_id
+     * @return \Illuminate\Http\Response
+    */
+
+    public  function download_pdf_facture_autre($facture_id)
+    {
+
+        // $compromis = Compromis::where('id', Crypt::decrypt($compromis_id))->first();
+        // $mandataire = $compromis->user;
+
+        $facture = Facture::where('id', crypt::decrypt($facture_id))->first();
+        if($facture->destinataire_est_mandataire == true ){
+            $filename = "F".$facture->numero." ".$facture->type." ".$facture->montant_ttc."€ ".strtoupper($facture->user->nom)." ".strtoupper(substr($facture->user->prenom,0,1)).".pdf" ;
+        }else{
+            $filename = "F".$facture->numero." ".$facture->type." ".$facture->montant_ttc."€.pdf" ;
+        }
+        // return response()->download($facture->url,$filename);
+        
+
+        // dd('ddd');
+        $pdf = PDF::loadView('facture.pdf_autre',compact(['facture']));
+        $path = storage_path('app/public/factures/'.$filename);
+        // $pdf->save($path);
+        // $pdf->download($path);
+        return $pdf->download($filename);
+    
+    }
+
+
+        
+    /**
+     *  générer facture autre
+     *
+     * @param  string  $compromis_id
+     * @return \Illuminate\Http\Response
+    */
+
+    public  function generer_pdf_facture_autre($facture_id)
+    {
+
+
+        // on sauvegarde la facture dans le repertoire du mandataire
+        $path = storage_path('app/public/factures/factures_autres');
+
+        if(!File::exists($path))
+            File::makeDirectory($path, 0755, true);
+        
+            $facture = Facture::where('id', crypt::decrypt($facture_id))->first();
+        $pdf = PDF::loadView('facture.pdf_autre',compact(['facture']));
+
+        if($facture->destinataire_est_mandataire == true ){
+            $filename = "F".$facture->numero." ".$facture->type." ".$facture->montant_ttc."€ ".strtoupper($facture->user->nom)." ".strtoupper(substr($facture->user->prenom,0,1)).".pdf" ;
+        }else{
+            $filename = "F".$facture->numero." ".$facture->type." ".$facture->montant_ttc."€.pdf" ;
+        }
+        
+        $path = $path.'/'.$filename;
+        $pdf->save($path);
+        
+        $facture->url = $path;
+        $facture->update();
+  
+
+        return   redirect()->route('facture.index')->with("ok", "Votre facture ". $facture->type." " .$facture->numero." a été crée");
+ 
+
+    }
+
 }

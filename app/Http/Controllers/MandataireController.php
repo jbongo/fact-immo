@@ -77,7 +77,7 @@ class MandataireController extends Controller
     public function store(Request $request)
     {
       
-         dd( $request);
+        //  dd( $request);
         
         $request->validate([
             'statut' => 'required|string',
@@ -520,4 +520,30 @@ class MandataireController extends Controller
 
         
     }
+
+
+    /**
+     *Affiche l'historique des jetons cosmmés pour chaque mandataire
+     *
+     * @param  int  $user_id
+     * @return \Illuminate\Http\Response
+     */
+    public function historique_jeton($user_id)
+    {
+       
+        $mandataire = User::where('id', Crypt::decrypt($user_id))->first();
+       
+        $factures = Facture::where([['user_id', Crypt::decrypt($user_id)], ['nb_mois_deduis', '>', 0]])->get();
+        $total_deduis = Facture::where([['user_id', Crypt::decrypt($user_id)], ['nb_mois_deduis', '>', 0]])->sum('nb_mois_deduis');
+        
+        $total_restant = $mandataire->nb_mois_pub_restant;
+        
+        return view('mandataires.historique_jeton',compact('factures','mandataire','total_deduis','total_restant'));
+    
+    }
+
+
+
+
+    
 }

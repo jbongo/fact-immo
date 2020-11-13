@@ -21,7 +21,7 @@ class CreateFactureTable extends Migration
             $table->integer('facture_id')->nullable();
             $table->text('motif')->nullable();
             $table->integer('compromis_id')->nullable();
-            $table->enum('type',['stylimmo','honoraire','pack_pub','carte_visite','parrainage','partage','parrainage_partage'])->nullable();
+            $table->enum('type',['stylimmo','honoraire','pack_pub','carte_visite','parrainage','partage','parrainage_partage','communication','autre'])->nullable();
             $table->boolean('encaissee')->default(false);
             $table->date('date_encaissement')->nullable();
             $table->boolean('reglee')->default(false);
@@ -34,6 +34,12 @@ class CreateFactureTable extends Migration
             $table->boolean('a_avoir')->default(false);
             $table->date('date_facture')->nullable();
             $table->enum('statut',['non valide','en attente de validation','refuse','valide'])->default('non valide');
+
+            // annexe facture (libre)
+            $table->boolean('destinataire_est_mandataire')->default(true);
+            $table->text('destinataire')->nullable();
+            $table->text('description_produit')->nullable();
+
 
             $table->timestamps();
         });
