@@ -134,7 +134,7 @@
                 </td>
                 <td style="width: 488px;  font-size: 12px;">
                    
-                    <div>A réception, par virement &agrave;   la SARL&nbsp;V4F, <br>en rappelant au moins sur l'objet du virement les r&eacute;f&eacute;rences de la facture.</div>
+                    <div>A réception, par virement &agrave; la SARL&nbsp;V4F, <br>en rappelant au moins sur l'objet du virement les r&eacute;f&eacute;rences de la facture.</div>
                     
                 </td>
             </tr>
