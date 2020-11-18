@@ -152,7 +152,7 @@
     </table>
     <br>
  
-    @if($compromis->type_affaire == "Vente")
+    {{-- @if($compromis->type_affaire == "Vente") --}}
     <table style="height: 40px; ">
         <tbody>
             <tr>
@@ -193,7 +193,7 @@
             </tr>
         </tbody>
     </table>
-    @endif
+    {{-- @endif --}}
     <br>
     <style>
         @page { margin: 50px 45px; }

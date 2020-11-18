@@ -25,22 +25,24 @@
     </tbody>
 </table>
 <br>
+
+
 <table style="height: 53px;" width="50%">
     <tbody>
         <tr>
-            <td style="width: 443px;">&nbsp;</td>
+            <td style="width: 443px;"><span style="color: #ff0000;">Merci d'indiquer le num&eacute;ro de facture en r&eacute;f&eacute;rence du virement.</span></td>
             <td style="width: 344px;"><span style="text-decoration: underline;font-size:20px"><strong>FACTURE N&deg; {{$facture->numero}}</strong></span></td>
         </tr>
     </tbody>
 </table>
-<table style="height: 59px; width: 500px;">
+{{-- <table style="height: 59px; width: 500px;">
     <tbody>
         <tr>
             <td style="width: 300px;"><span style="text-decoration: underline;"><strong>TRANSACTION</strong></span></td>
             <td style="width: 143px;"><span style="text-decoration: underline;"><strong>{{strtoupper($facture->type)}}</strong></span></td>
         </tr>
     </tbody>
-</table>
+</table> --}}
 
 <br>
 
@@ -56,56 +58,116 @@
     </tbody>
 </table>
 
-<br>
-<table style="height: 115px; width: 100%">
+
+
+
+<table style="height: 63px; width:90% ">
     <tbody>
         <tr>
-            <td style="width: 150px;">&nbsp;</td>
-            <td style="width: 528px;"><span style="">{!! $facture->description_produit !!} </td>
-            <td style="width: 30px;">&nbsp;</td>
+            <td style="width: 48px;">&nbsp;</td>
+            <td style=""><span style="">&nbsp;</span></td>
         </tr>
-        
+        <tr style="">
+            <td style="width: 48px;">&nbsp;</td>
+            <td style=" ">{!! $facture->description_produit !!} </td>
+            {{-- <td style="width: 391px;"></td> --}}
+
+        </tr>
     </tbody>
 </table>
-
-
-
-
+<br><br>
+<table style="height: 47px; width: 672px;">
+    <tbody>
+        <tr>
+            <td style="width: 400px;">&nbsp;</td>
+            <td style="width: 160px;">TOTAL H.T :</td>
+            <td style="width: 100px; text-align:right;" >{{number_format($facture->montant_ht,2,',',' ')}} &euro;</td>
+        </tr>
+        <tr>
+            <td style="width: 400px;">&nbsp;</td>
+            <td style="width: 160px;">T.V.A 20% :</td>
+            <td style="width: 100px; text-align:right;" >{{number_format($facture->montant_ht * 0.2,2,',',' ')}} &euro;</td>
+        </tr>
+        <tr>
+            <td style="width: 400px;">&nbsp;</td>
+            <td style="width: 160px;">TOTAL T.T.C:</td>
+            <td style="width: 100px; text-align:right;" >{{number_format($facture->montant_ttc,2,',',' ')}} &euro;</td>
+        </tr>
+    </tbody>
+</table>
 <br>
-<br>
-<table style="height: 42px; width: 50%;">
+
+<table style="height: 30px; width: 50%;">
     <tbody>
         <tr style="height: 25px;">
-            <td style="width: 349px; height: 25px;">Valeur en votre aimable r&egrave;glement de :</td>
-
-            @if( $facture->destinataire_est_mandataire == true && $facture->user->contrat->est_soumis_tva == true)
-                <td style="width: 117px; height: 25px;">{{number_format($facture->montant_ht * 1.2 ,2,',',' ')}} &euro; TTC</td>
-            @else 
-                <td style="width: 117px; height: 25px;">{{number_format($facture->montant_ht,2,',',' ')}} &euro; HT</td>
-            @endif
-
-            <td style="width: 177px; height: 25px;"> </td>
+            <td style="width: 300px; height: 25px;">Valeur en votre aimable r&egrave;glement de :</td>
+            <td style="width: 200px; height: 25px;">{{number_format($facture->montant_ttc,2,'.',' ')}} &euro; TTC</td>
+            <td style="width: 187px; height: 25px;"><span style="color: #ff0000; font-size:18px; font-weight:bold">&nbsp;R&eacute;f &agrave; rappeler: {{$facture->numero}}</span></td>
         </tr>
     </tbody>
 
 </table>
 <br>
 
-
-<br>
 <style>
     @page { margin: 50px 45px; }
     .footer {
         position: fixed;
-        bottom: -15px;
+        bottom: 90px;
         left: 0px; right: 0px;  height: 130px; 
         align-content: center;
     
     }
   
+  
+  
   </style>
+  
+  <div class="footer">
+    <table style="height: 40px; ">
+        <tbody>
+            <tr>
+                <td style="width: 170px;">
+                 
+                    <div><span style="text-decoration: underline;"><strong>Conditions de paiement:</strong></span></div>
+                    
+                </td>
+                <td style="width: 488px;  font-size: 12px;">
+                   
+                    <div>A réception, par virement &agrave; <br> la SARL&nbsp;V4F, en rappelant au moins sur l'objet du virement les r&eacute;f&eacute;rences de la facture.</div>
+                    
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 170px;">
+                 
+                    <div><span style="text-decoration: underline;"><strong>Intérêts de retard:</strong></span></div>
+                    
+                </td>
+                <td style="width: 488px;  font-size: 12px;">
+                   
+                    <div> Au taux d'intérêt légal</div>
+                    
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 300px;">
+                 
+                    <div><span style="text-decoration: underline;"><strong>Indemnité forfaitaire de recouvrement: </strong></span></div>
+                    
+                </td>
+                <td style="width: 158px;  font-size: 12px;">
+                   
+                    <div>40 €</div>
+                    
+                </td>
+            </tr>
+        </tbody>
+    </table>
 
-<div class="footer">
+<br>
+
+
     <table class="table table-striped table-bordered table-hover" style="width: 100%;"  border="1" cellspacing="0">
         <thead>
             <tr style="height: 18px;">
