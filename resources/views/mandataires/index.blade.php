@@ -16,159 +16,125 @@
             <div class="card alert">
                 <!-- table -->
             <a href="{{route('mandataire.create')}}" class="btn btn-success btn-rounded btn-addon btn-sm m-b-10 m-l-5"><i class="ti-user"></i>@lang('Nouveau mandataire')</a>
-                
-                <div class="card-body">
-                        <div class="panel panel-info m-t-15" id="cont">
-                                <div class="panel-heading">Liste des mandataires</div>
-                                <div class="panel-body">
-
-                        <div class="table-responsive" style="overflow-x: inherit !important;">
-                            <table  id="example3" class=" table student-data-table  table-striped table-hover dt-responsive display    "  style="width:100%">
-                                <thead>
-                                    <tr>
-                                        <th>@lang('Nom')</th>
-                                        <th>@lang('Statut')</th>
-                                        <th>@lang('TVA')</th>
-                                        <th>@lang('Jeton')</th>
-                                        {{-- <th>@lang('Email')</th> --}}
-                                        <th>@lang('Téléphone')</th>
-                                        {{-- <th>@lang('Adresse')</th> --}}
-                                        <th>@lang('date anniv')</th>
-                                        <th>@lang('Comm')</th>
-                                        <th>@lang('CA HT en cours')</th>
-                                     
-                                        <th>@lang('Action')</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                @foreach ($mandataires as $mandataire)
-                                    <tr>
-                                        
-                                        <td>
-                                            <a href="{{route('switch_user',Crypt::encrypt($mandataire->id) )}}" data-toggle="tooltip" title="@lang('Se connecter en tant que ') {{ $mandataire->nom }}">{{$mandataire->nom}} {{$mandataire->prenom}}<i style="font-size: 17px" class="material-icons color-success">person_pin</i></a> 
-                                        </td>
-                                        <td>
-                                        {{$mandataire->statut}} 
-                                        </td>
-                                        <td style="color: #32ade1; text-decoration: underline;">
-                                            @if($mandataire->contrat != null)
-                                                @if($mandataire->contrat->est_soumis_tva == true)
-                                                    <span class="badge badge-success">Oui</span>
-                                                @else 
-                                                    <span class="badge badge-danger">Non</span>
-                                                @endif
-                                               
-                                            @endif
-                                        </td>
-                                        <td style="color: #32ade1;  ">
-                                            @if($mandataire->contrat != null)
-                                                @if($mandataire->contrat->deduis_jeton == true)
-                                        <a href="{{route('mandataire.historique_jeton', Crypt::encrypt($mandataire->id))}}" class="badge badge-default"><i style="font-size: 15px" class="material-icons color-success ">launch</i>  <span style="font-size: 22px"> {{$mandataire->nb_mois_pub_restant}} </span></a>
-                                                @else 
-                                                    <span class="badge badge-danger">Non</span>
-                                                @endif
-
-
-                                                  
-                                            @endif
-                                            
-                                        </td>
-                                        {{-- <td style="color: #32ade1; text-decoration: underline;">
-                                        <strong>{{$mandataire->email}}</strong> 
-                                        </td> --}}
-                                        <td style="color: #e05555;; text-decoration: underline;">
-                                            <strong> {{$mandataire->telephone1}} </strong> 
-                                        </td>
-                                        {{-- <td>
-                                            {{$mandataire->adresse}} 
-                                        </td> --}}
-                                        
-                                        <td>
-                                            {{$mandataire->date_anniv()}}   
-                                        </td>                                  
-                                        <td @if($mandataire->contrat== null) style="background:#757575; color:white" @endif>                                             
-                                            <span class="color-success" >@if($mandataire->contrat!= null) {{$mandataire->commission}} % @else Pas de contrat @endif</span>
-                                        </td>
-                                        <td>                                             
-                                            <span class="color-warning">{{number_format($mandataire->chiffre_affaire_styl($mandataire->date_anniv(), date('Y-m-d')),2,'.',' ')}} €</span>
-                                        </td>
-                                      
-                                        <td width="13%">
-                                            <span><a href="{{route('mandataire.show',Crypt::encrypt($mandataire->id) )}}" data-toggle="tooltip" title="@lang('Détails de ') {{ $mandataire->nom }}"><i class="large material-icons color-info">visibility</i></a> </span>
-                                            <span><a href="{{route('mandataire.edit',Crypt::encrypt($mandataire->id) )}}" data-toggle="tooltip" title="@lang('Modifier ') {{ $mandataire->nom }}"><i class="large material-icons color-warning">edit</i></a></span>
-                                            {{-- <span><a href="{{route('switch_user',Crypt::encrypt($mandataire->id) )}}" data-toggle="tooltip" title="@lang('Se connecter en tant que ') {{ $mandataire->nom }}"><i class="large material-icons color-success">person_pin</i></a></span> --}}
-                                            
-                                        <span><a  href="{{route('mandataire.archive',[$mandataire->id,1])}}" class="delete" data-toggle="tooltip" title="@lang('Archiver ') {{ $mandataire->nom }}"><i class="large material-icons color-danger">delete</i> </a></span>
-                                        </td>
-                                    </tr>
-                            @endforeach
-                              </tbody>
-                            </table>
-                        </div>
+              
+            <div class="row">
+                    <!-- Navigation Buttons -->
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                       <ul class="nav nav-pills nav-tabs" id="myTabs">
+                          <li id="li_mandataire_actif" class="active"><a href="#mandataire_actif" data-toggle="pill"> <i class="material-icons" style="font-size: 15px;">account_balance_wallet</i> @lang('Mandataires Actifs')</a></li>
+                          <li id="li_demissionnaire_nav"><a href="#demissionnaire_nav" data-toggle="pill"> <i class="material-icons" style="font-size: 15px;">account_balance_wallet</i> @lang('Démissionnaires')</a></li>
+                          <li id="li_desactive_nav"><a href="#desactive_nav" data-toggle="pill"> <i class="material-icons" style="font-size: 15px;">account_balance_wallet</i> @lang('Mandataires Désactivés')</a></li>
+                         
+                         
+                       </ul>
                     </div>
-                </div>
-
+                    <!-- Content -->
+                    <div class=" col-lg-12 col-md-12 col-sm-12">
+                       <div class="card">
+                          <div class="card-body">
+                             <div class="tab-content">
+                                <div class="tab-pane active" id="mandataire_actif"> @include('mandataires.mandataire')</div>
+                                <div class="tab-pane" id="demissionnaire_nav">@include('mandataires.demissionnaire')</div>
+                                <div class="tab-pane" id="desactive_nav">@include('mandataires.desactive')</div>
+                             </div>
+                          </div>
+                       </div>
                     </div>
-                <!-- end table -->
-            </div>
-        </div>
+
+
+
+
+               </div>
+         </div>
+      </div>
     </div>
 @endsection
 
+
 @section('js-content')
+
+
 <script>
-        $(function() {
-            $.ajaxSetup({
-                headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
-            })
-            $('[data-toggle="tooltip"]').tooltip()
-            $('body').on('click','a.delete',function(e) {
-                let that = $(this)
-                e.preventDefault()
-                const swalWithBootstrapButtons = swal.mixin({
+    $(function() {
+        $.ajaxSetup({
+            headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
+        })
+        $('[data-toggle="tooltip"]').tooltip()
+        
+        
+        $('body').on('click','a.activer',function(e) {
+            let that = $(this)
+            e.preventDefault()
+            const swalWithBootstrapButtons = swal.mixin({   
             confirmButtonClass: 'btn btn-success',
             cancelButtonClass: 'btn btn-danger',
             buttonsStyling: false,
-})
+                 })
 
-        swalWithBootstrapButtons({
-            title: '@lang('Vraiment archiver cet mandataire  ?')',
-            type: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#DD6B55',
-            confirmButtonText: '@lang('Oui')',
-            cancelButtonText: '@lang('Non')',
-            
-        }).then((result) => {
-            if (result.value) {
-                $('[data-toggle="tooltip"]').tooltip('hide')
-                    $.ajax({                        
+            swalWithBootstrapButtons({
+                title: '@lang('Vraiment réactiver cet mandataire  ?')',
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#DD6B55',
+                confirmButtonText: '@lang('Oui')',
+                cancelButtonText: '@lang('Non')',
+                
+            }).then((result) => {
+                if (result.value) {
+                    $('[data-toggle="tooltip"]').tooltip('hide')
+                        
+                        
+        
+                    $.ajax({
+                        type: "POST",
+                        // url: "{{route('mandataire.add')}}",
                         url: that.attr('href'),
-                        type: 'PUT'
-                    })
-                    .done(function () {
-                            that.parents('tr').remove()
-                    })
-
-                swalWithBootstrapButtons(
-                'Archivé!',
-                'L\'mandataire a bien été archivé.',
-                'success'
-                )
-                
-                
-            } else if (
-                // Read more about handling dismissals
-                result.dismiss === swal.DismissReason.cancel
-            ) {
-                swalWithBootstrapButtons(
-                'Annulé',
-                'L\'utlisateur n\'a pas été archivé :)',
-                'error'
-                )
-            }
-        })
+                       
+                        // data: data,
+                        success: function(data) {
+                            console.log(data);
+                            
+                            swal(
+                                    'Activé',
+                                    'Le mandataire a été réactivé \n Veuillez mettre à jour son contrat',
+                                    'success'
+                                )
+                                .then(function() {
+                                    window.location.href = that.attr('contrat');
+                                })
+                                // setInterval(() => {
+                                //     window.location.href = "{{route('mandataire.index')}}";
+                                    
+                                // }, 5);
+                        },
+                        error: function(data) {
+                            console.log(data);
+                            
+                            swal(
+                                'Echec',
+                                'Le mandataire n\'a pas été activé :)',
+                                'error'
+                            );
+                        }
+                    });
+                    
+                  
+                    
+                    
+                } else if (
+                    // Read more about handling dismissals
+                    result.dismiss === swal.DismissReason.cancel
+                ) {
+                    swalWithBootstrapButtons(
+                    'Annulé',
+                    'Le mandataire n\'a pas été activé :)',
+                    'error'
+                    )
+                }
             })
-        })
-    </script>
+         })
+    })
+</script>
+
+
 @endsection

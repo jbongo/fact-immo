@@ -26,6 +26,8 @@ Route::middleware('auth')->group(function(){
         Route::delete('/mandataire/delete/{mandataire}','MandataireController@destroy')->name('mandataire.delete');
         Route::delete('/mandataire/archive/{mandataire}','MandataireController@archive')->name('mandataire.archive');
         Route::get('/mandataire/send-access/{mandataire_id}/{contrat_id}','MandataireController@send_access')->name('mandataire.send_access');
+        Route::post('/mandataire/activer/{mandataire}','MandataireController@activer')->name('mandataire.activer');
+        
 
   
     // compromis  
@@ -73,6 +75,7 @@ Route::middleware('auth')->group(function(){
 
     // factures
     Route::get('/factures','FactureController@index')->name('facture.index');
+    Route::get('/factures/hors-delais','FactureController@hors_delais')->name('facture.hors_delais');
     Route::get('/factures/create','FactureController@create')->name('facture.create');
     Route::get('/factures/packpub','FactureController@packpub')->name('facture.packpub');
     //  factures honoraire

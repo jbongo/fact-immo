@@ -54,6 +54,7 @@ class MandataireController extends Controller
     {
         //
         $mandataires = User::where('role','mandataire')->orderBy('nom')->get();
+        
         return view ('mandataires.index',compact('mandataires'));
     }
 
@@ -258,14 +259,40 @@ class MandataireController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * reactiver le mandataire demissionnaire
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function activer($mandataire_id)
     {
-        //
+        
+        $mandataire = User::where('id', $mandataire_id)->first();
+        
+        $contrat = $mandataire->contrat;
+        
+        $contrat->a_demission = false ;
+        $contrat->est_fin_droit_suite = false ;
+        
+        
+        $password = $mandataire->password;
+    //    return $password;
+        
+        $password = str_replace('_demission','',$password);
+        
+        $mandataire->password = $password;
+      
+        
+        $contrat->date_demission = null ;
+        $contrat->date_fin_preavis = null ;
+        $contrat->date_fin_droit_suite = null ;
+        
+        
+        $mandataire->update();
+        $contrat->update();
+       return "ok";
+        
+        
     }
 
     /**

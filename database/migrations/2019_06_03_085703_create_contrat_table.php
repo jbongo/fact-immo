@@ -66,6 +66,7 @@ class CreateContratTable extends Migration
 
             // Démission
             $table->boolean('a_demission')->default(false);
+            $table->boolean('est_fin_droit_suite')->default(false);
             $table->date('date_demission')->nullable();
             $table->date('date_fin_preavis')->nullable();
             $table->date('date_fin_droit_suite')->nullable();

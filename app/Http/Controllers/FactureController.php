@@ -2331,7 +2331,6 @@ public function valider_honoraire($action, $facture_id)
         $facture->update();
         
 
-        // return $facture->reglee.'';
     //    ************* Creer un mail pour notifier le mandataire
         // Mail::to("gestion@stylimmo.com")->send(new EncaissementFacture($facture));
        
@@ -2834,5 +2833,50 @@ public function valider_honoraire($action, $facture_id)
  
 
     }
+    
+    
+    /**
+     *  Liste des factures d'honoraires a payer et non ajoutées
+     *
+     * @return \Illuminate\Http\Response
+    */
+
+    public  function honoraire_a_payer()
+    {
+
+
+        $facturesAPayer = Facture::whereIn('type',['honoraire','partage','parrainage','parrainage_partage'])->where([['reglee', false], ['statut','valide']])->latest()->get();
+        $facturesNonAjou = Facture::whereIn('type',['honoraire','partage','parrainage','parrainage_partage'])->where([['reglee', false], ['statut','<>','valide']])->latest()->get();
+
+        // dd(Facture::whereIn('type',['honoraire','partage','parrainage','parrainage_partage'])->where([['reglee', false], ['statut','valide']])->count());
+
+       return view('facture.a_payer.index', compact('facturesAPayer','facturesNonAjou'));
+ 
+
+    }
+    
+    /**
+     *  Liste des factures STYL'IMMO non encaissées hors délais ( dont la date de vente est dépassée de 60 jours )
+     *
+     * @return \Illuminate\Http\Response
+    */
+
+    public  function hors_delais()
+    {
+
+
+// dd(date('Y-m-d', strtotime(date('Y-m-d'). ' - 60 days')));
+
+
+
+    $factures = Facture::where([['type','stylimmo'],['a_avoir',false],['encaissee',false]])->get();
+    $today60 = date('Y-m-d', strtotime(date('Y-m-d'). ' - 60 days'));
+    
+    
+       return view('facture.hors_delais', compact('factures','today60'));
+ 
+
+    }
+    
 
 }

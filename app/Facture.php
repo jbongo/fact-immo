@@ -91,4 +91,10 @@ class Facture extends Model
         $avoir = Facture::where([['id',$this->facture_id,['type','stylimmo']]])->first();
         return $avoir;
     }
+    
+    public static function nb_facture_a_payer(){
+        $nb =  Facture::whereIn('type',['honoraire','partage','parrainage','parrainage_partage'])->where([['reglee', false], ['statut','valide']])->count();
+        return $nb;
+    }
+   
 }
