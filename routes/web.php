@@ -46,6 +46,7 @@ Route::middleware('auth')->group(function(){
     Route::post('/compromis/archive/restaurer/{compromis}','CompromisController@restaurer_archive')->name('compromis.archive.restaurer');
     Route::get('/compromis/cloturer/{compromis}','CompromisController@cloturer')->name('compromis.cloturer');
     Route::get('/compromis/etat/{compromis}','CompromisController@etat_compromis')->name('compromis.etat');
+    Route::get('/compromis/modifer-date-vente/{compromis}','CompromisController@modifier_date_vente')->name('compromis.modifier_date_vente');
     // type affaire
     Route::get('/compromis/type','CompromisController@index_type_compromis')->name('compromis_type.index');
    

@@ -941,5 +941,25 @@ class CompromisController extends Controller
 
         return view('compromis.etat',compact('compromis','parrainPorteur','parrainPartage'));
     }
+    
+    
+    /**
+     * Modifier la date de vente du compromis
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function modifier_date_vente(Request $request, $compromis)
+    {
+        $compromis = Compromis::where('id',Crypt::decrypt($compromis))->first();
+
+
+        $compromis->date_vente = $request->date_vente;
+        
+        return redirect()->route('compromis.index');
+    }
+    
+    
+    
 
 }

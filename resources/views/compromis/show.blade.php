@@ -28,13 +28,15 @@ Détail de l'affaire de {{$compromis->user->prenom}} {{$compromis->user->nom}}
                     @endif
                     @if ($compromis->demande_facture < 2 ||  Auth()->user()->role =="admin" )
                         @if($compromis->user_id == Auth()->user()->id ||  Auth()->user()->role =="admin" )
-                            <a class="btn btn-success btn-flat btn-addon btn-sm m-b-10 m-l-5  " id="modifier_compromis"><i class="ti-pencil-alt"></i>Modifier l'affaire</a>
+                            <a  class="btn btn-success btn-flat btn-addon btn-sm m-b-10 m-l-5  " id="modifier_compromis"><i class="ti-pencil-alt"></i>Modifier l'affaire</a>
                         @endif
                     @endif
 
                     @if ($compromis->demande_facture == 2 && (  ($compromis->est_partage_agent == 1 && $compromis->je_porte_affaire == 1) ||  ($compromis->est_partage_agent == 0) )  )
                     @if($compromis->user_id == Auth()->user()->id )
                         <span class="color-danger">La facture STYL'IMMO a déjà été générée, pour modifier les informations ci-dessous, veuillez les transmettre à </span> <strong> gestion@stylimmo.com </strong>
+                        <a  data-toggle="modal" data-target="#myModal2" class="btn btn-danger btn-flat btn-addon btn-sm m-b-10 m-l-5 submit" href="#"><i class="ti-plus"></i>Modifier la date vente </a>
+                        
                     @endif
                 @endif
                 @endif
@@ -622,13 +624,61 @@ Détail de l'affaire de {{$compromis->user->prenom}} {{$compromis->user->nom}}
 
                 </form>
 		</div>
+		
+		
+		
+		
+		                        <!--Modifier la date de vente -->
+                    <div class="modal fade" id="myModal2" role="dialog">
+                        <div class="modal-dialog modal-xs">
+                        
+                           <!-- Modal content-->
+                           <div class="modal-content col-lg-offset-4  col-md-offset-4 col-sm-offset-4 col-lg-4 col-md-4 col-sm-4">
+                              <div class="modal-header">
+                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                 <h4 class="modal-title">Date de vente</h4>
+                              </div>
+                              <div class="modal-body">
+                                 <form action="{{route('compromis.modifier_date_vente', Crypt::encrypt($compromis->id) )}}" method="get" id="form_encaissement">
+                                       <div class="modal-body">
+                                          
+                                          <div class="">
+                                             <div class="form-group row">
+                                                   <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="date_vente">Date de vente <span class="text-danger">*</span> </label>
+                                                   <div class="col-lg-8 col-md-8 col-sm-8">
+                                                      <input type="date"  class="form-control {{ $errors->has('date_vente') ? ' is-invalid' : '' }}" value="{{old('date_vente')}}" id="date_vente" name="date_vente" required >
+                                                      @if ($errors->has('date_vente'))
+                                                      <br>
+                                                      <div class="alert alert-warning ">
+                                                         <strong>{{$errors->first('date_vente')}}</strong> 
+                                                      </div>
+                                                      @endif   
+                                                   </div>
+                                             </div>
+                                          </div>
+                                       
+                                       </div>
+                                       <div class="modal-footer">
+                                          <input type="submit" class="btn btn-success" id="valider_encaissement"  value="Valider" />
+                                          <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+                                       </div>
+                                 </form> 
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+		
+		
 	</div>
 </div>
 </div>
 @stop
 @section('js-content')
 
+
 <script>
+
+
 
     $('#adresse1_vendeur').attr('required', 'required');
     $('#code_postal_vendeur').attr('required', 'required');
@@ -824,6 +874,12 @@ $('#modifier_pdf_compromis').click(function (){
             }
             
         })
+
+
+
+// Modification de la date de vente
+
+$('input').attr('readonly',false);
 
 </script>
 @endsection
