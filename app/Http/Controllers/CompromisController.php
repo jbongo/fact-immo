@@ -956,7 +956,9 @@ class CompromisController extends Controller
 
         $compromis->date_vente = $request->date_vente;
         
-        return redirect()->route('compromis.index');
+        $compromis->update();
+        
+        return redirect()->route('compromis.index')->with('ok', "La date de vente de l'affaire  $compromis->numero_mandat a été modifié");
     }
     
     
