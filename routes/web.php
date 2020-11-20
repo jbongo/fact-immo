@@ -217,6 +217,13 @@ Route::middleware('auth')->group(function(){
     Route::get('/historique-jeton/{user_id}','MandataireController@historique_jeton')->name('mandataire.historique_jeton');
 
 
+// #######Système de notifications
+
+    Route::get('/notifications','NotificationController@index')->name('notifications.index');
+    Route::get('/notifications/delete/{id?}','NotificationController@delete')->name('notification.delete');
+    
+
+
 
 });
 

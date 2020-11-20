@@ -205,22 +205,31 @@
                 <li class="header-icon dib"><i class="ti-bell"></i>
                     <div class="drop-down">
                         <div class="dropdown-content-heading">
-                            <span class="text-left"> Notifications </span>
+                            <span class="text-left"> Notifications récentes</span>
                         </div>
                         <div class="dropdown-content-body">
                             <ul>
+                            
+                                @foreach (Auth::user()->unReadNotifications as $key => $notification)
+                            
                                 <li>
                                     <a href="#">
                                         <img class="pull-left m-r-10 avatar-img" src="{{ asset('images/avatar/3.jpg')}}" alt="" />
                                         <div class="notification-content">
-                                            <small class="notification-timestamp pull-right">02:34 PM</small>
-                                            <div class="notification-heading">Mr.  Ajay</div>
-                                            <div class="notification-text">5 members joined today </div>
+                                            <small class="notification-timestamp pull-right">{{$notification->created_at->format('d-m-Y à H:i')}} </small>
+                                            
+                                            <div class="notification-heading">{{$notification->nom}}</div>
+                                            <div class="notification-text"> {{$notification->data['message']}} </div>
                                         </div>
                                     </a>
                                 </li>
+                                @if($key >5 )
+                                    @php break; @endphp
+                                @endif
+                                @endforeach
+
                                 <li class="text-center">
-                                    <a href="#" class="more-link">Voir tout</a>
+                                <a href="{{route('notifications.index')}}" class="more-link">Voir tout</a>
                                 </li>
                             </ul>
                         </div>

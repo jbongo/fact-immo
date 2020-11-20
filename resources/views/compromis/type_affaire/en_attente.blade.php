@@ -65,6 +65,7 @@
                                     <td  style="color: #e05555;{{$grise}}">
                                         <strong> {{$compromi_attente->numero_mandat}}</strong> 
                                     </td> 
+                                   
                                     <td >
                                         @php
                                             $mois = ['','Jan','Fév','Mar','Avr','Mai','Juin','Juil','Août','Sep','Oct','Nov','Déc'];

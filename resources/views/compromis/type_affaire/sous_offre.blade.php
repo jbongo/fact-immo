@@ -23,6 +23,8 @@
                                     @endif
                                     <th>@lang('Numero Styl')</th>
                                     <th>@lang('Mandat')</th>
+                                    <th>@lang("Date d'ajout de l'offre ")</th>
+                                    
                                     <th>@lang('Date vente')</th>
                                     <th>@lang('Charge')</th>
                                     <th>@lang('Comm')</th>
@@ -64,6 +66,9 @@
                                     </td>
                                     <td  style="color: #e05555;{{$grise}}">
                                         <strong> {{$compromi_sous_offre->numero_mandat}}</strong> 
+                                    </td> 
+                                    <td  style="color: #e05555;{{$grise}}; font-size:18px">
+                                        <strong> {{$compromi_sous_offre->created_at->format('d/m/Y')}}</strong> 
                                     </td> 
                                     <td >
                                         @php
