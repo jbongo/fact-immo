@@ -550,7 +550,7 @@ Détail de l'affaire de {{$compromis->user->prenom}} {{$compromis->user->nom}}
                                                 
                                             <div class="col-lg-4 col-md-4 col-sm-4">
                                                 <div class="form-group">
-                                                    <label for="date_vente">Date exacte Vente </label> <span class="text-danger">*</span></label>
+                                                    <label for="date_vente">Date exacte Vente / Date entrée logement</label> <span class="text-danger">*</span></label>
                                                     <input class="form-control" type="date" @if($compromis->date_vente != null)  value="{{ $compromis->date_vente->format('Y-m-d')}}" @endif id="date_vente" name="date_vente"  required>
                                                 </div>
                                             </div>
@@ -558,7 +558,7 @@ Détail de l'affaire de {{$compromis->user->prenom}} {{$compromis->user->nom}}
 
                                             <div class="col-lg-4 col-md-4 col-sm-4">
                                                 <div class="form-group">
-                                                    <label for="date_signature">Date de signature du compromis  </label>
+                                                    <label for="date_signature">Date de signature du compromis / Bail </label>
                                                     <input class="form-control" type="date"  @if($compromis->date_signature != null)  value="{{ $compromis->date_signature->format('Y-m-d')}}" @endif id="date_signature" name="date_signature"  >
                                                     <div id="label_pdf_compromis" class="alert alert-warning" style="color: #1e003c;" role="alert">Le champs Date de signature du compromis devient obligatoire quand vous renseignez le fichier (compromis signé) </div>
                                                     
@@ -579,7 +579,7 @@ Détail de l'affaire de {{$compromis->user->prenom}} {{$compromis->user->nom}}
 
                                             <div class="col-lg-6 col-md-6 col-sm-6">
                                                 <div class="form-group">
-                                                    <label >Fichier pdf du compromis </label>
+                                                    <label >Fichier pdf du compromis / Contrat bail </label>
                                                     <input class="form-control" accept=".pdf" type="file" value="" id="pdf_compromis" name="pdf_compromis"  >
                                                     @if($compromis->pdf_compromis != null)
                                                         <a class="btn btn-danger btn-sm" href="{{route('compromis.telecharger_pdf_compromis', $compromis->id)}}" id="telecharger_pdf_compromis">Télécharger</a>

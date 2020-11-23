@@ -3,6 +3,10 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Notification;
+use Auth;
+use App\Notifications\ReitererAffaire;
+
 
 class Compromis extends Model
 {
@@ -821,6 +825,27 @@ public function calcul_niveau($paliers, $chiffre_affaire)
     }
 
     return $niveau;
+}
+
+// ############### NOTIFICATIONS 
+
+
+/**
+ * Notification après avois réitéré 
+ *
+ * @return \Illuminate\Http\Response
+ */
+public function notif_reiterer_affaire()
+{
+      
+     
+    $notif = array("id"=>Auth::user()->id, "nom"=> Auth::user()->nom, "numero_mandat"=> $this->numero_mandat );    
+    
+ 
+    Notification::send(Auth::user(),  new ReitererAffaire($notif));
+    
+    
+    return true;
 }
 
 }

@@ -274,7 +274,7 @@ Demande de facture  | {{ substr($compromis->description_bien,0,150) }}...
                     
                         <div class="col-lg-4 col-md-4 col-sm-4">
                             <div class="form-group">
-                                <label for="date_vente">Confirmez la date exacte de vente <span class="text-danger">*</span></label>
+                                <label for="date_vente">Confirmez la date exacte de vente / Date entrée logement<span class="text-danger">*</span></label>
                                 <input class="form-control" type="date"  id="date_vente" name="date_vente" @if($compromis->date_vente != null) value="{{$compromis->date_vente->format('Y-m-d')}}" @endif required >
                             </div>
                         </div>
@@ -285,7 +285,7 @@ Demande de facture  | {{ substr($compromis->description_bien,0,150) }}...
                                     
                             <div class="col-lg-4 col-md-4 col-sm-6">
                                 <div class="form-group">
-                                    <label for="date_signature">Date de signature du compromis  </label>
+                                    <label for="date_signature">Date de signature du compromis / Bail <span class="text-danger">*</span></label>
                                     <input class="form-control" type="date" value="{{old('date_signature')}}" id="date_signature" name="date_signature" required >
                                     {{-- <div id="label_pdf_compromis" class="alert alert-warning" style="color: #1e003c;" role="alert">Le champs Date de signature du compromis devient obligatoire quand vous renseignez le fichier (compromis signé) </div> --}}
                                     @if ($errors->has('date_signature'))
@@ -299,7 +299,7 @@ Demande de facture  | {{ substr($compromis->description_bien,0,150) }}...
 
                             <div class="col-lg-4 col-md-4 col-sm-6">
                                 <div class="form-group">
-                                    <label for="pdf_compromis">Fichier pdf du compromis </label>
+                                    <label for="pdf_compromis">Fichier pdf du compromis / contrat de bail <span class="text-danger">*</span></label>
                                     <input class="form-control"  type="file" accept=".pdf" id="pdf_compromis" name="pdf_compromis" required >
                                     
                                     @if ($errors->has('pdf_compromis'))

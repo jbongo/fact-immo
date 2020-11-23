@@ -380,13 +380,36 @@ class CompromisController extends Controller
     $date_mandat = $date->format('Y-m-d');
     $date_vente = $date_v->format('Y-m-d');
      
+    $aff = Compromis::where('numero_mandat',$request->numero_mandat)->first();
     
 
         if($request->partage == "Non"  || ($request->partage == "Oui" &&  $request->je_porte_affaire == "on" ) ){
-            $request->validate([
-                'numero_mandat' => 'unique:compromis',
-                'pdf_compromis' => 'file:pdf'
-            ]);
+            
+       
+             
+            if($request->type_affaire == "vente"){
+                $request->validate([
+                    'numero_mandat' => 'unique:compromis',
+                    'pdf_compromis' => 'file:pdf'
+                ]);
+            }else{
+            
+                if($aff != null && $aff->type_affaire == "vente"){
+        
+                    $request->validate([
+                        'numero_mandat' => 'unique:compromis',
+                        'pdf_compromis' => 'file:pdf'
+                    ]);
+        
+                }else{
+                
+                    $request->validate([                    
+                        'pdf_compromis' => 'file:pdf'
+                    ]);
+                }
+                
+            }
+           
 
 
             $compromis = Compromis::create([
@@ -588,10 +611,17 @@ class CompromisController extends Controller
 
         if($request->partage == "Non"  || ($request->partage == "Oui" ) ){
             if($request->numero_mandat != $compromis->numero_mandat){
-                $request->validate([
-                    'numero_mandat' => 'required|numeric|unique:compromis',
-                   
-                ]);
+                
+                if($request->type_affaire == "vente"){
+                    $request->validate([
+                        'numero_mandat' => 'required|numeric|unique:compromis',
+                       
+                    ]);
+                }
+                
+                
+                
+                
             }
             $compromis->est_partage_agent = $request->partage == "Non" ? false : true;
             $compromis->partage_reseau = $request->hors_reseau == "Non" ? true : false;
@@ -749,6 +779,8 @@ class CompromisController extends Controller
       
         Historique::createHistorique( $user_id,$compromis->id,"compromis",$action );
 
+        $compromis->notif_reiterer_affaire();
+        
         return redirect()->route('compromis.index')->with('ok', __("Affaire cloturée (mandat $compromis->numero_mandat)  "));
     }
 

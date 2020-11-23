@@ -8,7 +8,7 @@ use App\User;
 use App\Notifications\ReitererAffaire;
 use Illuminate\Support\Facades\Notification;
 use Auth;
-
+use Illuminate\Notifications\DatabaseNotification;
 class NotificationController extends Controller
 {
     
@@ -21,16 +21,19 @@ class NotificationController extends Controller
     public function index()
     {
     
-    $admins = User::where('role','admin')->first();
+
+    if(Auth::user()->role == "admin"){
     
+        $notifications = DatabaseNotification::all();
+        
     
-    // dd($admins->notifications[0]->delete());
+    }else{
+        $notifications = Auth::user()->notifications;
+        
+    }
     
-    $notif = array("id"=>$admins->id, "nom"=> $admins->nom, "numero_mandat"=> 15002 );
+    $notifications->markAsRead();
     
-    Notification::send($admins,  new ReitererAffaire($notif));
-    
-    $notifications = $admins->notifications;
        return view('notifications', compact('notifications'));
     }
     

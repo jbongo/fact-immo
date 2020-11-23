@@ -448,13 +448,13 @@ Ajout d'une affaire
                                        
                                        <div class="col-lg-4 col-md-4 col-sm-4">
                                            <div class="form-group">
-                                               <label for="date_vente">Date provisoire de la Vente <span class="text-danger">*</span> </label>
+                                               <label for="date_vente">Date provisoire de la Vente / Date entrée logement <span class="text-danger">*</span> </label>
                                                <input class="form-control" type="date" value="" id="date_vente" name="date_vente"  required>
                                            </div>
                                        </div>
                                        <div class="col-lg-4 col-md-4 col-sm-4">
                                             <div class="form-group">
-                                                <label for="date_signature">Date de signature du compromis  </label>
+                                                <label for="date_signature">Date de signature du compromis / Bail  </label>
                                                 <input class="form-control" type="date" value="" id="date_signature" name="date_signature"  >
                                                 <div id="label_pdf_compromis" class="alert alert-warning" style="color: #1e003c;" role="alert">Le champs Date de signature du compromis devient obligatoire quand vous renseignez le fichier (compromis signé) </div>
 
@@ -477,7 +477,7 @@ Ajout d'une affaire
 
                                             <div class="col-lg-6 col-md-6 col-sm-6">
                                                 <div class="form-group">
-                                                    <label for="pdf_compromis">Fichier pdf du compromis </label>
+                                                    <label for="pdf_compromis">Fichier pdf du compromis / contrat de bail </label>
                                                     <input class="form-control" accept=".pdf" type="file" value="" id="pdf_compromis" name="pdf_compromis"  >
                                                     <div id="" class="alert alert-info" style="color: #1e003c;" role="alert"> Pour que l'affaire passe sous compromis, il rajouter le fichier. Ajouter le fichier 10 jours max après la signature </div>
                                                 </div>

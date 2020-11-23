@@ -61,7 +61,7 @@ class ReitererAffaire extends Notification
     // dd($this->notif);
         return [
             'user_id' => $notifiable->id,
-            'message' => $this->notif['nom'] ." a rétiré l'affaire ". $this->notif['numero_mandat'],
+            'message' => $this->notif['nom'] ." a réitéré l'affaire ". $this->notif['numero_mandat'],
         ];
     }
 }
