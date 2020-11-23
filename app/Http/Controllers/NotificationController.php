@@ -34,6 +34,8 @@ class NotificationController extends Controller
     
     $notifications->markAsRead();
     
+    dd($notifications[2]);
+    
        return view('notifications', compact('notifications'));
     }
     

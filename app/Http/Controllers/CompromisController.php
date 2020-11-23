@@ -382,27 +382,32 @@ class CompromisController extends Controller
      
     $aff = Compromis::where('numero_mandat',$request->numero_mandat)->first();
     
+  
 
         if($request->partage == "Non"  || ($request->partage == "Oui" &&  $request->je_porte_affaire == "on" ) ){
             
        
-             
-            if($request->type_affaire == "vente"){
+           
+            if($request->type_affaire == "Vente"){
                 $request->validate([
                     'numero_mandat' => 'unique:compromis',
                     'pdf_compromis' => 'file:pdf'
                 ]);
+                
+               
             }else{
+               
             
-                if($aff != null && $aff->type_affaire == "vente"){
-        
+                if($aff != null && $aff->type_affaire == "Vente"){
+                
+                    
                     $request->validate([
                         'numero_mandat' => 'unique:compromis',
                         'pdf_compromis' => 'file:pdf'
                     ]);
         
                 }else{
-                
+                  
                     $request->validate([                    
                         'pdf_compromis' => 'file:pdf'
                     ]);

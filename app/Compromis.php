@@ -844,7 +844,7 @@ public function notif_reiterer_affaire()
  
     Notification::send(Auth::user(),  new ReitererAffaire($notif));
     
-    
+
     return true;
 }
 
