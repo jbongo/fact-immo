@@ -295,7 +295,7 @@
 
 <script>
 
-$('#add_tva').hide();
+// $('#add_tva').hide();
 
 if("{{$parametre->tva->tva_prochaine}}" == null){
 

@@ -1,6 +1,8 @@
 
  
                 <!-- table -->
+                <span style="font-size: 18px; font-weight:bold">Total TTC : </span> <span style="font-size: 18px; color:red; font-weight:bold">{{number_format( $totalApayer ,2,'.',',')}}</span>
+                 
                 
                 <div class="card-body">
                     <div class="panel panel-success m-t-15" id="cont">
