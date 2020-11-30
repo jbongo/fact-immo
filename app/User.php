@@ -52,6 +52,7 @@ class User extends Authenticatable
 
     // Chiffre d'affaire encaissé compris entre date deb et date fin
     public function  chiffre_affaire($date_deb, $date_fin){
+   
         $chiffre_affaire_encai = Facture::where([['user_id',$this->id],['reglee',true]])->whereIn('type',['honoraire','partage','parrainage','parrainage_partage'])->whereBetween('date_reglement', [$date_deb, $date_fin])->sum('montant_ht');
         return $chiffre_affaire_encai; 
      
@@ -102,7 +103,7 @@ class User extends Authenticatable
 
          
             
-            $ca_encaisse_N = round(($ca_encaisse_partage_pas_n+$ca_encaisse_porte_n+$ca_encaisse_porte_pas_n)/1.2,2);
+            $ca_encaisse_N = round(($ca_encaisse_partage_pas_n+$ca_encaisse_porte_n+$ca_encaisse_porte_pas_n)/Tva::coefficient_tva(),2);
 
 
         return $ca_encaisse_N ;    

@@ -11,6 +11,7 @@ use App\Compromis;
 use App\Filleul;
 use App\Avoir;
 use App\Parametre;
+use App\Tva;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\DemandeFactureStylimmo;
@@ -35,7 +36,7 @@ class FactureController extends Controller
     {
         //
         //
-     
+    
         if(auth()->user()->role == "admin"){
             $factureStylimmos = Facture::whereIn('type',['stylimmo','avoir','pack_pub','carte_visite','communication','autre'])->latest()->get();
             $factureHonoraires = Facture::whereIn('type',['honoraire','partage','parrainage','parrainage_partage'])->latest()->get();
@@ -257,7 +258,7 @@ public  function valider_facture_stylimmo( Request $request, $compromis)
     $mandataire = $compromis->user;
     // save la facture
 
-    $tva = 1.2;
+    $tva = Tva::coefficient_tva();
     // $numero = 1507;
     $facture = Facture::where([ ['type','stylimmo'],['compromis_id',$compromis->id]])->first();
 
@@ -743,7 +744,7 @@ public  function preparer_facture_honoraire($compromis)
 
     if($compromis->facture_honoraire_cree == false && $compromis->user->contrat->deduis_jeton == false ){
     
-        $montant_vnt_ht = ($compromis->frais_agence/1.2) ; 
+        $montant_vnt_ht = ($compromis->frais_agence/Tva::coefficient_tva()) ; 
          
         // Calcul de la commission, on retire l'encaissé actuel pour ne pas faire de doublon pendant le calcul de com
         $niveau_actuel = $this->calcul_niveau($paliers, ($chiffre_affaire_styl - $montant_vnt_ht ));
@@ -755,7 +756,7 @@ public  function preparer_facture_honoraire($compromis)
         // On calcul le chiffre d'affaire encaissé du mandataire depuis le 1er janvier, pour voir s'il passe à la TVA
         $chiffre_affaire_encai = Facture::where('user_id',$mandataire->id)->whereIn('type',['honoraire','partage','parrainage','parrainage_partage'])->where('reglee',true)->where('date_reglement','>=',$deb_annee)->sum('montant_ht');
 
-        $tva = 1.2;
+        $tva = Tva::coefficient_tva();
         // dd($chiffre_affaire_encai);
         if($contrat->est_soumis_tva == false ){
 
@@ -873,7 +874,7 @@ public  function preparer_facture_honoraire_parrainage($compromis_id, $id_parrai
             
             //    on reccupere le contrat du parrain
                 $contrat = $parrain->contrat;
-                $tva = 1.2;
+                $tva = Tva::coefficient_tva();
                     
                 if($contrat->est_soumis_tva == false){
                 
@@ -899,7 +900,7 @@ public  function preparer_facture_honoraire_parrainage($compromis_id, $id_parrai
                 }
                          
                 // On determine les montants ttc et ht du parrain 
-                $montant_ht = round ( ($frais_agence * $pourcentage_parrain/100 )/1.2,2);
+                $montant_ht = round ( ($frais_agence * $pourcentage_parrain/100 )/Tva::coefficient_tva(),2);
                 $montant_ttc = round($montant_ht*$tva,2);
                 
                 // on determine les droits de parrainage du parrain pour chacun de ses filleuls
@@ -1000,7 +1001,7 @@ public  function preparer_facture_honoraire_parrainage($compromis_id, $id_parrai
                 $chiffre_affaire_parrain_encai = Facture::where('user_id',$parrain->id)->whereIn('type',['honoraire','partage','parrainage','parrainage_partage'])->where('reglee',true)->where('date_reglement','>=',$deb_annee)->sum('montant_ht');
             //    on reccupere le contrat du parrain
                 $contrat = $parrain->contrat;
-                $tva = 1.2;
+                $tva = Tva::coefficient_tva();
                     
                 if($contrat->est_soumis_tva == false){
                 
@@ -1013,7 +1014,7 @@ public  function preparer_facture_honoraire_parrainage($compromis_id, $id_parrai
 
                 }
 
-                $montant_ht = round ( ($frais_agence * $pourcentage_parrain/100 )/1.2,2);
+                $montant_ht = round ( ($frais_agence * $pourcentage_parrain/100 )/Tva::coefficient_tva(),2);
                 $montant_ttc = round($montant_ht*$tva/100,2);
 
               
@@ -1057,7 +1058,7 @@ public  function preparer_facture_honoraire_parrainage($compromis_id, $id_parrai
                 $chiffre_affaire_parrain_encai = Facture::where('user_id',$parrain->id)->whereIn('type',['honoraire','partage','parrainage','parrainage_partage'])->where('reglee',true)->where('date_reglement','>=',$deb_annee)->sum('montant_ht');
             //    on reccupere le contrat du parrain
                 $contrat = $parrain->contrat;
-                $tva = 1.2;
+                $tva = Tva::coefficient_tva();
                 
                 if($contrat->est_soumis_tva == false){
                 
@@ -1071,7 +1072,7 @@ public  function preparer_facture_honoraire_parrainage($compromis_id, $id_parrai
                 }
 
                 $frais_agence = $compromis->frais_agence * $compromis->pourcentage_agent/100 ;
-                $montant_ht = round ( ($frais_agence * $pourcentage_parrain/100 )/1.2 ,2);
+                $montant_ht = round ( ($frais_agence * $pourcentage_parrain/100 )/Tva::coefficient_tva() ,2);
                 $montant_ttc = round( $montant_ht*$tva,2);
                 // dd("unique filleul 1 ");
 
@@ -1090,7 +1091,7 @@ public  function preparer_facture_honoraire_parrainage($compromis_id, $id_parrai
                 $chiffre_affaire_parrain_encai = Facture::where('user_id',$parrain->id)->whereIn('type',['honoraire','partage','parrainage','parrainage_partage'])->where('reglee',true)->where('date_reglement','>=',$deb_annee)->sum('montant_ht');
             //    on reccupere le contrat du parrain
                 $contrat = $parrain->contrat;
-                $tva = 1.2;
+                $tva = Tva::coefficient_tva();
                 
                 if($contrat->est_soumis_tva == false){
                 
@@ -1105,7 +1106,7 @@ public  function preparer_facture_honoraire_parrainage($compromis_id, $id_parrai
 
 
                 $frais_agence = $compromis->frais_agence * (100 - $compromis->pourcentage_agent) /100 ;
-                $montant_ht = round ( ($frais_agence * $pourcentage_parrain/100 )/1.2 ,2);
+                $montant_ht = round ( ($frais_agence * $pourcentage_parrain/100 )/Tva::coefficient_tva() ,2);
                 $montant_ttc = round( $montant_ht*$tva,2);
                 // dd($montant_ttc);
                 //  dd("unique filleul 2 ");
@@ -1151,7 +1152,7 @@ public  function preparer_facture_honoraire_parrainage($compromis_id, $id_parrai
         $chiffre_affaire_parrain_encai = Facture::where('user_id',$parrain->id)->whereIn('type',['honoraire','partage','parrainage','parrainage_partage'])->where('reglee',true)->where('date_reglement','>=',$deb_annee)->sum('montant_ht');
     //    on reccupere le contrat du parrain
         $contrat = $parrain->contrat;
-        $tva = 1.2;
+        $tva = Tva::coefficient_tva();
         
         if($contrat->est_soumis_tva == false){
         
@@ -1169,7 +1170,7 @@ public  function preparer_facture_honoraire_parrainage($compromis_id, $id_parrai
         $result = Filleul::droitParrainage($parrain->id, $filleul->id, $compromis->id);
 
         
-        $montant_ht = round ( ($compromis->frais_agence*$pourcentage_parrain/100 )/1.2 ,2);
+        $montant_ht = round ( ($compromis->frais_agence*$pourcentage_parrain/100 )/Tva::coefficient_tva() ,2);
         $montant_ttc =  round( $montant_ht*$tva,2);
      
     
@@ -1280,7 +1281,7 @@ public  function store_facture_honoraire_parrainage(Compromis $compromis, Filleu
         }
         // On fait la facture du parrain de celui qui a crée l'affaire
         if($compromis->facture_honoraire_parrainage_cree == false ){
-            $tva = 1.2;
+            $tva = Tva::coefficient_tva();
 
             $facture = Facture::create([
                 "numero"=> null,
@@ -1308,7 +1309,7 @@ public  function store_facture_honoraire_parrainage(Compromis $compromis, Filleu
          
                 $pourcentage_partage = (100 - $compromis->pourcentage_agent)/100;
        
-                $tva = 1.2;
+                $tva = Tva::coefficient_tva();
             
             $facture = Facture::create([
                 "numero"=> null,
@@ -1387,7 +1388,7 @@ public  function preparer_facture_honoraire_partage($compromis,$mandataire_id = 
         $paliers[$i][1] = $p; 
     }
 
-    $tva = 1.2;
+    $tva = Tva::coefficient_tva();
     $deb_annee = date("Y")."-01-01";
 
     // On calcul le chiffre d'affaire encaissé du mandataire depuis le 1er janvier, pour voir s'il passe à la TVA
@@ -1413,7 +1414,7 @@ public  function preparer_facture_honoraire_partage($compromis,$mandataire_id = 
 
 // facture du mandataire qui porte l'affaire
         if($compromis->facture_honoraire_partage_porteur_cree == false && ($mandataire->contrat->deduis_jeton == false || ($mandataire->contrat->deduis_jeton == true && $mandataire->nb_mois_pub_restant <= 0) ) ){
-            $montant_vnt_ht = ($compromis->frais_agence/1.2) ;
+            $montant_vnt_ht = ($compromis->frais_agence/Tva::coefficient_tva()) ;
             
             // Calcul de la commission, on retire l'encaissé actuel pour ne pas faire de doublon pendant le calcul de com
             $niveau_actuel = $this->calcul_niveau($paliers, ($chiffre_affaire_styl - $montant_vnt_ht ));
@@ -1478,7 +1479,7 @@ public  function preparer_facture_honoraire_partage($compromis,$mandataire_id = 
 
         if($compromis->facture_honoraire_partage_cree == false && ($mandataire->contrat->deduis_jeton == false || ($mandataire->contrat->deduis_jeton == true && $mandataire->nb_mois_pub_restant <= 0) )){
             // dd("creer");
-            $montant_vnt_ht = ($compromis->frais_agence/1.2) ;
+            $montant_vnt_ht = ($compromis->frais_agence/Tva::coefficient_tva()) ;
 
             // Calcul de la commission, on retire l'encaissé actuel pour ne pas faire de doublon pendant le calcul de com
             $niveau_actuel = $this->calcul_niveau($paliers, ($chiffre_affaire_styl - $montant_vnt_ht ));
@@ -1625,11 +1626,11 @@ public  function preparer_facture_honoraire_encaissement($compromis_id, $leporte
         
         if( $type_facture == "partage") {
         
-            $montant_vnt_ht =  ( $leporteur == true ) ?  ( $compromis->frais_agence * $compromis->pourcentage_agent/100 ) / 1.2  :   ($compromis->frais_agence * (100 - $compromis->pourcentage_agent)/100) /1.2 ;
+            $montant_vnt_ht =  ( $leporteur == true ) ?  ( $compromis->frais_agence * $compromis->pourcentage_agent/100 ) / Tva::coefficient_tva()  :   ($compromis->frais_agence * (100 - $compromis->pourcentage_agent)/100) /Tva::coefficient_tva() ;
             
            
         }else {
-            $montant_vnt_ht = ($compromis->frais_agence/1.2) ; 
+            $montant_vnt_ht = ($compromis->frais_agence/Tva::coefficient_tva()) ; 
         
         }
 
@@ -1644,7 +1645,7 @@ public  function preparer_facture_honoraire_encaissement($compromis_id, $leporte
             // On calcul le chiffre d'affaire encaissé du mandataire depuis le 1er janvier, pour voir s'il passe à la TVA
             $chiffre_affaire_encai = Facture::where('user_id',$mandataire->id)->whereIn('type',['honoraire','partage','parrainage','parrainage_partage'])->where('reglee',true)->where('date_reglement','>=',$deb_annee)->sum('montant_ht');
     
-            $tva = 1.2;
+            $tva = Tva::coefficient_tva();
             
             // dd($chiffre_affaire_encai);
             if($contrat->est_soumis_tva == false ){
@@ -1766,7 +1767,7 @@ public  function deduire_pub_facture_honoraire(Request $request, $compromis)
 
    
     //  VERIFIER S'IL Y'A TVA OU PAS
-    $tva = 1.2;
+    $tva = Tva::coefficient_tva();
     if($contrat->est_soumis_tva == false ){
 
         if( $mandataire->statut == "auto-entrepeneur"){
@@ -1782,7 +1783,7 @@ public  function deduire_pub_facture_honoraire(Request $request, $compromis)
         }
     }
     //PASSER LA COMMISSION DU MANDATAIRE EN PARAMETRE
-    $montant_vnt_ht = ($compromis->frais_agence/1.2) ; 
+    $montant_vnt_ht = ($compromis->frais_agence/Tva::coefficient_tva()) ; 
     
     // Calcul de la commission, on retire l'encaissé actuel pour ne pas faire de doublon pendant le calcul de com
     $niveau_actuel = $this->calcul_niveau($paliers, ($chiffre_affaire_styl - $montant_vnt_ht ));
@@ -1906,7 +1907,7 @@ for($i = 0 ; $i <count($paliers); $i++) {
     $paliers[$i][1] = $p; 
 }
 
-$tva = 1.2;
+$tva = Tva::coefficient_tva();
 $deb_annee = date("Y")."-01-01";
 
 // On calcul le chiffre d'affaire encaissé du mandataire depuis le 1er janvier, pour voir s'il passe à la TVA
@@ -1939,7 +1940,7 @@ if($compromis->je_porte_affaire == 1 && $compromis->est_partage_agent == 1 && (A
 //  dd("poter");
 // facture du mandataire qui porte l'affaire
     
-        $montant_vnt_ht = ($compromis->frais_agence/1.2) ;
+        $montant_vnt_ht = ($compromis->frais_agence/Tva::coefficient_tva()) ;
         
         // Calcul de la commission, on retire l'encaissé actuel pour ne pas faire de doublon pendant le calcul de com
         $niveau_actuel = $this->calcul_niveau($paliers, ($chiffre_affaire_styl - $montant_vnt_ht ));
@@ -1993,7 +1994,7 @@ else{
 
   
 
-        $montant_vnt_ht = ($compromis->frais_agence/1.2) ;
+        $montant_vnt_ht = ($compromis->frais_agence/Tva::coefficient_tva()) ;
 
         // Calcul de la commission, on retire l'encaissé actuel pour ne pas faire de doublon pendant le calcul de com
         $niveau_actuel = $this->calcul_niveau($paliers, ($chiffre_affaire_styl - $montant_vnt_ht ));
@@ -2733,7 +2734,7 @@ public function valider_honoraire($action, $facture_id)
 
           
              
-             $ca_encaisse_N = round(($ca_encaisse_partage_pas_n+$ca_encaisse_porte_n+$ca_encaisse_porte_pas_n)/1.2,2);
+             $ca_encaisse_N = round(($ca_encaisse_partage_pas_n+$ca_encaisse_porte_n+$ca_encaisse_porte_pas_n)/Tva::coefficient_tva(),2);
 
              $mandataire->chiffre_affaire_sty = $ca_encaisse_N ;
              $mandataire->update();
@@ -2893,7 +2894,7 @@ public function valider_honoraire($action, $facture_id)
             "type"=> $request->type,
             "encaissee"=> false,
             "montant_ht"=>  $request->montant_ht,
-            "montant_ttc"=> $request->montant_ht * 1.2,
+            "montant_ttc"=> $request->montant_ht * Tva::coefficient_tva(),
             "date_facture"=> $request->date_facture,
             "destinataire_est_mandataire"=> $destinataire_est_mandataire,
             "destinataire"=> $request->destinataire,
@@ -2974,7 +2975,7 @@ public function valider_honoraire($action, $facture_id)
             $facture->type = $request->type;
 
             $facture->montant_ht =  $request->montant_ht;
-            $facture->montant_ttc = $request->montant_ht * 1.2;
+            $facture->montant_ttc = $request->montant_ht * Tva::coefficient_tva();
             $facture->date_facture = $request->date_facture;
             $facture->destinataire_est_mandataire = $destinataire_est_mandataire;
             $facture->destinataire = $request->destinataire;

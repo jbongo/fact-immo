@@ -11,6 +11,7 @@ use App\Contrat;
 use App\Facture;
 use Auth;
 use Config;
+use App\Tva;
 
 
 class HomeController extends Controller
@@ -111,7 +112,7 @@ class HomeController extends Controller
                 //         }
                 //     }
                 // }
-                $ca_attente_N [] = round($ca_att_n/1.2,2);
+                $ca_attente_N [] = round($ca_att_n/Tva::coefficient_tva(),2);
         
                 #####ca encaissé
                 //  on réccupère toutes les factures stylimmo encaissées au cours du mois
@@ -137,29 +138,29 @@ class HomeController extends Controller
                 // }
         
                 // $ca_encai_n = Facture::where([['type','stylimmo'],['date_facture','like',"%$annee_n-$month%"],["encaissee",1]])->sum('montant_ht');
-                $ca_encaisse_N [] = round($ca_encai_n/1.2,2);
+                $ca_encaisse_N [] = round($ca_encai_n/Tva::coefficient_tva(),2);
                 
                 $ca_sous_offre_n = Compromis::where([['created_at','like',"%$annee_n-$month%"],['demande_facture','<',2],['pdf_compromis',null],['archive',false]])->sum('frais_agence');
                 $nb_sous_offre_n = Compromis::where([['created_at','like',"%$annee_n-$month%"],['demande_facture','<',2],['pdf_compromis',null],['archive',false]])->count();
                 $nb_sous_offre_N +=  $nb_sous_offre_n;
                 
-                $ca_sous_offre_N [] = round($ca_sous_offre_n/1.2,2);
+                $ca_sous_offre_N [] = round($ca_sous_offre_n/Tva::coefficient_tva(),2);
 
                 $ca_sous_compromis_n = Compromis::where([['date_vente','like',"%$annee_n-$month%"],['demande_facture','<',2],['pdf_compromis','<>',null],['archive',false]])->sum('frais_agence');
                 $nb_sous_compromis_n = Compromis::where([['date_vente','like',"%$annee_n-$month%"],['demande_facture','<',2],['pdf_compromis','<>',null],['archive',false]])->count();
                 $nb_sous_compromis_N += $nb_sous_compromis_n ;
                 
-                $ca_sous_compromis_N [] = round($ca_sous_compromis_n/1.2,2);
+                $ca_sous_compromis_N [] = round($ca_sous_compromis_n/Tva::coefficient_tva(),2);
 
 
                 $ca_glo_n = $ca_encai_n + $ca_att_n + $ca_sous_offre_n + $ca_sous_compromis_n;
 
                 $nb_global_N += ( $nb_encaisse_n + $nb_en_attente_n + $nb_sous_compromis_n + $nb_sous_offre_n);       
-                $ca_global_N [] = round($ca_glo_n/1.2,2);
+                $ca_global_N [] = round($ca_glo_n/Tva::coefficient_tva(),2);
                
                 // $ca_glo_n = Compromis::where([['date_vente','like',"%$annee_n-$month%"],['archive',false]])->sum('frais_agence');
                 // $nb_global_N += Compromis::where([['date_vente','like',"%$annee_n-$month%"],['archive',false]])->count();
-                // $ca_global_N [] = round($ca_glo_n/1.2,2);
+                // $ca_global_N [] = round($ca_glo_n/Tva::coefficient_tva(),2);
 
             }
 
@@ -205,7 +206,7 @@ class HomeController extends Controller
                 //     $ca_glo_porte_pas_n += $compro->frais_agence * (100-$compro->pourcentage_agent)/100 ;
                 // }
                 
-                // $ca_global_N [] = round(($ca_glo_partage_pas_n+$ca_glo_porte_n+$ca_glo_porte_pas_n)/1.2,2);
+                // $ca_global_N [] = round(($ca_glo_partage_pas_n+$ca_glo_porte_n+$ca_glo_porte_pas_n)/Tva::coefficient_tva(),2);
 
 
 
@@ -276,7 +277,7 @@ class HomeController extends Controller
                                     // dd($nb_en_attente_N);
                              
                                 
-                                $ca_attente_n = round(($ca_attente_partage_pas_n+$ca_attente_porte_n+$ca_attente_porte_pas_n)/1.2,2);
+                                $ca_attente_n = round(($ca_attente_partage_pas_n+$ca_attente_porte_n+$ca_attente_porte_pas_n)/Tva::coefficient_tva(),2);
                                 $ca_attente_N [] = $ca_attente_n;
 
                                     // dd($ca_attente_N);
@@ -331,7 +332,7 @@ class HomeController extends Controller
 
                              
                                 
-                                $ca_encaisse_n = round(($ca_encaisse_partage_pas_n+$ca_encaisse_porte_n+$ca_encaisse_porte_pas_n)/1.2,2);
+                                $ca_encaisse_n = round(($ca_encaisse_partage_pas_n+$ca_encaisse_porte_n+$ca_encaisse_porte_pas_n)/Tva::coefficient_tva(),2);
                                 $ca_encaisse_N [] = $ca_encaisse_n;
                                 
 
@@ -363,7 +364,7 @@ class HomeController extends Controller
                                 $ca_offre_porte_pas_n += $compro->frais_agence * (100-$compro->pourcentage_agent)/100 ;
                             }
                             
-                            $ca_sous_offre_n = round(($ca_offre_partage_pas_n+$ca_offre_porte_n+$ca_offre_porte_pas_n)/1.2,2);
+                            $ca_sous_offre_n = round(($ca_offre_partage_pas_n+$ca_offre_porte_n+$ca_offre_porte_pas_n)/Tva::coefficient_tva(),2);
                             $ca_sous_offre_N [] = $ca_sous_offre_n;
 
 
@@ -401,7 +402,7 @@ class HomeController extends Controller
                                 $ca_compromis_porte_pas_n += $compro->frais_agence * (100-$compro->pourcentage_agent)/100 ;
                             }
                             
-                            $ca_sous_compromis_n = round(($ca_compromis_partage_pas_n+$ca_compromis_porte_n+$ca_compromis_porte_pas_n)/1.2,2);
+                            $ca_sous_compromis_n = round(($ca_compromis_partage_pas_n+$ca_compromis_porte_n+$ca_compromis_porte_pas_n)/Tva::coefficient_tva(),2);
                             $ca_sous_compromis_N [] = $ca_sous_compromis_n;
 
                            

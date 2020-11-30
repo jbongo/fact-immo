@@ -2,10 +2,11 @@
 # Bonjour {{$mandataire->prenom}} {{$mandataire->nom}},
 
 
-Vous êtes arrivé à votre date d'anniversaire de début d'activité **({{$date_deb_activite->format('d/m/Y')}})**. <br>
+Vous êtes arrivés à votre date d'anniversaire de début d'activité le : **({{$date_deb_activite->format('d/m/Y')}})**. <br>
 
 @component('mail::panel')
-Votre commission passe de {{$ancienne_comm}} % à {{$nouvelle_comm}} %. <br>
+Suivant les termes de votre contrat, votre commission passe de {{$ancienne_comm}} % à {{$nouvelle_comm}} %. <br>
+Votre chiffre d'affaires STYL'IMMO a été remis à **0**. <br>
 
 @endcomponent
 
@@ -16,8 +17,8 @@ Votre commission passe de {{$ancienne_comm}} % à {{$nouvelle_comm}} %. <br>
 
 
 Chiffre d'affaire: **{{$chiffre_affaire}}** <br>
-Nombre de vente : **{{$nb_vente}}**<br>
-Nombre de filleul parrainé : **{{$nb_filleul}}**<br>
+Nombre de vente(s) : **{{$nb_vente}}**<br>
+Nombre de filleul(s) parrainé(s) : **{{$nb_filleul}}**<br>
 
 
 @component('mail::button', ['url' => config('app.url') ])

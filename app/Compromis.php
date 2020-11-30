@@ -113,7 +113,7 @@ class Compromis extends Model
         $niveau_actuel = $this->calcul_niveau($paliers, $chiffre_affaire_sty);
 
 
-        $tva = 1.2;
+        $tva = Tva::coefficient_tva();
         // dd($chiffre_affaire_encai);
         if($contrat->est_soumis_tva == false ){
 
@@ -131,7 +131,7 @@ class Compromis extends Model
         if($compromis->est_partage_agent == false ){
 
         
-            $montant_vnt_ht = ($compromis->frais_agence/1.2) ; 
+            $montant_vnt_ht = ($compromis->frais_agence/Tva::coefficient_tva()) ; 
             $formule = $this->calcul_com($paliers, $montant_vnt_ht, $chiffre_affaire_sty, $niveau_actuel-1, $mandataire);
         
 
@@ -142,7 +142,7 @@ class Compromis extends Model
             // SI LE MANDATAIRE PORTEUR PARTAGE 
             }else{
 
-                $montant_vnt_ht = ($compromis->frais_agence/1.2) ; 
+                $montant_vnt_ht = ($compromis->frais_agence/Tva::coefficient_tva()) ; 
                 $pourcentage_partage = $compromis->pourcentage_agent/100;
 
                 $formule = $this->calcul_com($paliers, $montant_vnt_ht*$pourcentage_partage , $chiffre_affaire_sty, $niveau_actuel-1, $mandataire);
@@ -153,7 +153,7 @@ class Compromis extends Model
             }
             
             if($contrat->est_soumis_tva == true ){
-                $montant_tva =  round ($montant_ht*0.2,2);
+                $montant_tva =  round ($montant_ht*Tva::tva(),2);
             }else{
                 $montant_tva =  0;
             }
@@ -217,7 +217,7 @@ class Compromis extends Model
                 $niveau_actuel = $this->calcul_niveau($paliers, $chiffre_affaire_sty);
 
 
-                $tva = 1.2;
+                $tva = Tva::coefficient_tva();
                 // dd($chiffre_affaire_encai);
                 if($contrat->est_soumis_tva == false ){
 
@@ -235,7 +235,7 @@ class Compromis extends Model
                     if($compromis->est_partage_agent == true ){
 
                 
-                        $montant_vnt_ht = ($compromis->frais_agence/1.2) ; 
+                        $montant_vnt_ht = ($compromis->frais_agence/Tva::coefficient_tva()) ; 
                         $pourcentage_partage = (100 - $compromis->pourcentage_agent)/100;
 
                         $formule = $this->calcul_com($paliers, $montant_vnt_ht*$pourcentage_partage , $chiffre_affaire_sty, $niveau_actuel-1, $mandataire);
@@ -252,7 +252,7 @@ class Compromis extends Model
 
 
                 if($contrat->est_soumis_tva == true ){
-                    $montant_tva =  round ($montant_ht*0.2,2);
+                    $montant_tva =  round ($montant_ht*Tva::tva(),2);
                 }else{
                     $montant_tva =  0;
                 }
@@ -299,7 +299,7 @@ class Compromis extends Model
                             $chiffre_affaire_parrain_encai = Facture::where('user_id',$parrain->id)->whereIn('type',['honoraire','partage','parrainage','parrainage_partage'])->where('reglee',true)->where('date_reglement','>=',$deb_annee)->sum('montant_ht');
                         //    on reccupere le contrat du parrain
                             $contrat = $parrain->contrat;
-                            $tva = 1.2;
+                            $tva = Tva::coefficient_tva();
                             
                             if($contrat->est_soumis_tva == false){
                             
@@ -313,7 +313,7 @@ class Compromis extends Model
                             }
             
                             $frais_agence = $compromis->frais_agence * $compromis->pourcentage_agent/100 ;
-                            $montant_ht = round ( ($frais_agence * $pourcentage_parrain/100 )/1.2 ,2);
+                            $montant_ht = round ( ($frais_agence * $pourcentage_parrain/100 )/Tva::coefficient_tva() ,2);
                             $montant_ttc = round( $montant_ht*$tva,2);
                             // dd("unique filleul 1 ");
             
@@ -329,7 +329,7 @@ class Compromis extends Model
                         else{
                             if( $result['ca_comm_parr'] + $montant_ht  > $filleul->contrat->seuil_comm ){
                                 $montant_ht = $filleul->contrat->seuil_comm - $result['ca_comm_parr'];
-                                $montant_ttc = $montant_ht*1.2;
+                                $montant_ttc = $montant_ht*Tva::coefficient_tva();
                             }
                         }
                     
@@ -360,7 +360,7 @@ class Compromis extends Model
                     $chiffre_affaire_parrain_encai = Facture::where('user_id',$parrain->id)->whereIn('type',['honoraire','partage','parrainage','parrainage_partage'])->where('reglee',true)->where('date_reglement','>=',$deb_annee)->sum('montant_ht');
                 //    on reccupere le contrat du parrain
                     $contrat = $parrain->contrat;
-                    $tva = 1.2;
+                    $tva = Tva::coefficient_tva();
                     
                     if($contrat->est_soumis_tva == false){
                     
@@ -376,7 +376,7 @@ class Compromis extends Model
                 
                      // On determine les montants ttc et ht du parrain 
                      $frais_agence =  $compromis->frais_agence;
-                    $montant_ht = round ( ($frais_agence * $pourcentage_parrain/100 )/1.2,2);
+                    $montant_ht = round ( ($frais_agence * $pourcentage_parrain/100 )/Tva::coefficient_tva(),2);
                     $montant_ttc = round($montant_ht*$tva,2);
                 
             
@@ -404,7 +404,7 @@ class Compromis extends Model
 
     
          if($contrat->est_soumis_tva == true ){
-                $montant_tva =  round ($montant_ht*0.2,2);
+                $montant_tva =  round ($montant_ht*Tva::tva(),2);
         }else{
             $montant_tva =  0;
         }
@@ -450,7 +450,7 @@ class Compromis extends Model
                             $chiffre_affaire_parrain_encai = Facture::where('user_id',$parrain->id)->whereIn('type',['honoraire','partage','parrainage','parrainage_partage'])->where('reglee',true)->where('date_reglement','>=',$deb_annee)->sum('montant_ht');
                         //    on reccupere le contrat du parrain
                             $contrat = $parrain->contrat;
-                            $tva = 1.2;
+                            $tva = Tva::coefficient_tva();
                             
                             if($contrat->est_soumis_tva == false){
                             
@@ -464,7 +464,7 @@ class Compromis extends Model
                             }
             
                             $frais_agence = $compromis->frais_agence * (100- $compromis->pourcentage_agent)/100 ;
-                            $montant_ht = round ( ($frais_agence * $pourcentage_parrain/100 )/1.2 ,2);
+                            $montant_ht = round ( ($frais_agence * $pourcentage_parrain/100 )/Tva::coefficient_tva() ,2);
                             $montant_ttc = round( $montant_ht*$tva,2);
                             // dd("unique filleul 1 ");
 
@@ -479,7 +479,7 @@ class Compromis extends Model
                         else{
                             if( $result['ca_comm_parr'] + $montant_ht  > $filleul->contrat->seuil_comm ){
                                 $montant_ht = $filleul->contrat->seuil_comm - $result['ca_comm_parr'];
-                                $montant_ttc = $montant_ht*1.2;
+                                $montant_ttc = $montant_ht*Tva::coefficient_tva();
                             }
                         }
             
@@ -491,7 +491,7 @@ class Compromis extends Model
         }
     
           if($contrat->est_soumis_tva == true ){
-                $montant_tva =  round ($montant_ht*0.2,2);
+                $montant_tva =  round ($montant_ht*Tva::tva(),2);
             }else{
                 $montant_tva =  0;
             }
@@ -512,7 +512,7 @@ public function total_du(){
 
     if($compromis->getHonoPorteur() != null){
         $total_ht += $compromis->getHonoPorteur()->montant_ht;
-        $total_tva += $compromis->getHonoPorteur()->montant_ttc > 0 ? $compromis->getHonoPorteur()->montant_ht * 0.2 : 0 ;
+        $total_tva += $compromis->getHonoPorteur()->montant_ttc > 0 ? $compromis->getHonoPorteur()->montant_ht * Tva::tva() : 0 ;
 
     }else{
         $total_ht += $compromis->getFactureHonoProvi()['montant_ht'];
@@ -521,7 +521,7 @@ public function total_du(){
 
     if($compromis->getHonoPartage() != null){
         $total_ht += $compromis->getHonoPartage()->montant_ht;
-        $total_tva += $compromis->getHonoPartage()->montant_ttc > 0 ? $compromis->getHonoPartage()->montant_ht * 0.2 : 0 ;
+        $total_tva += $compromis->getHonoPartage()->montant_ttc > 0 ? $compromis->getHonoPartage()->montant_ht * Tva::tva() : 0 ;
     }else{
         $total_ht += $compromis->getFactureHonoPartageProvi()['montant_ht'];
         $total_tva += $compromis->getFactureHonoPartageProvi()['montant_tva'];
@@ -530,7 +530,7 @@ public function total_du(){
     if($compromis->getFactureParrainPorteur() != null){
 
         $total_ht += $compromis->getFactureParrainPorteur()->montant_ht;
-        $total_tva += $compromis->getFactureParrainPorteur()->montant_ttc > 0 ? $compromis->getFactureParrainPorteur()->montant_ht * 0.2 : 0 ;
+        $total_tva += $compromis->getFactureParrainPorteur()->montant_ttc > 0 ? $compromis->getFactureParrainPorteur()->montant_ht * Tva::tva() : 0 ;
     }else{
         $total_ht += $compromis->getFactureParrainPorteurProvi()['montant_ht'];
         $total_tva += $compromis->getFactureParrainPorteurProvi()['montant_tva'];
@@ -538,7 +538,7 @@ public function total_du(){
 
     if($compromis->getFactureParrainPartage() != null){
         $total_ht += $compromis->getFactureParrainPartage()->montant_ht;
-        $total_tva += $compromis->getFactureParrainPartage()->montant_ttc > 0 ? $compromis->getFactureParrainPartage()->montant_ht * 0.2 : 0 ;
+        $total_tva += $compromis->getFactureParrainPartage()->montant_ttc > 0 ? $compromis->getFactureParrainPartage()->montant_ht * Tva::tva() : 0 ;
     }else{
         $total_ht += $compromis->getFactureParrainPartageProvi()['montant_ht'];
         $total_tva += $compromis->getFactureParrainPartageProvi()['montant_tva'];
@@ -572,11 +572,11 @@ public function reste_a_regler($date_deb =null, $date_fin = null){
                 if(($compromis->getHonoPorteur()->date_reglement->format('yy-m-d') <= $date_fin)){
 
                     $reste -= $mtn_a_deduire;
-                    $tva_a_payer -=  $compromis->getHonoPorteur()->montant_ttc > 0 ?  $compromis->getHonoPorteur()->montant_ht *0.2  : 0; 
+                    $tva_a_payer -=  $compromis->getHonoPorteur()->montant_ttc > 0 ?  $compromis->getHonoPorteur()->montant_ht *Tva::tva()  : 0; 
                 }
             }else{
                 $reste -= $mtn_a_deduire;
-                $tva_a_payer -= $compromis->getHonoPorteur()->montant_ttc > 0 ? $compromis->getHonoPorteur()->montant_ht *0.2  : 0; 
+                $tva_a_payer -= $compromis->getHonoPorteur()->montant_ttc > 0 ? $compromis->getHonoPorteur()->montant_ht *Tva::tva()  : 0; 
 
             }
         }
@@ -591,12 +591,12 @@ public function reste_a_regler($date_deb =null, $date_fin = null){
                 if(($compromis->getHonoPartage()->date_reglement->format('yy-m-d') <= $date_fin)){
 
                     $reste -= $mtn_a_deduire; 
-                    $tva_a_payer -=  $compromis->getHonoPartage()->montant_ttc > 0 ? $compromis->getHonoPartage()->montant_ht *0.2 : 0 ; 
+                    $tva_a_payer -=  $compromis->getHonoPartage()->montant_ttc > 0 ? $compromis->getHonoPartage()->montant_ht *Tva::tva() : 0 ; 
 
                 }
             }else{
                 $reste -= $mtn_a_deduire;
-                $tva_a_payer -=  $compromis->getHonoPartage()->montant_ttc > 0 ? $compromis->getHonoPartage()->montant_ht *0.2 : 0 ; 
+                $tva_a_payer -=  $compromis->getHonoPartage()->montant_ttc > 0 ? $compromis->getHonoPartage()->montant_ht *Tva::tva() : 0 ; 
 
             }
         }
@@ -611,12 +611,12 @@ public function reste_a_regler($date_deb =null, $date_fin = null){
                 if((  $compromis->getFactureParrainPorteur()->date_reglement->format('yy-m-d') <= $date_fin)){
 
                     $reste -= $mtn_a_deduire;
-                    $tva_a_payer -= $compromis->getFactureParrainPorteur()->montant_ttc > 0 ? $compromis->getFactureParrainPorteur()->montant_ht *0.2 : 0 ; 
+                    $tva_a_payer -= $compromis->getFactureParrainPorteur()->montant_ttc > 0 ? $compromis->getFactureParrainPorteur()->montant_ht *Tva::tva() : 0 ; 
 
                 }
             }else{
                 $reste -= $mtn_a_deduire;
-                $tva_a_payer -= $compromis->getFactureParrainPorteur()->montant_ttc > 0 ? $compromis->getFactureParrainPorteur()->montant_ht *0.2 : 0 ; 
+                $tva_a_payer -= $compromis->getFactureParrainPorteur()->montant_ttc > 0 ? $compromis->getFactureParrainPorteur()->montant_ht *Tva::tva() : 0 ; 
 
             }
         }
@@ -630,12 +630,12 @@ public function reste_a_regler($date_deb =null, $date_fin = null){
                 if(( $compromis->getFactureParrainPartage()->date_reglement->format('yy-m-d') <= $date_fin)){
 
                     $reste -= $mtn_a_deduire;
-                    $tva_a_payer -= $compromis->getFactureParrainPartage()->montant_ttc > 0 ? $compromis->getFactureParrainPartage()->montant_ht *0.2 : 0 ; 
+                    $tva_a_payer -= $compromis->getFactureParrainPartage()->montant_ttc > 0 ? $compromis->getFactureParrainPartage()->montant_ht *Tva::tva() : 0 ; 
 
                 }
             }else{
                 $reste -= $mtn_a_deduire;
-                $tva_a_payer -= $compromis->getFactureParrainPartage()->montant_ttc > 0 ? $compromis->getFactureParrainPartage()->montant_ht *0.2 : 0 ; 
+                $tva_a_payer -= $compromis->getFactureParrainPartage()->montant_ttc > 0 ? $compromis->getFactureParrainPartage()->montant_ht *Tva::tva() : 0 ; 
 
             }
         }
@@ -663,14 +663,14 @@ public function etat_fin($date_deb=null, $date_fin=null){
     $total_du_tva = $this->total_du()['total_tva'];
     $reste_a_regler = $this->reste_a_regler($date_deb, $date_fin)['reste_a_payer'];
     $tva_a_regler = $this->reste_a_regler($date_deb, $date_fin)['tva_a_payer'];
-    // $reste_a_regler_ttc = $this->reste_a_regler()*1.2;
+    // $reste_a_regler_ttc = $this->reste_a_regler()*Tva::coefficient_tva();
 
     $etat = array(
         "numero_mandat" => $mandat,
         "numero_styl" => $numero_styl,
         "montant_styl_ht" => $montant_styl_ht,
         "montant_styl_ttc" => $montant_styl_ttc,
-        "montant_styl_tva" =>  $montant_styl_ht*0.2,
+        "montant_styl_tva" =>  $montant_styl_ht*Tva::tva(),
         "facture_styl" => $this->getFactureStylimmo(),
 
         "total_du_ht" => $total_du_ht,
@@ -736,7 +736,7 @@ public function etat_fin($date_deb=null, $date_fin=null){
 
          
             
-            $ca_encaisse_N = round(($ca_encaisse_partage_pas_n+$ca_encaisse_porte_n+$ca_encaisse_porte_pas_n)/1.2,2);
+            $ca_encaisse_N = round(($ca_encaisse_partage_pas_n+$ca_encaisse_porte_n+$ca_encaisse_porte_pas_n)/Tva::coefficient_tva(),2);
 
 
 return $ca_encaisse_N ;    

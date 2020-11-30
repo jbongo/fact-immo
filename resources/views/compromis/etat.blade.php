@@ -178,7 +178,7 @@
 
                                             <td> @if($compromis->getHonoPorteur() != null )
 
-                                                <span> @if ($compromis->getHonoPorteur()->montant_ttc > 0) {{number_format($compromis->getHonoPorteur()->montant_ht * 0.2,'2','.',' ')}} @else 0  @endif € </span> 
+                                                <span> @if ($compromis->getHonoPorteur()->montant_ttc > 0) {{number_format($compromis->getHonoPorteur()->montant_ht * App\Tva::tva(),'2','.',' ')}} @else 0  @endif € </span> 
 
                                                 @else 
                                                     <span class="color-warning">{{number_format($compromis->getFactureHonoProvi()['montant_tva'],'2','.',' ')}} €</span>
@@ -213,7 +213,7 @@
                                             <td>
                                                 @if($compromis->getHonoPartage() != null )
 
-                                                <span>  @if ($compromis->getHonoPartage()->montant_ttc > 0) {{number_format($compromis->getHonoPartage()->montant_ht * 0.2,'2','.',' ')}} @else 0  @endif € </span> 
+                                                <span>  @if ($compromis->getHonoPartage()->montant_ttc > 0) {{number_format($compromis->getHonoPartage()->montant_ht * App\Tva::tva(),'2','.',' ')}} @else 0  @endif € </span> 
 
                                                 @else 
                                                     <span class="color-warning">{{number_format($compromis->getFactureHonoPartageProvi()['montant_tva'],'2','.',' ')}} €</span>
@@ -256,7 +256,7 @@
 
                                                     @if($compromis->getFactureParrainPorteur() != null )
 
-                                                    <span>@if ($compromis->getFactureParrainPorteur()->montant_ttc > 0) {{number_format($compromis->getFactureParrainPorteur()->montant_ht * 0.2,'2','.',' ')}} @else 0  @endif €</span> 
+                                                    <span>@if ($compromis->getFactureParrainPorteur()->montant_ttc > 0) {{number_format($compromis->getFactureParrainPorteur()->montant_ht * App\Tva::tva(),'2','.',' ')}} @else 0  @endif €</span> 
 
                                                     @else 
                                                         <span class="color-warning">{{number_format($compromis->getFactureParrainPorteurProvi()['montant_tva'],'2','.',' ')}} €</span>
@@ -306,7 +306,7 @@
 
                                                     @if($compromis->getFactureParrainPartage() != null )
 
-                                                    <span>@if ($compromis->getFactureParrainPartage()->montant_ttc > 0) {{number_format($compromis->getFactureParrainPartage()->montant_ht * 0.2,'2','.',' ')}} @else 0  @endif €</span> 
+                                                    <span>@if ($compromis->getFactureParrainPartage()->montant_ttc > 0) {{number_format($compromis->getFactureParrainPartage()->montant_ht * App\Tva::tva(),'2','.',' ')}} @else 0  @endif €</span> 
 
 
                                                     @else 
@@ -346,14 +346,14 @@
                                         <tr>
                                             <td>ENCAISSE STYL'IMMO</td>
                                             <td> <span class="color-primary" style="font-size: 25px"> <strong>  {{number_format($compromis->getFactureStylimmo()->montant_ht,'2','.',' ') }} €</strong></span></td>
-                                            <td> <span class="color-primary" style="font-size: 25px"> <strong>  {{number_format($compromis->getFactureStylimmo()->montant_ht * 0.2 ,'2','.',' ') }} €</strong></span></td>
+                                            <td> <span class="color-primary" style="font-size: 25px"> <strong>  {{number_format($compromis->getFactureStylimmo()->montant_ht * App\Tva::tva() ,'2','.',' ') }} €</strong></span></td>
                                             <td></td>
                                                              
                                         </tr>
                                         <tr>
                                             <td>RESTE A REGLER</td>
                                             <td> <span class="color-danger" style="font-size: 25px"> <strong> {{number_format($compromis->reste_a_regler()['reste_a_payer'] ,2)}} €  </strong></span></td>
-                                            <td> <span class="color-danger" style="font-size: 25px"> <strong> {{number_format($compromis->getFactureStylimmo()->montant_ht * 0.2   - $compromis->total_du()['total_tva'] ,'2','.',' ')}} € </strong></span></td>
+                                            <td> <span class="color-danger" style="font-size: 25px"> <strong> {{number_format($compromis->getFactureStylimmo()->montant_ht * App\Tva::tva()   - $compromis->total_du()['total_tva'] ,'2','.',' ')}} € </strong></span></td>
                                             <td></td>
                                                              
                                         </tr>

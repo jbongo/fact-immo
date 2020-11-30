@@ -13,14 +13,15 @@ class Tva extends Model
     
         $tva = Tva::where('actif',true)->first();
     
-        return $tva->tva_actuelle;
+        return $tva->tva_actuelle/100;
     }
     
-    public static function tva100(){
+    public static function coefficient_tva(){
     
         $tva = Tva::where('actif',true)->first();
     
-        return $tva->tva_actuelle; 
+        $coeff = $tva->tva_actuelle/100 + 1 ;
+        return $coeff; 
     }
 
 }

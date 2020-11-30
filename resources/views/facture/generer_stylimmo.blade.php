@@ -202,12 +202,12 @@ Facture N° {{$facture->numero}}
         <tr>
             <td style="width: 400px;">&nbsp;</td>
             <td style="width: 153px;">TOTAL H.T :</td>
-            <td style="width: 231px;">{{number_format($compromis->frais_agence/1.2 ,2,',',' ')}} &euro;</td>
+            <td style="width: 231px;">{{number_format($compromis->frais_agence/App\Tva::coefficient_tva() ,2,',',' ')}} &euro;</td>
         </tr>
         <tr>
             <td style="width: 400px;">&nbsp;</td>
             <td style="width: 153px;">T.V.A 20% :</td>
-            <td style="width: 231px;">{{number_format(($compromis->frais_agence/1.2) *0.2,2,',',' ')}} &euro;</td>
+            <td style="width: 231px;">{{number_format(($compromis->frais_agence/App\Tva::coefficient_tva()) *App\Tva::tva(),2,',',' ')}} &euro;</td>
         </tr>
         <tr>
             <td style="width: 400px;">&nbsp;</td>
