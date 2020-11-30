@@ -136,7 +136,7 @@ if($("#date_encaissement").val() != ""){
                      'success'
                   )
                   .then(function() {
-                     // window.location.href = "{{route('facture.index')}}";
+                     window.location.href = "{{route('facture.index')}}";
                   })
          },
          error: function(error){
