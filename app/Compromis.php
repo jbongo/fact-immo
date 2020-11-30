@@ -119,7 +119,7 @@ class Compromis extends Model
 
             if( $mandataire->statut == "auto-entrepeneur"){
 
-                if($chiffre_affaire_encai < 35200){
+                if($chiffre_affaire_encai < Parametre::montant_tva()){
                     $tva = 0;
                 }
             }else{
@@ -223,7 +223,7 @@ class Compromis extends Model
 
                     if( $mandataire->statut == "auto-entrepeneur"){
 
-                        if($chiffre_affaire_encai < 35200){
+                        if($chiffre_affaire_encai < Parametre::montant_tva()){
                             $tva = 0;
                         }
                     }else{
@@ -303,7 +303,7 @@ class Compromis extends Model
                             
                             if($contrat->est_soumis_tva == false){
                             
-                                if($chiffre_affaire_parrain_encai < 35200){
+                                if($chiffre_affaire_parrain_encai < Parametre::montant_tva()){
                                     $tva = 0;
                                 }else{
                                     $contrat->est_soumis_tva = true;
@@ -364,7 +364,7 @@ class Compromis extends Model
                     
                     if($contrat->est_soumis_tva == false){
                     
-                        if($chiffre_affaire_parrain_encai < 35200){
+                        if($chiffre_affaire_parrain_encai < Parametre::montant_tva()){
                             $tva = 0;
                         }else{
                             $contrat->est_soumis_tva = true;
@@ -454,7 +454,7 @@ class Compromis extends Model
                             
                             if($contrat->est_soumis_tva == false){
                             
-                                if($chiffre_affaire_parrain_encai < 35200){
+                                if($chiffre_affaire_parrain_encai < Parametre::montant_tva()){
                                     $tva = 0;
                                 }else{
                                     $contrat->est_soumis_tva = true;

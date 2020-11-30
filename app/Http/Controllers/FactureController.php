@@ -10,6 +10,7 @@ use App\User;
 use App\Compromis;
 use App\Filleul;
 use App\Avoir;
+use App\Parametre;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\DemandeFactureStylimmo;
@@ -760,7 +761,7 @@ public  function preparer_facture_honoraire($compromis)
 
             if( $mandataire->statut == "auto-entrepeneur"){
 
-                if($chiffre_affaire_encai < 35200){
+                if($chiffre_affaire_encai < Parametre::montant_tva()){
                     $tva = 0;
                 }else{
                     $contrat->est_soumis_tva = true;
@@ -876,7 +877,7 @@ public  function preparer_facture_honoraire_parrainage($compromis_id, $id_parrai
                     
                 if($contrat->est_soumis_tva == false){
                 
-                    if($chiffre_affaire_parrain_encai < 35200){
+                    if($chiffre_affaire_parrain_encai < Parametre::montant_tva()){
                         $tva = 0;
                     }else{
                         $contrat->est_soumis_tva = true;
@@ -1003,7 +1004,7 @@ public  function preparer_facture_honoraire_parrainage($compromis_id, $id_parrai
                     
                 if($contrat->est_soumis_tva == false){
                 
-                    if($chiffre_affaire_parrain_encai < 35200){
+                    if($chiffre_affaire_parrain_encai < Parametre::montant_tva()){
                         $tva = 0;
                     }else{
                         $contrat->est_soumis_tva = true;
@@ -1060,7 +1061,7 @@ public  function preparer_facture_honoraire_parrainage($compromis_id, $id_parrai
                 
                 if($contrat->est_soumis_tva == false){
                 
-                    if($chiffre_affaire_parrain_encai < 35200){
+                    if($chiffre_affaire_parrain_encai < Parametre::montant_tva()){
                         $tva = 0;
                     }else{
                         $contrat->est_soumis_tva = true;
@@ -1093,7 +1094,7 @@ public  function preparer_facture_honoraire_parrainage($compromis_id, $id_parrai
                 
                 if($contrat->est_soumis_tva == false){
                 
-                    if($chiffre_affaire_parrain_encai < 35200){
+                    if($chiffre_affaire_parrain_encai < Parametre::montant_tva()){
                         $tva = 0;
                     }else{
                         $contrat->est_soumis_tva = true;
@@ -1154,7 +1155,7 @@ public  function preparer_facture_honoraire_parrainage($compromis_id, $id_parrai
         
         if($contrat->est_soumis_tva == false){
         
-            if($chiffre_affaire_parrain_encai < 35200){
+            if($chiffre_affaire_parrain_encai < Parametre::montant_tva()){
                 $tva = 0;
             }else{
                 $contrat->est_soumis_tva = true;
@@ -1395,7 +1396,7 @@ public  function preparer_facture_honoraire_partage($compromis,$mandataire_id = 
     // dd($chiffre_affaire_encai);
     if($contrat->est_soumis_tva == false){
     
-        if($chiffre_affaire_encai < 35200){
+        if($chiffre_affaire_encai < Parametre::montant_tva()){
             $tva = 0;
         }else{
             $contrat->est_soumis_tva = true;
@@ -1650,7 +1651,7 @@ public  function preparer_facture_honoraire_encaissement($compromis_id, $leporte
     
                 if( $mandataire->statut == "auto-entrepeneur"){
     
-                    if($chiffre_affaire_encai < 35200){
+                    if($chiffre_affaire_encai < Parametre::montant_tva()){
                         $tva = 0;
                     }else{
                         $contrat->est_soumis_tva = true;
@@ -1770,7 +1771,7 @@ public  function deduire_pub_facture_honoraire(Request $request, $compromis)
 
         if( $mandataire->statut == "auto-entrepeneur"){
 
-            if($chiffre_affaire_encai < 35200){
+            if($chiffre_affaire_encai < Parametre::montant_tva()){
                 $tva = 0;
             }else{
                 $contrat->est_soumis_tva = true;
@@ -1916,7 +1917,7 @@ if($contrat->est_soumis_tva == false ){
 
     if( $mandataire->statut == "auto-entrepeneur"){
 
-        if($chiffre_affaire_encai < 35200){
+        if($chiffre_affaire_encai < Parametre::montant_tva()){
             $tva = 0;
         }else{
             $contrat->est_soumis_tva = true;

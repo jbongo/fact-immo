@@ -10,7 +10,7 @@
         <div class="col-md-2">
   
     <select name="annee" id="annee" class="form-control">
-            @for ($an = 2017; $an <= date('Y') ; $an++)
+            @for ($an = 2017; $an <= date('Y') +1 ; $an++)
                 @if($an == config('stats.STATS.annee'))
                     <option selected="selected" value="{{config('stats.STATS.annee')}}">{{config('stats.STATS.annee')}}</option>
                 @else

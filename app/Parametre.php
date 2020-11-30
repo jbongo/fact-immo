@@ -13,4 +13,10 @@ class Parametre extends Model
         return $this->belongsTo(Tva::class);
        
     }
+    
+    public static function montant_tva(){
+    
+    $parametre = Parametre::first();
+    return $parametre->ca_imposable;
+    }
 }
