@@ -25,7 +25,9 @@ class ParametreController extends Controller
             return view ('parametre.generaux.create');
         }else{
             $comm_parrain = unserialize($parametre['comm_parrain']);
-            return view ('parametre.generaux.edit', compact(['parametre','comm_parrain']));
+            
+            $tva_prochaine = Tva::where('est_tva_prochaine', true)->first(); 
+            return view ('parametre.generaux.edit', compact(['parametre','comm_parrain','tva_prochaine']));
         }
     }
 
@@ -104,12 +106,39 @@ class ParametreController extends Controller
     
     $parametre = Parametre::first();
 
+
+
+// dd($request->all());
+
     $tva = Tva::where('id',$parametre->tva_id)->first();
+    $tva_prochaine = Tva::where('est_tva_prochaine',true)->first();
+    
     $tva->tva_actuelle = $request->tva_actuelle;
     $tva->date_debut_tva_actuelle = $request->date_debut_tva_actuelle;
-    $tva->date_fin_tva_actuelle = $request->date_fin_tva_actuelle;
-    $tva->tva_prochaine = $request->tva_prochaine;
-    $tva->date_debut_tva_prochaine = $request->date_debut_tva_prochaine;
+    
+    
+    if($request->tva_prochaine != null && $tva_prochaine == null){
+    
+        Tva::create([
+            "tva_actuelle" => $request->tva_prochaine,
+            "date_debut_tva_actuelle" => $request->date_debut_tva_prochaine,
+            
+            "est_tva_prochaine" => true,
+            "actif" => false,
+        ]);
+        
+
+
+    }elseif($request->tva_prochaine != null && $tva_prochaine != null){
+    
+        $tva_prochaine->tva_actuelle = $request->tva_prochaine;
+        $tva_prochaine->date_debut_tva_actuelle = $request->date_debut_tva_prochaine;
+        
+        $tva_prochaine->update();
+    
+    }
+    
+  
 
     $tva->update();
 

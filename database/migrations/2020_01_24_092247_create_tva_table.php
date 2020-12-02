@@ -18,8 +18,7 @@ class CreateTvaTable extends Migration
             $table->double('tva_actuelle')->nullable();
             $table->date('date_debut_tva_actuelle')->nullable();
             $table->date('date_fin_tva_actuelle')->nullable();
-            $table->double('tva_prochaine')->nullable();
-            $table->date('date_debut_tva_prochaine')->nullable();
+            $table->boolean('est_tva_prochaine')->default(false);
             $table->boolean('actif')->default(true);
          
             $table->timestamps();

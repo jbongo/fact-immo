@@ -106,20 +106,21 @@
                                                 </div>
                                             </div>
                                            
-                                            {{-- @if($parametre->tva->tva_prochaine == null) --}}
+                                            @if($tva_prochaine == null)
                                             <div class="form-group row" style="text-align: center;">
                                                 <div class="col-lg-8 ml-auto"> 
-                                                    <a style="background-color:#ffc107; color:white" class="btn  btn-flat btn-addon btn-sm m-b-10 m-l-5  " title="Ajouter la prochaine TVA"  id="add_tva"><i class="ti-plus"></i>Ajouter TVA</a>
+                                                    <a style="background-color:#ffc107; color:white" class="btn  btn-flat btn-addon btn-sm m-b-10 m-l-5  " title="Ajouter la prochaine TVA"  id="add_tva"><i class="ti-plus"></i>Ajouter prochaine TVA</a>
                                                 </div>
                                             </div>
-                                            {{-- @endif --}}
+                                            @endif
                                             {{-- @if($parametre->tva->tva_prochaine != null) --}}
                                             <div class="form-group row" id="div_tva_prochaine">
                                                 <label class="col-lg-4 col-form-label" for="tva_prochaine">Prochaine TVA </label>
                                                 <div class="col-lg-4">
-                                                    <input type="number" style="background-color:#f3f3f3" class="form-control"  value="{{$parametre->tva->tva_prochaine}}" id="tva_prochaine" name="tva_prochaine" >
+                                                <input type="number" style="background-color:#82dac6" class="form-control"  value="{{$tva_prochaine != null ? $tva_prochaine->tva_actuelle : ''}}" id="tva_prochaine" name="tva_prochaine" >
                                                 </div>
                                             </div>
+                                           
                                             {{-- @endif --}}
                                             <div class="form-group row">
                                                 <label class="col-lg-4 col-form-label" for="ca_imposable">CA pour être imposable<span class="text-danger">*</span></label>
@@ -153,10 +154,12 @@
                                             <div class="form-group row">
                                                 <label class="col-lg-4 col-form-label" for="date_debut_tva_prochaine">Date début prochaine TVA  </label>
                                                 <div class="col-lg-4">
-                                                    <input type="date" style="background-color:#f3f3f3" class="form-control" value="{{$parametre->tva->date_debut_tva_prochaine->format('Y-m-d')}}" id="date_debut_tva_prochaine" name="date_debut_tva_prochaine" >
+                                                    <input type="date" style="background-color:#82dac6" class="form-control" value="{{$tva_prochaine != null ? $tva_prochaine->date_debut_tva_actuelle->format('Y-m-d') : ''}}" id="date_debut_tva_prochaine" name="date_debut_tva_prochaine" >
                                                 </div>
                                             </div>
                                         </div>
+                                        
+                                        
                                     </div>
                             </div>
                         </div>
@@ -297,20 +300,22 @@
 
 // $('#add_tva').hide();
 
-if("{{$parametre->tva->tva_prochaine}}" == null){
+console.log("{{$tva_prochaine}}");
+
+if("{{$tva_prochaine}}" == ""){
 
     $('#div_date_tva_prochaine').hide();
     $('#div_tva_prochaine').hide();
     $('#add_tva').show();
 
+}
 
-    $('#add_tva').click(function(){
+$('#add_tva').click(function(){
         $('#div_date_tva_prochaine').show();
         $('#div_tva_prochaine').show(); 
     
         $('#add_tva').hide();
 
-    });
-}
+});
 </script>
 @endsection

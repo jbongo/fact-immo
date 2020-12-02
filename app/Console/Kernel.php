@@ -34,6 +34,9 @@ class Kernel extends ConsoleKernel
                  
         $schedule->command('command:findroitsuite')
                  ->daily();
+                 
+        $schedule->command('command:changementtva')
+                 ->daily();
 
                  
     }
