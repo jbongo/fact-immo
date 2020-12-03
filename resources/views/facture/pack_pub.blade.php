@@ -31,7 +31,7 @@
             <td style="width: 370px; height: 100px;">Bagnols sur C&egrave;ze le,&nbsp;31 mars 2017</td>
             <td style="width: 370px; height: 100px;">
             <p><strong>Mme LAUCAGNE Valentine</strong></p>
-            <p><strong>99 Avenue du Mistral</strong><br /><strong>30200 SAINT ETIENNE DES SORTS</strong></p>
+            <p><strong>99 Avenue du Mistral</strong><br /><strong>{{App\Parametre::params()->code_postal}}   SAINT ETIENNE DES SORTS</strong></p>
             </td>
             </tr>
             </tbody>
@@ -137,7 +137,7 @@
             </table>
             <hr />
             <div style="text-align: center; font-size: 11px; margin-right: 25%; margin-left: 25%; margin-top: 20px;">
-            <p><strong>SARL V4F</strong> - 115 Avenue de la Roquette - Zone Artisanale de Berret - 30200 BAGNOLS SUR CEZE Carte professionnelle N&deg;1312T14 SIRET: 800 738 478 00018 - RCS NIMES 800 738 478</p>
+            <p><strong>SARL {{App\Parametre::params()->raison_sociale}}</strong> - {{App\Parametre::params()->adresse}}   - Zone Artisanale de Berret - {{App\Parametre::params()->code_postal}}   {{App\Parametre::params()->ville}}   Carte professionnelle N&deg;1312T14 SIRET: {{App\Parametre::params()->numero_siret}} - RCS NIMES {{App\Parametre::params()->numero_rcs}}</p>
             </div>
 
           </div>

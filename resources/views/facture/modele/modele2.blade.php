@@ -19,9 +19,9 @@
     <tr>
     <td style="width: 368px;">&nbsp;</td>
     <td style="width: 333px;">
-     <strong>SARL V4F&nbsp;</strong> <br>
-     115 avenue de la Roquette ZA e Berret <br>
-     30200 BAGNOLS SUR CEZE <br>
+     <strong>SARL {{App\Parametre::params()->raison_sociale}}&nbsp;</strong> <br>
+     {{App\Parametre::params()->adresse}}   ZA e Berret <br>
+     {{App\Parametre::params()->code_postal}}   {{App\Parametre::params()->ville}}   <br>
     <p>&nbsp;</p>
     <p> Le {{$facture->date_facture->format('d/m/Y')}}</p>
     </td>

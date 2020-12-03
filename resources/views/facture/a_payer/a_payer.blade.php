@@ -1,7 +1,9 @@
 
  
                 <!-- table -->
-                <span style="font-size: 18px; font-weight:bold">Total TTC : </span> <span style="font-size: 18px; color:red; font-weight:bold">{{number_format( $totalApayer ,2,'.',',')}}</span>
+                <span style="font-size: 18px; font-weight:bold">Total HT : </span> <span style="font-size: 18px; color:rgb(5, 72, 13); font-weight:bold">{{number_format( $totalApayer_HT ,2,'.',',')}}</span> <--|-->
+                <span style="font-size: 18px; font-weight:bold">Total TVA : </span> <span style="font-size: 18px; color:rgb(55, 6, 133); font-weight:bold">{{number_format( $motantTvaFAPayer ,2,'.',',')}}</span> <br><hr>
+                <span style="font-size: 18px; font-weight:bold">Total A Payer : </span> <span style="font-size: 18px; color:red; font-weight:bold">{{number_format( $totalApayer ,2,'.',',')}}</span> 
                  
                 
                 <div class="card-body">

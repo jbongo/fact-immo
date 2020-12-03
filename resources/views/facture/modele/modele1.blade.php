@@ -44,7 +44,7 @@
                     </td>
                     <td style="width: 230px; height: 25px;">
                     <div>
-                    <div style="text-align: center;">SARL&nbsp;V4F</div>
+                    <div style="text-align: center;">SARL&nbsp;{{App\Parametre::params()->raison_sociale}}</div>
                     </div>
                     </td>
                     <td style="width: 230px; height: 25px;">&nbsp;</td>
@@ -168,6 +168,6 @@
             </table>
  
 <div style="text-align: center; font-size: 11px; margin-right: 10%; margin-left: 10%; margin-top: 90px;">
-    <p><strong>SARL V4F</strong> - 115 Avenue de la Roquette - Zone Artisanale de Berret - 30200 BAGNOLS SUR CEZE Carte professionnelle N°1312T14 TVA in FR 67 800738478 - SIRET: 800 738 478 00018 - RCS NIMES 800 738 478
+    <p><strong>SARL {{App\Parametre::params()->raison_sociale}}</strong> - {{App\Parametre::params()->adresse}}   - Zone Artisanale de Berret - {{App\Parametre::params()->code_postal}}   {{App\Parametre::params()->ville}}   Carte professionnelle N°1312T14 TVA in FR {{App\Parametre::params()->numero_tva}}   - SIRET: {{App\Parametre::params()->numero_siret}} - RCS NIMES {{App\Parametre::params()->numero_rcs}}
     </p>
 </div>

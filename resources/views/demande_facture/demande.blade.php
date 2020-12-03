@@ -248,7 +248,7 @@ Demande de facture  | {{ substr($compromis->description_bien,0,150) }}...
                           </td>
                           <td style="width: 488px;">
                               <div>
-                                  <div>Au plus tard le jour de la signature de l'acte authentique, par virement &agrave; la SARL&nbsp;V4F, en rappelant au moins sur l'objet du virement les r&eacute;f&eacute;rences de la facture.</div>
+                                  <div>Au plus tard le jour de la signature de l'acte authentique, par virement &agrave; la SARL&nbsp;{{App\Parametre::params()->raison_sociale}}, en rappelant au moins sur l'objet du virement les r&eacute;f&eacute;rences de la facture.</div>
                               </div>
                           </td>
                       </tr>

@@ -18,10 +18,10 @@
     <tr>
     <td style="width: 346px;">&nbsp;</td>
     <td style="width: 346px;">
-    <div><strong>Sarl V4F</strong></div>
+    <div><strong>Sarl {{App\Parametre::params()->raison_sociale}}</strong></div>
     <div>&nbsp;</div>
-    <div>115 Avenue de la roquette</div>
-    <div>30 200 &ndash; Bagnols sur ceze</div>
+    <div>{{App\Parametre::params()->adresse}}  </div>
+    <div>30 200 &ndash; {{App\Parametre::params()->ville}}  </div>
     </td>
     </tr>
     </tbody>

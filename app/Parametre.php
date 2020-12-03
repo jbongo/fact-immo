@@ -16,7 +16,13 @@ class Parametre extends Model
     
     public static function montant_tva(){
     
-    $parametre = Parametre::first();
-    return $parametre->ca_imposable;
+        $parametre = Parametre::first();
+        return $parametre->ca_imposable;
+    }
+    
+    public static function params(){
+    
+        $parametre = Parametre::first();
+        return $parametre;
     }
 }

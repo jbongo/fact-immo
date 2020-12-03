@@ -240,7 +240,7 @@ Facture N° {{$facture->numero}}
             </td>
             <td style="width: 488px;">
                 <div>
-                    <div>Au plus tard le jour de la signature de l'acte authentique, par virement &agrave; la SARL&nbsp;V4F, en rappelant au moins sur l'objet du virement les r&eacute;f&eacute;rences de la facture.</div>
+                    <div>Au plus tard le jour de la signature de l'acte authentique, par virement &agrave; la SARL&nbsp;{{App\Parametre::params()->raison_sociale}}, en rappelant au moins sur l'objet du virement les r&eacute;f&eacute;rences de la facture.</div>
                 </div>
             </td>
         </tr>
@@ -293,7 +293,7 @@ Facture N° {{$facture->numero}}
 
 <hr>
 <div style="text-align: center; font-size: 11px; margin-right: 20%; margin-left: 20%; margin-top: 20px;">
-    <p><strong>SARL V4F</strong> - 115 Avenue de la Roquette - Zone Artisanale de Berret - 30200 BAGNOLS SUR CEZE <br> Capital social: 3000 € - Carte professionnelle N°1312T14 TVA in FR 67 800738478 - SIRET: 800 738 478 00018 - RCS NIMES 800 738 478
+    <p><strong> {{App\Parametre::params()->raison_sociale}}</strong> - {{App\Parametre::params()->adresse}}   - Zone Artisanale de Berret - {{App\Parametre::params()->code_postal}}   {{App\Parametre::params()->ville}}   <br> Capital social: 3000 € - Carte professionnelle N°1312T14 TVA in FR {{App\Parametre::params()->numero_tva}}   - SIRET: {{App\Parametre::params()->numero_siret}} - RCS NIMES {{App\Parametre::params()->numero_rcs}}
     </p>
 </div>
 

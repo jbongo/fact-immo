@@ -37,6 +37,11 @@ class Kernel extends ConsoleKernel
                  
         $schedule->command('command:changementtva')
                  ->daily();
+                 
+         $schedule->command('command:mandataireazero')
+                 ->daily();
+                 
+                 
 
                  
     }

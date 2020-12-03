@@ -3087,10 +3087,25 @@ public function valider_honoraire($action, $facture_id)
   
         $totalNonAjou = $totalNonAjou1 + $totalNonAjou2;
   
-//   dd($totalNonAjou);
-        // dd(Facture::whereIn('type',['honoraire','partage','parrainage','parrainage_partage'])->where([['reglee', false], ['statut','valide']])->count());
+//   Calcul des montants TVA;
+       
+       $motantTvaFAPayer = 0;
+       $motantTvaFNonAjou = 0;
+       
+       foreach ($facturesAPayer as $fact) {
+            $motantTvaFAPayer += $fact->montant_ttc == 0 ? 0 : $fact->montant_ttc - $fact->montant_ht;
+       }
+       
+        foreach ($facturesNonAjou as $fact) {
+            $motantTvaFNonAjou += $fact->montant_ttc == 0 ? 0 : $fact->montant_ttc - $fact->montant_ht;
+        }
 
-       return view('facture.a_payer.index', compact('facturesAPayer','facturesNonAjou','totalNonAjou','totalApayer'));
+//calcul des montant HT
+            $totalNonAjou_HT = Facture::whereIn('type',['honoraire','partage','parrainage','parrainage_partage'])->where([['reglee', false], ['statut','<>','valide']])->sum('montant_ht');
+            $totalApayer_HT = Facture::whereIn('type',['honoraire','partage','parrainage','parrainage_partage'])->where([['reglee', false], ['statut','valide']])->sum('montant_ht');
+
+
+       return view('facture.a_payer.index', compact('facturesAPayer','facturesNonAjou','totalNonAjou','totalApayer','motantTvaFNonAjou','motantTvaFAPayer','totalApayer_HT','totalNonAjou_HT'));
  
 
     }
