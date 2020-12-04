@@ -145,7 +145,7 @@ Avoir N° {{$avoir->numero}}
     <tbody>
         <tr>
             <td style="width: 423px;">&nbsp; </td>
-            <td style="width: 260px;"> date entrée : {{ Carbon\Carbon::parse($compromis->user->date_entree)->format('d/m/Y')}}   </td>
+            <td style="width: 260px;"> date entrée : {{ Carbon\Carbon::parse($compromis->date_vente)->format('d/m/Y')}}   </td>
         </tr>
     </tbody>
 </table>
