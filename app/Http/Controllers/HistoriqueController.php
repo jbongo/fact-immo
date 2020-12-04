@@ -14,7 +14,7 @@ class HistoriqueController extends Controller
      */
     public function index()
     {
-        $historiques = Historique::latest()->get();
+        $historiques = Historique::where('ressource','<>','connexion')->latest()->get();
 // dd($historiques);
         return view('historique.index', compact('historiques'));
     }
