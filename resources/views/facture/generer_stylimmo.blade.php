@@ -2,6 +2,7 @@
 
 @section('content')
     @section ('page_title')
+    
 @if ($compromis->facture_stylimmo_valide == true)
 Facture N° {{$facture->numero}}
 @else 

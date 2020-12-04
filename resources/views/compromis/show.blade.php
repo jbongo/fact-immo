@@ -606,7 +606,7 @@ Détail de l'affaire de {{$compromis->user->prenom}} {{$compromis->user->nom}}
 
                 @php
                     $droit_avoir= false; 
-                    if($compromis->getFactureStylimmo() != null && $compromis->getFactureStylimmo()->encaissee == 0 && $compromis->cloture_affaire == 0) $droit_avoir = true; 
+                    if($compromis->getFactureStylimmo() != null && $compromis->getFactureStylimmo()->encaissee == 0 ) $droit_avoir = true; 
                 @endphp
 
                 <input type="hidden" id="droit_avoir" name="droit_avoir" value="{{$droit_avoir}}">

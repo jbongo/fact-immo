@@ -210,7 +210,6 @@ public  function valider_facture_stylimmo( Request $request, $compromis)
         }
     }
 
-
     // Dans ce bloc on compare les dates
     if($prev_nums != null && $next_nums != null){
 
@@ -260,7 +259,7 @@ public  function valider_facture_stylimmo( Request $request, $compromis)
 
     $tva = Tva::coefficient_tva();
     // $numero = 1507;
-    $facture = Facture::where([ ['type','stylimmo'],['compromis_id',$compromis->id]])->first();
+    $facture = Facture::where([ ['type','stylimmo'],['compromis_id',$compromis->id],['a_avoir', false]])->first();
 
 
     // Si la facture n'est pas déjà crée
@@ -323,9 +322,9 @@ public  function valider_facture_stylimmo( Request $request, $compromis)
     }
     
     // fin save facture
-
+// dd("ee");
     
-    return view ('facture.generer_stylimmo',compact(['compromis','mandataire','facture']))->with('ok', __('Facture envoyée au mandataire') );
+    return view ('facture.generer_stylimmo',compact(['compromis','mandataire','facture','numero']))->with('ok', __('Facture envoyée au mandataire') );
     
 }
 
@@ -338,17 +337,16 @@ public  function valider_facture_stylimmo( Request $request, $compromis)
 */
     public  function generer_facture_stylimmo($compromis)
     {
-        
+      
         $compromis = Compromis::where('id', Crypt::decrypt($compromis))->first();
         $mandataire = $compromis->user;
-        $facture = Facture::where([ ['type','stylimmo'],['compromis_id',$compromis->id]])->first();
+        $facture = Facture::where([ ['type','stylimmo'],['compromis_id',$compromis->id],['a_avoir',false]])->first();
 
         $numero = "";
         
         $numero = Facture::whereIn('type',['avoir','stylimmo','pack_pub','carte_visite','communication','autre'])->max('numero') + 1;
 
         $lastdate = Facture::where('numero',$numero-1)->select('date_facture')->first();
-            
 
         $lastdate= $lastdate['date_facture'];
       

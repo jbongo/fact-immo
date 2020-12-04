@@ -598,7 +598,7 @@ class CompromisController extends Controller
         $date_mandat = $date->format('Y-m-d');
  
        
-        if($request->a_avoir == "true" && $compromis->getFactureStylimmo() != null && $compromis->cloture_affaire == 0){
+        if($request->a_avoir == "true" && $compromis->getFactureStylimmo() != null ){
             $facture = $compromis->getFactureStylimmo();
              $motif = "Modification du compromis";
              $numero = Facture::whereIn('type',['avoir','stylimmo','pack_pub','carte_visite','communication','autre'])->max('numero') + 1;
