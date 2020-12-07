@@ -66,7 +66,7 @@ class User extends Authenticatable
             $ca_encaisse_partage_pas_n = 0;
             if($compro_encaisse_partage_pas_n != null){                
                 foreach ($compro_encaisse_partage_pas_n as $compros_encaisse) {
-                    if($compros_encaisse->getFactureStylimmo()->a_avoir == false && $compros_encaisse->getFactureStylimmo()->encaissee == 1 && $compros_encaisse->getFactureStylimmo()->date_encaissement->format("Y-m-d") >= $date_deb && $compros_encaisse->getFactureStylimmo()->date_encaissement->format("Y-m-d") <= $date_fin){
+                    if($compros_encaisse->getFactureStylimmo() != null && $compros_encaisse->getFactureStylimmo()->a_avoir == false && $compros_encaisse->getFactureStylimmo()->encaissee == 1 && $compros_encaisse->getFactureStylimmo()->date_encaissement->format("Y-m-d") >= $date_deb && $compros_encaisse->getFactureStylimmo()->date_encaissement->format("Y-m-d") <= $date_fin){
                         $ca_encaisse_partage_pas_n +=  $compros_encaisse->getFactureStylimmo()->montant_ttc;
                     
                     }
@@ -81,7 +81,7 @@ class User extends Authenticatable
                 if($compro_encaisse_porte_n != null){
                     foreach ($compro_encaisse_porte_n as $compros_encaisse) {
 
-                        if($compros_encaisse->getFactureStylimmo()->a_avoir == false && $compros_encaisse->getFactureStylimmo()->encaissee == 1 && $compros_encaisse->getFactureStylimmo()->date_encaissement->format("Y-m-d") >= $date_deb && $compros_encaisse->getFactureStylimmo()->date_encaissement->format("Y-m-d") <= $date_fin){
+                        if($compros_encaisse->getFactureStylimmo() != null && $compros_encaisse->getFactureStylimmo()->a_avoir == false && $compros_encaisse->getFactureStylimmo()->encaissee == 1 && $compros_encaisse->getFactureStylimmo()->date_encaissement->format("Y-m-d") >= $date_deb && $compros_encaisse->getFactureStylimmo()->date_encaissement->format("Y-m-d") <= $date_fin){
                             $ca_encaisse_porte_n +=  $compros_encaisse->frais_agence * $compros_encaisse->pourcentage_agent/100;
                         }
                     }
@@ -95,7 +95,7 @@ class User extends Authenticatable
 
                 if($compro_encaisse_porte_pas_n != null){
                     foreach ($compro_encaisse_porte_pas_n as $compros_encaisse) {
-                        if($compros_encaisse->getFactureStylimmo()->a_avoir == false && $compros_encaisse->getFactureStylimmo()->encaissee == 1 && $compros_encaisse->getFactureStylimmo()->date_encaissement->format("Y-m-d") >= $date_deb && $compros_encaisse->getFactureStylimmo()->date_encaissement->format("Y-m-d") <= $date_fin){
+                        if($compros_encaisse->getFactureStylimmo() != null && $compros_encaisse->getFactureStylimmo()->a_avoir == false && $compros_encaisse->getFactureStylimmo()->encaissee == 1 && $compros_encaisse->getFactureStylimmo()->date_encaissement->format("Y-m-d") >= $date_deb && $compros_encaisse->getFactureStylimmo()->date_encaissement->format("Y-m-d") <= $date_fin){
                             $ca_encaisse_porte_pas_n +=  $compros_encaisse->frais_agence * (100-$compros_encaisse->pourcentage_agent)/100;
                         }
                     }

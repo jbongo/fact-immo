@@ -173,7 +173,7 @@
                                         <td width="" >
 
                                             @if($facture->type != "avoir")
-                                                @if($facture->a_avoir == 0 && $facture->encaissee == 0 && $facture->compromis != null && $facture->compromis->cloture_affaire == 0 && auth()->user()->role == "admin") 
+                                                @if($facture->a_avoir == 0 && $facture->encaissee == 0 && $facture->compromis != null  && auth()->user()->role == "admin") 
 
                                                     <a href="{{route('facture.avoir.create', Crypt::encrypt($facture->id))}}" target="_blank"  class="btn btn-info  btn-flat btn-addon  m-b-10 m-l-5 " id=""><i class="ti-link"></i>créer</a>
 

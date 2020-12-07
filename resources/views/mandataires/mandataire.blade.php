@@ -6,7 +6,7 @@
                                 <div class="panel-body">
 
                         <div class="table-responsive" style="overflow-x: inherit !important;">
-                            <table  id="example3" class=" table student-data-table  table-striped table-hover dt-responsive display    "  style="width:100%">
+                            <table  id="example00" class=" table student-data-table  table-striped table-hover dt-responsive display    "  style="width:100%">
                                 <thead>
                                     <tr>
                                         <th>@lang('Nom')</th>
@@ -18,7 +18,8 @@
                                         {{-- <th>@lang('Adresse')</th> --}}
                                         <th>@lang('date anniv')</th>
                                         <th>@lang('Comm')</th>
-                                        <th>@lang('CA HT en cours')</th>
+                                        <th>@lang('Comm Départ')</th>
+                                        <th>@lang('CA HT STYL')</th>
                                      
                                         <th>@lang('Action')</th>
                                     </tr>
@@ -73,6 +74,21 @@
                                         </td>                                  
                                         <td @if($mandataire->contrat== null) style="background:#757575; color:white" @endif>                                             
                                             <span class="color-success" >@if($mandataire->contrat!= null) {{$mandataire->commission}} % @else Pas de contrat @endif</span>
+                                        </td>
+                                        
+                                        <td @if($mandataire->contrat== null) style="background:#757575; color:white" @endif>                                             
+                                            <span class="color-primary" >@if($mandataire->contrat!= null) 
+                                            
+                                                @if($mandataire->pack_actuel == "expert")
+                                                    {{$mandataire->contrat->pourcentage_depart_expert}} %
+                                                
+                                                @else 
+                                                
+                                                {{$mandataire->contrat->pourcentage_depart_starter}} %
+                                                
+                                                @endif
+                                            
+                                            @else Pas de contrat @endif</span>
                                         </td>
                                         <td>                                             
                                             <span class="color-warning">{{number_format($mandataire->chiffre_affaire_styl($mandataire->date_anniv(), date('Y-m-d')),2,'.',' ')}} €</span>
