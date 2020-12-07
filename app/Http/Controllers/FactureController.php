@@ -2435,8 +2435,12 @@ public function valider_honoraire($action, $facture_id)
         $numero = $request->numero;
         
             // return redirect()->route('facture.index')->with('ok', __('Avoir crée')  );
-
+        if($facture->type == "stylimmo"){
             return redirect()->route('facture.generer_avoir_stylimmo', Crypt::encrypt($avoir->id));
+        }else{
+        
+            return redirect()->route('facture.index')->with('ok',"Un Avoir sur la facture $facture->numero a été crée");
+        }
 
               
         // return view ('facture.avoir.generer_avoir_stylimmo',compact(['compromis','numero','mandataire','facture']));
@@ -2526,7 +2530,23 @@ public function valider_honoraire($action, $facture_id)
         $mandataire = $avoir->user;
 
     
-        $filename = "FAVOIR".$avoir->numero." ".$avoir->montant_ttc."€ ".strtoupper($mandataire->nom)." ".strtoupper(substr($mandataire->prenom,0,1)).".pdf" ;
+       
+        if($mandataire != null){
+            $nom = $mandataire->nom;
+            $prenom = $mandataire->prenom;
+            $mandataire_id = $mandataire->id;
+        }else {
+        
+            $nom = "";
+            $prenom = "";
+            $mandataire_id = 0;
+            
+        }
+        
+        
+        
+        $filename = "FAVOIR".$avoir->numero." ".$avoir->montant_ttc."€ ".strtoupper($nom)." ".strtoupper(substr($prenom,0,1)).".pdf" ;
+      
         return response()->download($avoir->url,$filename);
 
     //     $pdf = PDF::loadView('facture.avoir.pdf_avoir_stylimmo',compact(['compromis','mandataire','facture','avoir']));
