@@ -138,6 +138,9 @@ Route::middleware('auth')->group(function(){
     Route::get('/contrat/edit/{contrat_id}','ContratController@edit')->name('contrat.edit');
     Route::post('/contrat/update/{contrat_id}','ContratController@update')->name('contrat.update');
     Route::get('/contrat/maj_date_anniversaire/','ContratController@maj_date_anniversaire')->name('contrat.maj_date_anniversaire');
+    Route::get('/contrat/historique/{contrat_id}','ContratController@historique')->name('contrat.historique');
+    Route::get('/contrat/historique/show/{contrat_id}','ContratController@historique_show')->name('contrat.historique.show');
+    // 
 
 
    

@@ -20,7 +20,8 @@
             @endif
             <br>
             <span>Total jetons déduis : </span> <label class="color-success" style="font-size: 20px">{{$total_deduis}} </label> <br>
-            <span>Total jetons restants : </span> <label class="color-danger" style="font-size: 20px">{{$total_restant}} </label>
+            <span>Total jetons restants : </span> <label class="color-danger" style="font-size: 20px">{{$total_restant}} </label> <br>
+            <span>Date d'anniversaire : </span> <label class="color-primary" style="font-size: 20px">{{$mandataire->date_anniv()}} </label>
                 <!-- table -->
                 
 

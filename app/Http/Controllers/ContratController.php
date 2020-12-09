@@ -10,6 +10,7 @@ use App\Contrat;
 use App\Filleul;
 use App\Parametre;
 use App\Historique;
+use App\Historiquecontrat;
 use App\Article;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\CreationMandataire;
@@ -98,6 +99,7 @@ class ContratController extends Controller
   
     }
 
+
     /**
      * Store a newly created resource in storage.
      *
@@ -107,6 +109,104 @@ class ContratController extends Controller
     public function update(Request $request, $contrat_id)
     {
         $contrat = Contrat::where('id',Crypt::decrypt($contrat_id))->first() ;               
+
+        // ######## SAUVEGARDE HISTORIQUE ######### 
+    //  $test = $contrat->a_palier_expert == ($request->check_palier_expert == "true" ? true : false) ? false : true ;
+     
+    //  return "--$test";
+     
+        // dd($request->all());
+        Historiquecontrat::create([
+        
+            "user_id" => $contrat->user_id,
+            // infos basiques 
+            "forfait_entree" => $contrat->forfait_entree,
+            "modif_forfait_entree" => $contrat->forfait_entree == ( $request->forfait_administratif + $request->forfait_carte_pro) ? false : true ,
+            "forfait_administratif" => $contrat->forfait_administratif,
+            "modif_forfait_administratif" => $contrat->forfait_administratif == $request->forfait_administratif ? false : true ,
+            "forfait_carte_pro" => $contrat->forfait_carte_pro,
+            "modif_forfait_carte_pro" => $contrat->forfait_carte_pro == $request->forfait_carte_pro ? false : true ,
+            "date_entree" => $contrat->date_entree,
+            "modif_date_entree" => $contrat->date_entree->format('Y-m-d') == $request->date_entree ? false : true ,
+            "date_deb_activite" => $contrat->date_deb_activite,
+            "modif_date_deb_activite" => $contrat->date_deb_activite->format('Y-m-d') == $request->date_debut ? false : true ,
+            "date_anniversaire" => $contrat->date_anniversaire, 
+
+            "ca_depart" => $contrat->ca_depart,
+            "modif_ca_depart" => $contrat->ca_depart == $request->ca_depart ? false : true ,
+            "ca_depart_sty" => $contrat->ca_depart_sty,
+            "modif_ca_depart_sty" => $contrat->ca_depart_sty == $request->ca_depart_sty ? false : true ,
+            "est_demarrage_starter" => $contrat->est_demarrage_starter,
+            "modif_est_demarrage_starter" => $contrat->est_demarrage_starter == $request->est_starter ? false : true ,
+            "a_parrain" => $contrat->a_parrain,
+            "modif_a_parrain" => $contrat->a_parrain == ($request->a_parrain == "true" ? true : false) ? false : true ,
+            "parrain_id" => $contrat->parrain_id,
+            
+            "a_condition_parrain" => $contrat->a_condition_parrain,
+
+
+// Commission direct pack starter
+            "pourcentage_depart_starter" => $contrat->pourcentage_depart_starter,
+            "modif_pourcentage_depart_starter" => $contrat->pourcentage_depart_starter == $request->pourcentage_depart_starter ? false : true ,
+            "duree_max_starter" => $contrat->duree_max_starter,
+            "modif_duree_max_starter" => $contrat->duree_max_starter == $request->duree_max_starter ? false : true ,
+            "duree_gratuite_starter" => $contrat->duree_gratuite_starter,
+            "modif_duree_gratuite_starter" => $contrat->duree_gratuite_starter == $request->duree_gratuite_starter ? false : true ,
+            "a_palier_starter" => $contrat->a_palier_starter,
+            "modif_a_palier_starter" => $contrat->a_palier_starter == ($request->check_palier_starter == "true" ? true : false) ? false : true ,
+            
+            "palier_starter" => $contrat->palier_starter,
+
+//  Commission direct pack expert
+            "pourcentage_depart_expert" => $contrat->pourcentage_depart_expert,
+            "modif_pourcentage_depart_expert" => $contrat->pourcentage_depart_expert == $request->pourcentage_depart_expert ? false : true ,
+            "duree_max_starter_expert" => $contrat->duree_max_starter_expert,
+            "modif_duree_max_starter_expert" => $contrat->duree_max_starter_expert == $request->duree_max_starter ? false : true ,
+// "duree_gratuite_expert" => $contrat->duree_gratuite_expert,
+            "a_palier_expert" => $contrat->a_palier_expert,
+            "modif_a_palier_expert" => $contrat->a_palier_expert == ($request->check_palier_expert == "true" ? true : false) ? false : true ,
+            "palier_expert" => $contrat->palier_expert,
+            
+            "nombre_vente_min" => $contrat->nombre_vente_min,
+            "modif_nombre_vente_min" => $contrat->nombre_vente_min == $request->nombre_vente_min ? false : true ,
+            "nombre_mini_filleul" => $contrat->nombre_mini_filleul,
+            "modif_nombre_mini_filleul" => $contrat->nombre_mini_filleul == $request->nombre_mini_filleul ? false : true ,
+            "chiffre_affaire_mini" => $contrat->chiffre_affaire_mini,
+            "modif_chiffre_affaire_mini" => $contrat->chiffre_affaire_mini == $request->chiffre_affaire_mini ? false : true ,
+            "a_soustraitre" => $contrat->a_soustraitre,
+            "modif_a_soustraitre" => $contrat->a_soustraitre == $request->a_soustraitre ? false : true ,
+            "a_condition_expert" => $contrat->a_condition_expert,
+            "est_soumis_tva" => $contrat->est_soumis_tva,
+            "modif_est_soumis_tva" => $contrat->est_soumis_tva == ($request->est_soumis_tva  == "true"  ? true : false) ? false : true ,
+            "deduis_jeton" => $contrat->deduis_jeton,
+            "modif_deduis_jeton" => $contrat->deduis_jeton == ($request->deduis_jeton == "true"  ? true : false) ? false : true ,
+
+
+// parrainage
+            "prime_forfaitaire" => $contrat->prime_forfaitaire,
+            "seuil_comm" => $contrat->seuil_comm,
+            "modif_seuil_comm" => $contrat->seuil_comm == $request->seuil_comm ? false : true ,
+            "comm_parrain" => $contrat->comm_parrain,
+
+
+// Pack pub
+            "packpub_id" => $contrat->packpub_id,
+            "modif_packpub_id" => $contrat->packpub_id == $request->pack_pub ? false : true ,
+
+// Démission
+            "a_demission" => $contrat->a_demission,
+            "modif_a_demission" => $contrat->a_demission == ($request->a_demission == "true" ? true : false ) ? false : true ,
+            "date_demission" => $contrat->date_demission,
+            "modif_date_demission" => $contrat->date_demission == $request->date_demission ? false : true ,
+            "date_fin_preavis" => $contrat->date_fin_preavis,
+            "modif_date_fin_preavis" => $contrat->date_fin_preavis == $request->date_fin_preavis ? false : true ,
+            "date_fin_droit_suite" => $contrat->date_fin_droit_suite,
+            "modif_date_fin_droit_suite" => $contrat->date_fin_droit_suite == $request->date_fin_droit_suite ? false : true ,
+        ]);
+        
+        // ######## FIN SAUVEGARDE HISTORIQUE ######### 
+
+
 
         // infos basiques
         $contrat->forfait_entree = $request->forfait_administratif + $request->forfait_carte_pro;
@@ -688,6 +788,47 @@ class ContratController extends Controller
 
 
         }
+    }
+    
+
+        /**
+     * Retourne l'historique des contrats
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function historique($contrat_id)
+    {
+        $contra = Contrat::where('id',Crypt::decrypt($contrat_id))->first() ;        
+        $contrats = HistoriqueContrat::where('user_id',$contra->user_id)->get() ;        
+        
+        return view('contrat.historique.index', compact('contrats','contra'));
+
+    }
+    
+    
+    /**
+     * Affiche un histoque de contrat
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function historique_show($contrat_id)
+    {
+        $contrat = HistoriqueContrat::where('id',Crypt::decrypt($contrat_id))->first() ;        
+    
+      
+        $parrain_id =   Filleul::where('user_id',$contrat->user->id)->select('parrain_id')->first();
+        $parrain = User::where('id',$parrain_id['parrain_id'])->first();
+        
+        
+        $palier_starter =  $contrat != null ?  $this->palier_unserialize($contrat->palier_starter) : null;
+        $palier_expert =  $contrat != null ? $this->palier_unserialize($contrat->palier_expert) : null;
+        $comm_parrain = unserialize($contrat->comm_parrain ); 
+
+     
+    
+//   dd($parrain);
+        return view('contrat.historique.show', compact(['parrain','contrat','palier_starter','palier_expert','comm_parrain']));
+
     }
 }
 
