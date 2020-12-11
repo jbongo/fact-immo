@@ -27,7 +27,7 @@
                                 <tbody>
                                 @foreach ($mandataires as $mandataire)
                                 
-                                @if(($mandataire->contrat != null && $mandataire->contrat->a_demission == false && $mandataire->contrat->est_fin_droit_suite == false) || $mandataire->contrat == null ) 
+                                @if(($mandataire->contrat != null && $mandataire->contrat->a_demission == false && $mandataire->contrat->est_fin_droit_suite == false) ) 
                                     <tr>
                                         
                                         <td>

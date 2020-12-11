@@ -445,19 +445,19 @@ public  function valider_facture_stylimmo( Request $request, $compromis)
     
     
     
-    // ########## On calucul la note d'hono du Porteur et du partage
+    // ########## On calucul la note d'hono du Porteur et du partage  ##################################################################
     
-            if($compromis->agent_id == null){
+            // if($compromis->agent_id == null){
             
-                $this->preparer_facture_honoraire_encaissement($compromis->id, true );
+            //     $this->preparer_facture_honoraire_encaissement($compromis->id, true );
             
-            }else{
-            // facture du porteur de l'affaire
-                $this->preparer_facture_honoraire_encaissement($compromis->id, true );
-                // facture du partage de l'affaire
-                $this->preparer_facture_honoraire_encaissement($compromis->id, false );
+            // }else{
+            // // facture du porteur de l'affaire
+            //     $this->preparer_facture_honoraire_encaissement($compromis->id, true );
+            //     // facture du partage de l'affaire
+            //     $this->preparer_facture_honoraire_encaissement($compromis->id, false );
             
-            }
+            // }
     
     // #############################
     
@@ -571,7 +571,7 @@ public  function valider_facture_stylimmo( Request $request, $compromis)
                             
                             if($touch_comm == "oui"){
                             
-                                 $this->store_facture_honoraire_parrainage( $compromis, $filleul1);
+                                //  $this->store_facture_honoraire_parrainage( $compromis, $filleul1);
                             }
                             
                             
@@ -673,7 +673,7 @@ public  function valider_facture_stylimmo( Request $request, $compromis)
                             
                             if($touch_comm == "oui"){
                             
-                                $this->store_facture_honoraire_parrainage($compromis, $filleul2);
+                                // $this->store_facture_honoraire_parrainage($compromis, $filleul2);
                             }
                             
                             
@@ -814,8 +814,13 @@ public  function preparer_facture_honoraire($compromis)
             $facture = Facture::where([ ['type','honoraire'],['compromis_id',$compromis->id]])->first();
             
             if($facture->url == null && $facture->nb_mois_deduis == null){
+            
+            // dd('yessssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss');
                 $this->recalculer_honoraire( Crypt::encrypt($facture->id) );
+                
             }
+                $facture = Facture::where([ ['type','honoraire'],['compromis_id',$compromis->id]])->first();
+            dd($facture);
                 
                 $formule = unserialize( $facture->formule);
             
@@ -2252,6 +2257,8 @@ public function generer_pdf_facture_honoraire(Request $request, $facture_id)
 public function create_upload_pdf_honoraire($facture_id)
 {
     $facture = Facture::where('id',  Crypt::decrypt($facture_id))->first();
+    
+    // dd(Crypt::decrypt($facture_id));
     return view('facture.add_honoraire_pdf', compact('facture') );
     
 }
@@ -2635,7 +2642,9 @@ public function valider_honoraire($action, $facture_id)
             $compromis->facture_honoraire_cree = 0 ;
 
                 $compromis->update();
+                // dd($facture);
                 $facture->delete();
+                
                 return redirect()->route('facture.preparer_facture_honoraire', [ Crypt::encrypt( $compromis->id)]);
         }elseif($facture->type == "partage"){
                 // le mandataire qui porte l'affaire

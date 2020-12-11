@@ -15,8 +15,12 @@
              @endif       
             <div class="card alert">
          
+            @if(Auth::user()->role == "admin")
 				<a href="{{route('contrat.edit', Crypt::encrypt($contra->id))}}" class="btn btn-warning btn-flat btn-addon m-b-10 m-l-5"><i class="ti-angle-double-left"></i>@lang('Retour')</a> 
-
+			@else 
+				<a href="{{route('mandataire.show', Crypt::encrypt($contra->user->id))}}" class="btn btn-warning btn-flat btn-addon m-b-10 m-l-5"><i class="ti-angle-double-left"></i>@lang('Retour')</a> 
+			
+			@endif
           
             <br>
     
@@ -127,6 +131,63 @@
 												</tr> 
 										   
 										@endforeach
+										@if(Auth::user()->role == "admin")
+										<tr style="background: #eebbff">
+                                            <td><label >{{$contra->date_entree->format('d/m/Y')}} </label> </td>
+                                            <td><label >{{$contra->date_deb_activite->format('d/m/Y')}} </label> </td>
+                                        
+                                        
+                                        
+                                            <td  >
+                                                <label class="color-info">{{$contra->user->pack_actuel}} </label> 
+                                            </td>
+                                            
+                                            <td><label >
+                                            @if($contra->user->pack_actuel == "expert")
+                                                {{$contra->pourcentage_depart_expert}} 
+                                            @else 
+                                                {{$contra->pourcentage_depart_starter}} 
+                                            
+                                            @endif
+                                            
+                                            %</label> </td>
+                                            
+                                            <td  >
+                                                <label class="color-info">
+                                                
+                                                    @if($contra->est_soumis_tva == true)
+                                                        <span class="badge badge-success">Oui</span>
+                                                    @else 
+                                                        <span class="badge badge-danger">Non</span>
+                                                    @endif
+                                                
+                                                
+                                                </label> 
+                                            </td>
+                                            
+                                            <td  >
+                                                <label class="color-info">
+                                                
+                                                    @if($contra->deduis_jeton == true)
+                                                        <span class="badge badge-success">Oui</span>
+                                                    @else 
+                                                        <span class="badge badge-danger">Non</span>
+                                                    @endif
+                                                
+                                                
+                                                </label> 
+                                            </td>
+                                        
+                                            <td><label  class="color-danger">{{$contra->updated_at->format('d/m/Y')}} </label> </td>
+                                            
+                                            <td width="13%">
+                                                <span><a href="{{route('contrat.edit',Crypt::encrypt($contra->id) )}}" data-toggle="tooltip" title="@lang('Détails ')"><i class="large material-icons color-info">visibility</i></a> </span>
+                                            </td>
+                                        
+                                        
+                                        
+                                        </tr> 
+                                        @endif
 										  </tbody>
 										</table>
 									</div>

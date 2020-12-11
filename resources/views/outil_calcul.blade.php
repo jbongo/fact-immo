@@ -15,7 +15,7 @@
              @endif       
             <div class="card alert">
             @if (Auth()->user()->role == "mandataire")
-              <strong> Votre date d'anniversaire : <span class="color-danger">{{Auth()->user()->date_anniv()}}</span></strong>
+              <strong> Votre date d'anniversaire : <span class="color-danger">{{Auth()->user()->date_anniv("fr")}}</span></strong>
             <br><hr>
             @endif
                 <!-- table -->

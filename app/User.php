@@ -157,14 +157,17 @@ class User extends Authenticatable
     }
 
 
-    public function  date_anniv(){
+    public function  date_anniv($lang = "en"){
 
             // On va determiner la dernière date d'anniv de sa date d'anniversaire
            
             if($this->contrat == null){
                 return null;
             }
+            $m_entree = $this->contrat->date_deb_activite->format('m');
+            $d_entree = $this->contrat->date_deb_activite->format('d');
             $m_d_entree = $this->contrat->date_deb_activite->format('m-d');
+            
 
             $y_en_cour = date('Y');
 
@@ -172,12 +175,28 @@ class User extends Authenticatable
 
             // Si aujourdhui > à la date anniv
                 if($today > $y_en_cour.'-'.$m_d_entree  ){
-                    $date_anniv = $y_en_cour.'-'.$m_d_entree ;
+                
+                    if($lang == "en"){
+                        $date_anniv = $y_en_cour.'-'.$m_d_entree ;
+                    
+                    }else{
+                        $date_anniv = $d_entree.'/'.$m_entree.'/'.$y_en_cour ;
+                    
+                    }
                     
                 }else{
-                    $date_anniv =  ($y_en_cour-1).'-'.$m_d_entree ;
+                
+                    if($lang == "en"){
+                        $date_anniv =  ($y_en_cour-1).'-'.$m_d_entree ;
+                    
+                    }else{
+                        $date_anniv = $d_entree.'/'.$m_entree.'/'.($y_en_cour-1) ;
+                    
+                    }
         
                 }
+                
+               
 
             return $date_anniv; 
      

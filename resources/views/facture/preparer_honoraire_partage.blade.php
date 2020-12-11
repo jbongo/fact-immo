@@ -27,7 +27,8 @@
                 <div class="row">
                     <div class="col-lg-6 col-md-6 col-sm-6">
                         <span > <strong> Jetons restant : </strong></span>&nbsp;&nbsp;  <span class="color-warning"> <strong> {{$mandataire->nb_mois_pub_restant}}</strong></span> <br>
-                        <span > <strong> Année concernée : </strong></span> &nbsp;&nbsp; <span class="color-warning"> <strong> {{date('Y')}}</strong></span> <br>
+                        <span > <strong> Dépuis la date d'anniversaire : </strong></span> &nbsp;&nbsp; <span class="color-warning"> <strong> {{$mandataire->date_anniv("fr")}}</strong></span> <br>
+                        
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-6"></div>
                 </div> <br>
