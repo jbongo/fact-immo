@@ -816,11 +816,11 @@ public  function preparer_facture_honoraire($compromis)
             if($facture->url == null && $facture->nb_mois_deduis == null){
             
             // dd('yessssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss');
-                $this->recalculer_honoraire( Crypt::encrypt($facture->id) );
+                // $this->recalculer_honoraire( Crypt::encrypt($facture->id) );
                 
             }
                 $facture = Facture::where([ ['type','honoraire'],['compromis_id',$compromis->id]])->first();
-            dd($facture);
+            // dd($facture);
                 
                 $formule = unserialize( $facture->formule);
             
@@ -1472,7 +1472,7 @@ public  function preparer_facture_honoraire_partage($compromis,$mandataire_id = 
             $facture = Facture::where([ ['type','partage'],['user_id',$mandataire->id],['compromis_id',$compromis->id]])->first();
             
             if($facture->url == null && $facture->nb_mois_deduis == null){
-                $this->recalculer_honoraire( Crypt::encrypt($facture->id) );
+                // $this->recalculer_honoraire( Crypt::encrypt($facture->id) );
             }
             $formule = unserialize( $facture->formule);
         }
@@ -1545,7 +1545,7 @@ public  function preparer_facture_honoraire_partage($compromis,$mandataire_id = 
 
         if($facture->url == null && $facture->nb_mois_deduis == null){
         // dd('why');
-            $this->recalculer_honoraire( Crypt::encrypt($facture->id) );
+            // $this->recalculer_honoraire( Crypt::encrypt($facture->id) );
         }
         
         
