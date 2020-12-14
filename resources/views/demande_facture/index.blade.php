@@ -27,9 +27,10 @@
                                     <tr>
                                        
                                         <th>@lang('Mandataire')</th>
-                                        <th>@lang('Désignation')</th>
+                                        {{-- <th>@lang('Désignation')</th> --}}
                                         <th>@lang('Mandat')</th>
                                         <th>@lang('Net Vendeur')</th>
+                                        <th>@lang('Frais agence')</th>
                                         <th>@lang('Date exacte de vente')</th>
                                         <th>@lang('Partage')</th>
                                         <th>@lang('Action')</th>
@@ -41,14 +42,17 @@
                                         <td >
                                            <label class="color-info"> <a href="{{route('switch_user',Crypt::encrypt($compromi->user->id) )}}" data-toggle="tooltip" title="@lang('Se connecter en tant que ') {{$compromi->user->nom}}">{{$compromi->user->civilite}} {{$compromi->user->nom}} {{$compromi->user->prenom}}<i style="font-size: 17px" class="material-icons color-success">person_pin</i></a>   </label> 
                                         </td>
-                                        <td >
-                                        <strong>{{$compromi->designation}}</strong> 
-                                        </td>
+                                        {{-- <td >
+                                        <strong>{{$compromi->description_bien}}</strong> 
+                                        </td> --}}
                                         <td style="color: #e05555;">
                                             <strong> {{$compromi->numero_mandat}}</strong> 
                                         </td>
                                         <td>
                                             {{number_format($compromi->net_vendeur,2,',',' ')}} €  
+                                        </td>
+                                        <td>
+                                            {{number_format($compromi->frais_agence,2,',',' ')}} €  
                                         </td>
                                         <td>
                                         {{$compromi->date_vente->format('d/m/Y')}}   
