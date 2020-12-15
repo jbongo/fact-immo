@@ -54,23 +54,23 @@
 
                                         <div class="col-lg-6 col-md-6 col-sm-6">
                                             <div class="form-group row">
-                                                <label class="col-lg-4 col-form-label" for="date_entree">Date d'entrée<span class="text-danger">*</span></label>
+                                                <label class="col-lg-4 col-form-label" for="date_entree">Date d'entrée</label>
                                                 <div class="col-lg-4">
-                                                    <input type="date" class="form-control" value="{{$modele->date_entree}}" id="date_entree" name="date_entree" required>
+                                                    <input type="date" class="form-control" value="{{$modele->date_entree}}" id="date_entree" name="date_entree" >
                                                 </div>
                                             </div>
                                             <div class="form-group row">
-                                                <label class="col-lg-4 col-form-label" for="date_debut">Date de début d'activité<span class="text-danger">*</span></label>
+                                                <label class="col-lg-4 col-form-label" for="date_debut">Date de début d'activité</label>
                                                 <div class="col-lg-4">
-                                                    <input type="date" class="form-control" value="{{$modele->date_deb_activite}}" id="date_debut" name="date_debut" required>
+                                                    <input type="date" class="form-control" value="{{$modele->date_deb_activite}}" id="date_debut" name="date_debut" >
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-lg-6 col-md-6 col-sm-6">
                                             <div class="form-group row">
-                                                <label class="col-lg-4 col-form-label" for="ca_depart">Chiffre d'affaire de départ<span class="text-danger">*</span></label>
+                                                <label class="col-lg-4 col-form-label" for="ca_depart">Chiffre d'affaire de départ</label>
                                                 <div class="col-lg-4">
-                                                    <input type="number" min="0" class="form-control" value="{{$modele->ca_depart}}" id="ca_depart" name="ca_depart" required>
+                                                    <input type="number" min="0" class="form-control" value="{{$modele->ca_depart}}" id="ca_depart" name="ca_depart" >
                                                 </div>
                                             </div>
                                             
@@ -233,12 +233,12 @@
                                     </div>
                                     <div class="col-lg-6 col-md-6 col-sm-6">
                                        
-                                        <div class="form-group row">
+                                        {{-- <div class="form-group row">
                                             <label class="col-lg-6 col-form-label" for="duree_gratuite_expert">Durée de la gratuité (mois)<span class="text-danger">*</span></label>
                                             <div class="col-lg-4 col-md-4 col-sm-4 ">
                                                 <input type="number" class="form-control" id="duree_gratuite_expert" name="duree_gratuite_expert" min="0" max="48" value="{{$modele->duree_gratuite_expert}}" required>
                                             </div>
-                                        </div>
+                                        </div> --}}
                                     </div>
                                 </div>
 

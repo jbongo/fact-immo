@@ -447,17 +447,17 @@ public  function valider_facture_stylimmo( Request $request, $compromis)
     
     // ########## On calucul la note d'hono du Porteur et du partage  ##################################################################
     
-            // if($compromis->agent_id == null){
+            if($compromis->agent_id == null){
             
-            //     $this->preparer_facture_honoraire_encaissement($compromis->id, true );
+                $this->preparer_facture_honoraire_encaissement($compromis->id, true );
             
-            // }else{
-            // // facture du porteur de l'affaire
-            //     $this->preparer_facture_honoraire_encaissement($compromis->id, true );
-            //     // facture du partage de l'affaire
-            //     $this->preparer_facture_honoraire_encaissement($compromis->id, false );
+            }else{
+            // facture du porteur de l'affaire
+                $this->preparer_facture_honoraire_encaissement($compromis->id, true );
+                // facture du partage de l'affaire
+                $this->preparer_facture_honoraire_encaissement($compromis->id, false );
             
-            // }
+            }
     
     // #############################
     
@@ -571,7 +571,7 @@ public  function valider_facture_stylimmo( Request $request, $compromis)
                             
                             if($touch_comm == "oui"){
                             
-                                //  $this->store_facture_honoraire_parrainage( $compromis, $filleul1);
+                                 $this->store_facture_honoraire_parrainage( $compromis, $filleul1);
                             }
                             
                             
@@ -673,7 +673,7 @@ public  function valider_facture_stylimmo( Request $request, $compromis)
                             
                             if($touch_comm == "oui"){
                             
-                                // $this->store_facture_honoraire_parrainage($compromis, $filleul2);
+                                $this->store_facture_honoraire_parrainage($compromis, $filleul2);
                             }
                             
                             
@@ -813,8 +813,10 @@ public  function preparer_facture_honoraire($compromis)
         else{
             $facture = Facture::where([ ['type','honoraire'],['compromis_id',$compromis->id]])->first();
             
-            if($facture->url == null && $facture->nb_mois_deduis == null){
+            if($facture->url == null && $facture->nb_mois_deduis == null && $facture->user->contrat->deduis_jeton == true){
+                // dd(Crypt::encrypt($facture->id));
             
+            return redirect()->route('facture.recalculer_honoraire', Crypt::encrypt($facture->id));
             // dd('yessssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss');
                 // $this->recalculer_honoraire( Crypt::encrypt($facture->id) );
                 
@@ -1471,7 +1473,9 @@ public  function preparer_facture_honoraire_partage($compromis,$mandataire_id = 
 
             $facture = Facture::where([ ['type','partage'],['user_id',$mandataire->id],['compromis_id',$compromis->id]])->first();
             
-            if($facture->url == null && $facture->nb_mois_deduis == null){
+            if($facture->url == null && $facture->nb_mois_deduis == null && $facture->user->contrat->deduis_jeton == true){
+                return redirect()->route('facture.recalculer_honoraire', Crypt::encrypt($facture->id));
+            
                 // $this->recalculer_honoraire( Crypt::encrypt($facture->id) );
             }
             $formule = unserialize( $facture->formule);
@@ -1543,9 +1547,11 @@ public  function preparer_facture_honoraire_partage($compromis,$mandataire_id = 
             }
         // dd($compromis->facture_honoraire_partage_cree );
 
-        if($facture->url == null && $facture->nb_mois_deduis == null){
+        if($facture->url == null && $facture->nb_mois_deduis == null && $facture->user->contrat->deduis_jeton == true){
         // dd('why');
             // $this->recalculer_honoraire( Crypt::encrypt($facture->id) );
+            return redirect()->route('facture.recalculer_honoraire', Crypt::encrypt($facture->id));
+            
         }
         
         

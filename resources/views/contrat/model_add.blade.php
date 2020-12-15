@@ -70,13 +70,13 @@
                                             <div class="form-group row">
                                                 <label class="col-lg-4 col-form-label" for="date_entree">Date d'entrée<span class="text-danger">*</span></label>
                                                 <div class="col-lg-4">
-                                                    <input type="date" class="form-control" value="{{$modele->date_entree}}" id="date_entree" name="date_entree" required>
+                                                    <input type="date" class="form-control" value="{{$modele->date_entree != null ? $modele->date_entree->format('Y-m-d') : $modele->date_entree }}" id="date_entree" name="date_entree" required>
                                                 </div>
                                             </div>
                                             <div class="form-group row">
                                                 <label class="col-lg-4 col-form-label" for="date_debut">Date de début d'activité<span class="text-danger">*</span></label>
                                                 <div class="col-lg-4">
-                                                    <input type="date" class="form-control" value="{{$modele->date_deb_activite}}" id="date_debut" name="date_debut" required>
+                                                    <input type="date" class="form-control" value="{{$modele->date_deb_activite != null ? $modele->date_deb_activite->format('Y-m-d') : $modele->date_deb_activite }}" id="date_debut" name="date_debut" required>
                                                 </div>
                                             </div>
                                         </div>
@@ -255,12 +255,12 @@
                                     </div>
                                     <div class="col-lg-6 col-md-6 col-sm-6">
                                        
-                                        <div class="form-group row">
+                                        {{-- <div class="form-group row">
                                             <label class="col-lg-6 col-form-label" for="duree_gratuite_expert">Durée de la gratuité (mois)<span class="text-danger">*</span></label>
                                             <div class="col-lg-4 col-md-4 col-sm-4 ">
                                                 <input type="number" class="form-control" id="duree_gratuite_expert" name="duree_gratuite_expert" min="0"  value="{{$modele->duree_gratuite_expert}}" required>
                                             </div>
-                                        </div>
+                                        </div> --}}
                                     </div>
                                 </div>
 
