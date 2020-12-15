@@ -568,12 +568,12 @@ public  function valider_facture_stylimmo( Request $request, $compromis)
 
                             // SI TOUCHE_COMM == OUI ON CALCUL LA COMMISSION DU PARRAIN DU PORTEUR
                             
-                            
                             if($touch_comm == "oui"){
-                            
+                            // dd($touch_comm);
                                  $this->store_facture_honoraire_parrainage( $compromis, $filleul1);
                             }
                             
+                            // dd("ici");
                             
                             // ####################################################################
                             
@@ -813,8 +813,8 @@ public  function preparer_facture_honoraire($compromis)
         else{
             $facture = Facture::where([ ['type','honoraire'],['compromis_id',$compromis->id]])->first();
             
-            if($facture->url == null && $facture->nb_mois_deduis == null && $facture->user->contrat->deduis_jeton == true){
-                // dd(Crypt::encrypt($facture->id));
+            if($facture->url == null && $facture->nb_mois_deduis === null && $facture->user->contrat->deduis_jeton == true){
+                // dd($facture->nb_mois_deduis);
             
             return redirect()->route('facture.recalculer_honoraire', Crypt::encrypt($facture->id));
             // dd('yessssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss');
@@ -1473,7 +1473,7 @@ public  function preparer_facture_honoraire_partage($compromis,$mandataire_id = 
 
             $facture = Facture::where([ ['type','partage'],['user_id',$mandataire->id],['compromis_id',$compromis->id]])->first();
             
-            if($facture->url == null && $facture->nb_mois_deduis == null && $facture->user->contrat->deduis_jeton == true){
+            if($facture->url == null && $facture->nb_mois_deduis === null && $facture->user->contrat->deduis_jeton == true){
                 return redirect()->route('facture.recalculer_honoraire', Crypt::encrypt($facture->id));
             
                 // $this->recalculer_honoraire( Crypt::encrypt($facture->id) );
@@ -1547,7 +1547,7 @@ public  function preparer_facture_honoraire_partage($compromis,$mandataire_id = 
             }
         // dd($compromis->facture_honoraire_partage_cree );
 
-        if($facture->url == null && $facture->nb_mois_deduis == null && $facture->user->contrat->deduis_jeton == true){
+        if($facture->url == null && $facture->nb_mois_deduis === null && $facture->user->contrat->deduis_jeton == true){
         // dd('why');
             // $this->recalculer_honoraire( Crypt::encrypt($facture->id) );
             return redirect()->route('facture.recalculer_honoraire', Crypt::encrypt($facture->id));

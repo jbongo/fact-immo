@@ -300,4 +300,5 @@
           </div>
       </div>
 </div>
+@if ($facture !=null ) {{$facture->id}} @endif
 @endsection
