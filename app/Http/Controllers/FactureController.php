@@ -1354,7 +1354,6 @@ public  function store_facture_honoraire_parrainage(Compromis $compromis, Filleu
 
 public  function preparer_facture_honoraire_partage($compromis,$mandataire_id = null)
 {
-
    
     $compromis = Compromis::where('id', Crypt::decrypt($compromis))->first();
 
@@ -1413,7 +1412,6 @@ public  function preparer_facture_honoraire_partage($compromis,$mandataire_id = 
     
     $chiffre_affaire_styl = $mandataire->chiffre_affaire_styl( $mandataire->date_anniv(), $compromis->getFactureStylimmo()->date_encaissement->format('Y-m-d'));
 
-    
 
     if($compromis->je_porte_affaire == 1 && $compromis->est_partage_agent == 1 && (Auth()->user()->id == $compromis->user_id || $mandataire_id == $compromis->user_id) ){
 
@@ -1753,7 +1751,6 @@ public  function deduire_pub_facture_honoraire(Request $request, $compromis)
 
     $compromis = Compromis::where('id', Crypt::decrypt($compromis))->first();
     $mandataire = $compromis->user;
-
     $contrat = $mandataire->contrat;
 
     // On se positionne sur le pack actuel
@@ -1943,19 +1940,18 @@ if($contrat->est_soumis_tva == false ){
 
 $chiffre_affaire_styl = $mandataire->chiffre_affaire_styl( $mandataire->date_anniv(), $compromis->getFactureStylimmo()->date_encaissement->format('Y-m-d'));
 
-
-// dd( $mandataire_id );
 if($compromis->je_porte_affaire == 1 && $compromis->est_partage_agent == 1 && (Auth()->user()->id == $compromis->user_id || $mandataire_id == $compromis->user_id) ){
 //  dd("poter");
 // facture du mandataire qui porte l'affaire
     
-        $montant_vnt_ht = ($compromis->frais_agence/Tva::coefficient_tva()) ;
+        $montant_vnt_ht = (($compromis->frais_agence*$pourcentage_partage/100)/Tva::coefficient_tva()) ;
+        
         
         // Calcul de la commission, on retire l'encaissé actuel pour ne pas faire de doublon pendant le calcul de com
         $niveau_actuel = $this->calcul_niveau($paliers, ($chiffre_affaire_styl - $montant_vnt_ht ));
 
-        $formule = $this->calcul_com($paliers, $montant_vnt_ht*$pourcentage_partage/100, $chiffre_affaire_styl, $niveau_actuel-1, $mandataire);
-
+        $formule = $this->calcul_com($paliers, $montant_vnt_ht, $chiffre_affaire_styl, $niveau_actuel-1, $mandataire);
+// dd($formule);
       
             $montant_ht = round ( ($formule[1] - ($contrat->packpub->tarif * $request->nb_mois_deduire) ) ,2) ;
             $montant_ttc = round ($montant_ht*$tva,2);
@@ -2003,12 +1999,12 @@ else{
 
   
 
-        $montant_vnt_ht = ($compromis->frais_agence/Tva::coefficient_tva()) ;
+        $montant_vnt_ht = (($compromis->frais_agence*$pourcentage_partage/100)/Tva::coefficient_tva()) ;
 
         // Calcul de la commission, on retire l'encaissé actuel pour ne pas faire de doublon pendant le calcul de com
         $niveau_actuel = $this->calcul_niveau($paliers, ($chiffre_affaire_styl - $montant_vnt_ht ));
 
-        $formule = $this->calcul_com($paliers, $montant_vnt_ht*$pourcentage_partage/100, $chiffre_affaire_styl, $niveau_actuel-1, $mandataire);
+        $formule = $this->calcul_com($paliers, $montant_vnt_ht, $chiffre_affaire_styl, $niveau_actuel-1, $mandataire);
 
         
         $montant_ht = round ( ($formule[1] - ($contrat->packpub->tarif * $request->nb_mois_deduire) ) ,2) ;
@@ -2115,8 +2111,8 @@ public function calcul_com($palier, $montant_vnt_ht, $ca, $niveau)
     
     // on retire l'encaissé actuel parcequ'il fait déjà partir du ca encaissé
     $ca -= $montant_vnt_ht;
-    // dd($palier);
-        // à partir du niveau actuell, on avance sur le palier
+    // dd($montant_vnt_ht);
+        // à partir du niveau actuel, on avance sur le palier
        for ($i=$niveau; $i<count($palier);$i++){
            if ($ca + $montant_vnt_ht <= ($palier[$i])[3] || $i == count($palier) - 1){
                $commission += ($montant_vnt_ht / 100) * ($palier[$i])[1];
@@ -2150,7 +2146,7 @@ public function calcul_niveau($paliers, $chiffre_affaire)
 {
     $niveau = 1;
     $nb_niveau = sizeof($paliers) -1  ;
-    // dd($paliers[4]);
+    // dd($chiffre_affaire);
     foreach ($paliers as $palier) {
        
         if($chiffre_affaire >= $palier[2] && $chiffre_affaire <= $palier[3] ){
@@ -2160,6 +2156,7 @@ public function calcul_niveau($paliers, $chiffre_affaire)
         }
     }
 
+// dd($niveau);
     return $niveau;
 }
 
