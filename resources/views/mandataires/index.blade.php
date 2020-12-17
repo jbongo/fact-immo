@@ -22,7 +22,7 @@
                     <div class="col-lg-12 col-md-12 col-sm-12">
                        <ul class="nav nav-pills nav-tabs" id="myTabs">
                           <li id="li_mandataire_actif" class="active"><a href="#mandataire_actif" data-toggle="pill"> <i class="material-icons" style="font-size: 15px;">account_balance_wallet</i> @lang('Mandataires Actifs')</a></li>
-                          <li id="li_recrutement_nav"><a href="#recrutement_nav" data-toggle="pill"> <i class="material-icons" style="font-size: 15px;">account_balance_wallet</i> @lang('Récrutement')</a></li>
+                          <li id="li_recrutement_nav"><a href="#recrutement_nav" data-toggle="pill"> <i class="material-icons" style="font-size: 15px;">account_balance_wallet</i> @lang('Recrutement')</a></li>
                           <li id="li_demissionnaire_nav"><a href="#demissionnaire_nav" data-toggle="pill"> <i class="material-icons" style="font-size: 15px;">account_balance_wallet</i> @lang('Démissionnaires')</a></li>
                           <li id="li_desactive_nav"><a href="#desactive_nav" data-toggle="pill"> <i class="material-icons" style="font-size: 15px;">account_balance_wallet</i> @lang('Mandataires Désactivés')</a></li>
                          

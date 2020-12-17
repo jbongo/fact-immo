@@ -320,8 +320,8 @@ class ContratController extends Controller
                 foreach ($rang_filleuls as $rang_fill) {
                     $rangs[] = $rang_fill["rang"];
                 }
-
-                $rang = max($rangs)+1;
+                $rang = sizeof($rangs) > 0 ? max($rangs)+1 : 1;
+            
 
           
                 }else{
@@ -566,7 +566,7 @@ class ContratController extends Controller
         
         // Ajout du parrain
 
-        if($request->a_parrain == "true" ){
+        if($request->a_parrain == "on" ){
 
 
             $nb_filleul = Filleul::where([ ['parrain_id',$request->parrain_id]])->count();
@@ -575,7 +575,6 @@ class ContratController extends Controller
             // on détermine le nombre d'année depuis la date de début d'activité du parrain dans le but de determiner le cycle dans le quel nous somme
             $nb_annee = intval( (strtotime(date('Y-m-d')) - strtotime($parrain->contrat->date_entree->format('Y-m-d'))) / (86400 *365) ) ;
             $cycle_actuel = intval($nb_annee / 3 ) + 1;
-
 
             if($nb_filleul > 0){
 
@@ -586,8 +585,11 @@ class ContratController extends Controller
                 foreach ($rang_filleuls as $rang_fill) {
                     $rangs[] = $rang_fill["rang"];
                 }
-
-                $rang = max($rangs)+1;
+                
+                
+                $rang = sizeof($rangs) > 0 ? max($rangs)+1 : 1;
+                
+         
             
             }else{
 

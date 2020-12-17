@@ -788,7 +788,7 @@
                
                 data: data,
                 success: function(data) {
-                    // console.log(data);
+                    console.log(data);
                     
                     swal(
                             'Ajouté',
@@ -796,7 +796,7 @@
                             'success'
                         )
                         .then(function() {
-                            // window.location.href = "{{route('mandataire.index')}}";
+                            window.location.href = "{{route('mandataire.index')}}";
                         })
                         // setInterval(() => {
                         //     window.location.href = "{{route('mandataire.index')}}";
