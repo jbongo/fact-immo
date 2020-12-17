@@ -474,26 +474,26 @@
                                               
                                             </tr>
                                         </thead>
-                                        <tbody class="input_fields_wrap_pub">
+                                        {{-- <tbody class="input_fields_wrap_pub">
                                             @foreach ($passerelles as $passerelle )
                                                 <tr>
                                                 <td  class="color-primary"><span style="color:#898855; font-weight: bold;" > {{$passerelle->fournisseur->nom}}</span></td>
                                                 <td><span style="color:#898855; font-weight: bold;" > {{$passerelle->quantite}}</span></td>
                                                 <td><span style="color:#898855; font-weight: bold;" > {{ ($passerelle->prix_achat / $passerelle->quantite) * $passerelle->coefficient }}</span></td>
                                                 <td><input type="number" style="background-color:#ecf0f9" min="0"  class="form-control" value="" id="pa_1" name="pa_1" required></td>
-                                                    {{-- <td><input type="number" style="background-color:#ecf0f9" min="0"  class="form-control" value="" id="pv_1" name="pv_1" readonly></td> --}} 
-                                                </tr>
+                                            </tr>
                                             @endforeach
                                             <tr>
-                                               
-                                                    <td colspan="2"><span  > <strong>TOTAL : </strong> </span></td>
-                                                    <td ><span  > <strong>xxx € </strong> </span></td>
-                                              
-                                                    
+                                                
+                                                <td colspan="2"><span  > <strong>TOTAL : </strong> </span></td>
+                                                <td ><span  > <strong>xxx € </strong> </span></td>
+                                                
+                                                
                                             </tr>
-                                            {{-- <button class="btn btn-warning add_field_button_pub" style="margin-bottom: 53px;">Ajouter une passerelle</button> --}}
-                                           
-                                        </tbody>
+                                            
+                                        </tbody> --}}
+                                        {{-- <button class="btn btn-warning add_field_button_pub" style="margin-bottom: 53px;">Ajouter une passerelle</button> --}}
+                                        {{-- <td><input type="number" style="background-color:#ecf0f9" min="0"  class="form-control" value="" id="pv_1" name="pv_1" readonly></td> --}} 
                                     </table>
                                 </div>
 
