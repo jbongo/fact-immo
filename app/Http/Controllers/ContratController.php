@@ -566,7 +566,7 @@ class ContratController extends Controller
         
         // Ajout du parrain
 
-        if($request->a_parrain == "on" ){
+        if($request->a_parrain == "true" ){
 
 
             $nb_filleul = Filleul::where([ ['parrain_id',$request->parrain_id]])->count();

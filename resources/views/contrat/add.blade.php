@@ -36,13 +36,13 @@
                                             <div class="form-group row">
                                                 <label class="col-lg-4 col-form-label" for="forfait_administratif">Forfait administratif (€)<span class="text-danger">*</span></label>
                                                 <div class="col-lg-4">
-                                                    <input type="number" class="form-control" min="0" value="175" id="forfait_administratif" name="forfait_administratif" required>
+                                                    <input type="number" class="form-control" min="0" value="" id="forfait_administratif" name="forfait_administratif" required>
                                                 </div>
                                             </div>
                                             <div class="form-group row">
                                                 <label class="col-lg-4 col-form-label" for="forfait_carte_pro">Attestation de collaborateur (€)<span class="text-danger">*</span></label>
                                                 <div class="col-lg-4">
-                                                    <input type="number" class="form-control" min="0" value="50" id="forfait_carte_pro" name="forfait_carte_pro" required>
+                                                    <input type="number" class="form-control" min="0" value="" id="forfait_carte_pro" name="forfait_carte_pro" required>
                                                 </div>
                                             </div>
                                             <div class="form-group row">
@@ -316,7 +316,7 @@
                                                             <div class="form-group row">
                                                                 <label class="col-lg-6 col-form-label" for="a_condition_expert">Appliquer ces conditions au mandataire ?</label>
                                                                 <div class="col-lg-6">
-                                                                    <input type="checkbox" checked data-toggle="toggle" id="a_condition_expert" name="a_condition_expert" data-off="Non" data-on="Oui" data-onstyle="success" data-offstyle="danger">
+                                                                    <input type="checkbox"  data-toggle="toggle" id="a_condition_expert" name="a_condition_expert" data-off="Non" data-on="Oui" data-onstyle="success" data-offstyle="danger">
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -796,7 +796,7 @@
                             'success'
                         )
                         .then(function() {
-                            window.location.href = "{{route('mandataire.index')}}";
+                            // window.location.href = "{{route('mandataire.index')}}";
                         })
                         // setInterval(() => {
                         //     window.location.href = "{{route('mandataire.index')}}";
