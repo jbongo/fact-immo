@@ -275,7 +275,7 @@ Compromis
                                             </div>
                                             <div class="col-lg-3 col-md-3 col-sm-3">
                                                 <div class="form-group">
-                                                    <label for="montant_deduis">Montant Déduis Ht ou Net </label>
+                                                    <label for="montant_deduis">Montant Déduits Ht ou Net </label>
                                                     <input class="form-control" type="number" value="{{ $compromis->montant_deduis_net}}" id="montant_deduis" name="montant_deduis" >
                                                 </div>
                                             </div>

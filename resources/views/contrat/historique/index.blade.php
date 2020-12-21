@@ -58,7 +58,7 @@
 													<th>@lang('Pack')</th>
 													<th>@lang('Pourcentage de départ')</th>
 													<th>@lang('est soumis TVA')</th>
-													<th>@lang('Déduis jétons')</th>
+													<th>@lang('Déduit jétons')</th>
 													<th>@lang('Date de modification')</th>
 													<th>@lang('Action')</th>
 												

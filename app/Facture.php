@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use PDF;
 use Illuminate\Support\Facades\File ;
 use App\Facture;
+use App\User;
 
 class Facture extends Model
 {
@@ -157,6 +158,29 @@ class Facture extends Model
     public static function nb_facture_a_payer(){
         $nb =  Facture::whereIn('type',['honoraire','partage','parrainage','parrainage_partage'])->where([['reglee', false], ['statut','valide']])->count();
         return $nb;
+    }
+    
+    
+    
+    
+    // Retourne le max à deduire et le reste à déduire
+    public static function etat_jeton($user_id){
+        
+        $mandataire = User::where('id', $user_id)->first();
+        $tab = array(0,0);
+        
+        if($mandataire->contrat->deduis_jeton == true) {
+        
+            $jeton_restant = $mandataire->nb_mois_pub_restant ;
+            $tab[0] = $jeton_restant;
+            $tab[1] = $mandataire->date_anniv();
+        
+        }else{
+            return null; 
+        }
+        
+        
+        return $tab;
     }
    
 }

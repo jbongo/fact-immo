@@ -718,6 +718,7 @@ public  function preparer_facture_honoraire($compromis)
     $compromis = Compromis::where('id', Crypt::decrypt($compromis))->first();
     $mandataire = $compromis->user;
     
+    dd(Facture::etat_jeton($mandataire->id));
     $contrat = $mandataire->contrat;
     
     // On se positionne sur le pack actuel
@@ -1825,10 +1826,10 @@ public  function deduire_pub_facture_honoraire(Request $request, $compromis)
         $compromis->update();
 
         if( session('is_switch') == true ){
-            $action = "a déduis $request->nb_mois_deduire mois de pub sur la facture $facture->numero pour  ".Auth::user()->nom." ".Auth::user()->prenom;
+            $action = "a dédui $request->nb_mois_deduire mois de pub sur la facture $facture->numero pour  ".Auth::user()->nom." ".Auth::user()->prenom;
             $user_id = session('admin_id');
         }else{
-            $action = Auth::user()->nom." ".Auth::user()->prenom." a déduis $request->nb_mois_deduire mois de pub sur la facture  $facture->numero";
+            $action = Auth::user()->nom." ".Auth::user()->prenom." a dédui $request->nb_mois_deduire mois de pub sur la facture  $facture->numero";
             $user_id = Auth::user()->id;
         }
       
@@ -2045,11 +2046,11 @@ else{
 //  dd($formule);
 
 if( session('is_switch') == true ){
-    $action = "a déduis $request->nb_mois_deduire mois de pub sur la facture $facture->type du mandat $compromis->numero_mandat pour  ".Auth::user()->nom." ".Auth::user()->prenom;
+    $action = "a dédui $request->nb_mois_deduire mois de pub sur la facture $facture->type du mandat $compromis->numero_mandat pour  ".Auth::user()->nom." ".Auth::user()->prenom;
     $user_id = session('admin_id');
 }else{
     $proprietaire = $facture->user->nom." ".$facture->user->prenom ;
-    $action = Auth::user()->nom." ".Auth::user()->prenom." a déduis $request->nb_mois_deduire mois de pub sur la facture  $facture->type du mandat $compromis->numero_mandat appartenant à $proprietaire ";
+    $action = Auth::user()->nom." ".Auth::user()->prenom." a dédui $request->nb_mois_deduire mois de pub sur la facture  $facture->type du mandat $compromis->numero_mandat appartenant à $proprietaire ";
     $user_id = Auth::user()->id;
 }
 
@@ -3104,6 +3105,19 @@ public function valider_honoraire($action, $facture_id)
 
         $facturesAPayer = Facture::whereIn('type',['honoraire','partage','parrainage','parrainage_partage'])->where([['reglee', false], ['statut','valide']])->latest()->get();
         $facturesNonAjou = Facture::whereIn('type',['honoraire','partage','parrainage','parrainage_partage'])->where([['reglee', false], ['statut','<>','valide']])->latest()->get();
+        
+        // Liste des affaires réitérée, encaissée mais dont les notes d'honoraires n'ont pas été générée
+        $compromisR = Compromis::where([['facture_stylimmo_valide', true], ['cloture_affaire', 1]])->where(function ($query) {
+        
+            // $query->where([['est_partage_agent', false], ['facture_honoraire_cree', false], ['facture_honoraire_parrainage_cree', false]])
+            $query->where([['est_partage_agent', false], ['facture_honoraire_cree', false]])
+                ->orWhere([['est_partage_agent', true], ['facture_honoraire_partage_cree', false], ['facture_honoraire_partage_porteur_cree', false]])
+                ->orWhere([['est_partage_agent', true], ['facture_honoraire_partage_cree', true], ['facture_honoraire_partage_porteur_cree', false]])
+                ->orWhere([['est_partage_agent', true], ['facture_honoraire_partage_cree', false], ['facture_honoraire_partage_porteur_cree', true]]);
+        
+        })->get();
+
+// dd($compromisR);
 
 
 // On reccupere le total TTC
@@ -3135,7 +3149,7 @@ public function valider_honoraire($action, $facture_id)
             $totalApayer_HT = Facture::whereIn('type',['honoraire','partage','parrainage','parrainage_partage'])->where([['reglee', false], ['statut','valide']])->sum('montant_ht');
 
 
-       return view('facture.a_payer.index', compact('facturesAPayer','facturesNonAjou','totalNonAjou','totalApayer','motantTvaFNonAjou','motantTvaFAPayer','totalApayer_HT','totalNonAjou_HT'));
+       return view('facture.a_payer.index', compact('facturesAPayer','facturesNonAjou','totalNonAjou','totalApayer','motantTvaFNonAjou','motantTvaFAPayer','totalApayer_HT','totalNonAjou_HT','compromisR'));
  
 
     }

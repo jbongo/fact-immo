@@ -1,15 +1,10 @@
 @component('mail::message')
 # Bonjour {{$mandataire->prenom}} {{$mandataire->nom}}
 
-Vous venez de passer à la tva <br>
+Vous venez de changer de palier <br>
 
-@if($mandataire->numero_tva == null)
-<span>Pensez à fournir votre numéro TVA au siège le plus tôt possible.</span>
-@endif
-<br>
-Votre Chiffre d'affaire depuis le début de l'année {{$ca}} <br>
-Le CA requis pour passer à la TVA: {{$catva}}
-
+Ancien pourcentage : {{$ancien_pourcentant}} % <br>
+Nouveau pourcentage : {{$nouveau_pourcentant}} % <br>
 
 @component('mail::button', ['url' => config('app.url') ])
 Se connecter

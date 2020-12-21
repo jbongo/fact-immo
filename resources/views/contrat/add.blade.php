@@ -18,7 +18,7 @@
 
                 <div class="panel-body">
                 @if ($modele !=null)
-                    <a class="btn btn-default btn-flat btn-addon btn-sm m-b-10 m-l-5  " href="{{route('contrat.model_create',$user_id)}}" id="terminer"><i class="ti-save"></i> &nbsp; Appliquer le Modèle par defaut</a>
+                    <a class="btn btn-success btn-flat btn-addon btn-sm m-b-10 m-l-5  " href="{{route('contrat.model_create',$user_id)}}" id="terminer"><i class="ti-save"></i> &nbsp; Appliquer le Modèle par defaut</a>
                 @else 
                     <span class="color-danger " id="terminer"><i class="ti-plus"></i>Vous n'avez pas encore crée de modèle de contrat </span> <span class="color-default"> (voir dans paramètre)</span>                    
                 @endif

@@ -10,15 +10,20 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 class NotifChangementPalier extends Mailable
 {
     use Queueable, SerializesModels;
-
+    
+    public $mandataire;
+    public $ancien_pourcentant;
+    public $nouveau_pourcentant;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($mandataire, $ancien_pourcentant, $nouveau_pourcentant)
     {
-        //
+        $this->mandataire = $mandataire;
+        $this->ancien_pourcentant = $ancien_pourcentant;
+        $this->nouveau_pourcentant = $nouveau_pourcentant;
     }
 
     /**
@@ -28,6 +33,6 @@ class NotifChangementPalier extends Mailable
      */
     public function build()
     {
-        return $this->view('view.name');
+        return $this->view('email.notif_changement_palier');
     }
 }

@@ -22,7 +22,7 @@
            <br>
                <div class="row">
                   <div class="col-lg-6 col-md-6 col-sm-6">
-                     <span > <strong> Jetons restant  : </strong></span>&nbsp;&nbsp;  <span class="color-warning"> <strong> {{$mandataire->nb_mois_pub_restant}}</strong></span> <br>
+                     <span > <strong> Jeton(s) restant(s)  : </strong></span>&nbsp;&nbsp;  <span class="color-warning"> <strong> {{$mandataire->nb_mois_pub_restant}}</strong></span> <br>
                      <span > <strong> Dépuis la date d'anniversaire : </strong></span> &nbsp;&nbsp; <span class="color-warning"> <strong> {{$mandataire->date_anniv("fr")}}</strong></span> <br>
                   </div>
                   <div class="col-lg-6 col-md-6 col-sm-6"></div>
@@ -37,7 +37,7 @@
                                 <hr>
                                 <div class="col-lg-9 col-md-9 col-sm-9">
                                     <div class="form-group row">
-                                        <label class="col-lg-6 col-md-6 col-sm-6 control-label" for="nb_mois_deduire">Nombre de jetons à utiliser<span class="text-danger">*</span> </label>
+                                        <label class="col-lg-6 col-md-6 col-sm-6 control-label" for="nb_mois_deduire">Nombre de jetons à déduire<span class="text-danger">*</span> </label>
                                         <div class="col-lg-3 col-md-3 col-sm-3">
                                         <input type="number" max="{{$mandataire->nb_mois_pub_restant}}" min="0" class="form-control {{ $errors->has('nb_mois_deduire') ? ' is-invalid' : '' }}" value="{{old('nb_mois_deduire')}}" id="nb_mois_deduire" name="nb_mois_deduire" required >
                                            @if ($errors->has('nb_mois_deduire'))
@@ -197,7 +197,7 @@
        @if ($facture->user->contrat->deduis_jeton == true ||  $facture->nb_mois_deduis > 0 )
            <tr>
                <td style="width: 400px;">&nbsp;</td>
-               <td style="width: 153px;">Jetons déduis :</td>
+               <td style="width: 153px;">Jetons déduits :</td>
                <td style="width: 231px;">- {{ number_format($montant_pub_deduis, 2, '.', ' ') }} &euro;</td>
            </tr>
        {{-- <tr><td>&nbsp;</td></tr> --}}
@@ -222,7 +222,7 @@
        @php $montant_pub_deduis = $facture->nb_mois_deduis * $mandataire->contrat->packpub->tarif @endphp
         <tr>
             <td style="width: 400px;">&nbsp;</td>
-            <td style="width: 355px; color:#dc3545">Jetons déduis : {{number_format($montant_pub_deduis,'2','.',' ')}} &euro;</td>
+            <td style="width: 355px; color:#dc3545">Jetons déduits : {{number_format($montant_pub_deduis,'2','.',' ')}} &euro;</td>
             <td style="width: 31px; ">&nbsp;</td>
         </tr>
         @endif --}}
@@ -244,7 +244,7 @@
         @php $montant_pub_deduis = $facture->nb_mois_deduis * $mandataire->contrat->packpub->tarif @endphp
         <tr>
             <td style="width: 400px;">&nbsp;</td>
-            <td style="width: 153px;">Jetons déduis :</td>
+            <td style="width: 153px;">Jetons déduits :</td>
             <td style="width: 231px;">- {{ number_format($montant_pub_deduis, 2, '.', ' ') }} &euro;</td>
         </tr>
         @endif --}}
