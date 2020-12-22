@@ -718,7 +718,7 @@ public  function preparer_facture_honoraire($compromis)
     $compromis = Compromis::where('id', Crypt::decrypt($compromis))->first();
     $mandataire = $compromis->user;
     
-    dd(Facture::etat_jeton($mandataire->id));
+    // dd(Facture::etat_jeton($mandataire->id));
     $contrat = $mandataire->contrat;
     
     // On se positionne sur le pack actuel
