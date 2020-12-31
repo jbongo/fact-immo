@@ -5,7 +5,7 @@
 
 
     $li_home = $li_mandataire = $li_affaire = $li_affaire_filleul = $li_affaire_archive=  $li_facture = $li_facture_gestion = $li_facture_demande = $li_facture_a_payer = $li_parametre = $li_parametre_modele =
-    $li_parametre_fournisseur = $li_parametre_generaux = $li_outil = $li_affaire_toutes = $li_affaire_cloture = $li_facture_hors_delais ="";
+    $li_parametre_fournisseur = $li_parametre_generaux = $li_outil = $li_affaire_toutes = $li_affaire_cloture = $li_facture_hors_delais = $li_jetons ="";
     
     switch ($curent_url[1]) {
         case 'home':       
@@ -54,6 +54,9 @@
         switch ($curent_url[2]) {
             case 'modele_contrat':       
                 $li_parametre_modele = "active";
+                break;
+            case 'jetons':
+                $li_jetons = "active";
                 break;
             case 'fournisseur':
                 $li_parametre_fournisseur = "active";
@@ -119,9 +122,9 @@
                
                     <li class="{{$li_mandataire}}"><a  href="{{route('mandataire.index')}}" class=""> <i class="large material-icons" style="font-size:20px;">person</i></i>Mandataires  </a></li>
                   
-                    <li class="{{$li_mandataire}}"><a  href="{{route('mandataires.jetons')}}" class=""> <i class="large material-icons" style="font-size:20px;">adjust</i></i>Gestion des jetons  </a></li>
+                    <li  style=" background:#aeefec" class="{{$li_jetons}}"><a  href="{{route('mandataires.jetons')}}" class=""> <i class="large material-icons" style="font-size:20px;">adjust</i></i>Gestion des jetons  </a></li>
                 @else 
-                    <li class="{{$li_mandataire}}"><a  href="{{route('mandataire.historique_jeton',Crypt::encrypt(Auth::id()))}}" class=""> <i class="large material-icons" style="font-size:20px;">adjust</i></i>Gestion des jetons  </a></li>
+                    <li  style=" background:#aeefec" class="{{$li_jetons}}"><a  href="{{route('mandataire.historique_jeton',Crypt::encrypt(Auth::id()))}}" class=""> <i class="large material-icons" style="font-size:20px;">adjust</i></i>Gestion des jetons  </a></li>
                     
 
                 @endif
