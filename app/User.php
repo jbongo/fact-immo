@@ -203,4 +203,41 @@ class User extends Authenticatable
     }
 
 
+     
+    // Retourne le max à deduire et le reste à déduire
+    public function etat_jeton(){
+        
+        $mandataire = User::where('id', $this->id)->first();
+        $tab = array();
+        
+        if($mandataire->contrat->deduis_jeton == true) {
+        
+            $jeton_restant = $mandataire->nb_mois_pub_restant ;
+            $tab["jeton_restant"] = $jeton_restant;
+            
+            $today = date_create(date('Y-m-d'));
+            $date_anniv = date_create($mandataire->date_anniv());
+            
+            // nombre de mois entre la date d'anniv et aujourd'hui == nombre de jeton minimum à deduire pour être à jour
+            $interval = date_diff($today, $date_anniv);
+            
+            // Nombre de jeton qui doit rester à deduire
+            $nb_mois_max  = 12 - $interval->m;
+            $tab["jeton_max"] = $nb_mois_max ;
+            
+            
+            $tab["retard"] =  ($jeton_restant - $nb_mois_max) > 0 ? ($jeton_restant - $nb_mois_max) : 0 ;
+            
+            $tab["jeton_min_a_deduire"] = $tab["retard"] > 3 ?  $tab["retard"]  - 3 : 0 ;
+            
+            $tab['date_anniv'] = $mandataire->date_anniv("fr");
+        
+        }else{
+            return null; 
+        }
+        
+        
+        return $tab;
+    }
+
 }

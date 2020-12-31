@@ -115,11 +115,14 @@
                 <ul>
                 <li class="{{$li_home}}" ><a href="{{route('home')}}" ><i class="large material-icons" style="font-size:20px;">home</i> Accueil </a></li>
                     
-                @if (Auth()->user()->role == "admin")
-                        
+                @if (Auth()->user()->role == "admin")                        
                
-                    <li class="{{$li_mandataire}}"><a  href="{{route('mandataire.index')}}" class=""> <i class="large material-icons" style="font-size:20px;">person</i></i>Mandataires  </a>
-                    </li>
+                    <li class="{{$li_mandataire}}"><a  href="{{route('mandataire.index')}}" class=""> <i class="large material-icons" style="font-size:20px;">person</i></i>Mandataires  </a></li>
+                  
+                    <li class="{{$li_mandataire}}"><a  href="{{route('mandataires.jetons')}}" class=""> <i class="large material-icons" style="font-size:20px;">adjust</i></i>Gestion des jetons  </a></li>
+                @else 
+                    <li class="{{$li_mandataire}}"><a  href="{{route('mandataire.historique_jeton',Crypt::encrypt(Auth::id()))}}" class=""> <i class="large material-icons" style="font-size:20px;">adjust</i></i>Gestion des jetons  </a></li>
+                    
 
                 @endif
                 <li class="{{$li_affaire}} {{$li_affaire_archive}} {{$li_affaire_toutes}} {{$li_affaire_cloture}} {{ $li_affaire_filleul}}"><a class="sidebar-sub-toggle" href="" ><i class="large material-icons" style="font-size:20px;">folder_open</i>  Affaires <span class="sidebar-collapse-icon ti-angle-down"></span> </a>

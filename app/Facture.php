@@ -167,13 +167,29 @@ class Facture extends Model
     public static function etat_jeton($user_id){
         
         $mandataire = User::where('id', $user_id)->first();
-        $tab = array(0,0);
+        $tab = array();
         
         if($mandataire->contrat->deduis_jeton == true) {
         
             $jeton_restant = $mandataire->nb_mois_pub_restant ;
-            $tab[0] = $jeton_restant;
-            $tab[1] = $mandataire->date_anniv();
+            $tab["jeton_restant"] = $jeton_restant;
+            
+            $today = date_create(date('Y-m-d'));
+            $date_anniv = date_create($mandataire->date_anniv());
+            
+            // nombre de mois entre la date d'anniv et aujourd'hui == nombre de jeton minimum à deduire pour être à jour
+            $interval = date_diff($today, $date_anniv);
+            
+            // Nombre de jeton qui doit rester à deduire
+            $nb_mois_max  = 12 - $interval->m;
+            $tab["jeton_max"] = $nb_mois_max ;
+            
+            
+            $tab["retard"] =  ($jeton_restant - $nb_mois_max) > 0 ? ($jeton_restant - $nb_mois_max) : 0 ;
+            
+            $tab["jeton_min_a_deduire"] = $tab["retard"] > 3 ?  $tab["retard"]  - 3 : 0 ;
+            
+            $tab['date_anniv'] = $mandataire->date_anniv("fr");
         
         }else{
             return null; 
@@ -182,5 +198,15 @@ class Facture extends Model
         
         return $tab;
     }
+    
+    // Pourcentage actuel 
+    public  function pourcentage_actuel(){
+        
+        $formule = unserialize($this->formule);
+        
+        
+        return $formule[0][0][1];
+    }
+    
    
 }

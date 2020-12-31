@@ -718,7 +718,6 @@ public  function preparer_facture_honoraire($compromis)
     $compromis = Compromis::where('id', Crypt::decrypt($compromis))->first();
     $mandataire = $compromis->user;
     
-    // dd(Facture::etat_jeton($mandataire->id));
     $contrat = $mandataire->contrat;
     
     // On se positionne sur le pack actuel
@@ -831,7 +830,9 @@ public  function preparer_facture_honoraire($compromis)
         
         
     $factureStylimmo = Facture::where([ ['type','stylimmo'],['compromis_id',$compromis->id]])->first();
-    return view ('facture.preparer_honoraire',compact(['compromis','mandataire','facture','factureStylimmo','formule']));
+    
+    $etat_jeton = Facture::etat_jeton($mandataire->id);
+    return view ('facture.preparer_honoraire',compact(['compromis','mandataire','facture','factureStylimmo','formule','etat_jeton']));
     
 }
 
@@ -1419,7 +1420,6 @@ public  function preparer_facture_honoraire_partage($compromis,$mandataire_id = 
 // facture du mandataire qui porte l'affaire
         if($compromis->facture_honoraire_partage_porteur_cree == false && ($mandataire->contrat->deduis_jeton == false || ($mandataire->contrat->deduis_jeton == true && $mandataire->nb_mois_pub_restant <= 0) ) ){
             $montant_vnt_ht = ($compromis->frais_agence/Tva::coefficient_tva()) ;
-            
             // Calcul de la commission, on retire l'encaissé actuel pour ne pas faire de doublon pendant le calcul de com
             $niveau_actuel = $this->calcul_niveau($paliers, ($chiffre_affaire_styl - $montant_vnt_ht ));
 
@@ -1462,13 +1462,13 @@ public  function preparer_facture_honoraire_partage($compromis,$mandataire_id = 
 
         }
         elseif($compromis->facture_honoraire_partage_porteur_cree == false && $mandataire->contrat->deduis_jeton == true && $mandataire->nb_mois_pub_restant > 0 ){
-        //    dd($mandataire);
        
             $facture = null;
             $formule = null;
         }
         else{
                        
+            
 
             $facture = Facture::where([ ['type','partage'],['user_id',$mandataire->id],['compromis_id',$compromis->id]])->first();
             
@@ -1564,9 +1564,9 @@ public  function preparer_facture_honoraire_partage($compromis,$mandataire_id = 
 
     }
 //  dd($formule);
+    $etat_jeton = Facture::etat_jeton($mandataire->id); 
 
-
-    return view ('facture.preparer_honoraire_partage',compact(['compromis','factureStylimmo','mandataire','mandataire_partage','facture','pourcentage_partage','formule']));
+    return view ('facture.preparer_honoraire_partage',compact(['compromis','factureStylimmo','mandataire','mandataire_partage','facture','pourcentage_partage','formule','etat_jeton']));
     
 }
     

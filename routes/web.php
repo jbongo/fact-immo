@@ -17,17 +17,22 @@ Route::middleware('auth')->group(function(){
 
     // Mandataires
    
-        Route::get('/mandataires','MandataireController@index')->name('mandataire.index');
-        Route::get('/mandataire/create','MandataireController@create')->name('mandataire.create');
-        Route::post('/mandataire/add','MandataireController@store')->name('mandataire.add');
-        Route::get('/mandataire/show/{id}','MandataireController@show')->name('mandataire.show');
-        Route::get('/mandataire/edit/{mandataire}','MandataireController@edit')->name('mandataire.edit');
-        Route::post('/mandataire/update/{mandataire}','MandataireController@update')->name('mandataire.update');
-        Route::delete('/mandataire/delete/{mandataire}','MandataireController@destroy')->name('mandataire.delete');
-        Route::delete('/mandataire/archive/{mandataire}','MandataireController@archive')->name('mandataire.archive');
-        Route::get('/mandataire/send-access/{mandataire_id}/{contrat_id}','MandataireController@send_access')->name('mandataire.send_access');
-        Route::post('/mandataire/activer/{mandataire}','MandataireController@activer')->name('mandataire.activer');
+    Route::get('/mandataires','MandataireController@index')->name('mandataire.index');
+    Route::get('/mandataire/create','MandataireController@create')->name('mandataire.create');
+    Route::post('/mandataire/add','MandataireController@store')->name('mandataire.add');
+    Route::get('/mandataire/show/{id}','MandataireController@show')->name('mandataire.show');
+    Route::get('/mandataire/edit/{mandataire}','MandataireController@edit')->name('mandataire.edit');
+    Route::post('/mandataire/update/{mandataire}','MandataireController@update')->name('mandataire.update');
+    Route::delete('/mandataire/delete/{mandataire}','MandataireController@destroy')->name('mandataire.delete');
+    Route::delete('/mandataire/archive/{mandataire}','MandataireController@archive')->name('mandataire.archive');
+    Route::get('/mandataire/send-access/{mandataire_id}/{contrat_id}','MandataireController@send_access')->name('mandataire.send_access');
+    Route::post('/mandataire/activer/{mandataire}','MandataireController@activer')->name('mandataire.activer');
         
+    // Gestion des Jetons
+    Route::get('/mandataires/jetons','MandataireController@mandataires_jetons')->name('mandataires.jetons');
+    // Route::get('/jetons/{mandataire_id}','MandataireController@jeton_mandataire')->name('jeton_mandataire');
+    Route::get('/historique-jeton/{user_id}','MandataireController@historique_jeton')->name('mandataire.historique_jeton');
+    Route::post('/jetons/update/{user_id}','MandataireController@update_jetons')->name('jetons.update');
 
   
     // compromis  
@@ -214,10 +219,6 @@ Route::middleware('auth')->group(function(){
 
     Route::get('/switch/{user_id}','MandataireController@switch_user')->name('switch_user');
     Route::get('/unswitch','MandataireController@unswitch_user')->name('unswitch_user');
-
-    //Historique JETON DES MANDATAIRES 
-
-    Route::get('/historique-jeton/{user_id}','MandataireController@historique_jeton')->name('mandataire.historique_jeton');
 
 
 // #######Système de notifications

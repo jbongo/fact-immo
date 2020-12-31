@@ -15,6 +15,7 @@ use App\Mail\CreationMandataire;
 use Illuminate\Support\Facades\Mail;
 use Auth;
 use App\Historique;
+use App\Updatejeton;
 
 
 class MandataireController extends Controller
@@ -565,11 +566,63 @@ class MandataireController extends Controller
         
         $total_restant = $mandataire->nb_mois_pub_restant;
         
-        return view('mandataires.historique_jeton',compact('factures','mandataire','total_deduis','total_restant'));
+        $updatejetons = Updatejeton::where('user_id', Crypt::decrypt($user_id))->get();
+        
+        return view('mandataires.historique_jeton',compact('factures','mandataire','total_deduis','total_restant','updatejetons'));
+    
+    }
+    
+    
+    /**
+     *Affiche la liste des mandataires et leurs jetons
+     * @param  int  $user_id
+     * @return \Illuminate\Http\Response
+     */
+    public function mandataires_jetons()
+    {
+       
+        $contrats = Contrat::where([['deduis_jeton', true],['user_id','<>', null]])->get();
+       
+       
+        return view('mandataires.jetons',compact('contrats'));
     
     }
 
 
+    /**
+     * Modifier le nombre de jeton du mandataire
+     * @param  int  $user_id
+     * @return \Illuminate\Http\Response
+     */
+    public function update_jetons(Request $request, $user_id)
+    {
+       
+        $mandataire = User::where('id', Crypt::decrypt($user_id))->first();
+        
+        
+        Updatejeton::create([
+        
+            "user_id" => Crypt::decrypt($user_id),
+            "admin_id" => Auth::user()->id,
+            "jetons_deduis" => $request->jetons,
+            "jetons_avant_deduction" => $mandataire->nb_mois_pub_restant
+        ]);
+        
+        
+        $mandataire->nb_mois_pub_restant += $request->jetons;
+        
+
+        $mandataire->update();
+        
+   
+       
+        return redirect()->route('mandataire.historique_jeton',$user_id )->with('ok', 'Le nombre de jetons du mandataire a été modifié');
+       
+     
+    
+    }
+
+    
 
 
     

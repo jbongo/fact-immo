@@ -19,9 +19,41 @@
 
             @endif
             <br>
-            <span>Total jetons déduits : </span> <label class="color-success" style="font-size: 20px">{{$total_deduis}} </label> <br>
-            <span>Total jetons restants : </span> <label class="color-danger" style="font-size: 20px">{{$total_restant}} </label> <br>
-            <span>Date d'anniversaire : </span> <label class="color-primary" style="font-size: 20px">{{$mandataire->date_anniv("fr")}} </label>
+            
+            <div class="row">
+				<div class="col-lg-6 col-sm-6">
+					<span>Total jetons déduits : </span> <label class="color-success" style="font-size: 20px">{{$total_deduis}} </label> <br>
+					<span>Total jetons restants : </span> <label class="color-danger" style="font-size: 20px">{{$total_restant}} </label> <br>
+					@if($mandataire->etat_jeton()['retard'] > 0 )    <span class="badge badge-danger">retard</span> <-- ({{$mandataire->etat_jeton()['retard']}} mois de retards)-->  @else    <span class="badge badge-success">à jour</span> @endif  Sur les jetons
+				</div>
+				<div class="col-lg-6 col-sm-6">
+					<span>Date d'anniversaire : </span> <label class="color-primary" style="font-size: 20px">{{$mandataire->date_anniv("fr")}} </label>
+					@if(Auth::user()->role == "admin")
+						<form action="{{route('jetons.update', Crypt::encrypt($mandataire->id))}}" method="POST">
+						@csrf
+						<div class="row">
+							<div class="col-lg-4 col-md-4">
+								<span>  Ajouter/réduire jetons : </span>
+							</div>
+							<div class="col-lg-2 col-md-2">
+							<input type="number" min="{{$total_restant*-1}}" class="form-control col-lg-2 col-md-2" name="jetons" required>
+							</div>
+							
+							<div class="col-lg-4 col-md-4">
+								<button type="submit" class="btn btn-danger">Valider</button>
+							</div>
+						</div>
+							
+					
+						
+						</form>
+						
+						@endif
+				
+				</div>
+			</div>
+            
+           
                 <!-- table -->
                 
 
@@ -43,6 +75,8 @@
 										
 							  
 								<div class="card-body">
+									<h2>Déductions des jetons sur les factures</h2>
+								
 									<div class="panel panel-default m-t-15" id="cont">
 											<div class="panel-heading"></div>
 											<div class="panel-body">
@@ -56,32 +90,20 @@
 													{{-- <th>@lang('Facture Stylimmo')</th> --}}
 											
 													@if(auth()->user()->role == "admin")
-													<th>@lang('Mandataire')</th>
+													{{-- <th>@lang('Mandataire')</th> --}}
 													@endif
 													<th>@lang('Type Facture')</th>
 													<th>@lang('Jetons déduits ')</th>
 													<th>@lang('Date Déduction')</th>
 												
 													
-							
-													
-							
 												</tr>
 											</thead>
 											<tbody>
 												@foreach ($factures as $facture)
 							
 												<tr>
-													{{-- <td  >
-														@if($facture->statut != "en attente de validation" && $facture->url != null) 
-														<label class="color-info"> </label> 
-															<a class="color-info" title="Télécharger la facture d'honoraire "  href="{{route('facture.telecharger_pdf_facture', Crypt::encrypt($facture->id))}}"  class="  m-b-10 m-l-5 " id="ajouter">{{$facture->numero}} <i class="ti-download"></i> </a>
-														@else 
-															<label class="color-danger" ><strong> Non dispo </strong> </label>
-														@endif
-							
-													   
-													</td> --}}
+													
 							
 													<td  >
 														@if($facture->statut == "valide" && $facture->numero != null )
@@ -105,7 +127,7 @@
 														
 													{{-- </td> --}}
 											
-													@if(auth()->user()->role == "admin")
+													{{-- @if(auth()->user()->role == "admin")
 													<td  >
 														<label class="color-info">
 															@if($facture->user !=null)
@@ -114,7 +136,7 @@
 														   
 														</label> 
 													</td>
-													@endif
+													@endif --}}
 													<td  >
 														<label class="color-info">{{$facture->type}} </label> 
 													</td>
@@ -136,52 +158,59 @@
 							</div>
 							
 							
-							{{-- <div class="container"> --}}
 							
-							<!-- Trigger the modal with a button -->
-							{{-- <button type="button" class="btn btn-info btn-lg" id="myBtn">Open Modal</button> --}}
+							<h2>Jetons déduits par l'administrateur</h2>
+								
+							<div class="panel panel-danger m-t-15" id="cont">
+									<div class="panel-heading"></div>
+									<div class="panel-body">
+					
+							<div class="table-responsive" >
+								<table  id="example" class=" table student-data-table  table-striped table-hover dt-responsive display    "  style="width:100%"  >
+									<thead>
+										<tr>
+										   
+						
+											<th>@lang('Nb de Jetons avant déduction ')</th>
+											<th>@lang('Nb de Jetons déduits ')</th>
+											<th>@lang('Date Déduction')</th>
+										
+											
+					
+											
+					
+										</tr>
+									</thead>
+									<tbody>
+										@foreach ($updatejetons as $updatejeton)
+					
+										<tr>
+											
+					
+					
+					
+										
+											<td  >
+												<label class="color-info">{{$updatejeton->jetons_avant_deduction}} </label> 
+											</td>
+											<td><label class="color-danger" style="font-size: 20px">{{$updatejeton->jetons_deduis}} </label> </td>
+											<td><label >{{$updatejeton->created_at->format('d/m/Y')}} </label> </td>
+										
+											
+											
+										
+					
+									  
+										</tr> 
+								   
+								@endforeach
+								  </tbody>
+								</table>
+							</div>
+						</div>
+					</div>
 							
-							<!-- Modal -->
-							<div class="modal fade" id="myModal" role="dialog">
-							<div class="modal-dialog modal-sm">
-							
-							<!-- Modal content-->
-							<div class="modal-content col-lg-offset-4  col-md-offset-4 col-sm-offset-4 col-lg-4 col-md-4 col-sm-4">
-							<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal">&times;</button>
-							<h4 class="modal-title">Date de règlement</h4>
-							</div>
-							<div class="modal-body">
-							<p><form action="" id="form_regler">
-									<div class="modal-body">
-									  @csrf
-											<div class="">
-												<div class="form-group row">
-													<label class="col-lg-4 col-md-4 col-sm-4 control-label" for="date_reglement">Date de règlement <span class="text-danger">*</span> </label>
-													<div class="col-lg-8 col-md-8 col-sm-8">
-														<input type="date"  class="form-control {{ $errors->has('date_reglement') ? ' is-invalid' : '' }}" value="{{old('date_reglement')}}" id="date_reglement" name="date_reglement" required >
-														@if ($errors->has('date_reglement'))
-														<br>
-														<div class="alert alert-warning ">
-															<strong>{{$errors->first('date_reglement')}}</strong> 
-														</div>
-														@endif   
-													</div>
-												</div>
-											</div>
-									  </p>
-							</div>
-							<div class="modal-footer">
-							<input type="submit" class="btn btn-success" id="valider_reglement"  value="Valider" />
-							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-							</div>
-							</div>
-							</form> 
-							</div>
-							</div>
-							
-							{{-- </div>               --}}
-							
+				
 							
 							</div>
 							</div>

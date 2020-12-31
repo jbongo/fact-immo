@@ -30,7 +30,16 @@
                         <span > <strong> Dépuis la date d'anniversaire : </strong></span> &nbsp;&nbsp; <span class="color-warning"> <strong> {{$mandataire->date_anniv("fr")}}</strong></span> <br>
                         
                     </div>
-                    <div class="col-lg-6 col-md-6 col-sm-6"></div>
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        @if($etat_jeton['retard'] > 0 )                  
+                            <span><strong> <span class="clignote" style="font-size:20px; background-color:#FF0633;color:white;visibility:visible; "> Vous n'êtes pas à jour sur les jetons </span>, vous avez <span style="font-size:20px; color:#FF0633;"> {{$etat_jeton['retard']}}</span> mois de retards <strong> </span><br>
+                            
+                                @if($etat_jeton['retard'] > 3 ) 
+                                <span><strong> Vous devez déduire minimum  <span style="font-size:20px; color:#dc3545"> {{$etat_jeton['jeton_min_a_deduire']}}</span> jetons ou <span class="text-danger"> contacter le siège !!.</span><strong> </span>
+                                @endif
+                      
+                        @endif
+                    </div>
                 </div> <br>
 
                 <div class="row">
@@ -201,6 +210,8 @@
 @if($facture != null )
 <table style="height: 47px; width: 672px;">
     <tbody>
+    
+    @if($facture->montant_ht > 0)
         @foreach ($formule[0] as $key=>$formu)
         <tr>
             <td style="width: 400px;">&nbsp;</td>
@@ -214,9 +225,9 @@
             <td style="width: 231px;"><hr style="border-top: 1px solid red;"></td>
         </tr>
 
-    @php
-        $montant_pub_deduis =  0;   
-    @endphp
+        @php
+            $montant_pub_deduis =  0;   
+        @endphp
 
        @php $montant_pub_deduis = $facture->nb_mois_deduis * $mandataire->contrat->packpub->tarif @endphp  
        @if ($facture->user->contrat->deduis_jeton == true ||  $facture->nb_mois_deduis > 0 )
@@ -274,12 +285,32 @@
                 <tr><td>&nbsp;</td> <td>&nbsp;</td> </tr>
             @endif
 
-        @endif
 
+        @endif
+    @else
+    
+ 
+    
+    <tr>
+        <td style="width: 400px;">&nbsp;</td>
+        <td style="width: 153px; font-size:20px; color:#dc3545">Montant ht non conforme :</td>
+        <td style="width: 231px; font-size:20px; color:#dc3545">{{ number_format($facture->montant_ht, 2, '.', ' ') }} &euro;</td>
+    </tr>
+    <tr><td>&nbsp;</td></tr>
+    <tr>
+        <td style="width: 100px;">&nbsp;</td>
+        <td style="width: 653px; font-size:20px; color:#dc3545">Contactez le siège pour un recalcul de votre commission</td>
+        <td style="width: 31px;"></td>
+    </tr>
+    
+
+    
+    @endif
     </tbody>
 </table>
 <br>
 <br>
+@if($facture->montant_ht > 0)
 <table style="height: 42px; width: 50%;">
     <tbody>
         <tr style="height: 25px;">
@@ -295,16 +326,17 @@
     </tbody>
 
 </table>
-
+@endif
 
 <br>
 
 <hr>
-
-    @if($facture->statut != "valide" || Auth()->user()->role == "admin")
-        {{-- <a href="{{route('facture.generer_honoraire_create', Crypt::encrypt($facture->id))}}" class="btn btn-default btn-rounded btn-addon btn-sm m-b-10 m-l-5"><i class="ti-loop"></i>Générer la facture</a> --}}
-        <a href="{{route('facture.create_upload_pdf_honoraire', Crypt::encrypt($facture->id))}}" class="btn btn-danger btn-rounded btn-addon btn-sm m-b-10 m-l-5"><i class="ti-upload"></i>Ajouter ma facture</a>
-    @endif          
+    @if($facture->montant_ht > 0)
+        @if($facture->statut != "valide" || Auth()->user()->role == "admin")
+            {{-- <a href="{{route('facture.generer_honoraire_create', Crypt::encrypt($facture->id))}}" class="btn btn-default btn-rounded btn-addon btn-sm m-b-10 m-l-5"><i class="ti-loop"></i>Générer la facture</a> --}}
+            <a href="{{route('facture.create_upload_pdf_honoraire', Crypt::encrypt($facture->id))}}" class="btn btn-danger btn-rounded btn-addon btn-sm m-b-10 m-l-5"><i class="ti-upload"></i>Ajouter ma facture</a>
+        @endif    
+    @endif
 
 @endif
 <hr>

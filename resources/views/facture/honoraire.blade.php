@@ -21,6 +21,7 @@
                                         <th>@lang('Type Facture')</th>
                                         <th>@lang('Montant HT ')</th>
                                         <th>@lang('Montant TTC ')</th>
+                                        <th>@lang('Commision (%)')</th>
                                         {{-- <th>@lang('Date Facture')</th> --}}
                                         <th>@lang('Date de l\'acte')</th>
                                         <th>@lang('Etat (Fac Stylimmo)')</th>
@@ -95,6 +96,12 @@
                                         </td>
                                         <td   >
                                         {{number_format($facture->montant_ttc,2,'.','')}} €
+                                        </td>
+                                        <td>
+                                        @if($facture->pourcentage_actuel() != "")                                        
+                                            <span style="color:#751a97; font-size:18px">  {{$facture->pourcentage_actuel()}} % </span>
+                                        @endif
+                                        
                                         </td>
                                         {{-- <td   class="color-info">
                                                 {{$facture->created_at->format('d/m/Y')}}
