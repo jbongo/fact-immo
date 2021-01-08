@@ -361,13 +361,15 @@ public  function valider_facture_stylimmo( Request $request, $compromis)
  * @return \Illuminate\Http\Response
 */
 
-    public  function download_pdf_facture_stylimmo($compromis_id)
+    public  function download_pdf_facture_stylimmo($facture_id)
     {
+    
+    
+        $facture = Facture::where('id', Crypt::decrypt($facture_id))->first();
 
-        $compromis = Compromis::where('id', Crypt::decrypt($compromis_id))->first();
+        $compromis = Compromis::where('id', $facture->compromis_id)->first();
         $mandataire = $compromis->user;
  
-        $facture = Facture::where([ ['type','stylimmo'],['compromis_id',$compromis->id], ['a_avoir', false]])->first();
         $filename = "F".$facture->numero." ".$facture->montant_ttc."€ ".strtoupper($mandataire->nom)." ".strtoupper(substr($mandataire->prenom,0,1)).".pdf" ;
         return response()->download($facture->url,$filename);
         

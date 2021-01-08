@@ -72,7 +72,7 @@
                                                 <span class="color-warning">En attente..</span>                                            
                                             @else 
                                           
-                                            <a class="color-info" title="Télécharger la facture stylimmo"  href="{{route('facture.telecharger_pdf_facture_stylimmo', Crypt::encrypt($compromi->id))}}"  class="  m-b-10 m-l-5 " id="ajouter">{{$compromi->getFactureStylimmo()->numero}}  <i class="ti-download"></i> </a>
+                                            <a class="color-info" title="Télécharger la facture stylimmo"  href="{{route('facture.telecharger_pdf_facture_stylimmo', Crypt::encrypt($compromi->getFactureStylimmo()->id))}}"  class="  m-b-10 m-l-5 " id="ajouter">{{$compromi->getFactureStylimmo()->numero}}  <i class="ti-download"></i> </a>
                                                 
                                             @endif
                                         @endif

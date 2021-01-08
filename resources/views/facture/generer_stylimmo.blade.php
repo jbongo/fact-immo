@@ -36,7 +36,7 @@ Facture N° {{$facture->numero}}
                <a  href="{{route('facture.envoyer_facture_stylimmo', Crypt::encrypt($facture->id))}}"  class="btn btn-danger btn-flat btn-addon  m-b-10 m-l-5 " id="ajouter"><i class="ti-email"></i>Renvoyer au mandataire</a>
             </div>
             <div class="col-lg-3 col-md-3 col-sm-6">
-               <a href="{{route('facture.telecharger_pdf_facture_stylimmo', Crypt::encrypt($compromis->id))}}"  class="btn btn-default btn-flat btn-addon  m-b-10 m-l-5 " id="ajouter"><i class="ti-download"></i>Télécharger</a>
+               <a href="{{route('facture.telecharger_pdf_facture_stylimmo', Crypt::encrypt($compromis->getFactureStylimmo()->id))}}"  class="btn btn-default btn-flat btn-addon  m-b-10 m-l-5 " id="ajouter"><i class="ti-download"></i>Télécharger</a>
             </div>
             @else 
             @if(Auth()->user()->role == "admin")
