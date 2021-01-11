@@ -49,7 +49,7 @@ $today = date("Y-m-d") ;
 
         foreach ($contrats as $contrat) {
 
-            $date_anniversaire = $contrat->date_anniversaire->format("Y-m-d");
+            // $date_anniversaire = $contrat->date_anniversaire->format("Y-m-d");
 
             // On va determiner la dernière date d'anniv de sa date d'anniversaire
             // $m_d_entree = $contrat->date_anniversaire->format('m-d');
