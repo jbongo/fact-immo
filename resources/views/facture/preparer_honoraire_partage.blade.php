@@ -53,6 +53,7 @@
                                         <div class="form-group row">
                                             <label class="col-lg-6 col-md-6 col-sm-6 control-label" for="nb_mois_deduire">Nombre de jetons à déduire<span class="text-danger">*</span> </label>
                                             <div class="col-lg-3 col-md-3 col-sm-3">
+                                            {{-- <input type="number" max="{{$mandataire->nb_mois_pub_restant}}" min="0" class="form-control {{ $errors->has('nb_mois_deduire') ? ' is-invalid' : '' }}" value="{{old('nb_mois_deduire')}}" id="nb_mois_deduire" name="nb_mois_deduire" required > --}}
                                             <input type="number" max="{{$mandataire->nb_mois_pub_restant}}" min="0" class="form-control {{ $errors->has('nb_mois_deduire') ? ' is-invalid' : '' }}" value="{{old('nb_mois_deduire')}}" id="nb_mois_deduire" name="nb_mois_deduire" required >
                                             @if ($errors->has('nb_mois_deduire'))
                                             <br>
