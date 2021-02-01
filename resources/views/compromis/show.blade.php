@@ -19,6 +19,9 @@ Détail de l'affaire de {{$compromis->user->prenom}} {{$compromis->user->nom}}
 		@endif
 		<div class="card">
           
+        @php 
+            $modif = false;
+        @endphp
 			<div class="col-lg-10">
                 @if($compromis->archive == false)
                     @if ($compromis->demande_facture == 0 && (  ($compromis->est_partage_agent == 1 && $compromis->je_porte_affaire == 1) ||  ($compromis->est_partage_agent == 0) )  )
@@ -28,7 +31,10 @@ Détail de l'affaire de {{$compromis->user->prenom}} {{$compromis->user->nom}}
                     @endif
                     @if ($compromis->demande_facture < 2 ||  Auth()->user()->role =="admin" )
                         @if($compromis->user_id == Auth()->user()->id ||  Auth()->user()->role =="admin" )
-                            <a  class="btn btn-success btn-flat btn-addon btn-sm m-b-10 m-l-5  " id="modifier_compromis"><i class="ti-pencil-alt"></i>Modifier l'affaire</a>
+                            {{-- <a  class="btn btn-success btn-flat btn-addon btn-sm m-b-10 m-l-5  " id="modifier_compromis"><i class="ti-pencil-alt"></i>Modifier l'affaire</a> --}}
+                            @php 
+                                $modif = true;
+                            @endphp
                         @endif
                     @endif
 
@@ -717,19 +723,27 @@ Détail de l'affaire de {{$compromis->user->prenom}} {{$compromis->user->nom}}
 </script>
 
 <script>
-$('input').attr('readonly',true);
-$('textarea').attr('readonly',true);
-$('select').attr('readonly',true);
-$('.enregistrer').hide();
+var modif = "{{$modif}}";
+    if (modif == false ){
+     
+            $('input').attr('readonly',true);
+            $('textarea').attr('readonly',true);
+            $('select').attr('readonly',true);
+            $('.enregistrer').hide();
+            
+    
+    }
+                    
 
-$('#modifier_compromis').click(function(){
-    $('input').attr('readonly',false);
-    $('textarea').attr('readonly',false);
-    $('select').attr('readonly',false);
-    $('#modifier_compromis').slideUp(1000);
-    $('.enregistrer').show();
 
-});
+// $('#modifier_compromis').click(function(){
+//     $('input').attr('readonly',false);
+//     $('textarea').attr('readonly',false);
+//     $('select').attr('readonly',false);
+//     $('#modifier_compromis').slideUp(1000);
+//     $('.enregistrer').show();
+
+// });
 
 </script>
 
@@ -879,7 +893,7 @@ $('#modifier_pdf_compromis').click(function (){
 
 // Modification de la date de vente
 
-$('input').attr('readonly',false);
+$('input#date_vente').attr('readonly',false);
 
 </script>
 @endsection

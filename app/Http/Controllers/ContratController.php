@@ -88,6 +88,17 @@ class ContratController extends Controller
         $parrain_id =   Filleul::where('user_id',$contrat->user->id)->select('parrain_id')->first();
         $parrain = User::where('id',$parrain_id['parrain_id'])->first();
         
+        $filleuls = Filleul::where('parrain_id', $contrat->user->id)->get();
+        // dd($contrat->user);
+        $comm_filleuls = array();
+        foreach ($filleuls as $filleul) {
+        
+        // dd($filleul);
+            $cont = Contrat::where('user_id', $filleul->user_id)->first() ;         
+            
+            $comm_filleuls[] = array( $cont->user ,unserialize($cont->comm_parrain)) ;
+        }
+        // dd($comm_filleuls);
         
         $palier_starter =  $contrat != null ?  $this->palier_unserialize($contrat->palier_starter) : null;
         $palier_expert =  $contrat != null ? $this->palier_unserialize($contrat->palier_expert) : null;
@@ -95,7 +106,7 @@ class ContratController extends Controller
 
      
     
-        return view ('contrat.edit', compact(['packs_pub','parrain','parrains','contrat','palier_starter','palier_expert','comm_parrain']));
+        return view ('contrat.edit', compact(['packs_pub','parrain','parrains','contrat','palier_starter','palier_expert','comm_parrain', 'comm_filleuls']));
   
     }
 
