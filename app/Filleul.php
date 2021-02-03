@@ -89,7 +89,7 @@ class Filleul extends Model
             //##### calcul du de la comm recu par le parrain de date_deb à date_fin sur le filleul
             // $ca_comm_parr = Facture::where([['user_id',$parrain_id],['filleul_id',$filleul_id],['reglee',1]])->whereIn('type',['parrainage','parrainage_partage'])->whereBetween('date_reglement',[$date_deb,$date_fin])->sum('montant_ht');
             
-            $facts_parrain = Facture::where([['user_id',$parrain_id],['filleul_id',$filleul_id]])->whereIn('type',['parrainage','parrainage_partage'])->get();
+            $facts_parrain = Facture::where([['user_id',$parrain_id],['filleul_id',$filleul_id], ['compromis_id','<>', $compromis_id ]])->whereIn('type',['parrainage','parrainage_partage'])->get();
             $ca_comm_parr = 0;
             foreach ($facts_parrain as $fact) {
                 
