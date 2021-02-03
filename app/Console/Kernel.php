@@ -27,7 +27,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('command:evolutionFilleul')
                  ->daily();
         $schedule->command('command:updatetva')
-                 ->everyMinute();
+                 ->daily();
                  
         $schedule->command('command:cloturercompromis')
                  ->daily();

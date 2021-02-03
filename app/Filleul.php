@@ -71,7 +71,7 @@ class Filleul extends Model
             $date_12 = strftime("%d/%m/%Y", strtotime($date_12)); 
             // dd($date_12);
 
-            // on vérifie que le parrain n'a pas dépassé le plafond de la commission de parrainage sur son filleul,  de la date d'anniversaire de sa date d'entrée jusqu'a la date d'encaissement
+            // on vérifie que le parrain n'a pas dépassé le plafond de la commission de parrainage sur son filleul,  de la date d'anniversaire de sa date d'entrée jusqu'a la date d'encaissement de l'affaire
             $m_d_entree = $filleul->contrat->date_entree->format('m-d');
             $m_d_entree_fr = $filleul->contrat->date_entree->format('d/m');
             $y_encaiss = $compromis->getFactureStylimmo()->date_encaissement->format('Y');
@@ -86,10 +86,19 @@ class Filleul extends Model
                 $date_fin = $compromis->getFactureStylimmo()->date_encaissement->format('Y-m-d'); 
                 $date_anniv = $m_d_entree_fr.'/'.($y_encaiss-1);
             }
-            // calcul du de la comm recu par le parrain de date_deb à date_fin sur le filleul
-            $ca_comm_parr = Facture::where([['user_id',$parrain_id],['filleul_id',$filleul_id],['reglee',1]])->whereIn('type',['parrainage','parrainage_partage'])->whereBetween('date_reglement',[$date_deb,$date_fin])->sum('montant_ht');
-
-
+            //##### calcul du de la comm recu par le parrain de date_deb à date_fin sur le filleul
+            // $ca_comm_parr = Facture::where([['user_id',$parrain_id],['filleul_id',$filleul_id],['reglee',1]])->whereIn('type',['parrainage','parrainage_partage'])->whereBetween('date_reglement',[$date_deb,$date_fin])->sum('montant_ht');
+            
+            $facts_parrain = Facture::where([['user_id',$parrain_id],['filleul_id',$filleul_id]])->whereIn('type',['parrainage','parrainage_partage'])->get();
+            $ca_comm_parr = 0;
+            foreach ($facts_parrain as $fact) {
+                
+                // echo $fact->compromis->getFactureStylimmo()->date_encaissement->format('Y-m-d')."<br>";
+                if($date_fin >= $fact->compromis->getFactureStylimmo()->date_encaissement->format('Y-m-d')   && $fact->compromis->getFactureStylimmo()->date_encaissement->format('Y-m-d') >= $date_deb ){
+                    $ca_comm_parr+= $fact->montant_ht;
+                }
+            }
+// dd($ca_comm_parr);
 
             // On vérifie que le parrain n'a pas démissionné à la date d'encaissement 
             $a_demission_parrain = false;
