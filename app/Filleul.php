@@ -78,15 +78,15 @@ class Filleul extends Model
 
             // dd($y_encaiss.'-'.$m_d_entree);
             if( $compromis->getFactureStylimmo()->date_encaissement->format('Y-m-d') > $y_encaiss.'-'.$m_d_entree  ){
-                $date_deb = $y_encaiss.'-'.$m_d_entree ;
+                // $date_deb = $y_encaiss.'-'.$m_d_entree ;
                 $date_fin = $compromis->getFactureStylimmo()->date_encaissement->format('Y-m-d');
                 $date_anniv = $m_d_entree_fr.'/'.$y_encaiss;
             }else{
-                $date_deb =  ($y_encaiss-1).'-'.$m_d_entree ;
+                // $date_deb =  ($y_encaiss-1).'-'.$m_d_entree ;
                 $date_fin = $compromis->getFactureStylimmo()->date_encaissement->format('Y-m-d'); 
                 $date_anniv = $m_d_entree_fr.'/'.($y_encaiss-1);
             }
-            //##### calcul du de la comm recu par le parrain de date_deb à date_fin sur le filleul
+            //##### calcul du de la comm recu par le parrain de $date_12 à date_fin sur le filleul
             // $ca_comm_parr = Facture::where([['user_id',$parrain_id],['filleul_id',$filleul_id],['reglee',1]])->whereIn('type',['parrainage','parrainage_partage'])->whereBetween('date_reglement',[$date_deb,$date_fin])->sum('montant_ht');
             
             $facts_parrain = Facture::where([['user_id',$parrain_id],['filleul_id',$filleul_id], ['compromis_id','<>', $compromis_id ]])->whereIn('type',['parrainage','parrainage_partage'])->get();
@@ -94,7 +94,7 @@ class Filleul extends Model
             foreach ($facts_parrain as $fact) {
                 
                 // echo $fact->compromis->getFactureStylimmo()->date_encaissement->format('Y-m-d')."<br>";
-                if($date_fin >= $fact->compromis->getFactureStylimmo()->date_encaissement->format('Y-m-d')   && $fact->compromis->getFactureStylimmo()->date_encaissement->format('Y-m-d') >= $date_deb ){
+                if($date_fin >= $fact->compromis->getFactureStylimmo()->date_encaissement->format('Y-m-d')   && $fact->compromis->getFactureStylimmo()->date_encaissement->format('Y-m-d') >= $date_12 ){
                     $ca_comm_parr+= $fact->montant_ht;
                 }
             }

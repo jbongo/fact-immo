@@ -925,7 +925,7 @@ public  function preparer_facture_honoraire_parrainage($compromis_id, $id_parrai
                 else{
                     if( $result['ca_comm_parr'] + $montant_ht  > $filleul->user->contrat->seuil_comm ){
                         $montant_ht = $filleul->user->contrat->seuil_comm - $result['ca_comm_parr'];
-                        $montant_ttc = $montant_ht*.12;
+                        $montant_ttc = $montant_ht*$tva;
 
                     }
                 }
@@ -1038,7 +1038,7 @@ public  function preparer_facture_honoraire_parrainage($compromis_id, $id_parrai
                 else{
                     if( $result['ca_comm_parr'] + $montant_ht  > $filleul->contrat->seuil_comm ){
                         $montant_ht = $filleul->contrat->seuil_comm - $result['ca_comm_parr'];
-                        $montant_ttc = $montant_ht*.12;
+                        $montant_ttc = $montant_ht*$tva;
 
                     }
                 }
@@ -1135,7 +1135,7 @@ public  function preparer_facture_honoraire_parrainage($compromis_id, $id_parrai
             else{
                 if( $result['ca_comm_parr'] + $montant_ht  > $filleul->contrat->seuil_comm ){
                     $montant_ht = $filleul->contrat->seuil_comm - $result['ca_comm_parr'];
-                    $montant_ttc = $montant_ht*.12;
+                    $montant_ttc = $montant_ht*$tva;
 
                 }
             }
@@ -2206,6 +2206,7 @@ public function generer_pdf_facture_honoraire(Request $request, $facture_id)
 
 
 
+
     $facture->numero = $request->numero ;
     $facture->date_facture = $date ;
     $facture->statut = "valide";
@@ -2279,7 +2280,9 @@ public function store_upload_pdf_honoraire(Request $request , $facture_id)
         // on force le format des dates à cause des vieux navigateurs
         $date = date_create($request->date_facture);
         $date_facture = $date->format('Y-m-d');
+     
 
+        $numero = str_replace(['/', '\\', '<','>',':','|','?','*','#'],"-",$request->numero_facture) ;
 
     $facture = Facture::where('id',  Crypt::decrypt($facture_id))->first();
 
@@ -2314,7 +2317,7 @@ public function store_upload_pdf_honoraire(Request $request , $facture_id)
         if(!File::exists($path))
             File::makeDirectory($path, 0755, true);
 
-            $filename = strtoupper($facture->user->nom)." ".strtoupper(substr($facture->user->prenom,0,1))." F".$request->numero_facture." ".$request->montant_ht."€ F".$facture->compromis->getFactureStylimmo()->numero ;
+            $filename = strtoupper($facture->user->nom)." ".strtoupper(substr($facture->user->prenom,0,1))." F".$numero." ".$request->montant_ht."€ F".$facture->compromis->getFactureStylimmo()->numero ;
  
             $file->move($path,$filename.'.pdf');            
             $path = $path.'/'.$filename.'.pdf';
