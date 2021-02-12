@@ -140,7 +140,7 @@
                                             @elseif($compromi_attente->demande_facture == 1)
                                                 <span class="color-warning">En attente de validation..</span>                                            
                                             @else 
-                                            <a href="{{route('facture.telecharger_pdf_facture_stylimmo', Crypt::encrypt($compromi_attente->getFactureStylimmo()->id))}}"  class="btn btn-warning btn-flat btn-addon  m-b-10 m-l-5 " id="ajouter"><i class="ti-download"></i>Télécharger</a>
+                                            {{-- <a href="{{route('facture.telecharger_pdf_facture_stylimmo', Crypt::encrypt($compromi_attente->getFactureStylimmo()->id))}}"  class="btn btn-warning btn-flat btn-addon  m-b-10 m-l-5 " id="ajouter"><i class="ti-download"></i>Télécharger</a> --}}
                                             @endif
                                         @endif
                                     </td>                                
