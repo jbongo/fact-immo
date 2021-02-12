@@ -135,12 +135,7 @@
                                             @elseif($compromi->demande_facture == 1)
                                                 <span class="color-warning">En attente de validation..</span>                                            
                                             @else 
-                                            
-                                            @if($compromi->getFactureStylimmo() == null)
-                                                {{$compromi->numero_mandat}}xxxxx
-                                            
-                                            @endif
-                                            {{-- <a href="{{route('facture.telecharger_pdf_facture_stylimmo', Crypt::encrypt($compromi->getFactureStylimmo()->id))}}"  class="btn btn-warning btn-flat btn-addon  m-b-10 m-l-5 " id="ajouter"><i class="ti-download"></i>Télécharger</a> --}}
+                                            <a href="{{route('facture.telecharger_pdf_facture_stylimmo', Crypt::encrypt($compromi->getFactureStylimmo()->id))}}"  class="btn btn-warning btn-flat btn-addon  m-b-10 m-l-5 " id="ajouter"><i class="ti-download"></i>Télécharger</a>
                                          
                                             @endif
                                         @endif
