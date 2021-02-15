@@ -2450,6 +2450,13 @@ public function valider_honoraire($action, $facture_id)
         $mandataire = $facture->user;
         $numero = $request->numero;
         
+        if($compromis != null){
+            $compromis->demande_facture = 0;
+            $compromis->facture_stylimmo_valide = 0;
+            $compromis->update();
+        }
+       
+        
             // return redirect()->route('facture.index')->with('ok', __('Avoir crée')  );
         if($facture->type == "stylimmo"){
             return redirect()->route('facture.generer_avoir_stylimmo', Crypt::encrypt($avoir->id));
