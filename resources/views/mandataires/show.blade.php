@@ -236,8 +236,9 @@
     <div class="panel panel-warning lobipanel-basic">
         <div class="panel-heading">Contrat.</div>
         <div class="panel-body">
+            @if ($mandataire->contrat == null)
     <a href="{{route('contrat.historique', Crypt::encrypt($mandataire->contrat->id))}}" class="btn btn-default btn-flat btn-addon m-b-10 m-l-5"><i class="ti-timer"></i>@lang('Voir l\'historique du contrat')</a> 
-            
+            @endif
                 <div class="row">
                         <div class="col-lg-12">
                             

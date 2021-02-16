@@ -18,6 +18,7 @@
                                     <th>@lang('Adresse')</th>
                                     <th>@lang('Numéro Siret')</th>
                                     <th>@lang('Numéro TVA')</th>
+                                    <th>@lang('Date de création')</th>
                                  
                                     <th>@lang('Action')</th>
                                 </tr>
@@ -60,6 +61,8 @@
                                     
                                         {{-- <span><a  href="{{route('mandataire.archive',[$mandataire->id,1])}}" class="delete" data-toggle="tooltip" title="@lang('Archiver ') {{ $mandataire->nom }}"><i class="large material-icons color-danger">delete</i> </a></span> --}}
                                     </td>
+                                    <td style="color: #32ade1; "><span  >{{$mandataire->created_at->format('d/m/Y')}} </td>
+                                    
                                 </tr>
                                 
                                 @endif
