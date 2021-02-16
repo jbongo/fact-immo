@@ -53,6 +53,7 @@
                                         
                                     <td style="color: #4da62f; text-decoration: underline;"><span class="badge badge-success">{{$mandataire->numero_siret}}</span></td>
                                     <td style="color: #4da62f; text-decoration: underline;"><span class="badge badge-success">{{$mandataire->numero_tva}}</span></td>
+                                    <td style="color: #32ade1; "><span  >{{$mandataire->created_at->format('d/m/Y')}} </td>
                                     
                                     <td width="13%">
                                         <span><a href="{{route('mandataire.show',Crypt::encrypt($mandataire->id) )}}" data-toggle="tooltip" title="@lang('Détails de ') {{ $mandataire->nom }}"><i class="large material-icons color-info">visibility</i></a> </span>
@@ -61,7 +62,6 @@
                                     
                                         {{-- <span><a  href="{{route('mandataire.archive',[$mandataire->id,1])}}" class="delete" data-toggle="tooltip" title="@lang('Archiver ') {{ $mandataire->nom }}"><i class="large material-icons color-danger">delete</i> </a></span> --}}
                                     </td>
-                                    <td style="color: #32ade1; "><span  >{{$mandataire->created_at->format('d/m/Y')}} </td>
                                     
                                 </tr>
                                 
