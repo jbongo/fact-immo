@@ -51,17 +51,18 @@ class EvolutionFilleul extends Command
         // dd ($filleuls[1]->user->id);
         $parametre = Parametre::first();
 
-        $comm_parrain = unserialize($parametre->comm_parrain);
+        // $comm_parrain = unserialize($parametre->comm_parrain);
 
         // dd($comm_parrain);
         if($filleuls != null){
 
             foreach($filleuls as $filleul){
+            // dd($filleul->user_id);
 
+           
                 $date_ent =  $filleul->user->contrat->date_entree->format('Y-m-d') >= "2019-01-01" ?  $filleul->user->contrat->date_entree : "2019-01-01";
                 $date_entree =  strtotime($date_ent);
                 $rang = $filleul->rang <= 3 ? $filleul->rang : 'n';
-
 
         
                 $today = strtotime (date('Y-m-d'));
@@ -70,6 +71,8 @@ class EvolutionFilleul extends Command
                 // On determine la commission de parrainnage du parrain
                 // $parrain = User::where('id',$filleul->parrain_id)->first();
                 $comm_parrain = unserialize($filleul->user->contrat->comm_parrain);
+
+                
 
                 // echo $parrain->nom."\n";
                 $trois_ans = 86400*365*3;
