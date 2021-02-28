@@ -241,5 +241,71 @@ if($("#date_encaissement").val() != ""){
  
 </script>
 
+<script>
+   // ######### Réitérer une affaire
+
+
+   $(function() {
+       $.ajaxSetup({
+           headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
+       })
+       $('[data-toggle="tooltip"]').tooltip()
+       $('body').on('click','a.cloturer',function(e) {
+           let that = $(this)
+           e.preventDefault()
+           const swalWithBootstrapButtons = swal.mixin({
+       confirmButtonClass: 'btn btn-success',
+       cancelButtonClass: 'btn btn-danger',
+       buttonsStyling: false,
+})
+
+   swalWithBootstrapButtons({
+       title: 'Confirmez-vous la réitération de cette affaire (Mandat '+that.attr("data-mandat")+' )  ?',
+       type: 'warning',
+       showCancelButton: true,
+       confirmButtonColor: '#DD6B55',
+       confirmButtonText: '@lang('Oui')',
+       cancelButtonText: '@lang('Non')',
+       
+   }).then((result) => {
+       if (result.value) {
+           $('[data-toggle="tooltip"]').tooltip('hide')
+               $.ajax({                        
+                   url: that.attr('href'),
+                   type: 'GET',
+                   success: function(data){
+                  document.location.reload();
+                },
+                error : function(data){
+                   console.log(data);
+                }
+               })
+               .done(function () {
+                       that.parents('tr').remove()
+               })
+
+           swalWithBootstrapButtons(
+           'Réitérée!',
+           'L\'affaire a bien été réitérée.',
+           'success'
+           )
+           
+           
+       } else if (
+           // Read more about handling dismissals
+           result.dismiss === swal.DismissReason.cancel
+       ) {
+           swalWithBootstrapButtons(
+           'Annulé',
+           'L\'affaire n\'a pas été réitérée.',
+         
+           'error'
+           )
+       }
+   })
+       })
+   })
+</script>
+
 
 @endsection
