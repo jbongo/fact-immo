@@ -535,7 +535,7 @@ public  function valider_facture_stylimmo( Request $request, $compromis)
                                 $date_fin = $compromis->getFactureStylimmo()->date_encaissement->format('Y-m-d'); 
                             }
                             // calcul du de la comm recu par le parrain de date_deb à date_fin 
-                            $ca_parrain_parrainage = Facture::where([['user_id',$parrain1->id],['reglee',1]])->whereIn('type',['parrainage','parrainage_partage'])->whereBetween('date_reglement',[$date_deb,$date_fin])->sum('montant_ht');
+                            $ca_parrain_parrainage = Facture::where([['user_id',$parrain1->id],['filleul_id',$filleul1->user->id], ['reglee',1]])->whereIn('type',['parrainage','parrainage_partage'])->whereBetween('date_reglement',[$date_deb,$date_fin])->sum('montant_ht');
                     
                             
                             // On vérifie que le parrain n'a pas démissionné à la date d'encaissement 
@@ -557,6 +557,8 @@ public  function valider_facture_stylimmo( Request $request, $compromis)
                             }
                             
                             $touch_comm = "non";
+                            // dd("$parrain1->id -- ".$filleul1->user->id."  -- $ca_parrain_parrainage < ".$mandataire1->contrat->seuil_comm );
+                            // dd("$ca_filleul1 >= $seuil_porteur && $ca_parrain1 >= $seuil_parrain && $ca_parrain_parrainage < $mandataire1->contrat->seuil_comm &&  $a_demission_parrain == false &&  $a_demission_filleul == false");
                             // On  n'a les seuils et les ca on peut maintenant faire les comparaisons     ## // on rajoutera les conditions de pack pub                           
                             if($ca_filleul1 >= $seuil_porteur && $ca_parrain1 >= $seuil_parrain && $ca_parrain_parrainage < $mandataire1->contrat->seuil_comm &&  $a_demission_parrain == false &&  $a_demission_filleul == false  ){
                                 $compromis->id_valide_parrain_porteur = $parrain1->id;
@@ -635,7 +637,7 @@ public  function valider_facture_stylimmo( Request $request, $compromis)
                                 $date_fin = $compromis->getFactureStylimmo()->date_encaissement->format('Y-m-d'); 
                             }
                             // calcul du de la comm recu par le parrain de date_deb à date_fin 
-                            $ca_parrain_parrainage = Facture::where([['user_id',$parrain2->id],['reglee',1]])->whereIn('type',['parrainage','parrainage_partage'])->whereBetween('date_reglement',[$date_deb,$date_fin])->sum('montant_ht');
+                            $ca_parrain_parrainage = Facture::where([['user_id',$parrain2->id],['filleul_id',$filleul2->user->id],['reglee',1]])->whereIn('type',['parrainage','parrainage_partage'])->whereBetween('date_reglement',[$date_deb,$date_fin])->sum('montant_ht');
 
                             // On vérifie que le parrain n'a pas démissionné à la date d'encaissement 
                             $a_demission_parrain = false;
@@ -803,9 +805,7 @@ public  function preparer_facture_honoraire($compromis)
 
             $filleul = Filleul::where('user_id',$mandataire->id)->first();
 
-            // if($filleul != null ){
-            //     $this->store_facture_honoraire_parrainage($compromis, $filleul);
-            // }
+           
         }
         elseif($compromis->facture_honoraire_cree == false && $compromis->user->contrat->deduis_jeton == true){
             $facture = null;
@@ -915,7 +915,6 @@ public  function preparer_facture_honoraire_parrainage($compromis_id, $id_parrai
                 // on determine les droits de parrainage du parrain pour chacun de ses filleuls
                 $result = Filleul::droitParrainage($parrain->id, $filleul->user_id, $compromis->id);
 
-                
                 // On vérifie que le parrain n'a pas dépassé le plafond de comm sur son filleul            
 
                 if($result['ca_comm_parr'] >= $filleul->user->contrat->seuil_comm ){
@@ -946,7 +945,7 @@ public  function preparer_facture_honoraire_parrainage($compromis_id, $id_parrai
                         $facture = Facture::create([
                             "numero"=> null,
                             "user_id"=> $parrain->id,
-                            "filleul_id"=> $filleul->id,
+                            "filleul_id"=> $filleul->user_id,
                             "compromis_id"=> $compromis->id,
                             "type"=> "parrainage",
                             "encaissee"=> false,
@@ -1023,8 +1022,9 @@ public  function preparer_facture_honoraire_parrainage($compromis_id, $id_parrai
 
                 }
 
+
                 $montant_ht = round ( ($frais_agence * $pourcentage_parrain/100 )/Tva::coefficient_tva(),2);
-                $montant_ttc = round($montant_ht*$tva/100,2);
+                $montant_ttc = round($montant_ht*$tva,2);
 
               
                 // On vérifie que le parrain n'a pas dépassé le plafond de comm sur son filleul 
@@ -1292,10 +1292,11 @@ public  function store_facture_honoraire_parrainage(Compromis $compromis, Filleu
         if($compromis->facture_honoraire_parrainage_cree == false ){
             $tva = Tva::coefficient_tva();
 
+
             $facture = Facture::create([
                 "numero"=> null,
                 "user_id"=> $parrain->id,
-                "filleul_id"=> $filleul->id,
+                "filleul_id"=> $filleul->user_id,
                 "compromis_id"=> $compromis->id,
                 "type"=> "parrainage",
                 "encaissee"=> false,
@@ -1323,7 +1324,7 @@ public  function store_facture_honoraire_parrainage(Compromis $compromis, Filleu
             $facture = Facture::create([
                 "numero"=> null,
                 "user_id"=> $parrain->id,
-                "filleul_id"=> $filleul->id,
+                "filleul_id"=> $filleul->user_id,
                 "compromis_id"=> $compromis->id,
                 "type"=> "parrainage_partage",
                 "encaissee"=> false,
@@ -1457,9 +1458,7 @@ public  function preparer_facture_honoraire_partage($compromis,$mandataire_id = 
             // Faire la facture du parrain de celui pas l'affaire s'il a un parrain 
 
             $filleul = Filleul::where('user_id',$mandataire->id)->first();
-            // if($filleul != null ){
-            //     $this->store_facture_honoraire_parrainage($compromis, $filleul);
-            // }
+           
         
 
         }
@@ -1523,9 +1522,7 @@ public  function preparer_facture_honoraire_partage($compromis,$mandataire_id = 
 
             $filleul = Filleul::where('user_id',$mandataire_partage->id)->first();
 
-            // if($filleul != null ){
-            //     $this->store_facture_honoraire_parrainage($compromis, $filleul);
-            // }
+         
           
 
         }
@@ -1635,11 +1632,22 @@ public  function preparer_facture_honoraire_encaissement($compromis_id, $leporte
 
         
         if( $type_facture == "partage") {
+            // si lacfture de partage est déjà créee
+            if($leporteur == true && $compromis->facture_honoraire_partage_cree == true){
+                return true;
+            }
+            if($leporteur == false && $compromis->facture_honoraire_partage_porteur_cree == true ){
+                return true;
+            }
         
             $montant_vnt_ht =  ( $leporteur == true ) ?  ( $compromis->frais_agence * $compromis->pourcentage_agent/100 ) / Tva::coefficient_tva()  :   ($compromis->frais_agence * (100 - $compromis->pourcentage_agent)/100) /Tva::coefficient_tva() ;
             
            
         }else {
+            // Si la facture d'honoraire est déjà créee
+            if( $compromis->facture_honoraire_cree == true){
+                return true;
+            }
             $montant_vnt_ht = ($compromis->frais_agence/Tva::coefficient_tva()) ; 
         
         }
@@ -1989,9 +1997,6 @@ if($compromis->je_porte_affaire == 1 && $compromis->est_partage_agent == 1 && (A
 
         $filleul = Filleul::where('user_id',$mandataire->id)->first();
         
-        // if($filleul != null ){
-        //     $this->store_facture_honoraire_parrainage($compromis, $filleul);
-        // }
     
 
     
@@ -2040,9 +2045,6 @@ else{
 
         $filleul = Filleul::where('user_id',$mandataire_partage->id)->first();
 
-        // if($filleul != null ){
-        //     $this->store_facture_honoraire_parrainage($compromis, $filleul);
-        // }
 
 }
 //  dd($formule);
