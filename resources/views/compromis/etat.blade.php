@@ -546,7 +546,7 @@
                                     <tbody>
                                         <tr>
                                             <td>Mandataire</td>
-                                            <td>{{$compromis->getPartage()->nom }} {{$compromis->getPartage()->prenom }}</td>
+                                            <td> @if($compromis->getPartage() != null) {{$compromis->getPartage()->nom }} {{$compromis->getPartage()->prenom }} @else {{$compromis->nom_agent }}  @endif</td>
                                             <td> @if($parrainPartage != null ) {{$parrainPartage->nom }} {{$parrainPartage->prenom }} @else <span class="color-warning">Pas de parrain @endif</span> </td>
                                         </tr>
                                         <tr>
