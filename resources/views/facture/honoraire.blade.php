@@ -161,7 +161,9 @@
                                             @if ( $facture->compromis->user_id == auth()->user()->id && auth()->user()->role != "admin" && $facture->compromis->cloture_affaire == 0 && $facture->compromis->demande_facture == 2 && $facture->compromis->agent_id != Auth()->user()->id)
                                                 <a class="cloturer" href="{{route('compromis.cloturer',Crypt::encrypt($facture->compromis->id))}}" data-toggle="tooltip" data-mandat="{{$facture->compromis->numero_mandat}}" title="@lang('Réitérer l\'affaire  ')"> <img src="{{asset('images/logo-notaire.png')}}" width="25px" height="30px" alt=""> <!-- <i class="large material-icons color-success ">thumb_up_alt</i> --> </a> 
                                             @elseif($facture->compromis->user_id != auth()->user()->id && auth()->user()->role != "admin" && $facture->compromis->cloture_affaire == 0 && $facture->compromis->demande_facture == 2 )
-                                                <span style="color:#751a97; font-size:12px">  Affaire à réitérer </span>
+                                              
+                                                <a class="cloturer" href="#" data-toggle="tooltip"  title="Affaire à réitérer par le porteur d'affaire "> <img src="{{asset('images/logo-notaire.png')}}" width="25px" height="30px" alt=""> <!-- <i class="large material-icons color-success ">thumb_up_alt</i> --> </a> 
+
 
                                             @else
                                                 @if ($facture->type == "partage" )
