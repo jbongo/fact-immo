@@ -1521,7 +1521,7 @@ public  function preparer_facture_honoraire_partage($compromis,$mandataire_id = 
 
             // // Faire la facture du parrain de celui qui ne porte pas l'affaire s'il a un parrain 
 
-            $filleul = Filleul::where('user_id',$mandataire_partage->id)->first();
+            $filleul =  ($mandataire_partage != null ) ? Filleul::where('user_id',$mandataire_partage->id)->first() : null;
 
             // if($filleul != null ){
             //     $this->store_facture_honoraire_parrainage($compromis, $filleul);
@@ -2038,7 +2038,7 @@ else{
 
         // // Faire la facture du parrain de celui qui ne porte pas l'affaire s'il a un parrain 
 
-        $filleul = Filleul::where('user_id',$mandataire_partage->id)->first();
+        $filleul =  ($mandataire_partage != null ) ? Filleul::where('user_id',$mandataire_partage->id)->first() : null;
 
         // if($filleul != null ){
         //     $this->store_facture_honoraire_parrainage($compromis, $filleul);

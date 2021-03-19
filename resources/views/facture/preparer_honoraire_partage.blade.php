@@ -144,7 +144,7 @@
         @endif
         {{-- @if(Auth()->user()->role !="admin")        --}}
         <tr>
-            <td style="width: 423px;"><span style="text-decoration: underline;"><strong>Mandataire avec qui je partage:</strong> </span> &nbsp; {{$mandataire_partage->nom}} {{$mandataire_partage->prenom}}&nbsp;</td>
+            <td style="width: 423px;"><span style="text-decoration: underline;"> @if($mandataire_partage != null) <strong>Mandataire avec qui je partage:</strong> </span> &nbsp; {{$mandataire_partage->nom}} {{$mandataire_partage->prenom}} @endif &nbsp; </td>
             <td style="width: 260px;height:35px"></td>
         </tr>
         {{-- @endif --}}
