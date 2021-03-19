@@ -189,9 +189,6 @@ class CompromisController extends Controller
 // ###################
 
 
-                // $valide_compro_id = array_unique ($valide_compro_id);
-                //  dd($valide_compro_id);
-
 
         return view ('compromis.index',compact('compromis','compromisParrain','fill_ids','compro_ids1','compro_ids2','valide_compro_id','compromisEncaissee','compromisEnattente','compromisSousOffre','compromisSousCompromis','page_filleul','nb_jour_max_demande'));
 

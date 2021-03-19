@@ -48,7 +48,8 @@
                                         @if(in_array($compromi->user_id,$fill_ids) )
                                         <span>{{$compromi->user->nom}} {{$compromi->user->prenom}}</span>
                                         @else 
-                                        <span>{{$compromi->getPartage()->nom}} {{$compromi->getPartage()->prenom}}</span>
+
+                                        <span> @if($compromi->getPartage() != null)  {{$compromi->getPartage()->nom}} {{$compromi->getPartage()->prenom}} @else {{$compromi->nom_agent}} @endif</span>
                                         @endif
                                     </td> 
                                 @elseif($type_user == "porteur") 
@@ -58,7 +59,7 @@
                                     </td> 
                                 @elseif($type_user == "partage")
                                 <td >
-                                    <span>{{$compromi->getPartage()->nom}} {{$compromi->getPartage()->prenom}}</span>
+                                    <span> @if($compromi->getPartage() != null) {{$compromi->getPartage()->nom}} {{$compromi->getPartage()->prenom}} @else {{$compromi->nom_agent}} @endif</span>
                                 </td> 
                                 @endif
                                     

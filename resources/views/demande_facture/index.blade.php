@@ -64,9 +64,14 @@
                                                 <span class="badge badge-danger">Non</span>
                                             @else
                                                 
-                                                
+                                                @if($compromi->getPartage() != null)
                                                 <strong> <a href="{{route('switch_user',Crypt::encrypt($compromi->getPartage()->id) )}}" data-toggle="tooltip" title="@lang('Se connecter en tant que ') {{$compromi->getPartage()->nom}}">{{$compromi->getPartage()->nom}} {{$compromi->getPartage()->prenom}}<i style="font-size: 17px" class="material-icons color-success">person_pin</i></a> </strong> 
+        
+                                                @else 
 
+                                                <strong> {{$compromi->nom_agent}}  </strong> 
+
+                                                @endif
                                                
                                             @endif
 

@@ -92,10 +92,20 @@
                                             <label class="color-info">{{$facture->type}} </label> 
                                         </td>
                                         <td   >
-                                        {{number_format($facture->montant_ht,2,'.','')}} €
+                                            @if (auth()->user()->role != "admin" && $facture->compromis->cloture_affaire == 0 && $facture->compromis->demande_facture == 2 )
+                                            <span style="color:#751a97; font-size:12px">  Affaire à réitérer </span>
+                                            @else
+                                            {{number_format($facture->montant_ht,2,'.','')}} €
+                                      
+                                            @endif
                                         </td>
                                         <td   >
-                                        {{number_format($facture->montant_ttc,2,'.','')}} €
+                                            
+                                            @if (auth()->user()->role != "admin" && $facture->compromis->cloture_affaire == 0 && $facture->compromis->demande_facture == 2 )
+                                            <span style="color:#751a97; font-size:12px">  Affaire à réitérer </span>
+                                            @else
+                                            {{number_format($facture->montant_ttc,2,'.','')}} €
+                                            @endif
                                         </td>
                                         <td>
                                         @if($facture->pourcentage_actuel() != "")                                        
@@ -148,15 +158,23 @@
                                         <td  >
                                             {{-- @if(auth::user()->role=="admin") --}}
                                             {{-- @if ($facture->compromis->je_porte_affaire == 0  || $facture->compromis->agent_id == auth::user()->id || ($facture->compromis->je_porte_affaire == 1 && $facture->compromis->est_partage_agent == 1) ) --}}
+                                            @if ( $facture->compromis->user_id == auth()->user()->id && auth()->user()->role != "admin" && $facture->compromis->cloture_affaire == 0 && $facture->compromis->demande_facture == 2 && $facture->compromis->agent_id != Auth()->user()->id)
+                                                <a class="cloturer" href="{{route('compromis.cloturer',Crypt::encrypt($facture->compromis->id))}}" data-toggle="tooltip" data-mandat="{{$facture->compromis->numero_mandat}}" title="@lang('Réitérer l\'affaire  ')"> <img src="{{asset('images/logo-notaire.png')}}" width="25px" height="30px" alt=""> <!-- <i class="large material-icons color-success ">thumb_up_alt</i> --> </a> 
+                                            @elseif($facture->compromis->user_id != auth()->user()->id && auth()->user()->role != "admin" && $facture->compromis->cloture_affaire == 0 && $facture->compromis->demande_facture == 2 )
+                                              
+                                                <a class="cloturer" href="#" data-toggle="tooltip"  title="Affaire à réitérer par le porteur d'affaire "> <img src="{{asset('images/logo-notaire.png')}}" width="25px" height="30px" alt=""> <!-- <i class="large material-icons color-success ">thumb_up_alt</i> --> </a> 
+
+
+                                            @else
                                                 @if ($facture->type == "partage" )
                                                     <a target="blank" href="{{route('facture.preparer_facture_honoraire_partage',[Crypt::encrypt($facture->compromis->id), $facture->user_id ])}}" data-toggle="tooltip" title="@lang('Note honoraire  ')"><i class="large material-icons color-danger">insert_drive_file</i></a> 
 
                                                 @elseif($facture->type == "parrainage" || $facture->type == "parrainage_partage")
-                                                    @if($facture->filleul_id != null)
+                                                    {{-- @if($facture->filleul_id != null)
                                                         <a target="blank" href="{{route('facture.preparer_facture_honoraire_parrainage',[Crypt::encrypt($facture->compromis->id), $facture->filleul_id])}}" data-toggle="tooltip" title="@lang('Note honoraire  ')"><i class="large material-icons color-danger">insert_drive_file</i></a> 
-                                                    @else
+                                                    @else --}}
                                                         <a target="blank" href="{{route('facture.preparer_facture_honoraire_parrainage',[Crypt::encrypt($facture->compromis->id), $facture->user_id])}}" data-toggle="tooltip" title="@lang('Note honoraire  ')"><i class="large material-icons color-danger">insert_drive_file</i></a> 
-                                                    @endif
+                                                    {{-- @endif --}}
                                                 
                                                 @else 
                                                     <a target="blank" href="{{route('facture.preparer_facture_honoraire',Crypt::encrypt($facture->compromis->id))}}" data-toggle="tooltip" title="@lang('Note honoraire  ')"><i class="large material-icons color-danger">insert_drive_file</i></a> 
@@ -166,6 +184,8 @@
                                                 <a href="{{route('facture.telecharger_pdf_facture_stylimmo', Crypt::encrypt($facture->compromis->id))}}"  class="btn btn-warning btn-flat btn-addon  m-b-10 m-l-5 " id="ajouter"><i class="ti-download"></i>Télécharger</a>
 
                                             @endif --}}
+                                                
+                                            @endif
                                         </td> 
 
                                   

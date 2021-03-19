@@ -98,7 +98,7 @@ class Filleul extends Model
                     $ca_comm_parr+= $fact->montant_ht;
                 }
             }
-// dd($ca_comm_parr);
+
 
             // On vérifie que le parrain n'a pas démissionné à la date d'encaissement 
             $a_demission_parrain = false;
