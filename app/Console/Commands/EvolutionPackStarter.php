@@ -47,7 +47,11 @@ class EvolutionPackStarter extends Command
 
         foreach ($mandataires as $mandataire) {
            
+           
+           if($mandataire->contrat != null && $mandataire->contrat->a_demission == false){
+           
             $nb_mois_starter = $mandataire->contrat->duree_max_starter;
+           
 
             if(date('Y-m-d',strtotime($mandataire->contrat->date_deb_activite->format('Y-m-d')."+ $nb_mois_starter month")) <= date('Y-m-d') ){
 
@@ -58,12 +62,15 @@ class EvolutionPackStarter extends Command
 
                 $mandataire->update();
 
-                Mail::to($mandataire->email)->send(new NotifEvolutionStarter($mandataire,$nb_mois_starter,$mandataire->contrat->date_deb_activite,$ancienne_comm,$nouvelle_comm));
-                Mail::to("gestion@stylimmo.com")->send(new NotifEvolutionStarter($mandataire,$nb_mois_starter,$mandataire->contrat->date_deb_activite,$ancienne_comm,$nouvelle_comm));
+                // Mail::to($mandataire->email)->send(new NotifEvolutionStarter($mandataire,$nb_mois_starter,$mandataire->contrat->date_deb_activite,$ancienne_comm,$nouvelle_comm));
+                Mail::to("support@stylimmo.com")->send(new NotifEvolutionStarter($mandataire,$nb_mois_starter,$mandataire->contrat->date_deb_activite,$ancienne_comm,$nouvelle_comm));
 
                
                 // echo $mandataire->nom." -->".date('Y-m-d',strtotime($mandataire->contrat->date_deb_activite->format("Y-m-d")."+ $nb_mois_starter month"))." \n";
             }
+            
+           }
+
         }
 
 
