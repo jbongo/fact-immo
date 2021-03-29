@@ -263,13 +263,9 @@ Demande de facture  | {{ substr($compromis->description_bien,0,150) }}...
               </div>
 
 
-
 <hr><br>
 
 
-
-
-               
                     <div class="row">
                     
                         <div class="col-lg-4 col-md-4 col-sm-4">

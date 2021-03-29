@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
     @section ('page_title')
-    Articles / Abonnement Chez {{$fournisseur->nom}}
+    Historique de l'article  << {{$article->libelle}} >>
     @endsection
     <div class="row"> 
        
@@ -15,10 +15,12 @@
              @endif       
             <div class="card alert">
                 <div class="col-lg-12">
-                    <a href="{{route('fournisseur.index')}}" class="btn btn-warning btn-flat btn-addon m-b-10 m-l-5"><i class="ti-angle-double-left"></i>@lang('Liste des fournisseurs')</a> <br>
+                    <a href="{{route('article.index', Crypt::encrypt($article->fournisseur->id))}}" class="btn btn-warning btn-flat btn-addon m-b-10 m-l-5"><i class="ti-angle-double-left"></i>@lang('Liste des articles')</a> <br>
                  </div>
                 <!-- table -->
-            <a href="{{route('article.create', Crypt::encrypt($fournisseur->id))}}" class="btn btn-success btn-rounded btn-addon btn-sm m-b-10 m-l-5"><i class="ti-user"></i>@lang('Ajouter un article')</a>
+                <br><br>
+                <br><br>
+            {{-- <a href="{{route('article.create', Crypt::encrypt($article->id))}}" class="btn btn-success btn-rounded btn-addon btn-sm m-b-10 m-l-5"><i class="ti-user"></i>@lang('Ajouter un article')</a> --}}
                 
                 <div class="card-body">
                         <div class="panel panel-warning m-t-15" id="cont" >
@@ -36,54 +38,92 @@
                                         <th>@lang('prix d\'achat')</th>
                                         <th>@lang('coefficient')</th>
                                         <th>@lang('expiration')</th>
-                                        <th>@lang('date_ d\'chat')</th>
+                                        <th>@lang('date_ d\'achat')</th>
                                         <th>@lang('date d\'expiration')</th>
+                                        <th>@lang('date de modification')</th>
                                         <th>@lang('action')</th>
 
                                     </tr>
                                 </thead>
                                 <tbody>
                    
-                                @foreach ($articles as $article)
+                                @foreach ($articles as $arti)
                                     <tr>
 
                                         <td style="color: #e05555; ">
-                                        <strong>{{$article->libelle}}</strong> 
+                                        <span @if($arti->modif_libelle == true ) style="background:#eea" @endif >{{$arti->libelle}}</span> 
                                         </td>
                                         <td style="color: #32ade1;">
-                                            <strong>{{$article->description}}</strong> 
+                                            <span @if($arti->modif_description == true ) style="background:#eea" @endif >{{$arti->description}}</span> 
                                             </td>
                                         <td style="color: #32ade1;">
-                                             {{$article->quantite}}  
+                                              <span @if($arti->modif_quantite == true ) style="background:#eea" @endif > {{$arti->quantite}} </span> 
                                         </td>
                                         <td style="color: #32ade1;">
-                                            {{$article->prix_achat}}
+                                             <span @if($arti->modif_prix_achat == true ) style="background:#eea" @endif > {{$arti->prix_achat}}</span>
                                         </td>
                                         <td style="color: #32ade1;">
-                                            {{$article->coefficient}}
+                                             <span @if($arti->modif_coefficient == true ) style="background:#eea" @endif > {{$arti->coefficient}}</span>
                                         </td>
                                         <td >
-                                           @if ($article->a_expire == true) <span style="color: #e05555;">Oui </span>   @else  <span style="color: #32ade1;">Non </span>    @endif
+                                            <span @if($arti->modif_a_expire == true ) style="background:#eea" @endif >  @if ($arti->a_expire == true) <span style="color: #e05555;">Oui </span>   @else  <span style="color: #32ade1;">Non </span>    @endif </span>
                                         </td>
                                         <td style="color: #32ade1;">
-                                            {{$article->date_achat->format('d/m/Y')}}
+                                            <span @if($arti->modif_date_achat == true ) style="background:#eea" @endif > {{$arti->date_achat->format('d/m/Y')}}</span>
                                         </td>
                                         <td style="color: #e1323e;">
-                                           @if($article->date_expiration!= null)  {{$article->date_expiration->format('d/m/Y')}} @endif
+                                           <span @if($arti->modif_date_expiration == true ) style="background:#eea" @endif > @if($arti->date_expiration!= null)  {{$arti->date_expiration->format('d/m/Y')}} @endif</span>
                                         </td>
-                                        
+                                        <td style=" color: #800a14;">
+                                           <span>  @if($arti->created_at!= null)  {{$arti->created_at->format('d/m/Y')}} @endif</span>
+                                         </td>
                                      
                                      
                                                                          
                                 
                                         <td>
-
-                                            <span><a href="{{route('article.edit',Crypt::encrypt($article->id))}}" data-toggle="tooltip" title="@lang('Modifier ') {{ $article->description }}"><i class="large material-icons color-warning">edit</i></a></span>
-                                            <span><a  href="{{route('article.edit',$article->id)}}" class="delete" data-toggle="tooltip" title="@lang('Archiver ') {{ $article->description }}"><i class="large material-icons color-danger">delete</i> </a></span>
-                                            <span><a href="{{route('article.historique', Crypt::encrypt($article->id))}}" data-toggle="tooltip" title="@lang('Voir l\'historique ') "><i class="large material-icons color-success">history</i>  </a></span>
+                                            {{-- <span><a href="{{route('article.historique.show',Crypt::encrypt($article->id))}}" data-toggle="tooltip" title="@lang('voir l\'article' ) "><i class="large material-icons color-warning">visibility</i></a></span> --}}
                                         </td>
                                     </tr>
                             @endforeach
+                            
+                            <tr style="background: #eebbff">
+
+                                <td style="color: #e05555; ">
+                                <strong>{{$article->libelle}}</strong> 
+                                </td>
+                                <td style="color: #32ade1;">
+                                    <strong>{{$article->description}}</strong> 
+                                    </td>
+                                <td style="color: #32ade1;">
+                                     {{$article->quantite}}  
+                                </td>
+                                <td style="color: #32ade1;">
+                                    {{$article->prix_achat}}
+                                </td>
+                                <td style="color: #32ade1;">
+                                    {{$article->coefficient}}
+                                </td>
+                                <td >
+                                   @if ($article->a_expire == true) <span style="color: #e05555;">Oui </span>   @else  <span style="color: #32ade1;">Non </span>    @endif
+                                </td>
+                                <td style="color: #32ade1;">
+                                    {{$article->date_achat->format('d/m/Y')}}
+                                </td>
+                                <td style="color: #e1323e;">
+                                   @if($article->date_expiration!= null)  {{$article->date_expiration->format('d/m/Y')}} @endif
+                                </td>
+                                <td style="background:#bdbdbd; color: #800a14;">
+                                    
+                                 </td>
+                             
+                             
+                                                                 
+                        
+                                <td>
+                                    <span><a href="{{route('article.edit',Crypt::encrypt($article->id))}}" data-toggle="tooltip" title="@lang('voir l\'article' ) "><i class="large material-icons color-danger">visibility</i></a></span>
+                                </td>
+                            </tr>
                               </tbody>
                             </table>
                         </div>

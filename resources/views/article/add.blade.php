@@ -112,6 +112,18 @@ Ajout d'un article
                                </div>
                          </div>
                         
+                         <div class="form-group row">
+                           <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="login">Date d'expiration </label>
+                           <div class="col-lg-8 col-md-8 col-sm-8">
+                              <input type="date" class="form-control {{ $errors->has('date_expiration') ? ' is-invalid' : '' }}" value="{{old('date_expiration')}}" id="date_expiration" name="date_expiration"  placeholder=""  >
+                              @if ($errors->has('date_expiration'))
+                                 <br>
+                                 <div class="alert alert-warning ">
+                                    <strong>{{$errors->first('date_expiration')}}</strong> 
+                                 </div>
+                              @endif     
+                           </div>
+                        </div>
                         
                     </div>
                 </div>

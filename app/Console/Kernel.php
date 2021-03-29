@@ -41,7 +41,9 @@ class Kernel extends ConsoleKernel
          $schedule->command('command:mandataireazero')
                  ->daily();
                  
-                 
+        $schedule->command('command:evolutionpackstarter')
+                 ->daily();
+  
 
                  
     }

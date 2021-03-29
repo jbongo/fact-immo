@@ -17,8 +17,8 @@
            @endif       
           <div class="card alert">
          <div class="row">
-               
-            @if ($mandataire->contrat->deduis_jeton == true && $compromis->facture_honoraire_cree == false)
+            
+            @if ($mandataire->contrat->deduis_jeton == true &&  ($compromis->facture_honoraire_cree == false ||   ($facture !=null && $facture->nb_mois_deduis === null) ) )
            <br>
                <div class="row">
                   <div class="col-lg-6 col-md-6 col-sm-6">
@@ -41,7 +41,7 @@
 
                <div class="row">
                   <div class="col-lg-8 col-md-8 col-sm-8">
-                        <form class="form-valide form-horizontal" action="{{ route('facture.deduire_pub_facture_honoraire',Crypt::encrypt($compromis->id) ) }}" method="post">
+                        <form class="form-valide form-horizontal"  @if($facture !=null && $facture->nb_mois_deduis === null) action="{{ route('facture.deduire_pub', [Crypt::encrypt($facture->id)] ) }}"  @else action="{{ route('facture.deduire_pub_facture_honoraire',Crypt::encrypt($compromis->id) ) }} @endif " method="post">
                               {{ csrf_field() }}
                             <div class="row">
 
@@ -184,7 +184,7 @@
 
 <br>
 
-@if($facture != null )
+@if($facture != null && $facture->nb_mois_deduis != null )
 <table style="height: 47px; width: 672px;">
 
     <tbody>

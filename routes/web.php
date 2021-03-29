@@ -92,8 +92,11 @@ Route::middleware('auth')->group(function(){
     Route::get('preparer/factures-honoraire-partage/{compromis}/{mandataire_id?}','FactureController@preparer_facture_honoraire_partage')->name('facture.preparer_facture_honoraire_partage');//ok
     Route::post('deduire-pub/factures-honoraire/{compromis}','FactureController@deduire_pub_facture_honoraire')->name('facture.deduire_pub_facture_honoraire');//ok
     Route::post('deduire-pub/factures-honoraire-partage/{compromis}/{mandataire_id?}','FactureController@deduire_pub_facture_honoraire_partage')->name('facture.deduire_pub_facture_honoraire_partage');//ok
-    // Route::get('generer/pdf/factures-honoraire/','FactureController@generer_pdf_facture_honoraire')->name('facture.pdf.generer_facture_honoraire');
-
+    
+    // Lorsqu'on déduis la pub sans supprimer la facture 
+    Route::get('deduire-pub-show/factures/{facture_id}','FactureController@deduire_pub_show')->name('facture.deduire_pub_show');//ok
+    Route::post('deduire-pub/factures/{facture_id}','FactureController@deduire_pub')->name('facture.deduire_pub');//ok
+    
 
     // Facture d'avoir
     Route::get('/factures/avoir/create/{facture_id}','FactureController@create_avoir')->name('facture.avoir.create');
@@ -178,6 +181,8 @@ Route::middleware('auth')->group(function(){
     Route::post('article/update/{article}','ArticleController@update')->name('article.update');
     Route::get('article/create/{fournisseur}','ArticleController@create')->name('article.create');
     Route::post('article/store','ArticleController@store')->name('article.store');
+    Route::get('/article/historique/{article_id}','ArticleController@historique')->name('article.historique');
+    Route::get('/article/historique/show/{article_id}','ArticleController@historique_show')->name('article.historique.show');
 
     // Etat financier
     Route::get('/etat-financier/{date_deb?}/{date_fin?}', 'FactureController@etat_financier')->name('etat_financier');       

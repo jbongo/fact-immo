@@ -62,7 +62,7 @@ class EvolutionPackStarter extends Command
 
                 $mandataire->update();
 
-                // Mail::to($mandataire->email)->send(new NotifEvolutionStarter($mandataire,$nb_mois_starter,$mandataire->contrat->date_deb_activite,$ancienne_comm,$nouvelle_comm));
+                Mail::to($mandataire->email)->send(new NotifEvolutionStarter($mandataire,$nb_mois_starter,$mandataire->contrat->date_deb_activite,$ancienne_comm,$nouvelle_comm));
                 Mail::to("support@stylimmo.com")->send(new NotifEvolutionStarter($mandataire,$nb_mois_starter,$mandataire->contrat->date_deb_activite,$ancienne_comm,$nouvelle_comm));
 
                

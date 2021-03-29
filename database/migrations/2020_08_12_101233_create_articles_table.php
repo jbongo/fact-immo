@@ -21,6 +21,7 @@ class CreateArticlesTable extends Migration
             $table->double('coefficient')->nullable();
             $table->integer('fournisseur_id')->nullable();
             $table->date('date_achat')->nullable();
+            $table->date('date_expiration')->nullable();
             $table->boolean('a_expire')->default(false);
             $table->string('description')->nullable();
 

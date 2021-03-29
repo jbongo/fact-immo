@@ -5,7 +5,7 @@
 
 
     $li_home = $li_mandataire = $li_affaire = $li_affaire_filleul = $li_affaire_archive=  $li_facture = $li_facture_gestion = $li_facture_demande = $li_facture_a_payer = $li_parametre = $li_parametre_modele =
-    $li_parametre_fournisseur = $li_parametre_generaux = $li_outil = $li_affaire_toutes = $li_affaire_cloture = $li_facture_hors_delais = $li_jetons ="";
+    $li_parametre_fournisseur = $li_parametre_pack_pub = $li_parametre_generaux = $li_outil = $li_affaire_toutes = $li_affaire_cloture = $li_facture_hors_delais = $li_jetons ="";
     
     switch ($curent_url[1]) {
         case 'home':       
@@ -64,6 +64,10 @@
             case 'generaux':
                 $li_parametre_generaux = "active";
                 break;
+            case 'pack_pub':
+                $li_parametre_pack_pub = "active";
+                break;
+                
             case 'archive' :
                 if($curent_url[1] == "compromis"){
                     $li_affaire_archive = "active open";
@@ -167,6 +171,7 @@
                         <ul>
                             {{-- <li><a href="page-login.html">Info Entreprise</a></li> --}}
                             <li class="{{$li_parametre_generaux}}"><a href="{{route('parametre_generaux.create')}}">Généraux</a></li>
+                            <li class="{{$li_parametre_pack_pub}}"><a href="{{route('pack_pub.index')}}">Pack Pub</a></li>
                             <li class="{{$li_parametre_modele}}"><a href="{{route('modele_contrat.create')}}">Modèle contrat</a></li>
                             <li class="{{$li_parametre_fournisseur}}"><a href="{{route('fournisseur.index')}}">Fournisseur</a></li>
                         </ul>
