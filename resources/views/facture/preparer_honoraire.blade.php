@@ -184,7 +184,7 @@
 
 <br>
 
-@if($facture != null && $facture->nb_mois_deduis !== null  &&  $facture->url != null )
+@if($facture != null && ( ($facture->nb_mois_deduis !== null && $mandataire->contrat->deduis_jeton == true ) || $mandataire->contrat->deduis_jeton == false )   )
 <table style="height: 47px; width: 672px;">
 
     <tbody>

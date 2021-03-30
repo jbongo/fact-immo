@@ -24,7 +24,6 @@
                 ||  (  $mandataire->contrat->deduis_jeton == true && $facture !=null && $facture->nb_mois_deduis === null &&  $mandataire->nb_mois_pub_restant > 0) )
                 {{-- {{dd($mandataire->contrat->deduis_jeton == true && $compromis->facture_honoraire_partage_cree == false)}} --}}
             <br><br>
-          
                 <div class="row">
                     <div class="col-lg-6 col-md-6 col-sm-6">
                         <span > <strong> Jeton(s) restant(s) : </strong></span>&nbsp;&nbsp;  <span class="color-warning"> <strong> {{$mandataire->nb_mois_pub_restant}}</strong></span> <br>
@@ -209,7 +208,7 @@
 
 <br>
 
-@if($facture != null && $facture->nb_mois_deduis !== null && $facture->url != null )
+@if($facture != null  && ( ($facture->nb_mois_deduis !== null && $mandataire->contrat->deduis_jeton == true ) || ( $mandataire->contrat->deduis_jeton == false ))  )
 <table style="height: 47px; width: 672px;">
     <tbody>
     
