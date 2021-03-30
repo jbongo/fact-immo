@@ -77,13 +77,17 @@ Ajout d'une affaire
                                         </div>
 
                                         <div class="col-lg-4 col-md-4 col-sm-4">
-                                            <div class="form-group" id="div_agent_hors_reseau">
-                                                <label class="col-lg-8 col-md-8 col-sm-8 col-form-label" for="nom_agent">Nom Agence/Agent <span class="text-danger">*</span></label>
-                                                <div class="col-lg-6 col-md-6 col-sm-6">
-                                                
-                                                    <input class="form-control" type="text" value="{{old('nom_agent') ? old('nom_agent') : " " }}" id="nom_agent" name="nom_agent" required >
+                                            <div  id="div_agent_hors_reseau">
+                                                <div class="form-group">
+                                                    <label class="col-lg-8 col-md-8 col-sm-8 col-form-label" for="nom_agent">Nom Agence/Agent <span class="text-danger">*</span></label>
+                                                    <div class="col-lg-6 col-md-6 col-sm-6">
+                                                    
+                                                        <input class="form-control" type="text" value="{{old('nom_agent') ? old('nom_agent') : " " }}" id="nom_agent" name="nom_agent" required >
+                                                    </div>
                                                 </div>
+                                            
                                             </div>
+                                          
                                         </div>
 
                                         

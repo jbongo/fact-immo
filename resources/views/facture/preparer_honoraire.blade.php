@@ -184,7 +184,7 @@
 
 <br>
 
-@if($facture != null && $facture->nb_mois_deduis !== null )
+@if($facture != null && $facture->nb_mois_deduis !== null  &&  $facture->url != null )
 <table style="height: 47px; width: 672px;">
 
     <tbody>
