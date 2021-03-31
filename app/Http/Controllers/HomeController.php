@@ -96,8 +96,8 @@ class HomeController extends Controller
 
 
                 //  on réccupère toutes les factures stylimmo du mois en cour qui n'ont pas encore été encaissée 
-                $ca_att_n = Facture::where([['type','stylimmo'],['encaissee',0],['date_facture','like',"%$annee_n-$month%"]])->sum('montant_ht');
-                $nb_en_attente_n = Facture::where([['type','stylimmo'],['encaissee',0],['date_facture','like',"%$annee_n-$month%"]])->count();
+                $ca_att_n = Facture::where([['type','stylimmo'],['encaissee',0], ['a_avoir',0],['date_facture','like',"%$annee_n-$month%"]])->sum('montant_ht');
+                $nb_en_attente_n = Facture::where([['type','stylimmo'],['encaissee',0], ['a_avoir',0],['date_facture','like',"%$annee_n-$month%"]])->count();
                 $nb_en_attente_N += $nb_en_attente_n ;
 
 
@@ -116,8 +116,8 @@ class HomeController extends Controller
         
                 #####ca encaissé
                 //  on réccupère toutes les factures stylimmo encaissées au cours du mois
-                $ca_encai_n = Facture::where([['type','stylimmo'],['encaissee',1],['date_encaissement','like',"%$annee_n-$month%"]])->sum('montant_ht');
-                $nb_encaisse_n  = Facture::where([['type','stylimmo'],['encaissee',1],['date_encaissement','like',"%$annee_n-$month%"]])->count();
+                $ca_encai_n = Facture::where([['type','stylimmo'],['encaissee',1], ['a_avoir',0],['date_encaissement','like',"%$annee_n-$month%"]])->sum('montant_ht');
+                $nb_encaisse_n  = Facture::where([['type','stylimmo'],['encaissee',1], ['a_avoir',0],['date_encaissement','like',"%$annee_n-$month%"]])->count();
                 $nb_encaisse_N += $nb_encaisse_n;
 
                 // dd($ca_encai_n);

@@ -129,7 +129,7 @@
                                             @endif
                                         
                                         @else
-                                            <span class="color-primary">Facture STYL'IMMO non disponible</span>   
+                                            <span class="color-primary">Facture STYL'IMMO non émise</span>   
                                             
                                         @endif
                                         

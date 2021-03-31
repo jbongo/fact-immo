@@ -56,9 +56,8 @@ class CompromisController extends Controller
         $tab_compromisEnattente_id = array();
         $tab_compromisPrevisionnel_id = array();
 
-        $compromisEncaissee_id = Facture::where([['encaissee',1],['type','stylimmo']])->select('compromis_id')->get();
-        $compromisEnattente_id = Facture::where([['encaissee',0],['type','stylimmo']])->select('compromis_id')->get();
-        // $compromisPrevisionnel_id = Facture::where([['encaissee',1],['type','stylimmo']])->select('compromis_id')->get();
+        $compromisEncaissee_id = Facture::where([['encaissee',1],['type','stylimmo'],['a_avoir',0]])->select('compromis_id')->get();
+        $compromisEnattente_id = Facture::where([['encaissee',0],['type','stylimmo'],['a_avoir',0]])->get();
 
         foreach ($compromisEncaissee_id as $encaiss) {
         $tab_compromisEncaissee_id[] = $encaiss["compromis_id"];
@@ -67,7 +66,7 @@ class CompromisController extends Controller
             $tab_compromisEnattente_id[] = $attente["compromis_id"];
         }
        
-
+// dd($compromisEnattente_id);
 
         if(auth::user()->role == "admin"){
             $compromisEncaissee = Compromis::whereIn('id',$tab_compromisEncaissee_id)->where([['archive',false],['cloture_affaire','<',2]])->get();
@@ -214,9 +213,8 @@ class CompromisController extends Controller
         $tab_compromisEnattente_id = array();
         $tab_compromisPrevisionnel_id = array();
 
-        $compromisEncaissee_id = Facture::where([['date_encaissement','like',"%$annee%"],['encaissee',1],['type','stylimmo']])->select('compromis_id')->get();
-        $compromisEnattente_id = Facture::where([['date_facture','like',"%$annee%"],['encaissee',0],['type','stylimmo']])->select('compromis_id')->get();
-        // $compromisPrevisionnel_id = Facture::where([['encaissee',1],['type','stylimmo']])->select('compromis_id')->get();
+        $compromisEncaissee_id = Facture::where([['date_encaissement','like',"%$annee%"],['encaissee',1],['a_avoir',0],['type','stylimmo']])->select('compromis_id')->get();
+        $compromisEnattente_id = Facture::where([['date_facture','like',"%$annee%"],['encaissee',0],['a_avoir',0],['type','stylimmo']])->select('compromis_id')->get();
 
         foreach ($compromisEncaissee_id as $encaiss) {
         $tab_compromisEncaissee_id[] = $encaiss["compromis_id"];
@@ -801,9 +799,8 @@ class CompromisController extends Controller
         $tab_compromisEnattente_id = array();
         $tab_compromisPrevisionnel_id = array();
 
-        $compromisEncaissee_id = Facture::where([['encaissee',1],['type','stylimmo']])->select('compromis_id')->get();
-        $compromisEnattente_id = Facture::where([['encaissee',0],['type','stylimmo']])->select('compromis_id')->get();
-        // $compromisPrevisionnel_id = Facture::where([['encaissee',1],['type','stylimmo']])->select('compromis_id')->get();
+        $compromisEncaissee_id = Facture::where([['encaissee',1],['a_avoir',0],['type','stylimmo']])->select('compromis_id')->get();
+        $compromisEnattente_id = Facture::where([['encaissee',0],['a_avoir',0],['type','stylimmo']])->select('compromis_id')->get();
 
         foreach ($compromisEncaissee_id as $encaiss) {
            $tab_compromisEncaissee_id[] = $encaiss["compromis_id"];
