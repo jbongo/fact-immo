@@ -410,7 +410,7 @@ class CompromisController extends Controller
                 
             }
            
-
+           
 
             $compromis = Compromis::create([
                 "user_id"=> Auth::user()->id,
@@ -418,6 +418,10 @@ class CompromisController extends Controller
                 "partage_reseau"=>$request->hors_reseau == "Non" ? true : false,
                 "agent_id"=> ($request->partage == "Oui" && $request->hors_reseau == "Non" ) ? $request->agent_id : null,
                 "nom_agent"=>$request->nom_agent,
+                "adresse_agence"=>$request->adresse_agence,
+                "code_postal_agence"=>$request->code_postal_agence,
+                "ville_agence"=>$request->ville_agence,
+                "qui_porte_externe"=>$request->qui_porte_externe,
                 "pourcentage_agent"=>$request->pourcentage_agent,
                 "je_porte_affaire"=>$request->je_porte_affaire == "on" ? true : false,
                 "type_affaire"=> $request->type_affaire,

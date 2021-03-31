@@ -77,8 +77,8 @@ Ajout d'une affaire
                                         </div>
 
                                         <div class="col-lg-4 col-md-4 col-sm-4">
-                                            <div class="form-group" id="div_agent_hors_reseau">
-                                                <label class="col-lg-8 col-md-8 col-sm-8 col-form-label" for="nom_agent">Nom Agence/Agent <span class="text-danger">*</span></label>
+                                            <div class="form-group div_agent_hors_reseau" >
+                                                <label class="col-lg-8 col-md-8 col-sm-8 col-form-label" for="nom_agent">Nom de l'agence <span class="text-danger">*</span></label>
                                                 <div class="col-lg-6 col-md-6 col-sm-6">
                                                 
                                                     <input class="form-control" type="text" value="{{old('nom_agent') ? old('nom_agent') : " " }}" id="nom_agent" name="nom_agent" required >
@@ -116,12 +116,27 @@ Ajout d'une affaire
                                                 <strong>Info !</strong> Si vous portez l'affaire, c'est vous qui ferez la demande de facture STYL'IMMO .
                                             </div>
                                         </div>
-
+                                       
+                                       <div class="div_agence_externe1">
+                                    
+                                       
+                                       </div>
+                                        
+                                        
+                                        
+                                        
                                         <div class="col-lg-4 col-md-4 col-sm-4" id="div_mandat_partage">
                                             
                                         </div>
 
                                         
+                                    </div>
+                                    
+                                    
+                                    <div class="row div_agence_externe2">
+
+                                      
+
                                     </div>
 
 
@@ -592,7 +607,7 @@ $('#div_partage_non_porte_alert').hide();
 
 $('#div_hors_reseau').hide();
 $('#div_agent_reseau').hide();
-$('#div_agent_hors_reseau').hide();
+$('.div_agent_hors_reseau').hide();
 $('#div_pourcentage_agent').hide();
 $('#div_je_porte_affaire').hide();
 
@@ -603,19 +618,22 @@ $("#partage").change(function(){
         $('#div_hors_reseau').show();
         $('#div_agent_reseau').show();
         $('#div_pourcentage_agent').show();
+        
 
     }else{
         $('#div_je_porte_affaire').hide();
 
         $('#div_hors_reseau').hide();
         $('#div_agent_reseau').hide();
-        $('#div_agent_hors_reseau').hide();
+        $('.div_agent_hors_reseau').hide();
         $('#div_pourcentage_agent').hide();
         $('#div_total').show();
 
         $('#sous_div_mandat_partage').remove();
         $('#div_mandat_partage').hide();
 
+        $('.sous_div_agence_externe1').remove();
+        $('.sous_div_agence_externe2').remove();
     }
 });
 
@@ -635,7 +653,7 @@ $('#je_porte_affaire').change(function(){
 
    }else{
        /* $('#div_hors_reseau').hide();
-        $('#div_agent_hors_reseau').hide();
+        $('.div_agent_hors_reseau').hide();
 
         $('#div_agent_reseau').hide();
         $('#div_pourcentage_agent').hide();*/
@@ -681,15 +699,70 @@ $("#agent_id").change(function(){
 })
 
 $("#hors_reseau").change(function(){
+    // Si l'affaire est partagée en interne
     if($('#hors_reseau').val() == "Non"){
-        $('#div_agent_hors_reseau').hide();
+        $('.div_agent_hors_reseau').hide();
         $('#div_agent_reseau').show();
         $('#label_partage_name').html($("#agent_id").children("option:selected").data('tokens'));
 
+        $('.sous_div_agence_externe1').remove();
+        $('.sous_div_agence_externe2').remove();
+        
+    // Si l'affaire est partagée avec une agence externe
     }else{
-        $('#div_agent_hors_reseau').show();
+        $('.div_agent_hors_reseau').show();
         $('#div_agent_reseau').hide();
+        $('#div_je_porte_affaire').hide();
+        
         $('#label_partage_name').html($('#nom_agent').val());
+        
+        
+        $('.div_agence_externe1').html(`
+        
+            <div class="col-lg-4 col-md-4 col-sm-4 sous_div_agence_externe1" >
+                <div class="form-group row  div_agent_hors_reseau" >                                                
+                    <label class="col-lg-8 col-md-8 col-sm-8 col-form-label" for="qui_porte_externe">Qui porte l'affaire chez le notaire ? <span class="text-danger">*</span></label>
+                    <div class="col-lg-8 col-md-8 col-sm-8 ">
+                        <select class="js-select2 form-control" id="qui_porte_externe" name="qui_porte_externe" required>
+                            <option value="1">STYL'IMMO et L'Agence</option>
+                            <option value="2">L'Agence</option>
+                            <option value="3">STYL'IMMO</option>
+                        </select>
+                    </div>                                                
+                </div>
+            </div>
+     
+        `);
+        
+        $('.div_agence_externe2').html(`
+             
+
+
+        <div class="col-lg-3 col-md-3 col-sm-3 sous_div_agence_externe2">                                            
+                <div class="form-group div_agent_hors_reseau">
+                    <label for="adresse_agence">Complément d'adresse de l'agence <span class="text-danger">*</span> </label>
+                    <input class="form-control" type="text" value="{{old('adresse_agence')}}" id="adresse_agence" required name="adresse_agence" >
+                </div>                                            
+        </div>
+
+        <div class="col-lg-3 col-md-3 col-sm-3 sous_div_agence_externe2">                                            
+                <div class="form-group div_agent_hors_reseau">
+                    <label for="code_postal_agence">Code Postal de l'agence <span class="text-danger">*</span> </label>
+                    <input class="form-control" type="text" value="{{old('code_postal_agence')}}" id="code_postal_agence" required name="code_postal_agence" >
+                </div>                                            
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-3 sous_div_agence_externe2">                                            
+                <div class="form-group div_agent_hors_reseau">
+                    <label for="ville_acquereur">Ville de l'agence <span class="text-danger">*</span> </label>
+                    <input class="form-control" type="text" value="{{old('ville_agence')}}" id="ville_agence" required name="ville_agence" >
+                </div>                                            
+        </div>
+ 
+    `);
+    
+        
+        
+        
 
     }
 });

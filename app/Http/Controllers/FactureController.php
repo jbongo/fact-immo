@@ -1779,7 +1779,7 @@ public  function deduire_pub(Request $request, $facture_id)
         
         $facture->nb_mois_deduis =  $request->nb_mois_deduire;
       
-      dd($request->nb_mois_deduire);
+    //   dd($request->nb_mois_deduire);
 
         $mandataire->nb_mois_pub_restant -= $request->nb_mois_deduire;
         $mandataire->update();

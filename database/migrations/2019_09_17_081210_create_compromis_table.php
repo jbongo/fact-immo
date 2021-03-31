@@ -47,6 +47,12 @@ class CreateCompromisTable extends Migration
             // Info Partage
             $table->boolean('est_partage_agent')->default(false);
             $table->string('nom_agent')->nullable();
+            $table->integer('qui_porte_externe')->nullable();
+            $table->string('adresse_agence')->nullable();
+            $table->string('code_postal_agence')->nullable();
+            $table->string('ville_agence')->nullable();
+            
+         
             $table->double('pourcentage_agent')->nullable();
             $table->double('montant_deduis_net')->nullable();
 
