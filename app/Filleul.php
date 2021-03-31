@@ -68,7 +68,8 @@ class Filleul extends Model
                 $seuil_filleul = $comm_parrain["seuil_fill_3"];
                 $seuil_parrain = $comm_parrain["seuil_parr_3"];
             }
-            $date_12 = strftime("%d/%m/%Y", strtotime($date_12)); 
+            $date_12 = strftime("%Y-%m-%d", strtotime($date_12)); 
+            $date_12_fr = strftime("%d/%m/%d", strtotime($date_12)); 
             // dd($date_12);
 
             // on vérifie que le parrain n'a pas dépassé le plafond de la commission de parrainage sur son filleul,  de la date d'anniversaire de sa date d'entrée jusqu'a la date d'encaissement de l'affaire
@@ -91,6 +92,8 @@ class Filleul extends Model
             
             $facts_parrain = Facture::where([['user_id',$parrain_id],['filleul_id',$filleul_id], ['compromis_id','<>', $compromis_id ]])->whereIn('type',['parrainage','parrainage_partage'])->get();
             $ca_comm_parr = 0;
+            
+            // dd($date_12);
             foreach ($facts_parrain as $fact) {
                 
                 // echo $fact->compromis->getFactureStylimmo()->date_encaissement->format('Y-m-d')."<br>";
@@ -125,7 +128,7 @@ class Filleul extends Model
             if($ca_filleul >= $seuil_filleul && $ca_parrain >= $seuil_parrain && $ca_comm_parr < $filleul->contrat->seuil_comm && $a_demission_parrain == false &&  $a_demission_filleul == false){
                 $respect_condition = true;
             }
-            $result = ["respect_condition"=>$respect_condition, "ca_filleul"=>$ca_filleul, "ca_parrain"=>$ca_parrain, "date_12" => $date_12,
+            $result = ["respect_condition"=>$respect_condition, "ca_filleul"=>$ca_filleul, "ca_parrain"=>$ca_parrain, "date_12" => $date_12,"date_12_fr" => $date_12_fr,
                      "seuil_filleul"=>$seuil_filleul, "seuil_parrain"=>$seuil_parrain, "ca_comm_parr"=>$ca_comm_parr, "a_demission_parrain"=>$a_demission_parrain , 
                       "a_demission_filleul"=>$a_demission_filleul, "date_anniv"=>$date_anniv ];
         

@@ -228,7 +228,7 @@
 <br>
 <span  style="background-color:rgb(240, 215, 248);color: #ff; " > Votre plafond HT de parrainnage sur votre filleul: <strong>{{number_format($filleul->contrat->seuil_comm,'2','.',' ') }} &euro; </strong></span> <br>
     <span @if($result['ca_comm_parr'] > $filleul->contrat->seuil_comm)  style="background-color: #FD9090;color: #ff; " @endif> Votre CA HT de parrainnage actuellement encaissé sur ce filleul : <strong>{{number_format($result["ca_comm_parr"],'2','.',' ') }} &euro; </strong></span>
-   <br> <br> <span   style="color: rgb(107, 64, 64); " >  <strong>NB: Plafond sur la période du  </strong> <span   style="color: #ff0080; " >{{$result['date_anniv']}} </span><span   style="color: rgb(107, 64, 64); ; " > (date d'anniversaire du filleul)   au  </span> <span   style="color: #ff0080; " > {{$compromis->getFactureStylimmo()->date_encaissement->format('d/m/Y')}} </span> <span   style="color: rgb(107, 64, 64);  " > (date d'encaissement de la facture STYL'IMMO)  
+   <br> <br> <span   style="color: rgb(107, 64, 64); " >  <strong>NB: Plafond sur les 12 derniers mois précedents la date d'encaissement  </strong> </span>  <span   style="color: #ff0080; " > ( {{$compromis->getFactureStylimmo()->date_encaissement->format('d/m/Y')}} )</span>
     </strong></span>
  
  <hr>
@@ -274,7 +274,7 @@
         </tbody>
     </table>
         <br>
-    <span style="color:#f81803f5">Chiffre d'affaires HT sur la période du  {{$result["date_12"] }}  au {{$compromis->getFactureStylimmo()->date_encaissement->format('d/m/Y')}}  (Les 12 mois précedents la date de d'encaissement de la facture STYL'IMMO)</span> 
+    <span style="color:#f81803f5">Chiffre d'affaires HT sur la période du  {{$result["date_12_fr"] }}  au {{$compromis->getFactureStylimmo()->date_encaissement->format('d/m/Y')}}  (Les 12 mois précedents la date de d'encaissement de la facture STYL'IMMO)</span> 
 
     @endif
 @endif
