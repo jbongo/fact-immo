@@ -80,21 +80,31 @@ Avoir N° {{$avoir->numero}}
         <tr>           
             <td style="width: 382px;"><img src="https://www.stylimmo.com/images/logo.jpg" alt="" width="219" height="114" /></td>
             <td style="width: 380px;">
-                @if ($compromis->charge == "Vendeur")
-                   
-                        <p>{{$compromis->civilite_vendeur}} {{$compromis->nom_vendeur}} </p>
-                   
-                        <p>{{$compromis->adresse1_vendeur}}</p>
-                        <p>{{$compromis->adresse2_vendeur}}</p> 
-                        <p>{{$compromis->code_postal_vendeur}}, {{$compromis->ville_vendeur}}</p>
+                @if($compromis->est_partage_agent == true && $compromis->partage_reseau == false &&  $compromis->qui_porte_externe == 2 )
+                            
+                    <p>{{$compromis->nom_agent}}  </p>
+                            
+                    <p>{{$compromis->adresse_agence}}</p>
+                    <p>{{$compromis->code_postal_agence}}, {{$compromis->ville_agence}}</p>
                 @else 
-
-                   
-                    <p>{{$compromis->civilite_acquereur}} {{$compromis->nom_acquereur}} </p>                
-                   
-                        <p>{{$compromis->adresse1_acquereur}} </p>
-                        <p>{{$compromis->adresse2_acquereur}} </p>
-                        <p>{{$compromis->code_postal_acquereur}} {{$compromis->ville_acquereur}}</p>
+                
+                    @if ($compromis->charge == "Vendeur")
+                       
+                            <p>{{$compromis->civilite_vendeur}} {{$compromis->nom_vendeur}} </p>
+                       
+                            <p>{{$compromis->adresse1_vendeur}}</p>
+                            <p>{{$compromis->adresse2_vendeur}}</p> 
+                            <p>{{$compromis->code_postal_vendeur}}, {{$compromis->ville_vendeur}}</p>
+                    @else 
+    
+                       
+                        <p>{{$compromis->civilite_acquereur}} {{$compromis->nom_acquereur}} </p>                
+                       
+                            <p>{{$compromis->adresse1_acquereur}} </p>
+                            <p>{{$compromis->adresse2_acquereur}} </p>
+                            <p>{{$compromis->code_postal_acquereur}} {{$compromis->ville_acquereur}}</p>
+                    @endif
+                    
                 @endif
                
             </td>

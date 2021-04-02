@@ -143,7 +143,7 @@
          </tr>
          <tr>
             <td style="width: 48px;">&nbsp;</td>
-            <td style="width: 428px;"><span style="text-decoration: underline;"><strong>Frais agence:</strong></span>&nbsp;&nbsp;&nbsp;&nbsp; <span style="color:mediumblue"> {{number_format($compromis->frais_agence,'2','.',' ')}} €</td>
+            <td style="width: 428px;"><span style="text-decoration: underline;"><strong>Frais agence:</strong></span>&nbsp;&nbsp;&nbsp;&nbsp; <span style="color:mediumblue"> {{number_format($compromis->frais_agence(),'2','.',' ')}} €</td>
             <td style="width: 391px; height:35px"></td>
         </tr>
         <tr>

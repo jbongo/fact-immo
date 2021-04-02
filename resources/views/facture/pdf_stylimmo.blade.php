@@ -3,24 +3,35 @@
             <tr>
                 <td style="width: 320px;"><img src="https://www.stylimmo.com/images/logo.jpg" alt="" width="279" height="124" /></td>
                 <td style="width: 380px;">
-                    @if ($compromis->charge == "Vendeur")
-                       
-                            <p><strong>{{$compromis->civilite_vendeur}} {{$compromis->nom_vendeur}} </strong></p> 
-                       
-                            <p>{{$compromis->adresse1_vendeur}}</p>
-                            <p>{{$compromis->adresse2_vendeur}} &nbsp;</p> 
-                            <p>{{$compromis->code_postal_vendeur}} {{$compromis->ville_vendeur}}</strong></p>
+                
+                    @if($compromis->est_partage_agent == true && $compromis->partage_reseau == false &&  $compromis->qui_porte_externe == 2 )
                             
+                        <p>{{$compromis->nom_agent}}  </p>
+                                
+                        <p>{{$compromis->adresse_agence}}</p>
+                        <p>{{$compromis->code_postal_agence}}, {{$compromis->ville_agence}}</p>
                     @else 
-
-                      
-                            <p> {{$compromis->civilite_acquereur}} {{$compromis->nom_acquereur}} </p>                
-                       
-                        <p>{{$compromis->adresse1_acquereur}} </p>
-                        <p>{{$compromis->adresse2_acquereur}} </p>
-                        <p> {{$compromis->code_postal_acquereur}}, {{$compromis->ville_acquereur}}</strong></p>
-                        
-
+                    
+                    
+                        @if ($compromis->charge == "Vendeur")
+                           
+                                <p><strong>{{$compromis->civilite_vendeur}} {{$compromis->nom_vendeur}} </strong></p> 
+                           
+                                <p>{{$compromis->adresse1_vendeur}}</p>
+                                <p>{{$compromis->adresse2_vendeur}} &nbsp;</p> 
+                                <p>{{$compromis->code_postal_vendeur}} {{$compromis->ville_vendeur}}</strong></p>
+                                
+                        @else 
+    
+                          
+                                <p> {{$compromis->civilite_acquereur}} {{$compromis->nom_acquereur}} </p>                
+                           
+                            <p>{{$compromis->adresse1_acquereur}} </p>
+                            <p>{{$compromis->adresse2_acquereur}} </p>
+                            <p> {{$compromis->code_postal_acquereur}}, {{$compromis->ville_acquereur}}</strong></p>
+                            
+    
+                        @endif
                     @endif
                 </td>
             </tr>
@@ -144,7 +155,7 @@
         <tbody>
             <tr style="height: 25px;">
                 <td style="width: 300px; height: 25px;">Valeur en votre aimable r&egrave;glement de :</td>
-                <td style="width: 200px; height: 25px;">{{number_format($compromis->frais_agence,2,'.',' ')}} &euro; TTC</td>
+                <td style="width: 200px; height: 25px;">{{number_format($compromis->frais_agence(),2,'.',' ')}} &euro; TTC</td>
                 <td style="width: 187px; height: 25px;"><span style="color: #ff0000; font-size:18px; font-weight:bold">&nbsp;R&eacute;f &agrave; rappeler: {{$facture->numero}}</span></td>
             </tr>
         </tbody>

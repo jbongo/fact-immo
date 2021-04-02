@@ -172,7 +172,34 @@ Détail de l'affaire de {{$compromis->user->prenom}} {{$compromis->user->nom}}
 
 
                                                             <div class="div_agence_externe1">
-                                    
+                                                                
+                                                                    @if($compromis->hors_reseau == false)
+                                                                    
+                                                                    
+                                                                    <div class="col-lg-4 col-md-4 col-sm-4 sous_div_agence_externe1" >
+                                                                        <div class="form-group row  div_agent_hors_reseau" >                                                
+                                                                            <label class="col-lg-8 col-md-8 col-sm-8 col-form-label" for="qui_porte_externe">Qui porte l'affaire chez le notaire ? <span class="text-danger">*</span></label>
+                                                                            <div class="col-lg-8 col-md-8 col-sm-8 ">
+                                                                                <select class="js-select2 form-control" id="qui_porte_externe" name="qui_porte_externe" required>
+                                                                                
+                                                                                @if($compromis->qui_porte_externe == 1)
+                                                                                    <option value="1">STYL'IMMO et L'Agence</option>
+                                                                                
+                                                                                @elseif($compromis->qui_porte_externe == 2)
+                                                                                    <option value="2">L'Agence</option>                                                                                
+                                                                                @else                                                                                 
+                                                                                    <option value="3">STYL'IMMO</option>
+                                                                                
+                                                                                @endif
+                                                                                    <option value="1">STYL'IMMO et L'Agence</option>
+                                                                                    <option value="2">L'Agence</option>
+                                                                                    <option value="3">STYL'IMMO</option>
+                                                                                </select>
+                                                                            </div>                                                
+                                                                        </div>
+                                                                    </div>
+                                                                    
+                                                                    @endif
                                        
                                                             </div>
                                                             
@@ -202,7 +229,31 @@ Détail de l'affaire de {{$compromis->user->prenom}} {{$compromis->user->nom}}
                                                         
                                                         <div class="row div_agence_externe2">
 
-                                      
+                                                            @if($compromis->hors_reseau == false)
+                                                            
+                                                                <div class="col-lg-3 col-md-3 col-sm-3 sous_div_agence_externe2">                                            
+                                                                        <div class="form-group div_agent_hors_reseau">
+                                                                            <label for="adresse_agence">Complément d'adresse de l'agence <span class="text-danger">*</span> </label>
+                                                                            <input class="form-control" type="text" value="{{old('adresse_agence') ? old('adresse_agence') : $compromis->adresse_agence }}" id="adresse_agence" required name="adresse_agence" >
+                                                                        </div>                                            
+                                                                </div>
+                                                        
+                                                                <div class="col-lg-3 col-md-3 col-sm-3 sous_div_agence_externe2">                                            
+                                                                        <div class="form-group div_agent_hors_reseau">
+                                                                            <label for="code_postal_agence">Code Postal de l'agence <span class="text-danger">*</span> </label>
+                                                                            <input class="form-control" type="text" value="{{old('code_postal_agence') ? old('code_postal_agence') : $compromis->code_postal_agence }}" id="code_postal_agence" required name="code_postal_agence" >
+                                                                        </div>                                            
+                                                                </div>
+                                                                <div class="col-lg-3 col-md-3 col-sm-3 sous_div_agence_externe2">                                            
+                                                                        <div class="form-group div_agent_hors_reseau">
+                                                                            <label for="ville_acquereur">Ville de l'agence <span class="text-danger">*</span> </label>
+                                                                            <input class="form-control" type="text" value="{{old('ville_agence') ? old('ville_agence') : $compromis->ville_agence }}" id="ville_agence" required name="ville_agence" >
+                                                                        </div>                                            
+                                                                </div>
+                                                            
+                                                            
+                                                            @endif
+
 
                                                         </div>
             

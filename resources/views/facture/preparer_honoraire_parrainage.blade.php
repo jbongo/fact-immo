@@ -127,12 +127,12 @@
         <tr>
             <td style="width: 423px;"><span style="text-decoration: underline;"><strong>Commission agence:</strong></span> &nbsp;  <span class="color-warning">
                 @if($compromis->est_partage_agent == false)
-                 {{number_format($compromis->frais_agence,'2','.',' ')}} €&nbsp; 
+                 {{number_format($compromis->frais_agence(),'2','.',' ')}} €&nbsp; 
                  @else
                     @if($compromis->user_id == $filleul->id)
-                        {{number_format($compromis->frais_agence * $compromis->pourcentage_agent/100,'2','.',' ')}} €&nbsp; (soit {{$compromis->pourcentage_agent}} % de {{$compromis->frais_agence}} €)
+                        {{number_format($compromis->frais_agence() * $compromis->pourcentage_agent/100,'2','.',' ')}} €&nbsp; (soit {{$compromis->pourcentage_agent}} % de {{$compromis->frais_agence()}} €)
                     @else
-                        {{number_format($compromis->frais_agence * (100 - $compromis->pourcentage_agent) /100,'2','.',' ')}} €&nbsp; (soit {{$compromis->pourcentage_agent}} % de {{$compromis->frais_agence}} €)
+                        {{number_format($compromis->frais_agence() * (100 - $compromis->pourcentage_agent) /100,'2','.',' ')}} €&nbsp; (soit {{$compromis->pourcentage_agent}} % de {{$compromis->frais_agence()}} €)
                     @endif
 
                  @endif

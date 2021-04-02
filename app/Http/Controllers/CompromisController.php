@@ -640,6 +640,12 @@ class CompromisController extends Controller
 
             $compromis->civilite_vendeur = $request->civilite_vendeur;
             $compromis->nom_vendeur = $request->nom_vendeur;
+            $compromis->adresse_agence = $request->adresse_agence;
+            $compromis->code_postal_agence = $request->code_postal_agence;
+            $compromis->ville_agence = $request->ville_agence;
+            $compromis->qui_porte_externe = $request->qui_porte_externe;
+            
+     
             $compromis->adresse1_vendeur = $request->adresse1_vendeur;
             $compromis->adresse2_vendeur = $request->adresse2_vendeur;
             $compromis->code_postal_vendeur = $request->code_postal_vendeur;

@@ -90,21 +90,32 @@ Facture N° {{$facture->numero}}
         <tr>           
             <td style="width: 382px;"><img src="https://www.stylimmo.com/images/logo.jpg" alt="" width="219" height="114" /></td>
             <td style="width: 380px;">
-                @if ($compromis->charge == "Vendeur")
-                   
-                        <p>{{$compromis->civilite_vendeur}} {{$compromis->nom_vendeur}} </p>
-                   
-                        <p>{{$compromis->adresse1_vendeur}}</p>
-                        <p>{{$compromis->adresse2_vendeur}}</p> 
-                        <p>{{$compromis->code_postal_vendeur}}, {{$compromis->ville_vendeur}}</p>
+            
+                @if($compromis->est_partage_agent == true && $compromis->partage_reseau == false &&  $compromis->qui_porte_externe == 2 )
+                            
+                    <p>{{$compromis->nom_agent}}  </p>
+                            
+                    <p>{{$compromis->adresse_agence}}</p>
+                    <p>{{$compromis->code_postal_agence}}, {{$compromis->ville_agence}}</p>
                 @else 
-
-                   
-                    <p>{{$compromis->civilite_acquereur}} {{$compromis->nom_acquereur}} </p>                
-                   
-                        <p>{{$compromis->adresse1_acquereur}} </p>
-                        <p>{{$compromis->adresse2_acquereur}} </p>
-                        <p>{{$compromis->code_postal_acquereur}} {{$compromis->ville_acquereur}}</p>
+                
+                    @if ($compromis->charge == "Vendeur")
+                       
+                            <p>{{$compromis->civilite_vendeur}} {{$compromis->nom_vendeur}} </p>
+                       
+                            <p>{{$compromis->adresse1_vendeur}}</p>
+                            <p>{{$compromis->adresse2_vendeur}}</p> 
+                            <p>{{$compromis->code_postal_vendeur}}, {{$compromis->ville_vendeur}}</p>
+                    @else 
+    
+                       
+                        <p>{{$compromis->civilite_acquereur}} {{$compromis->nom_acquereur}} </p>                
+                       
+                            <p>{{$compromis->adresse1_acquereur}} </p>
+                            <p>{{$compromis->adresse2_acquereur}} </p>
+                            <p>{{$compromis->code_postal_acquereur}} {{$compromis->ville_acquereur}}</p>
+                    @endif
+                
                 @endif
                
             </td>
@@ -203,17 +214,17 @@ Facture N° {{$facture->numero}}
         <tr>
             <td style="width: 400px;">&nbsp;</td>
             <td style="width: 153px;">TOTAL H.T :</td>
-            <td style="width: 231px;">{{number_format($compromis->frais_agence/App\Tva::coefficient_tva() ,2,',',' ')}} &euro;</td>
+            <td style="width: 231px;">{{number_format($compromis->frais_agence()/App\Tva::coefficient_tva() ,2,',',' ')}} &euro;</td>
         </tr>
         <tr>
             <td style="width: 400px;">&nbsp;</td>
             <td style="width: 153px;">T.V.A 20% :</td>
-            <td style="width: 231px;">{{number_format(($compromis->frais_agence/App\Tva::coefficient_tva()) *App\Tva::tva(),2,',',' ')}} &euro;</td>
+            <td style="width: 231px;">{{number_format(($compromis->frais_agence()/App\Tva::coefficient_tva()) *App\Tva::tva(),2,',',' ')}} &euro;</td>
         </tr>
         <tr>
             <td style="width: 400px;">&nbsp;</td>
             <td style="width: 153px;">TOTAL T.T.C :</td>
-            <td style="width: 231px;">{{number_format($compromis->frais_agence,2,',',' ')}} &euro;</td>
+            <td style="width: 231px;">{{number_format($compromis->frais_agence(),2,',',' ')}} &euro;</td>
         </tr>
     </tbody>
 </table>
@@ -223,7 +234,7 @@ Facture N° {{$facture->numero}}
     <tbody>
         <tr style="height: 25px;">
             <td style="width: 349px; height: 25px;">Valeur en votre aimable r&egrave;glement de :</td>
-            <td style="width: 117px; height: 25px;">{{number_format($compromis->frais_agence,2,',',' ')}} &euro; TTC</td>
+            <td style="width: 117px; height: 25px;">{{number_format($compromis->frais_agence(),2,',',' ')}} &euro; TTC</td>
             <td style="width: 177px; height: 25px;">@if ($compromis->facture_stylimmo_valide == true)<span style="color: #ff0000;font-size:17px">&nbsp;R&eacute;f &agrave; rappeler: {{$facture->numero}}</span>@endif</td>
         </tr>
     </tbody>

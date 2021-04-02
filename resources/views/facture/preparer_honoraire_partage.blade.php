@@ -149,12 +149,12 @@
         </tr>
         {{-- @endif --}}
         <tr>
-            <td style="width: 423px;"><span style="text-decoration: underline;"><strong>Frais d'agence:</strong> </span> &nbsp; {{ number_format($compromis->frais_agence, 2, '.', ' ') }} € &nbsp;</td>
+            <td style="width: 423px;"><span style="text-decoration: underline;"><strong>Frais d'agence:</strong> </span> &nbsp; {{ number_format($compromis->frais_agence(), 2, '.', ' ') }} € &nbsp;</td>
             <td style="width: 260px;height:35px"></td>
         </tr>
             {{-- @if(Auth()->user()->role !="admin") --}}
         <tr>
-            <td style="width: 423px;"><span style="text-decoration: underline;"><strong>Mon pourcentage de partage:</strong> </span> &nbsp; {{$pourcentage_partage}} %&nbsp; soit ({{ number_format($compromis->frais_agence * $pourcentage_partage /100, 2, '.', ' ')  }} €) </td>
+            <td style="width: 423px;"><span style="text-decoration: underline;"><strong>Mon pourcentage de partage:</strong> </span> &nbsp; {{$pourcentage_partage}} %&nbsp; soit ({{ number_format($compromis->frais_agence() * $pourcentage_partage /100, 2, '.', ' ')  }} €) </td>
             <td style="width: 260px;height:35px"></td>
         </tr>
         {{-- @endif --}}

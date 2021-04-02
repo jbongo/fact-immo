@@ -130,7 +130,7 @@ class Compromis extends Model
         if($compromis->est_partage_agent == false ){
 
         
-            $montant_vnt_ht = ($compromis->frais_agence/Tva::coefficient_tva()) ; 
+            $montant_vnt_ht = ($compromis->frais_agence()/Tva::coefficient_tva()) ; 
             $formule = $this->calcul_com($paliers, $montant_vnt_ht, $chiffre_affaire_sty, $niveau_actuel-1, $mandataire);
         
 
@@ -141,7 +141,7 @@ class Compromis extends Model
             // SI LE MANDATAIRE PORTEUR PARTAGE 
             }else{
 
-                $montant_vnt_ht = ($compromis->frais_agence/Tva::coefficient_tva()) ; 
+                $montant_vnt_ht = ($compromis->frais_agence()/Tva::coefficient_tva()) ; 
                 $pourcentage_partage = $compromis->pourcentage_agent/100;
 
                 $formule = $this->calcul_com($paliers, $montant_vnt_ht*$pourcentage_partage , $chiffre_affaire_sty, $niveau_actuel-1, $mandataire);
@@ -234,7 +234,7 @@ class Compromis extends Model
                     if($compromis->est_partage_agent == true ){
 
                 
-                        $montant_vnt_ht = ($compromis->frais_agence/Tva::coefficient_tva()) ; 
+                        $montant_vnt_ht = ($compromis->frais_agence()/Tva::coefficient_tva()) ; 
                         $pourcentage_partage = (100 - $compromis->pourcentage_agent)/100;
 
                         $formule = $this->calcul_com($paliers, $montant_vnt_ht*$pourcentage_partage , $chiffre_affaire_sty, $niveau_actuel-1, $mandataire);
@@ -311,7 +311,7 @@ class Compromis extends Model
             
                             }
             
-                            $frais_agence = $compromis->frais_agence * $compromis->pourcentage_agent/100 ;
+                            $frais_agence = $compromis->frais_agence() * $compromis->pourcentage_agent/100 ;
                             $montant_ht = round ( ($frais_agence * $pourcentage_parrain/100 )/Tva::coefficient_tva() ,2);
                             $montant_ttc = round( $montant_ht*$tva,2);
                             // dd("unique filleul 1 ");
@@ -374,7 +374,7 @@ class Compromis extends Model
             
                 
                      // On determine les montants ttc et ht du parrain 
-                     $frais_agence =  $compromis->frais_agence;
+                     $frais_agence =  $compromis->frais_agence();
                     $montant_ht = round ( ($frais_agence * $pourcentage_parrain/100 )/Tva::coefficient_tva(),2);
                     $montant_ttc = round($montant_ht*$tva,2);
                 
@@ -462,7 +462,7 @@ class Compromis extends Model
             
                             }
             
-                            $frais_agence = $compromis->frais_agence * (100- $compromis->pourcentage_agent)/100 ;
+                            $frais_agence = $compromis->frais_agence() * (100- $compromis->pourcentage_agent)/100 ;
                             $montant_ht = round ( ($frais_agence * $pourcentage_parrain/100 )/Tva::coefficient_tva() ,2);
                             $montant_ttc = round( $montant_ht*$tva,2);
                             // dd("unique filleul 1 ");
@@ -845,6 +845,36 @@ public function notif_reiterer_affaire()
     
 
     return true;
+}
+
+
+
+
+
+/**
+ * Retourne les frais d'agence, en vérifiant que sil y'a partage externe 
+ *
+ * @return \Illuminate\Http\Response
+ */
+public function frais_agence()
+{
+      
+     
+    $montant_ttc = $this->frais_agence;
+    
+    // Si on partage avec une agence externe
+    if($this->est_partage_agent == true && $this->partage_reseau == false){
+    // Si Styl et l'agence  OU  l'agence porte l'affaire chez le notaire, on ne facture facture pas la totalité des frais d'agence
+        if($this->qui_porte_externe == 1 || $this->qui_porte_externe == 2){
+        
+            $montant_ttc = $montant_ttc * $this->pourcentage_agent / 100;
+        }
+    }
+    
+    // dd($montant_ttc);
+    
+
+    return $montant_ttc;
 }
 
 }
