@@ -215,7 +215,7 @@
                                             <div class="form-group row">
                                                 <label class="col-lg-6 col-md-6 col-sm-6col-form-label" for="file_externe">Ajouter la facture de l'agence</label>
                                                 <div class="col-lg-6 col-md-6 col-sm-6">
-                                                    <input type="file_externe" accept=".pdf" class="form-control"  id="file_externe"  name="file_externe"  required>
+                                                    <input type="file" accept=".pdf" class="form-control"  id="file_externe"  name="file_externe"  required>
                                                 </div>
                                                  @if ($errors->has('file_externe'))
                                                     <br>
