@@ -83,6 +83,7 @@ class CreateCompromisTable extends Migration
             $table->boolean('facture_honoraire_parrainage_partage_cree')->default(false);
             $table->boolean('facture_honoraire_partage_cree')->default(false);
             $table->boolean('facture_honoraire_partage_porteur_cree')->default(false);
+            $table->boolean('facture_honoraire_partage_externe_cree')->default(false);
             // 0 = non réitérée, 1 = réitéré, 2 = cloturé
             $table->integer('cloture_affaire')->default(0);
             $table->text('observations')->nullable(); 

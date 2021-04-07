@@ -90,6 +90,8 @@ Route::middleware('auth')->group(function(){
     // Parrain du partage
     // Route::get('preparer/factures-honoraire-parrainage-partage/{compromis}','FactureController@preparer_facture_honoraire_parrainage_partage')->name('facture.preparer_facture_honoraire_parrainage_partage');//ok
     Route::get('preparer/factures-honoraire-partage/{compromis}/{mandataire_id?}','FactureController@preparer_facture_honoraire_partage')->name('facture.preparer_facture_honoraire_partage');//ok
+    // Pour les partage externe (facture honoraire de l'agence externe)
+    Route::get('preparer/factures-honoraire-partage-externe/{compromis}/{mandataire_id?}','FactureController@preparer_facture_honoraire_partage_externe')->name('facture.preparer_facture_honoraire_partage_externe');//ok
     Route::post('deduire-pub/factures-honoraire/{compromis}','FactureController@deduire_pub_facture_honoraire')->name('facture.deduire_pub_facture_honoraire');//ok
     Route::post('deduire-pub/factures-honoraire-partage/{compromis}/{mandataire_id?}','FactureController@deduire_pub_facture_honoraire_partage')->name('facture.deduire_pub_facture_honoraire_partage');//ok
     

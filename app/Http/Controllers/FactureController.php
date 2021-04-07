@@ -39,11 +39,11 @@ class FactureController extends Controller
     
         if(auth()->user()->role == "admin"){
             $factureStylimmos = Facture::whereIn('type',['stylimmo','avoir','pack_pub','carte_visite','communication','autre'])->latest()->get();
-            $factureHonoraires = Facture::whereIn('type',['honoraire','partage','parrainage','parrainage_partage'])->latest()->get();
+            $factureHonoraires = Facture::whereIn('type',['honoraire','partage','partage_externe','parrainage','parrainage_partage'])->latest()->get();
             $factureCommunications = Facture::where('type',['pack_pub','carte_visite'])->latest()->get();
             
         }else{
-            $factureHonoraires = Facture::where('user_id',auth()->user()->id)->whereIn('type',['honoraire','partage','parrainage','parrainage_partage'])->latest()->get();
+            $factureHonoraires = Facture::where('user_id',auth()->user()->id)->whereIn('type',['honoraire','partage','partage_externe','parrainage','parrainage_partage'])->latest()->get();
             $factureStylimmos = Facture::where('user_id',auth()->user()->id)->where('type',['stylimmo','avoir','pack_pub','carte_visite','communication','autre'])->latest()->get();
             $factureCommunications = Facture::where('user_id',auth()->user()->id)->whereIn('type',['pack_pub','carte_visite'])->latest()->get();
 
@@ -535,22 +535,39 @@ public  function valider_facture_stylimmo( Request $request, $compromis)
                                 $seuil_porteur = $comm_parrain1["seuil_fill_3"];
                                 $seuil_parrain = $comm_parrain1["seuil_parr_3"];
                             }
-
-                            // on vérifie que le parrain n'a pas dépassé le plafond de la commission de parrainage sur son filleul,  de la date d'anniversaire de sa date d'entrée jusqu'a la date d'encaissement
-                            $m_d_entree = $mandataire1->contrat->date_entree->format('m-d');
-                            $y_encaiss = $compromis->getFactureStylimmo()->date_encaissement->format('Y');
-
-                            // dd($y_encaiss.'-'.$m_d_entree);
-                            if( $compromis->getFactureStylimmo()->date_encaissement->format('Y-m-d') > $y_encaiss.'-'.$m_d_entree  ){
-                                $date_deb = $y_encaiss.'-'.$m_d_entree ;
-                                $date_fin = $compromis->getFactureStylimmo()->date_encaissement->format('Y-m-d');
-                            }else{
-                                $date_deb =  ($y_encaiss-1).'-'.$m_d_entree ;
-                                $date_fin = $compromis->getFactureStylimmo()->date_encaissement->format('Y-m-d'); 
-                            }
-                            // calcul du de la comm recu par le parrain de date_deb à date_fin 
-                            $ca_parrain_parrainage = Facture::where([['user_id',$parrain1->id],['filleul_id',$filleul1->user->id], ['reglee',1]])->whereIn('type',['parrainage','parrainage_partage'])->whereBetween('date_reglement',[$date_deb,$date_fin])->sum('montant_ht');
+                          
+                         
+                            
+                            $date_fin = $compromis->getFactureStylimmo()->date_encaissement->format('Y-m-d');
+                            
+                            // Vérifier le CA du parrain et du filleul sur les 12 derniers mois précédents la date d'encaissement de la facture STYL et qui respectent les critères et vérifier s'il sont à jour dans le reglèmement de leur factures stylimmo 
+                            // Dans cette partie on détermine le jour exaxt de il y'a 12 mois avant la date d'encaissement de la facture STYL
+                               
+        
                     
+                            // date_fin est la date exacte 1 ans avant la date  d'encaissement de la facture STYL
+                            $date_deb  =  strtotime( $date_fin. " -1 year"); 
+                            $date_deb = date('Y-m-d',$date_deb);
+        
+        
+        
+                            // calcul du de la comm recu par le parrain de date_deb à date_fin                 
+                            
+                            
+                            $facts_parrain = Facture::where([['user_id',$parrain1->id],['filleul_id',$filleul1->user->id], ['compromis_id','<>', $compromis->id ]])->whereIn('type',['parrainage','parrainage_partage'])->get();
+                            $ca_parrain_parrainage = 0;
+                            
+                            // dd($date_deb);
+                            foreach ($facts_parrain as $fact) {
+                                
+                                // echo $fact->compromis->getFactureStylimmo()->date_encaissement->format('Y-m-d')."<br>";
+                                if($date_fin >= $fact->compromis->getFactureStylimmo()->date_encaissement->format('Y-m-d')   && $fact->compromis->getFactureStylimmo()->date_encaissement->format('Y-m-d') >= $date_deb ){
+                                    $ca_parrain_parrainage+= $fact->montant_ht;
+                                }
+                            }
+                            
+                            
+                            
                             
                             // On vérifie que le parrain n'a pas démissionné à la date d'encaissement 
                             $a_demission_parrain = false;
@@ -585,9 +602,10 @@ public  function valider_facture_stylimmo( Request $request, $compromis)
 
 
                             // SI TOUCHE_COMM == OUI ON CALCUL LA COMMISSION DU PARRAIN DU PORTEUR
-                            
+                            // dd("$ca_filleul1 >= $seuil_porteur && $ca_parrain1 >= $seuil_parrain && $ca_parrain_parrainage < $mandataire1->contrat->seuil_comm &&  $a_demission_parrain == false &&  $a_demission_filleul == false ");
                             if($touch_comm == "oui"){
-                            // dd($touch_comm);
+                            // dd($a_demission_parrain);
+                            // dd("$ca_filleul1 >= $seuil_porteur && $ca_parrain1 >= $seuil_parrain && $ca_parrain_parrainage < $mandataire1->contrat->seuil_comm &&  $a_demission_parrain == false &&  $a_demission_filleul == false ");
                                  $this->store_facture_honoraire_parrainage( $compromis, $filleul1);
                             }
                             
@@ -635,23 +653,38 @@ public  function valider_facture_stylimmo( Request $request, $compromis)
                                 $seuil_partage = $comm_parrain2["seuil_fill_3"];
                                 $seuil_parrain = $comm_parrain2["seuil_parr_3"];
                             }
+             
 
+                           
+                            $date_fin = $compromis->getFactureStylimmo()->date_encaissement->format('Y-m-d');
                             
-                            // on vérifie que le parrain n'a pas dépassé le plafond de la commission de parrainage sur son filleul,  de la date d'anniversaire de sa date d'entrée jusqu'a la date d'encaissement
-
-                            $m_d_entree = $mandataire2->contrat->date_entree->format('m-d');
-                            $y_encaiss = $compromis->getFactureStylimmo()->date_encaissement->format('Y');
-
-                            // dd($y_encaiss.'-'.$m_d_entree);
-                            if( $compromis->getFactureStylimmo()->date_encaissement->format('Y-m-d') > $y_encaiss.'-'.$m_d_entree  ){
-                                $date_deb = $y_encaiss.'-'.$m_d_entree ;
-                                $date_fin = $compromis->getFactureStylimmo()->date_encaissement->format('Y-m-d');
-                            }else{
-                                $date_deb =  ($y_encaiss-1).'-'.$m_d_entree ;
-                                $date_fin = $compromis->getFactureStylimmo()->date_encaissement->format('Y-m-d'); 
-                            }
+                            // Vérifier le CA du parrain et du filleul sur les 12 derniers mois précédents la date d'encaissement de la facture STYL et qui respectent les critères et vérifier s'il sont à jour dans le reglèmement de leur factures stylimmo 
+                            // Dans cette partie on détermine le jour exaxt de il y'a 12 mois avant la date d'encaissement de la facture STYL
+                               
+    
+                            // date_fin est la date exacte 1 ans avant la date  d'encaissement de la facture STYL
+                            $date_deb  =  strtotime( $date_fin. " -1 year"); 
+                            $date_deb = date('Y-m-d',$date_deb);
+                            
+                            
+                            
+                            
+                            
                             // calcul du de la comm recu par le parrain de date_deb à date_fin 
-                            $ca_parrain_parrainage = Facture::where([['user_id',$parrain2->id],['filleul_id',$filleul2->user->id],['reglee',1]])->whereIn('type',['parrainage','parrainage_partage'])->whereBetween('date_reglement',[$date_deb,$date_fin])->sum('montant_ht');
+                            $facts_parrain = Facture::where([['user_id',$parrain1->id],['filleul_id',$filleul1->user->id], ['compromis_id','<>', $compromis->id ]])->whereIn('type',['parrainage','parrainage_partage'])->get();
+                            $ca_parrain_parrainage = 0;
+                            
+                            // dd($date_deb);
+                            foreach ($facts_parrain as $fact) {
+                                
+                                // echo $fact->compromis->getFactureStylimmo()->date_encaissement->format('Y-m-d')."<br>";
+                                if($date_fin >= $fact->compromis->getFactureStylimmo()->date_encaissement->format('Y-m-d')   && $fact->compromis->getFactureStylimmo()->date_encaissement->format('Y-m-d') >= $date_deb ){
+                                    $ca_parrain_parrainage+= $fact->montant_ht;
+                                }
+                            }
+
+
+
 
                             // On vérifie que le parrain n'a pas démissionné à la date d'encaissement 
                             $a_demission_parrain = false;
@@ -758,7 +791,16 @@ public  function preparer_facture_honoraire($compromis)
 
     if($compromis->facture_honoraire_cree == false && $compromis->user->contrat->deduis_jeton == false ){
     
-        $montant_vnt_ht = ($compromis->frais_agence()/Tva::coefficient_tva()) ; 
+    
+         // Si on partage avec une agence externe
+        if($compromis->est_partage_agent == true && $compromis->partage_reseau == false){
+            
+            $montant_vnt_ht = ( $compromis->frais_agence *  (100 - $compromis->pourcentage_agent) / 100 ) /Tva::coefficient_tva();
+        }else{
+            $montant_vnt_ht = ($compromis->frais_agence/Tva::coefficient_tva()) ; 
+                
+        }
+        
          
         // Calcul de la commission, on retire l'encaissé actuel pour ne pas faire de doublon pendant le calcul de com
         $niveau_actuel = $this->calcul_niveau($paliers, ($chiffre_affaire_styl - $montant_vnt_ht ));
@@ -844,6 +886,78 @@ public  function preparer_facture_honoraire($compromis)
 }
 
 
+
+
+
+
+
+/**
+ *  Préparation de la facture d'honoraire de l'agence externe
+ *
+ * @param  int  $compromis
+ * @return \Illuminate\Http\Response
+*/
+
+public  function preparer_facture_honoraire_partage_externe($compromis)
+{
+    
+    
+    
+    $compromis = Compromis::where('id', Crypt::decrypt($compromis))->first();
+    $mandataire = $compromis->user;
+    
+    
+    // on vérifie s'il y'a partage avec un agent ou une agence externe
+            
+    if($compromis->est_partage_agent == true && $compromis->partage_reseau == false && $compromis->qui_porte_externe == 3 ){
+                
+        if($compromis->facture_honoraire_partage_externe_cree == false){
+
+        
+        $montant_ht_externe =  ( $compromis->frais_agence  * (100 - $compromis->pourcentage_agent)/100  ) /Tva::coefficient_tva() ; ;
+        $montant_ttc_externe =  ( $compromis->frais_agence  * (100 - $compromis->pourcentage_agent)/100  ) ;
+            $facture = Facture::create([
+                "numero"=> null,
+                "user_id"=> $mandataire->id,
+                "compromis_id"=> $compromis->id,
+                "type"=> "partage_externe",
+                "encaissee"=> false,
+                "montant_ht"=>   round($montant_ht_externe,2),
+                "montant_ttc"=> round($montant_ttc_externe,2),
+                "formule" => null
+            ]);
+            
+            $compromis->facture_honoraire_partage_externe_cree = true;
+            $compromis->update();
+        
+        }
+        else{
+            $facture = Facture::where([ ['type','partage_externe'],['compromis_id',$compromis->id]])->first();         
+        }
+    
+    
+        return view ('facture.preparer_honoraire_partage_externe',compact(['compromis','mandataire','facture']));
+    
+    }
+    
+        
+    return false;
+    
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /**
  *  Préparation de la facture d'honoraire du parrain 
  *
@@ -908,6 +1022,7 @@ public  function preparer_facture_honoraire_parrainage($compromis_id, $id_parrai
 
 
                 if($filleul->user_id == $compromis->user_id ){
+                
                     $frais_agence = $compromis->frais_agence() * $compromis->pourcentage_agent/100 ;
                 }else{
                     $frais_agence = $compromis->frais_agence() * (100 - $compromis->pourcentage_agent) /100 ;
@@ -1317,6 +1432,8 @@ public  function store_facture_honoraire_parrainage(Compromis $compromis, Filleu
         }else{
             $pourcentage_partage = $compromis->pourcentage_agent/100;
         }
+        
+        
         // On fait la facture du parrain de celui qui a crée l'affaire
         if($compromis->facture_honoraire_parrainage_cree == false ){
             $tva = Tva::coefficient_tva();
@@ -1667,7 +1784,18 @@ public  function preparer_facture_honoraire_encaissement($compromis_id, $leporte
             if( $compromis->facture_honoraire_cree == true){
                 return true;
             }
-            $montant_vnt_ht = ($compromis->frais_agence()/Tva::coefficient_tva()) ; 
+            
+            
+                  // Si on partage avec une agence externe
+            if($compromis->est_partage_agent == true && $compromis->partage_reseau == false){
+                
+                $montant_vnt_ht = ( $compromis->frais_agence *  (100 - $compromis->pourcentage_agent) / 100 ) /Tva::coefficient_tva();
+            }else{
+                $montant_vnt_ht = ($compromis->frais_agence/Tva::coefficient_tva()) ; 
+                    
+            }
+            
+            
         
         }
 
@@ -1731,6 +1859,31 @@ public  function preparer_facture_honoraire_encaissement($compromis_id, $leporte
                 }
             }
             
+            
+            // on vérifie s'il y'a partage avec un agent ou une agence externe
+            
+            if($compromis->est_partage_agent == true && $compromis->partage_reseau == false && $compromis->qui_porte_externe == 3 ){
+                
+                if($compromis->facture_honoraire_partage_externe_cree == false){
+       
+                
+                $montant_ht_externe =  ( $compromis->frais_agence  * (100 - $compromis->pourcentage_agent)/100  ) /Tva::coefficient_tva() ; ;
+                $montant_ttc_externe =  ( $compromis->frais_agence  * (100 - $compromis->pourcentage_agent)/100  ) ;
+                    $facture = Facture::create([
+                        "numero"=> null,
+                        "user_id"=> $compromis->user_id,
+                        "compromis_id"=> $compromis->id,
+                        "type"=> "partage_externe",
+                        "encaissee"=> false,
+                        "montant_ht"=>   round($montant_ht_externe,2),
+                        "montant_ttc"=> round($montant_ttc_externe,2),
+                        "formule" => null
+                    ]);
+                    
+                    $compromis->facture_honoraire_partage_externe_cree = true;
+                }
+            
+            }
             
             
             
@@ -2426,6 +2579,46 @@ public function store_upload_pdf_honoraire(Request $request , $facture_id)
             $facture->update();
     }
     
+    
+    // SI YA PARTAGE EXTERNE AVEC UNE AGENCE
+    
+    if($request->numero_facture_externe != null){
+        
+        $facture_externe  = Facture::where([['user_id',  $facture->user_id],['type','partage_externe']])->first(); 
+        $numero_externe = str_replace(['/', '\\', '<','>',':','|','?','*','#'],"-",$request->numero_facture_externe) ;
+        
+        
+        if($file_externe = $request->file('file_externe')){
+
+            $name_externe = $file_externe->getClientOriginalName();
+    
+            // on sauvegarde la facture dans le repertoire du mandataire
+            $path_externe = storage_path('app/public/'.$facture->user->id.'/factures');
+    
+            if(!File::exists($path_externe))
+                File::makeDirectory($path_externe, 0755, true);
+    
+                $filename_externe = strtoupper($facture_externe->compromis->nom_agent)." F".$numero_externe." ".$request->montant_ht_externe."€ F".$facture_externe->compromis->getFactureStylimmo()->numero ;
+     
+                $file_externe->move($path_externe,$filename_externe.'.pdf');            
+                $path_externe = $path_externe.'/'.$filename_externe.'.pdf';
+            
+                $facture_externe->url = $path_externe;
+                $facture_externe->numero = $request->numero_facture;
+                $facture_externe->date_facture = $request->date_facture_externe;
+                $facture_externe->statut = "en attente de validation";
+                $facture_externe->update();
+        }
+    
+    
+    
+    }
+    
+    
+    
+    
+    
+    
     if( session('is_switch') == true ){
         $action = "a ajouté la facture $facture->numero pour  ".Auth::user()->nom." ".Auth::user()->prenom;
         $user_id = session('admin_id');
@@ -2791,7 +2984,20 @@ public function valider_honoraire($action, $facture_id)
               
                 return redirect()->route('facture.preparer_facture_honoraire_partage', [ Crypt::encrypt( $compromis->id),$mandataire->id]);
 
-        }elseif($facture->type == "parrainage"){
+        }
+        elseif($facture->type == "partage_externe"){
+        
+            $compromis->facture_honoraire_partage_externe_cree = 0 ;
+            $compromis->update();
+            // dd($facture);
+            $facture->delete();
+
+            return redirect()->route('facture.preparer_facture_honoraire_partage_externe', [ Crypt::encrypt( $compromis->id)]);
+        }
+        
+        
+        
+        elseif($facture->type == "parrainage"){
             $compromis->facture_honoraire_parrainage_cree = 0 ;
 
             $compromis->update();
@@ -3226,8 +3432,8 @@ public function valider_honoraire($action, $facture_id)
     {
 
 
-        $facturesAPayer = Facture::whereIn('type',['honoraire','partage','parrainage','parrainage_partage'])->where([['reglee', false], ['statut','valide']])->latest()->get();
-        $facturesNonAjou = Facture::whereIn('type',['honoraire','partage','parrainage','parrainage_partage'])->where([['reglee', false], ['statut','<>','valide']])->latest()->get();
+        $facturesAPayer = Facture::whereIn('type',['honoraire','partage','partage_externe','parrainage','parrainage_partage'])->where([['reglee', false], ['statut','valide']])->latest()->get();
+        $facturesNonAjou = Facture::whereIn('type',['honoraire','partage','partage_externe','parrainage','parrainage_partage'])->where([['reglee', false], ['statut','<>','valide']])->latest()->get();
         
         // Liste des affaires réitérée, encaissée mais dont les notes d'honoraires n'ont pas été générée
         $compromisR = Compromis::where([['facture_stylimmo_valide', true], ['cloture_affaire', 1]])->where(function ($query) {

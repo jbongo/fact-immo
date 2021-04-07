@@ -1,6 +1,6 @@
 @extends('layouts.app') 
 @section('content') 
-@section ('page_title') default
+@section ('page_title') 
     Ajouter votre facture -- <span class="color-warning">   <span class="color-primary">type :</span> {{$facture->type}} | <span class="color-primary"> montant ht : </span> {{$facture->montant_ht}} |  <span class="color-primary">mandat :</span> {{$facture->compromis->numero_mandat}} </span> 
 @endsection
 <div class="row">
@@ -121,6 +121,126 @@
                     </fieldset>
                 </div>
             </div>
+
+
+
+
+                
+            @if($facture->compromis->partage_reseau == false && $facture->compromis->qui_porte_externe == 3 && $facture->type =="honoraire")
+                <br><br>
+              <h4>  ************************************************************************** AGENCE EXTERNE **************************************************************************  </h4>
+                <div class="card-body">
+                
+                    <div class="panel-body">
+                    
+                <br> <hr>
+                        <fieldset class="col-md-12">
+                            <legend style="color: brown">Ajoutez la facture de l'agence externe avec laquelle vous avez partagé l'affaire</legend>
+                            <div class="panel panel-danger">
+                                <div class="panel-body">
+                                   
+                                
+                
+                                        <div class="row">
+                                            <div class="col-lg-4 col-md-4 col-sm-4">
+                
+                                                <div class="form-group row">
+                                                    <label class="col-lg-4 col-form-label" for="numero_facture_externe">Numéro de la facture<span class="text-danger">*</span></label>
+                                                    <div class="col-lg-6">
+                                                        <input type="text" class="form-control" value="{{old('numero_facture_externe')}}"  id="numero_facture_externe" name="numero_facture_externe" required>
+                                                    </div>
+                                                     @if ($errors->has('numero_facture_externe'))
+                                                        <br>
+                                                        <div class="alert alert-warning ">
+                                                            <strong>{{$errors->first('numero_facture_externe')}}</strong> 
+                                                        </div>
+                                                    @endif
+                                                </div>
+                                               
+                                            </div>
+                
+                                            <div class="col-lg-4 col-md-4 col-sm-4">
+                                                <div class="form-group row">
+                                                    <label class="col-lg-4 col-form-label" for="date_facture_externe">Date de la facture de l'agence<span class="text-danger">*</span></label>
+                                                    <div class="col-lg-6">
+                                                        <input type="date" class="form-control" value="{{old('date_facture_externe')}}" id="date_facture_externe" name="date_facture_externe" required>
+                                                    </div>
+                                                     @if ($errors->has('date_facture_externe'))
+                                                        <br>
+                                                        <div class="alert alert-warning ">
+                                                            <strong>{{$errors->first('date_facture_externe')}}</strong> 
+                                                        </div>
+                                                    @endif
+                                                </div>
+                                                
+                                            </div>
+                                            <div class="col-lg-4 col-md-4 col-sm-4">
+                
+                                                <div class="form-group row">
+                                                    <label class="col-lg-4 col-form-label" for="montant_ht_externe">Montant HT de l'agence <span class="text-danger">*</span></label>
+                                                    <div class="col-lg-6">
+                                                    <input type="number" class="form-control" min="0" step="0.01" value="{{old('montant_ht_externe')}}"  id="montant_ht_externe" name="montant_ht_externe" required>
+                                                    </div>
+                                                     @if ($errors->has('montant_ht_externe'))
+                                                        <br>
+                                                        <div class="alert alert-warning ">
+                                                            <strong>{{$errors->first('montant_ht_externe')}}</strong> 
+                                                        </div>
+                                                    @endif
+                                                </div>
+                                               
+                                            </div>
+                                           
+                                        
+                                        </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                
+                    <br>
+                
+                   
+                    <br>
+                
+                    <div class="panel-body">
+                        <fieldset class="col-md-12">
+                            {{-- <legend>Ajout de la facture</legend> --}}
+                            <div class="panel panel-danger">
+                                <div class="panel-body">
+                
+                                    <div class="row">
+                                        <div class="col-lg-6 col-md-6 col-sm-6">
+                                    
+                                            <div class="form-group row">
+                                                <label class="col-lg-6 col-md-6 col-sm-6col-form-label" for="file_externe">Ajouter la facture de l'agence</label>
+                                                <div class="col-lg-6 col-md-6 col-sm-6">
+                                                    <input type="file_externe" accept=".pdf" class="form-control"  id="file_externe"  name="file_externe"  required>
+                                                </div>
+                                                 @if ($errors->has('file_externe'))
+                                                    <br>
+                                                    <div class="alert alert-warning ">
+                                                        <strong>{{$errors->first('file_externe')}}</strong> 
+                                                    </div>
+                                                @endif
+                                            </div>
+                
+                                        </div>
+                                  
+                                      
+                                        
+                                    </div>
+                
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+
+
+
+        @endif
+
 
             <div class="form-group row" style="text-align: center; margin-top: 50px;">
                 <div class="col-lg-8 ml-auto">
