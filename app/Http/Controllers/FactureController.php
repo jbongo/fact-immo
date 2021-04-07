@@ -1423,6 +1423,7 @@ public  function store_facture_honoraire_parrainage(Compromis $compromis, Filleu
     $parrain_id = $filleul->parrain_id ; 
     $pourcentage_parrain = $filleul->pourcentage; 
     
+    $tva = Tva::coefficient_tva();
     $parrain = User::where('id',$parrain_id)->first();
     // On vérifie si filleul est le porteur d'affaire
     if($compromis->user_id == $filleul->user_id){
@@ -1434,9 +1435,37 @@ public  function store_facture_honoraire_parrainage(Compromis $compromis, Filleu
         }
         
         
+        
+        // On determine les montants ttc et ht du parrain 
+        $montant_ht = round ( ($compromis->frais_agence() * $pourcentage_partage * $pourcentage_parrain/100 )/Tva::coefficient_tva(),2);
+        $montant_ttc = round($montant_ht*$tva,2);
+        
+        // on determine les droits de parrainage du parrain pour chacun de ses filleuls
+        $result = Filleul::droitParrainage($parrain->id, $filleul->user_id, $compromis->id);
+
+        // On vérifie que le parrain n'a pas dépassé le plafond de comm sur son filleul            
+
+        if($result['ca_comm_parr'] >= $filleul->user->contrat->seuil_comm ){
+            $montant_ht = 0;
+            $montant_ttc = 0;
+        }
+        else{
+            if( $result['ca_comm_parr'] + $montant_ht  > $filleul->user->contrat->seuil_comm ){
+                $montant_ht = $filleul->user->contrat->seuil_comm - $result['ca_comm_parr'];
+                $montant_ttc = $montant_ht*$tva;
+
+            }
+        }        
+        
+        
+        
+        
+        
+        
         // On fait la facture du parrain de celui qui a crée l'affaire
         if($compromis->facture_honoraire_parrainage_cree == false ){
             $tva = Tva::coefficient_tva();
+
 
 
             $facture = Facture::create([
@@ -1446,8 +1475,8 @@ public  function store_facture_honoraire_parrainage(Compromis $compromis, Filleu
                 "compromis_id"=> $compromis->id,
                 "type"=> "parrainage",
                 "encaissee"=> false,
-                "montant_ht"=>  round ( ( ($compromis->frais_agence() * $pourcentage_partage) *$pourcentage_parrain/100 )/$tva ,2),
-                "montant_ttc"=> round( ($compromis->frais_agence() * $pourcentage_partage) *$pourcentage_parrain/100,2),
+                "montant_ht"=>  round ($montant_ht ,2),
+                "montant_ttc"=> round( $montant_ttc,2),
             ]);
             // dd($facture);
             // on incremente le chiffre d'affaire du parrain
@@ -1466,6 +1495,29 @@ public  function store_facture_honoraire_parrainage(Compromis $compromis, Filleu
                 $pourcentage_partage = (100 - $compromis->pourcentage_agent)/100;
        
                 $tva = Tva::coefficient_tva();
+                
+                  // On determine les montants ttc et ht du parrain 
+                $montant_ht = round ( ($compromis->frais_agence() * $pourcentage_partage * $pourcentage_parrain/100 )/Tva::coefficient_tva(),2);
+                $montant_ttc = round($montant_ht*$tva,2);
+                
+                // on determine les droits de parrainage du parrain pour chacun de ses filleuls
+                $result = Filleul::droitParrainage($parrain->id, $filleul->user_id, $compromis->id);
+        
+                // On vérifie que le parrain n'a pas dépassé le plafond de comm sur son filleul            
+        
+                if($result['ca_comm_parr'] >= $filleul->user->contrat->seuil_comm ){
+                    $montant_ht = 0;
+                    $montant_ttc = 0;
+                }
+                else{
+                    if( $result['ca_comm_parr'] + $montant_ht  > $filleul->user->contrat->seuil_comm ){
+                        $montant_ht = $filleul->user->contrat->seuil_comm - $result['ca_comm_parr'];
+                        $montant_ttc = $montant_ht*$tva;
+        
+                    }
+                }        
+                
+                
             
             $facture = Facture::create([
                 "numero"=> null,
