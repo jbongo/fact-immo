@@ -740,7 +740,7 @@ $("#hors_reseau").change(function(){
 
         <div class="col-lg-3 col-md-3 col-sm-3 sous_div_agence_externe2">                                            
                 <div class="form-group div_agent_hors_reseau">
-                    <label for="adresse_agence">Complément d'adresse de l'agence <span class="text-danger">*</span> </label>
+                    <label for="adresse_agence">Adresse du siège de l'agence <span class="text-danger">*</span> </label>
                     <input class="form-control" type="text" value="{{old('adresse_agence')}}" id="adresse_agence" required name="adresse_agence" >
                 </div>                                            
         </div>

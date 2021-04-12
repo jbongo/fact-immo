@@ -42,6 +42,10 @@
                         <label class="color-danger" ><strong> Facture non Ajoutée </strong> </label>
 
                         @endif  
+                        
+                        @if( $facture->rib != null)
+                            <a class="color-warning" title="Télécharger le rib de l'agence "  href="{{route('facture.telecharger_pdf_rib', Crypt::encrypt($facture->id))}}"  class="  m-b-10 m-l-5 " id="ajouter">Télécharger rib <i class="ti-download"></i> </a>
+                        @endif
                     @endif
                    </div>
                </div>

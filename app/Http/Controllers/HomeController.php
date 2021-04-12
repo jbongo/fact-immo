@@ -112,7 +112,8 @@ class HomeController extends Controller
                 //         }
                 //     }
                 // }
-                $ca_attente_N [] = round($ca_att_n/Tva::coefficient_tva(),2);
+                $ca_attente_N [] = round($ca_att_n,2);
+                // $ca_attente_N [] = round($ca_att_n/Tva::coefficient_tva(),2);
         
                 #####ca encaissé
                 //  on réccupère toutes les factures stylimmo encaissées au cours du mois
@@ -120,25 +121,17 @@ class HomeController extends Controller
                 $nb_encaisse_n  = Facture::where([['type','stylimmo'],['encaissee',1], ['a_avoir',0],['date_encaissement','like',"%$annee_n-$month%"]])->count();
                 $nb_encaisse_N += $nb_encaisse_n;
 
-                // dd($ca_encai_n);
 
-
-
-
-
-                // on parcour les facture stylimmo  encaissée pour réccupérer les montant_ht  
-                // $ca_encai_n = 0;
-                // if($compros_styls != null){
-                //     foreach ($compros_styls as $compros_styl) {
-                //         if($compros_styl->getFactureStylimmo()->encaissee == 1){
-                //             $ca_encai_n +=  $compros_styl->frais_agence ;
-                //             $nb_encaisse_N++;
-                //         }
-                //     }
-                // }
-        
-                // $ca_encai_n = Facture::where([['type','stylimmo'],['date_facture','like',"%$annee_n-$month%"],["encaissee",1]])->sum('montant_ht');
-                $ca_encaisse_N [] = round($ca_encai_n/Tva::coefficient_tva(),2);
+                // On retire toutes les facture externes réglé du chiffre d'affaire encaissé STYL
+                $ca_externe = Facture::where([['type','partage_externe'],['reglee',1],['date_reglement','like',"%$annee_n-$month%"]])->sum('montant_ttc');
+                
+                $ca_encai_n -=  round($ca_externe/Tva::coefficient_tva(),2);
+                
+                $ca_encaisse_N [] = round($ca_encai_n,2);
+                // $ca_encaisse_N [] = round($ca_encai_n/Tva::coefficient_tva(),2);
+                
+                // dd(Tva::coefficient_tva());
+                
                 
                 $ca_sous_offre_n = Compromis::where([['created_at','like',"%$annee_n-$month%"],['demande_facture','<',2],['pdf_compromis',null],['archive',false]])->sum('frais_agence');
                 $nb_sous_offre_n = Compromis::where([['created_at','like',"%$annee_n-$month%"],['demande_facture','<',2],['pdf_compromis',null],['archive',false]])->count();
@@ -158,9 +151,7 @@ class HomeController extends Controller
                 $nb_global_N += ( $nb_encaisse_n + $nb_en_attente_n + $nb_sous_compromis_n + $nb_sous_offre_n);       
                 $ca_global_N [] = round($ca_glo_n/Tva::coefficient_tva(),2);
                
-                // $ca_glo_n = Compromis::where([['date_vente','like',"%$annee_n-$month%"],['archive',false]])->sum('frais_agence');
-                // $nb_global_N += Compromis::where([['date_vente','like',"%$annee_n-$month%"],['archive',false]])->count();
-                // $ca_global_N [] = round($ca_glo_n/Tva::coefficient_tva(),2);
+          
 
             }
 
@@ -184,45 +175,13 @@ class HomeController extends Controller
                                 
                 $i < 10 ? $month = "0$i" : $month = $i;
             
-                // // CA Global non partagé
-                // $ca_glo_partage_pas_n = Compromis::where([['date_vente','like',"%$annee_n-$month%"],['user_id',Auth::id()],['est_partage_agent',false],['archive',false]])->sum('frais_agence');
-                // $nb_global_N += Compromis::where([['date_vente','like',"%$annee_n-$month%"],['user_id',Auth::id()],['est_partage_agent',false],['archive',false]])->count();
-                
-                // // CA Global partagé et porte affaire
-                // $ca_glo_porte_n = 0;
-                // $compro_glo_porte_n = Compromis::where([['date_vente','like',"%$annee_n-$month%"],['user_id',Auth::id()],['est_partage_agent',true],['archive',false]])->get();
-                // $nb_global_N += Compromis::where([['date_vente','like',"%$annee_n-$month%"],['user_id',Auth::id()],['est_partage_agent',true],['archive',false]])->count();
-                // $nb_global_N += Compromis::where([['date_vente','like',"%$annee_n-$month%"],['agent_id',Auth::id()],['est_partage_agent',true],['archive',false]])->count();
-                
-                // foreach ($compro_glo_porte_n as $compro) {
-                //     $ca_glo_porte_n += $compro->frais_agence * $compro->pourcentage_agent/100 ;
-                // }
-
-                // // CA Global partagé et ne porte pas affaire
-                // $ca_glo_porte_pas_n = 0;
-                // $compro_glo_porte_pas_n = Compromis::where([['date_vente','like',"%$annee_n-$month%"],['agent_id',Auth::id()],['est_partage_agent',true],['archive',false]])->get();
-                
-                // foreach ($compro_glo_porte_pas_n as $compro) {
-                //     $ca_glo_porte_pas_n += $compro->frais_agence * (100-$compro->pourcentage_agent)/100 ;
-                // }
-                
-                // $ca_global_N [] = round(($ca_glo_partage_pas_n+$ca_glo_porte_n+$ca_glo_porte_pas_n)/Tva::coefficient_tva(),2);
-
+             
 
 
                 #####ca non encaissé, en attente de payement
                 $compros_styls = Compromis::where([['date_vente','like',"%$annee_n-$month%"],['demande_facture',2],['archive',false]])->get();
                 // on parcour les facture stylimmo non encaissée pour réccupérer les montant_ht  
                
-
-                // $ca_att_n = 0;
-                // if($compros_styls != null){
-                //     foreach ($compros_styls as $compros_styl) {
-                //         if($compros_styl->getFactureStylimmo()->encaissee == 0){
-                //             $ca_att_n +=  $compros_styl->frais_agence ;
-                //         }
-                //     }
-                // }
           
 
                                 // CA en attente non partagé

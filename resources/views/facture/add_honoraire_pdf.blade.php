@@ -1,7 +1,7 @@
 @extends('layouts.app') 
 @section('content') 
 @section ('page_title') 
-    Ajouter votre facture -- <span class="color-warning">   <span class="color-primary">type :</span> {{$facture->type}} | <span class="color-primary"> montant ht : </span> {{$facture->montant_ht}} |  <span class="color-primary">mandat :</span> {{$facture->compromis->numero_mandat}} </span> 
+@if($facture->type == "partage_externe") Ajoutez la facture de l'agence externe  @else  Ajouter votre facture @endif -- <span class="color-warning">   <span class="color-primary">type :</span> {{$facture->type}} | <span class="color-primary"> montant ht : </span> {{$facture->montant_ht}} |  <span class="color-primary">mandat :</span> {{$facture->compromis->numero_mandat}} </span> 
 @endsection
 <div class="row">
     <div class="col-lg-12">
@@ -111,9 +111,26 @@
                                         </div>
 
                                     </div>
-                              
-                                  
                                     
+                                    @if($facture->type == "partage_externe")
+                              
+                                    <div class="col-lg-6 col-md-6 col-sm-6">
+                                    
+                                        <div class="form-group row">
+                                            <label class="col-lg-6 col-md-6 col-sm-6col-form-label" for="rib">Ajouter le rib de l'agence</label>
+                                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                                <input type="file" accept=".pdf" class="form-control"  id="rib"  name="rib"  required>
+                                            </div>
+                                             @if ($errors->has('rib'))
+                                                <br>
+                                                <div class="alert alert-warning ">
+                                                    <strong>{{$errors->first('rib')}}</strong> 
+                                                </div>
+                                            @endif
+                                        </div>
+            
+                                    </div>
+                                    @endif 
                                 </div>
 
                             </div>
@@ -128,7 +145,7 @@
                 
             @if($facture->compromis->partage_reseau == false && $facture->compromis->qui_porte_externe == 3 && $facture->type =="honoraire")
                 <br><br>
-              <h4>  ************************************************************************** AGENCE EXTERNE **************************************************************************  </h4>
+              <h4>  ******************************************* AGENCE EXTERNE *******************************************  </h4>
                 <div class="card-body">
                 
                     <div class="panel-body">
@@ -174,6 +191,7 @@
                                                 </div>
                                                 
                                             </div>
+                                            
                                             <div class="col-lg-4 col-md-4 col-sm-4">
                 
                                                 <div class="form-group row">
@@ -221,6 +239,23 @@
                                                     <br>
                                                     <div class="alert alert-warning ">
                                                         <strong>{{$errors->first('file_externe')}}</strong> 
+                                                    </div>
+                                                @endif
+                                            </div>
+                
+                                        </div>
+                                        
+                                        <div class="col-lg-6 col-md-6 col-sm-6">
+                                    
+                                            <div class="form-group row">
+                                                <label class="col-lg-6 col-md-6 col-sm-6col-form-label" for="rib">Ajouter le rib de l'agence</label>
+                                                <div class="col-lg-6 col-md-6 col-sm-6">
+                                                    <input type="file" accept=".pdf" class="form-control"  id="rib"  name="rib"  required>
+                                                </div>
+                                                 @if ($errors->has('rib'))
+                                                    <br>
+                                                    <div class="alert alert-warning ">
+                                                        <strong>{{$errors->first('rib')}}</strong> 
                                                     </div>
                                                 @endif
                                             </div>

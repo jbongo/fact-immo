@@ -95,6 +95,9 @@ Route::middleware('auth')->group(function(){
     Route::post('deduire-pub/factures-honoraire/{compromis}','FactureController@deduire_pub_facture_honoraire')->name('facture.deduire_pub_facture_honoraire');//ok
     Route::post('deduire-pub/factures-honoraire-partage/{compromis}/{mandataire_id?}','FactureController@deduire_pub_facture_honoraire_partage')->name('facture.deduire_pub_facture_honoraire_partage');//ok
     
+    // Liste des fact pub à valider
+    Route::get('/factures/pub-a-valider','FactpubController@pub_a_valider')->name('facture.pub_a_valider');
+    
     // Lorsqu'on déduis la pub sans supprimer la facture 
     Route::get('deduire-pub-show/factures/{facture_id}','FactureController@deduire_pub_show')->name('facture.deduire_pub_show');//ok
     Route::post('deduire-pub/factures/{facture_id}','FactureController@deduire_pub')->name('facture.deduire_pub');//ok
@@ -121,6 +124,8 @@ Route::middleware('auth')->group(function(){
     Route::get('facture/honoraire/a_valider/','FactureController@honoraire_a_valider')->name('facture.honoraire_a_valider'); 
     //Telecharger les factures
     Route::get('telecharger/pdf/factures/{facture_id}','FactureController@download_pdf_facture')->name('facture.telecharger_pdf_facture'); //ok
+    // Télecharger le rib  del'agence externe
+    Route::get('telecharger/pdf/rib/{facture_id}','FactureController@download_pdf_rib')->name('facture.telecharger_pdf_rib'); //ok
     // Recalculer une note d'honoraire
     Route::get('facture/honoraire/recalculer/{facture_id}','FactureController@recalculer_honoraire')->name('facture.recalculer_honoraire'); 
      // Recalculer pour chacun des mandataires les CA stylimmo

@@ -3,11 +3,11 @@
         <tr>
             <td style="width: 320px;"><img src="https://www.stylimmo.com/images/logo.jpg" alt="" width="279" height="124" /></td>
             <td style="width: 380px;">
-                    <p>  {{$facture->user->nom}} {{$facture->user->prenom}}</p>
+             
+                    <p> {{$facture->user->nom}} {{$facture->user->prenom}}</p>
                     <p>{{$facture->user->adresse}}</p> 
                     <p>{{$facture->user->code_postal}}, {{$facture->user->ville}}</p>
 
-               
             </td>
         </tr>
     </tbody>

@@ -1526,8 +1526,8 @@ public  function store_facture_honoraire_parrainage(Compromis $compromis, Filleu
                 "compromis_id"=> $compromis->id,
                 "type"=> "parrainage_partage",
                 "encaissee"=> false,
-                "montant_ht"=>  round ( ( ($compromis->frais_agence() * $pourcentage_partage )*$pourcentage_parrain/100 )/$tva ,2),
-                "montant_ttc"=> round( ($compromis->frais_agence() * $pourcentage_partage )*$pourcentage_parrain/100,2),
+                "montant_ht"=>  round ($montant_ht,2),
+                "montant_ttc"=> round( $montant_ttc,2),
             ]);
             // dd($facture);
             // on incremente le chiffre d'affaire du parrain
@@ -2662,11 +2662,30 @@ public function store_upload_pdf_honoraire(Request $request , $facture_id)
                 $facture_externe->update();
         }
     
-    
-    
     }
     
     
+    // SI ON AJOUTE LE RIB DE L'AGENCE EXTERNE
+    if($rib = $request->file('rib')){
+
+        $facture_externe  = Facture::where([['user_id',  $facture->user_id],['type','partage_externe']])->first(); 
+        $name_externe = $rib->getClientOriginalName();
+
+        // on sauvegarde la facture dans le repertoire du mandataire
+        $path_rib = storage_path('app/public/'.$facture->user->id.'/rib');
+
+        if(!File::exists($path_rib))
+            File::makeDirectory($path_rib, 0755, true);
+
+            $filename_rib = strtoupper($facture_externe->compromis->nom_agent)."_rib_".$facture_externe->compromis->getFactureStylimmo()->numero ;
+ 
+            $rib->move($path_rib,$filename_rib.'.pdf');            
+            $path_rib = $path_rib.'/'.$filename_rib.'.pdf';
+        
+            $facture_externe->rib = $path_rib;
+
+            $facture_externe->update();
+    }
     
     
     
@@ -2710,6 +2729,20 @@ public function download_pdf_facture($facture_id)
     return response()->download($facture->url);
     
 }
+
+
+/**
+ * Télécharger lerib de l'agence externe
+ *
+ * @return \Illuminate\Http\Response
+ */
+public function download_pdf_rib($facture_id)
+{
+    $facture = Facture::where('id',  Crypt::decrypt($facture_id))->first();
+    return response()->download($facture->rib);
+    
+}
+
 
 /**
  * Valider les factures 
@@ -3557,6 +3590,10 @@ public function valider_honoraire($action, $facture_id)
  
 
     }
-    
 
+
+
+
+
+    
 }
