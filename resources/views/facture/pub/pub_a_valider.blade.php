@@ -29,7 +29,7 @@
                                             <th>@lang('Mandataire')</th>
                                     
                                             {{-- <th>@lang('Type Facture')</th> --}}
-                                            <th>@lang('Montant HT ')</th>
+                                            <th>@lang('Pack ')</th>
                                             <th>@lang('Montant HT ')</th>
                                             <th>@lang('Montant TTC ')</th>
                                            
@@ -55,6 +55,9 @@
                                                     </label> 
                                                 </td>
                                             
+                                                <td  width="" >
+                                                    {{$facture->user->contrat->packpub->nom}}
+                                                </td>
                                                
                                                 <td  width="" >
                                                 {{number_format($facture->montant_ht,'2','.','')}}

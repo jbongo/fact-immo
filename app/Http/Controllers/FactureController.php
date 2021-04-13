@@ -287,7 +287,7 @@ public  function valider_facture_stylimmo( Request $request, $compromis)
             "encaissee"=> false,
             "montant_ht"=>  $montant_ht,
             "montant_ttc"=> $montant_ttc,
-            "date_facture"=> $montant_ttc,
+            "date_facture"=> $request->date_facture,
 
         ]);
 
