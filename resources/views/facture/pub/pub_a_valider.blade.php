@@ -32,6 +32,7 @@
                                             <th>@lang('Pack ')</th>
                                             <th>@lang('Montant HT ')</th>
                                             <th>@lang('Montant TTC ')</th>
+                                            <th>@lang('Pour le mois de')</th>
                                            
                                             <th>@lang('Action')</th>
                                          
@@ -39,6 +40,10 @@
                                         </tr>
                                     </thead>
                                     {{-- {{dd($today60)}} --}}
+                                    @php 
+                                    
+                                        $mois = Array('','Janvier','Février','Mars','Avril', 'Mai','Juin','Juillet','Aôut', 'Septembre','Octobre','Novembre','Décembre');
+                                    @endphp
                                     <tbody>
                                         @foreach ($factures as $facture)
                                             
@@ -65,12 +70,15 @@
                                                 <td  width="" >
                                                 {{number_format($facture->montant_ttc,'2','.','')}}
                                                 </td>
-                                               
+                                                
+                                                <td  width="" >
+                                                   <span class="badge badge-warning"> {{ $mois[$facture->created_at->format('m')*1]}}</span> 
+                                                </td>
                                                 
                                                 <td width="" >
                                                   
-                                                     <a href="{{route('compromis.etat', Crypt::encrypt($facture->id))}}"  target="_blank"  class="btn btn-success btn-flat btn-addon  m-b-10 m-l-5 " id="visualiser"><i class="ti-check"></i>valider</a>
-                                                    <a href="{{route('compromis.etat', Crypt::encrypt($facture->id))}}"  target="_blank"  class="btn btn-danger btn-flat btn-addon  m-b-10 m-l-5 " id="visualiser"><i class="ti-close"></i>réfuser</a> 
+                                                     <a href="{{route('facture.valider_fact_pub', [$facture->id,1])}}"  target="_blank"  class="btn btn-success btn-flat btn-addon  m-b-10 m-l-5 valider " id="visualiser"><i class="ti-check"></i>valider</a>
+                                                    <a href="{{route('facture.valider_fact_pub', [$facture->id,2])}}"  target="_blank"  class="btn btn-danger btn-flat btn-addon  m-b-10 m-l-5 refuser" id="visualiser"><i class="ti-close"></i>réfuser</a> 
                                                 
                                                 </td> 
                                         
@@ -100,7 +108,7 @@
                 headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
             })
             $('[data-toggle="tooltip"]').tooltip()
-            $('a.delete').click(function(e) {
+            $('a.valider').click(function(e) {
                 let that = $(this)
                 e.preventDefault()
                 const swalWithBootstrapButtons = swal.mixin({
@@ -110,7 +118,7 @@
 })
 
         swalWithBootstrapButtons({
-            title: '@lang('Vraiment archiver cet compromis  ?')',
+            title: '@lang('Vraiment valider la facture ?')',
             type: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#DD6B55',
@@ -122,15 +130,17 @@
                 $('[data-toggle="tooltip"]').tooltip('hide')
                     $.ajax({                        
                         url: that.attr('href'),
-                        type: 'PUT'
+                        type: 'GET'
                     })
-                    .done(function () {
-                            that.parents('tr').remove()
+                    .done(function (data) {
+                                        
+                    that.parents('tr').remove()
+                    window.location.href = "/factures/generer-fact-pub/"+data;
                     })
 
                 swalWithBootstrapButtons(
-                'Archivé!',
-                'L\'compromis a bien été archivé.',
+                'Validée!',
+                'La facture a bien été validée.',
                 'success'
                 )
                 
@@ -141,7 +151,7 @@
             ) {
                 swalWithBootstrapButtons(
                 'Annulé',
-                'L\'utlisateur n\'a pas été archivé :)',
+                'Facture non validée:)',
                 'error'
                 )
             }

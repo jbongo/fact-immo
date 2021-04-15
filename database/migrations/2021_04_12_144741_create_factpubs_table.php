@@ -16,6 +16,7 @@ class CreateFactpubsTable extends Migration
         Schema::create('factpubs', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('user_id')->nullable();
+            $table->integer('facture_id')->nullable();
             
             $table->string('packpub')->nullable();
             $table->double('montant_ht')->nullable();

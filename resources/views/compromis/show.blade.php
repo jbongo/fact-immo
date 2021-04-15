@@ -234,20 +234,20 @@ Détail de l'affaire de {{$compromis->user->prenom}} {{$compromis->user->nom}}
                                                                 <div class="col-lg-3 col-md-3 col-sm-3 sous_div_agence_externe2">                                            
                                                                         <div class="form-group div_agent_hors_reseau">
                                                                             <label for="adresse_agence">Adresse du siège de l'agence <span class="text-danger">*</span> </label>
-                                                                            <input class="form-control" type="text" value="{{old('adresse_agence') ? old('adresse_agence') : $compromis->adresse_agence }}" id="adresse_agence" required name="adresse_agence" >
+                                                                            <input class="form-control" type="text" value="{{old('adresse_agence') ? old('adresse_agence') : $compromis->adresse_agence }}" id="adresse_agence"  name="adresse_agence" >
                                                                         </div>                                            
                                                                 </div>
                                                         
                                                                 <div class="col-lg-3 col-md-3 col-sm-3 sous_div_agence_externe2">                                            
                                                                         <div class="form-group div_agent_hors_reseau">
                                                                             <label for="code_postal_agence">Code Postal de l'agence <span class="text-danger">*</span> </label>
-                                                                            <input class="form-control" type="text" value="{{old('code_postal_agence') ? old('code_postal_agence') : $compromis->code_postal_agence }}" id="code_postal_agence" required name="code_postal_agence" >
+                                                                            <input class="form-control" type="text" value="{{old('code_postal_agence') ? old('code_postal_agence') : $compromis->code_postal_agence }}" id="code_postal_agence"  name="code_postal_agence" >
                                                                         </div>                                            
                                                                 </div>
                                                                 <div class="col-lg-3 col-md-3 col-sm-3 sous_div_agence_externe2">                                            
                                                                         <div class="form-group div_agent_hors_reseau">
                                                                             <label for="ville_acquereur">Ville de l'agence <span class="text-danger">*</span> </label>
-                                                                            <input class="form-control" type="text" value="{{old('ville_agence') ? old('ville_agence') : $compromis->ville_agence }}" id="ville_agence" required name="ville_agence" >
+                                                                            <input class="form-control" type="text" value="{{old('ville_agence') ? old('ville_agence') : $compromis->ville_agence }}" id="ville_agence"  name="ville_agence" >
                                                                         </div>                                            
                                                                 </div>
                                                             

@@ -97,6 +97,11 @@ Route::middleware('auth')->group(function(){
     
     // Liste des fact pub à valider
     Route::get('/factures/pub-a-valider','FactpubController@pub_a_valider')->name('facture.pub_a_valider');
+    Route::get('/factures/generer-fact-pub/{facture_id}','FactpubController@generer_fact_pub')->name('facture.generer_fact_pub');
+    Route::get('/factures/generer-pdf-fact-pub/{facture_id}','FactpubController@generer_pdf_fact_pub')->name('facture.generer_pdf_fact_pub');
+
+    Route::get('/factures/valider-fact-pub/{fact_pub_id}/{validation}','FactpubController@valider_fact_pub')->name('facture.valider_fact_pub');
+    
     
     // Lorsqu'on déduis la pub sans supprimer la facture 
     Route::get('deduire-pub-show/factures/{facture_id}','FactureController@deduire_pub_show')->name('facture.deduire_pub_show');//ok
