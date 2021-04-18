@@ -46,6 +46,12 @@
                                                 </div>
                                             </div>
                                             <div class="form-group row">
+                                                <label class="col-lg-4 col-form-label" for="forfait_pack_info">Forfait pack informatique (€)<span class="text-danger">*</span></label>
+                                                <div class="col-lg-4">
+                                                    <input type="number" class="form-control" min="0" value="75" id="forfait_pack_info" name="forfait_pack_info" required>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
                                                 <label class="col-lg-6 col-form-label" for="est_starter">Démarrage en tant que Starter ?</label>
                                                 <input type="checkbox" unchecked data-toggle="toggle" id="est_starter" name="est_starter" data-off="Non" data-on="Oui" data-onstyle="success" data-offstyle="danger">
                                             </div>

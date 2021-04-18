@@ -16,6 +16,7 @@ class Listerfactpub extends Command
      * @var string
      */
     protected $signature = 'command:listerfactpub';
+    
 
     /**
      * The console command description.

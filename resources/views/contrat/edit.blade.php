@@ -41,6 +41,12 @@
                                                     <input type="number" class="form-control" min="0" value="{{$contrat->forfait_carte_pro}}" id="forfait_carte_pro" name="forfait_carte_pro" required>
                                                 </div>
                                             </div>
+                                            <div class="form-group row">
+                                                <label class="col-lg-4 col-form-label" for="forfait_pack_info">Forfait pack informatique (€)<span class="text-danger">*</span></label>
+                                                <div class="col-lg-4">
+                                                    <input type="number" class="form-control" min="0" value="{{$contrat->forfait_pack_info}}" id="forfait_pack_info" name="forfait_pack_info" required>
+                                                </div>
+                                            </div>
                                             @php
                                                $check =  ($contrat->est_demarrage_starter == true) ? "checked" : "unchecked";
                                             @endphp
