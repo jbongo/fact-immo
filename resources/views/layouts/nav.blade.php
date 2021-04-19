@@ -164,7 +164,7 @@
                         <li class="{{$li_facture_a_valider}}" ><a  href="{{route('facture.honoraire_a_valider')}}" >  @if($nb > 0) <span class="badge badge-danger">{{$nb}}</span> @endif Fac H à valider </a></li>
                         <li class="{{$li_facture_a_payer}}" ><a  href="{{route('facture.honoraire_a_payer')}}" >  @if($nb_a_payer > 0) <span class="badge badge-warning">{{$nb_a_payer}}</span> @endif Fac H à payer </a></li>
                         <li class="{{$li_facture_hors_delais}}" ><a  href="{{route('facture.hors_delais')}}" > Fac S hors délais </a></li>
-                        {{-- <li class="{{$li_facture_pub_a_valider}}" ><a  href="{{route('facture.pub_a_valider')}}" > Fac pub à valider </a></li> --}}
+                        <li class="{{$li_facture_hors_delais}}" ><a  href="{{route('facture.pub_a_valider')}}" > Fac pub à valider </a></li>
                         @endif
                         {{-- <li><a href="#">Avoir</a></li> --}}
                     </ul>

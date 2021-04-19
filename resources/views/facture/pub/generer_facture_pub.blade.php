@@ -1,3 +1,18 @@
+@extends('layouts.app')
+
+@section('content')
+    @section ('page_title')
+
+Facture N° {{$facture->numero}}
+
+ @endsection
+
+ <style type="text/css">
+    body {
+        background-color:#fff;
+    }
+    </style>
+
 <table style="width: 50%">
     <tbody>
         <tr>
@@ -43,11 +58,11 @@
 <br>
 
 <br>
-<table style=" width: 100%">
+<table style=" width: 50%">
     <tbody>
         <tr>
             <td style="width: 150px;">&nbsp;</td>
-            <td style="width: 528px;"><span style="text-decoration: underline;"><strong>DESCRIPTION</strong> </td>
+            <td style="width: 528px;"><span style="text-decoration: underline;"><strong>P&eacute;riode : Mars</strong> </td>
             <td style="width: 30px;">&nbsp;</td>
         </tr>
         
@@ -57,22 +72,59 @@
 
 
 
-<table style="height: 63px; width:90% ">
+<p style="text-align: left;">&nbsp;</p>
+<p style="text-align: left;"><strong>Passerelles dans votre Pac</strong></p>
+<p style="text-align: left;">&nbsp;</p>
+<table style="border-collapse: collapse; width: 50%; height: 18px;" >
+<tbody>
+<tr style="height: 18px;">
+<td style="width: 50%; height: 18px;"><img src="{{asset('images/logiciel.png')}}" alt="" /></td>
+<td style="width: 50%; height: 18px;">
+<p>&nbsp;</p>
+<p>H.T: 62.5 &euro;</p>
+<p>&nbsp;</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<table style="border-collapse: collapse; width: 50%; height: 18px;" >
     <tbody>
-        <tr>
-            <td style="width: 48px;">&nbsp;</td>
-            <td style=""><span style="">&nbsp;</span></td>
-        </tr>
-        <tr style="">
-            <td style="width: 48px;">&nbsp;</td>
-            <td style=" ">PACK PUB </td>
-            {{-- <td style="width: 391px;"></td> --}}
-
-        </tr>
+    <tr style="height: 18px;">
+    <td style="width: 50%; height: 18px;"><img src="{{asset('images/passerelle_abon.png')}}" alt="" /></td>
+    <td style="width: 50%; height: 18px;">
+    <p>&nbsp;</p>
+    <p>H.T: {{$facture->montant_ht - 62.5}}&euro;</p>
+    <p>&nbsp;</p>
+    </td>
+    </tr>
     </tbody>
 </table>
+<table style="border-collapse: collapse; width: 50%;">
+<tbody>
+<tr>
+<td style="width: 50%;"><img src="{{asset('images/passerelle_grat.png')}}" alt="" /></td>
+<td style="width: 50%;"></td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<table style="border-collapse: collapse; width: 50%; height: 18px;" >
+<tbody>
+<tr style="height: 18px;">
+<td style="width: 33.3333%; height: 18px;">T H.T:&nbsp; {{$facture->montant_ht}} €</td>
+<td style="width: 33.3333%; height: 18px;">T.V.A 20%: {{$facture->montant_ht * 0.2}} €</td>
+<td style="width: 33.3333%; height: 18px;">TOTAL T.T.C: {{$facture->montant_ttc}} €</td>
+</tr>
+</tbody>
+</table>
 <br><br>
-<table style="height: 47px; width: 672px;">
+
+
+{{-- <table style="height: 47px; width: 672px;">
     <tbody>
         <tr>
             <td style="width: 400px;">&nbsp;</td>
@@ -90,7 +142,7 @@
             <td style="width: 100px; text-align:right;" >{{number_format($facture->montant_ttc,2,',',' ')}} &euro;</td>
         </tr>
     </tbody>
-</table>
+</table> --}}
 <br>
 
 <table style="height: 30px; width: 50%;">
@@ -105,19 +157,7 @@
 </table>
 <br>
 
-<style>
-    @page { margin: 50px 45px; }
-    .footer {
-        position: fixed;
-        bottom: 90px;
-        left: 0px; right: 0px;  height: 130px; 
-        align-content: center;
-    
-    }
-  
-  
-  
-  </style>
+
   
   <div class="footer">
     <table style="height: 40px; ">
@@ -164,7 +204,7 @@
 <br>
 
 
-    <table class="table table-striped table-bordered table-hover" style="width: 100%;"  border="1" cellspacing="0">
+    <table class="table table-striped table-bordered table-hover" style="width: 50%;"  border="1" cellspacing="0">
         <thead>
             <tr style="height: 18px;">
                 <th align="center" style="height: 18px;">DOMICILIATION BANCAIRE: Crédit Mutuel</th>
@@ -190,3 +230,4 @@
    
 
 
+@endsection
