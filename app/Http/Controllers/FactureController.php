@@ -2779,6 +2779,7 @@ public function valider_honoraire($action, $facture_id)
     }
     $facture->update();
     // return response()->download($facture->url);
+    return redirect()->back();
     
 }
 

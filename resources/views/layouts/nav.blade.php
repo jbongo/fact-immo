@@ -4,7 +4,7 @@
     $curent_url = explode("/", $curent_url);
 
 
-    $li_home = $li_mandataire = $li_affaire = $li_affaire_filleul = $li_affaire_archive=  $li_facture = $li_facture_gestion = $li_facture_demande = $li_facture_a_payer = $li_parametre = $li_parametre_modele =
+    $li_home = $li_mandataire = $li_affaire = $li_affaire_filleul = $li_affaire_archive=  $li_facture = $li_facture_gestion = $li_facture_demande = $li_facture_a_payer = $li_facture_a_valider = $li_parametre = $li_parametre_modele =
     $li_parametre_fournisseur = $li_parametre_pack_pub = $li_parametre_generaux = $li_outil = $li_affaire_toutes = $li_affaire_cloture = $li_facture_hors_delais = $li_jetons ="";
     
     switch ($curent_url[1]) {
@@ -95,6 +95,11 @@
                         $li_facture_a_payer = "active open";
                     }
                 break;
+                case 'a_valider' :
+                    if($curent_url[2] == "honoraire"){
+                        $li_facture_a_valider = "active open";
+                    }
+                break;
                 
             
                 default:
@@ -148,7 +153,7 @@
                     </ul>
                 </li>
                 
-                <li class="{{$li_facture}} {{$li_facture_demande}} {{$li_facture_a_payer}} {{$li_facture_hors_delais}}" ><a  class="sidebar-sub-toggle"><i class="large material-icons">description</i> Factures @if($nb_notif > 0 && Auth()->user()->role == "admin") <span class="badge badge-danger">{{$nb_notif}}</span> @endif<span class="sidebar-collapse-icon ti-angle-down"></span></a>
+                <li class="{{$li_facture}} {{$li_facture_demande}} {{$li_facture_a_payer}} {{$li_facture_hors_delais}} {{$li_facture_a_valider}}" ><a  class="sidebar-sub-toggle"><i class="large material-icons">description</i> Factures @if($nb_notif > 0 && Auth()->user()->role == "admin") <span class="badge badge-danger">{{$nb_notif}}</span> @endif<span class="sidebar-collapse-icon ti-angle-down"></span></a>
                     <ul>
                         <li class="{{$li_facture_gestion}}" ><a href="{{route('facture.index')}}">Gestion</a></li>
                         @if (Auth()->user()->role == "admin")
@@ -156,7 +161,7 @@
                         @endif
                         
                         @if (Auth()->user()->role == "admin")
-                        <li class="{{$li_facture_demande}}" ><a  href="{{route('facture.honoraire_a_valider')}}" >  @if($nb > 0) <span class="badge badge-danger">{{$nb}}</span> @endif Fac H à valider </a></li>
+                        <li class="{{$li_facture_a_valider}}" ><a  href="{{route('facture.honoraire_a_valider')}}" >  @if($nb > 0) <span class="badge badge-danger">{{$nb}}</span> @endif Fac H à valider </a></li>
                         <li class="{{$li_facture_a_payer}}" ><a  href="{{route('facture.honoraire_a_payer')}}" >  @if($nb_a_payer > 0) <span class="badge badge-warning">{{$nb_a_payer}}</span> @endif Fac H à payer </a></li>
                         <li class="{{$li_facture_hors_delais}}" ><a  href="{{route('facture.hors_delais')}}" > Fac S hors délais </a></li>
                         {{-- <li class="{{$li_facture_pub_a_valider}}" ><a  href="{{route('facture.pub_a_valider')}}" > Fac pub à valider </a></li> --}}
