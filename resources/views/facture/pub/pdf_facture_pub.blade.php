@@ -57,7 +57,7 @@
 <table style="border-collapse: collapse; width: 100%; height: 18px;" >
     <tbody>
     <tr style="height: 18px;">
-    <td style="width: 500px; height: 18px;"><img src="images/logiciel.png" alt="" /></td>
+    <td style="width: 500px; height: 18px;"><img src="images/logiciel.PNG" alt="" /></td>
     <td style="width: 187px; height: 18px;">
     
   
@@ -87,7 +87,7 @@
 <table style="border-collapse: collapse; width: 100%; height: 18px;" >
     <tbody>
     <tr style="height: 18px;">
-    <td style="width: 500px; height: 18px;"><img src="images/passerelle_abon.png" width= "500px" height="200px" alt="" /></td>
+    <td style="width: 500px; height: 18px;"><img src="images/passerelle_abon.PNG" width= "500px" height="200px" alt="" /></td>
     <td style="width: 187px%; height: 18px;">
     <p>&nbsp;</p>
     <p></p>
