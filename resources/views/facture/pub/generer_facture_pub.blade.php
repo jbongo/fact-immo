@@ -1,11 +1,17 @@
 @extends('layouts.app')
 
 @section('content')
+
+
+<br><br>
+
+
     @section ('page_title')
 
-Facture N° {{$facture->numero}}
+    <a class=" btn btn-danger " title="Télécharger " href="{{route('facture.telecharger_pdf_facture_autre', Crypt::encrypt($facture->id))}}"  class="  m-b-10 m-l-5 " id="ajouter">Télecharger  <i class="ti-download"></i> </a>
 
  @endsection
+
 
  <style type="text/css">
     body {
@@ -54,62 +60,76 @@ Facture N° {{$facture->numero}}
         </tr>
     </tbody>
 </table> --}}
-
 <br>
-
-<br>
-<table style=" width: 50%">
+<table style="height: 30px; width: 50%;">
     <tbody>
-        <tr>
-            <td style="width: 150px;">&nbsp;</td>
-            <td style="width: 528px;"><span style="text-decoration: underline;"><strong>P&eacute;riode : Mars</strong> </td>
-            <td style="width: 30px;">&nbsp;</td>
-        </tr>
-        
+    <tr style="height: 18px;">
+        <td style="width: 200px; height: 18px;"><strong>Période de : {{$mois}}</strong></td>
+        <td style="width: 300px; height: 18px;"> </td>
+        <td style="width: 187px; height: 18px;"></td>
+    </tr>
     </tbody>
 </table>
 
+<br><br>
 
+<table style="height: 30px; width: 50%;">
+    <tbody>
+    <tr style="height: 18px;">
+        <td style="width: 200px; height: 18px;"><strong>Outils informatique</strong></td>
+        <td style="width: 300px; height: 18px;"> </td>
+        <td style="width: 187px; height: 18px;"> H.T: {{$facture->user->contrat->forfait_pack_info}} &euro; </td>
+    </tr>
+    </tbody>
+</table>
+    
+<table style="border-collapse: collapse; width: 100%; height: 18px;" >
+    <tbody>
+    <tr style="height: 18px;">
+    <td style="width: 500px; height: 18px;"><img src="/images/logiciel.png" alt="" /></td>
+    <td style="width: 187px; height: 18px;">
+    
+  
+    
+    </td>
 
-
-<p style="text-align: left;">&nbsp;</p>
-<p style="text-align: left;"><strong>Passerelles dans votre Pac</strong></p>
-<p style="text-align: left;">&nbsp;</p>
-<table style="border-collapse: collapse; width: 50%; height: 18px;" >
-<tbody>
-<tr style="height: 18px;">
-<td style="width: 50%; height: 18px;"><img src="{{asset('images/logiciel.png')}}" alt="" /></td>
-<td style="width: 50%; height: 18px;">
-<p>&nbsp;</p>
-<p>H.T: 62.5 &euro;</p>
-<p>&nbsp;</p>
-</td>
 </tr>
 </tbody>
 </table>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<table style="border-collapse: collapse; width: 50%; height: 18px;" >
+<br>
+
+{{-- <p style="text-align: left;"></p> --}}
+
+@if($facture->montant_ht > $facture->user->contrat->forfait_pack_info)
+
+<table style="height: 30px; width: 50%;">
     <tbody>
     <tr style="height: 18px;">
-    <td style="width: 50%; height: 18px;"><img src="{{asset('images/passerelle_abon.png')}}" alt="" /></td>
-    <td style="width: 50%; height: 18px;">
+        <td style="width: 200px; height: 18px;"><strong>Passerelles dans votre Pac</strong></td>
+        <td style="width: 300px; height: 18px;"> </td>
+        <td style="width: 187px; height: 18px;"> H.T: {{$facture->montant_ht - $facture->user->contrat->forfait_pack_info}}&euro; </td>
+    </tr>
+    </tbody>
+</table>
+    
+
+
+
+<table style="border-collapse: collapse; width: 100%; height: 18px;" >
+    <tbody>
+    <tr style="height: 18px;">
+    <td style="width: 500px; height: 18px;"><img src="/images/passerelle_abon.png" width= "500px" height="200px" alt="" /></td>
+    <td style="width: 187px%; height: 18px;">
     <p>&nbsp;</p>
-    <p>H.T: {{$facture->montant_ht - 62.5}}&euro;</p>
+    <p></p>
     <p>&nbsp;</p>
     </td>
     </tr>
     </tbody>
 </table>
-<table style="border-collapse: collapse; width: 50%;">
-<tbody>
-<tr>
-<td style="width: 50%;"><img src="{{asset('images/passerelle_grat.png')}}" alt="" /></td>
-<td style="width: 50%;"></td>
-</tr>
-</tbody>
-</table>
+
+@endif
+
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <table style="border-collapse: collapse; width: 50%; height: 18px;" >

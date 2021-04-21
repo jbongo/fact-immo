@@ -31,71 +31,88 @@
         </tr>
     </tbody>
 </table>
-{{-- <table style="height: 59px; width: 500px;">
+
+<br>
+<table style="height: 30px; width: 50%;">
     <tbody>
-        <tr>
-            <td style="width: 300px;"><span style="text-decoration: underline;"><strong>TRANSACTION</strong></span></td>
-            <td style="width: 143px;"><span style="text-decoration: underline;"><strong>{{strtoupper($facture->type)}}</strong></span></td>
-        </tr>
+    <tr style="height: 18px;">
+        <td style="width: 200px; height: 18px;">&nbsp;</td>
+        <td style="width: 300px; height: 18px;"> <strong>Période de : {{$mois}}</strong></td>
+        <td style="width: 187px; height: 18px;"></td>
+    </tr>
     </tbody>
-</table> --}}
-
-<br>
-
-<br>
+</table>
 
 
-<p style="text-align: left;">&nbsp;</p>
-<p style="text-align: left;"><strong>Passerelles dans votre Pac</strong></p>
-<p style="text-align: left;">&nbsp;</p>
-<table style="border-collapse: collapse; width: 50%; height: 18px;" >
-<tbody>
-<tr style="height: 18px;">
-<td style="width: 50%; height: 18px;"><img src="{{asset('images/logiciel.png')}}" alt="" /></td>
-<td style="width: 50%; height: 18px;">
-<p>&nbsp;</p>
-<p>H.T: 62.5 &euro;</p>
-<p>&nbsp;</p>
-</td>
+<table style="height: 30px; width: 100%;">
+    <tbody>
+    <tr style="height: 18px;">
+        <td style="width: 200px; height: 18px;"><strong>Outils informatique</strong></td>
+        <td style="width: 300px; height: 18px;"> </td>
+        <td style="width: 187px; height: 18px;"> H.T: {{$facture->user->contrat->forfait_pack_info}} &euro; </td>
+    </tr>
+    </tbody>
+</table>
+    
+<table style="border-collapse: collapse; width: 100%; height: 18px;" >
+    <tbody>
+    <tr style="height: 18px;">
+    <td style="width: 500px; height: 18px;"><img src="images/logiciel.png" alt="" /></td>
+    <td style="width: 187px; height: 18px;">
+    
+  
+    
+    </td>
+
 </tr>
 </tbody>
 </table>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<table style="border-collapse: collapse; width: 50%; height: 18px;" >
+<br>
+
+{{-- <p style="text-align: left;"></p> --}}
+@if($facture->montant_ht > $facture->user->contrat->forfait_pack_info)
+<table style="height: 30px; width: 100%;">
     <tbody>
     <tr style="height: 18px;">
-    <td style="width: 50%; height: 18px;"><img src="{{asset('images/passerelle_abon.png')}}" alt="" /></td>
-    <td style="width: 50%; height: 18px;">
+        <td style="width: 200px; height: 18px;"><strong>Passerelles dans votre Pac</strong></td>
+        <td style="width: 300px; height: 18px;"> </td>
+        <td style="width: 187px; height: 18px;"> H.T: {{$facture->montant_ht - $facture->user->contrat->forfait_pack_info}}&euro; </td>
+    </tr>
+    </tbody>
+</table>
+    
+
+
+
+<table style="border-collapse: collapse; width: 100%; height: 18px;" >
+    <tbody>
+    <tr style="height: 18px;">
+    <td style="width: 500px; height: 18px;"><img src="images/passerelle_abon.png" width= "500px" height="200px" alt="" /></td>
+    <td style="width: 187px%; height: 18px;">
     <p>&nbsp;</p>
-    <p>H.T: {{$facture->montant_ht - 62.5}}&euro;</p>
+    <p></p>
     <p>&nbsp;</p>
     </td>
     </tr>
     </tbody>
 </table>
-<table style="border-collapse: collapse; width: 50%;">
-<tbody>
-<tr>
-<td style="width: 50%;"><img src="{{asset('images/passerelle_grat.png')}}" alt="" /></td>
-<td style="width: 50%;"></td>
-</tr>
-</tbody>
-</table>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<table style="border-collapse: collapse; width: 50%; height: 18px;" >
+<br>
+<br>
+
+@endif
+
+
+<table style="height: 30px; width: 100%;">
 <tbody>
 <tr style="height: 18px;">
-<td style="width: 33.3333%; height: 18px;">T H.T:&nbsp; {{$facture->montant_ht}} €</td>
-<td style="width: 33.3333%; height: 18px;">T.V.A 20%: {{$facture->montant_ht *  App\Tva::tva()}} €</td>
-<td style="width: 33.3333%; height: 18px;">TOTAL T.T.C: {{$facture->montant_ttc}} €</td>
+    <td style="width: 300px; height: 18px;">T H.T:&nbsp; {{$facture->montant_ht}} €</td>
+    <td style="width: 200px; height: 18px;">T.V.A 20%: {{$facture->montant_ht *  App\Tva::tva()}} €</td>
+    <td style="width: 187px; height: 18px;">TOTAL T.T.C: {{$facture->montant_ttc}} €</td>
 </tr>
 </tbody>
 </table>
 <br><br>
-<br>
+
 
 <table style="height: 30px; width: 50%;">
     <tbody>

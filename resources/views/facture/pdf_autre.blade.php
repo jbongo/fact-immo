@@ -1,13 +1,18 @@
+  
 <table style="width: 50%">
     <tbody>
         <tr>
             <td style="width: 320px;"><img src="https://www.stylimmo.com/images/logo.jpg" alt="" width="279" height="124" /></td>
             <td style="width: 380px;">
+                @if($facture->destinataire_est_mandataire == true)
                     <p>  {{$facture->user->nom}} {{$facture->user->prenom}}</p>
                     <p>{{$facture->user->adresse}}</p> 
                     <p>{{$facture->user->code_postal}}, {{$facture->user->ville}}</p>
 
-               
+                @else
+
+                    <p> {!! $facture->destinataire !!}  </p>
+                @endif
             </td>
         </tr>
     </tbody>
@@ -56,53 +61,41 @@
 
 
 
-<p style="text-align: left;"><strong>Passerelles dans votre Pac</strong></p>
 
-<table style="border-collapse: collapse; width: 50%; height: 18px;" >
-<tbody>
-<tr style="height: 18px;">
-<td style="width: 50%; height: 18px;"><img src="images/logiciel.png" alt="" /></td>
-<td style="width: 50%; height: 18px;">
-<p>&nbsp;</p>
-<p>H.T: 62.5 &euro;</p>
-<p>&nbsp;</p>
-</td>
-</tr>
-</tbody>
-</table>
-
-<table style="border-collapse: collapse; width: 50%; height: 18px;" >
+<table style="height: 63px; width:90% ">
     <tbody>
-    <tr style="height: 18px;">
-    <td style="width: 50%; height: 18px;"><img src="images/passerelle_abon.png" alt="" /></td>
-    <td style="width: 50%; height: 18px;">
-    <p>&nbsp;</p>
-    <p>H.T: {{$facture->montant_ht - 62.5}}&euro;</p>
-    <p>&nbsp;</p>
-    </td>
-    </tr>
+        <tr>
+            <td style="width: 48px;">&nbsp;</td>
+            <td style=""><span style="">&nbsp;</span></td>
+        </tr>
+        <tr style="">
+            <td style="width: 48px;">&nbsp;</td>
+            <td style=" ">{!! $facture->description_produit !!} </td>
+            {{-- <td style="width: 391px;"></td> --}}
+
+        </tr>
     </tbody>
 </table>
-<table style="border-collapse: collapse; width: 50%;">
-<tbody>
-<tr>
-<td style="width: 50%;"><img src="images/passerelle_grat.png" alt="" /></td>
-<td style="width: 50%;"></td>
-</tr>
-</tbody>
-</table>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<table style="border-collapse: collapse; width: 50%; height: 18px;" >
-<tbody>
-<tr style="height: 18px;">
-<td style="width: 33.3333%; height: 18px;">T H.T:&nbsp; {{$facture->montant_ht}} €</td>
-<td style="width: 33.3333%; height: 18px;">T.V.A 20%: {{$facture->montant_ht *  0.2}} €</td>
-<td style="width: 33.3333%; height: 18px;">TOTAL T.T.C: {{$facture->montant_ttc}} €</td>
-</tr>
-</tbody>
-</table>
 <br><br>
+<table style="height: 47px; width: 672px;">
+    <tbody>
+        <tr>
+            <td style="width: 400px;">&nbsp;</td>
+            <td style="width: 160px;">TOTAL H.T :</td>
+            <td style="width: 100px; text-align:right;" >{{number_format($facture->montant_ht,2,',',' ')}} &euro;</td>
+        </tr>
+        <tr>
+            <td style="width: 400px;">&nbsp;</td>
+            <td style="width: 160px;">T.V.A 20% :</td>
+            <td style="width: 100px; text-align:right;" >{{number_format($facture->montant_ht * App\Tva::tva(),2,',',' ')}} &euro;</td>
+        </tr>
+        <tr>
+            <td style="width: 400px;">&nbsp;</td>
+            <td style="width: 160px;">TOTAL T.T.C:</td>
+            <td style="width: 100px; text-align:right;" >{{number_format($facture->montant_ttc,2,',',' ')}} &euro;</td>
+        </tr>
+    </tbody>
+</table>
 <br>
 
 <table style="height: 30px; width: 50%;">
@@ -200,5 +193,3 @@
     </div>
 </div>
    
-
-

@@ -19,4 +19,30 @@ class Contrat extends Model
     {
         return $this->belongsto(Packpub::class);
     }
+    
+    // Le montant pub que le mandataire doit payer
+    
+    // public function tarifpub()
+    // {
+    //     $contrat = $this;
+        
+        
+              
+    //     if($contrat->user->pack_actuel == "expert") ){
+          
+    //         $montant_ht = round($contrat->packpub->tarif / Tva::coefficient_tva(), 2);
+    //         $montant_ttc = $contrat->packpub->tarif;
+            
+    //         ]);
+            
+            
+           
+            
+    //     }else{
+        
+        
+        
+    //     }
+    //     return $this->belongsto(Packpub::class);
+    // }
 }

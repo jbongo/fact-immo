@@ -7,23 +7,28 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class EnvoyerFactureStylimmoMandataire extends Mailable
+class EnvoyerFactPub extends Mailable
 {
     use Queueable, SerializesModels;
     public $mandataire;
     public $facture;
     public $numero_facture;
+    public $mois;
+
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($mandataire,$facture)
+    public function __construct($facture)
     {
         //
-        $this->mandataire = $mandataire;
+        $tabmois = ['','Janvier','Février','Mars','Avril', 'Mai','Juin','Juillet','Aôut', 'Septembre','Octobre','Novembre','Décembre'];
+        
+        $this->mandataire = $facture->user;
         $this->facture = $facture;
         $this->numero_facture = $facture->numero;
+        $this->mois = $tabmois[$facture->factpublist()->created_at->format('m')*1];
     }
 
     /**
@@ -33,8 +38,7 @@ class EnvoyerFactureStylimmoMandataire extends Mailable
      */
     public function build()
     {
-        return $this->subject("STYL'IMMO Facture F$this->numero_facture")->markdown('email.envoyer_facture_stylimmo_mandataire')
-        ->attach($this->facture->url);
-        
+        return $this->subject("Facture Pub et logiciel $this->mois F$this->numero_facture")->markdown('email.envoyer_fact_pub');
+        // ->attach($this->facture->url);
     }
 }

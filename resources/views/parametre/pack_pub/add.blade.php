@@ -40,13 +40,13 @@ Ajouter un pack pub
                     </div>
                     <div class="col-lg-4 col-md-4 col-sm-4">
                          <div class="form-group row">
-                            <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="pays">Tarif <span class="text-danger">*</span></label>
+                            <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="pays">Tarif HT <span class="text-danger">*</span></label>
                             <div class="col-lg-5 col-md-5 col-sm-5">
-                               <input type="text" class="form-control {{ $errors->has('tarif') ? ' is-invalid' : '' }}" value="{{old('tarif')}}" id="tarif" name="tarif" required>
-                               @if ($errors->has('tarif'))
+                               <input type="text" class="form-control {{ $errors->has('tarif_ht') ? ' is-invalid' : '' }}" value="{{old('tarif_ht')}}" id="tarif_ht" name="tarif_ht" required>
+                               @if ($errors->has('tarif_ht'))
                                <br>
                                <div class="alert alert-warning ">
-                                  <strong>{{$errors->first('tarif')}}</strong> 
+                                  <strong>{{$errors->first('tarif_ht')}}</strong> 
                                </div>
                                @endif 
                             </div>

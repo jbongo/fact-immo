@@ -3459,8 +3459,19 @@ public function valider_honoraire($action, $facture_id)
         
 
         // dd('ddd');
-        $pdf = PDF::loadView('facture.pdf_autre',compact(['facture']));
+        if($facture->type == "pack_pub"){
+        
+            $tabmois = ['','Janvier','Février','Mars','Avril', 'Mai','Juin','Juillet','Aôut', 'Septembre','Octobre','Novembre','Décembre'];        
+            $mois = $tabmois[$facture->factpublist()->created_at->format('m')*1];
+            
+            $pdf = PDF::loadView('facture.pub.pdf_facture_pub',compact(['facture','mois']));
+           
+        }else{
+            $pdf = PDF::loadView('facture.pdf_autre',compact(['facture']));
+        
+        }
         $path = storage_path('app/public/factures/'.$filename);
+      
         // $pdf->save($path);
         // $pdf->download($path);
         return $pdf->download($filename);
@@ -3487,7 +3498,19 @@ public function valider_honoraire($action, $facture_id)
             File::makeDirectory($path, 0755, true);
         
             $facture = Facture::where('id', crypt::decrypt($facture_id))->first();
-        $pdf = PDF::loadView('facture.pdf_autre',compact(['facture']));
+          
+            
+            if($facture->type == "pack_pub"){
+            
+                $tabmois = ['','Janvier','Février','Mars','Avril', 'Mai','Juin','Juillet','Aôut', 'Septembre','Octobre','Novembre','Décembre'];        
+                $mois = $tabmois[$facture->factpublist()->created_at->format('m')*1];
+                
+                $pdf = PDF::loadView('facture.pub.pdf_facture_pub',compact(['facture','mois']));
+            }else{
+                $pdf = PDF::loadView('facture.pdf_autre',compact(['facture']));
+            
+            }
+        
 
         if($facture->destinataire_est_mandataire == true ){
             $filename = "F".$facture->numero." ".$facture->type." ".$facture->montant_ttc."€ ".strtoupper($facture->user->nom)." ".strtoupper(substr($facture->user->prenom,0,1)).".pdf" ;

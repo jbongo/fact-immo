@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Packpub;
+use App\Tva;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 
@@ -40,12 +41,14 @@ class PackpubController extends Controller
     
         $request->validate([
             'nom' => 'required|unique:packpubs',
-            'tarif' => 'required|numeric',
+            'tarif_ht' => 'required|numeric',
         ]);
         Packpub::create([
             "nom"=>$request->nom,
-            "tarif"=>$request->tarif
+            "tarif_ht"=>$request->tarif_ht,
+            "tarif"=>$request->tarif_ht * Tva::coefficient_tva()
         ]);
+        
         return  redirect()->route('pack_pub.index')->with('ok',__('Nouveau pack pub enregistré'));
         
     }
@@ -82,17 +85,18 @@ class PackpubController extends Controller
         if($request->nom == $pack->nom){
             $request->validate([
                 'nom' => 'required',
-                'tarif' => 'required|numeric',
+                'tarif_ht' => 'required|numeric',
             ]);
         }else{
             $request->validate([
                 'nom' => 'required|unique:packpubs',
-                'tarif' => 'required|numeric',
+                'tarif_ht' => 'required|numeric',
             ]);
         }
-
+        
         $pack->nom = $request->nom;
-        $pack->tarif = $request->tarif;
+        $pack->tarif_ht = $request->tarif_ht;
+        $pack->tarif = $request->tarif_ht * Tva::coefficient_tva();
         $pack->update();
         
         return  redirect()->route('pack_pub.index')->with('ok',__('le pack pub a été modifié'));

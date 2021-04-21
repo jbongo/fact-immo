@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use App\Facture;
 use App\Factpub;
 use App\Tva;
+use App\Mail\EnvoyerFactPub;
+use Illuminate\Support\Facades\Mail;
+
 use Illuminate\Support\Facades\Crypt;
 
 
@@ -23,7 +26,7 @@ class FactpubController extends Controller
     public  function pub_a_valider()
     {
     
-        $factures = Factpub::where([['validation',0]])->get();
+        $factures = Factpub::where([['validation',0]])->orderBy('id','desc')->get();
        
         return view('facture.pub.pub_a_valider', compact('factures'));
     }
@@ -40,30 +43,37 @@ class FactpubController extends Controller
     
    
         $factpub = Factpub::where('id',$fact_pub_id)->first();
-  
         $factpub->validation = $validation;
         
-        $montant_ttc = $factpub->user->contrat->packpub->tarif;
-        $montant_ht = round($montant_ttc / Tva::coefficient_tva(), 2);
-        $numero = Facture::whereIn('type',['avoir','stylimmo','pack_pub','carte_visite','communication','autre'])->max('numero') + 1;
-        
-        $facture = Facture::create([
-            "numero"=> $numero,
-            "user_id"=> $factpub->user_id,
-            "type"=> "pack_pub",
-            "encaissee"=> false,
-            "montant_ht"=>  $montant_ht,
-            "montant_ttc"=> $montant_ttc,
-            "date_facture"=> date('Y-m-d'),
-        
-        ]);
-        
+        // Si la facture a été validé
+        if($validation == 1){
            
-        
-        
-        $factpub->update();
-        
-        return Crypt::encrypt($facture->id);
+            $numero = Facture::whereIn('type',['avoir','stylimmo','pack_pub','carte_visite','communication','autre'])->max('numero') + 1;
+            
+            $facture = Facture::create([
+                "numero"=> $numero,
+                "user_id"=> $factpub->user_id,
+                "type"=> "pack_pub",
+                "encaissee"=> false,
+                "montant_ht"=>   $factpub->montant_ht,
+                "montant_ttc"=>  $factpub->montant_ttc,
+                "date_facture"=> date('Y-m-d'),
+            
+            ]);
+            
+            $factpub->facture_id = $facture->id;
+            $factpub->update();
+            
+            Mail::to($facture->user->email)->send(new EnvoyerFactPub($facture));
+            
+            return Crypt::encrypt($facture->id);
+        }else{
+            $factpub->update();
+            
+            return redirect()->route('facture.pub_a_valider');
+            
+        }
+     
        
         
     }
@@ -79,8 +89,12 @@ class FactpubController extends Controller
     {
     
         $facture = Facture::where([['id',Crypt::decrypt($facture_id)],])->first();
+        
+        $tabmois = ['','Janvier','Février','Mars','Avril', 'Mai','Juin','Juillet','Aôut', 'Septembre','Octobre','Novembre','Décembre'];
+        
+        $mois = $tabmois[$facture->factpublist()->created_at->format('m')*1];
        
-        return view('facture.pub.generer_facture_pub', compact('facture'));
+        return view('facture.pub.generer_facture_pub', compact(['facture','mois']));
     }
     
     
@@ -94,9 +108,13 @@ class FactpubController extends Controller
     public  function generer_pdf_fact_pub($facture_id)
     {
     
+  
         $facture = Facture::where([['id',Crypt::decrypt($facture_id)],])->first();
+        $tabmois = ['','Janvier','Février','Mars','Avril', 'Mai','Juin','Juillet','Aôut', 'Septembre','Octobre','Novembre','Décembre'];
+        
+        $mois = $tabmois[$facture->factpublist()->created_at->format('m')*1];
        
-        return view('facture.pub.generer_facture_pub', compact('facture'));
+        return view('facture.pub.generer_facture_pub', compact(['facture','mois']));
     }
     
     
@@ -110,8 +128,11 @@ class FactpubController extends Controller
     {
     
         $facture = Facture::where([['id',Crypt::decrypt($facture_id)],])->first();
+        $tabmois = ['','Janvier','Février','Mars','Avril', 'Mai','Juin','Juillet','Aôut', 'Septembre','Octobre','Novembre','Décembre'];
+        
+        $mois = $tabmois[$facture->factpublist()->created_at->format('m')*1];
        
-        return view('facture.pub.generer_facture_pub', compact('facture'));
+        return view('facture.pub.generer_facture_pub', compact(['facture','mois']));
     }
     
 

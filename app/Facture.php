@@ -7,6 +7,7 @@ use PDF;
 use Illuminate\Support\Facades\File ;
 use App\Facture;
 use App\User;
+use App\Factpub;
 
 class Facture extends Model
 {
@@ -208,5 +209,15 @@ class Facture extends Model
         return $formule[0][0][1];
     }
     
+    
+    // Retourne la pré-facture de pub liée à cette facture de pub
+    public  function factpublist(){
+        
+        $factpub = Factpub::where('facture_id', $this->id)->first();
+        
+        // dd($factpub);
+        return $factpub;
+        
+    }
    
 }

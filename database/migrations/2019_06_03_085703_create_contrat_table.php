@@ -20,6 +20,8 @@ class CreateContratTable extends Migration
             $table->double('forfait_entree')->nullable();
             $table->double('forfait_administratif')->nullable();
             $table->double('forfait_carte_pro')->nullable();
+            $table->double('forfait_carte_pro')->nullable();
+            $table->double('forfait_pack_info')->default(75);
             $table->date('date_entree')->nullable();
             $table->date('date_deb_activite')->nullable();
             $table->date('date_anniversaire')->nullable(); // == date_deb_activite + nb_mois_gratuite si starter  ou  == date_deb_activite

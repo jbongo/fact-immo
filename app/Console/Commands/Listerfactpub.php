@@ -63,23 +63,39 @@ class Listerfactpub extends Command
             
             // dd($duree_passage_expert);
            
+            $duree_starter = date_diff($today, date_create($contrat->date_deb_activite->format('Y-m-d')));
             
+            // dd($contrat->id);
+            $duree_starter = floor($duree_starter->days / 30);
+            // dd($contrat->duree_gratuite_starter);
             
             if($contrat->user->pack_actuel == "expert" && ($contrat->est_demarrage_starter == false || $contrat->est_demarrage_starter == true && $duree_passage_expert->days > 28 ) ){
                 
                 
                 Factpub::create([
-                'user_id' => $contrat->user_id,
-                'packpub' => $contrat->packpub->nom,
-                'montant_ht' => round($contrat->packpub->tarif / Tva::coefficient_tva(), 2),
-                'montant_ttc' => $contrat->packpub->tarif,
+                    'user_id' => $contrat->user_id,
+                    'packpub' => $contrat->packpub->nom,
+                    'montant_ht' => round($contrat->packpub->tarif / Tva::coefficient_tva(), 2),
+                    'montant_ttc' => $contrat->packpub->tarif,
                 
                 ]);
                 
                 
                
                 
+            }elseif($contrat->user->pack_actuel == "starter" && $contrat->duree_gratuite_starter >= $duree_starter ){
+            
+                Factpub::create([
+                    'user_id' => $contrat->user_id,
+                    'packpub' => $contrat->packpub->nom,
+                    'montant_ht' => $contrat->forfait_pack_info ,
+                    'montant_ttc' => $contrat->forfait_pack_info * Tva::coefficient_tva(),
+                
+                ]);
+            
             }
+            
+                
             
         }
 
