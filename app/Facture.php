@@ -157,7 +157,7 @@ class Facture extends Model
     }
     
     public static function nb_facture_a_payer(){
-        $nb =  Facture::whereIn('type',['honoraire','partage','parrainage','parrainage_partage'])->where([['reglee', false], ['statut','valide']])->count();
+        $nb =  Facture::whereIn('type',['honoraire','partage','parrainage','parrainage_partage','partage_externe'])->where([['reglee', false], ['statut','valide']])->count();
         return $nb;
     }
     
