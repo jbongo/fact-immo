@@ -3537,13 +3537,13 @@ public function valider_honoraire($action, $facture_id)
 
 
 // On reccupere le total TTC
-        $totalApayer1 = Facture::whereIn('type',['honoraire','partage','parrainage','parrainage_partage'])->where([['reglee', false], ['statut','valide'], ['montant_ttc', 0]])->sum('montant_ht');
-        $totalApayer2 = Facture::whereIn('type',['honoraire','partage','parrainage','parrainage_partage'])->where([['reglee', false], ['statut','valide'], ['montant_ttc','<>', 0]])->sum('montant_ttc');
+        $totalApayer1 = Facture::whereIn('type',['honoraire','partage','parrainage','parrainage_partage','partage_externe'])->where([['reglee', false], ['statut','valide'], ['montant_ttc', 0]])->sum('montant_ht');
+        $totalApayer2 = Facture::whereIn('type',['honoraire','partage','parrainage','parrainage_partage','partage_externe'])->where([['reglee', false], ['statut','valide'], ['montant_ttc','<>', 0]])->sum('montant_ttc');
   
         $totalApayer = $totalApayer1 + $totalApayer2;
         
-        $totalNonAjou1 = Facture::whereIn('type',['honoraire','partage','parrainage','parrainage_partage'])->where([['reglee', false], ['statut','<>','valide'], ['montant_ttc', 0]])->sum('montant_ht');
-        $totalNonAjou2 = Facture::whereIn('type',['honoraire','partage','parrainage','parrainage_partage'])->where([['reglee', false], ['statut','<>','valide'], ['montant_ttc','<>', 0]])->sum('montant_ttc');
+        $totalNonAjou1 = Facture::whereIn('type',['honoraire','partage','parrainage','parrainage_partage','partage_externe'])->where([['reglee', false], ['statut','<>','valide'], ['montant_ttc', 0]])->sum('montant_ht');
+        $totalNonAjou2 = Facture::whereIn('type',['honoraire','partage','parrainage','parrainage_partage','partage_externe'])->where([['reglee', false], ['statut','<>','valide'], ['montant_ttc','<>', 0]])->sum('montant_ttc');
   
         $totalNonAjou = $totalNonAjou1 + $totalNonAjou2;
   
@@ -3561,8 +3561,8 @@ public function valider_honoraire($action, $facture_id)
         }
 
 //calcul des montant HT
-            $totalNonAjou_HT = Facture::whereIn('type',['honoraire','partage','parrainage','parrainage_partage'])->where([['reglee', false], ['statut','<>','valide']])->sum('montant_ht');
-            $totalApayer_HT = Facture::whereIn('type',['honoraire','partage','parrainage','parrainage_partage'])->where([['reglee', false], ['statut','valide']])->sum('montant_ht');
+            $totalNonAjou_HT = Facture::whereIn('type',['honoraire','partage','parrainage','parrainage_partage','partage_externe'])->where([['reglee', false], ['statut','<>','valide']])->sum('montant_ht');
+            $totalApayer_HT = Facture::whereIn('type',['honoraire','partage','parrainage','parrainage_partage','partage_externe'])->where([['reglee', false], ['statut','valide']])->sum('montant_ht');
 
 
        return view('facture.a_payer.index', compact('facturesAPayer','facturesNonAjou','totalNonAjou','totalApayer','motantTvaFNonAjou','motantTvaFAPayer','totalApayer_HT','totalNonAjou_HT','compromisR'));
