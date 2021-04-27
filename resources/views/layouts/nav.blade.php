@@ -114,7 +114,9 @@
     //  Factures honoraires en attente de validation 
     $nb = App\Facture::where('statut','en attente de validation')->get()->count();
     $nb_a_payer= App\Facture::nb_facture_a_payer();
-    $nb_notif =  auth()->user()->demande_facture + $nb + $nb_a_payer ;
+    $nb_liste_pub = App\Factpub::where([['validation',0]])->orderBy('id','desc')->get()->count();
+    $nb_notif =  auth()->user()->demande_facture + $nb + $nb_a_payer + $nb_liste_pub;
+    
     
 
 @endphp
@@ -164,7 +166,7 @@
                         <li class="{{$li_facture_a_valider}}" ><a  href="{{route('facture.honoraire_a_valider')}}" >  @if($nb > 0) <span class="badge badge-danger">{{$nb}}</span> @endif Fac H à valider </a></li>
                         <li class="{{$li_facture_a_payer}}" ><a  href="{{route('facture.honoraire_a_payer')}}" >  @if($nb_a_payer > 0) <span class="badge badge-warning">{{$nb_a_payer}}</span> @endif Fac H à payer </a></li>
                         <li class="{{$li_facture_hors_delais}}" ><a  href="{{route('facture.hors_delais')}}" > Fac S hors délais </a></li>
-                        <li class="{{$li_facture_hors_delais}}" ><a  href="{{route('facture.pub_a_valider')}}" > Fac pub à valider </a></li>
+                        <li class="{{$li_facture_hors_delais}}" ><a  href="{{route('facture.pub_a_valider')}}" >  @if($nb_liste_pub > 0) <span class="badge badge-warning">{{$nb_liste_pub}}</span> @endif Fac pub à valider </a></li>
                         @endif
                         {{-- <li><a href="#">Avoir</a></li> --}}
                     </ul>

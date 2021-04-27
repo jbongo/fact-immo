@@ -44,7 +44,8 @@ class Kernel extends ConsoleKernel
         $schedule->command('command:evolutionpackstarter')
                  ->daily();
   
-
+        $schedule->command('command:listerfactpub')
+                 ->monthlyOn(28, '01:00');	;
                  
     }
 

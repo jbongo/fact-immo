@@ -11,6 +11,10 @@ use Illuminate\Support\Facades\Mail;
 
 use Illuminate\Support\Facades\Crypt;
 
+use PDF;
+use Illuminate\Support\Facades\File ;
+use Illuminate\Support\Facades\Storage;
+
 
 class FactpubController extends Controller
 {
@@ -64,7 +68,6 @@ class FactpubController extends Controller
             $factpub->facture_id = $facture->id;
             $factpub->update();
             
-            Mail::to($facture->user->email)->send(new EnvoyerFactPub($facture));
             
             return Crypt::encrypt($facture->id);
         }else{
@@ -93,6 +96,8 @@ class FactpubController extends Controller
         $tabmois = ['','Janvier','Février','Mars','Avril', 'Mai','Juin','Juillet','Aôut', 'Septembre','Octobre','Novembre','Décembre'];
         
         $mois = $tabmois[$facture->factpublist()->created_at->format('m')*1];
+        
+        $this->generer_pdf_fact_pub($facture_id);
        
         return view('facture.pub.generer_facture_pub', compact(['facture','mois']));
     }
@@ -108,32 +113,64 @@ class FactpubController extends Controller
     public  function generer_pdf_fact_pub($facture_id)
     {
     
-  
-        $facture = Facture::where([['id',Crypt::decrypt($facture_id)],])->first();
-        $tabmois = ['','Janvier','Février','Mars','Avril', 'Mai','Juin','Juillet','Aôut', 'Septembre','Octobre','Novembre','Décembre'];
-        
-        $mois = $tabmois[$facture->factpublist()->created_at->format('m')*1];
+       // on sauvegarde la facture dans le repertoire du mandataire
+       $path = storage_path('app/public/factures/factures_autres');
+    
+       if(!File::exists($path))
+           File::makeDirectory($path, 0755, true);
        
-        return view('facture.pub.generer_facture_pub', compact(['facture','mois']));
+           $facture = Facture::where('id', crypt::decrypt($facture_id))->first();
+           
+       $tabmois = ['','Janvier','Février','Mars','Avril', 'Mai','Juin','Juillet','Aôut', 'Septembre','Octobre','Novembre','Décembre'];        
+       $mois = $tabmois[$facture->factpublist()->created_at->format('m')*1];
+       
+       $pdf = PDF::loadView('facture.pub.pdf_facture_pub',compact(['facture','mois']));
+          
+
+       $filename = "F".$facture->numero." ".$facture->type." ".$facture->montant_ttc."€ ".strtoupper($facture->user->nom)." ".strtoupper(substr($facture->user->prenom,0,1)).".pdf" ;
+       
+       
+       $path = $path.'/'.$filename;
+       $pdf->save($path);
+       
+       $facture->url = $path;
+       $facture->update();
+       Mail::to($facture->user->email)->send(new EnvoyerFactPub($facture));
+       
+
     }
     
-    
     /**
-     *  génère le pdf de la facture de pub
+     *  telecharger facture pack pub
      *
      * @return \Illuminate\Http\Response
     */
-    
-    public  function telecharger_pdf_fact_pub($facture_id)
+
+    public  function download_pdf_facture_fact_pub($facture_id)
     {
-    
-        $facture = Facture::where([['id',Crypt::decrypt($facture_id)],])->first();
-        $tabmois = ['','Janvier','Février','Mars','Avril', 'Mai','Juin','Juillet','Aôut', 'Septembre','Octobre','Novembre','Décembre'];
+
+ 
+        $facture = Facture::where('id', crypt::decrypt($facture_id))->first();
         
-        $mois = $tabmois[$facture->factpublist()->created_at->format('m')*1];
+        
+            $filename = "F".$facture->numero." ".$facture->type." ".$facture->montant_ttc."€ ".strtoupper($facture->user->nom)." ".strtoupper(substr($facture->user->prenom,0,1)).".pdf" ;
        
-        return view('facture.pub.generer_facture_pub', compact(['facture','mois']));
+ 
+        
+            $tabmois = ['','Janvier','Février','Mars','Avril', 'Mai','Juin','Juillet','Aôut', 'Septembre','Octobre','Novembre','Décembre'];        
+            $mois = $tabmois[$facture->factpublist()->created_at->format('m')*1];
+            
+            $pdf = PDF::loadView('facture.pub.pdf_facture_pub',compact(['facture','mois']));
+           
+       
+        // $path = storage_path('app/public/factures/'.$filename);
+ 
+        return $pdf->download($filename);
+    
     }
+    
+    
+    
     
 
 }

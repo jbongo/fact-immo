@@ -3455,21 +3455,9 @@ public function valider_honoraire($action, $facture_id)
         }else{
             $filename = "F".$facture->numero." ".$facture->type." ".$facture->montant_ttc."€.pdf" ;
         }
-        // return response()->download($facture->url,$filename);
-        
 
-        // dd('ddd');
-        if($facture->type == "pack_pub"){
-        
-            $tabmois = ['','Janvier','Février','Mars','Avril', 'Mai','Juin','Juillet','Aôut', 'Septembre','Octobre','Novembre','Décembre'];        
-            $mois = $tabmois[$facture->factpublist()->created_at->format('m')*1];
-            
-            $pdf = PDF::loadView('facture.pub.pdf_facture_pub',compact(['facture','mois']));
-           
-        }else{
-            $pdf = PDF::loadView('facture.pdf_autre',compact(['facture']));
-        
-        }
+        $pdf = PDF::loadView('facture.pdf_autre',compact(['facture']));
+
         $path = storage_path('app/public/factures/'.$filename);
       
         // $pdf->save($path);
@@ -3481,7 +3469,7 @@ public function valider_honoraire($action, $facture_id)
 
         
     /**
-     *  générer facture autre
+     *  générer facture autre y compris pack_pub
      *
      * @param  string  $compromis_id
      * @return \Illuminate\Http\Response
@@ -3499,18 +3487,8 @@ public function valider_honoraire($action, $facture_id)
         
             $facture = Facture::where('id', crypt::decrypt($facture_id))->first();
           
-            
-            if($facture->type == "pack_pub"){
-            
-                $tabmois = ['','Janvier','Février','Mars','Avril', 'Mai','Juin','Juillet','Aôut', 'Septembre','Octobre','Novembre','Décembre'];        
-                $mois = $tabmois[$facture->factpublist()->created_at->format('m')*1];
-                
-                $pdf = PDF::loadView('facture.pub.pdf_facture_pub',compact(['facture','mois']));
-            }else{
-                $pdf = PDF::loadView('facture.pdf_autre',compact(['facture']));
-            
-            }
-        
+            $pdf = PDF::loadView('facture.pdf_autre',compact(['facture']));
+
 
         if($facture->destinataire_est_mandataire == true ){
             $filename = "F".$facture->numero." ".$facture->type." ".$facture->montant_ttc."€ ".strtoupper($facture->user->nom)." ".strtoupper(substr($facture->user->prenom,0,1)).".pdf" ;

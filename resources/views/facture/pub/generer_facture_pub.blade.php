@@ -8,7 +8,7 @@
 
     @section ('page_title')
 
-    <a class=" btn btn-danger " title="Télécharger " href="{{route('facture.telecharger_pdf_facture_autre', Crypt::encrypt($facture->id))}}"  class="  m-b-10 m-l-5 " id="ajouter">Télecharger  <i class="ti-download"></i> </a>
+    <a class=" btn btn-danger " title="Télécharger " href="{{route('facture.telecharger_pdf_facture_fact_pub', Crypt::encrypt($facture->id))}}"  class="  m-b-10 m-l-5 " id="ajouter">Télecharger  <i class="ti-download"></i> </a>
 
  @endsection
 
@@ -232,10 +232,10 @@
         </thead>
         <tbody>
             <tr style="height: 18px;">
-                <th align="center" style="height: 18px;">RIB: 10278 7941 00020227203 08</th>
+                <th align="center" style="height: 18px;">RIB: 10278 7941 00020227202 11</th>
             </tr>
             <tr style="height: 18px;">
-                <th align="center">IBAN: FR76102 78079 41000 2022 720308</th>
+                <th align="center">IBAN: FR76102 78079 41000 2022 720211</th>
             </tr>
             <tr style="height: 8px;">
                 <th align="center" style="height: 8px;">BIC: CMCIFR2A</th>

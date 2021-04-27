@@ -22,7 +22,8 @@
            <br>
                <div class="row">
                   <div class="col-lg-6 col-md-6 col-sm-6">
-                     <span > <strong> Jeton(s) restant(s)  : </strong></span>&nbsp;&nbsp;  <span class="color-warning"> <strong> {{$mandataire->nb_mois_pub_restant}}</strong></span> <br>
+                     <span > <strong> Jeton(s) restant(s)  : </strong></span>&nbsp;&nbsp;  <span class="color-warning"> <strong> {{$mandataire->nb_mois_pub_restant}}</strong></span> <br> <br>
+                     <span > <strong> Tarif du Jeton (HT): </strong></span>&nbsp;&nbsp;  <span class="color-danger"> <strong> {{$mandataire->contrat->packpub->tarif}} € ({{$mandataire->contrat->packpub->nom}})</strong></span> <br> <br>
                      <span > <strong> Dépuis la date d'anniversaire : </strong></span> &nbsp;&nbsp; <span class="color-warning"> <strong> {{$mandataire->date_anniv("fr")}}</strong></span> <br>
                   </div>
                   <div class="col-lg-6 col-md-6 col-sm-6">

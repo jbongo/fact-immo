@@ -134,8 +134,10 @@
                     })
                     .done(function (data) {
                                         
-                    that.parents('tr').remove()
-                    window.location.href = "/factures/generer-fact-pub/"+data;
+                    that.parents('tr').remove();
+                    var url = "/factures/generer-fact-pub/"+data;
+                    window.open(url, '_blank');
+                    // window.location.href = "/factures/generer-fact-pub/"+data;
                     })
 
                 swalWithBootstrapButtons(
