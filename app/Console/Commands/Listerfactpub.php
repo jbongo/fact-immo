@@ -69,7 +69,7 @@ class Listerfactpub extends Command
             $duree_starter = floor($duree_starter->days / 30);
             // dd($contrat->duree_gratuite_starter);
             
-            if($contrat->user->id == 77)
+            // if($contrat->user->id == 77)
             // dd($duree_starter);
             
             if($contrat->user->pack_actuel == "expert" && ($contrat->est_demarrage_starter == false || $contrat->est_demarrage_starter == true && $duree_passage_expert->days > 28 ) ){

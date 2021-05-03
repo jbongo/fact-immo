@@ -843,5 +843,26 @@ class ContratController extends Controller
         return view('contrat.historique.show', compact(['parrain','contrat','palier_starter','palier_expert','comm_parrain']));
 
     }
+    
+    /**
+     * reinitialiser le contrat du mandataire
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function reinitialiser($contrat_id)
+    {
+        $contrat = Contrat::where('id',Crypt::decrypt($contrat_id))->first() ;       
+        
+        $mandataire = $contrat->user;
+        
+        if($contrat->est_demarrage_starter == true){
+            
+            $mandataire->pack_actuel = "starter";
+        }
+  
+        
+        return redirect()->route('mandataire.index')->with('ok','mandataire réinitialiser');
+
+    }
 }
 

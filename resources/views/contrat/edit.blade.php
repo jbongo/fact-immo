@@ -16,7 +16,8 @@
             <div class="col-lg-10">
             </div>
             <div class="card-body">
-                <a href="{{route('contrat.historique', Crypt::encrypt($contrat->id))}}" class="btn btn-default btn-flat btn-addon m-b-10 m-l-5"><i class="ti-timer"></i>@lang('Voir l\'historique du contrat')</a> 
+                <a href="{{route('contrat.historique', Crypt::encrypt($contrat->id))}}" class="btn btn-default btn-flat btn-addon"><i class="ti-timer"></i>@lang('Voir l\'historique du contrat')</a> 
+                <a href="{{route('contrat.reinitialiser', Crypt::encrypt($contrat->id))}}" class="btn btn-danger btn-flat btn-addon "><i class="ti-reload"></i>réinitialiser le contrat</a> 
                 <div class="panel-body">
  <hr>
                     <fieldset class="col-md-12">
