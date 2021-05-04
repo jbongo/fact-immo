@@ -137,19 +137,18 @@ class HomeController extends Controller
                 $nb_sous_offre_n = Compromis::where([['created_at','like',"%$annee_n-$month%"],['demande_facture','<',2],['pdf_compromis',null],['archive',false]])->count();
                 $nb_sous_offre_N +=  $nb_sous_offre_n;
                 
-                $ca_sous_offre_N [] = round($ca_sous_offre_n/Tva::coefficient_tva(),2);
+                $ca_sous_offre_N [] = $ca_sous_offre_n =  round($ca_sous_offre_n/Tva::coefficient_tva(),2);
 
                 $ca_sous_compromis_n = Compromis::where([['date_vente','like',"%$annee_n-$month%"],['demande_facture','<',2],['pdf_compromis','<>',null],['archive',false]])->sum('frais_agence');
                 $nb_sous_compromis_n = Compromis::where([['date_vente','like',"%$annee_n-$month%"],['demande_facture','<',2],['pdf_compromis','<>',null],['archive',false]])->count();
                 $nb_sous_compromis_N += $nb_sous_compromis_n ;
                 
-                $ca_sous_compromis_N [] = round($ca_sous_compromis_n/Tva::coefficient_tva(),2);
+                $ca_sous_compromis_N [] = $ca_sous_compromis_n = round($ca_sous_compromis_n/Tva::coefficient_tva(),2);
 
 
                 $ca_glo_n = $ca_encai_n + $ca_att_n + $ca_sous_offre_n + $ca_sous_compromis_n;
-
                 $nb_global_N += ( $nb_encaisse_n + $nb_en_attente_n + $nb_sous_compromis_n + $nb_sous_offre_n);       
-                $ca_global_N [] = round($ca_glo_n/Tva::coefficient_tva(),2);
+                $ca_global_N [] = round($ca_glo_n,2);
                
           
 
@@ -385,6 +384,7 @@ class HomeController extends Controller
 
 
         // dd($ca_global_N);
+// dd( $ca_global_N);
         
             $CA_N[] = $ca_global_N; 
             $CA_N[] = $ca_attente_N; 
@@ -392,6 +392,7 @@ class HomeController extends Controller
             $CA_N[] = $ca_sous_offre_N; 
             $CA_N[] = $ca_sous_compromis_N; 
 
+// dd($CA_N);
             $STATS = array();
             $nb_affaires = Compromis::count();
             $nb_mandataires = User::where('role','mandataire')->count();
