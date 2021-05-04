@@ -17,7 +17,7 @@
             </div>
             <div class="card-body">
                 <a href="{{route('contrat.historique', Crypt::encrypt($contrat->id))}}" class="btn btn-default btn-flat btn-addon"><i class="ti-timer"></i>@lang('Voir l\'historique du contrat')</a> 
-                <a href="{{route('contrat.reinitialiser', Crypt::encrypt($contrat->id))}}" class="btn btn-danger btn-flat btn-addon "><i class="ti-reload"></i>réinitialiser le contrat</a> 
+                <a href="{{route('contrat.reinitialiser', Crypt::encrypt($contrat->id))}}" class="btn btn-danger btn-flat btn-addon reinitialiser"><i class="ti-reload"></i>réinitialiser le contrat</a> 
                 <div class="panel-body">
  <hr>
                     <fieldset class="col-md-12">
@@ -1108,6 +1108,52 @@ $('#a_demission').change(function(e) {
 
 
 
+// Réinitialiser le contrat
 
+$(function() {
+       $.ajaxSetup({
+          headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
+       })
+       
+      
+       $('[data-toggle="tooltip"]').tooltip()
+       $('body').on('click','a.reinitialiser',function(e) {
+          let that = $(this)
+      
+          e.preventDefault()
+          const swalWithBootstrapButtons = swal.mixin({
+          confirmButtonClass: 'btn btn-success',
+          cancelButtonClass: 'btn btn-danger',
+          buttonsStyling: false,
+          })
+
+    swalWithBootstrapButtons({
+       title: '@lang('Voulez-vous vraiment réinitialiser ce contrat ?')',
+       type: 'warning',
+       showCancelButton: true,
+       confirmButtonColor: '#DD6B55',
+       confirmButtonText: '@lang('Oui')',
+       cancelButtonText: '@lang('Non')',
+       
+    }).then((result) => {
+       if (result.value) {
+       document.location.href= that.attr('href');
+       
+        
+          
+          
+       } else if (
+          // Read more about handling dismissals
+          result.dismiss === swal.DismissReason.cancel
+       ) {
+          swalWithBootstrapButtons(
+          'Annulé',
+          'Aucune action effectuée :)',
+          'error'
+          )
+       }
+    })
+       })
+    })
 </script>
 @endsection

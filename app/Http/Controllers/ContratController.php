@@ -856,12 +856,24 @@ class ContratController extends Controller
         $mandataire = $contrat->user;
         
         if($contrat->est_demarrage_starter == true){
-            
             $mandataire->pack_actuel = "starter";
+            $mandataire->commission =  $contrat->pourcentage_depart_starter;
+            
+            $mandataire->update();
+            return redirect()->route('mandataire.index')->with('ok'," le contrat de $mandataire->nom a été réinitialisé ==> Pack actuel : starter  ==> commission :  $mandataire->commission ");
+        }else{
+        
+            $mandataire->pack_actuel = "expert";
+            $mandataire->commission =  $contrat->pourcentage_depart_expert;
+            $mandataire->update();
+            
+            return redirect()->route('mandataire.index')->with('ok'," le contrat de $mandataire->nom a été réinitialisé ==> Pack actuel : expert  ==> commission :  $mandataire->commission ");
+            
+            
         }
   
         
-        return redirect()->route('mandataire.index')->with('ok','mandataire réinitialiser');
+       
 
     }
 }
