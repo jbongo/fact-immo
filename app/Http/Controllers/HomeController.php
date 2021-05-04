@@ -125,7 +125,7 @@ class HomeController extends Controller
                 // On retire toutes les facture externes réglé du chiffre d'affaire encaissé STYL
                 $ca_externe = Facture::where([['type','partage_externe'],['reglee',1],['date_reglement','like',"%$annee_n-$month%"]])->sum('montant_ht');
                 
-                $ca_encai_n -=  round($ca_externe/Tva::coefficient_tva(),2);
+                // $ca_encai_n -=  round($ca_externe/Tva::coefficient_tva(),2);
                 
                 $ca_encaisse_N [] = round($ca_encai_n,2);
                 // $ca_encaisse_N [] = round($ca_encai_n/Tva::coefficient_tva(),2);
