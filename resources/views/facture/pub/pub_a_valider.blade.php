@@ -34,6 +34,7 @@
                                             <th>@lang('Montant TTC ')</th>
                                             <th>@lang('Pour le mois de')</th>
                                            
+                                            <th>@lang('Recalculer les montants')</th>
                                             <th>@lang('Action')</th>
                                          
     
@@ -73,6 +74,10 @@
                                                 
                                                 <td  width="" >
                                                    <span class="badge badge-warning"> {{ $mois[$facture->created_at->format('m')*1]}}</span> 
+                                                </td>
+                                                <td>
+                                                    <a href="{{route('facture.recalculer_fact_pub', [$facture->id])}}"  class="btn btn-warning btn-flat btn-addon  m-b-10 m-l-5 " id="valider"><i class="ti-reload"></i> &nbsp;</a>
+                                                
                                                 </td>
                                                 
                                                 <td width="" >

@@ -9,7 +9,7 @@
                         <p>{{$compromis->nom_agent}}  </p>
                                 
                         <p>{{$compromis->adresse_agence}}</p>
-                        <p>{{$compromis->code_postal_agence}}, {{$compromis->ville_agence}}</p>
+                        <p>{{$compromis->code_postal_agence}} {{$compromis->ville_agence}}</p>
                     @else 
                     
                     
@@ -28,7 +28,7 @@
                            
                             <p>{{$compromis->adresse1_acquereur}} </p>
                             <p>{{$compromis->adresse2_acquereur}} </p>
-                            <p> {{$compromis->code_postal_acquereur}}, {{$compromis->ville_acquereur}}</strong></p>
+                            <p> {{$compromis->code_postal_acquereur}} {{$compromis->ville_acquereur}}</strong></p>
                             
     
                         @endif

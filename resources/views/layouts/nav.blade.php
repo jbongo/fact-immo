@@ -4,7 +4,7 @@
     $curent_url = explode("/", $curent_url);
 
 
-    $li_home = $li_mandataire = $li_affaire = $li_affaire_filleul = $li_affaire_archive=  $li_facture = $li_facture_gestion = $li_facture_demande = $li_facture_a_payer = $li_facture_a_valider = $li_parametre = $li_parametre_modele =
+    $li_home = $li_mandataire = $li_prospect_gestion = $li_prospect_archive = $li_affaire = $li_affaire_filleul = $li_affaire_archive=  $li_facture = $li_facture_gestion = $li_facture_demande = $li_facture_a_payer = $li_facture_a_valider = $li_parametre = $li_parametre_modele =
     $li_parametre_fournisseur = $li_parametre_pack_pub = $li_parametre_generaux = $li_outil = $li_affaire_toutes = $li_affaire_cloture = $li_facture_hors_delais = $li_jetons ="";
     
     switch ($curent_url[1]) {
@@ -16,6 +16,9 @@
             break;
         case 'mandataires':
             $li_mandataire = "active";
+            break;
+        case 'prospects':
+            $li_prospect_gestion = "active";
             break;
         case 'compromis':
         if(sizeof($curent_url) < 3){
@@ -71,11 +74,14 @@
             case 'archive' :
                 if($curent_url[1] == "compromis"){
                     $li_affaire_archive = "active open";
+                }elseif($curent_url[1] == "prospects"){
+                    $li_affaire_archive = "active open";
+                
                 }
             break;
             case 'page_filleul' :
                 if($curent_url[1] == "compromis"){
-                    $li_affaire_filleul = "active open";
+                    $li_prospect_archive = "active open";
                 }
             break;
             
@@ -132,10 +138,20 @@
                 @if (Auth()->user()->role == "admin")                        
                
                     <li class="{{$li_mandataire}}"><a  href="{{route('mandataire.index')}}" class=""> <i class="large material-icons" style="font-size:20px;">person</i></i>Mandataires  </a></li>
+                    <li  style=" background:#aeefec" class="{{$li_prospect_gestion}} {{$li_prospect_archive}}"><a  href="" class="sidebar-sub-toggle"> <i class="large material-icons" style="font-size:20px;">person</i></i> Prospects <span class="sidebar-collapse-icon ti-angle-down"></span> </a>
+                        <ul>
+                        <li class="{{$li_prospect_gestion}}" ><a href="{{route('prospect.index')}}">Gestion</a></li>
+                        <li class="{{$li_prospect_archive}}" ><a href="{{route('prospect.archives')}}">Archivés</a></li>
+                      
+                        {{-- <li><a href="#">Avoir</a></li> --}}
+                    </ul>
+                    
+                    
+                    </li>
                   
-                    <li  style=" background:#aeefec" class="{{$li_jetons}}"><a  href="{{route('mandataires.jetons')}}" class=""> <i class="large material-icons" style="font-size:20px;">adjust</i></i>Gestion des jetons  </a></li>
+                    <li   class="{{$li_jetons}}"><a  href="{{route('mandataires.jetons')}}" class=""> <i class="large material-icons" style="font-size:20px;">adjust</i></i>Gestion des jetons  </a></li>
                 @else 
-                    <li  style=" background:#aeefec" class="{{$li_jetons}}"><a  href="{{route('mandataire.historique_jeton',Crypt::encrypt(Auth::id()))}}" class=""> <i class="large material-icons" style="font-size:20px;">adjust</i></i>Gestion des jetons  </a></li>
+                    <li  class="{{$li_jetons}}"><a  href="{{route('mandataire.historique_jeton',Crypt::encrypt(Auth::id()))}}" class=""> <i class="large material-icons" style="font-size:20px;">adjust</i></i>Gestion des jetons  </a></li>
                     
 
                 @endif
@@ -191,7 +207,7 @@
                     @endif
 
                     {{-- @if(Auth()->user()->role == "admin"  ) --}}
-                        <li  style=" background:#aeefec" class="" ><a href="{{route('outil_calcul.index')}}" ><i class="large material-icons" style="font-size:20px;">iso</i> Outil de calcul </a></li>
+                        <li  class="" ><a href="{{route('outil_calcul.index')}}" ><i class="large material-icons" style="font-size:20px;">iso</i> Outil de calcul </a></li>
                     {{-- @endif --}}
 
                     <li><a href="{{ route('logout') }}"  onclick="event.preventDefault();

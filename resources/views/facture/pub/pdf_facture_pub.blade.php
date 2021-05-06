@@ -6,7 +6,7 @@
              
                     <p> {{$facture->user->nom}} {{$facture->user->prenom}}</p>
                     <p>{{$facture->user->adresse}}</p> 
-                    <p>{{$facture->user->code_postal}}, {{$facture->user->ville}}</p>
+                    <p>{{$facture->user->code_postal}} {{$facture->user->ville}}</p>
 
             </td>
         </tr>
@@ -37,7 +37,7 @@
     <tbody>
     <tr style="height: 18px;">
         <td style="width: 200px; height: 18px;">&nbsp;</td>
-        <td style="width: 300px; height: 18px;"> <strong>Période de : {{$mois}}</strong></td>
+        <td style="width: 300px; height: 18px;"> <strong>Période de facturation : {{$mois}}</strong></td>
         <td style="width: 187px; height: 18px;"></td>
     </tr>
     </tbody>
@@ -47,9 +47,9 @@
 <table style="height: 30px; width: 100%;">
     <tbody>
     <tr style="height: 18px;">
-        <td style="width: 200px; height: 18px;"><strong>Outils informatique</strong></td>
+        <td style="width: 200px; height: 18px;"><strong>Outils informatiques</strong></td>
         <td style="width: 300px; height: 18px;"> </td>
-        <td style="width: 187px; height: 18px;"> H.T: {{$facture->user->contrat->forfait_pack_info}} &euro; </td>
+        <td style="width: 187px; height: 18px;"> H.T: {{ number_format($facture->user->contrat->forfait_pack_info,2,',',' ')}} &euro; </td>
     </tr>
     </tbody>
 </table>
@@ -74,9 +74,9 @@
 <table style="height: 30px; width: 100%;">
     <tbody>
     <tr style="height: 18px;">
-        <td style="width: 200px; height: 18px;"><strong>Passerelles dans votre Pac</strong></td>
+        <td style="width: 200px; height: 18px;"><strong>Passerelles dans votre Pack</strong></td>
         <td style="width: 300px; height: 18px;"> </td>
-        <td style="width: 187px; height: 18px;"> H.T: {{$facture->montant_ht - $facture->user->contrat->forfait_pack_info}}&euro; </td>
+        <td style="width: 187px; height: 18px;"> H.T: {{number_format($facture->montant_ht - $facture->user->contrat->forfait_pack_info,2,',',' ')}} &euro; </td>
     </tr>
     </tbody>
 </table>
@@ -105,9 +105,9 @@
 <table style="height: 30px; width: 100%;">
 <tbody>
 <tr style="height: 18px;">
-    <td style="width: 300px; height: 18px;">T H.T:&nbsp; {{$facture->montant_ht}} €</td>
-    <td style="width: 200px; height: 18px;">T.V.A 20%: {{$facture->montant_ht *  App\Tva::tva()}} €</td>
-    <td style="width: 187px; height: 18px;">TOTAL T.T.C: {{$facture->montant_ttc}} €</td>
+    <td style="width: 300px; height: 18px;">TOTAL H.T:&nbsp; {{number_format($facture->montant_ht,2,',',' ')}} €</td>
+    <td style="width: 200px; height: 18px;">T.V.A 20%: {{number_format($facture->montant_ht *  App\Tva::tva(),2,',',' ')}} €</td>
+    <td style="width: 187px; height: 18px;">TOTAL T.T.C: {{number_format($facture->montant_ttc,2,',',' ')}} €</td>
 </tr>
 </tbody>
 </table>
@@ -118,7 +118,7 @@
     <tbody>
         <tr style="height: 25px;">
             <td style="width: 300px; height: 25px;">Valeur en votre aimable r&egrave;glement de :</td>
-            <td style="width: 200px; height: 25px;">{{number_format($facture->montant_ttc,2,'.',' ')}} &euro; TTC</td>
+            <td style="width: 200px; height: 25px;">{{number_format($facture->montant_ttc,2,',',' ')}} &euro; TTC</td>
             <td style="width: 187px; height: 25px;"><span style="color: #ff0000; font-size:18px; font-weight:bold">&nbsp;R&eacute;f &agrave; rappeler: {{$facture->numero}}</span></td>
         </tr>
     </tbody>

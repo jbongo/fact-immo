@@ -52,7 +52,7 @@ Facture N° {{$facture->numero}}
                 @if($facture->destinataire_est_mandataire == true)
                     <p>  {{$facture->user->nom}} {{$facture->user->prenom}}</p>
                     <p>{{$facture->user->adresse}}</p> 
-                    <p>{{$facture->user->code_postal}}, {{$facture->user->ville}}</p>
+                    <p>{{$facture->user->code_postal}} {{$facture->user->ville}}</p>
 
                 @else
 

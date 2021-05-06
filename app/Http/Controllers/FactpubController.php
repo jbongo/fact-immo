@@ -170,7 +170,66 @@ class FactpubController extends Controller
     }
     
     
+     
+    /**
+     *  Recalculer la fact pub
+     *
+     * @return \Illuminate\Http\Response
+    */
     
+    public  function recalculer_fact_pub($fact_pub_id)
+    {
+    
+   
+        $factpub = Factpub::where('id',$fact_pub_id)->first();
+        
+        $contrat = $factpub->user->contrat ;
+        
+        
+                    // On determine la date à laquelle le mandataire doit passer expert
+                    $date_passage_expert = strtotime($contrat->date_deb_activite->format('Y-m-d'). "+ $contrat->duree_max_starter month");
+                    $date_passage_expert = date('Y-m-d', $date_passage_expert);
+                    
+                    $today = date_create(date('Y-m-d'));
+                    $date_passage= date_create($date_passage_expert);
+                    
+                    // on determine le nombre de jours entre son passage à expert et aujourd'hui
+                    $duree_passage_expert = date_diff($today, $date_passage);
+                    
+        
+                   
+                    $duree_starter = date_diff($today, date_create($contrat->date_deb_activite->format('Y-m-d')));
+                    $duree_starter = floor($duree_starter->days / 30);
+                    
+                    
+                    
+                    if($contrat->user->pack_actuel == "expert" && ($contrat->est_demarrage_starter == false || $contrat->est_demarrage_starter == true && $duree_passage_expert->days > 28 ) ){
+                        
+                        
+                       
+                            $factpub->packpub = $contrat->packpub->nom;
+                            $factpub->montant_ht = round($contrat->packpub->tarif / Tva::coefficient_tva(), 2);
+                            $factpub->montant_ttc = $contrat->packpub->tarif;
+                        
+                     
+                        
+                       
+                        
+                    }elseif($contrat->user->pack_actuel == "starter" && $contrat->duree_gratuite_starter >= $duree_starter ){
+                    
+                            $factpub->packpub = $contrat->packpub->nom;
+                            $factpub->montant_ht = $contrat->forfait_pack_info ;
+                            $factpub->montant_ttc = $contrat->forfait_pack_info * Tva::coefficient_tva();
+                      
+                    
+                    }
+                    
+                    $factpub->update();
+       
+                    return redirect()->route('facture.pub_a_valider');
+
+        
+    }
     
 
 }

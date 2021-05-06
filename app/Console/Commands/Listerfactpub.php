@@ -51,26 +51,22 @@ class Listerfactpub extends Command
         foreach ($contrats as $contrat) {
             
           
-            
+            // On determine la date à laquelle le mandataire doit passer expert
             $date_passage_expert = strtotime($contrat->date_deb_activite->format('Y-m-d'). "+ $contrat->duree_max_starter month");
             $date_passage_expert = date('Y-m-d', $date_passage_expert);
             
             $today = date_create(date('Y-m-d'));
             $date_passage= date_create($date_passage_expert);
             
-            
+            // on determine le nombre de jours entre son passage à expert et aujourd'hui
             $duree_passage_expert = date_diff($today, $date_passage);
             
-            // dd($duree_passage_expert);
+
            
             $duree_starter = date_diff($today, date_create($contrat->date_deb_activite->format('Y-m-d')));
-            
-            // dd($contrat->id);
             $duree_starter = floor($duree_starter->days / 30);
-            // dd($contrat->duree_gratuite_starter);
             
-            // if($contrat->user->id == 77)
-            // dd($duree_starter);
+            
             
             if($contrat->user->pack_actuel == "expert" && ($contrat->est_demarrage_starter == false || $contrat->est_demarrage_starter == true && $duree_passage_expert->days > 28 ) ){
                 

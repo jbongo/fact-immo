@@ -27,6 +27,18 @@ Route::middleware('auth')->group(function(){
     Route::delete('/mandataire/archive/{mandataire}','MandataireController@archive')->name('mandataire.archive');
     Route::get('/mandataire/send-access/{mandataire_id}/{contrat_id}','MandataireController@send_access')->name('mandataire.send_access');
     Route::post('/mandataire/activer/{mandataire}','MandataireController@activer')->name('mandataire.activer');
+    
+    // Prospects
+    
+    Route::get('/prospects','ProspectController@index')->name('prospect.index');
+    Route::get('/prospect/create','ProspectController@create')->name('prospect.create');
+    Route::post('/prospect/add','ProspectController@store')->name('prospect.add');
+    Route::get('/prospect/show/{id}','ProspectController@show')->name('prospect.show');
+    Route::get('/prospect/edit/{prospect}','ProspectController@edit')->name('prospect.edit');
+    Route::post('/prospect/update/{prospect}','ProspectController@update')->name('prospect.update');
+    Route::delete('/prospect/delete/{prospect}','ProspectController@destroy')->name('prospect.delete');
+    Route::get('/prospect/archives/','ProspectController@archive')->name('prospect.archives');
+    
         
     // Gestion des Jetons
     Route::get('/mandataires/jetons','MandataireController@mandataires_jetons')->name('mandataires.jetons');
@@ -103,6 +115,7 @@ Route::middleware('auth')->group(function(){
     
 
     Route::get('/factures/valider-fact-pub/{fact_pub_id}/{validation}','FactpubController@valider_fact_pub')->name('facture.valider_fact_pub');
+    Route::get('/factures/recalculer-fact-pub/{fact_pub_id}','FactpubController@recalculer_fact_pub')->name('facture.recalculer_fact_pub');
     
     
     // Lorsqu'on déduis la pub sans supprimer la facture 
