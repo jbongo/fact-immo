@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
     @section ('page_title')
-    Mandataires
+    Prospects
     @endsection
     <div class="row"> 
        
@@ -16,6 +16,7 @@
             <div class="card alert">
                 <!-- table -->
             <a href="{{route('prospect.create')}}" class="btn btn-success btn-rounded btn-addon btn-sm m-b-10 m-l-5"><i class="ti-user"></i>@lang('Nouveau prospect')</a>
+            <a href="{{route('prospect.agenda')}}" class="btn btn-warning btn-rounded btn-addon btn-sm m-b-10 m-l-5"><i class="ti-calendar"></i>@lang('Agenda')</a>
               
             
                 
@@ -33,6 +34,10 @@
                                 <th>@lang('Téléphone')</th>
                                 <th>@lang('Code postal')</th>
                                 <th>@lang('Ville')</th>
+                                <th>@lang('Contrat')</th>
+                                <th>@lang('Fiche consultée')</th>
+                                <th>@lang('Fiche renseignée')</th>
+                                <th>@lang('Envois mails')</th>
                                
                                 <th>@lang('Action')</th>
                             </tr>
@@ -50,7 +55,7 @@
                                     {{$prospect->email}} 
                                 </td>
                                 <td>
-                                    {{$prospect->telephone_personnel}}
+                                    {{$prospect->telephone_portable}}
                                 </td>
                                 <td>
                                     {{$prospect->code_postal}}
@@ -58,14 +63,38 @@
                                 <td>
                                     {{$prospect->ville}}
                                 </td>
-                                                         
-                              
-                                <td width="13%">
-                                    <span><a href="{{route('prospect.show',Crypt::encrypt($prospect->id) )}}" data-toggle="tooltip" title="@lang('Détails de ') {{ $prospect->nom }}"><i class="large material-icons color-info">visibility</i></a> </span>
-                                    <span><a href="{{route('prospect.edit',Crypt::encrypt($prospect->id) )}}" data-toggle="tooltip" title="@lang('Modifier ') {{ $prospect->nom }}"><i class="large material-icons color-warning">edit</i></a></span>
-                                    {{-- <span><a href="{{route('switch_user',Crypt::encrypt($prospect->id) )}}" data-toggle="tooltip" title="@lang('Se connecter en tant que ') {{ $prospect->nom }}"><i class="large material-icons color-success">person_pin</i></a></span> --}}
+                                
+                                <td>
+                                    <span><a href="{{route('prospect.envoyer_modele_contrat',Crypt::encrypt($prospect->id) )}}" class="btn btn-default" data-toggle="tooltip" title="@lang('Envoyer le modèle de contrat à  ') {{ $prospect->nom }}"><i class="large material-icons color-danger">mail</i>@if($prospect->modele_contrat_envoye == true) Renvoyer @else Envoyer @endif le modèle </a> </span>
+                                
+                                </td>
+                                
+                                <td>
+                                    @if($prospect->a_ouvert_fiche == true)
+                                    <span class="badge badge-success">Oui</span>
+                                    @else 
+                                    <span class="badge badge-danger">Non</span>
                                     
-                                {{-- <span><a  href="{{route('prospect.archive',[$prospect->id,1])}}" class="delete" data-toggle="tooltip" title="@lang('Archiver ') {{ $prospect->nom }}"><i class="large material-icons color-danger">delete</i> </a></span> --}}
+                                    @endif
+                                 </td> 
+                                 
+                                <td>
+                                   @if($prospect->renseigne == true)
+                                   <span class="badge badge-success">Oui</span>
+                                   @else 
+                                   <span class="badge badge-danger">Non</span>
+                                   
+                                   @endif
+                                </td>  
+                                
+                                <td>
+                                    <span><a href="{{route('prospect.envoi_mail_fiche',Crypt::encrypt($prospect->id) )}}" class="btn btn-success" data-toggle="tooltip" title="@lang('Envoyer la fiche à remplir à ') {{ $prospect->nom }}"><i class="large material-icons color-danger">mail</i>@if($prospect->fiche_envoyee == true) Renvoyer @else Envoyer @endif  fiche prospect </a> </span>
+                                
+                                </td>
+                                <td width="15%">
+                                    <span><a href="{{route('prospect.show',Crypt::encrypt($prospect->id) )}}" data-toggle="tooltip" title="@lang('Détails de ') {{ $prospect->nom }}"><i class="large material-icons color-info">visibility</i></a> </span>
+                                    <span><a href="{{route('prospect.edit',Crypt::encrypt($prospect->id) )}}" data-toggle="tooltip" title="@lang('Modifier ') {{ $prospect->nom }}"><i class="large material-icons color-warning">edit</i></a></span>                                    
+                                    <span><a  href="{{route('prospect.archiver',[Crypt::encrypt($prospect->id),1])}}" class="archiver" data-toggle="tooltip" title="@lang('Archiver ') {{ $prospect->nom }}"><i class="large material-icons color-danger">delete</i> </a></span>
                                 </td>
                             </tr>
                             
@@ -99,7 +128,7 @@
         $('[data-toggle="tooltip"]').tooltip()
         
         
-        $('body').on('click','a.activer',function(e) {
+        $('body').on('click','a.archiver',function(e) {
             let that = $(this)
             e.preventDefault()
             const swalWithBootstrapButtons = swal.mixin({   
@@ -109,7 +138,7 @@
                  })
 
             swalWithBootstrapButtons({
-                title: '@lang('Vraiment réactiver cet prospect  ?')',
+                title: '@lang('Vraiment archiver cet prospect  ?')',
                 type: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#DD6B55',
@@ -123,37 +152,36 @@
                         
         
                     $.ajax({
-                        type: "POST",
+                        type: "GET",
                         // url: "{{route('prospect.add')}}",
                         url: that.attr('href'),
                        
                         // data: data,
                         success: function(data) {
-                            console.log(data);
                             
                             swal(
-                                    'Activé',
-                                    'Le prospect a été réactivé \n Veuillez mettre à jour son contrat',
+                                    'Archivé',
+                                    'Le prospect a été archivé \n ',
                                     'success'
                                 )
-                                .then(function() {
-                                    window.location.href = that.attr('contrat');
-                                })
-                                // setInterval(() => {
-                                //     window.location.href = "{{route('prospect.index')}}";
-                                    
-                                // }, 5);
+                                
+                            
+                              
                         },
                         error: function(data) {
                             console.log(data);
                             
                             swal(
                                 'Echec',
-                                'Le prospect n\'a pas été activé :)',
+                                'Le prospect n\'a pas été archivé :)',
                                 'error'
                             );
                         }
-                    });
+                    })
+                    .done(function () {
+                               that.parents('tr').remove()
+                            })
+                    ;
                     
                   
                     
@@ -164,7 +192,7 @@
                 ) {
                     swalWithBootstrapButtons(
                     'Annulé',
-                    'Le prospect n\'a pas été activé :)',
+                    'Le prospect n\'a pas été archivé :)',
                     'error'
                     )
                 }

@@ -29,6 +29,8 @@
     <link href="https://cdn.datatables.net/responsive/2.2.5/css/responsive.dataTables.min.css" rel="stylesheet">
    
 
+    <link href="{{ asset('css/lib/calendar/fullcalendar.css')}}" rel="stylesheet" />
+
 
     
 

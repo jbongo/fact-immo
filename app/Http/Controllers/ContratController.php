@@ -19,7 +19,6 @@ use Auth;
 
 
 
-
 class ContratController extends Controller
 {
 

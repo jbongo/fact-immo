@@ -47,7 +47,7 @@
                                                
                                                 <div class="phone-content">
                                                    <span class="contact-title"><strong>Téléphone Personnel:</strong></span>
-                                                   <span class="phone-number" style="color: #ff435c; text-decoration: underline;">{{$prospect->telephone_personnel}}</span>
+                                                   <span class="phone-number" style="color: #ff435c; text-decoration: underline;">{{$prospect->telephone_portable}}</span>
                                                 </div>
                                                 <div class="phone-content">
                                                     <span class="contact-title"><strong>Téléphone Fixe:</strong></span>

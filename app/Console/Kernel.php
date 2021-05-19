@@ -30,7 +30,7 @@ class Kernel extends ConsoleKernel
                  ->daily();
                  
         $schedule->command('command:cloturercompromis')
-                 ->daily();
+        ->everyMinute();
                  
         $schedule->command('command:findroitsuite')
                  ->daily();

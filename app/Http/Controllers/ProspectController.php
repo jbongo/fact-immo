@@ -5,6 +5,14 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Prospect;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\File ;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\SendFicheProspect;
+use App\Mail\SendModeleContrat;
+
+
+use PDF;
 
 class ProspectController extends Controller
 {
@@ -57,7 +65,7 @@ class ProspectController extends Controller
             "code_postal" => $request->code_postal,
             "ville" => $request->ville,
             "telephone_fixe" => $request->telephone_fixe,
-            "telephone_personnel" => $request->telephone_personnel,
+            "telephone_portable" => $request->telephone_portable,
             "email" => $request->email,
         ]);
         
@@ -119,7 +127,7 @@ class ProspectController extends Controller
         $prospect->code_postal = $request->code_postal;
         $prospect->ville = $request->ville;
         $prospect->telephone_fixe = $request->telephone_fixe;
-        $prospect->telephone_personnel = $request->telephone_personnel;
+        $prospect->telephone_portable = $request->telephone_portable;
         $prospect->email = $request->email;
         
         $prospect->update();
@@ -147,12 +155,13 @@ class ProspectController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function archiver($id)
+    public function archiver($id, $action)
     {
         $prospect = Prospect::where('id', Crypt::decrypt($id))->first();
         
-        $prostect->archive = true;
-        $propstec->update();
+        
+        $prospect->archive = $action == 1 ? true : false;
+        $prospect->update();
         
         return $prospect;
     }
@@ -168,4 +177,373 @@ class ProspectController extends Controller
         
         return view('prospect.archive', compact('prospects'));
     }
+    
+    
+    /**
+     *Afficher le formulaire de remseignement
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create_fiche($id)
+    {
+    
+        $prospect = Prospect::where('id', Crypt::decrypt($id))->first();
+        // $prospect = Prospect::where('id', 1)->first();
+        $prospect->a_ouvert_fiche = true;
+        $prospect->date_ouverture_fiche = date("Y-m-d");
+        
+        $prospect->update();
+
+        
+        return view('prospect.fiche', compact('prospect'));
+    }
+    
+    
+    
+    /**
+     *Sauvegarder les infos de la fiche prospect
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function sauvegarder_fiche(Request $request, $id)
+    {
+    
+    
+    $request->validate([
+        "civilite" => "required|string",
+        "nom" => "required|string",
+        "prenom" => "required|string",
+        "adresse" => "required|string",
+        "code_postal" => "required|string",
+        "ville" => "required|string",
+        "telephone_portable" => "required|string",
+        "email" => "required|email"
+    ]);
+    
+
+    // "carte_identite" => UploadedFile {#404 ▶}
+    // "rib" => UploadedFile {#407 ▶}
+    // "attestation_responsabilite" => UploadedFile {#406 ▶}
+    // "photo" => UploadedFile {#153 ▶}
+    
+        $prospect = Prospect::where('id', Crypt::decrypt($id))->first();
+
+    
+        $prospect->civilite = $request->civilite;
+        $prospect->nom = $request->nom;
+        $prospect->nom_usage = $request->nom_usage;
+        $prospect->prenom = $request->prenom;
+        $prospect->adresse = $request->adresse;
+        $prospect->code_postal = $request->code_postal;
+        $prospect->ville = $request->ville;
+        $prospect->telephone_fixe = $request->telephone_fixe;
+        $prospect->telephone_portable = $request->telephone_portable;
+        $prospect->email = $request->email;
+        $prospect->date_naissance = $request->date_naissance;
+        $prospect->lieu_naissance = $request->lieu_naissance;
+        $prospect->situation_familliale = $request->situation_familliale;
+        $prospect->nationalite = $request->nationalite;
+        $prospect->nom_pere = $request->nom_pere;
+        $prospect->nom_mere = $request->nom_mere;
+        $prospect->statut_souhaite = $request->statut_souhaite;
+        $prospect->numero_rsac = $request->numero_rsac;
+        $prospect->numero_siret = $request->numero_siret;
+        $prospect->code_postaux = $request->code_postaux;
+        
+        if($file = $request->file('piece_identite')){
+
+            $request->validate([
+                "piece_identite" => "required|mimes:jpeg,png,pdf|max:5000",
+            ]);
+          
+
+
+                $name = $file->getClientOriginalName();
+                $extension = $file->getClientOriginalExtension();
+                
+        
+                // on sauvegarde la facture dans le repertoire du mandataire
+                $path = storage_path('app/public/prospects/');
+        
+                if(!File::exists($path))
+                    File::makeDirectory($path, 0755, true);
+        
+                    $filename = strtoupper($prospect->nom)." piece_identite ".$prospect->id ;
+         
+                    $file->move($path,$filename.'.'.$extension);            
+                    $path = $path.'/'.$filename.'.'.$extension;
+                
+                    $prospect->piece_identite = $path;
+
+        }
+        
+        if($file = $request->file('rib')){
+
+            $request->validate([
+                "rib" => "required|mimes:jpeg,png,pdf|max:5000",
+            ]);
+          
+
+
+                $name = $file->getClientOriginalName();
+                $extension = $file->getClientOriginalExtension();
+                
+        
+                // on sauvegarde la facture dans le repertoire du mandataire
+                $path = storage_path('app/public/prospects/');
+        
+                if(!File::exists($path))
+                    File::makeDirectory($path, 0755, true);
+        
+                    $filename = strtoupper($prospect->nom)." rib ".$prospect->id ;
+         
+                    $file->move($path,$filename.'.'.$extension);            
+                    $path = $path.'/'.$filename.'.'.$extension;
+                
+                    $prospect->rib = $path;
+
+        }
+        
+        if($file = $request->file('attestation_responsabilite')){
+
+            $request->validate([
+                "attestation_responsabilite" => "required|mimes:jpeg,png,pdf|max:5000",
+            ]);
+          
+
+
+                $name = $file->getClientOriginalName();
+                $extension = $file->getClientOriginalExtension();
+                
+        
+                // on sauvegarde la facture dans le repertoire du mandataire
+                $path = storage_path('app/public/prospects/');
+        
+                if(!File::exists($path))
+                    File::makeDirectory($path, 0755, true);
+        
+                    $filename = strtoupper($prospect->nom)." attestation_responsabilite ".$prospect->id ;
+         
+                    $file->move($path,$filename.'.'.$extension);            
+                    $path = $path.'/'.$filename.'.'.$extension;
+                
+                    $prospect->attestation_responsabilite = $path;
+
+        }
+        
+        if($file = $request->file('photo')){
+
+            $request->validate([
+                "photo" => "required|mimes:jpeg,png|max:5000",
+            ]);
+          
+
+
+                $name = $file->getClientOriginalName();
+                $extension = $file->getClientOriginalExtension();
+                
+        
+                // on sauvegarde la facture dans le repertoire du mandataire
+                $path = storage_path('app/public/prospects/');
+        
+                if(!File::exists($path))
+                    File::makeDirectory($path, 0755, true);
+        
+                    $filename = strtoupper($prospect->nom)." photo ".$prospect->id ;
+         
+                    $file->move($path,$filename.'.'.$extension);            
+                    $path = $path.'/'.$filename.'.'.$extension;
+                
+                    $prospect->photo = $path;
+
+        }
+        
+        
+      
+        
+        $prospect->renseigne = true;
+        $prospect->update();
+        
+        
+        return redirect()->route('prospect.fiche', Crypt::encrypt($prospect->id))->with('ok', 'Vos modifications ont été prises en compte ');
+        
+        // return view('prospect.fiche', compact('prospect'));
+    }
+    
+
+
+    /**
+     *Télecharger doc prospect
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function telecharger_doc($prospect_id, $type)
+    {
+        $prospect = Prospect::where('id', Crypt::decrypt($prospect_id))->first();
+        // $prospect = Prospect::where('id', 1)->first();
+        if($type=="photo"){
+            return response()->download($prospect->photo);
+        
+        }elseif($type=="piece_identite"){
+            return response()->download($prospect->piece_identite);
+        
+        }
+        elseif($type=="attestation_responsabilite"){
+            return response()->download($prospect->attestation_responsabilite);
+        
+        }elseif($type=="rib"){
+            return response()->download($prospect->rib);
+
+        
+        }else{
+        
+        return  redirect()->back();
+        
+        }
+
+    }
+    
+    
+     /**
+     *Envoi du mail au prospect pour renseigner sa fiche 
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function envoi_mail_fiche($prospect_id)
+    {
+        
+        $prospect = Prospect::where('id', Crypt::decrypt($prospect_id))->first();
+     
+        $url = route('prospect.fiche', $prospect_id);
+        Mail::to($prospect->email)->send(new SendFicheProspect($prospect, $url));
+        
+        $prospect->fiche_envoyee = true;
+        $prospect->update();
+     
+        return  redirect()->route('prospect.index')->with('ok','Mail envoyé au prospect');
+        
+
+
+    }
+    
+    /**
+     *Envoi du mail de modèle de contrat au prospect 
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function envoi_mail_modele_contrat($prospect_id)
+    {
+        
+        $prospect = Prospect::where('id', Crypt::decrypt($prospect_id))->first();
+     
+
+        Mail::to($prospect->email)->send(new SendModeleContrat($prospect, $url));
+        
+        $prospect->modele_contrat_envoye = true;
+        $prospect->update();
+     
+        return  redirect()->route('prospect.index')->with('ok','Le modèle du contrat a été envoyé au prospect ');
+        
+
+
+    }
+    
+    
+    /**
+     *Envoi du mail de contrat au prospect 
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function envoi_mail_contrat($prospect_id)
+    {
+        
+        $prospect = Prospect::where('id', Crypt::decrypt($prospect_id))->first();
+     
+
+        Mail::to($prospect->email)->send(new SendContrat($prospect, $url));
+        
+        $prospect->contrat_envoye = true;
+        $prospect->update();
+     
+        return  redirect()->route('prospect.index')->with('ok','Le contrat a été envoyé au prospect ');
+        
+
+
+    }
+    
+    
+     /**
+     * Affiche un modele de contrat
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function modele_contrat()
+    {
+         // on sauvegarde la modele de contrat
+         $path = storage_path('app/public/contrat/');
+
+         if(!File::exists($path))
+             File::makeDirectory($path, 0755, true);
+         
+         $pdf = PDF::loadView('contrat.modele_contrat_pdf');
+         $path = $path.'modele_contrat.pdf';
+         $pdf->save($path);
+         
+         $prospect = Prospect::where('id',1)->first();
+         
+         $pdf = storage_path('app/public/contrat/').'modele_contrat.pdf';
+         
+        
+         Mail::to($prospect->email)->send(new SendModeleContrat($prospect,$pdf));
+        return view('contrat.modele_contrat_pdf');
+
+    }
+    
+    
+    /**
+     * Affiche un modele de contrat
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function envoyer_modele_contrat($prospect_id)
+    {
+       // on sauvegarde la modele de contrat
+       $path = storage_path('app/public/contrat/');
+
+       if(!File::exists($path))
+           File::makeDirectory($path, 0755, true);
+       
+       $pdf = PDF::loadView('contrat.modele_contrat_pdf');
+       $path = $path.'modele_contrat.pdf';
+       $pdf->save($path);
+       
+       $prospect = Prospect::where('id',Crypt::decrypt($prospect_id))->first();
+       
+       $prospect->modele_contrat_envoye = true ;
+       
+       $prospect->update();
+       
+       $pdf = storage_path('app/public/contrat/').'modele_contrat.pdf';
+       
+      
+       Mail::to($prospect->email)->send(new SendModeleContrat($prospect,$pdf));
+       return  redirect()->route('prospect.index')->with('ok','Le modèle de contrat a été envoyé au prospect ');
+
+
+    }
+    
+    
+        
+     /**
+     * Affiche l'agenda
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function agenda()
+    {
+        
+        return view('prospect.agenda');
+
+    }
+    
 }

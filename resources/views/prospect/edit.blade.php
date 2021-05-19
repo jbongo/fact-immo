@@ -133,13 +133,13 @@ Modifier prospect {{$prospect->nom}}
                         
        
                          <div class="form-group row">
-                            <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="telephone_personnel">Téléphone Portable  </label>
+                            <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="telephone_portable">Téléphone Portable  </label>
                             <div class="col-lg-8 col-md-8 col-sm-8">
-                               <input type="text" class="form-control {{ $errors->has('telephone_personnel') ? ' is-invalid' : '' }}" value="{{old('telephone_personnel')? old('telephone_personnel') : $prospect->telephone_personnel}}" id="telephone_personnel" name="telephone_personnel" placeholder="Ex: 0600000000.." >
-                               @if ($errors->has('telephone_personnel'))
+                               <input type="text" class="form-control {{ $errors->has('telephone_portable') ? ' is-invalid' : '' }}" value="{{old('telephone_portable')? old('telephone_portable') : $prospect->telephone_portable}}" id="telephone_portable" name="telephone_portable" placeholder="Ex: 0600000000.." >
+                               @if ($errors->has('telephone_portable'))
                                <br>
                                <div class="alert alert-warning ">
-                                  <strong>{{$errors->first('telephone_personnel')}}</strong> 
+                                  <strong>{{$errors->first('telephone_portable')}}</strong> 
                                </div>
                                @endif     
                             </div>

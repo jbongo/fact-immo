@@ -37,7 +37,16 @@ Route::middleware('auth')->group(function(){
     Route::get('/prospect/edit/{prospect}','ProspectController@edit')->name('prospect.edit');
     Route::post('/prospect/update/{prospect}','ProspectController@update')->name('prospect.update');
     Route::delete('/prospect/delete/{prospect}','ProspectController@destroy')->name('prospect.delete');
-    Route::get('/prospect/archives/','ProspectController@archive')->name('prospect.archives');
+    Route::get('/prospect/archives/','ProspectController@archives')->name('prospect.archives');
+    Route::get('/prospect/archiver/{prospect}/{action}','ProspectController@archiver')->name('prospect.archiver');
+    Route::get('/prospect/agenda','ProspectController@agenda')->name('prospect.agenda');
+    
+    
+    Route::get('/prospect/telecharger/{url}/{type}','ProspectController@telecharger_doc')->name('prospect.telecharger');
+    Route::get('/prospect/envoi-mail-fiche/{prospect}','ProspectController@envoi_mail_fiche')->name('prospect.envoi_mail_fiche');
+    
+    Route::get('/contrat/modele/','ProspectController@modele_contrat')->name('prospect.modele');
+    Route::get('/contrat/envoyer/modele/{prospect}','ProspectController@envoyer_modele_contrat')->name('prospect.envoyer_modele_contrat');
     
         
     // Gestion des Jetons
@@ -96,6 +105,12 @@ Route::middleware('auth')->group(function(){
     Route::get('/factures/hors-delais','FactureController@hors_delais')->name('facture.hors_delais');
     Route::get('/factures/create','FactureController@create')->name('facture.create');
     Route::get('/factures/packpub','FactureController@packpub')->name('facture.packpub');
+    
+    Route::get('/factures/stylimmo','FactureController@index_stylimmo')->name('facture.index_stylimmo');
+    Route::get('/factures/pub','FactureController@index_pub')->name('facture.index_pub');
+    
+
+
     //  factures honoraire
     Route::get('preparer/factures-honoraire/{compromis}','FactureController@preparer_facture_honoraire')->name('facture.preparer_facture_honoraire');//ok
     Route::get('preparer/factures-honoraire-parrainage/{compromis}/{parrain_id?}','FactureController@preparer_facture_honoraire_parrainage')->name('facture.preparer_facture_honoraire_parrainage');//ok
@@ -176,6 +191,8 @@ Route::middleware('auth')->group(function(){
     Route::get('/contrat/historique/{contrat_id}','ContratController@historique')->name('contrat.historique');
     Route::get('/contrat/historique/show/{contrat_id}','ContratController@historique_show')->name('contrat.historique.show');
     Route::get('/contrat/reinitialiser/{contrat_id}','ContratController@reinitialiser')->name('contrat.reinitialiser');
+     
+    
     
     // 
 
@@ -265,3 +282,6 @@ Route::middleware('auth')->group(function(){
 
 });
 
+// Envoi de la fiche info au prospect
+Route::get('fiche/prospect/{prospect}/','ProspectController@create_fiche')->name('prospect.fiche');
+Route::post('fiche/prospect/{prospect}/','ProspectController@sauvegarder_fiche')->name('prospect.sauvegarder_fiche');

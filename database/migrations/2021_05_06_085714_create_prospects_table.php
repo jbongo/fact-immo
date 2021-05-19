@@ -23,7 +23,7 @@ class CreateProspectsTable extends Migration
             $table->string('code_postal')->nullable();
             $table->string('ville')->nullable();
             $table->string('telephone_fixe')->nullable();
-            $table->string('telephone_personnel')->nullable();
+            $table->string('telephone_portable')->nullable();
             $table->string('email')->unique();
             
             $table->date('date_naissance')->nullable();
@@ -34,7 +34,7 @@ class CreateProspectsTable extends Migration
             $table->string('nom_pere')->nullable();
             $table->string('nom_mere')->nullable();
             
-            $table->enum('statut_souhaite',['auto-entrepreneur','portage salarial', 'autre']);
+            $table->enum('statut_souhaite',['Auto-entrepreneur','Portage salarial', 'Autre']);
             $table->string('numero_rsac')->nullable();
             $table->string('numero_siret')->nullable();
             
@@ -42,6 +42,7 @@ class CreateProspectsTable extends Migration
             $table->string('piece_identite')->nullable();
             $table->string('rib')->nullable();
             $table->string('attestation_responsabilite')->nullable();
+            $table->string('photo')->nullable();
             $table->boolean('a_parrain')->default(false);
             $table->string('nom_parrain')->nullable();
             
@@ -49,6 +50,13 @@ class CreateProspectsTable extends Migration
             $table->boolean('renseigne')->default(false);
             $table->boolean('a_ouvert_fiche')->default(false);
             $table->date('date_ouverture_fiche')->nullable();
+            $table->boolean('fiche_envoyee')->default(false);
+            $table->boolean('modele_contrat_envoye')->default(false);
+            $table->boolean('contrat_envoye')->default(false);
+            
+            
+            
+    
             
             
             $table->timestamps();

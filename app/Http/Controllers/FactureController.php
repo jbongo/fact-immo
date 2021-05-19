@@ -52,6 +52,55 @@ class FactureController extends Controller
         
         return view ('facture.index',compact(['factureHonoraires','factureStylimmos']));
     }
+    
+    
+    
+    /**
+     * Afficher toutes les factures stylimmo
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index_stylimmo()
+    {
+        //
+        //
+    
+        if(auth()->user()->role == "admin"){
+            $factureStylimmos = Facture::whereIn('type',['stylimmo'])->latest()->get();
+            
+        }else{
+            $factureStylimmos = Facture::where('user_id',auth()->user()->id)->where('type',['stylimmo'])->latest()->get();
+        }
+        
+        
+        return view ('facture.index_stylimmo',compact(['factureStylimmos']));
+    }
+    
+    
+    
+        /**
+     * Afficher toutes les factures pub
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index_pub()
+    {
+        //
+        //
+    
+        if(auth()->user()->role == "admin"){
+            $facturePubs = Facture::whereIn('type',['pack_pub'])->latest()->get();
+            
+        }else{
+            $facturePubs = Facture::where('user_id',auth()->user()->id)->where('type',['pack_pub'])->latest()->get();
+        }
+        
+        
+        return view ('facture.index_pub',compact(['facturePubs']));
+    }
+    
+    
+    
 
 
     /**
@@ -970,6 +1019,8 @@ public  function preparer_facture_honoraire_parrainage($compromis_id, $id_parrai
     $compromis = Compromis::where('id',Crypt::decrypt($compromis_id))->first();
     // dd($id_parrain);
     $deux_filleuls = false;
+    $facture = null;
+    
     //  On détermine le filleul ou les filleuls s'il y'a partage entre les filleuls (même parrain)
     if($compromis->est_partage_agent == true){
         
