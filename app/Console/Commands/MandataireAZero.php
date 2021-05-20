@@ -6,6 +6,7 @@ use Illuminate\Console\Command;
 use App\Contrat;
 use App\Mail\NotifMandataireAZero;
 use Illuminate\Support\Facades\Mail;
+use App\Cronjob;
 
 class MandataireAZero extends Command
 {
@@ -132,6 +133,8 @@ $today = date("Y-m-d") ;
 
 
 
-
+            Cronjob::create([
+                "nom" => "mandataireazero",
+                ]);
     }
 }

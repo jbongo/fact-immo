@@ -8,6 +8,9 @@ use App\User;
 use App\Contrat;
 use App\Factpub;
 use App\Tva;
+
+use App\Cronjob;
+
 class Listerfactpub extends Command
 {
     /**
@@ -97,6 +100,8 @@ class Listerfactpub extends Command
                 
             
         }
-
+        Cronjob::create([
+            "nom" => "listerfactpub",
+            ]);
     }
 }

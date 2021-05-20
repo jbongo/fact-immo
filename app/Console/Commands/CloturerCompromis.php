@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use App\Compromis;
 use App\Filleul;
+use App\Cronjob;
 
 class CloturerCompromis extends Command
 {
@@ -168,5 +169,11 @@ class CloturerCompromis extends Command
             }
 
         }
+        
+        Cronjob::create([
+        "nom" => "cloturercompromis",
+        ]);
     }
+    
+    
 }

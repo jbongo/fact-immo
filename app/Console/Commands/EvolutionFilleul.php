@@ -7,6 +7,7 @@ use App\Filleul;
 use App\User;
 use App\Parametre;
 
+use App\Cronjob;
 
 
 class EvolutionFilleul extends Command
@@ -110,5 +111,8 @@ class EvolutionFilleul extends Command
                 
             }
         }
+        Cronjob::create([
+            "nom" => "evolutionfilleul",
+            ]);
     }
 }

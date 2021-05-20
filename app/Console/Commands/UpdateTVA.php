@@ -4,6 +4,8 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use App\Tva;
+use App\Cronjob;
+
 class UpdateTVA extends Command
 {
     /**
@@ -44,6 +46,10 @@ class UpdateTVA extends Command
         //     "tva_prochaine"=>18,
         //     "date_debut_tva_prochaine"=>date('Y-m-d'),
         // ]);
+        
+        Cronjob::create([
+            "nom" => "updatetva",
+            ]);
 
     }
 }

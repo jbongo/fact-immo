@@ -6,6 +6,7 @@ use Illuminate\Console\Command;
 use App\User;
 use App\Mail\NotifEvolutionStarter;
 use Illuminate\Support\Facades\Mail;
+use App\Cronjob;
 
 
 class EvolutionPackStarter extends Command
@@ -73,6 +74,8 @@ class EvolutionPackStarter extends Command
 
         }
 
-
+        Cronjob::create([
+            "nom" => "evolutionpackstarter",
+            ]);
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use App\Cronjob;
 
 class MandatairePackStarter extends Command
 {
@@ -38,5 +39,9 @@ class MandatairePackStarter extends Command
     public function handle()
     {
         //
+        
+        Cronjob::create([
+            "nom" => "cloturercompromis",
+            ]);
     }
 }

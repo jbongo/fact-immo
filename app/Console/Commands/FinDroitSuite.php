@@ -8,6 +8,7 @@ use Illuminate\Console\Command;
 use App\Contrat;
 use App\Mail\NotifFinDroitSuite;
 
+use App\Cronjob;
 
 use Illuminate\Support\Facades\Mail;
 
@@ -71,7 +72,9 @@ class FinDroitSuite extends Command
             }
             
         }
-        
+        Cronjob::create([
+            "nom" => "findroitsuite",
+            ]);
         
     }
 }

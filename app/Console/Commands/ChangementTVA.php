@@ -9,6 +9,7 @@ use App\Parametre;
 use App\Mail\ChangementTVA as ChangementTVAMail ;
 use Illuminate\Support\Facades\Mail;
 
+use App\Cronjob;
 
 class ChangementTVA extends Command
 {
@@ -72,5 +73,8 @@ class ChangementTVA extends Command
         
         }
         // echo $tva_encour
+        Cronjob::create([
+            "nom" => "changementtva",
+            ]);
     }
 }

@@ -4,6 +4,8 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use App\Contrat;
+use App\Cronjob;
+
 
 class UpdateJeton extends Command
 {
@@ -62,7 +64,9 @@ class UpdateJeton extends Command
         
         
         
-        
+        Cronjob::create([
+            "nom" => "updatejeton",
+            ]);
         
         // dd($contrats[1]);
         
