@@ -30,7 +30,7 @@ class Kernel extends ConsoleKernel
                  ->daily();
                  
         $schedule->command('command:cloturercompromis')
-        ->everyMinute();
+        ->daily();
                  
         $schedule->command('command:findroitsuite')
                  ->daily();
@@ -45,7 +45,7 @@ class Kernel extends ConsoleKernel
                  ->daily();
   
         $schedule->command('command:listerfactpub')
-                 ->monthlyOn(28, '01:00');	;
+                 ->monthlyOn(21, '01:00');	;
                  
     }
 
