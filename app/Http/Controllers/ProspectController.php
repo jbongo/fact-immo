@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Prospect;
+use App\Parametre;
+use App\Contrat;
+use App\Packpub;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\File ;
 use Illuminate\Support\Facades\Storage;
@@ -479,29 +482,23 @@ class ProspectController extends Controller
      */
     public function modele_contrat()
     {
-         // on sauvegarde la modele de contrat
-         $path = storage_path('app/public/contrat/');
-
-         if(!File::exists($path))
-             File::makeDirectory($path, 0755, true);
-         
-         $pdf = PDF::loadView('contrat.modele_contrat_pdf');
-         $path = $path.'modele_contrat.pdf';
-         $pdf->save($path);
-         
-         $prospect = Prospect::where('id',1)->first();
-         
-         $pdf = storage_path('app/public/contrat/').'modele_contrat.pdf';
-         
+        $parametre  = Parametre::first();
+        $modele  = Contrat::where('est_modele', true)->first();
+        $packs = Packpub::all();
         
-         Mail::to($prospect->email)->send(new SendModeleContrat($prospect,$pdf));
-        return view('contrat.modele_contrat_pdf');
+        $palier_starter = Contrat::palier_unserialize($modele->palier_starter);
+        $palier_expert = Contrat::palier_unserialize($modele->palier_expert);
+        
+        // dd($parametre);
+        
+        return view('contrat.modele_contrat_pdf', compact('parametre'));
+        return view('contrat.annexe_pdf',compact('parametre','modele','palier_expert','palier_starter','packs'));
 
     }
     
     
     /**
-     * Affiche un modele de contrat
+     * Affiche un modele de contrat et les annexes
      *
      * @return \Illuminate\Http\Response
      */
@@ -513,21 +510,36 @@ class ProspectController extends Controller
        if(!File::exists($path))
            File::makeDirectory($path, 0755, true);
        
-       $pdf = PDF::loadView('contrat.modele_contrat_pdf');
-       $path = $path.'modele_contrat.pdf';
-       $pdf->save($path);
-       
-       $prospect = Prospect::where('id',Crypt::decrypt($prospect_id))->first();
-       
-       $prospect->modele_contrat_envoye = true ;
-       
-       $prospect->update();
-       
-       $pdf = storage_path('app/public/contrat/').'modele_contrat.pdf';
-       
-      
-       Mail::to($prospect->email)->send(new SendModeleContrat($prospect,$pdf));
-       return  redirect()->route('prospect.index')->with('ok','Le modèle de contrat a été envoyé au prospect ');
+        $parametre  = Parametre::first();
+        $modele  = Contrat::where('est_modele', true)->first();
+        $packs = Packpub::all();
+        
+        $palier_starter = Contrat::palier_unserialize($modele->palier_starter);
+        $palier_expert = Contrat::palier_unserialize($modele->palier_expert);
+           
+        $modele_contrat_pdf = PDF::loadView('contrat.modele_contrat_pdf',compact('parametre'));
+        
+        $modele_annexe_pdf = PDF::loadView('contrat.annexe_pdf',compact('parametre','modele','palier_expert','palier_starter','packs'));
+        
+        
+        $contrat_path = $path.'modele_contrat.pdf';
+        $annexe_path = $path.'modele_annexe.pdf';
+        
+        $modele_contrat_pdf->save($contrat_path);
+        $modele_annexe_pdf->save($annexe_path);
+   
+        $prospect = Prospect::where('id',Crypt::decrypt($prospect_id))->first();
+   
+        $prospect->modele_contrat_envoye = true ;
+   
+        $prospect->update();
+   
+        $modele_contrat_pdf_path = storage_path('app/public/contrat/').'modele_contrat.pdf';
+        $modele_annexe_pdf_path = storage_path('app/public/contrat/').'modele_annexe.pdf';
+   
+  
+        Mail::to($prospect->email)->send(new SendModeleContrat($prospect,$modele_contrat_pdf_path, $modele_annexe_pdf_path));
+        return  redirect()->route('prospect.index')->with('ok','Le modèle de contrat a été envoyé au prospect ');
 
 
     }

@@ -89,7 +89,16 @@ class ParametreController extends Controller
         "ca_imposable" => $request->ca_imposable,
         "comm_parrain" => $comm_parrain,
         "nb_jour_max_demande" => $request->nb_jour_max_demande,
+        
+        "num_carte_pro" => $request->num_carte_pro,
+        "carte_pro_delivre_le" => $request->carte_pro_delivre_le,
+        "carte_pro_delivre_par" => $request->carte_pro_delivre_par,
+        "adresse_organisme_de_garantie" => $request->adresse_organisme_de_garantie,
+        "gerant" => $request->gerant,
+        "capital" => $request->capital,
     ]);
+    
+
     
      return redirect('parametre/generaux/create');
 
@@ -178,6 +187,12 @@ class ParametreController extends Controller
     $parametre->comm_parrain = $comm_parrain;
     $parametre->nb_jour_max_demande = $request->nb_jour_max_demande;
    
+    $parametre->num_carte_pro  = $request->num_carte_pro;
+    $parametre->carte_pro_delivre_le  = $request->carte_pro_delivre_le;
+    $parametre->carte_pro_delivre_par  = $request->carte_pro_delivre_par;
+    $parametre->adresse_organisme_de_garantie  = $request->adresse_organisme_de_garantie;
+    $parametre->gerant  = $request->gerant;
+    $parametre->capital  = $request->capital;
     
     $parametre->update();
     return redirect('parametre/generaux/create');

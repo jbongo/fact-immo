@@ -34,6 +34,18 @@
                                                 </div>
                                             </div>
                                             <div class="form-group row">
+                                                <label class="col-lg-4 col-form-label" for="capital">Capital<span class="text-danger">*</span></label>
+                                                <div class="col-lg-4">
+                                                    <input type="number" class="form-control" id="capital" name="capital" required>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-lg-4 col-form-label" for="gerant">Gérant<span class="text-danger">*</span></label>
+                                                <div class="col-lg-4">
+                                                    <input type="text" class="form-control"  value="" id="gerant" name="gerant" required>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
                                                 <label class="col-lg-4 col-form-label" for="numero_siret">Numéro SIRET<span class="text-danger">*</span></label>
                                                 <div class="col-lg-4">
                                                     <input type="text" class="form-control" value="" id="numero_siret" name="numero_siret" required>
@@ -52,10 +64,60 @@
                                                     <input type="text" class="form-control" value="" id="numero_tva" name="numero_tva" required>
                                                 </div>
                                             </div>
+                                            
+                                            
                                            
-
                                         </div>
+                                      
 
+                                 
+
+
+                                        
+                                        
+                                        
+                                   
+                                        <div class="col-lg-6 col-md-6 col-sm-6">
+                                            <div class="form-group row">
+                                                <label class="col-lg-4 col-form-label" for="num_carte_pro">Numéro carte professionnelle <span class="text-danger">*</span></label>
+                                                <div class="col-lg-4">
+                                                    <input type="text" min="0" class="form-control" value="" id="num_carte_pro" name="num_carte_pro" required>
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                        
+                                        <div class="col-lg-6 col-md-6 col-sm-6">
+                                            <div class="form-group row">
+                                                <label class="col-lg-4 col-form-label" for="carte_pro_delivre_le">Date de délivrance de la carte professionnelle <span class="text-danger">*</span></label>
+                                                <div class="col-lg-4">
+                                                    <input type="text" min="0" class="form-control" value="" id="carte_pro_delivre_le" name="carte_pro_delivre_le" required>
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                        
+                                        <div class="col-lg-6 col-md-6 col-sm-6">
+                                            <div class="form-group row">
+                                                <label class="col-lg-4 col-form-label" for="carte_pro_delivre_par">Carte pro délivrée par<span class="text-danger">*</span></label>
+                                                <div class="col-lg-4">
+                                                    <input type="text"  class="form-control" value="" id="carte_pro_delivre_par" name="carte_pro_delivre_par" required>
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                        
+                                        <div class="col-lg-6 col-md-6 col-sm-6">
+                                            <div class="form-group row">
+                                                <label class="col-lg-4 col-form-label" for="adresse_organisme_de_garantie">Adresse organisme de garantie<span class="text-danger">*</span></label>
+                                                <div class="col-lg-4">
+                                                    <input type="text" min="0" class="form-control" value="" id="adresse_organisme_de_garantie" name="adresse_organisme_de_garantie" required>
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                      
+                                        
                                         <div class="col-lg-6 col-md-6 col-sm-6">
                                             <div class="form-group row">
                                                 <label class="col-lg-4 col-form-label" for="adresse">Adresse<span class="text-danger">*</span></label>
@@ -63,7 +125,6 @@
                                                     <input type="text" class="form-control" id="adresse" name="adresse" required>
                                                 </div>
                                             </div>
-                                           
                                         </div>
                                         <div class="col-lg-6 col-md-6 col-sm-6">
                                             <div class="form-group row">
@@ -83,6 +144,7 @@
                                             </div>
                                             
                                         </div>
+                                           
                                     </div>
                             </div>
                         </div>

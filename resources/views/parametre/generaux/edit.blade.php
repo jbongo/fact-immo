@@ -34,6 +34,18 @@
                                                 </div>
                                             </div>
                                             <div class="form-group row">
+                                                <label class="col-lg-4 col-form-label" for="capital">Capital<span class="text-danger">*</span></label>
+                                                <div class="col-lg-4">
+                                                    <input type="number" class="form-control" value="{{$parametre->capital}}" id="capital" name="capital" required>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-lg-4 col-form-label" for="gerant">Gérant<span class="text-danger">*</span></label>
+                                                <div class="col-lg-4">
+                                                    <input type="text" class="form-control"  value="{{$parametre->gerant}}" id="gerant" name="gerant" required>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
                                                 <label class="col-lg-4 col-form-label" for="numero_siret">Numéro SIRET<span class="text-danger">*</span></label>
                                                 <div class="col-lg-4">
                                                     <input type="text" class="form-control" value="{{$parametre->numero_siret}}" id="numero_siret" name="numero_siret" required>
@@ -53,9 +65,52 @@
                                                 </div>
                                             </div>
                                            
+                                           
 
                                         </div>
 
+                                                  
+                                     
+                                        <div class="col-lg-6 col-md-6 col-sm-6">
+                                            <div class="form-group row">
+                                                <label class="col-lg-4 col-form-label" for="num_carte_pro">Numéro carte professionnelle <span class="text-danger">*</span></label>
+                                                <div class="col-lg-4">
+                                                    <input type="text"  class="form-control" value="{{$parametre->num_carte_pro}}" id="num_carte_pro" name="num_carte_pro" required>
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                        
+                                        <div class="col-lg-6 col-md-6 col-sm-6">
+                                            <div class="form-group row">
+                                                <label class="col-lg-4 col-form-label" for="carte_pro_delivre_le">Date de délivrance de la carte professionnelle <span class="text-danger">*</span></label>
+                                                <div class="col-lg-4">
+                                                    <input type="date"  class="form-control" value="{{$parametre->carte_pro_delivre_le}}" id="carte_pro_delivre_le" name="carte_pro_delivre_le" required>
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                        
+                                        <div class="col-lg-6 col-md-6 col-sm-6">
+                                            <div class="form-group row">
+                                                <label class="col-lg-4 col-form-label" for="carte_pro_delivre_par">Carte pro délivrée par<span class="text-danger">*</span></label>
+                                                <div class="col-lg-4">
+                                                    <input type="text"  class="form-control" value="{{$parametre->carte_pro_delivre_par}}" id="carte_pro_delivre_par" name="carte_pro_delivre_par" required>
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                        
+                                        <div class="col-lg-6 col-md-6 col-sm-6">
+                                            <div class="form-group row">
+                                                <label class="col-lg-4 col-form-label" for="adresse_organisme_de_garantie">Adresse organisme de garantie<span class="text-danger">*</span></label>
+                                                <div class="col-lg-4">
+                                                    <input type="text"  class="form-control" value="{{$parametre->adresse_organisme_de_garantie}}" id="adresse_organisme_de_garantie" name="adresse_organisme_de_garantie" required>
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                        
                                         <div class="col-lg-6 col-md-6 col-sm-6">
                                             <div class="form-group row">
                                                 <label class="col-lg-4 col-form-label" for="adresse">Adresse<span class="text-danger">*</span></label>
@@ -69,7 +124,7 @@
                                             <div class="form-group row">
                                                 <label class="col-lg-4 col-form-label" for="code_postal">Code postal<span class="text-danger">*</span></label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" min="0" class="form-control" value="{{$parametre->code_postal}}" id="code_postal" name="code_postal" required>
+                                                    <input type="text"  class="form-control" value="{{$parametre->code_postal}}" id="code_postal" name="code_postal" required>
                                                 </div>
                                             </div>
                                             
@@ -78,7 +133,7 @@
                                             <div class="form-group row">
                                                 <label class="col-lg-4 col-form-label" for="ville">Ville<span class="text-danger">*</span></label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" min="0" class="form-control" value="{{$parametre->ville}}" id="ville" name="ville" required>
+                                                    <input type="text" class="form-control" value="{{$parametre->ville}}" id="ville" name="ville" required>
                                                 </div>
                                             </div>
                                             

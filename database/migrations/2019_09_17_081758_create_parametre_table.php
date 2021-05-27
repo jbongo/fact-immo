@@ -26,6 +26,13 @@ class CreateParametreTable extends Migration
             $table->double('ca_imposable')->nullable();
             $table->text('comm_parrain')->nullable();
             $table->integer('nb_jour_max_demande')->nullable();
+            $table->double('capital')->nullable();
+            $table->string('num_carte_pro')->nullable();
+            $table->date('carte_pro_delivre_le')->nullable();
+            $table->string('carte_pro_delivre_par')->nullable();
+            $table->string('adresse_organisme_de_garantie')->nullable();
+            $table->string('gerant')->nullable();
+            
             
             $table->timestamps();
         });
