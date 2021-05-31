@@ -3,11 +3,18 @@
 @section ('page_title') 
     Profil du prospect 
 @endsection
+
 <div class="row">
+
    <div class="col-lg-12">
+   
       <div class="card">
+    <a href="{{route('prospect.index')}}" class="btn btn-default btn-flat btn-addon m-b-10 m-l-5"><i class="ti-angle-double-left"></i>@lang('liste des prospects ')</a>
+      
          <div class="card-body">
             <div class="col-lg-6">
+            
+            
                <div class="panel panel-default lobipanel-basic">
                   <div class="panel-heading">Fiche utilisateur.</div>
                   <div class="panel-body">
@@ -94,135 +101,59 @@
                   </div>
                </div>
             </div>
-            @if ($prospect->role == "prospect")
+         
                 
           
             <div class="col-lg-6">
-              
-               <div class="panel panel-success lobipanel-basic">
-                     <div class="panel-heading">Statistiques.</div>
-                     <div class="panel-body">
-                           <div class="col-lg-4 col-md-4 col-sm-4 ">
-                                 <div class="card bg-danger">
-                                     <div class="media">
-                                         <div class="media-left meida media-middle">
-                                             <span><i class="ti-home f-s-48 color-white"></i></span>
-                                         </div>
-                                         <div class="media-body media-text-right">
-                                         <h4>{{$nb_affaire}}</h4>
-                                             <h5>Affaires</h5>
-                                         </div>
-                                     </div>
-                                 </div>
-                                </div>
-                            
-                                <div class="col-lg-4 col-md-4 col-sm-4 ">
-                                    <div class="card bg-primary">
-                                        <div class="media">
-                                            <div class="media-left meida media-middle">
-                                                <span><i class="ti-money f-s-48 color-white"></i></span>
-                                            </div>
-                                            <div class="media-body media-text-right">
-                                                <h4>{{number_format($prospect->chiffre_affaire,2,'.',' ')}}€</h4>
-                                                <h5>Chiffre d'affaires</h5>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-4 col-md-4 col-sm-4 ">
-                                    <div class="card bg-success">
-                                        <div class="media">
-                                            <div class="media-left meida media-middle">
-                                                <span><i class="ti-money f-s-48 color-white"></i></span>
-                                            </div>
-                                            <div class="media-body media-text-right">
-                                                <h4>{{$nb_filleul}}</h4>
-                                                <h5>Filleuls</h5>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                     </div>
-                  </div>
 
 
-            @if($parrain != null)
+
+<hr style="border:2px solid red">
 
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <div class="card">
                             <div class="media">
                                 <div class="media-left media-middle">
-                                    <i class="ti-id-badge f-s-48 color-danger m-r-15"></i>
+                                    <i class="ti-id-badge f-s-48 color-danger m-r-1"></i>
                                 </div>
+                                
+                                
                                 <div class="media-body">
-                                    <h4>Parrain</h4>
-                                    <p><label class="color-primary">{{$parrain->nom}} {{$parrain->prenom}}</label> </p>
+                                    <h4>Fiche (formulaire) envoyée par mail au prospect</h4>
+                                    <p><label class="color-primary">La fiche a t'elle été consultée par le prospect ? :</label>  @if($prospect->a_ouvert_fiche == true)<span  style="color:white" class="badge badge-success">Oui</span>@else <span class="badge badge-danger">Non</span> @endif </p>
+                                    <p><label class="color-primary">La fiche a t'elle été renseignée par le prospect ? :</label>  @if($prospect->renseigne == true)<span  style="color:white" class="badge badge-success">Oui</span>@else <span class="badge badge-danger">Non</span> @endif </p>
                                 </div>
-                                {{-- <div class="media-right media-middle f-s-30">
-                                    18000
-                                </div> --}}
+                                
+                                
+                                
+                                <hr>
+                                
+                                <span>
+                                <a href="{{route('prospect.envoyer_modele_contrat',Crypt::encrypt($prospect->id) )}}" style="background: #3b4842" class="btn btn-default btn-flat btn-addon m-b-10 m-l-5" data-toggle="tooltip" title="@lang('Envoyer le modèle de contrat à  ') {{ $prospect->nom }}"><i class="ti-email"></i>@if($prospect->modele_contrat_envoye == true) Renvoyer @else Envoyer @endif le modèle </a> </span>
+                                
+                              <hr>
+                                <span><a href="{{route('prospect.envoi_mail_fiche',Crypt::encrypt($prospect->id) )}}"class="btn btn-warning btn-flat btn-addon m-b-10 m-l-5"  data-toggle="tooltip" title="@lang('Envoyer la fiche à remplir à ') {{ $prospect->nom }}"><i class="ti-email"></i>@if($prospect->fiche_envoyee == true) Renvoyer @else Envoyer @endif  fiche prospect </a> </span>
+
+                              
                             </div>
                         </div>
                     </div>
                 </div>
 
-            @endif
+     
 
-                  
-                    @if($nb_filleul > 0)
-                    <div class="panel panel-default lobipanel-basic">
-                        <div class="panel-heading">Filleuls.</div>
-                        <div class="panel-body">
-                             
-                                <div class="table-responsive" style="overflow-x: inherit !important;">
-                                        <table  id="example" class=" table student-data-table  m-t-20 "  style="width:100%">
-                                            <thead>
-                                                <tr>
-                                                    <th>@lang('Nom filleul')</th>
-                                                    <th>@lang('Rang')</th>
-                                                    <th>@lang('Expire le')</th>
-                                                    <th>@lang('Action')</th>
-                                                   
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                            @foreach ($filleuls as $filleul)
-                                                <tr>
-                                           
-                                                    <td style="color: #32ade1; text-decoration: underline;">
-                                                    <strong>{{$filleul->user->nom}} {{$filleul->user->prenom}}</strong> 
-                                                    </td>
-                                                    <td style="color: #e05555;; text-decoration: underline;">
-                                                        <strong> {{$filleul->rang}} </strong> 
-                                                    </td>
-                                                    <td style="color: #e05555;">
-                                                        @php 
-                                                            $date_expire = strtotime($filleul->user->contrat->date_deb_activite.'+3 year');
-                                                            $date_expire = date('d-m-Y', $date_expire);
-                                                        @endphp 
-                                                        <strong> {{$date_expire}} </strong> 
-                                                    </td>
-                                                                                     
-                                                    <td>
-                                                        <span><a href="{{route('prospect.show',Crypt::encrypt($filleul->user_id))}}" data-toggle="tooltip" title="@lang('Détail ') {{ $filleul->nom }}"><i class="large material-icons color-warning">visibility</i></a></span>
-                                                    </td>
-                                                </tr>
-                                        @endforeach
-                                          </tbody>
-                                        </table>
-                                    </div>
-                                
-                        </div>
-                    </div>
-                    @endif
+
              
             </div>
-            @endif
+       
          </div>
       </div>
    </div>
 </div>
+
+
+
 @if ($prospect->role == "prospect")
 <div class="row">
     <div class="panel panel-warning lobipanel-basic">

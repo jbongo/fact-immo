@@ -159,7 +159,7 @@
 							
 							
 							
-							<h2>Jetons déduits par l'administrateur</h2>
+							<h2>Jetons déduits ou ajouté par l'administrateur</h2>
 								
 							<div class="panel panel-danger m-t-15" id="cont">
 									<div class="panel-heading"></div>
@@ -173,6 +173,7 @@
 						
 											<th>@lang('Nb de Jetons avant déduction ')</th>
 											<th>@lang('Nb de Jetons déduits ')</th>
+											<th>@lang('Ajouté automatiquement à la date d\'anniv ')</th>
 											<th>@lang('Date Déduction')</th>
 										
 											
@@ -194,6 +195,7 @@
 												<label class="color-info">{{$updatejeton->jetons_avant_deduction}} </label> 
 											</td>
 											<td><label class="color-danger" style="font-size: 20px">{{$updatejeton->jetons_deduis}} </label> </td>
+											<td>@if($updatejeton->est_ajout_cronjob)  <span class="badge badge-success">Oui</span> @else  <span class="badge badge-danger">Non</span> @endif </td>
 											<td><label >{{$updatejeton->created_at->format('d/m/Y')}} </label> </td>
 										
 											

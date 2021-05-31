@@ -19,6 +19,7 @@ class CreateUpdatejetonsTable extends Migration
             $table->integer('admin_id')->nullable();
             $table->integer('jetons_deduis')->nullable();
             $table->integer('jetons_avant_deduction')->nullable();
+            $table->boolean('est_ajout_cronjob')->default(false);
             $table->timestamps();
         });
     }

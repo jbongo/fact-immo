@@ -5,6 +5,9 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use App\Contrat;
 use App\Cronjob;
+use App\Updatejeton as Jeton;
+use App\Mail\NotifUpdateJeton;
+use Illuminate\Support\Facades\Mail;
 
 
 class UpdateJeton extends Command
@@ -56,6 +59,18 @@ class UpdateJeton extends Command
                     $contrat->user->update();
                     
                     // dd($contrat); 
+                    Jeton::create([
+                        "user_id" => $contrat->user->id,
+                        "admin_id" => 0,
+                        "jetons_deduis" => 12,
+                        "jetons_avant_deduction" => $contrat->user->nb_mois_pub_restant,
+                        "est_ajout_cronjob" => true,
+                    
+                    ]);
+                    
+                    Mail::to($contrat->user->email)->send(new NotifUpdateJeton($contrat->user));
+
+                    
                 }
                 
             }
