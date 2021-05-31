@@ -516,8 +516,11 @@ class ProspectController extends Controller
         
         $palier_starter = Contrat::palier_unserialize($modele->palier_starter);
         $palier_expert = Contrat::palier_unserialize($modele->palier_expert);
+        
+        $prospect = Prospect::where('id',Crypt::decrypt($prospect_id))->first();
+        
            
-        $modele_contrat_pdf = PDF::loadView('contrat.modele_contrat_pdf',compact('parametre'));
+        $modele_contrat_pdf = PDF::loadView('contrat.modele_contrat_pdf',compact('parametre','prospect'));
         
         $modele_annexe_pdf = PDF::loadView('contrat.annexe_pdf',compact('parametre','modele','palier_expert','palier_starter','packs'));
         
@@ -528,7 +531,6 @@ class ProspectController extends Controller
         $modele_contrat_pdf->save($contrat_path);
         $modele_annexe_pdf->save($annexe_path);
    
-        $prospect = Prospect::where('id',Crypt::decrypt($prospect_id))->first();
    
         $prospect->modele_contrat_envoye = true ;
    
