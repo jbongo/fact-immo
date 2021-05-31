@@ -22,7 +22,7 @@
   border-top: 0.1pt solid rgb(19, 5, 5);
 }
 .page-number:before {
-  content: counter(page) "/ 14" ;
+  content: counter(page) "/ 9" ;
 }
 
 body {
