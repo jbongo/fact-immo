@@ -7,6 +7,7 @@ use App\Prospect;
 use App\Parametre;
 use App\Contrat;
 use App\Packpub;
+use App\User;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\File ;
 use Illuminate\Support\Facades\Storage;
@@ -545,6 +546,60 @@ class ProspectController extends Controller
 
 
     }
+    
+    
+    
+     /**
+     * Passer le prospect à mandataire
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function prospect_a_mandataire($prospect_id)
+    {
+      
+        $prospect = Prospect::where('id',Crypt::decrypt($prospect_id))->first();
+        
+        
+        if($prospect->est_mandataire == false){
+            
+            $user = User::create([
+                'statut'=>$prospect->statut_souhaite,
+                'civilite' => $prospect->civilite,
+                'nom' => $prospect->nom,
+                'prenom'=>$prospect->prenom,
+                'telephone1'=>$prospect->telephone_portable,
+                'telephone2'=>$prospect->telephone_fixe,
+                'ville'=>$prospect->ville,
+                'code_postal'=>$prospect->code_postal,
+                'pays'=>$prospect->pays,
+                'email_perso'=>$prospect->email,
+                'email'=>$prospect->id."",
+                'role'=>"mandataire",
+                'adresse'=>$prospect->adresse,
+                'siret'=>$prospect->numero_siret,
+              
+                
+               
+            
+            ]);
+        }
+        else{
+        
+            return  redirect()->route('prospect.index')->with('ok','Ce prospect est déjà mandataire ');
+        }
+        
+        $prospect->user_id = $user->id;
+        $prospect->est_mandataire = true;
+        $prospect->update();
+
+         return redirect()->route('mandataire.edit', ['user_id'=>Crypt::encrypt($user->id)]);
+     
+
+    }
+    
+    
+    
+    
     
     
         

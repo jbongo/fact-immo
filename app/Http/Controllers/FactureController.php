@@ -42,15 +42,20 @@ class FactureController extends Controller
             $factureHonoraires = Facture::whereIn('type',['honoraire','partage','partage_externe','parrainage','parrainage_partage'])->latest()->get();
             $factureCommunications = Facture::where('type',['pack_pub','carte_visite'])->latest()->get();
             
+            $nb_comm_non_regle  = Facture::where('reglee',false)->whereIn('type',['pack_pub','carte_visite'])->count();
+            
         }else{
             $factureHonoraires = Facture::where('user_id',auth()->user()->id)->whereIn('type',['honoraire','partage','partage_externe','parrainage','parrainage_partage'])->latest()->get();
             $factureStylimmos = Facture::where('user_id',auth()->user()->id)->where('type',['stylimmo','avoir','pack_pub','carte_visite','communication','autre'])->latest()->get();
             $factureCommunications = Facture::where('user_id',auth()->user()->id)->whereIn('type',['pack_pub','carte_visite'])->latest()->get();
+            
+            $nb_comm_non_regle  = Facture::where([['user_id',auth()->user()->id],['reglee',false]])->whereIn('type',['pack_pub','carte_visite'])->count();
+         
 
         }
         
         
-        return view ('facture.index',compact(['factureHonoraires','factureStylimmos']));
+        return view ('facture.index',compact(['factureHonoraires','factureStylimmos','factureCommunications','nb_comm_non_regle']));
     }
     
     
@@ -3022,7 +3027,7 @@ public function valider_honoraire($action, $facture_id)
         $facture = Facture::where('id', Crypt::decrypt($facture_id))->first();
     
         $facture->reglee = true;
-        $facture->date_reglement = $request->date_reglement;
+        $facture->date_reglement = Auth::user()->role == "admin" ? $request->date_reglement : $request->date_reglement_pub;
         $facture->update();
         
 
@@ -3035,6 +3040,7 @@ public function valider_honoraire($action, $facture_id)
       
         Historique::createHistorique( $user_id,$facture->id,"facture",$action );
 
+return 4444;
         return redirect()->route('facture.index')->with('ok', __("Facture $facture->numero reglée")  );
         
     }

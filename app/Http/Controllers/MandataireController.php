@@ -256,7 +256,7 @@ class MandataireController extends Controller
         $mandataire->complement_adresse = $request->compl_adresse; 
 
         $mandataire->update();
-        return redirect()->route('mandataire.index')->with('ok', __('mandataire modifié')  );
+        return redirect()->route('mandataire.edit', Crypt::encrypt($mandataire->id))->with('ok', __('mandataire modifié')  );
     }
 
     /**

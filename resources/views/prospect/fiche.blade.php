@@ -66,7 +66,7 @@
       border-radius: 3px;
       }
       input {
-      width: calc(100% - 10px);
+      /* width: calc(100% - 10px); */
       padding: 5px;
       }
       select {
@@ -453,11 +453,14 @@
           <div class="question">
             <p>Statut souhaité:<span>*</span></p> 
             <div class="question-answer">
-              <input type="radio" value="Auto-entrepreneur" @if($prospect->statut_souhaite == "Auto-entrepreneur") checked @endif  id="radio_1" name="statut_souhaite"  required/>
+              <input type="radio" value="auto-entrepreneur" @if($prospect->statut_souhaite == "auto-entrepreneur") checked @endif  id="radio_1" name="statut_souhaite"  required/>
               <label for="radio_1" class="radio"><span>Auto-entrepreneur</span></label>
               
-              <input type="radio" value="Portage salarial" @if($prospect->statut_souhaite == "Portage salarial") checked @endif  id="radio_2" name="statut_souhaite" />
+              <input type="radio" value="portage-salarial" @if($prospect->statut_souhaite == "portage-salarial") checked @endif  id="radio_2" name="statut_souhaite" />
               <label for="radio_2" class="radio"><span>Portage salarial</span></label>
+              
+              <input type="radio" value="independant" @if($prospect->statut_souhaite == "independant") checked @endif  id="radio_4" name="statut_souhaite" />
+              <label for="radio_4" class="radio"><span>Indépendant</span></label>
               
               <input type="radio" value="Autre" @if($prospect->statut_souhaite == "Autre") checked @endif  id="radio_3" name="statut_souhaite" />
               <label for="radio_3" class="radio"><span>Autre</span></label>

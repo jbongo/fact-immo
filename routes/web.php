@@ -44,6 +44,7 @@ Route::middleware('auth')->group(function(){
     
     Route::get('/prospect/telecharger/{url}/{type}','ProspectController@telecharger_doc')->name('prospect.telecharger');
     Route::get('/prospect/envoi-mail-fiche/{prospect}','ProspectController@envoi_mail_fiche')->name('prospect.envoi_mail_fiche');
+    Route::get('/prospect/a_mandataire/{prospect}','ProspectController@prospect_a_mandataire')->name('prospect.prospect_a_mandataire');
     
     Route::get('/contrat/modele/','ProspectController@modele_contrat')->name('prospect.modele');
     Route::get('/contrat/envoyer/modele/{prospect}','ProspectController@envoyer_modele_contrat')->name('prospect.envoyer_modele_contrat');
@@ -192,6 +193,9 @@ Route::middleware('auth')->group(function(){
     Route::get('/contrat/historique/show/{contrat_id}','ContratController@historique_show')->name('contrat.historique.show');
     Route::get('/contrat/reinitialiser/{contrat_id}','ContratController@reinitialiser')->name('contrat.reinitialiser');
      
+    Route::get('/contrat/telecharger/{contrat_id}','ContratController@telecharger_contrat')->name('contrat.telecharger');
+    Route::get('/contrat/envoyer-contrat-mail/','ContratController@envoyer_contrat_mail')->name('contrat.envoyer_contrat_mail');
+    Route::get('/contrat/envoyer-contrat-non-signe-mail/{contrat_id}','ContratController@envoyer_contrat_non_signe_mail')->name('contrat.envoyer_contrat_non_signe_mail');
     
     
     // 

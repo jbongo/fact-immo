@@ -65,6 +65,7 @@ class CreateContratTable extends Migration
             // Pack pub
             $table->integer('packpub_id')->nullable();
             $table->boolean('est_modele')->default(false);
+            $table->boolean('est_soumis_fact_pub')->default(true);
 
             // Démission
             $table->boolean('a_demission')->default(false);
@@ -72,6 +73,10 @@ class CreateContratTable extends Migration
             $table->date('date_demission')->nullable();
             $table->date('date_fin_preavis')->nullable();
             $table->date('date_fin_droit_suite')->nullable();
+            
+            $table->string('contrat_pdf')->nullable();
+            $table->boolean('contrat_envoye')->default(false);
+            
 
 
     

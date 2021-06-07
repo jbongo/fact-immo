@@ -239,5 +239,13 @@ class User extends Authenticatable
         
         return $tab;
     }
+    
+    
+    // Retourne les infos prospect lorsque le mandataire étatit prospect
+    public function prospect(){
+    
+        return $this->hasOne('App\Prospect');
+    
+    }
 
 }

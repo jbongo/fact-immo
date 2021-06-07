@@ -13,18 +13,22 @@
         @endif
         
         <div class="card">
-            <div class="col-lg-10">
-            </div>
+            
             <div class="card-body">
-                <a href="{{route('contrat.historique', Crypt::encrypt($contrat->id))}}" class="btn btn-default btn-flat btn-addon"><i class="ti-timer"></i>@lang('Voir l\'historique du contrat')</a> 
-                <a href="{{route('contrat.reinitialiser', Crypt::encrypt($contrat->id))}}" class="btn btn-danger btn-flat btn-addon reinitialiser"><i class="ti-reload"></i>réinitialiser le contrat</a> 
+                <a href="{{route('contrat.historique', Crypt::encrypt($contrat->id))}}" data-toggle="tooltip" title="Voir toutes les modifications du contrat" class="btn btn-default btn-flat btn-addon"><i class="ti-timer"></i>@lang('Voir l\'historique du contrat')</a> 
+                <a href="{{route('contrat.reinitialiser', Crypt::encrypt($contrat->id))}}"data-toggle="tooltip" title="Réinitialiser le contrat"  class="btn btn-danger btn-flat btn-addon reinitialiser"><i class="ti-reload"></i>réinitialiser le contrat</a> 
+                
+                @if($contrat->contrat_pdf == null)
+                    <a href="{{route('contrat.envoyer_contrat_non_signe_mail', Crypt::encrypt($contrat->id))}}"  data-toggle="tooltip" title="Envoyer le contrat pour signature au mandataire" style="background: #3b4842" class="btn btn-warning btn-flat btn-addon"><i class="ti-email"></i>Envoyer contrat pour signature</a> 
+                @endif
+                
                 <div class="panel-body">
  <hr>
                     <fieldset class="col-md-12">
                         <legend>Infos basiques</legend>
                         <div class="panel panel-warning">
                             <div class="panel-body">
-                                <form class="form-valide3" action="{{ route('contrat.update',Crypt::encrypt($contrat->id)) }}" method="post">
+                                <form class="form-valide3" action="{{ route('contrat.update',Crypt::encrypt($contrat->id)) }}" method="post" enctype="multipart/form-data">
                                     {{ csrf_field() }}
 
                                     <div class="row">
@@ -133,6 +137,7 @@
                                         <div class="col-lg-6 col-md-6 col-sm-6">
                                             @php
                                                 $check_tva =  ($contrat->est_soumis_tva == true) ? "checked" : "unchecked";
+                                                $check_fact_pub =  ($contrat->est_soumis_fact_pub == true) ? "checked" : "unchecked";
                                             @endphp
                                             <div class="form-group row">
                                                 <label class="col-lg-6 col-form-label" for="est_soumis_tva">Le mandataire est soumis à la TVA ?</label>
@@ -141,6 +146,7 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        
                                         <div class="col-lg-6 col-md-6 col-sm-6">
                                             @php
                                                 $check_deduis =  ($contrat->deduis_jeton == true) ? "checked" : "unchecked";
@@ -149,6 +155,16 @@
                                                 <label class="col-lg-6 col-form-label" for="deduis_jeton">Le mandataire déduit des jetons ?</label>
                                                 <div class="col-lg-6">
                                                     <input type="checkbox" {{$check_deduis}} data-toggle="toggle" id="deduis_jeton" name="deduis_jeton" data-off="Non" data-on="Oui" data-onstyle="success" data-offstyle="danger">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="col-lg-6 col-md-6 col-sm-6">
+                                           
+                                            <div class="form-group row">
+                                                <label class="col-lg-6 col-form-label" for="est_soumis_fact_pub">Générer des facture pub s'il n'est pas soumis aux jetons ?</label>
+                                                <div class="col-lg-6">
+                                                    <input type="checkbox" {{$check_fact_pub}} data-toggle="toggle" id="est_soumis_fact_pub" name="est_soumis_fact_pub" data-off="Non" data-on="Oui" data-onstyle="success" data-offstyle="danger">
                                                 </div>
                                             </div>
                                         </div>
@@ -737,6 +753,42 @@
 
                             </div>
                         </div>
+                        
+                        
+                        
+                                        
+                <div class="panel-body">
+                    <fieldset class="col-md-12">
+                        <legend>Documents</legend>
+                        <div class="panel panel-warning">
+                            <div class="panel-body">
+
+                                
+
+                                <div class="row">
+                                    @if($contrat->contrat_pdf)
+                                    <a href="{{route('contrat.telecharger', Crypt::encrypt($contrat->id))}}"data-toggle="tooltip" title="Réinitialiser le contrat"  class="btn btn-danger btn-flat btn-addon "><i class="ti-download"></i>télécharger le contrat</a> 
+
+                                    @endif
+
+                                        <div class="col-lg-6 col-md-6 col-sm-6 ">
+                                            <div class="form-group row">
+                                                <label class="col-lg-4 col-form-label" for="contrat_pdf">Contrat signé</label>
+                                                <div class="col-lg-4">
+                                                    <input type="file" class="form-control" value="" id="contrat_pdf" name="contrat_pdf" accept=".pdf" >
+                                                </div>
+                                            </div>
+                                        </div>
+                                      
+                                      
+                                </div>
+      
+                            </div>
+
+                        </div>
+                </div>
+                        
+                        
                     </fieldset>
                 </div>
             </div>
@@ -961,11 +1013,26 @@
 {{-- Envoi des données en ajax pour le stockage --}}
 <script>
 
+
+
     $('.form-valide3').submit(function(e) {
-        e.preventDefault();
         var form = $(".form-valide3");
 
-           
+console.log($('#contrat_pdf').prop('files')[0]);
+       
+        if($('#contrat_pdf').prop('files')[0] == undefined)
+        e.preventDefault();
+
+        
+      
+        
+        
+        
+    //     var file_data = $('#contrat_pdf').prop('files')[0];   
+    //     console.log(Object.values(file_data));
+    // var form_data = new FormData();                  
+    // form_data.append('file', file_data);
+    // alert(form_data); 
             var palierdata = $('#palier_starter input').serialize();
 
         data = {
@@ -980,6 +1047,7 @@
             "a_parrain" : $("#a_parrain").prop('checked') ,
             "a_condition_parrain" : $("#a_condition_parrain").prop('checked') ,
             "est_soumis_tva" : $("#est_soumis_tva").prop('checked') ,
+            "est_soumis_fact_pub" : $("#est_soumis_fact_pub").prop('checked') ,
             "deduis_jeton" : $("#deduis_jeton").prop('checked') ,
             
             "parrain_id" : $('#parrain_id').val(),         
@@ -1029,6 +1097,7 @@
             "date_demission" : $('#date_demission').val(),
             "date_fin_preavis" : $('#date_fin_preavis').val(),
             "date_fin_droit_suite" : $('#date_fin_droit_suite').val(),
+            // "contrat_pdf" : Object.values(file_data),
 
 
       

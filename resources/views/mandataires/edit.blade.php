@@ -6,7 +6,7 @@ Modifier mandataire {{$mandataire->nom}}
 <div class="row">
    <div class="col-lg-12 col-md-12 col-sm-12">
       @if (session('ok'))
-      <div class="alert alert-success alert-dismissible fade in">
+      <div class="alert alert-success alert-dismissible fade in" style="color: red">
          <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
          <strong> {{ session('ok') }}</strong>
       </div>
@@ -18,7 +18,12 @@ Modifier mandataire {{$mandataire->nom}}
             @if($mandataire->contrat != null) 
             <a href="{{route('contrat.edit',Crypt::encrypt($mandataire->contrat->id) )}}"  class="btn btn-warning btn-flat btn-addon m-b-10 m-l-5"><i class="ti-pencil"></i>Modifier le contrat</a>
             @else
-            <a href="{{route('contrat.create',Crypt::encrypt($mandataire->id) )}}"  class="btn btn-warning btn-flat btn-addon m-b-10 m-l-5"><i class="ti-pencil"></i>Ajouter un contrat</a>
+               @if( filter_var($mandataire->email, FILTER_VALIDATE_EMAIL)  ) 
+                  <a href="{{route('contrat.create',Crypt::encrypt($mandataire->id) )}}"  class="btn btn-warning btn-flat btn-addon m-b-10 m-l-5"><i class="ti-pencil"></i>Ajouter un contrat</a>
+                  @else 
+                  <span class="color-warning" style="font-size:16px"> Modifiez l'adresse mail pro avant de créer le contrat</span>
+                  
+               @endif
             @endif
          </div>
          <div class="card-body">

@@ -14,8 +14,12 @@ use App\Historiquecontrat;
 use App\Article;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\CreationMandataire;
+use App\Mail\SendContratSignature;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\File ;
+use Illuminate\Support\Facades\Storage;
 use Auth;
+use PDF;
 
 
 
@@ -148,12 +152,14 @@ class ContratController extends Controller
             "modif_ca_depart_sty" => $contrat->ca_depart_sty == $request->ca_depart_sty ? false : true ,
             "est_demarrage_starter" => $contrat->est_demarrage_starter,
             "modif_est_demarrage_starter" => $contrat->est_demarrage_starter == $request->est_starter ? false : true ,
+            "modif_est_soumis_fact_pub" => $contrat->est_soumis_fact_pub == $request->est_soumis_fact_pub ? false : true ,
+            "est_soumis_fact_pub" =>$request->est_soumis_fact_pub == "true" ? true : false  ,
             "a_parrain" => $contrat->a_parrain,
             "modif_a_parrain" => $contrat->a_parrain == ($request->a_parrain == "true" ? true : false) ? false : true ,
             "parrain_id" => $contrat->parrain_id,
             
             "a_condition_parrain" => $contrat->a_condition_parrain,
-
+            
 
 // Commission direct pack starter
             "pourcentage_depart_starter" => $contrat->pourcentage_depart_starter,
@@ -372,6 +378,8 @@ class ContratController extends Controller
 
         $contrat->a_parrain = $request->a_parrain == "true" ? true : false;
         $contrat->est_soumis_tva = $request->est_soumis_tva == "true" ? true : false;
+        $contrat->est_soumis_fact_pub = $request->est_soumis_fact_pub == "true" ? true : false;
+        
         $contrat->deduis_jeton = $request->deduis_jeton == "true" ? true : false;
         $contrat->parrain_id = $request->a_parrain== "true" ? $request->parrain_id : null;
         $contrat->a_condition_parrain = $request->a_condition_parrain == "true" ? true : false;
@@ -402,6 +410,40 @@ class ContratController extends Controller
     }
 
     $contrat->date_anniversaire = $date_anniversaire;
+    
+    
+    // Ajout du CONTRAT PDF
+    
+   
+    
+    if($file = $request->file('contrat_pdf')){
+
+        $request->validate([
+            'contrat_pdf' => 'mimes:pdf',
+        ]);
+
+            $extension = $file->getClientOriginalExtension();
+            
+    
+            // on sauvegarde la facture dans le repertoire du mandataire
+            $path = storage_path('app/public/'.$contrat->id.'/contrat');
+    
+            if(!File::exists($path))
+                File::makeDirectory($path, 0755, true);
+    
+                $filename = 'contrat'.$contrat->nom.' '.$contrat->prenom ;
+     
+                $file->move($path,$filename.'.'.$extension);            
+                $path = $path.'/'.$filename.'.'.$extension;
+            
+                $contrat->contrat_pdf = $path;
+
+    }
+    
+    
+    
+    
+    
    
 
     $contrat->update();
@@ -411,6 +453,11 @@ class ContratController extends Controller
         $user_id = Auth::user()->id;
   
         Historique::createHistorique( $user_id,$contrat->id,"contrat",$action );
+        
+        if($request->file('contrat_pdf') != null)
+            return  redirect()->route('contrat.edit', Crypt::encrypt($contrat->id))->with('ok','Le contrat a été modifié ');
+        
+        
 
         return 1;
                 
@@ -526,8 +573,9 @@ class ContratController extends Controller
             "parrain_id"=>$request->a_parrain== "true" ? $request->parrain_id : null,
             "a_condition_parrain"=>$request->a_condition_parrain == "true" ? true : false,
             "est_soumis_tva"=>$request->est_soumis_tva == "true" ? true : false,
+            "est_soumis_fact_pub"=>$request->est_soumis_fact_pub == "true" ? true : false,
             "deduis_jeton"=>$request->deduis_jeton == "true" ? true : false,
-
+            
             
             // Commission direct pack starter          
             "pourcentage_depart_starter"=>$request->pourcentage_depart_starter,
@@ -875,5 +923,94 @@ class ContratController extends Controller
        
 
     }
+    
+    
+    
+    /**
+     * Télécharger le contrat
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function telecharger_contrat($contrat_id)
+    {
+        $contrat = Contrat::where('id',Crypt::decrypt($contrat_id))->first() ;    
+        
+        return response()->download($contrat->contrat_pdf);
+
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    /**
+     * Envoyer le contrat par le mail
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function envoyer_contrat_mail($contrat_id)
+    {
+        $contrat = HistoriqueContrat::where('id',Crypt::decrypt($contrat_id))->first() ;        
+
+    }
+    
+    
+    /**
+     * Envoyer le contrat par le mail
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function envoyer_contrat_non_signe_mail($contrat_id)
+    {
+    
+    
+ 
+         // on sauvegarde la modele de contrat
+         $contrat  = Contrat::where('id',Crypt::decrypt($contrat_id))->first();
+         $path = storage_path('app/public/'.$contrat->user->id.'contrat/');
+    
+         if(!File::exists($path))
+             File::makeDirectory($path, 0755, true);
+         
+          $parametre  = Parametre::first();
+          
+          $packs = Packpub::all();
+          
+          $palier_starter = Contrat::palier_unserialize($contrat->palier_starter);
+          $palier_expert = Contrat::palier_unserialize($contrat->palier_expert);
+          
+         
+       
+          
+             
+          $contrat_pdf = PDF::loadView('contrat.contrat',compact('parametre','contrat'));
+          
+          $annexe_pdf = PDF::loadView('contrat.annexe_pdf',compact('parametre','contrat','palier_expert','palier_starter','packs'));
+          
+          
+          $contrat_path = $path.'contrat.pdf';
+          $annexe_path = $path.'annexe.pdf';
+          
+          $contrat_pdf->save($contrat_path);
+          $annexe_pdf->save($annexe_path);
+     
+     
+        //   $contrat->contrat_envoye = true ;
+     
+          $contrat->update();
+     
+          $contrat_pdf_path =  $path.'contrat.pdf';
+          $annexe_pdf_path =  $path.'annexe.pdf';
+     
+    
+          Mail::to($contrat->user->email)->send(new SendContratSignature($contrat,$contrat_pdf_path, $annexe_pdf_path));
+          return  redirect()->route('contrat.edit', Crypt::encrypt($contrat->id))->with('ok','Le contrat a été envoyé au mandataire ');
+       
+    }
+    
+
 }
 

@@ -24,7 +24,7 @@ font-family: 'Times New Roman', Times, serif
 <div id="footer">
     <div class="page-number"></div>
 </div>
-{{-- {{dd($modele)}} --}}
+{{-- {{dd($contrat)}} --}}
 
 <br>
 <hr>
@@ -35,12 +35,12 @@ font-family: 'Times New Roman', Times, serif
 <p>La commission du mandataire est calcul&eacute;e en pourcentage du montant des honoraires d&rsquo;agence H.T. g&eacute;n&eacute;r&eacute;s par le mandataire. Ce pourcentage de base est d&eacute;fini selon le choix effectu&eacute; ci-dessous (STARTER ou EXPERT).</p>
 <p><strong><u>A &ndash; Pourcentage de base choisi</u></strong></p>
 <p>D&eacute;marrage en tant que&nbsp;:</p>
-<p><strong>&nbsp;&nbsp;&nbsp; STARTER&nbsp;(max. {{$modele->duree_max_starter}} mois)&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{$modele->pourcentage_depart_starter}} % &nbsp; (des honoraires d&rsquo;agence H.T.)</strong></p>
+<p><strong>&nbsp;&nbsp;   <input type="checkbox" name="" id=""> &nbsp; STARTER&nbsp;(max. {{$contrat->duree_max_starter}} mois)&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{$contrat->pourcentage_depart_starter}} % &nbsp; (des honoraires d&rsquo;agence H.T.)</strong></p>
 <p style="text-align: right;"><strong><u>conditions et tarifs en annexe 3</u></strong></p>
 <p><strong><u>ou</u></strong> d&eacute;marrage <u>directement</u> en tant que&nbsp;:</p>
-<p><strong>&nbsp;&nbsp;&nbsp; EXPERT&nbsp;: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </strong><strong>{{$modele->pourcentage_depart_expert}}  %&nbsp;&nbsp; (des honoraires d&rsquo;agence H.T.)</strong></p>
+<p><strong>&nbsp;&nbsp; <input type="checkbox" name="" id=""> &nbsp; EXPERT&nbsp;: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </strong><strong>{{$contrat->pourcentage_depart_expert}}  %&nbsp;&nbsp; (des honoraires d&rsquo;agence H.T.)</strong></p>
 <p style="text-align: right;"><strong><u>conditions et tarifs en annexe 3</u></strong></p>
-<p>Condition pour le passage &agrave; {{$modele->pourcentage_depart_expert}} % : r&eacute;aliser 3 ventes.</p>
+<p>Condition pour le passage &agrave; {{$contrat->pourcentage_depart_expert}} % : r&eacute;aliser 3 ventes.</p>
 
 
 <p><strong><u>B - Progression du commissionnement</u></strong></p>
@@ -50,7 +50,7 @@ font-family: 'Times New Roman', Times, serif
 
 @php 
 
-    $pourcentage_plafonne = $modele->pourcentage_depart_expert;
+    $pourcentage_plafonne = $contrat->pourcentage_depart_expert;
 
 @endphp 
 

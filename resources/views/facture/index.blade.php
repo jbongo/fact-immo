@@ -28,7 +28,7 @@
                        <ul class="nav nav-pills nav-tabs" id="myTabs">
                           <li id="li_stylimmo" class="active"><a href="#stylimmo" data-toggle="pill"> <i class="material-icons" style="font-size: 15px;">account_balance_wallet</i> @lang('Factures Styl\'immo')</a></li>
                           <li id="li_caracteristique_nav"><a href="#caracteristique_nav" data-toggle="pill"> <i class="material-icons" style="font-size: 15px;">account_balance_wallet</i> @lang('Factures Honoraires')</a></li>
-                          <li id="li_autre_nav"><a href="#autre_nav" data-toggle="pill"> <i class="material-icons" style="font-size: 15px;">account_balance_wallet</i> @if(Auth()->user()->role == "admin") @lang('Factures Fournisseurs') @else @lang('Factures Communication') @endif </a></li>
+                          <li id="li_autre_nav"><a href="#autre_nav" data-toggle="pill"> <i class="material-icons" style="font-size: 15px;">account_balance_wallet</i> @if(Auth()->user()->role == "admin") @lang('Factures Fournisseurs') @else @lang('Factures Communication')  <span class="badge badge-danger">{{ $nb_comm_non_regle}}</span> @endif </a></li>
                          
                          
                        </ul>
@@ -40,7 +40,7 @@
                              <div class="tab-content">
                                 <div class="tab-pane active" id="stylimmo"> @include('facture.stylimmo')</div>
                                 <div class="tab-pane" id="caracteristique_nav">@include('facture.honoraire')</div>
-                                <div class="tab-pane" id="autre_nav">@include('facture.autre')</div>                               
+                                <div class="tab-pane" id="autre_nav"> @if(Auth()->user()->role == "admin")  @include('facture.autre') @else @include('facture.communication') @endif </div>                               
                              </div>
                           </div>
                        </div>
@@ -196,16 +196,17 @@ if($("#date_encaissement").val() != ""){
 
 
 
+// Règlement de la note d'honoraire
    $('#valider_reglement').on('click',function(e){
        e.preventDefault();
  
       if($("#date_reglement").val() != ""){
 
          $.ajaxSetup({
-    headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    }
-});
+       headers: {
+           'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+       }
+   });
          $.ajax({
                type: "GET",
                url: "regler/factures-honoraire/"+facture_id ,
@@ -238,6 +239,59 @@ if($("#date_encaissement").val() != ""){
 
 
    });
+   
+   
+   
+   
+   
+   // Règlement de la facture de pub
+   $('#valider_reglement_pub').on('click',function(e){
+       e.preventDefault();
+ 
+      if($("#date_reglement_pub").val() != ""){
+
+         $.ajaxSetup({
+       headers: {
+           'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+       }
+   });
+         $.ajax({
+               type: "GET",
+               url: "regler/factures-honoraire/"+facture_id ,
+               data:  $("#form_regler_pub").serialize(),
+               success: function (result) {
+                  swal(
+                     'Réglée',
+                     'Vous avez reglé la facture ',
+                     'success'
+                  )
+                  .then(function(data) {
+                     window.location.href = "{{route('facture.index')}}";
+                  })
+               },
+               error: function(error){
+                  console.log(error);
+                  
+                  swal(
+                           'Echec',
+                           'la facture  n\'a pas été reglé '+error,
+                           'error'
+                        )
+                        .then(function() {
+                           window.location.href = "{{route('facture.index')}}";
+                        })
+                  
+               }
+         });
+      }
+
+
+   });
+   
+   
+   
+   
+   
  
 </script>
 

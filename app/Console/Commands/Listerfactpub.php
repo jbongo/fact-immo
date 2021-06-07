@@ -49,7 +49,7 @@ class Listerfactpub extends Command
         
         $today = date('Y-m-d');
         
-        $contrats = Contrat::where([['a_demission',false],['deduis_jeton', false], ['est_modele', false]])->orWhere([['a_demission',true],['date_fin_preavis', '>=' ,$today],['deduis_jeton', false], ['est_modele', false]])->get();
+        $contrats = Contrat::where([['a_demission',false],['deduis_jeton', false], ['est_modele', false],['est_soumis_fact_pub', true]])->orWhere([['a_demission',true],['date_fin_preavis', '>=' ,$today],['deduis_jeton', false], ['est_modele', false]])->get();
         
         foreach ($contrats as $contrat) {
             
@@ -85,7 +85,7 @@ class Listerfactpub extends Command
                 
                
                 
-            }elseif($contrat->user->pack_actuel == "starter" && $contrat->duree_gratuite_starter >= $duree_starter ){
+            }elseif($contrat->user->pack_actuel == "starter" && $contrat->duree_gratuite_starter >= $duree_starter && $contrat->forfait_pack_info > 0 ){
             
                 Factpub::create([
                     'user_id' => $contrat->user_id,

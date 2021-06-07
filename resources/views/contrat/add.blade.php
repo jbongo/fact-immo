@@ -128,6 +128,16 @@
                                             </div>
                                         </div>
                                         
+                                        <div class="col-lg-6 col-md-6 col-sm-6">
+                                           
+                                            <div class="form-group row">
+                                                <label class="col-lg-6 col-form-label" for="est_soumis_fact_pub">Générer des facture pub s'il n'est pas soumis aux jetons ?</label>
+                                                <div class="col-lg-6">
+                                                    <input type="checkbox" checked data-toggle="toggle" id="est_soumis_fact_pub" name="est_soumis_fact_pub" data-off="Non" data-on="Oui" data-onstyle="success" data-offstyle="danger">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
                                     </div>
                             </div>
                         </div>
@@ -743,6 +753,8 @@
             "duree_max_starter" : $('#duree_max_starter').val(),
             "duree_gratuite_starter" : $('#duree_gratuite_starter').val(),
             "check_palier_starter" : $("#check_palier_starter").prop('checked'),
+            "est_soumis_fact_pub" : $("#est_soumis_fact_pub").prop('checked'),
+            
             "palier_starter" : $('#palier_starter input').serialize(),
 
             "pourcentage_depart_expert" : $('#pourcentage_depart_expert').val(),
@@ -802,7 +814,7 @@
                             'success'
                         )
                         .then(function() {
-                            // window.location.href = "{{route('mandataire.index')}}";
+                            window.location.href = "{{route('mandataire.index')}}";
                         })
                         // setInterval(() => {
                         //     window.location.href = "{{route('mandataire.index')}}";

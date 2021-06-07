@@ -121,6 +121,9 @@
     $nb = App\Facture::where('statut','en attente de validation')->get()->count();
     $nb_a_payer= App\Facture::nb_facture_a_payer();
     $nb_liste_pub = App\Factpub::where([['validation',0]])->orderBy('id','desc')->get()->count();
+    
+    $nb_notif_pub = Auth()->user()->role == "mandataire" ? App\Facture::where([['user_id',auth()->user()->id],['reglee',false]])->whereIn('type',['pack_pub','carte_visite'])->count() : 0;
+
     $nb_notif =  auth()->user()->demande_facture + $nb + $nb_a_payer + $nb_liste_pub;
     
     
@@ -151,8 +154,10 @@
                   
                     <li   class="{{$li_jetons}}"><a  href="{{route('mandataires.jetons')}}" class=""> <i class="large material-icons" style="font-size:20px;">adjust</i></i>Gestion des jetons  </a></li>
                 @else 
-                    <li  class="{{$li_jetons}}"><a  href="{{route('mandataire.historique_jeton',Crypt::encrypt(Auth::id()))}}" class=""> <i class="large material-icons" style="font-size:20px;">adjust</i></i>Gestion des jetons  </a></li>
                     
+                    @if(Auth()->user()->contrat->deduis_jeton == true)
+                    <li  class="{{$li_jetons}}"><a  href="{{route('mandataire.historique_jeton',Crypt::encrypt(Auth::id()))}}" class=""> <i class="large material-icons" style="font-size:20px;">adjust</i></i>Gestion des jetons  </a></li>
+                    @endif
 
                 @endif
                 <li class="{{$li_affaire}} {{$li_affaire_archive}} {{$li_affaire_toutes}} {{$li_affaire_cloture}} {{ $li_affaire_filleul}}"><a class="sidebar-sub-toggle" href="" ><i class="large material-icons" style="font-size:20px;">folder_open</i>  Affaires <span class="sidebar-collapse-icon ti-angle-down"></span> </a>
@@ -171,7 +176,7 @@
                     </ul>
                 </li>
                 
-                <li class="{{$li_facture}} {{$li_facture_demande}} {{$li_facture_a_payer}} {{$li_facture_hors_delais}} {{$li_facture_a_valider}}" ><a  class="sidebar-sub-toggle"><i class="large material-icons">description</i> Factures @if($nb_notif > 0 && Auth()->user()->role == "admin") <span class="badge badge-danger">{{$nb_notif}}</span> @endif<span class="sidebar-collapse-icon ti-angle-down"></span></a>
+                <li class="{{$li_facture}} {{$li_facture_demande}} {{$li_facture_a_payer}} {{$li_facture_hors_delais}} {{$li_facture_a_valider}}" ><a  class="sidebar-sub-toggle"><i class="large material-icons">description</i> Factures @if($nb_notif > 0 && Auth()->user()->role == "admin") <span class="badge badge-danger">{{$nb_notif}}</span> @endif     @if($nb_notif_pub > 0 && Auth()->user()->role == "mandataire") <span class="badge badge-danger">{{$nb_notif_pub}}</span> @endif      <span class="sidebar-collapse-icon ti-angle-down"></span></a>
                     <ul>
                         <li class="{{$li_facture_gestion}}" ><a href="{{route('facture.index')}}">Gestion</a></li>
                         @if (Auth()->user()->role == "admin")

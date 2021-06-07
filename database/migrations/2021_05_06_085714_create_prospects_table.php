@@ -26,6 +26,8 @@ class CreateProspectsTable extends Migration
             $table->string('telephone_portable')->nullable();
             $table->string('email')->unique();
             
+            
+            
             $table->date('date_naissance')->nullable();
             $table->string('lieu_naissance')->nullable();
             $table->integer('departement_naissance')->nullable();
@@ -34,7 +36,7 @@ class CreateProspectsTable extends Migration
             $table->string('nom_pere')->nullable();
             $table->string('nom_mere')->nullable();
             
-            $table->enum('statut_souhaite',['Auto-entrepreneur','Portage salarial', 'Autre']);
+            $table->enum('statut_souhaite',['auto-entrepreneur','portage-salarial','independant', 'Autre']);
             $table->string('numero_rsac')->nullable();
             $table->string('numero_siret')->nullable();
             
@@ -53,8 +55,10 @@ class CreateProspectsTable extends Migration
             $table->boolean('fiche_envoyee')->default(false);
             $table->boolean('modele_contrat_envoye')->default(false);
             $table->boolean('contrat_envoye')->default(false);
+            $table->boolean('est_mandataire')->default(false);
             
-            
+            // id mandataire lorsque que le prospect devient mandataire 
+            $table->integer('user_id')->nullable();
             
     
             
