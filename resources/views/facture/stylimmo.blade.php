@@ -142,6 +142,12 @@
                                             @endif
                                         </td>
 
+                                        @elseif($facture->type == "pack_pub" && $facture->reglee == true) 
+                                            
+                                        <td width=""  >
+                                            <label data-toggle="tooltip" title="Facture pub réglée par le mandataire"  style="color:rgb(255, 4, 0);">Réglée le {{$facture->date_reglement->format('d/m/Y')}} </label>
+                                        </td>
+                                        
                                         @else 
                                         <td width="" style="background-color:#DCD6E1" >
                                            
