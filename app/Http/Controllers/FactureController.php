@@ -2658,7 +2658,7 @@ public function store_upload_pdf_honoraire(Request $request , $facture_id)
         return redirect()->route('facture.create_upload_pdf_honoraire',$facture_id)->with('ok',__("Le numéro de facture $request->numero_facture existe déjà dans vos factures"));
     }
 
-dd(doubleval($request->montant_ht)."==".gettype(doubleval($request->montant_ht) )."----->".$facture->montant_ht."==".gettype($facture->montant_ht)."****** <br>".doubleval($request->montant_ht) != doubleval($facture->montant_ht));
+dd(doubleval($request->montant_ht)."==".gettype(doubleval($request->montant_ht) )."----->".$facture->montant_ht."==".gettype($facture->montant_ht)."****** <br>".floatval($request->montant_ht) != floatval($facture->montant_ht));
     if(doubleval($request->montant_ht) != $facture->montant_ht ){
         return redirect()->route('facture.create_upload_pdf_honoraire',$facture_id)->with('ok',__("Votre montant HT ( $request->montant_ht € )  ne correspond pas au montant HT  ( $facture->montant_ht € ) de la note d'honoraire. Veuillez contacter l'administrateur."));
     }
