@@ -19,9 +19,9 @@
          <div class="row">
              {{-- {{dd($compromis )}} --}}
          
-                @if (($mandataire->id == $compromis->user_id && $mandataire->contrat->deduis_jeton == true && $compromis->facture_honoraire_partage_porteur_cree == false && $mandataire->nb_mois_pub_restant > 0)
-                || ($mandataire->id == $compromis->agent_id && $mandataire->contrat->deduis_jeton == true && $compromis->facture_honoraire_partage_cree == false && $mandataire->nb_mois_pub_restant > 0)
-                ||  (  $mandataire->contrat->deduis_jeton == true && $facture !=null && $facture->nb_mois_deduis === null &&  $mandataire->nb_mois_pub_restant > 0) )
+                @if (($mandataire->id == $compromis->user_id && $mandataire->contrat->deduis_jeton == true && $compromis->facture_honoraire_partage_porteur_cree == false && $mandataire->nb_mois_pub_restant >= 0)
+                || ($mandataire->id == $compromis->agent_id && $mandataire->contrat->deduis_jeton == true && $compromis->facture_honoraire_partage_cree == false && $mandataire->nb_mois_pub_restant >= 0)
+                ||  (  $mandataire->contrat->deduis_jeton == true && $facture !=null && $facture->nb_mois_deduis === null &&  $mandataire->nb_mois_pub_restant >= 0) )
                 {{-- {{dd($mandataire->contrat->deduis_jeton == true && $compromis->facture_honoraire_partage_cree == false)}} --}}
             <br><br>
                 <div class="row">
