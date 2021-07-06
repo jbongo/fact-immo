@@ -179,6 +179,16 @@
                                         <td width="" >
                                             @if($facture->encaissee == true && $facture->compromis != null )
                                             <a href="{{route('compromis.etat', Crypt::encrypt($facture->compromis->id))}}"  target="_blank"  class="btn btn-warning btn-flat btn-addon  m-b-10 m-l-5 " id="visualiser"><i class="ti-eye"></i>Visualiser</a>
+                                            
+                                            @elseif($facture->type == "pack_pub" && $facture->reglee == true)
+                                            
+                                            <a href="{{route('facture.avoir.create', Crypt::encrypt($facture->id))}}" target="_blank" title="Confirmez que vous avez bien reçu le virement du mandataire" data-toggle="tooltip"  class="btn btn-info  btn-flat btn-addon  m-b-10 m-l-5 " id=""><i class="ti-help"></i>Confirmer l'encaissement</a>
+                                            
+                                            @elseif($facture->type == "pack_pub" && $facture->reglee == false)
+                                                
+                                            <a href="{{route('facture.avoir.create', Crypt::encrypt($facture->id))}}" target="_blank" title="Relancer le mandataire pour le payement de la facture" data-toggle="tooltip"  class="btn btn-danger  btn-flat btn-addon  m-b-10 m-l-5 " id=""><i class="ti-email"></i>Relancer</a>
+                                                
+                                            
                                             @endif
                                         </td> 
                                         @endif

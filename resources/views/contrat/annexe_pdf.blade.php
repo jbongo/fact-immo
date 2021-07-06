@@ -7,16 +7,16 @@
 	color: rgb(12, 2, 2);
 	font-size: 0.9em;
 }
-
+@page { margin: 60px 50px; }
 #footer {
   bottom: 0;
-  border-top: 0.1pt solid rgb(19, 5, 5);
+  /* border-top: 0.1pt solid rgb(19, 5, 5); */
 }
 .page-number:before {
-  content: counter(page)  ;
+  content: counter(page) "/ 6"  ;
 }
 body {
-font-size: 13px;
+font-size: 14px;
 font-family: 'Times New Roman', Times, serif
 }
 </style>
@@ -274,7 +274,7 @@ font-family: 'Times New Roman', Times, serif
 </tr>
 </tbody>
 </table>
-<p>&nbsp;</p>
+
 <p>&nbsp;</p>
 <p>Le MANDATAIRE s'engage &agrave; ne pas d&eacute;passer ou modifier ce bar&egrave;me &agrave; la hausse mais pourra cependant accorder des remises &agrave; la client&egrave;le sur le montant des commissions pr&eacute;vues au dit bar&egrave;me. Ce bar&egrave;me d&rsquo;honoraires s&rsquo;applique sur tous types de mandat (recherche&hellip;, vente&hellip;) li&eacute;s &agrave; une transaction immobili&egrave;re.</p>
 <p>&nbsp;</p>
@@ -283,7 +283,7 @@ font-family: 'Times New Roman', Times, serif
 <p style="text-align: center;">LE MANDANT (paraphe)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; LE MANDATAIRE (paraphe)</p>
 <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;</p>
 <p>&nbsp;</p>
-<p>&nbsp;</p>
+
 <p><strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SIGNATURE POUR L&rsquo;ENSEMBLE DES ANNEXES 1 &agrave; 4 </strong></p>
 <p>La direction se r&eacute;serve le droit de modifier &agrave; tout moment et sans pr&eacute;avis les annexes 1 &agrave; 4. Toute modification ainsi faite est r&eacute;put&eacute;e accept&eacute;e par le mandataire d&egrave;s sa notification par mail. Exception&nbsp;: une modification du pourcentage de r&eacute;mun&eacute;ration directe ainsi que mentionn&eacute;e &agrave; l&rsquo;article 3.1. du contrat.</p>
 <p>&nbsp;</p>

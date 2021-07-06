@@ -39,7 +39,9 @@ class CreateFactureTable extends Migration
             $table->boolean('destinataire_est_mandataire')->default(true);
             $table->text('destinataire')->nullable();
             $table->text('description_produit')->nullable();
-
+            
+            $table->date('date_relance_paiement')->nullable();
+            
 
             $table->timestamps();
         });

@@ -12,7 +12,7 @@
 #footer {
   position: fixed;
   left: 0;
-	right: 0;
+	/* right: 0; */
 	color: rgb(12, 2, 2);
 	font-size: 0.9em;
 }
@@ -22,24 +22,37 @@
   border-top: 0.1pt solid rgb(19, 5, 5);
 }
 .page-number:before {
-  content: counter(page) "/ 9" ;
+  content: counter(page) "/ 11";
 }
 
 body {
-font-size: 13px;
+font-size: 14px;
 font-family: 'Times New Roman', Times, serif
 }
 
 
+@page { margin: 60px 50px; }
+.footer, .paraphe {
+    position: fixed;
+    bottom: 0;
+    left: 0px; right: 0px;  height: 15px; 
+    align-content: center;
+    font-size: 14px;
+
+}
+      
+
+
 </style>
 
-<div id="footer">
+
+<div class="footer">
     <div class="page-number"></div>
 </div>
   
-<h2 style="text-align: center;">CONTRAT D&rsquo;AGENT COMMERCIAL</h2>
-<h3 style="text-align: center;"><strong>&nbsp;N&eacute;gociateur en immobilier</strong></h3>
-<h3 style="text-align: center;"><strong>Sans bureau ni r&eacute;ception de client&egrave;le</strong></h3>
+<h1 style="text-align: center;">CONTRAT D&rsquo;AGENT COMMERCIAL</h1>
+<h2 style="text-align: center;"><strong>&nbsp;N&eacute;gociateur en immobilier</strong></h2>
+<h2 style="text-align: center;"><strong>Sans bureau ni r&eacute;ception de client&egrave;le</strong></h2>
 <p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</p>
 <p style="text-align: center;">Ce contrat est conforme&nbsp;:</p>
 <ul>
@@ -62,7 +75,12 @@ font-family: 'Times New Roman', Times, serif
 <p>Ci-apr&egrave;s d&eacute;nomm&eacute;(e) &laquo;&nbsp;LE MANDATAIRE&nbsp;&raquo;</p>
 <p>D&rsquo;autre part</p>
 <p>&nbsp;</p>
-<p style="text-align: center;"><strong><u>EXPOSE PREALABLE</u></strong></p>
+
+{{-- <div class="" style="" class="paraphes">PARAPHES  &nbsp; Mandataire: <span style="margin-left: 25%">Mandant: </span> </div> --}}
+
+{{-- PAGE 1 --}}
+
+<p style="text-align: center;page-break-before:always"><strong><u>EXPOSE PREALABLE</u></strong></p>
 <p>Monsieur VASILE Jean-Pierre exploite depuis plusieurs ann&eacute;es l&rsquo;activit&eacute; d&rsquo;agent immobilier, g&eacute;rant d&rsquo;immeubles, marchand de biens, publicit&eacute; et marketing, notamment sous la marque commerciale &laquo;&nbsp;STYL&rsquo;IMMO&nbsp;&raquo;, dont il est propri&eacute;taire.</p>
 <p>Cette marque est la propri&eacute;t&eacute; exclusive de Monsieur Jean-Pierre VASILE.</p>
 <p>Elle est exploit&eacute;e par la soci&eacute;t&eacute; {{$parametre->raison_sociale}} et couvre globalement les produits et services suivants&nbsp;:</p>
@@ -84,7 +102,13 @@ font-family: 'Times New Roman', Times, serif
 <p>LE MANDATAIRE ne saurait en aucun cas relever des disposions des articles L7311-1 et suivants du Code du Travail, ni &ecirc;tre soumis aux diverses obligations r&eacute;sultant de ces textes, n'&eacute;tant aucunement subordonn&eacute; au MANDANT ni salari&eacute; par ce dernier.</p>
 <p>LE MANDATAIRE accomplira les activit&eacute;s n&eacute;es de l'exercice du pr&eacute;sent mandat sous la marque "STYL&rsquo;IMMO" ou sous toute autre marque commerciale si le MANDANT devait en changer.</p>
 <p>&nbsp;</p>
-<p><strong><u>Article 2 : CONDITIONS D'EXERCICE DU MANDAT</u></strong></p>
+
+
+
+
+
+{{-- PAGE 2 --}}
+<p style="text-align: center;page-break-before:always"><strong><u>Article 2 : CONDITIONS D'EXERCICE DU MANDAT</u></strong></p>
 <p>LE MANDATAIRE devra &ecirc;tre titulaire et porteur d'une attestation d&eacute;livr&eacute;e par la CCI, conform&eacute;ment &agrave; l'article 4 de la loi N&deg;70-9 du 2 Janvier 1970 (loi "Hoguet") et &agrave; l'article 9 du d&eacute;cret n&deg;72-678 du 20 Juillet 1972 modifi&eacute; par d&eacute;cret n&deg;2005-1315 du 21 octobre 2005.</p>
 <p>Avant de commencer son activit&eacute; et sa prospection, LE MANDATAIRE devra &ecirc;tre titulaire et porteur de cette attestation que le MANDANT s'oblige &agrave; lui faire d&eacute;livrer.</p>
 <p>En sa qualit&eacute; de travailleur ind&eacute;pendant l&eacute;galement habilit&eacute;, LE MANDATAIRE exerce ses activit&eacute;s en dehors de tout lien hi&eacute;rarchique vis-&agrave;-vis de son MANDANT, jouit de la plus grande ind&eacute;pendance et n'est astreint &agrave; aucun horaire de travail ou permanence quelconque.</p>
@@ -101,7 +125,12 @@ font-family: 'Times New Roman', Times, serif
 <p>Le MANDATAIRE est tenu par le secret professionnel.</p>
 <p>Il devra tenir une comptabilit&eacute; r&eacute;guli&egrave;re de tous les documents qui lui sont confi&eacute;s.</p>
 <p>Il fera sa propre publicit&eacute; en tenant compte des textes l&eacute;gaux en vigueur et s'engage &agrave; toujours employer l'appellation &laquo;&nbsp;STYL&rsquo;IMMO&nbsp;&raquo; sous la forme (charte graphique) agr&eacute;&eacute;e par le MANDANT. Toute communication particuli&egrave;re &agrave; son initiative (m&eacute;dia, support &hellip;) devra &ecirc;tre valid&eacute;e par le si&egrave;ge.</p>
-<p><strong><u>Ind&eacute;pendance juridique du mandataire&nbsp;:</u></strong></p>
+
+<div class="paraphe" style="text-align: left;  margin-right: 1%; margin-left: 5%; margin-top: 20px;" class="paraphes">PARAPHES  &nbsp; Mandataire: <span style="margin-left: 25%">Mandant:</span> </div>
+
+
+<p style="text-align: center;page-break-before:always"><strong><u>Ind&eacute;pendance juridique du mandataire&nbsp;:</u></strong></p>
+
 <p>Les parties reconnaissent express&eacute;ment que la pr&eacute;sente convention ne s'analyse pas comme un louage de service, mais qu'elle a le caract&egrave;re d'un mandat.</p>
 <p>S'il emploie un v&eacute;hicule pour son transport, il appartient au MANDATAIRE de prendre toutes les pr&eacute;cautions d'assurances n&eacute;cessaires car n'ayant aucune part dans ses d&eacute;cisions, le MANDANT ne peut encourir aucune responsabilit&eacute; &agrave; l'&eacute;gard de quiconque ou de tiers transport&eacute;s, ni dans le cas o&ugrave; le MANDATAIRE serait victime d'un accident dans l'exercice de son mandat.</p>
 <p>Il devra souscrire une police d'assurance couvrant sa responsabilit&eacute; civile professionnelle, tant &agrave; l'&eacute;gard des tiers que du MANDANT, pour son activit&eacute; de n&eacute;gociateur en immobilier ind&eacute;pendant telle que d&eacute;finie au pr&eacute;sent contrat.</p>
