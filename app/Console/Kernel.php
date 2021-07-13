@@ -28,6 +28,8 @@ class Kernel extends ConsoleKernel
                  ->daily();
         $schedule->command('command:updatetva')
                  ->daily();
+        $schedule->command('command:updatejeton')
+                 ->daily();
                  
         $schedule->command('command:cloturercompromis')
         ->daily();
