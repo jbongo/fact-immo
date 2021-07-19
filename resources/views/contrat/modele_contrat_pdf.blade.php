@@ -49,6 +49,9 @@ font-family: 'Times New Roman', Times, serif
 <div class="footer">
     <div class="page-number"></div>
 </div>
+
+<div class="paraphe" style="text-align: left;  margin-right: 1%; margin-left: 5%; margin-top: 20px;" class="paraphes">PARAPHES  &nbsp; Mandataire: <span style="margin-left: 25%">Mandant:</span> </div>
+
   
 <h1 style="text-align: center;">CONTRAT D&rsquo;AGENT COMMERCIAL</h1>
 <h2 style="text-align: center;"><strong>&nbsp;N&eacute;gociateur en immobilier</strong></h2>
@@ -62,7 +65,7 @@ font-family: 'Times New Roman', Times, serif
 <li>&agrave; la loi "E.N.L." n&deg; 2006-872 du 13 Juillet 2006</li>
 </ul>
 <p><u>Entre les soussign&eacute;s </u>:</p>
-<p><strong>La soci&eacute;t&eacute; {{$parametre->raison_sociale}}&nbsp;, </strong>SARL au capital de {{$parametre->capital}} &euro; inscrite au R.C&nbsp;.S. de N&icirc;mes, sous le num&eacute;ro {{$parametre->numero_rcs}}, titulaire de la carte professionnelle &laquo;&nbsp;Agent Immobilier&nbsp;&raquo; n&deg; {{$parametre->numero_carte_pro}} (transactions sur immeubles et fonds de commerce), d&eacute;livr&eacute;e le 12/06/2014 par {{$parametre->carte_pro_delivre_par}} (organisme de garantie&nbsp;: {{$parametre->adresse_organisme_de_garantie}}), dont le si&egrave;ge est sis {{$parametre->adresse}}, l&eacute;galement repr&eacute;sent&eacute;e par {{$parametre->gerant}}, g&eacute;rante.</p>
+<p><strong>La soci&eacute;t&eacute; {{$parametre->raison_sociale}}&nbsp;, </strong>SARL au capital de {{$parametre->capital}} &euro; inscrite au R.C&nbsp;.S. de N&icirc;mes, sous le num&eacute;ro {{$parametre->numero_rcs}}, titulaire de la carte professionnelle &laquo;&nbsp;Agent Immobilier&nbsp;&raquo; n&deg; {{$parametre->num_carte_pro}} (transactions sur immeubles et fonds de commerce), d&eacute;livr&eacute;e le 12/06/2014 par {{$parametre->carte_pro_delivre_par}} (organisme de garantie&nbsp;: {{$parametre->adresse_organisme_de_garantie}}), dont le si&egrave;ge est sis {{$parametre->adresse}}, {{$parametre->code_postal}} {{$parametre->ville}}, l&eacute;galement repr&eacute;sent&eacute;e par {{$parametre->gerant}}, g&eacute;rante.</p>
 <p>Ci-apr&egrave;s d&eacute;nomm&eacute; &laquo;&nbsp;LE MANDANT&nbsp;&raquo;</p>
 <p style="text-align: right;">D&rsquo;une part</p>
 <p>Et&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Pr&eacute;sent&eacute;(e) au R&eacute;seau par&nbsp;:</p>
@@ -76,7 +79,6 @@ font-family: 'Times New Roman', Times, serif
 <p>D&rsquo;autre part</p>
 <p>&nbsp;</p>
 
-{{-- <div class="" style="" class="paraphes">PARAPHES  &nbsp; Mandataire: <span style="margin-left: 25%">Mandant: </span> </div> --}}
 
 {{-- PAGE 1 --}}
 
@@ -125,8 +127,6 @@ font-family: 'Times New Roman', Times, serif
 <p>Le MANDATAIRE est tenu par le secret professionnel.</p>
 <p>Il devra tenir une comptabilit&eacute; r&eacute;guli&egrave;re de tous les documents qui lui sont confi&eacute;s.</p>
 <p>Il fera sa propre publicit&eacute; en tenant compte des textes l&eacute;gaux en vigueur et s'engage &agrave; toujours employer l'appellation &laquo;&nbsp;STYL&rsquo;IMMO&nbsp;&raquo; sous la forme (charte graphique) agr&eacute;&eacute;e par le MANDANT. Toute communication particuli&egrave;re &agrave; son initiative (m&eacute;dia, support &hellip;) devra &ecirc;tre valid&eacute;e par le si&egrave;ge.</p>
-
-<div class="paraphe" style="text-align: left;  margin-right: 1%; margin-left: 5%; margin-top: 20px;" class="paraphes">PARAPHES  &nbsp; Mandataire: <span style="margin-left: 25%">Mandant:</span> </div>
 
 
 <p style="text-align: center;page-break-before:always"><strong><u>Ind&eacute;pendance juridique du mandataire&nbsp;:</u></strong></p>
