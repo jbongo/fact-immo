@@ -218,6 +218,11 @@ class ContratController extends Controller
             "modif_date_fin_preavis" => $contrat->date_fin_preavis == $request->date_fin_preavis ? false : true ,
             "date_fin_droit_suite" => $contrat->date_fin_droit_suite,
             "modif_date_fin_droit_suite" => $contrat->date_fin_droit_suite == $request->date_fin_droit_suite ? false : true ,
+        
+// Contrat et annexe pdf
+
+            "contrat_pdf" => $contrat->contrat_pdf,
+            "modif_contrat_pdf" => $contrat->contrat_pdf == $request->contrat_pdf ? false : true ,
         ]);
         
         // ######## FIN SAUVEGARDE HISTORIQUE ######### 
@@ -933,12 +938,24 @@ class ContratController extends Controller
      */
     public function telecharger_contrat($contrat_id)
     {
-        $contrat = Contrat::where('id',Crypt::decrypt($contrat_id))->first() ;    
+        $contrat =Contrat::where('id',Crypt::decrypt($contrat_id))->first() ;    
         
         return response()->download($contrat->contrat_pdf);
 
     }
     
+      /**
+     * Télécharger le contrat
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function telecharger_historiquecontrat($contrat_id)
+    {
+        $contrat = HistoriqueContrat::where('id',Crypt::decrypt($contrat_id))->first() ;    
+        
+        return response()->download($contrat->contrat_pdf);
+
+    }
     
     
     

@@ -18,7 +18,7 @@
 
                 <div class="panel-body">
                 @if ($modele !=null)
-                    <a class="btn btn-success btn-flat btn-addon btn-sm m-b-10 m-l-5  " href="{{route('contrat.model_create',$user_id)}}" id="terminer"><i class="ti-save"></i> &nbsp; Appliquer le Modèle par defaut</a>
+                    {{-- <a class="btn btn-success btn-flat btn-addon btn-sm m-b-10 m-l-5  " href="{{route('contrat.model_create',$user_id)}}" id="terminer"><i class="ti-save"></i> &nbsp; Appliquer le Modèle par defaut</a> --}}
                 @else 
                     <span class="color-danger " id="terminer"><i class="ti-plus"></i>Vous n'avez pas encore crée de modèle de contrat </span> <span class="color-default"> (voir dans paramètre)</span>                    
                 @endif
@@ -131,7 +131,7 @@
                                         <div class="col-lg-6 col-md-6 col-sm-6">
                                            
                                             <div class="form-group row">
-                                                <label class="col-lg-6 col-form-label" for="est_soumis_fact_pub">Générer des facture pub s'il n'est pas soumis aux jetons ?</label>
+                                                <label class="col-lg-6 col-form-label" for="est_soumis_fact_pub">Générer des factures pub s'il n'est pas soumis aux jetons ?</label>
                                                 <div class="col-lg-6">
                                                     <input type="checkbox" checked data-toggle="toggle" id="est_soumis_fact_pub" name="est_soumis_fact_pub" data-off="Non" data-on="Oui" data-onstyle="success" data-offstyle="danger">
                                                 </div>
@@ -478,18 +478,18 @@
 
                                 <div class="table-responsive">
                                     <table class="table table-bordered">
-                                        <thead>
+                                        {{-- <thead>
                                             <tr>
                                                
                                                 <th>Passerelle</th>
                                                 <th>Quantité restante</th>
                                                 <th>Prix de vente (€)</th>
-                                                <th>Quantité</th>
+                                                <th>Quantité</th> --}}
                                                 {{-- <th>Prix de vente</th>  --}}
                                              
                                               
-                                            </tr>
-                                        </thead>
+                                            {{-- </tr>
+                                        </thead> --}}
                                         {{-- <tbody class="input_fields_wrap_pub">
                                             @foreach ($passerelles as $passerelle )
                                                 <tr>

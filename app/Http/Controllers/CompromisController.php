@@ -671,7 +671,7 @@ class CompromisController extends Controller
            if($compromis->date_vente != null){
                 if($compromis->date_vente->format('Y-m-d') != $date_vente){
                     
-                    Mail::to("gestion@stylimmo.com")->send(new ModifCompromis($compromis, $request,"admin"));
+                    // Mail::to("gestion@stylimmo.com")->send(new ModifCompromis($compromis, $request,"admin"));
                 }
            }else{
                 $compromis->date_vente = $date_vente;

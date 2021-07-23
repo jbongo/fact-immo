@@ -108,6 +108,12 @@ class CreateHistoriquecontratTable extends Migration
             $table->boolean('modif_date_fin_preavis')->default(false);
             $table->date('date_fin_droit_suite')->nullable();
             $table->boolean('modif_date_fin_droit_suite')->default(false);
+            
+            
+// Contrat pdf et annexe
+            $table->boolean('modif_contrat_pdf')->default(false);
+            $table->string('contrat_pdf')->nullable();
+
             $table->timestamps();
         });
     }

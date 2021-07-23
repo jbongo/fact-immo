@@ -22,7 +22,7 @@
                     <div class="col-lg-12 col-md-12 col-sm-12">
                        <ul class="nav nav-pills nav-tabs" id="myTabs">
                           <li id="li_a_payer" class="active"><a href="#a_payer" data-toggle="pill"> <i class="material-icons" style="font-size: 15px;">account_balance_wallet</i> @lang('Honoraires à payer')<span class="badge badge-warning"> {{App\Facture::nb_facture_a_payer()}}</span></a> </li>
-                          <li id="li_non_ajoute_nav"><a href="#non_ajoute_nav" data-toggle="pill"> <i class="material-icons" style="font-size: 15px;">account_balance_wallet</i> @lang('Honoraires non ajoutées')</a></li>
+                          <li id="li_non_ajoute_nav"><a href="#non_ajoute_nav" data-toggle="pill"> <i class="material-icons" style="font-size: 15px;">account_balance_wallet</i> @lang('Honoraires non ajoutées + Attente de Valid.')</a></li>
                           <li id="li_etat_fin_nav"><a href="#etat_fin_nav" data-toggle="pill"> <i class="material-icons" style="font-size: 15px;">account_balance_wallet</i> @lang('Etat Financier')</a></li>
                           <li id="li_reitere_nav"><a href="#reitere_nav" data-toggle="pill"> <i class="material-icons" style="font-size: 15px;">account_balance_wallet</i> @lang('Honoraires réitérées non crées')</a></li>
                          

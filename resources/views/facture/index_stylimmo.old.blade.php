@@ -84,7 +84,7 @@
                                 <tr>
                                     <td width="" >
                                        @if($facture->type != "avoir")
-                                            @if($facture->compromis_id != null)
+                                            @if($facture->compromis != null)
                                               
                                                 <a class="color-info" title="Télécharger la facture stylimmo" href="{{route('facture.telecharger_pdf_facture_stylimmo', Crypt::encrypt($facture->id))}}"  class="  m-b-10 m-l-5 " id="ajouter">{{$facture->numero}}  <i class="ti-download"></i> </a>
                                             
@@ -105,7 +105,7 @@
                                     </td>
                                     <td width="" >
                                         {{-- <label class="color-info">{{$facture->compromis->numero_mandat}} </label>  --}}
-                                        @if($facture->compromis_id != null)
+                                        @if($facture->compromis != null)
                                              <label class="color-info"><a href="{{route('compromis.show',Crypt::encrypt($facture->compromis->id) )}}" target="_blank" title="@lang('voir l\'affaire  ') ">{{$facture->compromis->numero_mandat}}  <i style="font-size: 17px" class="material-icons color-success">account_balance</i></a></label>
                                         @else 
                                             <label class="color-danger">{{$facture->type}}  </label>
@@ -113,12 +113,12 @@
                                     </td>
                                     <td  style="">
 
-                                        @if($facture->compromis_id != null) 
+                                        @if($facture->compromis != null) 
 
-                                            @if($facture->charge == "Vendeur")
-                                                <strong>{{ substr($facture->compros_nom_vendeur,0,20)}}</strong> 
+                                            @if($facture->compromis->charge == "Vendeur")
+                                                <strong>{{ substr($facture->compromis->nom_vendeur,0,20)}}</strong> 
                                             @else
-                                                <strong>{{ substr($facture->compros_nom_acquereur,0,20)}}</strong> 
+                                                <strong>{{ substr($facture->compromis->nom_acquereur,0,20)}}</strong> 
                                             @endif   
                                         @endif
                                     </td>
@@ -126,7 +126,7 @@
                                     <td width="" >
                                         <label class="color-info">
                                             @if($facture->user !=null)
-                                            <a href="{{route('switch_user',Crypt::encrypt($facture->user_id) )}}" data-toggle="tooltip" title="@lang('Se connecter en tant que ') {{$facture->user->nom}}">{{$facture->user->nom}} {{$facture->user->prenom}}<i style="font-size: 17px" class="material-icons color-success">person_pin</i></a>  
+                                            <a href="{{route('switch_user',Crypt::encrypt($facture->user->id) )}}" data-toggle="tooltip" title="@lang('Se connecter en tant que ') {{$facture->user->nom}}">{{$facture->user->nom}} {{$facture->user->prenom}}<i style="font-size: 17px" class="material-icons color-success">person_pin</i></a>  
                                             @endif
                                         </label> 
                                     </td>
@@ -145,9 +145,9 @@
                                     </td> --}}
                                     {{-- @if($facture->type == "stylimmo") --}}
                                     <td width="" >
-                                        @if($facture->compromis_id != null)
+                                        @if($facture->compromis != null)
                                             <label class="color-info">
-                                                {{$facture->compro_date_vente->format('d/m/Y')}} 
+                                                {{$facture->compromis->date_vente->format('d/m/Y')}} 
                                             </label> 
                                         @endif
                                     </td>
@@ -159,8 +159,8 @@
                                     @endif --}}
                                     {{--  alert paiement--}}
                                     @php
-                                     if($facture->compromis_id != null){
-                                         $interval = strtotime(date('Y-m-d')) - strtotime($facture->compro_date_vente);
+                                     if($facture->compromis != null){
+                                         $interval = strtotime(date('Y-m-d')) - strtotime($facture->compromis->date_vente);
                                         $diff_jours = $interval / 86400 ;
                                      }
                                         
@@ -170,7 +170,7 @@
                                     @if($facture->type == "stylimmo" && $facture->a_avoir == false)
                                     <td width="" >
 
-                                        @if($facture->compromis_id != null)
+                                        @if($facture->compromis != null)
                                             @if( $facture->encaissee == false && $diff_jours < 3)
                                                 <label  style="color:lime">En attente de paiement</label>
                                             @elseif( $facture->encaissee == false && $diff_jours >=3 && $diff_jours <=6)
@@ -212,8 +212,8 @@
                                     </td>
                                     
                                     <td width="" >
-                                        @if($facture->encaissee == true && $facture->compromis_id != null )
-                                        <a href="{{route('compromis.etat', Crypt::encrypt($facture->compromis_id))}}"  target="_blank"  class="btn btn-warning btn-flat btn-addon  m-b-10 m-l-5 " id="visualiser"><i class="ti-eye"></i>Visualiser</a>
+                                        @if($facture->encaissee == true && $facture->compromis != null )
+                                        <a href="{{route('compromis.etat', Crypt::encrypt($facture->compromis->id))}}"  target="_blank"  class="btn btn-warning btn-flat btn-addon  m-b-10 m-l-5 " id="visualiser"><i class="ti-eye"></i>Visualiser</a>
                                         @endif
                                     </td> 
                                     @endif
@@ -221,11 +221,11 @@
                                     <td width="" >
 
                                         @if($facture->type != "avoir")
-                                            @if($facture->a_avoir == 0 && $facture->encaissee == 0 && $facture->compromis_id != null  && auth()->user()->role == "admin") 
+                                            @if($facture->a_avoir == 0 && $facture->encaissee == 0 && $facture->compromis != null  && auth()->user()->role == "admin") 
 
                                                 <a href="{{route('facture.avoir.create', Crypt::encrypt($facture->id))}}" target="_blank"  class="btn btn-info  btn-flat btn-addon  m-b-10 m-l-5 " id=""><i class="ti-link"></i>créer</a>
 
-                                            @elseif($facture->a_avoir == 0 && $facture->encaissee == 0 && $facture->compromis_id == null  && auth()->user()->role == "admin") 
+                                            @elseif($facture->a_avoir == 0 && $facture->encaissee == 0 && $facture->compromis == null  && auth()->user()->role == "admin") 
 
                                                 <a href="{{route('facture.avoir.create', Crypt::encrypt($facture->id))}}" target="_blank"  class="btn btn-info  btn-flat btn-addon  m-b-10 m-l-5 " id=""><i class="ti-link"></i>créer</a>
                                             @elseif($facture->a_avoir == 1 && $facture->avoir() != null)

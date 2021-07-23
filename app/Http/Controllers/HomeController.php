@@ -80,6 +80,11 @@ class HomeController extends Controller
                 $nb_sous_compromis_N = 0;
                 $nb_en_attente_N = 0;
                 $nb_encaisse_N = 0;
+                
+                
+  /*****************
+    ######              ADMIN        ######
+*****************/
 
      if(Auth::user()->role == "admin"){
             //  ######## Sur l'année N ##########
@@ -149,12 +154,26 @@ class HomeController extends Controller
                 $ca_glo_n = $ca_encai_n + $ca_att_n + $ca_sous_offre_n + $ca_sous_compromis_n;
                 $nb_global_N += ( $nb_encaisse_n + $nb_en_attente_n + $nb_sous_compromis_n + $nb_sous_offre_n);       
                 $ca_global_N [] = round($ca_glo_n,2);
-               
-          
+                
+                
+                
+                
+               // ########### Autres chiffres
+
+                //Nombre d'affaires en cours (Nombre d'affaires non cloturées)
+                
+                $nb_affaires_en_cours = Compromis::where([['archive',false],['cloture_affaire','<',2]])->count();
+                
 
             }
 
          } 
+         
+         
+/*****************
+    ######              MANDATAIRE        ######
+*****************/
+
         else{
 
            
@@ -380,8 +399,17 @@ class HomeController extends Controller
 
 
 
-}
+                // ########### Autres chiffres
 
+                //Nombre d'affaires en cours (Nombre d'affaires non cloturées partagées ou non)
+                
+                $nb_affaires_en_cours = Compromis::where('user_id',Auth::id())->orWhere('agent_id',Auth::id())->where(function($query){                
+                    $query->where([['archive',false],['cloture_affaire','<',2]]);
+                })->get()->count();
+                // dd($nb_affaires_en_cours);
+
+}
+// Fin else
 
         // dd($ca_global_N);
 // dd( $ca_global_N);
@@ -393,21 +421,41 @@ class HomeController extends Controller
             $CA_N[] = $ca_sous_compromis_N; 
 
 // dd($CA_N);
+
             $STATS = array();
-            $nb_affaires = Compromis::count();
-            $nb_mandataires = User::where('role','mandataire')->count();
+            
+
+
+
+
+            // ####### AUTRE CALCULS 
+    
+            //    Nombre de mandataires actifs
+            $nb_mandataires_actifs = Contrat::where('est_fin_droit_suite',false)->count();
+            
+            // Nb mandataire ayants saisis une affaire à l'année N
+            $nb_mandataires_actifs_n = sizeof(Compromis::where('created_at','like',"%$annee_n%" )->select('user_id')->distinct()->get()->toArray() ); 
+            
+            
+            
+            
             $nb_filleuls = Filleul::where('expire',0)->count();
-      
-        
-            $STATS["nb_affaires"] = $nb_affaires;
+
+
+
+
+
+
+
+            $STATS["nb_affaires_en_cours"] = $nb_affaires_en_cours;
             $STATS["nb_global_N"] = $nb_global_N;
             $STATS["nb_sous_offre_N"] = $nb_sous_offre_N;
             $STATS["nb_sous_compromis_N"] = $nb_sous_compromis_N;
             $STATS["nb_en_attente_N"] = $nb_en_attente_N;
             $STATS["nb_encaisse_N"] = $nb_encaisse_N;
             $STATS["annee"] = $annee_n;
-        
-            $STATS["nb_mandataires"] = $nb_mandataires;
+            $STATS["nb_mandataires_actifs_n"] = $nb_mandataires_actifs_n;
+            $STATS["nb_mandataires_actifs"] = $nb_mandataires_actifs;
             $STATS["nb_filleuls"] = $nb_filleuls;
 
            

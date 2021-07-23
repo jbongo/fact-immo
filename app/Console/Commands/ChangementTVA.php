@@ -66,7 +66,7 @@ class ChangementTVA extends Command
                 $tva_prochaine->update();
                 $tva_encour->update();
                 
-            Mail::to("gestion@stylimmo.com")->send(new ChangementTVAMail($tva_encour->tva_actuelle ,$tva_prochaine->tva_actuelle));
+            // Mail::to("gestion@stylimmo.com")->send(new ChangementTVAMail($tva_encour->tva_actuelle ,$tva_prochaine->tva_actuelle));
                 
             }
         

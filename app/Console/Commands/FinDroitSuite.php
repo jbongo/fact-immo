@@ -68,7 +68,7 @@ class FinDroitSuite extends Command
                     Mail::to($mandataire->email)->send(new NotifFinDroitSuite($contrat));
                 
                 
-                Mail::to("gestion@stylimmo.com")->send(new NotifFinDroitSuite($contrat));
+                // Mail::to("gestion@stylimmo.com")->send(new NotifFinDroitSuite($contrat));
             }
             
         }

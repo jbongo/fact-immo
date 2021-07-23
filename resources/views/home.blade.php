@@ -152,37 +152,18 @@
 
 
 
-{{-- Chiffre d'affaires Styl HT mensuels N BAR --}}
-
-<div class="row">
- <!-- Bar Chart -->
-    <div class="col-sm-12 col-md-12">
-        <div class="panel">
-            <div class="panel-heading">
-                <div class="panel-title">
-                    <h4>Chiffre d'affaires Styl HT mensuels {{config('stats.STATS.annee')}} </h4>
-                </div>
-            </div>
-            <div class="panel-body">
-                <canvas id="barChart"></canvas>
-            </div>
-        </div>
-    </div>
-</div>
-
-
 {{-- ############# --}}
 
 <div class="row">
-<div class="col-lg-3">
+<div class="col-lg-2">
     <div class="card">
         <div class="stat-widget-five">
             <div class="stat-icon">
                 <i class="ti-home bg-primary"></i>
             </div>
             <div class="stat-content">
-                <div class="stat-heading color-primary"><strong>Affaires</strong></div>
-                <div class="stat-text">{{config('stats.STATS')["nb_affaires"]}}</div>
+                <div class="stat-heading color-primary"><strong>Affaires en cours</strong></div>
+                <div class="stat-text">{{config('stats.STATS')["nb_affaires_en_cours"]}}</div>
             </div>
         </div>
     </div>
@@ -194,8 +175,8 @@
                 <i class="ti-user bg-success"></i>
             </div>
             <div class="stat-content">
-                <div class="stat-heading color-success"><strong>Mandataires</strong></div>
-                <div class="stat-text">{{config('stats.STATS')["nb_mandataires"] }}</div>
+                <div class="stat-heading color-success"><strong>Mandataires actifs</strong></div>
+                <div class="stat-text">{{config('stats.STATS')["nb_mandataires_actifs"] }}</div>
             </div>
         </div>
     </div>
@@ -408,67 +389,6 @@
 
 
 <script>
-
-
-//bar chart ANNEE N
-var ctx = document.getElementById("barChart");
-//    ctx.height = 200;
-    var myChart = new Chart(ctx, { 
-        type: 'bar',
-        data: {
-            labels: ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet","Août","Septembre","Octobre","Novembre","Décembre"],
-            datasets: [
-
-                {
-                    label: "Sous offre",
-                    data: {{json_encode(config('stats.CA_N')[3])}},
-                    borderColor: "#FFA500",
-                    borderWidth: "0",
-                    backgroundColor: "#FFA500"
-                },
-                {
-                    label: "Sous compromis",
-                    data: {{json_encode(config('stats.CA_N')[4])}},
-                    borderColor: "rgba(10, 210, 255, 1)",
-                    borderWidth: "0",
-                    backgroundColor: "rgba(10, 210, 255, 1)"
-                },
-               
-                {
-                    label: "En attente",
-                    data: {{json_encode(config('stats.CA_N')[1])}},
-                    borderColor: "rgba(0,0,0,0.09)",
-                    borderWidth: "0",
-                    backgroundColor: "rgba(0,0,0,0.07)"
-                },
-                {
-                    label: "Encaissé",
-                    data: {{json_encode(config('stats.CA_N')[2])}},
-                    borderColor: "rgba(110, 255, 26, 1)",
-                    borderWidth: "0",
-                    backgroundColor: "rgba(110, 255, 26, 1)"
-                },
-                {
-                    label: "Général",
-                    data: {{json_encode(config('stats.CA_N')[0])}},
-                    borderColor: "rgba(255, 26, 26, 1)",
-                    borderWidth: "0",
-                    backgroundColor: "rgba(255, 26, 26, 1)"
-                }
-                            
-                        ]
-        },
-        options: {
-            scales: {
-              
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: true
-                    }
-                                }]
-            }
-        }
-    });
 
 
    

@@ -103,6 +103,8 @@ Route::middleware('auth')->group(function(){
 
     // factures
     Route::get('/factures','FactureController@index')->name('facture.index');
+    Route::get('/factures/test','FactureController@index_test')->name('facture.index_test');
+    Route::get('/factures/test/json','FactureController@index_test_json')->name('facture.index_test_json');
     Route::get('/factures/hors-delais','FactureController@hors_delais')->name('facture.hors_delais');
     Route::get('/factures/create','FactureController@create')->name('facture.create');
     Route::get('/factures/packpub','FactureController@packpub')->name('facture.packpub');
@@ -194,6 +196,7 @@ Route::middleware('auth')->group(function(){
     Route::get('/contrat/reinitialiser/{contrat_id}','ContratController@reinitialiser')->name('contrat.reinitialiser');
      
     Route::get('/contrat/telecharger/{contrat_id}','ContratController@telecharger_contrat')->name('contrat.telecharger');
+    Route::get('/historiquecontrat/telecharger/{contrat_id}','ContratController@telecharger_historiquecontrat')->name('historiquecontrat.telecharger');
     Route::get('/contrat/envoyer-contrat-mail/','ContratController@envoyer_contrat_mail')->name('contrat.envoyer_contrat_mail');
     Route::get('/contrat/envoyer-contrat-non-signe-mail/{contrat_id}','ContratController@envoyer_contrat_non_signe_mail')->name('contrat.envoyer_contrat_non_signe_mail');
     

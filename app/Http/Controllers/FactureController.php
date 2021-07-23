@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use Auth;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Facture;
@@ -27,6 +28,88 @@ use App\Historique;
 
 class FactureController extends Controller
 {
+    
+    public function index_test(){
+    
+        $factureStylimmos = DB::table('factures')
+        ->whereIn('type',['stylimmo','avoir','pack_pub','carte_visite','communication','autre'])
+        ->join('compromis','factures.compromis_id','=','compromis.id' )
+        ->join('users','factures.user_id','=', 'users.id')
+        ->select('factures.*', 'compromis.charge as compro_charge',  'compromis.created_at as compro_created_at', 'compromis.updated_at as compro_updated_at ', 'compromis.nom_vendeur as compro_nom_vendeur',
+                'compromis.nom_acquereur as compro_nom_acquereur', 'compromis.numero_mandat as compro_numero_mandat', 'compromis.date_vente as compro_date_vente',
+                'users.nom as user_nom','users.prenom as user_prenom'
+                )
+        ->get();
+        $datas = ["total" => sizeof($factureStylimmos), "totalNotFiltered"=> sizeof($factureStylimmos) ];
+        
+        
+        
+        $rows = array();
+        foreach ($factureStylimmos as $fact) {
+        
+            $values = [
+            "id"=> $fact->id,
+            "numero"=> $fact->numero,
+            "compro_numero_mandat"=> $fact->compro_numero_mandat,
+            "compro_charge"=> $fact->compro_charge,
+            ];
+            
+            
+            array_push($rows, $values );
+           
+        }
+        
+        $rows = array("rows"=>$rows);
+        // dd($datas);
+        $datas =  array_merge($datas, $rows);
+        
+        $datas = json_encode($datas);
+        
+        // dd($datas);
+        return view('facture.stylimmo_test', compact('factureStylimmos'));
+    }
+    
+    public function index_test_json(){
+    
+        $factureStylimmos = DB::table('factures')
+        ->whereIn('type',['stylimmo','avoir','pack_pub','carte_visite','communication','autre'])
+        ->join('compromis','factures.compromis_id','=','compromis.id' )
+        ->join('users','factures.user_id','=', 'users.id')
+        ->select('factures.*', 'compromis.charge as compro_charge',  'compromis.created_at as compro_created_at', 'compromis.updated_at as compro_updated_at ', 'compromis.nom_vendeur as compro_nom_vendeur',
+                'compromis.nom_acquereur as compro_nom_acquereur', 'compromis.numero_mandat as compro_numero_mandat', 'compromis.date_vente as compro_date_vente',
+                'users.nom as user_nom','users.prenom as user_prenom'
+                )
+        ->get();
+        // dd($factureStylimmos);
+        
+        $datas = ["total" => sizeof($factureStylimmos), "totalNotFiltered"=> sizeof($factureStylimmos) ];
+        
+        $rows = array();
+        foreach ($factureStylimmos as $fact) {
+        
+            $values = [
+            "id"=> $fact->id,
+            "numero"=> $fact->numero,
+            "compro_numero_mandat"=> $fact->compro_numero_mandat,
+            ];
+            
+            
+            array_push($rows, $values );
+           
+        }
+        
+        $rows = array("rows"=>$rows);
+        // dd($datas);
+        $datas =  array_merge($datas, $rows);
+        
+        $datas = json_encode($datas);
+        
+        // dd($datas);
+        
+  return $datas;
+    }
+    
+    
     /**
      * Afficher toutes les factures
      *
@@ -38,8 +121,38 @@ class FactureController extends Controller
         //
     
         if(auth()->user()->role == "admin"){
-            $factureStylimmos = Facture::whereIn('type',['stylimmo','avoir','pack_pub','carte_visite','communication','autre'])->latest()->get();
-            $factureHonoraires = Facture::whereIn('type',['honoraire','partage','partage_externe','parrainage','parrainage_partage'])->latest()->get();
+            // $factureStylimmos = Facture::whereIn('type',['stylimmo','avoir','pack_pub','carte_visite','communication','autre'])->latest()->get();
+            
+            // $avant = microtime(true);
+            // $après = microtime(true);
+            // var_dump($après - $avant); // en micro secondes.
+
+            $factureStylimmos = DB::table('factures')
+            ->whereIn('type',['stylimmo','avoir','pack_pub','carte_visite','communication','autre'])
+            ->join('compromis','factures.compromis_id','=','compromis.id' )
+            ->join('users','factures.user_id','=', 'users.id')
+            ->select('factures.*', 'compromis.charge as compro_charge',  'compromis.created_at as compro_created_at', 'compromis.updated_at as compro_updated_at ', 'compromis.nom_vendeur as compro_nom_vendeur',
+                    'compromis.nom_acquereur as compro_nom_acquereur', 'compromis.nom_agent as compro_nom_agent' ,'compromis.numero_mandat as compro_numero_mandat', 'compromis.date_vente as compro_date_vente',
+                    'users.nom as user_nom','users.prenom as user_prenom'
+                    )
+            ->latest()
+            ->get();
+            // dd($factureStylimmos);
+            
+            // $factureHonoraires = Facture::whereIn('type',['honoraire','partage','partage_externe','parrainage','parrainage_partage'])->latest()->get();
+            
+            $factureHonoraires = DB::table('factures')
+            ->whereIn('type',['honoraire','partage','partage_externe','parrainage','parrainage_partage'])
+            ->join('compromis','factures.compromis_id','=','compromis.id' )
+            ->join('users','factures.user_id','=', 'users.id')
+            ->select('factures.*', 'compromis.charge as compro_charge',  'compromis.created_at as compro_created_at', 'compromis.updated_at as compro_updated_at ', 'compromis.nom_vendeur as compro_nom_vendeur',
+                    'compromis.nom_acquereur as compro_nom_acquereur', 'compromis.nom_agent as compro_nom_agent' , 'compromis.numero_mandat as compro_numero_mandat', 'compromis.date_vente as compro_date_vente',
+                    'compromis.cloture_affaire as compro_cloture_affaire','compromis.agent_id as compro_agent_id','compromis.demande_facture as compro_demande_facture','compromis.user_id as compro_user_id','compromis.cloture_affaire as compro_cloture_affaire',
+                    'users.nom as user_nom','users.prenom as user_prenom'
+                    )
+            ->latest()
+            ->get();
+            
             $factureCommunications = Facture::where('type',['pack_pub','carte_visite'])->latest()->get();
             
             $nb_comm_non_regle  = Facture::where('reglee',false)->whereIn('type',['pack_pub','carte_visite'])->count();

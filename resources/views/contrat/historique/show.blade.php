@@ -630,6 +630,30 @@
                                         </div>
                                     </div>
                                 </div>
+                                
+                                
+                                <div class="panel-body">
+                                    <fieldset class="col-md-12">
+                                        <legend>Documents</legend>
+                                        <div class="panel panel-warning">
+                                            <div class="panel-body">
+                
+                                                
+                
+                                                <div class="row">
+                                                    @if($contrat->contrat_pdf)
+                                                    <a href="{{route('historiquecontrat.telecharger', Crypt::encrypt($contrat->id))}}"data-toggle="tooltip" title="Réinitialiser le contrat"  class="btn btn-danger btn-flat btn-addon "><i class="ti-download"></i>télécharger le contrat</a> 
+                
+                                                    @endif
+                                                      
+                                                      
+                                                </div>
+                      
+                                            </div>
+                
+                                        </div>
+                                </div>
+                                        
                                
                                
 

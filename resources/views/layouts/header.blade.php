@@ -32,7 +32,8 @@
     <link href="{{ asset('css/lib/calendar/fullcalendar.css')}}" rel="stylesheet" />
 
 
-    
+    <link href="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.css" rel="stylesheet">
+
 
 
 

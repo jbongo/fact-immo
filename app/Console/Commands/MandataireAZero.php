@@ -121,7 +121,7 @@ $today = date("Y-m-d") ;
 
                     // Envoir de mail
                     Mail::to($mandataire->email)->send(new NotifMandataireAZero($mandataire, $date_deb_activite, $ancienne_comm, $nouvelle_comm, $date_deb, $date_fin, $chiffre_affaire, $nb_vente, $nb_filleul));
-                    Mail::to("gestion@stylimmo.com")->send(new NotifMandataireAZero($mandataire, $date_deb_activite, $ancienne_comm, $nouvelle_comm, $date_deb, $date_fin, $chiffre_affaire, $nb_vente, $nb_filleul));
+                    // Mail::to("gestion@stylimmo.com")->send(new NotifMandataireAZero($mandataire, $date_deb_activite, $ancienne_comm, $nouvelle_comm, $date_deb, $date_fin, $chiffre_affaire, $nb_vente, $nb_filleul));
 
                     //
                     echo "\nyes" ;

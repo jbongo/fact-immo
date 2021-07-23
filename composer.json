@@ -45,7 +45,14 @@
             "database/factories"
         ],
         "files": [
-            "app/Helper/Lettre_en_nombre.php"
+            "app/Helper/Lettre_en_nombre.php",
+            "app/Helper/String_to_date.php",
+            "app/Helper/Get_avoir_facture.php",
+            "app/Helper/Get_facture_avoir.php",
+            "app/Helper/Get_facture_stylimmo.php",
+            "app/Helper/Pourcentage_actuel.php"
+
+
         ]
     },
     "autoload-dev": {
