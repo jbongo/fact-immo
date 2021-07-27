@@ -10,15 +10,17 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 class RelancePaiementFacture extends Mailable
 {
     use Queueable, SerializesModels;
+    public $facture;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($facture)
     {
         //
+        $this->facture = $facture;
     }
 
     /**
@@ -28,6 +30,7 @@ class RelancePaiementFacture extends Mailable
      */
     public function build()
     {
-        return $this->view('view.name');
+        return $this->subject("STYL'IMMO - Relance facture")->markdown('email.relance_paiement_facture')
+        ->attach($this->facture->url);
     }
 }

@@ -112,6 +112,9 @@ Route::middleware('auth')->group(function(){
     Route::get('/factures/stylimmo','FactureController@index_stylimmo')->name('facture.index_stylimmo');
     Route::get('/factures/pub','FactureController@index_pub')->name('facture.index_pub');
     
+    Route::get('/factures/relance/{facture_id}','FactureController@relancer_paiement_facture')->name('facture.relancer_paiement_facture');
+    
+    
 
 
     //  factures honoraire

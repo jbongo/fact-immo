@@ -41,6 +41,7 @@ class CreateFactureTable extends Migration
             $table->text('description_produit')->nullable();
             
             $table->date('date_relance_paiement')->nullable();
+            $table->integer('nb_relance_paiement')->default(0);
             
 
             $table->timestamps();

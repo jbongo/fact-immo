@@ -20,17 +20,18 @@
                                     {{-- <th>@lang('Type Facture')</th> --}}
                                     <th>@lang('Montant HT ')</th>
                                     <th>@lang('Montant TTC ')</th>
-                                    {{-- <th>@lang('Date Facture')</th> --}}
                                     {{-- @if(auth()->user()->role == "admin") --}}
                                     <th>@lang('Alerte paiement')</th>
                                     @if(auth()->user()->role == "admin")
                                     <th>@lang('Encaissement')</th>
-
-
+                                    
+                                    
                                     @endif
                                     {{-- @endif --}}
                                     {{-- <th>@lang('Télécharger')</th> --}}
                                     <th>@lang('Avoir')</th>
+                                    <th>@lang('Relances de paiement')</th>
+                                    <th>@lang('Actions')</th>
 
                                 </tr>
                             </thead>
@@ -71,11 +72,13 @@
                                
                                     @if(auth()->user()->role == "admin")
                                     <td width="" >
-                                        <label class="color-info">
+                                       
                                             @if($facture->user !=null)
-                                            <a href="{{route('switch_user',Crypt::encrypt($facture->user->id) )}}" data-toggle="tooltip" title="@lang('Se connecter en tant que ') {{$facture->user->nom}}">{{$facture->user->nom}} {{$facture->user->prenom}}<i style="font-size: 17px" class="material-icons color-success">person_pin</i></a>  
+                                            <label class="color-info"><a href="{{route('switch_user',Crypt::encrypt($facture->user->id) )}}" data-toggle="tooltip" title="@lang('Se connecter en tant que ') {{$facture->user->nom}}">{{$facture->user->nom}} {{$facture->user->prenom}}<i style="font-size: 17px" class="material-icons color-success">person_pin</i></a>  
+                                            
+                                            </label> 
                                             @endif
-                                        </label> 
+                                       
                                     </td>
                                     @endif
                                     {{-- <td width="" >
@@ -166,6 +169,25 @@
                                             @endif
                                         @endif
                                     </td>
+                                    <td>
+                                        @if($facture->date_relance_paiement != null ) <span class="badge badge-danger"> {{$facture->nb_relance_paiement}}</span> <span> , dernière: {{$facture->date_relance_paiement->format('d/m/Y')}}     </span> @endif
+                                    </td>
+                                    
+                                    
+                                    <td width="" >
+                                       
+                                        
+                                        {{-- @if($facture->type == "pack_pub" && $facture->reglee == true) --}}
+                                        
+                                        {{-- <a href="{{route('facture.avoir.create', Crypt::encrypt($facture->id))}}" target="_blank" title="Confirmez que vous avez bien reçu le virement du mandataire" data-toggle="tooltip"  class="btn btn-info  btn-flat btn-addon  m-b-10 m-l-5 " id=""><i class="ti-help"></i>Confirmer l'encaissement</a> --}}
+                                        
+                                        @if($facture->type == "pack_pub" && $facture->reglee == false && $facture->encaissee == false  && $facture->a_avoir != 1  )
+                                            
+                                        <a href="{{route('facture.relancer_paiement_facture', $facture->id)}}" target="_blank" title="Relancer le mandataire pour le payement de la facture" data-toggle="tooltip"  class="btn btn-danger  btn-flat btn-addon  m-b-10 m-l-5 relancer" id=""><i class="ti-email"></i>Relancer</a>
+                                            
+                                        
+                                        @endif
+                                    </td> 
                                 </tr> 
                            
                            @endif
@@ -179,6 +201,3 @@
         </div>
             <!-- end table -->
         
-
-
-      

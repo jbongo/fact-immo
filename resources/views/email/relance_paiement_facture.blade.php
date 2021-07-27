@@ -1,9 +1,10 @@
 @component('mail::message')
-# Bonjour {{$mandataire->prenom}} {{$mandataire->nom}}
+# Bonjour {{$facture->user->prenom}} {{$facture->user->nom}}
 
-Sauf erreur ou omission de notre part, le paiement de la facture {{$facture->numero}}, ne nous est pas parvenu.
-Nous vous prions de bien vouloir procéder à son règlement dans les meilleurs délais, et vous adressons, à toutes fins utiles, un duplicata de cette facture en pièce jointe.
-Si par ailleurs votre paiement venait à nous parvenir avant la réception de la présente, nous vous saurions gré de ne pas en tenir compte.<br>
+<br>
+Sauf erreur ou omission de notre part, le paiement de la facture <strong> {{$facture->numero}}</strong> ne nous est pas parvenu. <br><br>
+Nous vous prions de bien vouloir procéder à son règlement dans les meilleurs délais, et vous adressons, à toutes fins utiles, un duplicata de cette facture en pièce jointe. <br><br>
+Si par ailleurs votre paiement venait à nous parvenir avant la réception de la présente, nous vous saurions gré de ne pas en tenir compte.<br><br>
 
 
 

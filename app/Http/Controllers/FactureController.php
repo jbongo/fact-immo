@@ -19,6 +19,7 @@ use App\Mail\DemandeFactureStylimmo;
 use App\Mail\EnvoyerFactureStylimmoMandataire;
 use App\Mail\EncaissementFacture;
 use App\Mail\NotifierValidationHonoraire;
+use App\Mail\RelancePaiementFacture;
 
 use PDF;
 use Illuminate\Support\Facades\File ;
@@ -3750,18 +3751,32 @@ return 4444;
     public  function hors_delais()
     {
 
-
-// dd(date('Y-m-d', strtotime(date('Y-m-d'). ' - 60 days')));
-
-
-
-    $factures = Facture::where([['type','stylimmo'],['a_avoir',false],['encaissee',false]])->get();
-    $today60 = date('Y-m-d', strtotime(date('Y-m-d'). ' - 60 days'));
-    
-    
-       return view('facture.hors_delais', compact('factures','today60'));
+        $factures = Facture::where([['type','stylimmo'],['a_avoir',false],['encaissee',false]])->get();
+        $today60 = date('Y-m-d', strtotime(date('Y-m-d'). ' - 60 days'));
+        
+        return view('facture.hors_delais', compact('factures','today60'));
  
+    }
+    
+    /**
+     *  Envois d'un mail de relance aux mandataires n'ayants pas reglé leur facture
+     *
+     * @return \Illuminate\Http\Response
+    */
 
+    public  function relancer_paiement_facture($facture_id)
+    {
+
+        $facture = Facture::where('id', $facture_id)->first();
+        $facture->date_relance_paiement = date("Y-m-d");
+        $facture->nb_relance_paiement += 1;
+        
+        
+        $facture->update();
+   
+        Mail::to($facture->user->email)->send(new RelancePaiementFacture($facture));
+
+        return "1";    
     }
 
 
