@@ -38,6 +38,7 @@
                                 <th>@lang('Fiche consultée')</th>
                                 <th>@lang('Fiche renseignée')</th>
                                 <th>@lang('Envois mails')</th>
+                                <th>@lang('Date de création')</th>
                                
                                 <th>@lang('Action')</th>
                             </tr>
@@ -89,8 +90,10 @@
                                 
                                 <td>
                                 <a href="{{route('prospect.envoi_mail_fiche',Crypt::encrypt($prospect->id) )}}" class="btn btn-warning btn-flat btn-addon m-b-10 m-l-5" data-toggle="tooltip" title="@lang('Envoyer la fiche à remplir à ') {{ $prospect->nom }}"><i class="ti-email"></i>@if($prospect->fiche_envoyee == true) Renvoyer @else Envoyer @endif  fiche prospect </a>
-                                     
+                                </td>
                                 
+                                <td>
+                                    <span>{{$prospect->created_at->format('d/m/Y')}}</span>
                                 </td>
                                 <td width="15%">
                                     <span><a href="{{route('prospect.show',Crypt::encrypt($prospect->id) )}}" data-toggle="tooltip" title="@lang('Détails de ') {{ $prospect->nom }}"><i class="large material-icons color-info">visibility</i></a> </span>

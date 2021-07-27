@@ -71,6 +71,8 @@ class ProspectController extends Controller
             "telephone_fixe" => $request->telephone_fixe,
             "telephone_portable" => $request->telephone_portable,
             "email" => $request->email,
+            "commentaire_pro" => $request->commentaire_pro,
+            "commentaire_perso" => $request->commentaire_perso,
         ]);
         
         return  redirect()->route('prospect.index')->with('ok','prospect crée');
@@ -133,6 +135,8 @@ class ProspectController extends Controller
         $prospect->telephone_fixe = $request->telephone_fixe;
         $prospect->telephone_portable = $request->telephone_portable;
         $prospect->email = $request->email;
+        $prospect->commentaire_pro = $request->commentaire_pro;
+        $prospect->commentaire_perso = $request->commentaire_perso;
         
         $prospect->update();
         return redirect()->route('prospect.index')->with('ok','prospect modifié');

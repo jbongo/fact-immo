@@ -57,6 +57,10 @@ class CreateProspectsTable extends Migration
             $table->boolean('contrat_envoye')->default(false);
             $table->boolean('est_mandataire')->default(false);
             
+            $table->text('commentaire_perso')->nullable();
+            $table->text('commentaire_pro')->nullable();
+            
+            
             // id mandataire lorsque que le prospect devient mandataire 
             $table->integer('user_id')->nullable();
             

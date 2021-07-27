@@ -89,6 +89,24 @@
                                                    <span class="gender">{{date('d-m-Y',strtotime($prospect->created_at ))}}</span>
                                                 </div>
                                              </div>
+                                             
+                                             <div class="basic-information">
+                                                {{-- <h4 style="color: #32ade1;text-decoration: underline;">Role utilisateur</h4> --}}
+                                                
+                                                <div class="gender-content">
+                                                   <span class="contact-title"><strong>Commentaire pro:</strong></span>
+                                                   <span class="gender">{{$prospect->commentaire_pro}}</span>
+                                                </div>
+                                             </div>
+                                             
+                                             <div class="basic-information">
+                                                {{-- <h4 style="color: #32ade1;text-decoration: underline;">Role utilisateur</h4> --}}
+                                                
+                                                <div class="gender-content">
+                                                   <span class="contact-title"><strong>Commentaire perso:</strong></span>
+                                                   <span class="gender">{{$prospect->commentaire_perso}}</span>
+                                                </div>
+                                             </div>
                                             
                                           </div>
                                        </div>

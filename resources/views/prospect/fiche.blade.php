@@ -39,21 +39,26 @@
       box-shadow: 0 0 230px 0 #4282bf; 
       }
       .banner {
-      position: relative;
+      /* position: relative; */
       height: 210px;
       /* background-image: url("/images/fiche_info2.jpg");   */
       background-size: cover;
   
-  
+    
       display: flex;
       justify-content: center;
       align-items: center;
+      background-color: #0aa0d9; 
+      
       text-align: center;
+      }
+      
+      .banner > img {
+        z-index:1;
       }
       .banner::after {
       content: "";
-      background-color: rgba(34 54 70); 
-      position: absolute;
+      /* position: absolute; */
       width: 100%;
       height: 100%;
       }
@@ -163,7 +168,7 @@
       cursor: pointer;
       }
       button:hover {
-      background: #f50452d9;
+      background: #0aa0d9;
       }
       @media (min-width: 568px) {
       .name-item, .city-item {
@@ -195,6 +200,8 @@
     <form action="{{route('prospect.sauvegarder_fiche', Crypt::encrypt($prospect->id))}}" method="POST" enctype="multipart/form-data">
     @csrf
         <div class="banner">
+        
+        <img src="{{asset('/images/logo.jpg')}}" width="400px" alt="">
           <h1>Fiche Info</h1>
         </div>
         <br>
@@ -205,13 +212,19 @@
           </div>
         @endif       
        <br>
+       
+       @if($prospect->commentaire_pro != null )
+       <span> <strong>Commentaire:  </strong> {{$prospect->commentaire_pro}}</span>
+       <br><br>
+       @endif
+       
        <h3>Madame, Monsieur</h3>
        
        <h5>Une petite démarche administrative avant de rentrer dans le vif du sujet. <br>
        Merci de nous retourner les éléments suivants:
        </h5>
        
-       <hr style="border-top: 4px solid rgb(245 4 82 / 85%);">
+       <hr style="border-top: 4px solid #3e3a92">
        <br>
        
         <br>
@@ -278,7 +291,7 @@
             
         </div>
         <br>
-        {{-- <hr style="border-top: 4px solid rgb(245 4 82 / 85%);"> --}}
+        {{-- <hr style="border-top: 4px solid #3e3a92"> --}}
         <br>
         
         
@@ -419,7 +432,7 @@
        <br>
        <h3>Infos nécessaires pour l'inscription à la CCI</h3>
        
-       <hr style="border-top: 4px solid rgb(245 4 82 / 85%);">
+       <hr style="border-top: 4px solid #3e3a92">
        <br>
        
        <br>

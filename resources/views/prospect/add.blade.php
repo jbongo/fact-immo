@@ -87,6 +87,18 @@ Ajout d'un prospect
                         </div>
                       
                        
+                        <div class="form-group row">
+                           <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="commentaire_perso">Commentaire perso</label>
+                           <div class="col-lg-8 col-md-8 col-sm-8">
+                             <textarea name="commentaire_perso" id="commentaire_perso" class="form-control" cols="30" rows="5"> {{old('commentaire_perso')}}</textarea>
+                              @if ($errors->has('commentaire_perso'))
+                              <br>
+                              <div class="alert alert-warning ">
+                                 <strong>{{$errors->first('commentaire_perso')}}</strong> 
+                              </div>
+                              @endif
+                           </div>
+                        </div>
 
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-6">
@@ -159,6 +171,21 @@ Ajout d'un prospect
                            </div>
 
                         </div>
+                        
+                        <div class="form-group row">
+                           <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="commentaire_pro">Commentaire pro</label>
+                           <div class="col-lg-8 col-md-8 col-sm-8">
+                             <textarea name="commentaire_pro" id="commentaire_pro" class="form-control" cols="30" rows="5"> {{old('commentaire_pro')}}</textarea>
+                              @if ($errors->has('commentaire_pro'))
+                              <br>
+                              <div class="alert alert-warning ">
+                                 <strong>{{$errors->first('commentaire_pro')}}</strong> 
+                              </div>
+                              @endif
+                           </div>
+                        </div>
+                        
+                        
                     </div>
                 </div>
                   
