@@ -296,7 +296,7 @@ class FactureController extends Controller
            $admin->update();
         }
 
-        Mail::to("gestion@stylimmo.com")->send(new DemandeFactureStylimmo($compromis->user));
+        // Mail::to("gestion@stylimmo.com")->send(new DemandeFactureStylimmo($compromis->user));
 
 
        if( session('is_switch') == true ){
