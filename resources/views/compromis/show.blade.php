@@ -569,14 +569,14 @@ Détail de l'affaire de {{$compromis->user->prenom}} {{$compromis->user->nom}}
                                                 <div class="form-group row" id="parrain-id">
                                                     <label class="" for="parr-id">Net Vendeur</label>  <span class="text-danger">*</span></label>
                                                     
-                                                        <input type="number" class="form-control" id="net_vendeur" name="net_vendeur" value="{{ $compromis->net_vendeur}}" required>                                                    
+                                                        <input type="number" min="0" step="0.1" class="form-control" id="net_vendeur" name="net_vendeur" value="{{ $compromis->net_vendeur}}" required>                                                    
                                                    
                                                 </div>
                                             </div>
                                             <div class="col-lg-4 col-md-4 col-sm-4">
                                                 <div class="form-group">
                                                     <label for="frais_agence">Frais d'agence</label> <span class="text-danger">*</span></label>
-                                                    <input class="form-control" min="0" type="number" value="{{ $compromis->frais_agence}}" id="frais_agence" name="frais_agence" required>
+                                                    <input class="form-control" min="0" min="0" step="0.1" type="number" value="{{ $compromis->frais_agence}}" id="frais_agence" name="frais_agence" required>
                                                 </div>
                                             </div>
                                             <div class="col-lg-4 col-md-4 col-sm-4">

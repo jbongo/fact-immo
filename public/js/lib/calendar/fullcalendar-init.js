@@ -137,8 +137,8 @@
                 },
                 {
                     title: 'BCH237',
-                    start: '2021-05-15T10:30:00',
-                    end: '2021-05-16T11:30:00',
+                    start: '2021-07-29T10:30:00',
+                    end: '2021-07-30T11:30:00',
                     extendedProps: {
                         department: 'BioChemistry'
                     },
@@ -149,12 +149,22 @@
             var $this = this;
             $this.$calendarObj = $this.$calendar.fullCalendar({
                 slotDuration: '00:15:00',
+                buttonText: {
+                    year: "Année",
+                    month: "Mois",
+                    week: "Semaine",
+                    day: "Jour",
+                    today: "Aujourd'hui",
+                },
+                allDayHtml: "Toute la<br/>journée",
+                eventLimitText: "en plus",
+                noEventsMessage: "Aucun événement à afficher",
                 /* If we want to split day time each 15minutes */
                 minTime: '08:00:00',
                 maxTime: '19:00:00',
                 defaultView: 'month',
                 handleWindowResize: true,
-                height: $(window).height() - 200,
+                height: $(window).height() - 100,
                 header: {
                     left: 'prev,next today',
                     center: 'title',
@@ -191,5 +201,6 @@
 //initializing CalendarApp
 function($) {
     "use strict";
+
     $.CalendarApp.init()
 }(window.jQuery);
