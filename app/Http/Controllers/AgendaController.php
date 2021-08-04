@@ -96,5 +96,9 @@ class AgendaController extends Controller
     public function destroy($agenda_id)
     {
         //
+        $agenda = Agenda::where('id', $agenda_id)->first();
+        
+        return "ok";
+        $agenda->delete();
     }
 }

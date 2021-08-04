@@ -112,7 +112,7 @@
                                             <div class="form-group row">
                                                 <label class="col-lg-4 col-form-label"  @if($contrat->modif_ca_depart == true) style="background:#f291bf"  @endif for="ca_depart">Chiffre d'affaires de depart HT<span class="text-danger">*</span></label>
                                                 <div class="col-lg-4">
-                                                    <input type="number" min="0" step="0.1" class="form-control" value="{{$contrat->ca_depart}}" id="ca_depart" name="ca_depart" required>
+                                                    <input type="number" min="0" step="0.01" class="form-control" value="{{$contrat->ca_depart}}" id="ca_depart" name="ca_depart" required>
                                                 </div>
                                             </div>
                                             

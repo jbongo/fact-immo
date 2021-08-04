@@ -97,7 +97,7 @@
                                             <div class="form-group row">
                                                 <label class="col-lg-4 col-form-label" for="ca_depart">Chiffre d'affaires de depart HT<span class="text-danger">*</span></label>
                                                 <div class="col-lg-4">
-                                                    <input type="number" min="0" step="0.1" class="form-control" value="0" id="ca_depart" name="ca_depart" required>
+                                                    <input type="number" min="0" step="0.01" class="form-control" value="0" id="ca_depart" name="ca_depart" required>
                                                 </div>
                                             </div>
                                             
@@ -106,7 +106,7 @@
                                             <div class="form-group row">
                                                 <label class="col-lg-4 col-form-label" for="ca_depart_sty">Chiffre d'affaires rapporté à stylimmo HT<span class="text-danger">*</span></label>
                                                 <div class="col-lg-4">
-                                                    <input type="number" min="0" step="0.1" class="form-control" value="0" id="ca_depart_sty" name="ca_depart_sty" required>
+                                                    <input type="number" min="0" step="0.01" class="form-control" value="0" id="ca_depart_sty" name="ca_depart_sty" required>
                                                 </div>
                                             </div>
                                             

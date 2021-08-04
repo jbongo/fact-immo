@@ -303,6 +303,7 @@ Route::post('fiche/prospect/{prospect}/','ProspectController@sauvegarder_fiche')
 // Agenda 
 Route::post('/agenda/store','AgendaController@store')->name('agenda.store');
 Route::post('/agenda/update','AgendaController@update')->name('agenda.update');
+Route::post('/agenda/delete/{agenda_id}','AgendaController@destroy')->name('agenda.delete');
 
 
 

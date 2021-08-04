@@ -251,7 +251,7 @@ console.log(agendas);
                             <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Fermer</button>
                             <input type="submit" class="btn btn-success waves-effect waves-light save-agenda"  value="Modifier">
                             
-                            <button type="button" class="btn btn-danger delete-event waves-effect waves-light" data-dismiss="modal">Supprimer</button>
+                            <a type="button" class="btn btn-danger delete-event waves-effect waves-light agenda-supprimer" agenda-id= ${calEvent.extendedProps.id} data-dismiss="modal">Supprimer</a>
                            
                         </div>
                         `);
@@ -259,16 +259,15 @@ console.log(agendas);
                 backdrop: 'static'
             });
             $this.$modal.find('.delete-event').show().end().find('.save-event').hide().end().find('.modal-body').empty().prepend(form).end().find('.delete-event').unbind('click').on("click", function() {
-                $this.$calendarObj.fullCalendar('removeEvents', function(ev) {
-                    return (ev._id == calEvent._id);
-                });
+                // $this.$calendarObj.fullCalendar('removeEvents', function(ev) {
+                //     return (ev._id == calEvent._id);
+                // });
                 $this.$modal.modal('hide');
             });
             $this.$modal.find('form').on('submit', function() {
                
             });
         },
-        
         
         
         
@@ -468,4 +467,86 @@ function($) {
 
 
 </script>
+
+
+
+{{-- Suppression d'un évènement --}}
+
+
+<script>
+    $(function() {
+        $.ajaxSetup({
+            headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
+        })
+        $('[data-toggle="tooltip"]').tooltip()
+        
+        
+        $('body').on('click','.agenda-supprimer',function(e) {
+            let that = $(this)
+            e.preventDefault()
+            const swalWithBootstrapButtons = swal.mixin({   
+            confirmButtonClass: 'btn btn-success',
+            cancelButtonClass: 'btn btn-danger',
+            buttonsStyling: false,
+                 })
+
+            swalWithBootstrapButtons({
+                title: '@lang('Vraiment supprimer cet évènement ?')',
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#DD6B55',
+                confirmButtonText: '@lang('Oui')',
+                cancelButtonText: '@lang('Non')',
+                
+            }).then((result) => {
+                if (result.value) {
+                    $('[data-toggle="tooltip"]').tooltip('hide')
+
+                    $.ajax({
+                        type: "POST",
+                        // url: "{{route('prospect.add')}}",
+                        url: "/agenda/delete/"+that.attr('agenda-id'),
+                       
+                        // data: data,
+                        success: function(data) {
+                        
+                            that.$calendarObj.fullCalendar('removeEvents', function(ev) {
+                                return (ev._id == calEvent._id);
+                            });
+                            swal(
+                                    'Supprimé',
+                                    'Suppression terminée \n ',
+                                    'success'
+                                )
+                        },
+                        error: function(data) {
+                            console.log(data);
+                            swal(
+                                'Echec',
+                                'Suppression annulée :)',
+                                'error'
+                            );
+                        }
+                    })
+                    .done(function () {
+                               that.parents('tr').remove()
+                            });
+                    
+                } else if (
+                    // Read more about handling dismissals
+                    result.dismiss === swal.DismissReason.cancel
+                ) {
+                    swalWithBootstrapButtons(
+                    'Annulé',
+                    'Suppression annulée :)',
+                    'error'
+                    )
+                }
+            })
+         })
+    })
+
+
+</script>
+
 @endsection
