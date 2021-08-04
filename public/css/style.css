@@ -3542,9 +3542,9 @@ tbody tr td:last-child {
     top: 3px
 }
 
-#add-category .modal-dialog,
+#add-agenda .modal-dialog,
 #event-modal .modal-dialog {
-    max-width: 600px
+    max-width: 800px
 }
 
 .flotTip {

@@ -39,7 +39,10 @@ Route::middleware('auth')->group(function(){
     Route::delete('/prospect/delete/{prospect}','ProspectController@destroy')->name('prospect.delete');
     Route::get('/prospect/archives/','ProspectController@archives')->name('prospect.archives');
     Route::get('/prospect/archiver/{prospect}/{action}','ProspectController@archiver')->name('prospect.archiver');
-    Route::get('/prospect/agenda','ProspectController@agenda')->name('prospect.agenda');
+    Route::get('/prospect/agenda','ProspectController@agenda_general')->name('prospect.agenda');
+    Route::get('/prospect/agenda/{prospect_id}','ProspectController@show_agenda_prospect')->name('prospect.agenda.show');
+    Route::post('/prospect/agenda/store','ProspectController@store_agenda_prospect')->name('prospect.agenda.store');
+    Route::post('/prospect/agenda/update','ProspectController@update_agenda_prospect')->name('prospect.agenda.update');
     
     
     Route::get('/prospect/telecharger/{url}/{type}','ProspectController@telecharger_doc')->name('prospect.telecharger');
@@ -295,6 +298,12 @@ Route::middleware('auth')->group(function(){
 // Envoi de la fiche info au prospect
 Route::get('fiche/prospect/{prospect}/','ProspectController@create_fiche')->name('prospect.fiche');
 Route::post('fiche/prospect/{prospect}/','ProspectController@sauvegarder_fiche')->name('prospect.sauvegarder_fiche');
+
+
+// Agenda 
+Route::post('/agenda/store','AgendaController@store')->name('agenda.store');
+Route::post('/agenda/update','AgendaController@update')->name('agenda.update');
+
 
 
 // Tests

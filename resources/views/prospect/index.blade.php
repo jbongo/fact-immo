@@ -96,7 +96,7 @@
                                     <span>{{$prospect->created_at->format('d/m/Y')}}</span>
                                 </td>
                                 <td width="15%">
-                                    <a href="{{route('prospect.agenda')}}" class="btn btn-warning btn-rounded btn-addon btn-sm m-b-10 m-l-5"><i class="ti-calendar"></i>@lang('Agenda')</a>
+                                    <span><a href="{{route('prospect.agenda.show', $prospect->id)}}" data-toggle="tooltip" title="@lang('Détails de ') {{ $prospect->nom }}"><i class="large material-icons color-danger">event_note</i></a> </span>
                                     <span><a href="{{route('prospect.show',Crypt::encrypt($prospect->id) )}}" data-toggle="tooltip" title="@lang('Détails de ') {{ $prospect->nom }}"><i class="large material-icons color-info">visibility</i></a> </span>
                                     <span><a href="{{route('prospect.edit',Crypt::encrypt($prospect->id) )}}" data-toggle="tooltip" title="@lang('Modifier ') {{ $prospect->nom }}"><i class="large material-icons color-warning">edit</i></a></span>                                    
                                     <span><a  href="{{route('prospect.archiver',[Crypt::encrypt($prospect->id),1])}}" class="archiver" data-toggle="tooltip" title="@lang('Archiver ') {{ $prospect->nom }}"><i class="large material-icons color-danger">delete</i> </a></span>

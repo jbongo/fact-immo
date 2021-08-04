@@ -441,13 +441,13 @@ Ajout d'une affaire
                                         <div class="col-lg-4 col-md-4 col-sm-4" id="div_net_vendeur">
                                             <div class="form-group">
                                                 <label for="net_vendeur">Net Vendeur TTC<span class="text-danger">*</span></label>
-                                                <input class="form-control" min="0" step="0.1" type="number" value="{{old('net_vendeur')}}" id="net_vendeur" name="net_vendeur" required>
+                                                <input class="form-control" min="0" step="0.01" type="number" value="{{old('net_vendeur')}}" id="net_vendeur" name="net_vendeur" required>
                                             </div>
                                         </div>
                                         <div class="col-lg-4 col-md-4 col-sm-4">
                                             <div class="form-group">
                                                 <label for="frais_agence">Frais d'agence TTC <span class="text-danger">*</span> </label>
-                                                <input class="form-control" min="0" step="0.1" type="number" value="{{old('frais_agence')}}" id="frais_agence" name="frais_agence" required>
+                                                <input class="form-control" min="0" step="0.01" type="number" value="{{old('frais_agence')}}" id="frais_agence" name="frais_agence" required>
                                             </div>
                                         </div>
 

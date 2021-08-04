@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
     @section ('page_title')
-    Agenda de {{$prospect->nom}} {{$prospect->prenom}}
+    Agenda
     @endsection
     <div class="row"> 
        
@@ -36,7 +36,7 @@
                                       
                                     </div>
 
-                                   
+
 
                                 </div>
                                 <div class="col-md-12">
@@ -79,8 +79,6 @@
                                                 @csrf
                                                 
                                                 <div class="row">
-                                                    <input type="hidden" name="prospect_id" value="{{$prospect->id}}" />
-                                                
                                                     <div class="col-md-6">
                                                         <label class="control-label">Date début</label>
                                                         <input class="form-control form-white" placeholder="" type="date" name="date_deb" />
@@ -165,7 +163,6 @@ var agendas = "{{$agendas}}";
 agendas = JSON.parse(agendas.replaceAll('&quot;','"') );
 
 
-console.log(agendas);
 
 ! function($) {
     "use strict";
@@ -214,7 +211,6 @@ console.log(agendas);
      
             form.append(`@csrf <div class="row">
                         <input type="hidden" name="id" value="${calEvent.extendedProps.id}" />
-                        <input type="hidden" name="prospect_id" value="${calEvent.extendedProps.prospect_id}" />
             
                             <div class="col-md-6">
                                 <label class="control-label">Date début</label>
@@ -282,8 +278,6 @@ console.log(agendas);
             form.append(" <div class='row'></div>");
             form.find(".row")
                 .append(` @csrf <div class="row">
-                            <input type="hidden" name="prospect_id" value="{{$prospect->id}}" />
-
                             <div class="col-md-6">
                                 <label class="control-label">Date début</label>
                                 <input class="form-control form-white" placeholder="" type="date" name="date_deb" />
@@ -385,7 +379,6 @@ console.log(agendas);
                     end: agenda.date_fin+'T'+agenda.heure_fin,
                     extendedProps: {
                         id:agenda.id,
-                        prospect_id:agenda.prospect_id,
                         date_deb:agenda.date_deb,
                         date_fin:agenda.date_fin,
                         heure_deb:agenda.heure_deb,

@@ -8,6 +8,7 @@ use App\Parametre;
 use App\Contrat;
 use App\Packpub;
 use App\User;
+use App\Agenda;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\File ;
 use Illuminate\Support\Facades\Storage;
@@ -610,15 +611,101 @@ class ProspectController extends Controller
     
         
      /**
-     * Affiche l'agenda
+     * Affiche l'agenda de tous les prospects
      *
      * @return \Illuminate\Http\Response
      */
-    public function agenda()
+    public function agenda_general()
     {
         
-        return view('prospect.agenda');
+        $agendas = Agenda::where('est_agenda_prospect', true)->get()->toJson();
+        // dd($agendas);
+        return view('prospect.agenda_general',compact('agendas'));
 
+    }
+    
+    
+    /**
+     * affichage de  l'agenda d'un prospect
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show_agenda_prospect($prospect_id)
+    {
+        $agendas = Agenda::where('prospect_id', $prospect_id)->get()->toJson();
+        $prospect = Prospect::where('id', $prospect_id)->first();
+        // dd($agendas);
+        return view('prospect.agenda',compact('agendas', 'prospect'));
+           
+    }
+    
+    
+    /**
+     *  création d'un agenda
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store_agenda_prospect(Request $request)
+    {
+        
+        $agenda = Agenda::create([
+        
+            'titre' => $request->titre, 
+            'description' => $request->description, 
+            'date_deb' => $request->date_deb, 
+            'date_fin' => $request->date_fin, 
+            'heure_deb' => $request->heure_deb, 
+            'heure_fin' => $request->heure_fin, 
+            // 'est_agenda_prospect' => $request->est_agenda_prospect,            
+            'est_agenda_prospect' => true,
+            // 'est_agenda_mandataire' => $request->est_agenda_mandataire,            
+            'est_agenda_mandataire' => false,
+            // 'est_agenda_prospect' => $request->est_agenda_prospect,            
+            'est_agenda_general' => false,
+            'prospect_id' => $request->prospect_id, 
+            'mandataire_id' => $request->mandataire_id, 
+        
+        ]);
+        
+    return redirect()->back()->with('ok', 'tâche créee');
+        
+    }
+
+
+    
+
+    /**
+     * Modification d'un agenda
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update_agenda_prospect(Request $request)
+    {
+        //
+        $agenda = Agenda::where('id',$request->id)->first();
+        
+        $agenda->titre =  $request->titre; 
+        $agenda->description =  $request->description; 
+        $agenda->date_deb =  $request->date_deb; 
+        $agenda->date_fin =  $request->date_fin; 
+        $agenda->heure_deb =  $request->heure_deb; 
+        $agenda->heure_fin =  $request->heure_fin; 
+         $agenda->est_agenda_prospect = true;
+        // $agenda->est_agenda_mandataire =  $request->est_agenda_mandataire;            
+         $agenda->est_agenda_mandataire = false;
+        // $agenda->est_agenda_prospect =  $request->est_agenda_prospect;            
+        $agenda->est_agenda_general =  false;
+        $agenda->prospect_id =  $request->prospect_id; 
+        $agenda->mandataire_id =  $request->mandataire_id; 
+        
+        $agenda->update();
+        
+        return redirect()->back()->with('ok', 'tâche modifiée '.$agenda->titre);
+        
     }
     
 }
