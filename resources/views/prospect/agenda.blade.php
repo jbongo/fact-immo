@@ -259,15 +259,16 @@ console.log(agendas);
                 backdrop: 'static'
             });
             $this.$modal.find('.delete-event').show().end().find('.save-event').hide().end().find('.modal-body').empty().prepend(form).end().find('.delete-event').unbind('click').on("click", function() {
-                // $this.$calendarObj.fullCalendar('removeEvents', function(ev) {
-                //     return (ev._id == calEvent._id);
-                // });
+                $this.$calendarObj.fullCalendar('removeEvents', function(ev) {
+                    return (ev._id == calEvent._id);
+                });
                 $this.$modal.modal('hide');
             });
             $this.$modal.find('form').on('submit', function() {
                
             });
         },
+        
         
         
         
@@ -509,10 +510,6 @@ function($) {
                        
                         // data: data,
                         success: function(data) {
-                        
-                            that.$calendarObj.fullCalendar('removeEvents', function(ev) {
-                                return (ev._id == calEvent._id);
-                            });
                             swal(
                                     'Supprimé',
                                     'Suppression terminée \n ',

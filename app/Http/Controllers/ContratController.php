@@ -592,7 +592,7 @@ class ContratController extends Controller
             // Commission direct pack expert          
             "pourcentage_depart_expert"=>$request->pourcentage_depart_expert,
             "duree_max_starter_expert"=>$request->duree_max_expert,
-            // "duree_gratuite_expert"=>$request->duree_gratuite_expert,
+            "duree_gratuite_expert"=>$request->duree_gratuite_expert,
             "a_palier_expert"=>$request->check_palier_expert == "true" ? true : false,
             "palier_expert"=>$request->palier_expert,
 
@@ -624,6 +624,20 @@ class ContratController extends Controller
         $mandataire->chiffre_affaire_sty = $request->ca_depart_sty;
         $mandataire->commission = $request->est_starter == "true" ? $request->pourcentage_depart_starter : $request->pourcentage_depart_expert ;
         $mandataire->pack_actuel = $request->est_starter == "true" ? "starter" : "expert" ;
+        
+        // Maj jeton
+        if($contrat->est_demarrage_starter == true && $contrat->deduis_jeton == true ){
+            
+            $mandataire->nb_mois_pub_restant = $mandataire->nb_mois_pub_restant - $contrat->duree_gratuite_starter;
+        
+        }elseif($contrat->est_demarrage_starter == false && $contrat->deduis_jeton == true){
+        
+            $mandataire->nb_mois_pub_restant = $mandataire->nb_mois_pub_restant - $contrat->duree_gratuite_expert;
+                    
+        }
+        
+        
+        
         $mandataire->update();
         
         
