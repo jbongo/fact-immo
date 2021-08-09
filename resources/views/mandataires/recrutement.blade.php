@@ -12,12 +12,11 @@
                                     <th>@lang('Nom')</th>
                                     <th>@lang('Statut')</th>
                                     {{-- <th>@lang('Email')</th> --}}
-                                    <th>@lang('Téléphone')</th>
+                                    <th>@lang('Téléphone pro')</th>
                                     <th>@lang('Email pro')</th>
                                     <th>@lang('Email perso')</th>
                                     <th>@lang('Adresse')</th>
-                                    <th>@lang('Numéro Siret')</th>
-                                    <th>@lang('Numéro TVA')</th>
+                                  
                                     <th>@lang('Date de création')</th>
                                  
                                     <th>@lang('Action')</th>
@@ -50,9 +49,7 @@
                                     <td style="color: #32ade1; text-decoration: underline;"><span  >{{$mandataire->email_perso}} </td>
                                     <td>{{$mandataire->adresse}} </td>
                                     
-                                        
-                                    <td style="color: #4da62f; text-decoration: underline;"><span class="badge badge-success">{{$mandataire->numero_siret}}</span></td>
-                                    <td style="color: #4da62f; text-decoration: underline;"><span class="badge badge-success">{{$mandataire->numero_tva}}</span></td>
+                          
                                     <td style="color: #32ade1; "><span  >{{$mandataire->created_at->format('d/m/Y')}} </td>
                                     
                                     <td width="13%">

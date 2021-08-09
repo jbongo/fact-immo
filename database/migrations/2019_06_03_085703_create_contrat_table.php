@@ -45,6 +45,7 @@ class CreateContratTable extends Migration
             $table->double('pourcentage_depart_expert')->nullable();
             $table->integer('duree_max_starter_expert')->nullable();
             $table->integer('nb_vente_passage_expert')->nullable();
+            $table->date('date_passage_starter_expert')->nullable();
             
             
             $table->integer('duree_gratuite_expert')->nullable();

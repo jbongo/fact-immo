@@ -49,9 +49,13 @@
                                                     <span class="phone-number" style="color: #ff435c;">{{$mandataire->statut}}</span>
                                                 </div>
                                                 <div class="phone-content">
-                                                   <span class="contact-title"><strong>Téléphone:</strong></span>
-                                                   <span class="phone-number" style="color: #ff435c; text-decoration: underline;">{{$mandataire->telephone}}</span>
+                                                   <span class="contact-title"><strong>Téléphone pro:</strong></span>
+                                                   <span class="phone-number" style="color: #ff435c; text-decoration: underline;">{{$mandataire->telephone1}}</span>
                                                 </div>
+                                                <div class="phone-content">
+                                                    <span class="contact-title"><strong>Téléphone perso:</strong></span>
+                                                    <span class="phone-number" style="color: #ff435c; text-decoration: underline;">{{$mandataire->telephone2}}</span>
+                                                 </div>
                                                 <div class="address-content">
                                                    <span class="contact-title"><strong>Adresse:</strong></span>
                                                    <span class="mail-address">{{$mandataire->adresse}}</span>

@@ -14,7 +14,7 @@
                                         <th>@lang('TVA')</th>
                                         <th>@lang('Jeton')</th>
                                         {{-- <th>@lang('Email')</th> --}}
-                                        <th>@lang('Téléphone')</th>
+                                        <th>@lang('Téléphone pro')</th>
                                         {{-- <th>@lang('Adresse')</th> --}}
                                         <th>@lang('date anniv')</th>
                                         <th>@lang('Comm')</th>

@@ -216,7 +216,7 @@ Modifier mandataire {{$mandataire->nom}}
                          </div>
        
                          <div class="form-group row">
-                            <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="telephone1">Téléphone (FR) </label>
+                            <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="telephone1">Téléphone pro </label>
                             <div class="col-lg-8 col-md-8 col-sm-8">
                                <input type="text" class="form-control {{ $errors->has('telephone1') ? ' is-invalid' : '' }}" value="{{old('telephone1')? old('telephone1') : $mandataire->telephone1}}" id="telephone1" name="telephone1" placeholder="Ex: 0600000000.." >
                                @if ($errors->has('telephone1'))
@@ -228,7 +228,7 @@ Modifier mandataire {{$mandataire->nom}}
                             </div>
                          </div>
                          <div class="form-group row">
-                           <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="telephone2">Téléphone (FR) </label>
+                           <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="telephone2">Téléphone perso </label>
                            <div class="col-lg-8 col-md-8 col-sm-8">
                               <input type="text" class="form-control {{ $errors->has('telephone2') ? ' is-invalid' : '' }}" value="{{old('telephone2')? old('telephone2') : $mandataire->telephone2}}" id="telephone2" name="telephone2" placeholder="Ex: 0600000000.." >
                               @if ($errors->has('telephone2'))

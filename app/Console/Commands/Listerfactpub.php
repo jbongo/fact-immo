@@ -70,14 +70,20 @@ class Listerfactpub extends Command
             $duree_starter = floor($duree_starter->days / 30);
             
             
+            if($contrat->est_demarrage_starter == false)
+                $duree_starter = $duree_starter;
             
+            else {
+            
+            
+            }
             
             
             // Le Mandataire paye si 
             // son pack est starter et sa période de gratuitée est terminée 
             // son pack est expert et sa période de gratuitée est terminée et 28 jour après qu'il soit passé expert
             
-            if($contrat->user->pack_actuel == "expert" && ($contrat->est_demarrage_starter == false || $contrat->est_demarrage_starter == true && $duree_passage_expert->days > 28 ) ){
+            if($contrat->user->pack_actuel == "expert"  && $contrat->duree_gratuite_expert >= $duree_expert && ($contrat->est_demarrage_starter == false || $contrat->est_demarrage_starter == true && $duree_passage_expert->days > 28 ) ){
                 
                 
                 Factpub::create([
@@ -87,8 +93,7 @@ class Listerfactpub extends Command
                     'montant_ttc' => $contrat->packpub->tarif,
                 
                 ]);
-                
-                
+
                
                 
             }elseif($contrat->user->pack_actuel == "starter" && $contrat->duree_gratuite_starter >= $duree_starter && $contrat->forfait_pack_info > 0 ){
