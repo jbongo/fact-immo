@@ -169,6 +169,14 @@
                                         </div>
                                     </div>
                                     <div class="col-lg-6 col-md-6 col-sm-6">
+                                    
+                                        <div class="form-group row" id="max-starter-parrent">
+                                            <label class="col-lg-6 col-md-6 col-sm-6 col-form-label" for="nb_vente_passage_expert">Nombre de vente pour passer expert<span class="text-danger">*</span></label>
+                                            <div class="col-lg-4 col-md-4 col-sm-4 ">
+                                                <input type="number" class="form-control" id="nb_vente_passage_expert" name="nb_vente_passage_expert" min="0" value="0" required>
+                                            </div>
+                                        </div>
+                                        
                                         <div class="form-group row" id="max-starter-parrent">
                                             <label class="col-lg-6 col-md-6 col-sm-6 col-form-label" for="duree_max_starter">Durée maximum du pack Starter<span class="text-danger">*</span></label>
                                             <div class="col-lg-4 col-md-4 col-sm-4 ">
@@ -252,12 +260,12 @@
                                     </div>
                                     <div class="col-lg-6 col-md-6 col-sm-6">
                                        
-                                        {{-- <div class="form-group row">
+                                        <div class="form-group row">
                                             <label class="col-lg-6 col-form-label" for="duree_gratuite_expert">Durée de la gratuité (mois)<span class="text-danger">*</span></label>
                                             <div class="col-lg-4 col-md-4 col-sm-4 ">
-                                                <input type="number" class="form-control" id="duree_gratuite_expert" name="duree_gratuite_expert" min="0" value="4" required>
+                                                <input type="number" class="form-control" id="duree_gratuite_expert" name="duree_gratuite_expert" min="0" value="0" required>
                                             </div>
-                                        </div> --}}
+                                        </div>
                                     </div>
                                 </div>
 
@@ -750,6 +758,7 @@
             
             
             "pourcentage_depart_starter" : $('#pourcentage_depart_starter').val(),
+            "nb_vente_passage_expert" : $('#nb_vente_passage_expert').val(),
             "duree_max_starter" : $('#duree_max_starter').val(),
             "duree_gratuite_starter" : $('#duree_gratuite_starter').val(),
             "check_palier_starter" : $("#check_palier_starter").prop('checked'),

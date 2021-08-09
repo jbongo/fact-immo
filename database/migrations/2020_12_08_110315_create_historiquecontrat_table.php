@@ -61,7 +61,8 @@ class CreateHistoriquecontratTable extends Migration
             $table->boolean('modif_pourcentage_depart_expert')->default(false);
             $table->integer('duree_max_starter_expert')->nullable();
             $table->boolean('modif_duree_max_starter_expert')->default(false);
-// $table->integer('duree_gratuite_expert')->nullable();
+            $table->integer('duree_gratuite_expert')->nullable();
+            $table->boolean('modif_duree_gratuite_expert')->default(false);
             $table->boolean('a_palier_expert')->nullable();
             $table->boolean('modif_a_palier_expert')->default(false);
             $table->text('palier_expert')->nullable();

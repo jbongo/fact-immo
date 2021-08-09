@@ -2,7 +2,12 @@
 # Bonjour {{$mandataire->prenom}} {{$mandataire->nom}},
 
 
- Vous avez atteint la durée maximale du pack starter. <br>
+@if($mandataire->contrat->nb_vente_passage_expert > 0)
+
+Vous avez atteint le nombre de vente requis pour passer à Expert. <br>
+@else 
+Vous avez atteint la durée maximale du pack starter. <br>
+@endif
 
 @component('mail::panel')
 <li>Vous passez de Starter à Expert. </li><br>
@@ -13,8 +18,11 @@
 <br><hr>
 
 
-
+@if($mandataire->contrat->nb_vente_passage_expert > 0)
+Nombre de vente pour devenir Expert: **{{$mandataire->contrat->nb_vente_passage_expert}} mois** <br>
+@else 
 Durée du pack starter: **{{$duree_starter}} mois** <br>
+@endif
 Date de début d'activité : **{{$date_deb_activite->format('d/m/Y')}}**<br>
 
 

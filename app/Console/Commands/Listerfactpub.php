@@ -71,6 +71,12 @@ class Listerfactpub extends Command
             
             
             
+            
+            
+            // Le Mandataire paye si 
+            // son pack est starter et sa période de gratuitée est terminée 
+            // son pack est expert et sa période de gratuitée est terminée et 28 jour après qu'il soit passé expert
+            
             if($contrat->user->pack_actuel == "expert" && ($contrat->est_demarrage_starter == false || $contrat->est_demarrage_starter == true && $duree_passage_expert->days > 28 ) ){
                 
                 
