@@ -266,7 +266,15 @@
                                                 <input type="number" class="form-control" id="duree_gratuite_expert" name="duree_gratuite_expert" min="0" value="0" required>
                                             </div>
                                         </div>
+                                        <div class="form-group row">
+                                            <label class="col-lg-6 col-form-label" for="nb_vente_gratuite_expert">Nombre de vente de la gratuité <span class="text-danger">*</span></label>
+                                            <div class="col-lg-4 col-md-4 col-sm-4 ">
+                                                <input type="number" class="form-control" id="nb_vente_gratuite_expert" name="nb_vente_gratuite_expert" min="0" value="" required>
+                                            </div>
+                                        </div>
                                     </div>
+                                    
+                                    
                                 </div>
 
                                 <div class="row">
@@ -745,6 +753,8 @@
             "user_id": "{{$user_id}}",
             "forfait_administratif" : $('#forfait_administratif').val(),
             "forfait_carte_pro" : $('#forfait_carte_pro').val(),
+            "forfait_pack_info" : $('#forfait_pack_info').val(),
+            
             "date_entree" : $('#date_entree').val(),
             "date_debut" : $('#date_debut').val(),
             "ca_depart" : $('#ca_depart').val(),
@@ -768,6 +778,8 @@
 
             "pourcentage_depart_expert" : $('#pourcentage_depart_expert').val(),
             "duree_gratuite_expert" : $('#duree_gratuite_expert').val(),
+            "nb_vente_gratuite_expert" : $('#nb_vente_gratuite_expert').val(),
+            
             "check_palier_expert" : $("#check_palier_expert").prop('checked'),
             "palier_expert" : $('#palier_expert input').serialize(),
             "nombre_vente_min" : $('#nombre_vente_min').val(),

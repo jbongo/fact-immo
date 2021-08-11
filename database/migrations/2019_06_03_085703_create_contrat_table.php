@@ -49,6 +49,7 @@ class CreateContratTable extends Migration
             
             
             $table->integer('duree_gratuite_expert')->nullable();
+            $table->integer('nb_vente_gratuite_expert')->nullable();
             $table->boolean('a_palier_expert')->nullable();
             $table->text('palier_expert')->nullable();
             $table->integer('nombre_vente_min')->nullable();

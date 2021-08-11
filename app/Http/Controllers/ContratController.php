@@ -115,7 +115,7 @@ class ContratController extends Controller
 
 
     /**
-     * Store a newly created resource in storage.
+     * Modification du contrat
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -129,7 +129,10 @@ class ContratController extends Controller
      
     //  return "--$test";
      
-        // dd($request->all());
+    //  file_put_contents("/data.txt",$contrat->contrat_pdf  );
+    //     dd($request->all());
+        // $contrat->contrat_pdf == $request->contrat_pdf 
+        $est_starter =  $request->est_starter == "true" ? true : false;
         Historiquecontrat::create([
         
             "user_id" => $contrat->user_id,
@@ -140,6 +143,10 @@ class ContratController extends Controller
             "modif_forfait_administratif" => $contrat->forfait_administratif == $request->forfait_administratif ? false : true ,
             "forfait_carte_pro" => $contrat->forfait_carte_pro,
             "modif_forfait_carte_pro" => $contrat->forfait_carte_pro == $request->forfait_carte_pro ? false : true ,
+            "forfait_pack_info" => $contrat->forfait_pack_info,
+            "modif_forfait_pack_info" => $contrat->forfait_pack_info == $request->forfait_pack_info ? false : true ,
+            
+            
             "date_entree" => $contrat->date_entree,
             "modif_date_entree" => $contrat->date_entree->format('Y-m-d') == $request->date_entree ? false : true ,
             "date_deb_activite" => $contrat->date_deb_activite,
@@ -151,7 +158,7 @@ class ContratController extends Controller
             "ca_depart_sty" => $contrat->ca_depart_sty,
             "modif_ca_depart_sty" => $contrat->ca_depart_sty == $request->ca_depart_sty ? false : true ,
             "est_demarrage_starter" => $contrat->est_demarrage_starter,
-            "modif_est_demarrage_starter" => $contrat->est_demarrage_starter == $request->est_starter ? false : true ,
+            "modif_est_demarrage_starter" => $contrat->est_demarrage_starter == $est_starter ? false : true ,
             "modif_est_soumis_fact_pub" => $contrat->est_soumis_fact_pub == $request->est_soumis_fact_pub ? false : true ,
             "est_soumis_fact_pub" =>$request->est_soumis_fact_pub == "true" ? true : false  ,
             "a_parrain" => $contrat->a_parrain,
@@ -182,6 +189,8 @@ class ContratController extends Controller
             "modif_nb_vente_passage_expert" => $contrat->nb_vente_passage_expert == $request->nb_vente_passage_expert ? false : true ,
             "duree_gratuite_expert" => $contrat->duree_gratuite_expert,
             "modif_duree_gratuite_expert" => $contrat->duree_gratuite_expert == $request->duree_gratuite_expert ? false : true ,
+            "nb_vente_gratuite_expert" => $contrat->nb_vente_gratuite_expert,
+            "modif_nb_vente_gratuite_expert" => $contrat->nb_vente_gratuite_expert == $request->nb_vente_gratuite_expert ? false : true ,
             
             "a_palier_expert" => $contrat->a_palier_expert,
             "modif_a_palier_expert" => $contrat->a_palier_expert == ($request->check_palier_expert == "true" ? true : false) ? false : true ,
@@ -237,6 +246,9 @@ class ContratController extends Controller
         $contrat->forfait_entree = $request->forfait_administratif + $request->forfait_carte_pro;
         $contrat->forfait_administratif = $request->forfait_administratif;
         $contrat->forfait_carte_pro = $request->forfait_carte_pro;
+        $contrat->forfait_pack_info = $request->forfait_pack_info;
+        
+    
         $contrat->date_entree = $request->date_entree;
         $contrat->date_deb_activite = $request->date_debut;
         if($contrat->ca_depart != $request->ca_depart){
@@ -283,6 +295,8 @@ class ContratController extends Controller
         $contrat->pourcentage_depart_expert = $request->pourcentage_depart_expert;
         $contrat->duree_max_starter_expert = $request->duree_max_starter;
         $contrat->duree_gratuite_expert = $request->duree_gratuite_expert;
+        $contrat->nb_vente_gratuite_expert = $request->nb_vente_gratuite_expert;
+        
         $contrat->nb_vente_passage_expert = $request->nb_vente_passage_expert;
         
         $contrat->a_palier_expert = $request->check_palier_expert == "true" ? true : false;
@@ -574,6 +588,8 @@ class ContratController extends Controller
             "forfait_entree"=> $request->forfait_administratif + $request->forfait_carte_pro,
             "forfait_administratif"=>$request->forfait_administratif,
             "forfait_carte_pro"=>$request->forfait_carte_pro,
+            "forfait_pack_info"=>$request->forfait_pack_info,
+            
             "date_entree"=>$request->date_entree,
             "date_deb_activite"=>$request->date_debut,
             "ca_depart"=>$request->ca_depart,
@@ -600,6 +616,8 @@ class ContratController extends Controller
             "duree_max_starter_expert"=>$request->duree_max_expert,
             "nb_vente_passage_expert"=>$request->nb_vente_passage_expert,
             "duree_gratuite_expert"=>$request->duree_gratuite_expert,
+            "nb_vente_gratuite_expert"=>$request->nb_vente_gratuite_expert,
+            
             "a_palier_expert"=>$request->check_palier_expert == "true" ? true : false,
             "palier_expert"=>$request->palier_expert,
 
@@ -632,7 +650,7 @@ class ContratController extends Controller
         $mandataire->commission = $request->est_starter == "true" ? $request->pourcentage_depart_starter : $request->pourcentage_depart_expert ;
         $mandataire->pack_actuel = $request->est_starter == "true" ? "starter" : "expert" ;
         
-        // Maj jeton
+        // Maj jeton ************************************************************************************************************************************************************************
         if($contrat->est_demarrage_starter == true && $contrat->deduis_jeton == true ){
             
             $mandataire->nb_mois_pub_restant = $mandataire->nb_mois_pub_restant - $contrat->duree_gratuite_starter;
@@ -643,7 +661,7 @@ class ContratController extends Controller
                     
         }
         
-        
+        // ******************************************************************************************************
         
         $mandataire->update();
         
@@ -757,6 +775,8 @@ class ContratController extends Controller
             "pourcentage_depart_expert"=>$request->pourcentage_depart_expert,
             "duree_max_starter_expert"=>$request->duree_max_starter,
             "duree_gratuite_expert"=>$request->duree_gratuite_expert,
+            "nb_vente_gratuite_expert"=>$request->nb_vente_gratuite_expert,
+            
             "a_palier_expert"=>$request->check_palier_expert == "true" ? true : false,
             "palier_expert"=>$request->palier_expert,
 
@@ -807,6 +827,8 @@ class ContratController extends Controller
         $modele->pourcentage_depart_expert = $request->pourcentage_depart_expert;
         $modele->duree_max_starter_expert = $request->duree_max_starter;
         $modele->duree_gratuite_expert = $request->duree_gratuite_expert;
+        $modele->nb_vente_gratuite_expert = $request->nb_vente_gratuite_expert;
+        
         $modele->a_palier_expert = $request->check_palier_expert == "true" ? true : false;
         $modele->palier_expert = $request->palier_expert;
         $modele->nombre_vente_min = $request->nombre_vente_min;

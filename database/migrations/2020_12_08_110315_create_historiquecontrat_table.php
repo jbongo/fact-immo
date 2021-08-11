@@ -23,6 +23,20 @@ class CreateHistoriquecontratTable extends Migration
             $table->boolean('modif_forfait_administratif')->default(false);
             $table->double('forfait_carte_pro')->nullable();
             $table->boolean('modif_forfait_carte_pro')->default(false);
+            
+            $table->double('forfait_pack_info')->nullable();
+            $table->boolean('modif_forfait_pack_info')->default(false);
+            
+            $table->double('est_soumis_fact_pub')->nullable();
+            $table->boolean('modif_est_soumis_fact_pub')->default(false);
+            
+            $table->double('nb_vente_passage_expert')->nullable();
+            $table->boolean('modif_nb_vente_passage_expert')->default(false);
+            
+            
+            
+            
+            
             $table->date('date_entree')->nullable();
             $table->boolean('modif_date_entree')->default(false);
             $table->date('date_deb_activite')->nullable();
@@ -63,6 +77,9 @@ class CreateHistoriquecontratTable extends Migration
             $table->boolean('modif_duree_max_starter_expert')->default(false);
             $table->integer('duree_gratuite_expert')->nullable();
             $table->boolean('modif_duree_gratuite_expert')->default(false);
+            $table->integer('nb_vente_gratuite_expert')->nullable();
+            $table->boolean('modif_nb_vente_gratuite_expert')->default(false);
+            
             $table->boolean('a_palier_expert')->nullable();
             $table->boolean('modif_a_palier_expert')->default(false);
             $table->text('palier_expert')->nullable();

@@ -45,6 +45,12 @@
                                                     <input type="number" class="form-control" min="0" value="{{$contrat->forfait_carte_pro}}" id="forfait_carte_pro" name="forfait_carte_pro" required>
                                                 </div>
                                             </div>
+                                            <div class="form-group row">
+                                                <label class="col-lg-4 col-form-label" @if($contrat->modif_forfait_pack_info == true) style="background:#f291bf"  @endif for="forfait_pack_info">Forfait pack informatique (€)<span class="text-danger">*</span></label>
+                                                <div class="col-lg-4">
+                                                    <input type="number" class="form-control" min="0" value="{{$contrat->forfait_pack_info}}" id="forfait_pack_info" name="forfait_pack_info" required>
+                                                </div>
+                                            </div>
                                             @php
                                                $check =  ($contrat->est_demarrage_starter == true) ? "checked" : "unchecked";
                                             @endphp
@@ -127,6 +133,7 @@
                                         </div>
                                         <div class="col-lg-6 col-md-6 col-sm-6">
                                             @php
+                                                $check_fact_pub =  ($contrat->est_soumis_fact_pub == true) ? "checked" : "unchecked";
                                                 $check_tva =  ($contrat->est_soumis_tva == true) ? "checked" : "unchecked";
                                             @endphp
                                             <div class="form-group row">
@@ -147,6 +154,19 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        
+                                       
+                                        <div class="col-lg-6 col-md-6 col-sm-6">
+                                           
+                                            <div class="form-group row">
+                                                <label class="col-lg-6 col-form-label"  @if($contrat->modif_est_soumis_fact_pub == true) style="background:#f291bf"  @endif for="est_soumis_fact_pub">Générer des factures pub s'il n'est pas soumis aux jetons ?</label>
+                                                <div class="col-lg-6">
+                                                    <input type="checkbox" {{$check_fact_pub}} data-toggle="toggle" id="est_soumis_fact_pub" name="est_soumis_fact_pub" data-off="Non" data-on="Oui" data-onstyle="success" data-offstyle="danger">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        
                                     </div>
                             </div>
                         </div>
@@ -176,8 +196,17 @@
                                                 <input type="number" class="form-control" value="{{$contrat->pourcentage_depart_starter}}" id="pourcentage_depart_starter" name="pourcentage_depart_starter" min="0" max="100" hidden required>
                                             </div>
                                         </div>
+                                        
                                     </div>
                                     <div class="col-lg-6 col-md-6 col-sm-6">
+                                    
+                                        <div class="form-group row" >
+                                            <label class="col-lg-6 col-md-6 col-sm-6 col-form-label" @if($contrat->modif_nb_vente_passage_expert == true) style="background:#f291bf"  @endif for="nb_vente_passage_expert">Nombre de vente pour passer expert<span class="text-danger">*</span></label>
+                                            <div class="col-lg-4 col-md-4 col-sm-4 ">
+                                                <input type="number" class="form-control" id="nb_vente_passage_expert" name="nb_vente_passage_expert" min="0" value="{{$contrat->nb_vente_passage_expert}}"  required>
+                                            </div>
+                                        </div>
+                                        
                                         <div class="form-group row" id="max-starter-parrent">
                                             <label class="col-lg-6 col-md-6 col-sm-6 col-form-label"  @if($contrat->modif_duree_max_starter == true) style="background:#f291bf"  @endif for="duree_max_starter">Durée maximum du pack Starter<span class="text-danger">*</span></label>
                                             <div class="col-lg-4 col-md-4 col-sm-4 ">
@@ -305,13 +334,20 @@
                                     </div>
                                     <div class="col-lg-6 col-md-6 col-sm-6">
                                        
-                                        {{-- <div class="form-group row">
-                                            <label class="col-lg-6 col-form-label"  @if($contrat->modif_duree_gratuite_expert == true) style="background:#f291bf"  @endif for="duree_gratuite_expert">Durée de la gratuité (mois)<span class="text-danger">*</span></label>
+                                        <div class="form-group row">
+                                            <label class="col-lg-6 col-form-label" @if($contrat->modif_duree_gratuite_expert == true) style="background:#f291bf"  @endif for="duree_gratuite_expert">Durée de la gratuité (mois)<span class="text-danger">*</span></label>
                                             <div class="col-lg-4 col-md-4 col-sm-4 ">
                                                 <input type="number" class="form-control" id="duree_gratuite_expert" name="duree_gratuite_expert" min="0" value="{{$contrat->duree_gratuite_expert}}" required>
                                             </div>
-                                        </div> --}}
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-lg-6 col-form-label" @if($contrat->modif_nb_vente_gratuite_expert == true) style="background:#f291bf"  @endif for="nb_vente_gratuite_expert">Nombre de vente de la gratuité <span class="text-danger">*</span></label>
+                                            <div class="col-lg-4 col-md-4 col-sm-4 ">
+                                                <input type="number" class="form-control" id="nb_vente_gratuite_expert" name="nb_vente_gratuite_expert" min="0" value="{{$contrat->nb_vente_gratuite_expert}}" required>
+                                            </div>
+                                        </div>
                                     </div>
+                                    
                                 </div>
 
                                 <div class="row">
@@ -640,7 +676,7 @@
                 
                                                 
                 
-                                                <div class="row">
+                                                <div class="row"  @if($contrat->modif_contrat_pdf == true) style="background:#f291bf"  @endif>
                                                     @if($contrat->contrat_pdf)
                                                     <a href="{{route('historiquecontrat.telecharger', Crypt::encrypt($contrat->id))}}"data-toggle="tooltip" title="Réinitialiser le contrat"  class="btn btn-danger btn-flat btn-addon "><i class="ti-download"></i>télécharger le contrat</a> 
                 

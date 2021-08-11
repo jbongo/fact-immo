@@ -19,7 +19,7 @@ Vous avez atteint la durée maximale du pack starter. <br>
 
 
 @if($mandataire->contrat->nb_vente_passage_expert > 0)
-Nombre de vente pour devenir Expert: **{{$mandataire->contrat->nb_vente_passage_expert}} mois** <br>
+Nombre de vente pour devenir Expert: **{{$mandataire->contrat->nb_vente_passage_expert}} ** <br>
 @else 
 Durée du pack starter: **{{$duree_starter}} mois** <br>
 @endif

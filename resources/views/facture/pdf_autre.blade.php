@@ -169,6 +169,7 @@
 <br>
 
 
+
     <table class="table table-striped table-bordered table-hover" style="width: 100%;"  border="1" cellspacing="0">
         <thead>
             <tr style="height: 18px;">
@@ -177,16 +178,17 @@
         </thead>
         <tbody>
             <tr style="height: 18px;">
-                <th align="center" style="height: 18px;">RIB: 10278 7941 00020227203 08</th>
+                <th align="center" style="height: 18px;">RIB: 10278 7941 00020227202 11</th>
             </tr>
             <tr style="height: 18px;">
-                <th align="center">IBAN: FR76102 78079 41000 2022 720308</th>
+                <th align="center">IBAN: FR76102 78079 41000 2022 720211</th>
             </tr>
             <tr style="height: 8px;">
                 <th align="center" style="height: 8px;">BIC: CMCIFR2A</th>
             </tr>
         </tbody>
     </table> 
+        
     <div style="text-align: center; font-size: 11px; margin-right: 5%; margin-left: 5%; ">
         <p><strong>SARL {{App\Parametre::params()->raison_sociale}}</strong> - {{App\Parametre::params()->adresse}}   - Zone Artisanale de Berret - {{App\Parametre::params()->code_postal}}   {{App\Parametre::params()->ville}}   <br> Capital social: 3000 € - Carte professionnelle N°1312T14 TVA {{App\Parametre::params()->numero_tva}}   - SIRET: {{App\Parametre::params()->numero_siret}} - RCS NIMES {{App\Parametre::params()->numero_rcs}}
         </p>
