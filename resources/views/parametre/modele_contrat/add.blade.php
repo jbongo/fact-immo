@@ -697,10 +697,10 @@
                             'success'
                         )
                         .then(function() {
-                            // window.location.href = "{{route('mandataire.index')}}";
+                            window.location.href = "{{route('modele_contrat.create')}}";
+
                         })
                         setInterval(() => {
-                            window.location.href = "{{route('modele_contrat.create')}}";
                             
                         }, 5);
                 },

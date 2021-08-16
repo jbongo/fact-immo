@@ -343,7 +343,7 @@
                                                            <div class="form-group row">
                                                             <label class="col-lg-6 col-form-label" for="duree_pack_info_expert">Durée du pack informatique (mois) <span class="text-danger">*</span></label>
                                                             <div class="col-lg-4 col-md-4 col-sm-4 ">
-                                                                <input type="number" class="form-control" id="duree_pack_info_expert" name="duree_pack_info_expert" min="0" value="{{$contrat->duree_pack_info_expert}}" required>
+                                                                <input type="number" class="form-control" id="duree_pack_info_expert" name="duree_pack_info_expert" min="0" value="{{$modele->duree_pack_info_expert}}" required>
                                                             </div>
                                                         </div>
                                                            {{-- <div class="form-group row">
@@ -861,6 +861,8 @@
             "user_id": "{{$user_id}}",
             "forfait_administratif" : $('#forfait_administratif').val(),
             "forfait_carte_pro" : $('#forfait_carte_pro').val(),
+            "forfait_pack_info" : $('#forfait_pack_info').val(),
+            
             "date_entree" : $('#date_entree').val(),
             "date_debut" : $('#date_debut').val(),
             "ca_depart" : $('#ca_depart').val(),
@@ -868,6 +870,8 @@
             "est_starter" : $("#est_starter").prop('checked'),            
             "a_parrain" : $("#a_parrain").prop('checked') ,
             "parrain_id" : $('#parrain_id').val(),
+            "nb_vente_passage_expert" : $('#nb_vente_passage_expert').val(),
+            
             
             "duree_pack_info_starter" : $('#duree_pack_info_starter').val(),
             "duree_pack_info_expert" : $('#duree_pack_info_expert').val(),
@@ -909,12 +913,9 @@
                             'success'
                         )
                         .then(function() {
-                            // window.location.href = "{{route('mandataire.index')}}";
-                        })
-                        setInterval(() => {
                             window.location.href = "{{route('mandataire.index')}}";
-                            
-                        }, 5);
+                        })
+                        
                 },
                 error: function(data) {
                     console.log(data);
