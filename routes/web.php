@@ -312,6 +312,6 @@ Route::post('/agenda/delete/{agenda_id}','AgendaController@destroy')->name('agen
 
 // Tests
 
-Route::get('/test', function () {
-    return view('test');
-});
+// Route::get('/test', function () {
+//     return view('test');
+// });
