@@ -69,6 +69,8 @@ class CreateHistoriquecontratTable extends Migration
             $table->boolean('modif_a_palier_starter')->default(false);
             $table->text('palier_starter')->nullable();
             $table->boolean('modif_palier_starter')->default(false);
+            $table->integer('duree_pack_info_starter')->nullable();
+            $table->boolean('modif_duree_pack_info_starter')->default(false);
 
 //  Commission direct pack expert
             $table->double('pourcentage_depart_expert')->nullable();
@@ -77,8 +79,12 @@ class CreateHistoriquecontratTable extends Migration
             $table->boolean('modif_duree_max_starter_expert')->default(false);
             $table->integer('duree_gratuite_expert')->nullable();
             $table->boolean('modif_duree_gratuite_expert')->default(false);
-            $table->integer('nb_vente_gratuite_expert')->nullable();
-            $table->boolean('modif_nb_vente_gratuite_expert')->default(false);
+            
+            $table->integer('duree_pack_info_expert')->nullable();
+            $table->boolean('modif_duree_pack_info_expert')->default(false);
+            
+            // $table->integer('nb_vente_gratuite_expert')->nullable();
+            // $table->boolean('modif_nb_vente_gratuite_expert')->default(false);
             
             $table->boolean('a_palier_expert')->nullable();
             $table->boolean('modif_a_palier_expert')->default(false);

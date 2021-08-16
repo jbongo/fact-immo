@@ -29,7 +29,7 @@ Facture N° {{$facture->numero}}
                 <a href="{{route('facture.edit_libre', Crypt::encrypt($facture->id))}}"  class="btn btn-default btn-flat btn-addon  m-b-10 m-l-5 " id="ajouter"><i class="ti-pencil"></i>Modifier</a>
              </div>
             <div class="col-lg-3 col-md-3 col-sm-6">
-                <a href="{{route('facture.generer_pdf_facture_autre', Crypt::encrypt($facture->id))}}"  class="btn btn-danger btn-flat btn-addon  m-b-10 m-l-5 " id="ajouter"><i class="ti-reload"></i>Génerer la facture</a>
+                <a href="{{route('facture.generer_pdf_facture_autre', Crypt::encrypt($facture->id))}}"  class="btn btn-danger btn-flat btn-addon  m-b-10 m-l-5 " id="ajouter"><i class="ti-reload"></i>Générer la facture</a>
              </div>
 
 

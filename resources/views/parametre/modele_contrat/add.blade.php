@@ -31,13 +31,19 @@
                                             <div class="form-group row">
                                                 <label class="col-lg-4 col-form-label" for="forfait_administratif">Forfait administratif (€)<span class="text-danger">*</span></label>
                                                 <div class="col-lg-4">
-                                                    <input type="number" class="form-control" min="1" value="175" id="forfait_administratif" name="forfait_administratif" required>
+                                                    <input type="number" class="form-control" min="1" value="" id="forfait_administratif" name="forfait_administratif" required>
                                                 </div>
                                             </div>
                                             <div class="form-group row">
                                                 <label class="col-lg-4 col-form-label" for="forfait_carte_pro">Forfait carte pro (€)<span class="text-danger">*</span></label>
                                                 <div class="col-lg-4">
-                                                    <input type="number" class="form-control" min="1" value="50" id="forfait_carte_pro" name="forfait_carte_pro" required>
+                                                    <input type="number" class="form-control" min="1" value="" id="forfait_carte_pro" name="forfait_carte_pro" required>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-lg-4 col-form-label" for="forfait_pack_info">Forfait pack informatique (€)<span class="text-danger">*</span></label>
+                                                <div class="col-lg-4">
+                                                    <input type="number" class="form-control" min="0" value="" id="forfait_pack_info" name="forfait_pack_info" required>
                                                 </div>
                                             </div>
                                             <div class="form-group row">
@@ -102,16 +108,28 @@
                                         </div>
                                     </div>
                                     <div class="col-lg-6 col-md-6 col-sm-6">
+                                        <div class="form-group row" >
+                                            <label class="col-lg-6 col-md-6 col-sm-6 col-form-label" for="nb_vente_passage_expert">Nombre de vente pour passer expert<span class="text-danger">*</span></label>
+                                            <div class="col-lg-4 col-md-4 col-sm-4 ">
+                                                <input type="number" class="form-control" id="nb_vente_passage_expert" name="nb_vente_passage_expert" min="0" value=""  required>
+                                            </div>
+                                        </div>
                                         <div class="form-group row" id="max-starter-parrent">
                                             <label class="col-lg-6 col-md-6 col-sm-6 col-form-label" for="duree_max_starter">Durée maximum du pack Starter<span class="text-danger">*</span></label>
                                             <div class="col-lg-4 col-md-4 col-sm-4 ">
-                                                <input type="number" class="form-control" id="duree_max_starter" name="duree_max_starter" min="1" max="48" value="7" required>
+                                                <input type="number" class="form-control" id="duree_max_starter" name="duree_max_starter" min="1" max="48" value="" required>
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <label class="col-lg-6 col-form-label" for="duree_gratuite_starter">Durée de la gratuité (mois)<span class="text-danger">*</span></label>
+                                            <label class="col-lg-6 col-form-label" for="duree_gratuite_starter">Durée de la gratuité totale (mois)<span class="text-danger">*</span></label>
                                             <div class="col-lg-4 col-md-4 col-sm-4 ">
-                                                <input type="number" class="form-control" id="duree_gratuite_starter" name="duree_gratuite_starter" min="0" max="48" value="4" required>
+                                                <input type="number" class="form-control" id="duree_gratuite_starter" name="duree_gratuite_starter" min="0" max="48" value="" required>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-lg-6 col-form-label" for="duree_pack_info_starter">Durée du pack informatique (mois) <span class="text-danger">*</span></label>
+                                            <div class="col-lg-4 col-md-4 col-sm-4 ">
+                                                <input type="number" class="form-control" id="duree_pack_info_starter" name="duree_pack_info_starter" min="0" value="" required>
                                             </div>
                                         </div>
                                     </div>
@@ -185,10 +203,22 @@
                                     </div>
                                     <div class="col-lg-6 col-md-6 col-sm-6">
                                        
-                                        {{-- <div class="form-group row">
-                                            <label class="col-lg-6 col-form-label" for="duree_gratuite_expert">Durée de la gratuité (mois)<span class="text-danger">*</span></label>
+                                        <div class="form-group row">
+                                            <label class="col-lg-6 col-form-label" for="duree_gratuite_expert">Durée de la gratuité totale (mois)<span class="text-danger">*</span></label>
                                             <div class="col-lg-4 col-md-4 col-sm-4 ">
-                                                <input type="number" class="form-control" id="duree_gratuite_expert" name="duree_gratuite_expert" min="0" max="48" value="4" required>
+                                                <input type="number" class="form-control" id="duree_gratuite_expert" name="duree_gratuite_expert" min="0" value="" required>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-lg-6 col-form-label" for="duree_pack_info_expert">Durée du pack informatique (mois) <span class="text-danger">*</span></label>
+                                            <div class="col-lg-4 col-md-4 col-sm-4 ">
+                                                <input type="number" class="form-control" id="duree_pack_info_expert" name="duree_pack_info_expert" min="0" value="" required>
+                                            </div>
+                                        </div>
+                                        {{-- <div class="form-group row">
+                                            <label class="col-lg-6 col-form-label" for="nb_vente_gratuite_expert">Nombre de vente de la gratuité <span class="text-danger">*</span></label>
+                                            <div class="col-lg-4 col-md-4 col-sm-4 ">
+                                                <input type="number" class="form-control" id="nb_vente_gratuite_expert" name="nb_vente_gratuite_expert" min="0" value="" required>
                                             </div>
                                         </div> --}}
                                     </div>
@@ -618,6 +648,12 @@
         data = {
             "forfait_administratif" : $('#forfait_administratif').val(),
             "forfait_carte_pro" : $('#forfait_carte_pro').val(),
+            "forfait_pack_info" : $('#forfait_pack_info').val(),
+            "nb_vente_passage_expert" : $('#nb_vente_passage_expert').val(),
+            // "nb_vente_gratuite_expert" : $('#nb_vente_gratuite_expert').val(),
+            "duree_pack_info_starter" : $('#duree_pack_info_starter').val(),
+            "duree_pack_info_expert" : $('#duree_pack_info_expert').val(),
+            
             "date_entree" : $('#date_entree').val(),
             "date_debut" : $('#date_debut').val(),
             "ca_depart" : $('#ca_depart').val(),

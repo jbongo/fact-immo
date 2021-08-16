@@ -105,9 +105,9 @@ class ContratController extends Controller
         
         $palier_starter =  $contrat != null ?  $this->palier_unserialize($contrat->palier_starter) : null;
         $palier_expert =  $contrat != null ? $this->palier_unserialize($contrat->palier_expert) : null;
+   
         $comm_parrain = unserialize($contrat->comm_parrain ); 
 
-     
     
         return view ('contrat.edit', compact(['packs_pub','parrain','parrains','contrat','palier_starter','palier_expert','comm_parrain', 'comm_filleuls']));
   
@@ -129,8 +129,8 @@ class ContratController extends Controller
      
     //  return "--$test";
      
-    //  file_put_contents("/data.txt",$contrat->contrat_pdf  );
-    //     dd($request->all());
+    //  file_put_contents("data.txt",$contrat  );
+        // dd($request->all());
         // $contrat->contrat_pdf == $request->contrat_pdf 
         $est_starter =  $request->est_starter == "true" ? true : false;
         Historiquecontrat::create([
@@ -189,8 +189,15 @@ class ContratController extends Controller
             "modif_nb_vente_passage_expert" => $contrat->nb_vente_passage_expert == $request->nb_vente_passage_expert ? false : true ,
             "duree_gratuite_expert" => $contrat->duree_gratuite_expert,
             "modif_duree_gratuite_expert" => $contrat->duree_gratuite_expert == $request->duree_gratuite_expert ? false : true ,
-            "nb_vente_gratuite_expert" => $contrat->nb_vente_gratuite_expert,
-            "modif_nb_vente_gratuite_expert" => $contrat->nb_vente_gratuite_expert == $request->nb_vente_gratuite_expert ? false : true ,
+            
+            "duree_pack_info_starter" => $contrat->duree_pack_info_starter,
+            "modif_duree_pack_info_starter" => $contrat->duree_pack_info_starter == $request->duree_pack_info_starter ? false : true ,
+            
+            "duree_pack_info_expert" => $contrat->duree_pack_info_expert,
+            "modif_duree_pack_info_expert" => $contrat->duree_pack_info_expert == $request->duree_pack_info_expert ? false : true ,
+            
+            // "nb_vente_gratuite_expert" => $contrat->nb_vente_gratuite_expert,
+            // "modif_nb_vente_gratuite_expert" => $contrat->nb_vente_gratuite_expert == $request->nb_vente_gratuite_expert ? false : true ,
             
             "a_palier_expert" => $contrat->a_palier_expert,
             "modif_a_palier_expert" => $contrat->a_palier_expert == ($request->check_palier_expert == "true" ? true : false) ? false : true ,
@@ -235,7 +242,7 @@ class ContratController extends Controller
 // Contrat et annexe pdf
 
             "contrat_pdf" => $contrat->contrat_pdf,
-            "modif_contrat_pdf" => $contrat->contrat_pdf == $request->contrat_pdf ? false : true ,
+            "modif_contrat_pdf" =>  $request->contrat_pdf == null ? false : true ,
         ]);
         
         // ######## FIN SAUVEGARDE HISTORIQUE ######### 
@@ -295,7 +302,11 @@ class ContratController extends Controller
         $contrat->pourcentage_depart_expert = $request->pourcentage_depart_expert;
         $contrat->duree_max_starter_expert = $request->duree_max_starter;
         $contrat->duree_gratuite_expert = $request->duree_gratuite_expert;
-        $contrat->nb_vente_gratuite_expert = $request->nb_vente_gratuite_expert;
+        $contrat->duree_pack_info_starter = $request->duree_pack_info_starter;
+        $contrat->duree_pack_info_expert = $request->duree_pack_info_expert;
+        
+        
+        // $contrat->nb_vente_gratuite_expert = $request->nb_vente_gratuite_expert;
         
         $contrat->nb_vente_passage_expert = $request->nb_vente_passage_expert;
         
@@ -504,12 +515,16 @@ class ContratController extends Controller
         $palier_starter =  $modele != null ?  $this->palier_unserialize($modele->palier_starter) : null;
         $palier_expert =  $modele != null ? $this->palier_unserialize($modele->palier_expert) : null;
         $parrains = User::where([['role','mandataire'], ['id','<>', Crypt::decrypt($user_id)]])->get();
+        
+        $comm_parrain = $modele->comm_parrain;
 
+        $comm_parrain = unserialize($modele->comm_parrain); 
+        
         $user_id =$user_id;
         if($modele == null){
             return view ('contrat.add', compact(['parrains','user_id','packs_pub','modele']));
         }else{
-            return view ('contrat.model_add', compact(['packs_pub','modele','palier_starter','palier_expert','user_id','parrains']));
+            return view ('contrat.model_add', compact(['packs_pub','modele','palier_starter','palier_expert','user_id','parrains','comm_parrain']));
         }
     }
 
@@ -616,7 +631,10 @@ class ContratController extends Controller
             "duree_max_starter_expert"=>$request->duree_max_expert,
             "nb_vente_passage_expert"=>$request->nb_vente_passage_expert,
             "duree_gratuite_expert"=>$request->duree_gratuite_expert,
-            "nb_vente_gratuite_expert"=>$request->nb_vente_gratuite_expert,
+            "duree_pack_info_starter"=>$request->duree_pack_info_starter,
+            "duree_pack_info_expert"=>$request->duree_pack_info_expert,
+            
+            // "nb_vente_gratuite_expert"=>$request->nb_vente_gratuite_expert,
             
             "a_palier_expert"=>$request->check_palier_expert == "true" ? true : false,
             "palier_expert"=>$request->palier_expert,
@@ -752,11 +770,37 @@ class ContratController extends Controller
         // return $request->est_starter == "true" ? 1 : 0;
         // parrainage
         // return "".$request->forfait_administratif;
+        
+        $comm_parrain = array();
+
+        $comm_parrain["p_1_1"] = $request->p_1_1;
+        $comm_parrain["p_1_2"] = $request->p_1_2;
+        $comm_parrain["p_1_3"] = $request->p_1_3;
+        $comm_parrain["p_1_n"] = $request->p_1_n;
+        $comm_parrain["p_2_1"] = $request->p_2_1;
+        $comm_parrain["p_2_2"] = $request->p_2_2;
+        $comm_parrain["p_2_3"] = $request->p_2_3;
+        $comm_parrain["p_2_n"] = $request->p_2_n;
+        $comm_parrain["p_3_1"] = $request->p_3_1;
+        $comm_parrain["p_3_2"] = $request->p_3_2;
+        $comm_parrain["p_3_3"] = $request->p_3_3;
+        $comm_parrain["p_3_n"] = $request->p_3_n;
+        $comm_parrain["seuil_parr_1"] = $request->seuil_parr_1;
+        $comm_parrain["seuil_fill_1"] = $request->seuil_fill_1;
+        $comm_parrain["seuil_parr_2"] = $request->seuil_parr_2;
+        $comm_parrain["seuil_fill_2"] = $request->seuil_fill_2;
+        $comm_parrain["seuil_parr_3"] = $request->seuil_parr_3;
+        $comm_parrain["seuil_fill_3"] = $request->seuil_fill_3;
+        
+        $comm_parrain = serialize($comm_parrain);
+        
         Contrat::create([
               // infos basiques
             "forfait_entree"=> $request->forfait_administratif + $request->forfait_carte_pro,
             "forfait_administratif"=>$request->forfait_administratif,
             "forfait_carte_pro"=>$request->forfait_carte_pro,
+            "forfait_pack_info"=>$request->forfait_pack_info,
+            
             "date_entree"=>$request->date_entree,
             "date_deb_activite"=>$request->date_debut,
             "ca_depart"=>$request->ca_depart,
@@ -770,16 +814,23 @@ class ContratController extends Controller
             "duree_gratuite_starter"=>$request->duree_gratuite_starter,
             "a_palier_starter"=>$request->check_palier_starter == "true" ? true : false,
             "palier_starter"=>$request->palier_starter,
+            "nb_vente_passage_expert"=>$request->nb_vente_passage_expert,
+            
 
             // Commission direct pack expert          
             "pourcentage_depart_expert"=>$request->pourcentage_depart_expert,
             "duree_max_starter_expert"=>$request->duree_max_starter,
             "duree_gratuite_expert"=>$request->duree_gratuite_expert,
-            "nb_vente_gratuite_expert"=>$request->nb_vente_gratuite_expert,
+            "duree_pack_info_starter"=>$request->duree_pack_info_starter,
+            "duree_pack_info_expert"=>$request->duree_pack_info_expert,
+            
+            
+            // "nb_vente_gratuite_expert"=>$request->nb_vente_gratuite_expert,
             
             "a_palier_expert"=>$request->check_palier_expert == "true" ? true : false,
             "palier_expert"=>$request->palier_expert,
-
+            "comm_parrain"=>$request->comm_parrain,
+            
             "nombre_vente_min"=>$request->nombre_vente_min,
             "nombre_mini_filleul"=>$request->nombre_mini_filleul,
             "chiffre_affaire_mini"=>$request->chiffre_affaire,
@@ -806,10 +857,39 @@ class ContratController extends Controller
       
         $modele = Contrat::where('est_modele',true)->first();
 
+
+
+      
+        $comm_parrain = array();
+
+        $comm_parrain["p_1_1"] = $request->p_1_1;
+        $comm_parrain["p_1_2"] = $request->p_1_2;
+        $comm_parrain["p_1_3"] = $request->p_1_3;
+        $comm_parrain["p_1_n"] = $request->p_1_n;
+        $comm_parrain["p_2_1"] = $request->p_2_1;
+        $comm_parrain["p_2_2"] = $request->p_2_2;
+        $comm_parrain["p_2_3"] = $request->p_2_3;
+        $comm_parrain["p_2_n"] = $request->p_2_n;
+        $comm_parrain["p_3_1"] = $request->p_3_1;
+        $comm_parrain["p_3_2"] = $request->p_3_2;
+        $comm_parrain["p_3_3"] = $request->p_3_3;
+        $comm_parrain["p_3_n"] = $request->p_3_n;
+        $comm_parrain["seuil_parr_1"] = $request->seuil_parr_1;
+        $comm_parrain["seuil_fill_1"] = $request->seuil_fill_1;
+        $comm_parrain["seuil_parr_2"] = $request->seuil_parr_2;
+        $comm_parrain["seuil_fill_2"] = $request->seuil_fill_2;
+        $comm_parrain["seuil_parr_3"] = $request->seuil_parr_3;
+        $comm_parrain["seuil_fill_3"] = $request->seuil_fill_3;
+        
+        $comm_parrain = serialize($comm_parrain);
+        
+        
         // infos basiques
         $modele->forfait_entree = $request->forfait_administratif + $request->forfait_carte_pro;
         $modele->forfait_administratif = $request->forfait_administratif;
         $modele->forfait_carte_pro = $request->forfait_carte_pro;
+        $modele->forfait_pack_info = $request->forfait_pack_info;
+        
         $modele->date_entree = $request->date_entree;
         $modele->date_deb_activite = $request->date_debut;
         $modele->ca_depart = $request->ca_depart;
@@ -822,12 +902,18 @@ class ContratController extends Controller
         $modele->duree_gratuite_starter = $request->duree_gratuite_starter;
         $modele->a_palier_starter = $request->check_palier_starter == "true" ? true : false;
         $modele->palier_starter = $request->palier_starter;
+        $modele->nb_vente_passage_expert = $request->nb_vente_passage_expert;
 
+        
         // Commission direct pack expert          
         $modele->pourcentage_depart_expert = $request->pourcentage_depart_expert;
         $modele->duree_max_starter_expert = $request->duree_max_starter;
         $modele->duree_gratuite_expert = $request->duree_gratuite_expert;
-        $modele->nb_vente_gratuite_expert = $request->nb_vente_gratuite_expert;
+        $modele->duree_pack_info_starter = $request->duree_pack_info_starter;
+        $modele->duree_pack_info_expert = $request->duree_pack_info_expert;
+        
+        
+        // $modele->nb_vente_gratuite_expert = $request->nb_vente_gratuite_expert;
         
         $modele->a_palier_expert = $request->check_palier_expert == "true" ? true : false;
         $modele->palier_expert = $request->palier_expert;
@@ -835,7 +921,8 @@ class ContratController extends Controller
         $modele->nombre_mini_filleul = $request->nombre_mini_filleul;
         $modele->chiffre_affaire_mini = $request->chiffre_affaire;
         $modele->a_soustraitre = $request->a_soustraitre;
-
+        $modele->comm_parrain = $comm_parrain;
+        
         $modele->prime_forfaitaire = $request->prime_max_forfait_parrain;
         $modele->packpub_id = $request->pack_pub;  
    

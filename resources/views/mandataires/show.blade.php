@@ -368,11 +368,19 @@
                                                                 </div>
                                                             </div>
                                                             <div class="form-group row">
-                                                                <label class="col-lg-6 col-form-label" for="duree_gratuite_starter">Durée de la gratuité (mois)<span class="text-danger">*</span></label>
+                                                                <label class="col-lg-6 col-form-label" for="duree_gratuite_starter">Durée de la gratuité totale (mois)<span class="text-danger">*</span></label>
                                                                 <div class="col-lg-4 col-md-4 col-sm-4 ">
                                                                     <label class="color-primary">{{$mandataire->contrat->duree_gratuite_starter}} </label>
                                                                 </div>
                                                             </div>
+                                                            <div class="form-group row">
+                                                                <label class="col-lg-6 col-form-label" for="duree_pack_info_starter">Durée du pack informatique (mois) <span class="text-danger">*</span></label>
+                                                                <div class="col-lg-4 col-md-4 col-sm-4 ">
+                                                                    <label class="color-primary">{{$contrat->duree_pack_info_starter}} </label>
+                                                                </div>
+                                                            </div>
+                                                            
+                                                           
                                                         </div>
                                                     </div>
                     
@@ -464,9 +472,15 @@
                                                         <div class="col-lg-6 col-md-6 col-sm-6">
                                                            
                                                             <div class="form-group row">
-                                                                <label class="col-lg-6 col-form-label" for="duree_gratuite_expert">Durée de la gratuité (mois)<span class="text-danger">*</span></label>
+                                                                <label class="col-lg-6 col-form-label" for="duree_gratuite_expert">Durée de la gratuité totale (mois)<span class="text-danger">*</span></label>
                                                                 <div class="col-lg-4 col-md-4 col-sm-4 ">
                                                                     <label class="color-primary">{{$mandataire->contrat->duree_gratuite_expert}} </label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group row">
+                                                                <label class="col-lg-6 col-form-label" for="duree_pack_info_expert">Durée du pack informatique (mois) <span class="text-danger">*</span></label>
+                                                                <div class="col-lg-4 col-md-4 col-sm-4 ">
+                                                                    <label class="color-primary">{{$contrat->duree_pack_info_expert}} </label>
                                                                 </div>
                                                             </div>
                                                         </div>

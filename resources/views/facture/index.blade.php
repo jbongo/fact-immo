@@ -23,8 +23,26 @@
                </div>
                @endif
             <div class="row">
+            
+               <nav class="navbar navbar-default">
+                  <div class="container-fluid">
+                   
+                  
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                      <ul class="nav navbar-nav">
+                        <li class="active"><a href="{{route('facture.index')}}"> <i class="material-icons" style="font-size: 15px;">account_balance_wallet</i> Factures Styl'immo <span class="sr-only">(current)</span></a></li>
+                        <li><a href="{{route('facture.index_honoraire')}}"> <i class="material-icons" style="font-size: 15px;">account_balance_wallet</i> Factures Honoraires</a></li>
+                        <li><a href="{{route('facture.index_communication')}}"><i class="material-icons" style="font-size: 15px;">account_balance_wallet</i> @if(Auth()->user()->role == "admin") @lang('Factures Pubs') @else @lang('Factures Communication')  <span class="badge badge-danger">{{ $nb_comm_non_regle}}</span> @endif</a></li>
+                        
+                      </ul>
+                
+                     
+                    </div><!-- /.navbar-collapse -->
+                  </div><!-- /.container-fluid -->
+                </nav>
+            
                     <!-- Navigation Buttons -->
-                    <div class="col-lg-12 col-md-12 col-sm-12">
+                    {{-- <div class="col-lg-12 col-md-12 col-sm-12">
                        <ul class="nav nav-pills nav-tabs" id="myTabs">
                           <li id="li_stylimmo" class="active"><a href="#stylimmo" data-toggle="pill"> <i class="material-icons" style="font-size: 15px;">account_balance_wallet</i> @lang('Factures Styl\'immo')</a></li>
                           <li id="li_caracteristique_nav"><a href="#caracteristique_nav" data-toggle="pill"> <i class="material-icons" style="font-size: 15px;">account_balance_wallet</i> @lang('Factures Honoraires')</a></li>
@@ -32,9 +50,9 @@
                          
                          
                        </ul>
-                    </div>
+                    </div> --}}
                     <!-- Content -->
-                    <div class=" col-lg-12 col-md-12 col-sm-12">
+                    {{-- <div class=" col-lg-12 col-md-12 col-sm-12">
                        <div class="card">
                           <div class="card-body">
                              <div class="tab-content">
@@ -44,7 +62,19 @@
                              </div>
                           </div>
                        </div>
-                    </div>
+                    </div> --}}
+                    
+                  <div class=" col-lg-12 col-md-12 col-sm-12">
+                       <div class="card">
+                          <div class="card-body">
+                             <div class="tab-content">
+                                @include('facture.stylimmo')
+                                                     
+                             </div>
+                          </div>
+                       </div>
+                    </div> 
+
 
 
 

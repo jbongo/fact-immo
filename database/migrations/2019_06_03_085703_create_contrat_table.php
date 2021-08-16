@@ -46,10 +46,13 @@ class CreateContratTable extends Migration
             $table->integer('duree_max_starter_expert')->nullable();
             $table->integer('nb_vente_passage_expert')->nullable();
             $table->date('date_passage_starter_expert')->nullable();
+            $table->integer('duree_pack_info_starter')->nullable();
             
             
             $table->integer('duree_gratuite_expert')->nullable();
-            $table->integer('nb_vente_gratuite_expert')->nullable();
+            $table->integer('duree_pack_info_expert')->nullable();
+            
+            // $table->integer('nb_vente_gratuite_expert')->nullable();
             $table->boolean('a_palier_expert')->nullable();
             $table->text('palier_expert')->nullable();
             $table->integer('nombre_vente_min')->nullable();

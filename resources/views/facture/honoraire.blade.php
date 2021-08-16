@@ -1,5 +1,43 @@
 
+ @extends('layouts.app')
+ @section('content')
+     @section ('page_title')
+     Factures 
+     @endsection
  
+     <div class="row"> 
+        
+         <div class="col-lg-12">
+                 @if (session('ok'))
+        
+                 <div class="alert alert-success alert-dismissible fade in">
+                         <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                         <a href="#" class="alert-link"><strong> {{ session('ok') }}</strong></a> 
+                 </div>
+              @endif       
+             <div class="card alert">
+                 <!-- table -->
+                
+                
+                <nav class="navbar navbar-default">
+                    <div class="container-fluid">
+                     
+                    
+                      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                        <ul class="nav navbar-nav">
+                          <li ><a href="{{route('facture.index')}}"> <i class="material-icons" style="font-size: 15px;">account_balance_wallet</i> Factures Styl'immo <span class="sr-only">(current)</span></a></li>
+                          <li class="active"><a href="{{route('facture.index_honoraire')}}"> <i class="material-icons" style="font-size: 15px;">account_balance_wallet</i> Factures Honoraires</a></li>
+                          <li><a href="{{route('facture.index_communication')}}"><i class="material-icons" style="font-size: 15px;">account_balance_wallet</i> @if(Auth()->user()->role == "admin") @lang('Factures Pubs') @else @lang('Factures Communication')  <span class="badge badge-danger">{{ $nb_comm_non_regle}}</span> @endif</a></li>
+                          
+                        </ul>
+                  
+                       
+                      </div><!-- /.navbar-collapse -->
+                    </div><!-- /.container-fluid -->
+                  </nav>
+             <div class="row">
+             
+             
                 <!-- table -->
                 
                 <div class="card-body">
@@ -210,7 +248,7 @@
                 </div>
 
 
-{{-- <div class="container"> --}}
+
 
         <!-- Trigger the modal with a button -->
         {{-- <button type="button" class="btn btn-info btn-lg" id="myBtn">Open Modal</button> --}}
@@ -250,14 +288,355 @@
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
               </div>
             </div>
-        </form> 
+            </form> 
           </div>
         </div>
         
-      {{-- </div>               --}}
+
+ 
+    </div>
+    </div>
+</div>
+</div>
+@endsection
+
+@section('js-content')
 
 
-                </div>
-                </div>
-            <!-- end table -->
-            
+{{-- ##### Encaissement de la facture stylimmo --}}
+<script>
+
+function getId(id){
+ facture_id = id;
+ // console.log(id);
+ 
+}
+
+
+ // $('.encaisser').click(function(){
+ //    facture_id = $(this).attr('data-id');
+ //    console.log("okok");
+    
+ //    console.log(facture_id);
+ // })
+    
+    
+    
+$('#valider_encaissement').on('click',function(e){
+e.preventDefault();
+
+if($("#date_encaissement").val() != ""){
+
+
+ $.ajax({
+       type: "GET",
+       url: "encaisser/factures-stylimmo/"+facture_id ,
+       data:  $("#form_encaissement").serialize(),
+       success: function (result) {
+          console.log(result);
+          
+                swal(
+                   'Encaissée',
+                   'Vous avez encaissé la facture '+result,
+                   'success'
+                )
+                .then(function() {
+                   window.location.href = "{{route('facture.index')}}";
+                })
+       },
+       error: function(error){
+          console.log(error);
+          
+          swal(
+                   'Echec',
+                   'la facture '+error+' n\'a pas été encaissée',
+                   'error'
+                )
+                .then(function() {
+                   // window.location.href = "{{route('facture.index')}}";
+                })
+          
+       }
+ });
+}
+
+});
+
+</script>
+{{-- Alertes paiement  --}}
+<script type="text/javascript">
+ var clignotement = function(){
+
+    var element = document.getElementsByClassName('danger');
+ 
+
+    Array.prototype.forEach.call(element, function(el) {
+       if (el.style.visibility=='visible'){
+          el.style.visibility='hidden';
+       }
+       else{
+          el.style.visibility='visible';
+       }
+   });
+   
+   
+ };
+
+ periode = setInterval(clignotement, 1500);
+
+</script>
+
+{{--  Reglement de la facture stylimmo--}}
+<script>
+ // $('.payer').on('click',function(e){
+ //    facture_id = $(this).attr('id');  
+ //    console.log(facture_id);
+ // });
+
+ function getIdPayer(id){
+    facture_id = id;
+    // console.log(id);
+    
+ }
+
+
+
+// Règlement de la note d'honoraire
+ $('#valider_reglement').on('click',function(e){
+     e.preventDefault();
+
+    if($("#date_reglement").val() != ""){
+
+       $.ajaxSetup({
+     headers: {
+         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+     }
+ });
+       $.ajax({
+             type: "GET",
+             url: "regler/factures-honoraire/"+facture_id ,
+             data:  $("#form_regler").serialize(),
+             success: function (result) {
+                swal(
+                   'Réglée',
+                   'Vous avez reglé la facture ',
+                   'success'
+                )
+                .then(function() {
+                   window.location.href = "{{route('facture.index')}}";
+                })
+             },
+             error: function(error){
+                console.log(error);
+                
+                swal(
+                         'Echec',
+                         'la facture  n\'a pas été reglé '+error,
+                         'error'
+                      )
+                      .then(function() {
+                         window.location.href = "{{route('facture.index')}}";
+                      })
+                
+             }
+       });
+    }
+
+
+ });
+ 
+ 
+ 
+ 
+ 
+ // Règlement de la facture de pub
+ $('#valider_reglement_pub').on('click',function(e){
+     e.preventDefault();
+
+    if($("#date_reglement_pub").val() != ""){
+
+       $.ajaxSetup({
+     headers: {
+         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+     }
+ });
+       $.ajax({
+             type: "GET",
+             url: "regler/factures-honoraire/"+facture_id ,
+             data:  $("#form_regler_pub").serialize(),
+             success: function (result) {
+                swal(
+                   'Réglée',
+                   'Vous avez reglé la facture ',
+                   'success'
+                )
+                .then(function(data) {
+                   window.location.href = "{{route('facture.index')}}";
+                })
+             },
+             error: function(error){
+                console.log(error);
+                
+                swal(
+                         'Echec',
+                         'la facture  n\'a pas été reglé '+error,
+                         'error'
+                      )
+                      .then(function() {
+                         window.location.href = "{{route('facture.index')}}";
+                      })
+                
+             }
+       });
+    }
+
+
+ });
+ 
+ 
+ 
+ 
+ 
+
+</script>
+
+<script>
+ // ######### Réitérer une affaire
+
+
+ $(function() {
+     $.ajaxSetup({
+         headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
+     })
+     $('[data-toggle="tooltip"]').tooltip()
+     $('body').on('click','a.cloturer',function(e) {
+         let that = $(this)
+         e.preventDefault()
+         const swalWithBootstrapButtons = swal.mixin({
+     confirmButtonClass: 'btn btn-success',
+     cancelButtonClass: 'btn btn-danger',
+     buttonsStyling: false,
+})
+
+ swalWithBootstrapButtons({
+     title: 'Confirmez-vous la réitération de cette affaire (Mandat '+that.attr("data-mandat")+' )  ?',
+     type: 'warning',
+     showCancelButton: true,
+     confirmButtonColor: '#DD6B55',
+     confirmButtonText: '@lang('Oui')',
+     cancelButtonText: '@lang('Non')',
+     
+ }).then((result) => {
+     if (result.value) {
+         $('[data-toggle="tooltip"]').tooltip('hide')
+             $.ajax({                        
+                 url: that.attr('href'),
+                 type: 'GET',
+                 success: function(data){
+                document.location.reload();
+              },
+              error : function(data){
+                 console.log(data);
+              }
+             })
+             .done(function () {
+                     that.parents('tr').remove()
+             })
+
+         swalWithBootstrapButtons(
+         'Réitérée!',
+         'L\'affaire a bien été réitérée.',
+         'success'
+         )
+         
+         
+     } else if (
+         // Read more about handling dismissals
+         result.dismiss === swal.DismissReason.cancel
+     ) {
+         swalWithBootstrapButtons(
+         'Annulé',
+         'L\'affaire n\'a pas été réitérée.',
+       
+         'error'
+         )
+     }
+ })
+     })
+ })
+</script>
+
+
+
+
+
+{{-- Relancer un mandataire pour une facture PUB --}}
+<script>      
+      
+      
+  $(function() {
+     $.ajaxSetup({
+        headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
+     })
+     
+    
+     $('[data-toggle="tooltip"]').tooltip()
+     $('body').on('click','a.relancer',function(e) {
+        let that = $(this)
+    
+        e.preventDefault()
+        const swalWithBootstrapButtons = swal.mixin({
+        confirmButtonClass: 'btn btn-success',
+        cancelButtonClass: 'btn btn-danger',
+        buttonsStyling: false,
+        })
+
+  swalWithBootstrapButtons({
+     title: 'Le mandataire va recevoir un mail de relance, continuer ?',
+     type: 'warning',
+     showCancelButton: true,
+     confirmButtonColor: '#DD6B55',
+     confirmButtonText: '@lang('Oui')',
+     cancelButtonText: '@lang('Non')',
+     
+  }).then((result) => {
+     if (result.value) {
+        $('[data-toggle="tooltip"]').tooltip('hide')
+              $.ajax({                        
+                 url: that.attr('href'),
+                 type: 'GET',
+                 success: function(data){
+                   document.location.reload();
+                 },
+                 error : function(data){
+                    console.log(data);
+                 }
+              })
+              .done(function () {
+                console.log(data);
+                    
+              })
+
+        swalWithBootstrapButtons(
+        'Relancé!',
+        'Le mandatataire sera notifié par mail.',
+        'success'
+        )
+        
+        
+     } else if (
+        // Read more about handling dismissals
+        result.dismiss === swal.DismissReason.cancel
+     ) {
+        swalWithBootstrapButtons(
+        'Annulé',
+        'Aucune action effectuée :)',
+        'error'
+        )
+     }
+  })
+     })
+  })
+</script>
+
+@endsection

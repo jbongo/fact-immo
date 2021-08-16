@@ -214,9 +214,15 @@
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <label class="col-lg-6 col-form-label" for="duree_gratuite_starter">Durée de la gratuité (mois)<span class="text-danger">*</span></label>
+                                            <label class="col-lg-6 col-form-label" for="duree_gratuite_starter">Durée de la gratuité totale (mois)<span class="text-danger">*</span></label>
                                             <div class="col-lg-4 col-md-4 col-sm-4 ">
                                                 <input type="number" class="form-control" id="duree_gratuite_starter" name="duree_gratuite_starter" min="0" value="{{$contrat->duree_gratuite_starter}}" required>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-lg-6 col-form-label" for="duree_pack_info_starter">Durée du pack informatique (mois) <span class="text-danger">*</span></label>
+                                            <div class="col-lg-4 col-md-4 col-sm-4 ">
+                                                <input type="number" class="form-control" id="duree_pack_info_starter" name="duree_pack_info_starter" min="0" value="{{$contrat->duree_pack_info_starter}}" required>
                                             </div>
                                         </div>
                                     </div>
@@ -335,17 +341,23 @@
                                     <div class="col-lg-6 col-md-6 col-sm-6">
                                        
                                         <div class="form-group row">
-                                            <label class="col-lg-6 col-form-label" for="duree_gratuite_expert">Durée de la gratuité (mois)<span class="text-danger">*</span></label>
+                                            <label class="col-lg-6 col-form-label" for="duree_gratuite_expert">Durée de la gratuité totale (mois)<span class="text-danger">*</span></label>
                                             <div class="col-lg-4 col-md-4 col-sm-4 ">
                                                 <input type="number" class="form-control" id="duree_gratuite_expert" name="duree_gratuite_expert" min="0" value="{{$contrat->duree_gratuite_expert}}" required>
                                             </div>
                                         </div>
                                         <div class="form-group row">
+                                            <label class="col-lg-6 col-form-label" for="duree_pack_info_expert">Durée du pack informatique (mois) <span class="text-danger">*</span></label>
+                                            <div class="col-lg-4 col-md-4 col-sm-4 ">
+                                                <input type="number" class="form-control" id="duree_pack_info_expert" name="duree_pack_info_expert" min="0" value="{{$contrat->duree_pack_info_expert}}" required>
+                                            </div>
+                                        </div>
+                                        {{-- <div class="form-group row">
                                             <label class="col-lg-6 col-form-label" for="nb_vente_gratuite_expert">Nombre de vente de la gratuité <span class="text-danger">*</span></label>
                                             <div class="col-lg-4 col-md-4 col-sm-4 ">
                                                 <input type="number" class="form-control" id="nb_vente_gratuite_expert" name="nb_vente_gratuite_expert" min="0" value="{{$contrat->nb_vente_gratuite_expert}}" required>
                                             </div>
-                                        </div>
+                                        </div> --}}
                                     </div>
                                 </div>
 
@@ -1078,7 +1090,10 @@ console.log($('#contrat_pdf').prop('files')[0]);
 
             "pourcentage_depart_expert" : $('#pourcentage_depart_expert').val(),
             "duree_gratuite_expert" : $('#duree_gratuite_expert').val(),
-            "nb_vente_gratuite_expert" : $('#nb_vente_gratuite_expert').val(),
+            // "nb_vente_gratuite_expert" : $('#nb_vente_gratuite_expert').val(),
+            
+            "duree_pack_info_starter" : $('#duree_pack_info_starter').val(),
+            "duree_pack_info_expert" : $('#duree_pack_info_expert').val(),
             
             "check_palier_expert" : $("#check_palier_expert").prop('checked'),
             "palier_expert" : $('#palier_expert input').serialize(),

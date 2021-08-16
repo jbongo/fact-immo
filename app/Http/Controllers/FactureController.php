@@ -122,38 +122,9 @@ class FactureController extends Controller
         //
     
         if(auth()->user()->role == "admin"){
-            $factureStylimmos = Facture::whereIn('type',['stylimmo','avoir','pack_pub','carte_visite','communication','autre'])->latest()->get();
-            
-            // $avant = microtime(true);
-            // $après = microtime(true);
-            // var_dump($après - $avant); // en micro secondes.
-
-            // $factureStylimmos = DB::table('factures')
-            // ->whereIn('type',['stylimmo','avoir','pack_pub','carte_visite','communication','autre'])
-            // ->join('compromis','factures.compromis_id','=','compromis.id' )
-            // ->join('users','factures.user_id','=', 'users.id')
-            // ->select('factures.*', 'compromis.charge as compro_charge',  'compromis.created_at as compro_created_at', 'compromis.updated_at as compro_updated_at ', 'compromis.nom_vendeur as compro_nom_vendeur',
-            //         'compromis.nom_acquereur as compro_nom_acquereur', 'compromis.nom_agent as compro_nom_agent' ,'compromis.numero_mandat as compro_numero_mandat', 'compromis.date_vente as compro_date_vente',
-            //         'users.nom as user_nom','users.prenom as user_prenom'
-            //         )
-            // ->latest()
-            // ->get();
-            // dd($factureStylimmos);
-            
-            $factureHonoraires = Facture::whereIn('type',['honoraire','partage','partage_externe','parrainage','parrainage_partage'])->latest()->get();
-            
-            // $factureHonoraires = DB::table('factures')
-            // ->whereIn('type',['honoraire','partage','partage_externe','parrainage','parrainage_partage'])
-            // ->join('compromis','factures.compromis_id','=','compromis.id' )
-            // ->join('users','factures.user_id','=', 'users.id')
-            // ->select('factures.*', 'compromis.charge as compro_charge',  'compromis.created_at as compro_created_at', 'compromis.updated_at as compro_updated_at ', 'compromis.nom_vendeur as compro_nom_vendeur',
-            //         'compromis.nom_acquereur as compro_nom_acquereur', 'compromis.nom_agent as compro_nom_agent' , 'compromis.numero_mandat as compro_numero_mandat', 'compromis.date_vente as compro_date_vente',
-            //         'compromis.cloture_affaire as compro_cloture_affaire','compromis.agent_id as compro_agent_id','compromis.demande_facture as compro_demande_facture','compromis.user_id as compro_user_id','compromis.cloture_affaire as compro_cloture_affaire',
-            //         'users.nom as user_nom','users.prenom as user_prenom'
-            //         )
-            // ->latest()
-            // ->get();
-            
+        
+            $factureStylimmos = Facture::whereIn('type',['stylimmo','avoir','pack_pub','carte_visite','communication','autre'])->latest()->get();          
+            $factureHonoraires = Facture::whereIn('type',['honoraire','partage','partage_externe','parrainage','parrainage_partage'])->latest()->get();            
             $factureCommunications = Facture::where('type',['pack_pub','carte_visite'])->latest()->get();
             
             $nb_comm_non_regle  = Facture::where('reglee',false)->whereIn('type',['pack_pub','carte_visite'])->count();
@@ -170,6 +141,65 @@ class FactureController extends Controller
         
         
         return view ('facture.index',compact(['factureHonoraires','factureStylimmos','factureCommunications','nb_comm_non_regle']));
+    }
+    
+    
+    
+    
+     /**
+     * Afficher toutes les factures d'honoraire
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index_honoraire()
+    {
+        //
+        //
+    
+        $nb_comm_non_regle  = "";
+    
+        if(auth()->user()->role == "admin"){
+            $factureHonoraires = Facture::whereIn('type',['honoraire','partage','partage_externe','parrainage','parrainage_partage'])->latest()->get();                       
+        }else{
+            $factureHonoraires = Facture::where('user_id',auth()->user()->id)->whereIn('type',['honoraire','partage','partage_externe','parrainage','parrainage_partage'])->latest()->get();
+            $nb_comm_non_regle  = Facture::where([['user_id',auth()->user()->id],['reglee',false]])->whereIn('type',['pack_pub','carte_visite'])->count();
+
+        }
+        
+        
+        return view ('facture.honoraire',compact(['factureHonoraires','nb_comm_non_regle']));
+    }
+    
+    
+      /**
+     * Afficher toutes les factures d'honoraire
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index_communication()
+    {
+        //
+        //
+    
+        if(auth()->user()->role == "admin"){
+        
+        // Liste des factures de publicité
+            $facturePubs = Facture::where('type',['pack_pub'])->latest()->get();
+
+            $nb_comm_non_regle  = Facture::where('reglee',false)->whereIn('type',['pack_pub','carte_visite'])->count();
+            
+            return view ('facture.pubs',compact(['facturePubs','nb_comm_non_regle']));
+            
+        }else{
+        
+            $factureCommunications = Facture::where('user_id',auth()->user()->id)->whereIn('type',['pack_pub','carte_visite'])->latest()->get();
+            $nb_comm_non_regle  = Facture::where([['user_id',auth()->user()->id],['reglee',false]])->whereIn('type',['pack_pub','carte_visite'])->count();
+            
+            return view ('facture.communication',compact(['factureCommunications','nb_comm_non_regle']));
+
+        }
+
+        
     }
     
     
@@ -197,7 +227,7 @@ class FactureController extends Controller
     
     
     
-        /**
+    /**
      * Afficher toutes les factures pub
      *
      * @return \Illuminate\Http\Response
