@@ -141,7 +141,7 @@
                 @if (Auth()->user()->role == "admin")                        
                
                     <li class="{{$li_mandataire}}"><a  href="{{route('mandataire.index')}}" class=""> <i class="large material-icons" style="font-size:20px;">person</i></i>Mandataires  </a></li>
-                    <li  style=" background:#aeefec" class="{{$li_prospect_gestion}} {{$li_prospect_archive}}"><a  href="" class="sidebar-sub-toggle"> <i class="large material-icons" style="font-size:20px;">person</i></i> Prospects <span class="sidebar-collapse-icon ti-angle-down"></span> </a>
+                    <li  class="{{$li_prospect_gestion}} {{$li_prospect_archive}}"><a  href="" class="sidebar-sub-toggle"> <i class="large material-icons" style="font-size:20px;">person</i></i> Prospects <span class="sidebar-collapse-icon ti-angle-down"></span> </a>
                         <ul>
                         <li class="{{$li_prospect_gestion}}" ><a href="{{route('prospect.index')}}">Gestion</a></li>
                         <li class="{{$li_prospect_archive}}" ><a href="{{route('prospect.archives')}}">Archivés</a></li>
@@ -205,7 +205,8 @@
                             <li class="{{$li_parametre_fournisseur}}"><a href="{{route('fournisseur.index')}}">Fournisseur</a></li>
                         </ul>
                     </li>
-                    <li class=""><a  href="{{route('export_facture.index')}}" class=""> <i class="large material-icons" style="font-size:20px;">vertical_align_center</i></i>Export   </a>
+                    <li class=""  style=" background:#aeefec"><a  href="{{route('winfic.index')}}" class=""> <i class="large material-icons" style="font-size:20px;">vertical_align_center</i></i>Export WINFIC   </a>
+                        {{-- <li class=""><a  href="{{route('export_facture.index')}}" class=""> <i class="large material-icons" style="font-size:20px;">vertical_align_center</i></i>Export   </a> --}}
                     <li class=""><a  href="{{route('historique.index')}}" class=""> <i class="large material-icons" style="font-size:20px;">access_time</i></i>Historique   </a>
                         <li class=""><a  href="{{route('etat_financier')}}" class=""> <i class="large material-icons" style="font-size:20px;">enhanced_encryption</i></i>Etat financier   </a>
                     </li>

@@ -35,7 +35,7 @@ font-family: 'Times New Roman', Times, serif
 <p>La commission du mandataire est calcul&eacute;e en pourcentage du montant des honoraires d&rsquo;agence H.T. g&eacute;n&eacute;r&eacute;s par le mandataire. Ce pourcentage de base est d&eacute;fini selon le choix effectu&eacute; ci-dessous (STARTER ou EXPERT).</p>
 <p><strong><u>A &ndash; Pourcentage de base choisi</u></strong></p>
 <p>D&eacute;marrage en tant que&nbsp;:</p>
-<p><strong>&nbsp;&nbsp;   <input type="checkbox" name="" id=""> &nbsp; STARTER&nbsp;(max. {{$contrat->duree_max_starter}} mois)&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{$contrat->pourcentage_depart_starter}} % &nbsp; (des honoraires d&rsquo;agence H.T.)</strong></p>
+<p><strong>&nbsp;&nbsp;   <input type="checkbox" name="" id=""> &nbsp; STARTER&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{$contrat->pourcentage_depart_starter}} % &nbsp; (des honoraires d&rsquo;agence H.T.)</strong></p>
 <p style="text-align: right;"><strong><u>conditions et tarifs en annexe 3</u></strong></p>
 <p><strong><u>ou</u></strong> d&eacute;marrage <u>directement</u> en tant que&nbsp;:</p>
 <p><strong>&nbsp;&nbsp; <input type="checkbox" name="" id=""> &nbsp; EXPERT&nbsp;: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </strong><strong>{{$contrat->pourcentage_depart_expert}}  %&nbsp;&nbsp; (des honoraires d&rsquo;agence H.T.)</strong></p>
@@ -92,6 +92,7 @@ font-family: 'Times New Roman', Times, serif
 <p>&Agrave; l&rsquo;expiration du 1er cycle, un 2&egrave; cycle peut commencer &agrave; la date d&rsquo;entr&eacute;e du prochain filleul. Ce 2&egrave; cycle durera &eacute;galement deux ans &agrave; compter de cette nouvelle date. Et ainsi de suite pour les cycles suivants.</p>
 <p>La r&eacute;mun&eacute;ration indirecte pour parrainage se fera pendant trois ans (36 mois) &agrave; compter de l&rsquo;entr&eacute;e du filleul concern&eacute;.</p>
 <p>La r&eacute;mun&eacute;ration du parrain se fait comme suit&nbsp;(la date de d&eacute;part pour l&rsquo;ann&eacute;e d&rsquo;exercice du filleul est la date de son entr&eacute;e dans le r&eacute;seau)&nbsp;:</p>
+<p>A partir de la 2<sup>ème</sup> année, le parrain devra avoir réalisé un chiffre d'affaires de 30 000 € HT sur les 12 derniers mois afin de pouvoir percevoir les commissions indirectes.</p>
 <p>&nbsp;</p>
 <p><u>1&egrave;re ann&eacute;e d&rsquo;exercice du filleul&nbsp;: </u></p>
 <p>Le parrain recevra 5 % du chiffre d&rsquo;affaires personnel du filleul d&egrave;s le 1er centime (pas de seuil de chiffre d&rsquo;affaires du filleul), en revanche le chiffre d&rsquo;affaires du filleul pour ce calcul est plafonn&eacute; &agrave; 30.000 &euro; HT, soit un maximum de 1.500 &euro; HT de commission indirecte pour l&rsquo;ann&eacute;e d&rsquo;exercice du filleul concern&eacute;. Cette r&egrave;gle s&rsquo;applique &agrave; tous les filleuls quel que soit leur rang.</p>
@@ -148,8 +149,8 @@ font-family: 'Times New Roman', Times, serif
 <h3><strong>ANNEXE 3</strong><strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </strong>Engagement &agrave; payer</h3>
 <hr /><hr />
 <p>&nbsp;</p>
-<p><strong><u>FORFAIT D&rsquo;ENTREE</u></strong><strong> :</strong>&nbsp;&nbsp;&nbsp; 270 &euro; TTC qui sera factur&eacute; &agrave; la signature du contrat d&rsquo;agent</p>
-<p>Un ch&egrave;que de 54 &euro; &agrave; l&rsquo;ordre de la CCI pour l&rsquo;attestation professionnelle.</p>
+<p><strong><u>FORFAIT D&rsquo;ENTREE</u></strong><strong> :</strong>&nbsp;&nbsp;&nbsp; factur&eacute; &agrave; la signature du contrat d&rsquo;agent: 225 HT + 55 € pour l'obtention de l'attestation professionnelle</p>
+
 <p>Ouverture des comptes administratifs internes et externes (attestation de n&eacute;gociateur immobilier etc.).</p>
 <p>Remboursement&nbsp;: 225,00 &euro; HT &nbsp;sur la premi&egrave;re vente qui devra &ecirc;tre effectu&eacute;e dans les 8 mois suivant le d&eacute;but d&rsquo;activit&eacute;.</p>
 <p>&nbsp;</p>
@@ -158,7 +159,7 @@ font-family: 'Times New Roman', Times, serif
 <p><strong><u>FORFAIT MENSUEL</u></strong>&nbsp;(STARTER <strong><em><u>ou</u></em></strong> EXPERT)&nbsp;:</p>
 <p><strong>&nbsp;</strong></p>
 <ul>
-<li><strong><u>FORFAIT MENSUEL &laquo;&nbsp;STARTER&nbsp;&raquo;</u></strong><strong>r&eacute;mun&eacute;ration &agrave; 65%</strong> :</li>
+<li><strong><u>FORFAIT MENSUEL &laquo;&nbsp;STARTER&nbsp;&raquo;</u></strong> :</li>
 </ul>
 <p>Ce forfait comprend&nbsp;: suivi/conseil + formations + outils informatiques + outils publicitaires correspondant au pack 10.</p>
 <p>Le prix mensuel du forfait STARTER&nbsp;est de&nbsp;:</p>
@@ -171,7 +172,7 @@ font-family: 'Times New Roman', Times, serif
 <p><em>*&nbsp;: mois suivant la date de d&eacute;but d&rsquo;activit&eacute; inscrite dans le contrat.</em></p>
 <p>&nbsp;</p>
 <ul>
-<li><strong><u>FORFAIT MENSUEL &laquo;&nbsp;EXPERT&nbsp;&raquo;</u></strong><strong>r&eacute;mun&eacute;ration &agrave; 80%&nbsp;: </strong></li>
+<li><strong><u>FORFAIT MENSUEL &laquo;&nbsp;EXPERT&nbsp;&raquo;</u></strong>: </strong></li>
 </ul>
 <p>Ce forfait comprend&nbsp;: suivi/conseil + formations + outils informatiques + outils publicitaires correspondant au pack choisi par le mandataire.</p>
 <p>Prix mensuel du forfait EXPERT&nbsp;(&agrave; compter du d&eacute;marrage d&rsquo;activit&eacute;)&nbsp;:</p>

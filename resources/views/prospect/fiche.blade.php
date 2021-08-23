@@ -322,7 +322,7 @@
             </div>
             <div class="form-group col-md-6">
               <label for="ville">Ville <span>*</span></label>
-              <input type="text" name="ville" value="{{old('ville') ? old('ville') : $prospect->ville}}" required class="form-control" id="ville" placeholder="">
+              <input type="text" name="ville" value="{{old('ville') ? old('ville') : $prospect->ville}}" required class="form-control" id="ville" placeholder="" >
                 @if ($errors->has('ville'))
                    <br>
                    <div class="alert alert-warning ">
@@ -375,8 +375,8 @@
      
         <div class="form-row ">
             <div class="form-group col-md-6">
-              <label for="date_naissance">Date de naissance</label>
-              <input type="date" name="date_naissance"  value="{{old('date_naissance') ? old('date_naissance') : $prospect->date_naissance}}" class="form-control" id="date_naissance" placeholder    ="">
+              <label for="date_naissance">Date de naissance <span>*</span></label>
+              <input type="date" name="date_naissance"  value="{{old('date_naissance') ? old('date_naissance') : $prospect->date_naissance}}" class="form-control" id="date_naissance" placeholder    ="" required>
               @if ($errors->has('date_naissance'))
                  <br>
                  <div class="alert alert-warning ">
@@ -385,8 +385,8 @@
                @endif
             </div>
             <div class="form-group col-md-6">
-              <label for="lieu_naissance">Lieu de naissance </label>
-              <input type="text" name="lieu_naissance"  value="{{old('lieu_naissance') ? old('lieu_naissance') : $prospect->lieu_naissance}}" class="form-control" id="lieu_naissance" placeholder    ="">
+              <label for="lieu_naissance">Lieu de naissance <span>*</span> </label>
+              <input type="text" name="lieu_naissance"  value="{{old('lieu_naissance') ? old('lieu_naissance') : $prospect->lieu_naissance}}" class="form-control" id="lieu_naissance" placeholder    ="" required>
               @if ($errors->has('lieu_naissance'))
                  <br>
                  <div class="alert alert-warning ">
@@ -398,7 +398,7 @@
         
         <div class="form-row item">
             <div class="form-group col-md-6">
-              <label for="situation_familliale">Situation familliale</label>
+              <label for="situation_familliale">Situation familliale <span>*</span> </label>
               <select name="situation_familliale"  class="form-control"  id="situation_familliale">
               
               @if($prospect->situation_familliale != null)
@@ -416,8 +416,8 @@
                             
             </div>
             <div class="form-group col-md-6">
-              <label for="nationalite">Nationalité</label>
-              <input type="text" name="nationalite"  value="{{old('nationalite') ? old('nationalite') : $prospect->nationalite}}" class="form-control" id="nationalite" placeholder   ="">
+              <label for="nationalite">Nationalité <span>*</span> </label>
+              <input type="text" name="nationalite"  value="{{old('nationalite') ? old('nationalite') : $prospect->nationalite}}" class="form-control" id="nationalite" placeholder   ="" required>
               @if ($errors->has('nationalite'))
                  <br>
                  <div class="alert alert-warning ">
@@ -439,7 +439,7 @@
        
        <div class="form-row item">
         <div class="form-group col-md-6">
-          <label for="nom_pere">Nom et prénom(s) du père</label>
+          <label for="nom_pere">Nom et prénom(s) du père <span>*</span> </label>
           <input type="text" name="nom_pere"  value="{{old('nom_pere') ? old('nom_pere') : $prospect->nom_pere}}" class="form-control" id="nom_pere" placeholder=""  required>
               @if ($errors->has('nom_pere'))
                  <br>
@@ -449,7 +449,7 @@
                @endif
         </div>
         <div class="form-group col-md-6">
-          <label for="nom_mere">Nom et prénom(s) de la mère </label>
+          <label for="nom_mere">Nom (de jeune fille) et prénom(s) de la mère <span>*</span> </label>
           <input type="text" name="nom_mere"  value="{{old('nom_mere') ? old('nom_mere') : $prospect->nom_mere}}" class="form-control" id="nom_mere" placeholder="" required>
               @if ($errors->has('nom_mere'))
                  <br>

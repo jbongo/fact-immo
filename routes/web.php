@@ -296,8 +296,6 @@ Route::middleware('auth')->group(function(){
 
 
 
-});
-
 // Envoi de la fiche info au prospect
 Route::get('fiche/prospect/{prospect}/','ProspectController@create_fiche')->name('prospect.fiche');
 Route::post('fiche/prospect/{prospect}/','ProspectController@sauvegarder_fiche')->name('prospect.sauvegarder_fiche');
@@ -307,6 +305,17 @@ Route::post('fiche/prospect/{prospect}/','ProspectController@sauvegarder_fiche')
 Route::post('/agenda/store','AgendaController@store')->name('agenda.store');
 Route::post('/agenda/update','AgendaController@update')->name('agenda.update');
 Route::post('/agenda/delete/{agenda_id}','AgendaController@destroy')->name('agenda.delete');
+
+
+// Export WINFIC
+Route::get('/winfic','ExportwinficController@index')->name('winfic.index');
+Route::get('/winfic/exporter/{date_deb?}/{date_fin?}','ExportwinficController@exporter')->name('winfic.exporter');
+
+
+
+
+
+});
 
 
 
