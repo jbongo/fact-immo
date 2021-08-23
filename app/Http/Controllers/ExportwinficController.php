@@ -155,7 +155,7 @@ class ExportwinficController extends Controller
             
         }
         
-        file_put_contents("test.txt", $data);
+        file_put_contents("ECRITURE.WIN", $data);
         
         return response()->download("ECRITURE.WIN");
         
