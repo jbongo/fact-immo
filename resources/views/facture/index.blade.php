@@ -17,10 +17,10 @@
             <div class="card alert">
                 <!-- table -->
                 @if(Auth::user()->role == "admin")
-                <div class="col-lg-12">
+                
                   <a href="{{route('facture.create_libre')}}" class="btn btn-success btn-flat btn-addon m-b-10 m-l-5"><i class="ti-plus"></i>@lang('Créer facture STYL\'IMMO')</a>
                   <br> <hr>
-               </div>
+             
                @endif
             <div class="row">
             
