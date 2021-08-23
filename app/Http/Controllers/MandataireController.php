@@ -107,6 +107,8 @@ class MandataireController extends Controller
             'role'=>"mandataire",
             'adresse'=>$request->adresse,
             'complement_adresse'=>$request->compl_adresse,
+            'code_client'=>$request->code_client,
+            'code_analytic'=>$request->code_analytic,
         
         ]);
 
@@ -254,6 +256,8 @@ class MandataireController extends Controller
         $mandataire->email_perso = $request->email_perso; 
         $mandataire->adresse = $request->adresse; 
         $mandataire->complement_adresse = $request->compl_adresse; 
+        $mandataire->code_client = $request->code_client; 
+        $mandataire->code_analytic = $request->code_analytic; 
 
         $mandataire->update();
         return redirect()->route('mandataire.edit', Crypt::encrypt($mandataire->id))->with('ok', __('mandataire modifié')  );

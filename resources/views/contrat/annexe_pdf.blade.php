@@ -180,7 +180,9 @@ font-family: 'Times New Roman', Times, serif
 <p>Tarifs &agrave; ce jour&nbsp;:</p>
 
 @foreach($packs as $pack)
-<p>&nbsp;- {{$pack->nom}}&nbsp;: {{$pack->tarif_ht}} &euro; H.T.,</p>
+  @if($pack->type != "reseau")
+  <p>&nbsp;- {{$pack->nom}}&nbsp;: {{$pack->tarif_ht}} &euro; H.T.,</p>
+  @endif
 @endforeach
 <p>&nbsp;</p>
 

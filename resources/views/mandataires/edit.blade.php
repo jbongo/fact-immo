@@ -243,7 +243,7 @@ Modifier mandataire {{$mandataire->nom}}
                         <div class="form-group row">
                            <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="code_client">Code client </label>
                            <div class="col-lg-8 col-md-8 col-sm-8">
-                              <input type="text" class="form-control {{ $errors->has('code_client') ? ' is-invalid' : '' }}" value="{{old('code_client')}}" id="code_client" name="code_client" placeholder="" >
+                              <input type="text" class="form-control {{ $errors->has('code_client') ? ' is-invalid' : '' }}" value="{{$mandataire->code_client}}" id="code_client" name="code_client" placeholder="" >
                               @if ($errors->has('code_client'))
                               <br>
                               <div class="alert alert-warning ">
@@ -256,7 +256,7 @@ Modifier mandataire {{$mandataire->nom}}
                         <div class="form-group row">
                            <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="code_analytic">Code analytic </label>
                            <div class="col-lg-8 col-md-8 col-sm-8">
-                              <input type="text" class="form-control {{ $errors->has('code_analytic') ? ' is-invalid' : '' }}" value="{{old('code_analytic')}}" id="code_analytic" name="code_analytic" placeholder="" >
+                              <input type="text" class="form-control {{ $errors->has('code_analytic') ? ' is-invalid' : '' }}" value="{{$mandataire->code_analytic}}" id="code_analytic" name="code_analytic" placeholder="" >
                               @if ($errors->has('code_analytic'))
                               <br>
                               <div class="alert alert-warning ">
