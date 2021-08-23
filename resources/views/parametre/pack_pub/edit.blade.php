@@ -24,7 +24,7 @@ Modifier un pack pub
                     <hr>
                     <hr>
                     <hr>
-                    <div class="col-lg-4 col-md-4 col-sm-4">
+                    <div class="col-lg-3 col-md-4 col-sm-4">
                         <div class="form-group row">
                             <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="adresse">Nom pack_pub<span class="text-danger">*</span> </label>
                             <div class="col-lg-5 col-md-5 col-sm-5">
@@ -38,7 +38,7 @@ Modifier un pack pub
                             </div>
                          </div>
                     </div>
-                    <div class="col-lg-4 col-md-4 col-sm-4">
+                    <div class="col-lg-3 col-md-4 col-sm-4">
                          <div class="form-group row">
                             <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="pays">Tarif HT <span class="text-danger">*</span></label>
                             <div class="col-lg-5 col-md-5 col-sm-5">
@@ -52,8 +52,34 @@ Modifier un pack pub
                             </div>
                          </div>
                     </div>
-                    </div>
+                    
+                    <div class="col-lg-3 col-md-4 col-sm-4">
+                     <div class="form-group row">
+                        <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="type">Type du pack <span class="text-danger">*</span></label>
+                        <div class="col-lg-5 col-md-5 col-sm-5">
+                           
+                           <select name="type" class="form-control" id="type">
+                           
+                              <option value="{{$pack->type}}">{{$pack->type}}</option>
+                              
+                              <option value="reseau">réseau</option>
+                              <option value="mandataire">mandataire</option>
+                              
+                           </select>
+                           @if ($errors->has('type'))
+                           <br>
+                           <div class="alert alert-warning ">
+                              <strong>{{$errors->first('type')}}</strong> 
+                           </div>
+                           @endif 
+                        </div>
+                     </div>
+                     
+                </div>
                
+                    </div>
+                    
+                    
                   
                   <div class="form-group row" style="text-align: center; margin-top: 50px;">
                      <div class="col-lg-8 ml-auto">

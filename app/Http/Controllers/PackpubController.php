@@ -46,7 +46,8 @@ class PackpubController extends Controller
         Packpub::create([
             "nom"=>$request->nom,
             "tarif_ht"=>$request->tarif_ht,
-            "tarif"=>$request->tarif_ht * Tva::coefficient_tva()
+            "tarif"=>$request->tarif_ht * Tva::coefficient_tva(),
+            "type"=>$request->type,
         ]);
         
         return  redirect()->route('pack_pub.index')->with('ok',__('Nouveau pack pub enregistré'));
@@ -97,6 +98,7 @@ class PackpubController extends Controller
         $pack->nom = $request->nom;
         $pack->tarif_ht = $request->tarif_ht;
         $pack->tarif = $request->tarif_ht * Tva::coefficient_tva();
+        $pack->type = $request->type;
         $pack->update();
         
         return  redirect()->route('pack_pub.index')->with('ok',__('le pack pub a été modifié'));

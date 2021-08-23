@@ -29,6 +29,7 @@
                                         <th>@lang('Nom Pack')</th>
                                         <th>@lang('Tarif HT')</th>
                                         <th>@lang('Tarif TTC')</th>
+                                        <th>@lang('Type du pack')</th>
                                         <th>@lang('Action')</th>
                                        
                                     </tr>
@@ -45,6 +46,10 @@
                                         </td>
                                         <td style="color: #e05555;; text-decoration: underline;">
                                             <strong> {{$pack->tarif}} €</strong> 
+                                        </td>
+                                        
+                                        <td style="color: #3811c7;; text-decoration: underline;">
+                                            <strong> {{$pack->type}} </strong> 
                                         </td>
                                                                          
                                 
