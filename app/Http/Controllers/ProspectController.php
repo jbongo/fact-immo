@@ -30,7 +30,7 @@ class ProspectController extends Controller
     {
         $prospects = Prospect::where([['archive', false], ['est_mandataire', false]])->get();
         
-        dd($prospects);
+        
         
         return view('prospect.index', compact('prospects'));
     }
