@@ -97,7 +97,8 @@ font-family: 'Times New Roman', Times, serif
 <p><u>1&egrave;re ann&eacute;e d&rsquo;exercice du filleul&nbsp;: </u></p>
 <p>Le parrain recevra 5 % du chiffre d&rsquo;affaires personnel du filleul d&egrave;s le 1er centime (pas de seuil de chiffre d&rsquo;affaires du filleul), en revanche le chiffre d&rsquo;affaires du filleul pour ce calcul est plafonn&eacute; &agrave; 30.000 &euro; HT, soit un maximum de 1.500 &euro; HT de commission indirecte pour l&rsquo;ann&eacute;e d&rsquo;exercice du filleul concern&eacute;. Cette r&egrave;gle s&rsquo;applique &agrave; tous les filleuls quel que soit leur rang.</p>
 <p>Ce calcul du plafond des 30 000 &euro; HT est calcul&eacute; sur le chiffre d'affaires des 12 mois pr&eacute;c&eacute;dents du filleul.</p>
-<p>&nbsp;</p>
+
+
 <p><u>2&egrave; ann&eacute;e d&rsquo;exercice du filleul&nbsp;: </u></p>
 <p>- le filleul concern&eacute; doit avoir un chiffre d&rsquo;affaires annuel sup&eacute;rieur ou &eacute;gal &agrave; 30.000 &euro; HT (seuil)&nbsp;;</p>
 <p>- le parrain recevra un pourcentage sur 30.000 &euro; (plafond) comme suit&nbsp;:</p>
@@ -107,7 +108,7 @@ font-family: 'Times New Roman', Times, serif
 <li>sur le 3&egrave; filleul (du cycle)&nbsp;: 5 % (soit 1.500 &euro;)</li>
 <li>sur le 4&egrave; filleul et suiv. (du cycle)&nbsp;: 5 % (soit 1.500 &euro;)</li>
 </ul>
-<p><u>&nbsp;</u></p>
+
 <p><u>3&egrave; ann&eacute;e d&rsquo;exercice du filleul&nbsp;</u>(derni&egrave;re ann&eacute;e donnant droit &agrave; commission indirecte) :</p>
 <p>- le filleul concern&eacute; doit avoir un chiffre d&rsquo;affaires annuel sup&eacute;rieur ou &eacute;gal &agrave; 30.000 &euro; (seuil)&nbsp;;</p>
 <p>- le parrain recevra un pourcentage sur 30.000 &euro; (plafond) comme suit&nbsp;:</p>
