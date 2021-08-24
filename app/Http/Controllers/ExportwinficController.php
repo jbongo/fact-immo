@@ -50,6 +50,12 @@ class ExportwinficController extends Controller
         $num_folio = 1;
         $num_ecriture = 1;
         
+        if(file_exists("ECRITURE.WIN")){
+            unlink("ECRITURE.WIN");
+        }
+        
+        $fichier = fopen("ECRITURE.WIN","w");
+        
         foreach ($factureStylimmos as $facture) {
            
             $code_journal = "VE";
@@ -135,19 +141,23 @@ class ExportwinficController extends Controller
             
             
             
-            $ligne1 = $code_journal."|".$date_operation."|".$this->formatage_colonne(6,$num_folio,'droite')."|".$this->formatage_colonne(6,$num_ecriture,'droite')."|".$jour_ecriture."|".$compte_tva."|".$montant_debit_tva."|".$montant_credit_tva."|".$libelle."|".$lettrage."|".$code_piece."|".$code_stat."|".$date_echeance."|".$monnaie."|".$filler."|".$ind_compteur."|".$quantite."|".$code_pointage."|\n";
+            $ligne1 = $code_journal."|".$date_operation."|".$this->formatage_colonne(6,$num_folio,'droite')."|".$this->formatage_colonne(6,$num_ecriture,'droite')."|".$jour_ecriture."|".$compte_tva."|".$montant_debit_tva."|".$montant_credit_tva."|".$libelle."|".$lettrage."|".$code_piece."|".$code_stat."|".$date_echeance."|".$monnaie."|".$filler."|".$ind_compteur."|".$quantite."|".$code_pointage."|\r\n";
             $num_ecriture++;
-            $ligne2 = $code_journal."|".$date_operation."|".$this->formatage_colonne(6,$num_folio,'droite')."|".$this->formatage_colonne(6,$num_ecriture,'droite')."|".$jour_ecriture."|".$compte_ht."|".$montant_debit_ht."|".$montant_credit_ht."|".$libelle."|".$lettrage."|".$code_piece."|".$code_stat."|".$date_echeance."|".$monnaie."|".$filler."|".$ind_compteur."|".$quantite."|".$code_pointage."|\n";
+            // fputs($fichier, $ligne1);
+            
+            $ligne2 = $code_journal."|".$date_operation."|".$this->formatage_colonne(6,$num_folio,'droite')."|".$this->formatage_colonne(6,$num_ecriture,'droite')."|".$jour_ecriture."|".$compte_ht."|".$montant_debit_ht."|".$montant_credit_ht."|".$libelle."|".$lettrage."|".$code_piece."|".$code_stat."|".$date_echeance."|".$monnaie."|".$filler."|".$ind_compteur."|".$quantite."|".$code_pointage."|\r\n";
             $num_ecriture++;
-            $ligne3 = $code_journal."|".$date_operation."|".$this->formatage_colonne(6,$num_folio,'droite')."|".$this->formatage_colonne(6,$num_ecriture,'droite')."|".$jour_ecriture."|".$compte_ttc."|".$montant_debit_ttc."|".$montant_credit_ttc."|".$libelle."|".$lettrage."|".$code_piece."|".$code_stat."|".$date_echeance."|".$monnaie."|".$filler."|".$ind_compteur."|".$quantite."|".$code_pointage."|\n";
+            // fputs($fichier, $ligne2);
+            $ligne3 = $code_journal."|".$date_operation."|".$this->formatage_colonne(6,$num_folio,'droite')."|".$this->formatage_colonne(6,$num_ecriture,'droite')."|".$jour_ecriture."|".$compte_ttc."|".$montant_debit_ttc."|".$montant_credit_ttc."|".$libelle."|".$lettrage."|".$code_piece."|".$code_stat."|".$date_echeance."|".$monnaie."|".$filler."|".$ind_compteur."|".$quantite."|".$code_pointage."|\r\n";
             $num_ecriture++;
+            // fputs($fichier, $ligne3);
           
             
-            $data .= $ligne1.$ligne2.$ligne3 ;
+            $data.=$ligne1.$ligne2.$ligne3 ;
             
             
             
-            
+            // dd($ligne1.'HELLLOOOO FGRR  FR FR');
             if($num_ecriture > 47 ){
                 $num_folio ++;
                 $num_ecriture = 1;
@@ -155,6 +165,7 @@ class ExportwinficController extends Controller
             
         }
         
+        // fclose($fichier);
         file_put_contents("ECRITURE.WIN", $data);
         
         return response()->download("ECRITURE.WIN");
