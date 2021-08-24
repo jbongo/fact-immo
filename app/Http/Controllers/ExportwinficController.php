@@ -56,7 +56,7 @@ class ExportwinficController extends Controller
             $date_operation = $facture->date_facture->format('dmY');
             // $num_folio = "";
             // $num_ecriture = "";
-            $jour_ecriture = $facture->date_facture->format('d');;
+            $jour_ecriture =  $this->formatage_colonne(6,$facture->date_facture->format('d'), "droite");;
             
             
             
