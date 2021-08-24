@@ -97,6 +97,7 @@
                                     <tr>
                                        
                                         <th>@lang('Facture Stylimmo')</th>
+                                        <th>@lang('Date facture')</th>
                                         <th>@lang('Mandat')</th>
                                         <th>@lang('Charge')</th>
                                         @if(auth()->user()->role == "admin")
@@ -137,6 +138,10 @@
                                             <a class="color-info" title="Télécharger la facture d'avoir" href="{{route('facture.telecharger_pdf_avoir', Crypt::encrypt($facture->id))}}"  class="  m-b-10 m-l-5 " id="ajouter">{{$facture->numero}} <i class="ti-download"></i> AV</a>
 
                                             @endif
+                                        </td>
+                                        
+                                        <td width="" >
+                                            <label class="color-danger">{{$facture->date_facture->format('d/m/Y')}}  </label>
                                         </td>
                                         <td width="" >
                                             {{-- <label class="color-info">{{$facture->compromis->numero_mandat}} </label>  --}}

@@ -22,7 +22,7 @@ class ExportwinficController extends Controller
             $date_fin = date("Y-m-d");        
         }     
         
-        $factureStylimmos = Facture::whereIn('type',['stylimmo','avoir','pack_pub','carte_visite','communication','autre'])->whereBetween('date_facture',[$date_deb,$date_fin])->latest()->get();  
+        $factureStylimmos = Facture::whereIn('type',['stylimmo','avoir','pack_pub','carte_visite','communication','autre'])->whereBetween('date_facture',[$date_deb,$date_fin])->orderBy('date_facture','asc')->get();  
        
         return view ('winfic.index',compact(['factureStylimmos','date_deb','date_fin']));
         
@@ -44,7 +44,7 @@ class ExportwinficController extends Controller
             $date_fin = date("Y-m-d");        
         }     
         
-        $factureStylimmos = Facture::whereIn('type',['stylimmo','avoir','pack_pub','carte_visite','communication','autre'])->whereBetween('date_facture',[$date_deb,$date_fin])->latest()->get();  
+        $factureStylimmos = Facture::whereIn('type',['stylimmo','avoir','pack_pub','carte_visite','communication','autre'])->whereBetween('date_facture',[$date_deb,$date_fin])->orderBy('date_facture','asc')->get();  
         
         $data = "";
         $num_folio = 1;
@@ -85,11 +85,11 @@ class ExportwinficController extends Controller
             if($facture->type == "stylimmo" || ($facture->type == "avoir" && $facture->facture_avoir()->type == "stylimmo")){
                 $compte_ttc = "9CLIEN";
                 
-                $libelle = $facture->compromis->charge == "vendeur" ? $this->formatage_colonne(30, $facture->compromis->nom_vendeur." ".$facture->compromis->pre_vendeur) : $this->formatage_colonne(30, $facture->compromis->nom_acquereur." ".$facture->compromis->pre_acquereur);
+                $libelle = $facture->compromis->charge == "vendeur" ? $this->formatage_colonne(30, $facture->compromis->nom_vendeur." ".$facture->compromis->prenon_vendeur) : $this->formatage_colonne(30, $facture->compromis->nom_acquereur." ".$facture->compromis->prenon_acquereur);
                 
             }else {
                 $compte_ttc = $this->formatage_colonne(6,$facture->user->code_client);
-                $libelle = $this->formatage_colonne(30, $facture->user->nom." ".$facture->prenom);
+                $libelle = $this->formatage_colonne(30, $facture->user->nom." ".$facture->user->prenom);
             
             }
             
@@ -189,7 +189,9 @@ class ExportwinficController extends Controller
             $champ = preg_replace('#&([A-za-z])(?:acute|cedil|caron|circ|grave|orn|ring|slash|th|tilde|uml);#', '\1', $champ);
             $champ = preg_replace('#&([A-za-z]{2})(?:lig);#', '\1', $champ); // pour les ligatures e.g. '&oelig;'
             $champ = preg_replace('#&[^;]+;#', '', $champ); // supprime les autres caractères
-        
+            
+            $champ = str_replace(["mr","mmme","mlle","monsieur","madame","Mr","Mmme","Mlle","Monsieur","Madame","Mademoisselle","MR","MME","MLLE","MADAME","MONSIEUR","MADEMOISELLE"], "", $champ);
+            
         if($nb_caractere < strlen($champ)){
         
             
