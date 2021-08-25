@@ -181,8 +181,14 @@ class ExportwinficController extends Controller
      */
     public function formatage_colonne($nb_caractere, $champ, $position = "gauche")
     {
-        //si la taille de la chaine est supérieur au nombre de caractère max requis, il faut retirer des caractères dans la chaine
+        //si la taille de la chaine est supérieur au nombre de caractère max requis, il faut retirer des caractères dans la chaine        
         
+            $champ = str_replace(["mr","mme","mlle","monsieur","madame","Mr","Mme","Mlle","Monsieur","Madame","Mademoisselle","MR","MME","MLLE","MADAME","MONSIEUR","MADEMOISELLE","M."],'', $champ);
+        
+            if(substr($champ, 0, 1) == " "){
+                $champ = substr($champ, 1, strlen($champ));
+            }
+            $champ = str_replace('  ', ' ',$champ );
         
             $champ = htmlentities($champ, ENT_NOQUOTES, "utf-8");
         
@@ -190,7 +196,6 @@ class ExportwinficController extends Controller
             $champ = preg_replace('#&([A-za-z]{2})(?:lig);#', '\1', $champ); // pour les ligatures e.g. '&oelig;'
             $champ = preg_replace('#&[^;]+;#', '', $champ); // supprime les autres caractères
             
-            $champ = str_replace(["mr","mmme","mlle","monsieur","madame","Mr","Mmme","Mlle","Monsieur","Madame","Mademoisselle","MR","MME","MLLE","MADAME","MONSIEUR","MADEMOISELLE"], "", $champ);
             
         if($nb_caractere < strlen($champ)){
         
