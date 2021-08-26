@@ -423,7 +423,7 @@ if($("#date_encaissement").val() != ""){
                    'success'
                 )
                 .then(function() {
-                   window.location.href = "{{route('facture.index')}}";
+                   window.location.href = "{{route('facture.index_honoraire')}}";
                 })
              },
              error: function(error){
@@ -435,7 +435,7 @@ if($("#date_encaissement").val() != ""){
                          'error'
                       )
                       .then(function() {
-                         window.location.href = "{{route('facture.index')}}";
+                         window.location.href = "{{route('facture.index_honoraire')}}";
                       })
                 
              }

@@ -295,50 +295,6 @@ facture_id = id;
 
 
 
-// Règlement de la note d'honoraire
-$('#valider_reglement').on('click',function(e){
- e.preventDefault();
-
-if($("#date_reglement").val() != ""){
-
-   $.ajaxSetup({
- headers: {
-     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
- }
-});
-   $.ajax({
-         type: "GET",
-         url: "regler/factures-honoraire/"+facture_id ,
-         data:  $("#form_regler").serialize(),
-         success: function (result) {
-            swal(
-               'Réglée',
-               'Vous avez reglé la facture ',
-               'success'
-            )
-            .then(function() {
-               window.location.href = "{{route('facture.index')}}";
-            })
-         },
-         error: function(error){
-            console.log(error);
-            
-            swal(
-                     'Echec',
-                     'la facture  n\'a pas été reglé '+error,
-                     'error'
-                  )
-                  .then(function() {
-                     window.location.href = "{{route('facture.index')}}";
-                  })
-            
-         }
-   });
-}
-
-
-});
-
 
 
 
@@ -346,6 +302,7 @@ if($("#date_reglement").val() != ""){
 // Règlement de la facture de pub
 $('#valider_reglement_pub').on('click',function(e){
  e.preventDefault();
+ 
 
 if($("#date_reglement_pub").val() != ""){
 
@@ -356,7 +313,7 @@ if($("#date_reglement_pub").val() != ""){
 });
    $.ajax({
          type: "GET",
-         url: "regler/factures-honoraire/"+facture_id ,
+         url: "/regler/factures-honoraire/"+facture_id ,
          data:  $("#form_regler_pub").serialize(),
          success: function (result) {
             swal(
@@ -365,7 +322,7 @@ if($("#date_reglement_pub").val() != ""){
                'success'
             )
             .then(function(data) {
-               window.location.href = "{{route('facture.index')}}";
+               window.location.href = "{{route('facture.index_communication')}}";
             })
          },
          error: function(error){
@@ -377,7 +334,7 @@ if($("#date_reglement_pub").val() != ""){
                      'error'
                   )
                   .then(function() {
-                     window.location.href = "{{route('facture.index')}}";
+                     window.location.href = "{{route('facture.index_communication')}}";
                   })
             
          }
@@ -394,143 +351,6 @@ if($("#date_reglement_pub").val() != ""){
 
 </script>
 
-<script>
-// ######### Réitérer une affaire
 
-
-$(function() {
- $.ajaxSetup({
-     headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
- })
- $('[data-toggle="tooltip"]').tooltip()
- $('body').on('click','a.cloturer',function(e) {
-     let that = $(this)
-     e.preventDefault()
-     const swalWithBootstrapButtons = swal.mixin({
- confirmButtonClass: 'btn btn-success',
- cancelButtonClass: 'btn btn-danger',
- buttonsStyling: false,
-})
-
-swalWithBootstrapButtons({
- title: 'Confirmez-vous la réitération de cette affaire (Mandat '+that.attr("data-mandat")+' )  ?',
- type: 'warning',
- showCancelButton: true,
- confirmButtonColor: '#DD6B55',
- confirmButtonText: '@lang('Oui')',
- cancelButtonText: '@lang('Non')',
- 
-}).then((result) => {
- if (result.value) {
-     $('[data-toggle="tooltip"]').tooltip('hide')
-         $.ajax({                        
-             url: that.attr('href'),
-             type: 'GET',
-             success: function(data){
-            document.location.reload();
-          },
-          error : function(data){
-             console.log(data);
-          }
-         })
-         .done(function () {
-                 that.parents('tr').remove()
-         })
-
-     swalWithBootstrapButtons(
-     'Réitérée!',
-     'L\'affaire a bien été réitérée.',
-     'success'
-     )
-     
-     
- } else if (
-     // Read more about handling dismissals
-     result.dismiss === swal.DismissReason.cancel
- ) {
-     swalWithBootstrapButtons(
-     'Annulé',
-     'L\'affaire n\'a pas été réitérée.',
-   
-     'error'
-     )
- }
-})
- })
-})
-</script>
-
-
-
-
-
-{{-- Relancer un mandataire pour une facture PUB --}}
-<script>      
-  
-  
-$(function() {
- $.ajaxSetup({
-    headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
- })
- 
-
- $('[data-toggle="tooltip"]').tooltip()
- $('body').on('click','a.relancer',function(e) {
-    let that = $(this)
-
-    e.preventDefault()
-    const swalWithBootstrapButtons = swal.mixin({
-    confirmButtonClass: 'btn btn-success',
-    cancelButtonClass: 'btn btn-danger',
-    buttonsStyling: false,
-    })
-
-swalWithBootstrapButtons({
- title: 'Le mandataire va recevoir un mail de relance, continuer ?',
- type: 'warning',
- showCancelButton: true,
- confirmButtonColor: '#DD6B55',
- confirmButtonText: '@lang('Oui')',
- cancelButtonText: '@lang('Non')',
- 
-}).then((result) => {
- if (result.value) {
-    $('[data-toggle="tooltip"]').tooltip('hide')
-          $.ajax({                        
-             url: that.attr('href'),
-             type: 'GET',
-             success: function(data){
-               document.location.reload();
-             },
-             error : function(data){
-                console.log(data);
-             }
-          })
-          .done(function () {
-            console.log(data);
-                
-          })
-
-    swalWithBootstrapButtons(
-    'Relancé!',
-    'Le mandatataire sera notifié par mail.',
-    'success'
-    )
-    
-    
- } else if (
-    // Read more about handling dismissals
-    result.dismiss === swal.DismissReason.cancel
- ) {
-    swalWithBootstrapButtons(
-    'Annulé',
-    'Aucune action effectuée :)',
-    'error'
-    )
- }
-})
- })
-})
-</script>
 
 @endsection

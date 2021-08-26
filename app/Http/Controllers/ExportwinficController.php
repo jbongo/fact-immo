@@ -29,11 +29,11 @@ class ExportwinficController extends Controller
     }
 
     /**
-     *exporter les fichiers ECRITURE.WIN et ECRANA.WIN
+     *exporter les fichiers ECRITURE.WIN 
      *
      * @return \Illuminate\Http\Response
      */
-    public function exporter($date_deb = null, $date_fin = null)
+    public function exporter_ecriture($date_deb = null, $date_fin = null)
     {
         
         
@@ -54,7 +54,6 @@ class ExportwinficController extends Controller
             unlink("ECRITURE.WIN");
         }
         
-        $fichier = fopen("ECRITURE.WIN","w");
         
         foreach ($factureStylimmos as $facture) {
            
@@ -122,11 +121,7 @@ class ExportwinficController extends Controller
             
             }
             
-          
-         
-            
-            
-           
+
             $lettrage = "  ";
             $code_piece = $this->formatage_colonne(5, $facture->numero);
             $code_stat = "    ";
@@ -138,26 +133,20 @@ class ExportwinficController extends Controller
             $code_pointage = "  ";
             
             
-            
-            
-            
+
             $ligne1 = $code_journal."|".$date_operation."|".$this->formatage_colonne(6,$num_folio,'droite')."|".$this->formatage_colonne(6,$num_ecriture,'droite')."|".$jour_ecriture."|".$compte_tva."|".$montant_debit_tva."|".$montant_credit_tva."|".$libelle."|".$lettrage."|".$code_piece."|".$code_stat."|".$date_echeance."|".$monnaie."|".$filler."|".$ind_compteur."|".$quantite."|".$code_pointage."|\r\n";
             $num_ecriture++;
-            // fputs($fichier, $ligne1);
+        
             
             $ligne2 = $code_journal."|".$date_operation."|".$this->formatage_colonne(6,$num_folio,'droite')."|".$this->formatage_colonne(6,$num_ecriture,'droite')."|".$jour_ecriture."|".$compte_ht."|".$montant_debit_ht."|".$montant_credit_ht."|".$libelle."|".$lettrage."|".$code_piece."|".$code_stat."|".$date_echeance."|".$monnaie."|".$filler."|".$ind_compteur."|".$quantite."|".$code_pointage."|\r\n";
             $num_ecriture++;
-            // fputs($fichier, $ligne2);
+        
             $ligne3 = $code_journal."|".$date_operation."|".$this->formatage_colonne(6,$num_folio,'droite')."|".$this->formatage_colonne(6,$num_ecriture,'droite')."|".$jour_ecriture."|".$compte_ttc."|".$montant_debit_ttc."|".$montant_credit_ttc."|".$libelle."|".$lettrage."|".$code_piece."|".$code_stat."|".$date_echeance."|".$monnaie."|".$filler."|".$ind_compteur."|".$quantite."|".$code_pointage."|\r\n";
             $num_ecriture++;
-            // fputs($fichier, $ligne3);
-          
+                 
             
             $data.=$ligne1.$ligne2.$ligne3 ;
-            
-            
-            
-            // dd($ligne1.'HELLLOOOO FGRR  FR FR');
+
             if($num_ecriture > 47 ){
                 $num_folio ++;
                 $num_ecriture = 1;
@@ -165,12 +154,271 @@ class ExportwinficController extends Controller
             
         }
         
-        // fclose($fichier);
+ 
         file_put_contents("ECRITURE.WIN", $data);
         
         return response()->download("ECRITURE.WIN");
         
     }
+
+
+
+
+
+/**
+     *exporter les fichiers ECRITURE.WIN 
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function exporter_ecrana($date_deb = null, $date_fin = null)
+    {
+        
+        
+    
+    
+        if($date_deb == null || $date_fin == null || $date_fin < $date_deb){        
+            $date_deb = date("Y-m")."-01";
+            $date_fin = date("Y-m-d");        
+        }     
+        
+        $factureStylimmos = Facture::whereIn('type',['stylimmo','avoir'])->whereBetween('date_facture',[$date_deb,$date_fin])->orderBy('numero','asc')->get();  
+        
+        $data = "";
+        $num_folio = 1;
+        $num_ecriture = 1;
+        
+        if(file_exists("ECRANA.WIN")){
+            unlink("ECRANA.WIN");
+        }
+        
+     
+        
+        foreach ($factureStylimmos as $facture) {
+        
+            // On réccupère soit les  factures stylimmo, soit les avoirs des factures stylimmo 
+           
+            if($facture->type == "stylimmo" || ($facture->type == "avoir" && $facture->facture_avoir()->type == "stylimmo")){
+            
+                $code_journal = "VE";
+                $date_operation = $facture->date_facture->format('dmY');
+                // $num_folio = "";
+                // $num_ecriture = "";
+                $jour_ecriture =  $this->formatage_colonne(6,$facture->date_facture->format('d'), "droite");;
+                
+                
+                
+                $compte_tva = $this->formatage_colonne(6, 445716);
+                
+                $compte_ht = $facture->compromis->type == "vente" ? 708229 : 708239;
+                
+               
+                $compte_ttc = "9CLIEN";
+                    
+                $libelle = $facture->compromis->charge == "vendeur" ? $this->formatage_colonne(30, $facture->compromis->nom_vendeur." ".$facture->compromis->prenon_vendeur) : $this->formatage_colonne(30, $facture->compromis->nom_acquereur." ".$facture->compromis->prenon_acquereur);
+                    
+                
+                $lettrage = "  ";
+                $code_piece = $this->formatage_colonne(5, $facture->numero);
+                $code_stat = "    ";
+                $date_echeance =  $facture->date_facture->format('dmY');
+                $monnaie = 1;
+                $filler = " ";
+                $ind_compteur = " ";
+                $quantite = "      0,000";
+                $code_pointage = "  ";
+                
+                
+                
+                //  On vérifie si y'a partage ou pas..  Quand y'a partage, créer les lignes pour chaque mandataire              
+                
+                if($facture->compromis->est_partage_agent == true){
+                
+                
+                
+               
+                
+                    if($facture->type == "avoir"){
+                    
+                    
+                     // POUR LE mandataire qui porte l'affaire, USER_ID
+                
+                         $montant_debit_tva_porteur = $this->formatage_colonne(13, number_format( ($facture->montant_ttc - $facture->montant_ht) * $facture->compromis->pourcentage_agent /100 ,2, ",",""), "droite");
+                         $montant_credit_tva_porteur = $this->formatage_colonne(13, "0,00", "droite");
+                         
+                         
+                         $montant_debit_ht_porteur = $this->formatage_colonne(13, number_format( $facture->montant_ht * $facture->compromis->pourcentage_agent /100 ,2, ",",""), "droite");
+                         $montant_credit_ht_porteur = $this->formatage_colonne(13, "0,00", "droite");
+                         
+                         $montant_debit_ttc_porteur = $this->formatage_colonne(13, "0,00", "droite");
+                         $montant_credit_ttc_porteur = $this->formatage_colonne(13, number_format( $facture->montant_ttc * $facture->compromis->pourcentage_agent /100 ,2, ",",""), "droite");
+                
+                
+                
+                
+                
+                    // POUR LE mandataire qui ne porte pas l'affaire, AGENT_ID OU l'AGENCE OU AGENT EXTERNE
+                    
+                        $montant_debit_tva_partage = $this->formatage_colonne(13, number_format( ($facture->montant_ttc - $facture->montant_ht) * (100 - $facture->compromis->pourcentage_agent )/100 ,2, ",",""), "droite");
+                        $montant_credit_tva_partage = $this->formatage_colonne(13, "0,00", "droite");
+                        
+                        
+                        $montant_debit_ht_partage = $this->formatage_colonne(13, number_format($facture->montant_ht * (100 - $facture->compromis->pourcentage_agent )/100 ,2, ",",""), "droite");
+                        $montant_credit_ht_partage = $this->formatage_colonne(13, "0,00", "droite");
+                        
+                        $montant_debit_ttc_partage =$this->formatage_colonne(13, "0,00", "droite");
+                        $montant_credit_ttc_partage = $this->formatage_colonne(13, number_format($facture->montant_ttc * (100 - $facture->compromis->pourcentage_agent )/100 ,2, ",",""), "droite");
+                    
+                    
+                    
+                    }else{
+                    
+                    
+                     // POUR LE mandataire qui porte l'affaire, USER_ID
+                
+                
+                         $montant_debit_tva_porteur = $this->formatage_colonne(13, "0,00", "droite");
+                         $montant_credit_tva_porteur = $this->formatage_colonne(13, number_format(($facture->montant_ttc - $facture->montant_ht) *  $facture->compromis->pourcentage_agent /100 ,2, ",",""), "droite");
+                         
+                        
+                         $montant_debit_ht_porteur = $this->formatage_colonne(13, "0,00", "droite");
+                         $montant_credit_ht_porteur = $this->formatage_colonne(13, number_format($facture->montant_ht * $facture->compromis->pourcentage_agent /100 ,2, ",",""), "droite");
+                         
+                        
+                         $montant_debit_ttc_porteur = $this->formatage_colonne(13, number_format($facture->montant_ttc *  $facture->compromis->pourcentage_agent /100 ,2, ",",""), "droite");
+                
+                
+                
+                
+                    // POUR LE mandataire qui ne porte pas l'affaire, AGENT_ID OU l'AGENCE OU AGENT EXTERNE
+                    
+                        $montant_debit_tva_partage = $this->formatage_colonne(13, "0,00", "droite");
+                        $montant_credit_tva_partage = $this->formatage_colonne(13, number_format(($facture->montant_ttc - $facture->montant_ht) * (100 - $facture->compromis->pourcentage_agent )/100 ,2, ",",""), "droite");
+                        
+                       
+                        $montant_debit_ht_partage = $this->formatage_colonne(13, "0,00", "droite");
+                        $montant_credit_ht_partage = $this->formatage_colonne(13, number_format($facture->montant_ht * (100 - $facture->compromis->pourcentage_agent )/100 ,2, ",",""), "droite");
+                        
+                       
+                        $montant_debit_ttc_partage = $this->formatage_colonne(13, number_format($facture->montant_ttc * (100 - $facture->compromis->pourcentage_agent )/100 ,2, ",",""), "droite");
+                        $montant_credit_ttc_partage = $this->formatage_colonne(13, "0,00", "droite");
+                    
+                    
+                    }
+                    
+                    
+                    
+                    $ligne1_porteur = $code_journal."|".$date_operation."|".$this->formatage_colonne(6,$num_folio,'droite')."|".$this->formatage_colonne(6,$num_ecriture,'droite')."|".$jour_ecriture."|".$compte_tva."|".$montant_debit_tva_porteur."|".$montant_credit_tva_porteur."|".$libelle."|".$lettrage."|".$code_piece."|".$code_stat."|".$date_echeance."|".$monnaie."|".$filler."|".$ind_compteur."|".$quantite."|".$code_pointage."|\r\n";
+                    $num_ecriture++;
+                
+                    
+                    $ligne2_porteur = $code_journal."|".$date_operation."|".$this->formatage_colonne(6,$num_folio,'droite')."|".$this->formatage_colonne(6,$num_ecriture,'droite')."|".$jour_ecriture."|".$compte_ht."|".$montant_debit_ht_porteur."|".$montant_credit_ht_porteur."|".$libelle."|".$lettrage."|".$code_piece."|".$code_stat."|".$date_echeance."|".$monnaie."|".$filler."|".$ind_compteur."|".$quantite."|".$code_pointage."|\r\n";
+                    $num_ecriture++;
+                
+                    $ligne3_porteur = $code_journal."|".$date_operation."|".$this->formatage_colonne(6,$num_folio,'droite')."|".$this->formatage_colonne(6,$num_ecriture,'droite')."|".$jour_ecriture."|".$compte_ttc."|".$montant_debit_ttc_porteur."|".$montant_credit_ttc_porteur."|".$libelle."|".$lettrage."|".$code_piece."|".$code_stat."|".$date_echeance."|".$monnaie."|".$filler."|".$ind_compteur."|".$quantite."|".$code_pointage."|\r\n";
+                    $num_ecriture++;
+                         
+                    
+                    $data.=$ligne1_porteur.$ligne2_porteur.$ligne3_porteur ;
+                    
+                    if($num_ecriture > 47 ){
+                        $num_folio ++;
+                        $num_ecriture = 1;
+                    }
+                    
+                    $ligne1_partage = $code_journal."|".$date_operation."|".$this->formatage_colonne(6,$num_folio,'droite')."|".$this->formatage_colonne(6,$num_ecriture,'droite')."|".$jour_ecriture."|".$compte_tva."|".$montant_debit_tva_partage."|".$montant_credit_tva_partage."|".$libelle."|".$lettrage."|".$code_piece."|".$code_stat."|".$date_echeance."|".$monnaie."|".$filler."|".$ind_compteur."|".$quantite."|".$code_pointage."|\r\n";
+                    $num_ecriture++;
+                
+                    
+                    $ligne2_partage = $code_journal."|".$date_operation."|".$this->formatage_colonne(6,$num_folio,'droite')."|".$this->formatage_colonne(6,$num_ecriture,'droite')."|".$jour_ecriture."|".$compte_ht."|".$montant_debit_ht_partage."|".$montant_credit_ht_partage."|".$libelle."|".$lettrage."|".$code_piece."|".$code_stat."|".$date_echeance."|".$monnaie."|".$filler."|".$ind_compteur."|".$quantite."|".$code_pointage."|\r\n";
+                    $num_ecriture++;
+                
+                    $ligne3_partage = $code_journal."|".$date_operation."|".$this->formatage_colonne(6,$num_folio,'droite')."|".$this->formatage_colonne(6,$num_ecriture,'droite')."|".$jour_ecriture."|".$compte_ttc."|".$montant_debit_ttc_partage."|".$montant_credit_ttc_partage."|".$libelle."|".$lettrage."|".$code_piece."|".$code_stat."|".$date_echeance."|".$monnaie."|".$filler."|".$ind_compteur."|".$quantite."|".$code_pointage."|\r\n";
+                    $num_ecriture++;
+                         
+                    
+                    $data.=$ligne1_partage.$ligne2_partage.$ligne3_partage ;
+                    
+                    if($num_ecriture > 47 ){
+                        $num_folio ++;
+                        $num_ecriture = 1;
+                    }
+                    
+                    
+                    
+                }
+                
+                
+                
+                else{
+                
+                    if($facture->type == "avoir"){
+                    
+                        $montant_debit_tva = $this->formatage_colonne(13, number_format($facture->montant_ttc - $facture->montant_ht,2, ",",""), "droite");
+                        $montant_credit_tva = $this->formatage_colonne(13, "0,00", "droite");
+                        
+                        
+                        $montant_debit_ht = $this->formatage_colonne(13, number_format($facture->montant_ht,2, ",",""), "droite");
+                        $montant_credit_ht = $this->formatage_colonne(13, "0,00", "droite");
+                        
+                        $montant_debit_ttc =$this->formatage_colonne(13, "0,00", "droite");
+                        $montant_credit_ttc = $this->formatage_colonne(13, number_format($facture->montant_ttc,2, ",",""), "droite");
+                    
+                    }else{
+                    
+                        $montant_debit_tva = $this->formatage_colonne(13, "0,00", "droite");
+                        $montant_credit_tva = $this->formatage_colonne(13, number_format($facture->montant_ttc - $facture->montant_ht,2, ",",""), "droite");
+                        
+                       
+                        $montant_debit_ht = $this->formatage_colonne(13, "0,00", "droite");
+                        $montant_credit_ht = $this->formatage_colonne(13, number_format($facture->montant_ht,2, ",",""), "droite");
+                        
+                       
+                        $montant_debit_ttc = $this->formatage_colonne(13, number_format($facture->montant_ttc,2, ",",""), "droite");
+                        $montant_credit_ttc = $this->formatage_colonne(13, "0,00", "droite");
+                    
+                    
+                    }
+                    
+                    
+                    $ligne1 = $code_journal."|".$date_operation."|".$this->formatage_colonne(6,$num_folio,'droite')."|".$this->formatage_colonne(6,$num_ecriture,'droite')."|".$jour_ecriture."|".$compte_tva."|".$montant_debit_tva."|".$montant_credit_tva."|".$libelle."|".$lettrage."|".$code_piece."|".$code_stat."|".$date_echeance."|".$monnaie."|".$filler."|".$ind_compteur."|".$quantite."|".$code_pointage."|\r\n";
+                    $num_ecriture++;
+                    
+                    
+                    
+                    $ligne2 = $code_journal."|".$date_operation."|".$this->formatage_colonne(6,$num_folio,'droite')."|".$this->formatage_colonne(6,$num_ecriture,'droite')."|".$jour_ecriture."|".$compte_ht."|".$montant_debit_ht."|".$montant_credit_ht."|".$libelle."|".$lettrage."|".$code_piece."|".$code_stat."|".$date_echeance."|".$monnaie."|".$filler."|".$ind_compteur."|".$quantite."|".$code_pointage."|\r\n";
+                    $num_ecriture++;
+                
+                    $ligne3 = $code_journal."|".$date_operation."|".$this->formatage_colonne(6,$num_folio,'droite')."|".$this->formatage_colonne(6,$num_ecriture,'droite')."|".$jour_ecriture."|".$compte_ttc."|".$montant_debit_ttc."|".$montant_credit_ttc."|".$libelle."|".$lettrage."|".$code_piece."|".$code_stat."|".$date_echeance."|".$monnaie."|".$filler."|".$ind_compteur."|".$quantite."|".$code_pointage."|\r\n";
+                    $num_ecriture++;
+                         
+                    
+                    $data.=$ligne1.$ligne2.$ligne3 ;
+                
+                    if($num_ecriture > 47 ){
+                        $num_folio ++;
+                        $num_ecriture = 1;
+                    }
+                    
+                }
+                
+    
+             
+    
+                
+                
+            }
+        }
+ 
+ 
+        file_put_contents("ECRANA.WIN", $data);
+        
+        return response()->download("ECRANA.WIN");
+        
+    }
+
+
+
+
 
 
 

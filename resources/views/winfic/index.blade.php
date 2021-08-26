@@ -67,7 +67,8 @@
                                 <label class="col-lg-12 col-md-12 col-sm-12 control-label"> .</label> <br>
                                 <div class="col-lg-10 col-md-10 col-sm-10">
                               
-                                    <a href="{{route('winfic.exporter', [$date_deb, $date_fin])}}"  class="btn btn-lg btn-warning btn-flat btn-addon  m-b-10 m-l-5 "><i class="ti-download"></i>Exporter</a>
+                                    <a href="{{route('winfic.exporter_ecriture', [$date_deb, $date_fin])}}"  class="btn btn-lg btn-warning btn-flat btn-addon  m-b-10 m-l-5 "><i class="ti-download"></i>Exporter ECRITURE.WIN</a>
+                                    <a href="{{route('winfic.exporter_ecrana', [$date_deb, $date_fin])}}"  class="btn btn-lg btn-default btn-flat btn-addon  m-b-10 m-l-5 "><i class="ti-download"></i>Exporter ECRANA.WIN</a>
                                 
                                 </div>
                             </div>

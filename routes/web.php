@@ -309,7 +309,8 @@ Route::post('/agenda/delete/{agenda_id}','AgendaController@destroy')->name('agen
 
 // Export WINFIC
 Route::get('/winfic','ExportwinficController@index')->name('winfic.index');
-Route::get('/winfic/exporter/{date_deb?}/{date_fin?}','ExportwinficController@exporter')->name('winfic.exporter');
+Route::get('/winfic/exporter_ecriture/{date_deb?}/{date_fin?}','ExportwinficController@exporter_ecriture')->name('winfic.exporter_ecriture');
+Route::get('/winfic/exporter_ecrana/{date_deb?}/{date_fin?}','ExportwinficController@exporter_ecrana')->name('winfic.exporter_ecrana');
 
 
 
