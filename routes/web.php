@@ -106,8 +106,6 @@ Route::middleware('auth')->group(function(){
 
     // factures
     Route::get('/factures','FactureController@index')->name('facture.index');
-    Route::get('/factures/test','FactureController@index_test')->name('facture.index_test');
-    Route::get('/factures/test/json','FactureController@index_test_json')->name('facture.index_test_json');
     Route::get('/factures/hors-delais','FactureController@hors_delais')->name('facture.hors_delais');
     Route::get('/factures/create','FactureController@create')->name('facture.create');
     Route::get('/factures/packpub','FactureController@packpub')->name('facture.packpub');

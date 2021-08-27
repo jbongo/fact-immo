@@ -71,6 +71,8 @@ Création de facture
                                     <option value="" data-tokens=""></option>
                                     <option value="pack_pub" data-tokens="pub">Pub</option>
                                     <option value="communication" data-tokens="communication">Communication</option>
+                                    <option value="forfait_entree" data-tokens="forfait_entree">Forfait d'endrée</option>
+                                    <option value="cci" data-tokens="cci">Cci</option>
                                     <option value="autre" data-tokens="autre">Autre</option>
                                     
                                  </select>

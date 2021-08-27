@@ -28,88 +28,7 @@ use App\Historique;
 
 
 class FactureController extends Controller
-{
-    
-    public function index_test(){
-    
-        $factureStylimmos = DB::table('factures')
-        ->whereIn('type',['stylimmo','avoir','pack_pub','carte_visite','communication','autre'])
-        ->join('compromis','factures.compromis_id','=','compromis.id' )
-        ->join('users','factures.user_id','=', 'users.id')
-        ->select('factures.*', 'compromis.charge as compro_charge',  'compromis.created_at as compro_created_at', 'compromis.updated_at as compro_updated_at ', 'compromis.nom_vendeur as compro_nom_vendeur',
-                'compromis.nom_acquereur as compro_nom_acquereur', 'compromis.numero_mandat as compro_numero_mandat', 'compromis.date_vente as compro_date_vente',
-                'users.nom as user_nom','users.prenom as user_prenom'
-                )
-        ->get();
-        $datas = ["total" => sizeof($factureStylimmos), "totalNotFiltered"=> sizeof($factureStylimmos) ];
-        
-        
-        
-        $rows = array();
-        foreach ($factureStylimmos as $fact) {
-        
-            $values = [
-            "id"=> $fact->id,
-            "numero"=> $fact->numero,
-            "compro_numero_mandat"=> $fact->compro_numero_mandat,
-            "compro_charge"=> $fact->compro_charge,
-            ];
-            
-            
-            array_push($rows, $values );
-           
-        }
-        
-        $rows = array("rows"=>$rows);
-        // dd($datas);
-        $datas =  array_merge($datas, $rows);
-        
-        $datas = json_encode($datas);
-        
-        // dd($datas);
-        return view('facture.stylimmo_test', compact('factureStylimmos'));
-    }
-    
-    public function index_test_json(){
-    
-        $factureStylimmos = DB::table('factures')
-        ->whereIn('type',['stylimmo','avoir','pack_pub','carte_visite','communication','autre'])
-        ->join('compromis','factures.compromis_id','=','compromis.id' )
-        ->join('users','factures.user_id','=', 'users.id')
-        ->select('factures.*', 'compromis.charge as compro_charge',  'compromis.created_at as compro_created_at', 'compromis.updated_at as compro_updated_at ', 'compromis.nom_vendeur as compro_nom_vendeur',
-                'compromis.nom_acquereur as compro_nom_acquereur', 'compromis.numero_mandat as compro_numero_mandat', 'compromis.date_vente as compro_date_vente',
-                'users.nom as user_nom','users.prenom as user_prenom'
-                )
-        ->get();
-        // dd($factureStylimmos);
-        
-        $datas = ["total" => sizeof($factureStylimmos), "totalNotFiltered"=> sizeof($factureStylimmos) ];
-        
-        $rows = array();
-        foreach ($factureStylimmos as $fact) {
-        
-            $values = [
-            "id"=> $fact->id,
-            "numero"=> $fact->numero,
-            "compro_numero_mandat"=> $fact->compro_numero_mandat,
-            ];
-            
-            
-            array_push($rows, $values );
-           
-        }
-        
-        $rows = array("rows"=>$rows);
-        // dd($datas);
-        $datas =  array_merge($datas, $rows);
-        
-        $datas = json_encode($datas);
-        
-        // dd($datas);
-        
-  return $datas;
-    }
-    
+{    
     
     /**
      * Afficher toutes les factures
@@ -123,7 +42,7 @@ class FactureController extends Controller
     
         if(auth()->user()->role == "admin"){
         
-            $factureStylimmos = Facture::whereIn('type',['stylimmo','avoir','pack_pub','carte_visite','communication','autre'])->latest()->get();          
+            $factureStylimmos = Facture::whereIn('type',['stylimmo','avoir','pack_pub','carte_visite','communication','autre','forfait_entree','cci'])->latest()->get();          
             $factureHonoraires = Facture::whereIn('type',['honoraire','partage','partage_externe','parrainage','parrainage_partage'])->latest()->get();            
             $factureCommunications = Facture::where('type',['pack_pub','carte_visite'])->latest()->get();
             
@@ -131,7 +50,7 @@ class FactureController extends Controller
             
         }else{
             $factureHonoraires = Facture::where('user_id',auth()->user()->id)->whereIn('type',['honoraire','partage','partage_externe','parrainage','parrainage_partage'])->latest()->get();
-            $factureStylimmos = Facture::where('user_id',auth()->user()->id)->where('type',['stylimmo','avoir','pack_pub','carte_visite','communication','autre'])->latest()->get();
+            $factureStylimmos = Facture::where('user_id',auth()->user()->id)->where('type',['stylimmo','avoir','pack_pub','carte_visite','communication','autre','forfait_entree','cci'])->latest()->get();
             $factureCommunications = Facture::where('user_id',auth()->user()->id)->whereIn('type',['pack_pub','carte_visite'])->latest()->get();
             
             $nb_comm_non_regle  = Facture::where([['user_id',auth()->user()->id],['reglee',false]])->whereIn('type',['pack_pub','carte_visite'])->count();
@@ -263,7 +182,7 @@ class FactureController extends Controller
     
         $compromis = Compromis::where('id',Crypt::decrypt($compromis_id))->first();
         $mandataire = User::where('id',$compromis->user_id)->first();
-        $numero = Facture::whereIn('type',['avoir','stylimmo','pack_pub','carte_visite','communication','autre'])->max('numero') + 1;
+        $numero = Facture::whereIn('type',['avoir','stylimmo','pack_pub','carte_visite','communication','autre','forfait_entree','cci'])->max('numero') + 1;
 
         return view ('demande_facture.demande',compact('compromis','mandataire','numero'));  
         // return redirect()->route('compromis.index')->with('ok', __('compromis modifié')  );
@@ -556,7 +475,7 @@ public  function valider_facture_stylimmo( Request $request, $compromis)
 
         $numero = "";
         
-        $numero = Facture::whereIn('type',['avoir','stylimmo','pack_pub','carte_visite','communication','autre'])->max('numero') + 1;
+        $numero = Facture::whereIn('type',['avoir','stylimmo','pack_pub','carte_visite','communication','autre','forfait_entree','cci'])->max('numero') + 1;
 
         $lastdate = Facture::where('numero',$numero-1)->select('date_facture')->first();
 
@@ -2227,21 +2146,6 @@ public  function deduire_pub(Request $request, $facture_id)
     }        
 }
 
-   
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
     
 
@@ -3497,7 +3401,7 @@ return 4444;
     public  function create_libre()
     {
         $mandataires = User::where('role', 'mandataire')->orderBy('nom')->get();
-        $numero = Facture::whereIn('type',['avoir','stylimmo','pack_pub','carte_visite','communication','autre'])->max('numero') + 1;
+        $numero = Facture::whereIn('type',['avoir','stylimmo','pack_pub','carte_visite','communication','autre','forfait_entree','cci'])->max('numero') + 1;
         return view ('facture.add',compact('numero','mandataires'));
     }
 
