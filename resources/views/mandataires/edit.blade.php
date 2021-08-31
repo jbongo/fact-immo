@@ -241,6 +241,8 @@ Modifier mandataire {{$mandataire->nom}}
                         </div>
                         
                         <div class="form-group row">
+                      <span class="text-danger"> <strong>  (4 premières lettres du NOM et 1ere lettre du prénom ) </strong></span> 
+                        
                            <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="code_client"> WINFIC Code client </label>
                            <div class="col-lg-8 col-md-8 col-sm-8">
                               <input type="text" class="form-control {{ $errors->has('code_client') ? ' is-invalid' : '' }}" value="{{$mandataire->code_client}}" id="code_client" name="code_client" placeholder="" >

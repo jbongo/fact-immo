@@ -234,6 +234,8 @@ Ajout d'un mandataire
                         </div>
                         
                         <div class="form-group row">
+                           <span class="text-danger"> <strong>  (4 premières lettres du NOM et 1ere lettre du prénom ) </strong></span> 
+
                            <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="code_client">WINFIC Code client <span>*</span> </label>
                            <div class="col-lg-8 col-md-8 col-sm-8">
                               <input type="text" class="form-control {{ $errors->has('code_client') ? ' is-invalid' : '' }}" value="{{old('code_client')}}" id="code_client" name="code_client" required placeholder="" >
