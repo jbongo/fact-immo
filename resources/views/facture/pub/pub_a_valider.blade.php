@@ -20,12 +20,42 @@
                                     <div class="panel-heading"></div>
                                     <div class="panel-body">
     
+    
+    <form action="">
+    
+    
+    <div class="row">
+        <div class="col-lg-4 col-md-4 col-sm-6">
+            <label for="selection">Tout Sélectionner</label>
+            <input type="checkbox" class="slection_parent" name="selection" id="selection">
+        
+        
+            {{-- <label for="action">Action</label> --}}
+    
+            <select class="" style="padding: 6px 12px; height: 32px;" name="action" id="action">
+               <option value="1">Valider les factures</option>
+               <option value="2">Réfuser les factures</option>
+               
+            </select>
+            
+            <input class="btn btn-danger"  type="submit" value="Valider">
+        </div>
+    </div>
+    
+    <br>
+    <hr><br>
+    </form>
+    
+  
+    
+    
                             <div class="table-responsive" >
                                 <table  id="example1" class=" table student-data-table  table-striped table-hover dt-responsive display    "  style="width:100%"  >
                                     <thead>
                                         <tr>
                                            
                                 
+                                            <th>@lang('Sélection')</th>
                                             <th>@lang('Mandataire')</th>
                                     
                                             {{-- <th>@lang('Type Facture')</th> --}}
@@ -51,7 +81,7 @@
                                         
                                             <tr>
                                                 
-                                              
+                                              <td><input class="slection_child" type="checkbox" class="form-control"></td>
                                           
                                                 <td width="" >
                                                     <label class="color-info">
@@ -227,5 +257,28 @@
         
         
         
+    </script>
+    
+    
+    {{-- SELECTION DESELECTION --}}
+    
+    
+    <script>
+    
+    $('.slection_parent').click(function(e){
+    
+    
+        if($('.slection_parent').is(':checked')){
+        
+            $('.slection_child').prop('checked',true);
+        
+        }else{
+            $('.slection_child').prop('checked',false);
+        
+        
+        }
+    
+    })
+    
     </script>
 @endsection
