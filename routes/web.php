@@ -140,6 +140,7 @@ Route::middleware('auth')->group(function(){
     
 
     Route::get('/factures/valider-fact-pub/{fact_pub_id}/{validation}','FactpubController@valider_fact_pub')->name('facture.valider_fact_pub');
+    Route::get('/factures/valider-facts-pub/plusieurs/{validation}','FactpubController@valider_fact_pub_plusieurs')->name('facture.valider_fact_pub_plusieurs');
     Route::get('/factures/recalculer-fact-pub/{fact_pub_id}','FactpubController@recalculer_fact_pub')->name('facture.recalculer_fact_pub');
     
     

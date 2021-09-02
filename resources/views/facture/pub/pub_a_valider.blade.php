@@ -27,7 +27,7 @@
     <div class="row">
         <div class="col-lg-4 col-md-4 col-sm-6">
             <label for="selection">Tout Sélectionner</label>
-            <input type="checkbox" class="slection_parent" name="selection" id="selection">
+            <input type="checkbox" class="selection_parent" name="selection" id="selection">
         
         
             {{-- <label for="action">Action</label> --}}
@@ -38,7 +38,7 @@
                
             </select>
             
-            <input class="btn btn-danger"  type="submit" value="Valider">
+            <input class="btn btn-danger"  type="submit" value="Valider" id="valider_selection">
         </div>
     </div>
     
@@ -81,7 +81,7 @@
                                         
                                             <tr>
                                                 
-                                              <td><input class="slection_child" type="checkbox" class="form-control"></td>
+                                              <td><input class="selection_child" type="checkbox" id="{{$facture->id}}" class="form-control"></td>
                                           
                                                 <td width="" >
                                                     <label class="color-info">
@@ -265,20 +265,112 @@
     
     <script>
     
-    $('.slection_parent').click(function(e){
+    $('.selection_parent').click(function(e){
     
     
-        if($('.slection_parent').is(':checked')){
+        if($('.selection_parent').is(':checked')){
         
-            $('.slection_child').prop('checked',true);
+            $('.selection_child').prop('checked',true);
         
         }else{
-            $('.slection_child').prop('checked',false);
+            $('.selection_child').prop('checked',false);
         
         
         }
     
-    })
+    });
+    
+    
+    
+    
+    
+    
+    
+    // Validation des Factures sélecctionnées
+    
+    
+    $(function() {
+            $.ajaxSetup({
+                headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
+            })
+            $('[data-toggle="tooltip"]').tooltip()
+            $('#valider_selection').click(function(e) {
+            
+                var validation = $('#action').val();
+                
+                var type_validation = validation == 1 ?  "valider" : "réfuser"; 
+                
+                
+         
+                let that = $(this)
+                e.preventDefault()
+                const swalWithBootstrapButtons = swal.mixin({
+                        confirmButtonClass: 'btn btn-success',
+                        cancelButtonClass: 'btn btn-danger',
+                        buttonsStyling: false,
+                    });
+
+                swalWithBootstrapButtons({
+                    title: 'Voulez-Vous '+type_validation+' les factures sélectionnées  ?',
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#DD6B55',
+                    confirmButtonText: '@lang('Oui')',
+                    cancelButtonText: '@lang('Non')',
+                    
+                }).then((result) => {
+                    if (result.value) {
+                        $('[data-toggle="tooltip"]').tooltip('hide')
+                        
+                        
+                        datas = Array();       
+                
+                        $('.selection_child').map(function(){
+                            
+                            if( this.checked == true){
+                                datas.push(this.id)
+                                return this.id;
+                            }
+                          
+                        })
+                        
+                        
+                        datas = {'list_id':datas};
+                        // datas = JSON.stringify(datas);
+                        
+                        
+                      
+                        
+                            $.ajax({                        
+                                url: "/factures/valider-facts-pub/plusieurs/"+validation,
+                                data: datas,
+                                type: 'GET'
+                            })
+                            .done(function (data) {
+                                                
+                           
+                            window.location.href = "/factures/pub-a-valider/";
+                            })
+
+                
+                
+                
+            } else if (
+                // Read more about handling dismissals
+                result.dismiss === swal.DismissReason.cancel
+            ) {
+                swalWithBootstrapButtons(
+                'Annulé',
+                'Annulation:)',
+                'error'
+                )
+            }
+        })
+            })
+        });
+        
+        
+   
     
     </script>
 @endsection

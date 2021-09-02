@@ -82,6 +82,65 @@ class FactpubController extends Controller
     }
     
     
+    
+    /**
+     *  Liste des factures pub à valider
+     *
+     * @return \Illuminate\Http\Response
+    */
+    
+    public  function valider_fact_pub_plusieurs(Request $request, $validation)
+    {
+    
+    
+// dd($request->list_id);
+        
+        
+        $fact_pub_id = $request->list_id;
+        
+        // return $fact_pub_id;
+        
+        $factpubs = Factpub::whereIn('id',$fact_pub_id)->get();
+        
+        
+        foreach ($factpubs as $factpub) {
+            
+      
+            $factpub->validation = $validation;
+            
+            // Si la facture a été validé
+            if($validation == 1){
+               
+                $numero = Facture::whereIn('type',['avoir','stylimmo','pack_pub','carte_visite','communication','autre'])->max('numero') + 1;
+                
+                $facture = Facture::create([
+                    "numero"=> $numero,
+                    "user_id"=> $factpub->user_id,
+                    "type"=> "pack_pub",
+                    "encaissee"=> false,
+                    "montant_ht"=>   $factpub->montant_ht,
+                    "montant_ttc"=>  $factpub->montant_ttc,
+                    "date_facture"=> date('Y-m-d'),
+                
+                ]);
+                
+                $factpub->facture_id = $facture->id;
+                $factpub->update();
+                
+                
+                // return Crypt::encrypt($facture->id);
+            }else{
+                $factpub->update();
+                
+                // return redirect()->route('facture.pub_a_valider');
+                
+            }
+     
+        }
+        
+        return "ok";
+    }
+    
     /**
      *  page de la facture de pub
      *
