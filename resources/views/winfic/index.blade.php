@@ -101,14 +101,15 @@
                                         <th>@lang('Date facture')</th>
                                         <th>@lang('Mandat')</th>
                                         <th>@lang('Charge')</th>
-                                        @if(auth()->user()->role == "admin")
+                                       
                                         <th>@lang('Mandataire')</th>
-                                        @endif
+                                        <th>@lang('Code client')</th>
+                                        <th>@lang('Code analytique')</th>
+                                    
                                         {{-- <th>@lang('Type Facture')</th> --}}
                                         <th>@lang('Montant HT ')</th>
                                         <th>@lang('Montant TTC ')</th>
                                         {{-- <th>@lang('Date Facture')</th> --}}
-                                        <th>@lang('Date de l\'acte')</th>
                                         {{-- @if(auth()->user()->role == "admin") --}}
                                         <th>@lang('Alerte paiement')</th>
                                   
@@ -163,7 +164,7 @@
                                                 @endif   
                                             @endif
                                         </td>
-                                        @if(auth()->user()->role == "admin")
+                                     
                                         <td width="" >
                                             <label class="color-info">
                                                 @if($facture->user !=null)
@@ -171,10 +172,13 @@
                                                 @endif
                                             </label> 
                                         </td>
-                                        @endif
-                                        {{-- <td width="" >
-                                            <label class="color-info">{{$facture->type}} </label> 
-                                        </td> --}}
+                                   
+                                        <td width="" >
+                                            <label class="color-info">{{$facture->user->code_client}} </label> 
+                                        </td>
+                                        <td width="" >
+                                            <label class="color-danger">{{$facture->user->code_analytic}} </label> 
+                                        </td>
                                         <td  width="" >
                                         {{number_format($facture->montant_ht,'2','.','')}}
                                         </td>
