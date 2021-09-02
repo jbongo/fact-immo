@@ -189,13 +189,7 @@
                                                 {{$facture->created_at->format('d/m/Y')}}
                                         </td> --}}
                                         {{-- @if($facture->type == "stylimmo") --}}
-                                        <td width="" >
-                                            @if($facture->compromis != null)
-                                                <label class="color-info">
-                                                    {{$facture->compromis->date_vente->format('d/m/Y')}} 
-                                                </label> 
-                                            @endif
-                                        </td>
+                                        
 
                                         {{-- @else 
                                         <td width="" style="background-color:#DCD6E1" >
