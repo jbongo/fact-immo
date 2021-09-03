@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Facture;
+use App\User;
+
+
 class ExportwinficController extends Controller
 {
     /**
@@ -543,14 +546,16 @@ class ExportwinficController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * liste des codes analytiques et clients
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function code_analytic_client()
     {
-        //
+        $mandataires = User::where('role','mandataire')->orderBy('nom')->get();
+        
+        return view ('winfic.code_analytic_client',compact('mandataires'));
     }
 
     /**

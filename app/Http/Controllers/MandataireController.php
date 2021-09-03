@@ -241,6 +241,16 @@ class MandataireController extends Controller
         }
 
         
+        if($request->code_client != $mandataire->code_client){        
+            $request->validate(['code_client' => 'unique:users',]);
+        }
+        
+        if($request->code_analytic != $mandataire->code_analytic){
+        
+            $request->validate(['code_analytic' => 'unique:users',]);
+        }
+        
+        
         $mandataire->civilite = $request->civilite; 
         $mandataire->nom = $request->nom; 
         $mandataire->prenom = $request->prenom; 

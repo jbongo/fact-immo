@@ -143,7 +143,7 @@
 
 
                 
-            @if($facture->compromis->partage_reseau == false && $facture->compromis->qui_porte_externe == 3 && $facture->type =="honoraire")
+            @if( $facture->compromis->est_partage_agent == true && $facture->compromis->partage_reseau == false && $facture->compromis->qui_porte_externe == 3 && $facture->type =="honoraire")
                 <br><br>
               <h4>  ******************************************* AGENCE EXTERNE *******************************************  </h4>
                 <div class="card-body">

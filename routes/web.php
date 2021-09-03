@@ -311,6 +311,8 @@ Route::get('/winfic','ExportwinficController@index')->name('winfic.index');
 Route::get('/winfic/exporter_ecriture/{date_deb?}/{date_fin?}','ExportwinficController@exporter_ecriture')->name('winfic.exporter_ecriture');
 Route::get('/winfic/exporter_ecrana/{date_deb?}/{date_fin?}','ExportwinficController@exporter_ecrana')->name('winfic.exporter_ecrana');
 
+Route::get('/winfic/code-analytic-client','ExportwinficController@code_analytic_client')->name('winfic.code_analytic_client');
+
 
 
 

@@ -2,7 +2,7 @@
  @extends('layouts.app')
  @section('content')
      @section ('page_title')
-     Export WINFIC 
+     Export WINFIC    <a href="{{route('winfic.code_analytic_client')}}" target="_blank" class=" btn btn-default btn-flat btn-addon m-b-10 m-l-5"><i class="ti-list"></i>liste des Codes clients et analytiques</a>
      @endsection
  
      <div class="row"> 
@@ -37,6 +37,7 @@
                                 </div>
                             </div>
                         </div>
+                        
                         <div class="col-md-3 col-lg-3 col-sm-4">
                             <div class="form-group row">
                                 <label class="col-lg-12 col-md-12 col-sm-12 control-label" for="date_fin">Date de fin  </label>
@@ -80,6 +81,7 @@
                          </form>
                     </div>
 
+               
                      
                     
              <div class="row">
