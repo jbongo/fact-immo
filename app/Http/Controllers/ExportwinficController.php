@@ -382,7 +382,7 @@ class ExportwinficController extends Controller
                     $num_ecriture++;
                          
                     
-                    $data.=$ligne1_porteur.$ligne2_porteur.$ligne3_porteur ;
+                    $data.=$ligne2_porteur ;
                     
                     if($num_ecriture > 47 ){
                         $num_folio ++;
@@ -404,7 +404,7 @@ class ExportwinficController extends Controller
                         $num_ecriture++;
                              
                         
-                        $data.=$ligne1_partage.$ligne2_partage.$ligne3_partage ;
+                        $data.=$ligne2_partage ;
                         
                         if($num_ecriture > 47 ){
                             $num_folio ++;
@@ -466,7 +466,7 @@ class ExportwinficController extends Controller
                     $num_ecriture++;
                          
                     
-                    $data.=$ligne1.$ligne2.$ligne3 ;
+                    $data.=$ligne2 ;
                 
                     if($num_ecriture > 47 ){
                         $num_folio ++;
