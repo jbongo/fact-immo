@@ -75,7 +75,7 @@ class ExportwinficController extends Controller
             
             if($facture->compromis != null){
                 
-                $compte_ht = $facture->compromis->type == "vente" ? 708229 : 708239;
+                $compte_ht = $facture->compromis->type == "Vente" ? 708229 : 708239;
             }else{
                 $compte_ht = 708800;
             }
@@ -217,7 +217,7 @@ class ExportwinficController extends Controller
                 
                 if($facture->compromis != null){
                 
-                    $compte_ht = $facture->compromis->type == "vente" ? 708229 : 708239;
+                    $compte_ht = $facture->compromis->type == "Vente" ? 708229 : 708239;
                 }else{
                     $compte_ht = 708800;
                 }

@@ -27,7 +27,7 @@
                             <div class="row">
                                 <div class="col-lg-3">
                                     <a href="#" data-toggle="modal" data-target="#add-agenda" class="btn btn-lg btn-danger btn-block waves-effect waves-light">
-                                        <i class="fa fa-plus"></i> Nouveau rappel
+                                        <i class="fa fa-plus"></i> Nouvelle tâche
                                     </a>
                                     <div id="external-events" class="m-t-20">
                                         <br>

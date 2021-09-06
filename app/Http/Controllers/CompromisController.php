@@ -616,7 +616,7 @@ class CompromisController extends Controller
         if($request->partage == "Non"  || ($request->partage == "Oui" ) ){
             if($request->numero_mandat != $compromis->numero_mandat){
                 
-                if($request->type_affaire == "vente"){
+                if($request->type_affaire == "Vente"){
                     $request->validate([
                         'numero_mandat' => 'required|numeric|unique:compromis',
                        
