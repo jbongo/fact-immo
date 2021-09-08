@@ -33,7 +33,7 @@ Ajout d'un mandataire
                                   <option value="{{old('statut')}}">{{old('statut')}}</option>
                                   <option value="independant">indépendant</option>
                                   <option value="auto-entrepreneur">auto Entrepreneur</option>
-                                  <option value="portage-salarial">portage Salarial</option>
+                                  <option value="portage salarial">portage Salarial</option>
                                </select>
                                @if ($errors->has('statut'))
                                <br>

@@ -36,7 +36,7 @@ class CreateProspectsTable extends Migration
             $table->string('nom_pere')->nullable();
             $table->string('nom_mere')->nullable();
             
-            $table->enum('statut_souhaite',['auto-entrepreneur','portage-salarial','independant', 'Autre']);
+            $table->enum('statut_souhaite',['auto-entrepreneur','portage salarial','independant', 'autre']);
             $table->string('numero_rsac')->nullable();
             $table->string('numero_siret')->nullable();
             

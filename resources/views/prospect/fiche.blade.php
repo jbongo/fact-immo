@@ -376,7 +376,7 @@
         <div class="form-row ">
             <div class="form-group col-md-6">
               <label for="date_naissance">Date de naissance <span>*</span></label>
-              <input type="date" name="date_naissance"  value="{{old('date_naissance') ? old('date_naissance') : $prospect->date_naissance}}" class="form-control" id="date_naissance" placeholder    ="" required>
+              <input type="date" name="date_naissance"  value="{{old('date_naissance') ? old('date_naissance') : ( $prospect->date_naissance != null ? $prospect->date_naissance->format('Y-m-d') : null )}}" class="form-control" id="date_naissance" placeholder    ="" required>
               @if ($errors->has('date_naissance'))
                  <br>
                  <div class="alert alert-warning ">
@@ -469,7 +469,7 @@
               <input type="radio" value="auto-entrepreneur" @if($prospect->statut_souhaite == "auto-entrepreneur") checked @endif  id="radio_1" name="statut_souhaite"  required/>
               <label for="radio_1" class="radio"><span>Auto-entrepreneur</span></label>
               
-              <input type="radio" value="portage-salarial" @if($prospect->statut_souhaite == "portage-salarial") checked @endif  id="radio_2" name="statut_souhaite" />
+              <input type="radio" value="portage salarial" @if($prospect->statut_souhaite == "portage salarial") checked @endif  id="radio_2" name="statut_souhaite" />
               <label for="radio_2" class="radio"><span>Portage salarial</span></label>
               
               <input type="radio" value="independant" @if($prospect->statut_souhaite == "independant") checked @endif  id="radio_4" name="statut_souhaite" />
@@ -531,7 +531,7 @@
             <label for="piece_identite">Carte d'identité scannée recto verso</label>
             @if($prospect->piece_identite != null)
             <a class="btn btn-warning color-info" title="Télécharger la pièce d'identité' "  href="{{route('prospect.telecharger',[ Crypt::encrypt($prospect->id),"piece_identite"])}}"  class="  m-b-10 m-l-5 " id="ajouter">Télécharger <i class="ti-download"></i> </a>
-         @endif
+            @endif
             <input type="file" name="piece_identite" class="form-control" id="piece_identite" placeholder="" accept=".pdf, image/png, image/jpeg">
              @if ($errors->has('piece_identite'))
                  <br>

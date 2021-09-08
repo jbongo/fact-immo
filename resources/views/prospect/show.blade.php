@@ -107,6 +107,150 @@
                                                    <span class="gender">{{$prospect->commentaire_perso}}</span>
                                                 </div>
                                              </div>
+                                             
+                                             
+                                             <hr>
+                                             <br>
+                                             
+                                             @if($prospect->renseigne == true )
+                                             
+                                             <div class="basic-information">                                                
+                                                <div class="gender-content">
+                                                   <span class="contact-title"><strong>Date de naissance :</strong></span>
+                                                   <span class="gender">{{$prospect->date_naissance->format('d/m/Y')}}</span>
+                                                </div>
+                                             </div>
+                                             
+                                             <div class="basic-information">                                                
+                                                <div class="gender-content">
+                                                   <span class="contact-title"><strong>Lieu de naissance :</strong></span>
+                                                   <span class="gender">{{$prospect->lieu_naissance}}</span>
+                                                </div>
+                                             </div>
+                                             
+                                             
+                                             
+                                             <div class="basic-information">                                                
+                                                <div class="gender-content">
+                                                   <span class="contact-title"><strong>Département de naissance :</strong></span>
+                                                   <span class="gender">{{$prospect->departement_naissance}}</span>
+                                                </div>
+                                             </div>
+                                             
+                                             <div class="basic-information">                                                
+                                                <div class="gender-content">
+                                                   <span class="contact-title"><strong>Situation familliale :</strong></span>
+                                                   <span class="gender">{{$prospect->situation_familliale}}</span>
+                                                </div>
+                                             </div>
+                                             
+                                             <div class="basic-information">                                                
+                                                <div class="gender-content">
+                                                   <span class="contact-title"><strong>Nationalité :</strong></span>
+                                                   <span class="gender">{{$prospect->nationalite}}</span>
+                                                </div>
+                                             </div>
+                                             
+                                             <div class="basic-information">                                                
+                                                <div class="gender-content">
+                                                   <span class="contact-title"><strong>	Nom du père :</strong></span>
+                                                   <span class="gender">{{$prospect->nom_pere}}</span>
+                                                </div>
+                                             </div>
+                                             <div class="basic-information">                                                
+                                                <div class="gender-content">
+                                                   <span class="contact-title"><strong>Nom de la mère :</strong></span>
+                                                   <span class="gender">{{$prospect->nom_mere}}</span>
+                                                </div>
+                                             </div>
+                                             
+                                             <div class="basic-information">                                                
+                                                <div class="gender-content">
+                                                   <span class="contact-title"><strong>Statut souhaité :</strong></span>
+                                                   <span class="gender">{{$prospect->statut_souhaite}}</span>
+                                                </div>
+                                             </div>
+                                             
+                                             
+                                             
+                                             <div class="basic-information">                                                
+                                                <div class="gender-content">
+                                                   <span class="contact-title"><strong>Codes postaux souhaités:</strong></span>
+                                                   <span class="gender">{{$prospect->code_postaux}}</span>
+                                                </div>
+                                             </div>
+                                             <div class="basic-information">                                                
+                                                <div class="gender-content">
+                                                   <span class="contact-title"><strong>Numéro RSAC:</strong></span>
+                                                   <span class="gender">{{$prospect->numero_rsac}}</span>
+                                                </div>
+                                             </div>
+                                             <div class="basic-information">                                                
+                                                <div class="gender-content">
+                                                   <span class="contact-title"><strong>Numéro SIRET:</strong></span>
+                                                   <span class="gender">{{$prospect->numero_siret}}</span>
+                                                </div>
+                                             </div>
+                                             
+                                             <div class="basic-information">                                                
+                                                <div class="gender-content">
+                                                   <span class="contact-title"><strong>Carte d'identité :</strong></span>
+                                                   
+                                                   @if($prospect->piece_identite != null)
+                                                        <a class="btn btn-warning color-info" title="Télécharger la pièce d'identité" style="color: #fff"   href="{{route('prospect.telecharger',[ Crypt::encrypt($prospect->id),"piece_identite"])}}"  class="  m-b-10 m-l-5 ">Télécharger <i class="ti-download"></i> </a>
+                                                   
+                                                   @else 
+                                                        <span class="contact-title text-danger"><strong> Non Ajoutée </strong></span>                                                  
+                                                   @endif                                                
+                                                </div>
+                                             </div>
+                                             
+                                             <div class="basic-information">                                                
+                                                <div class="gender-content">
+                                                   <span class="contact-title"><strong>Attestion responsabilité  :</strong></span>
+                                                   
+                                                   @if($prospect->attestation_responsabilite != null)
+                                                        <a class="btn btn-warning color-info" title="Télécharger la pièce d'identité" style="color: #fff"   href="{{route('prospect.telecharger',[ Crypt::encrypt($prospect->id),"attestation_responsabilite"])}}"  class="  m-b-10 m-l-5 ">Télécharger <i class="ti-download"></i> </a>
+                                                   
+                                                   @else 
+                                                        <span class="contact-title text-danger"><strong> Non Ajoutée </strong></span>                                                  
+                                                   @endif                                                
+                                                </div>
+                                             </div>
+                                             
+                                             <div class="basic-information">                                                
+                                                <div class="gender-content">
+                                                   <span class="contact-title"><strong>Rib :</strong></span>
+                                                   
+                                                   @if($prospect->rib != null)
+                                                        <a class="btn btn-warning color-info" title="Télécharger la pièce d'identité" style="color: #fff"   href="{{route('prospect.telecharger',[ Crypt::encrypt($prospect->id),"rib"])}}"  class="  m-b-10 m-l-5 ">Télécharger <i class="ti-download"></i> </a>
+                                                   
+                                                   @else 
+                                                        <span class="contact-title text-danger"><strong> Non Ajoutée </strong></span>                                                  
+                                                   @endif                                                
+                                                </div>
+                                             </div>
+                                             
+                                             
+                                             <div class="basic-information">                                                
+                                                <div class="gender-content">
+                                                   <span class="contact-title"><strong>Photo :</strong></span>
+                                                   
+                                                   @if($prospect->photo != null)
+                                                        <a class="btn btn-warning color-info" title="Télécharger la pièce d'identité" style="color: #fff"   href="{{route('prospect.telecharger',[ Crypt::encrypt($prospect->id),"photo"])}}"  class="  m-b-10 m-l-5 ">Télécharger <i class="ti-download"></i> </a>
+                                                   
+                                                   @else 
+                                                        <span class="contact-title text-danger"><strong> Non Ajoutée </strong></span>                                                  
+                                                   @endif                                                
+                                                </div>
+                                             </div>
+                                             
+                                             @else 
+                                             
+                                             
+                                             
+                                             
+                                             @endif
                                             
                                           </div>
                                        </div>
@@ -173,491 +317,14 @@
 </div>
 
 
-
-@if ($prospect->role == "prospect")
-<div class="row">
-    <div class="panel panel-warning lobipanel-basic">
-        <div class="panel-heading">Contrat.</div>
-        <div class="panel-body">
-            @if ($prospect->contrat != null)
-    <a href="{{route('contrat.historique', Crypt::encrypt($prospect->contrat->id))}}" class="btn btn-default btn-flat btn-addon m-b-10 m-l-5"><i class="ti-timer"></i>@lang('Voir l\'historique du contrat')</a> 
-            @endif
-                <div class="row">
-                        <div class="col-lg-12">
-                            
-                            @if ($prospect->contrat == null)
-                            <label class="color-red" >  <h4>  Pas de contrat </h4></label> <hr>
-                                @if (auth()->user()->role == "admin")
-                                    @php
-                                        $prospect_id = Crypt::encrypt($prospect->id);
-                                    @endphp
-                                    <a class="btn btn-default btn-flat btn-addon btn-lg m-b-10 m-l-5 " href="{{route('contrat.create',$prospect_id)}}" ><i class="ti-plus"></i>Ajouter contrat</a> <hr>
-                                @endif
-                            @else 
-                                @if (auth()->user()->role == "admin")
-                                    <a href="{{route('contrat.edit',Crypt::encrypt($prospect->contrat->id) )}}"  class="btn btn-warning btn-rounded btn-addon btn-xs m-b-10"><i class="ti-pencil"></i>Modifier</a>
-                                @endif
-                            <div class="card">
-                                <div class="col-lg-10">
-                                </div>
-                                <div class="card-body">
-                    
-                                    <div class="panel-body">
-                                        <fieldset class="col-md-12">
-                                            <legend>Infos basiques</legend>
-                                            <div class="panel panel-warning">
-                                                <div class="panel-body">
-                    
-                                                        <div class="row">
-                                                            <div class="col-lg-6 col-md-6 col-sm-6">
-                    
-                                                                <div class="form-group row">
-                                                                    <label class="col-lg-4 col-form-label" for="forfait_entree">Forfait d'entrée (€)<span class="text-danger">*</span></label>
-                                                                    <div class="col-lg-4">
-                                                                    <label class="color-primary">{{$prospect->contrat->forfait_entree}}</label>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="form-group row">
-                                                                    <label class="col-lg-6 col-form-label" for="est_starter">Démarrage en tant que Starter ?</label>
-                                                                    <label class="color-primary">{{$prospect->contrat->est_demarrage_starter == 1 ? "Oui" : "Non"}}</label>
-                                                                    
-                                                                </div>
-                                                                <div class="form-group row">
-                                                                    <label class="col-lg-6 col-form-label" for="a_parrain">Le prospect a t'il un parrain ?</label>
-                                                                    <label class="color-primary">{{$prospect->contrat->a_parrain == 1 ? "Oui" : "Non"}}</label>
-                                                                </div>
-                                                                
-                                                                @if ($prospect->contrat->a_parrain == 1)
-                                                                    <div class="form-group row" id="parrain-id">
-                                                                        <label class="col-lg-4 col-form-label" for="parrain_id">Parrain</label>
-                                                                        <div class="col-lg-8">
-                                                                        <label class="color-primary">{{$parrain->nom}} {{$parrain->prenom}}</label>  
-                                                                            {{--**********************  --}}
-                                                                    </div>
-                                                                </div>
-                                                                @endif
-
-                                                                
-
-
-                                                            </div>
-                    
-                                                            <div class="col-lg-6 col-md-6 col-sm-6">
-                                                                <div class="form-group row">
-                                                                    <label class="col-lg-4 col-form-label" for="date_entree">Date d'entrée<span class="text-danger">*</span></label>
-                                                                    <div class="col-lg-4">
-                                                                    <label class="color-primary">{{$prospect->contrat->date_entree}}</label>
-
-                                                                    </div>
-                                                                </div>
-                                                                <div class="form-group row">
-                                                                    <label class="col-lg-4 col-form-label" for="date_debut">Date de début d'activité<span class="text-danger">*</span></label>
-                                                                    <div class="col-lg-4">
-                                                                    <label class="color-primary">{{$prospect->contrat->date_deb_activite}}</label>
-
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-lg-6 col-md-6 col-sm-6">
-                                                                <div class="form-group row">
-                                                                    <label class="col-lg-4 col-form-label" for="ca_depart">Chiffre d'affaires de départ<span class="text-danger">*</span></label>
-                                                                    <div class="col-lg-4">
-                                                                        <label class="color-primary">{{number_format($prospect->contrat->ca_depart,2,'.',' ')}} €</label>                                                                        
-                                                                    </div>
-                                                                </div>
-                                                                
-                                                            </div>
-                                                        </div>
-                                                </div>
-                                            </div>
-                                        </fieldset>
-                                    </div>
-                    
-                                    <div class="panel-body">
-                                        <fieldset class="col-md-12">
-                                            <legend>Commission directe</legend>
-                                            <div class="panel panel-warning">
-                                                <div class="panel-body">
-                    
-                                                    {{-- PACK STARTER --}}
-                                                @if ($prospect->contrat->est_demarrage_starter == 1)
-                                                    
-                                                <div class="row" id="pack_starter">
-                                                        <div class="row">
-                                                            <div class="col-md-12 col-lg-12 col-sm-12 "style="color: #5c96b3; ">
-                                                                <h4> <strong><center> @lang('Starter') </center></strong></h4>                          
-                                                            </div>
-                                                        </div>
-                                                        <hr>
-                                                    <div class="row">
-                                                        <div class="col-lg-6 col-md-6 col-sm-6">
-                                                           
-                                                            <div class="form-group row">
-                                                                <label class="col-lg-6 col-md-6 col-sm-6 col-form-label" for="pourcentage_depart_starter">Pourcentage de départ du prospect<span class="text-danger">*</span></label>
-                                                                <div class="col-lg-4 col-md-4 col-sm-4 ">
-                                                                    <label class="color-primary">{{$prospect->contrat->pourcentage_depart_starter}} %</label>                                                                    
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-lg-6 col-md-6 col-sm-6">
-                                                            <div class="form-group row" id="max-starter-parrent">
-                                                                <label class="col-lg-6 col-md-6 col-sm-6 col-form-label" for="duree_max_starter">Durée maximum du pack Starter<span class="text-danger">*</span></label>
-                                                                <div class="col-lg-4 col-md-4 col-sm-4 ">
-                                                                    <label class="color-primary">{{$prospect->contrat->duree_max_starter}} </label>
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-group row">
-                                                                <label class="col-lg-6 col-form-label" for="duree_gratuite_starter">Durée de la gratuité totale (mois)<span class="text-danger">*</span></label>
-                                                                <div class="col-lg-4 col-md-4 col-sm-4 ">
-                                                                    <label class="color-primary">{{$prospect->contrat->duree_gratuite_starter}} </label>
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-group row">
-                                                                <label class="col-lg-6 col-form-label" for="duree_pack_info_starter">Durée du pack informatique (mois)<span class="text-danger">*</span></label>
-                                                                <div class="col-lg-4 col-md-4 col-sm-4 ">
-                                                                    <label class="color-primary">{{$prospect->contrat->duree_pack_info_starter}} </label>
-                                                                </div>
-                                                            </div>
-                                                            
-                                                            
-                                                        </div>
-                                                    </div>
-                    
-                                                    @if ($prospect->contrat->a_palier_starter == 1)
-                                                        
-                                                    
-                                                    <div class="row">
-                                                        <div class="col-lg-12 col-md-12 col-sm-12">
-                    
-                                                            <div class="col-lg-12 col-md-12 col-sm-12" id="palier_starter">
-                                                                <div class="panel panel-pink m-t-15">
-                                                                    <div class="panel-heading"></div>
-                                                                    <div class="panel-body">
-                                                                        <div class="input_fields_wrap_starter">
-                                                                        <span>Niveau starter actuel : {{$niveau_starter}}</span>
-                                                                            <div class="card alert">
-                                                                                    <div class="card-header">
-                                                                                        <h4><strong>Paliers Starter</strong> </h4>
-                                                                                    </div>
-
-                                                                                    <div class="card-body">
-                                                                                        <div class="table-responsive">
-                                                                                            <table class="table table-bordered">
-                                                                                                <thead>
-                                                                                                    <tr>
-                                                                                                        <th>Niveau</th>
-                                                                                                        <th>Pourcentage en +</th>
-                                                                                                        <th>chiffre affaires min</th>
-                                                                                                        <th>chiffre affaires max</th>
-                                                                                                    </tr>
-                                                                                                </thead>
-                                                                                                <tbody>
-                                                                                                @foreach ($palier_starter as $pal)
-                                                                                               
-                                                                                                    
-                                                                                                
-                                                                                                    <tr  @if ($pal[0] == $niveau_starter) style="background-color:linen" @endif>
-                                                                                                        <th class="color-primary" scope="row">{{$pal[0]}}</th>
-                                                                                                        <td>{{$pal[1]}}</td>
-                                                                                                        <td>{{number_format($pal[2],2,'.',' ')}} €</td>
-                                                                                                        <td>{{number_format($pal[3],2,'.',' ')}} €</td>
-                                                                                                    </tr>
-                                                                                                @endforeach
-                                                                                                </tbody>
-                                                                                            </table>
-                                                                                        </div>
-                                                                                    </div>
-
-                                                                                </div>
-                                                                            </div>
-
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        @else 
-                                                            <label class="color-danger">pas de palier starter</label>
-                                                        @endif
-                    
-                                                    </div>
-                                                    @endif
-                                                    
-                    
-                                                {{-- </div> --}}
-                                                {{-- FIN PACK STARTER --}}
-                    
-                    
-                    
-                                                {{-- PACK EXPERT --}}
-                                                <br>
-                                                <hr>
-                                                <div class="row">
-                                                    <div class="row">
-                                                        <div class="col-md-12 col-lg-12 col-sm-12 "style="color: #5c96b3; ">
-                                                            <h4> <strong><center> @lang('Expert') </center></strong></h4>                          
-                                                        </div>
-                                                    </div><hr>
-                                                    
-                                                    <div class="row">
-                                                        <div class="col-lg-6 col-md-6 col-sm-6">
-                                                            <div class="form-group row">
-                                                                <label class="col-lg-6 col-md-6 col-sm-6 col-form-label" for="pourcentage_depart_expert">Pourcentage de départ du prospect<span class="text-danger">*</span></label>
-                                                                <div class="col-lg-4 col-md-4 col-sm-4 ">
-                                                                    <label class="color-primary">{{$prospect->contrat->pourcentage_depart_expert}} %</label>                                                                    
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-lg-6 col-md-6 col-sm-6">
-                                                           
-                                                            <div class="form-group row">
-                                                                <label class="col-lg-6 col-form-label" for="duree_gratuite_expert">Durée de la gratuité totale (mois)<span class="text-danger">*</span></label>
-                                                                <div class="col-lg-4 col-md-4 col-sm-4 ">
-                                                                    <label class="color-primary">{{$prospect->contrat->duree_gratuite_expert}} </label>
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-group row">
-                                                                <label class="col-lg-6 col-form-label" for="duree_pack_info_expert">Durée du pack informatique (mois)<span class="text-danger">*</span></label>
-                                                                <div class="col-lg-4 col-md-4 col-sm-4 ">
-                                                                    <label class="color-primary">{{$prospect->contrat->duree_pack_info_expert}} </label>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-
-
-                                                    @if ($prospect->contrat->a_palier_expert == 1)
-                                                        
-                                                    
-                                                    <div class="row">
-                                                        <div class="col-lg-12 col-md-12 col-sm-12">
-                    
-                                                            <div class="col-lg-12 col-md-12 col-sm-12" id="palier_expert">
-                                                                <div class="panel panel-pink m-t-15">
-                                                                    <div class="panel-heading"></div>
-                                                                    <div class="panel-body">
-                                                                        <div class="input_fields_wrap_expert">
-                                                                        <span>Niveau expert actuel : {{$niveau_expert}}</span>                                                                            
-                                                                            <div class="card alert">
-                                                                                    <div class="card-header">
-                                                                                        <h4><strong>Paliers Expert</strong> </h4>
-                                                                                    </div>
-
-                                                                                    <div class="card-body">
-                                                                                        <div class="table-responsive">
-                                                                                            <table class="table table-bordered">
-                                                                                                <thead>
-                                                                                                    <tr>
-                                                                                                        <th>Niveau</th>
-                                                                                                        <th>Pourcentage en +</th>
-                                                                                                        <th>chiffre affaires min</th>
-                                                                                                        <th>chiffre affaires max</th>
-                                                                                                    </tr>
-                                                                                                </thead>
-                                                                                                <tbody>
-                                                                                                @foreach ($palier_expert as $pal)
-                                                                                                    <tr @if ($pal[0] == $niveau_expert) style="background-color:linen" @endif>
-                                                                                                        <th class="color-primary" scope="row">{{$pal[0]}}</th>
-                                                                                                        <td>{{$pal[1]}}</td>
-                                                                                                        <td>{{number_format($pal[2],2,'.',' ') }} €</td>
-                                                                                                        <td>{{number_format($pal[3],2,'.',' ') }} €</td>
-                                                                                                    </tr>
-                                                                                                @endforeach
-                                                                                                </tbody>
-                                                                                            </table>
-                                                                                        </div>
-                                                                                    </div>
-
-                                                                                </div>
-                                                                            </div>
-
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                    
-                                                    </div>
-                                                    @else 
-                                                        <label class="color-danger">pas de palier expert</label>
-                                                    @endif
-                    
-                    
-                                                    <div class="row">
-                                                        <div class="col-lg-12 col-md-12 col-sm-12">
-                    
-                                                            <div class="col-lg-12" id="expert-par">
-                                                                <div class="panel panel-default m-t-15">
-                                                                    <div class="panel-heading-default"><strong>Paramètres du pack expert</strong></div>
-                                                                    <div class="panel-body">
-                                                                        <br>
-                                                                        <br>
-                                                                        </strong>
-                    
-                                                                        <div class="row">
-                                                                            <div class="col-lg-6-col-md-6 col-sm-6">
-                                                                                <div class="form-group row">
-                                                                                    <label class="col-lg-6 col-md-6 col-sm-6 col-form-label" for="nombre_vente_min">Nombre de vente minimum</label>
-                                                                                    <div class="col-lg-4 col-md-4 col-sm-4 ">
-                                                                                        <label class="color-primary">{{$prospect->contrat->nombre_vente_min}} </label>
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div class="form-group row">
-                                                                                    <label class="col-lg-6 col-md-6 col-sm-6 col-form-label" for="nombre_mini_filleul">Nombre minimum de filleuls parrainés</label>
-                                                                                    <div class="col-lg-4 col-md-4 col-sm-4 ">
-                                                                                        <label class="color-primary">{{$prospect->contrat->nombre_mini_filleul}} </label>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="col-lg-6-col-md-6 col-sm-6">
-                                                                                <div class="form-group row">
-                                                                                    <label class="col-lg-6 col-md-6 col-sm-6 col-form-label" for="chiffre_affaire">Chiffre d'affaires (€) </label>
-                                                                                    <div class="col-lg-4 col-md-4 col-sm-4 ">
-                                                                                        <label class="color-primary">{{$prospect->contrat->chiffre_affaire}} €</label>
-                                                                                    </div>
-                                                                                </div>
-                                                                                <strong>Si ces conditions ne sont pas réunies alors:
-                                                                                <br>
-                                                                                <br>
-                                                                                </strong>
-                                                                                <div class="form-group row">
-                                                                                    <label class="col-lg-6 col-md-6 col-sm-6 col-form-label" for="a_soustraitre">A soustraire (%)</label>
-                                                                                    <div class="col-lg-4 col-md-4 col-sm-4 ">
-                                                                                        <label class="color-primary">{{$prospect->contrat->a_soustraitre}} %</label>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                {{-- FIN PACK EXPERT --}}
-                    
-                    
-                    
-                    
-                                                </div>
-                                            </div>
-                                        </fieldset>
-                                    </div>
-                                    <br>
-                    
-                                    <div class="panel-body" id="parrainage_div">
-                                        <fieldset class="col-md-12">
-                                            <legend>Parrainage</legend>
-                                            <div class="panel panel-warning">
-                                                <div class="panel-body">
-                    
-                                                    <div class="row">
-                                                                                <!-- /# column -->
-                                            <div class="col-lg-6">
-                                                    <div class="card alert">
-                                                        <div class="card-header">
-                                                            <h4>&Eacute;volution de l'impact </h4>
-                                
-                                                        </div>
-                                                        <div class="card-body">
-                                                            <div class="table-responsive">
-                                                                <table class="table table-bordered">
-                                                                    <thead>
-                                                                        <tr>
-                                                                           
-                                                                            <th>Année</th>
-                                                                            <th>1er filleul</th>
-                                                                            <th>2<sup> ème</sup> filleul</th>
-                                                                            <th>3<sup> ème</sup> filleul</th>
-                                                                            <th>4<sup> ème</sup> filleul</th>
-                                                                        </tr>
-                                                                    </thead>
-                                                                    <tbody>
-                                                                        <tr>
-                                                                            <th class="color-primary" scope="row">1</th>
-                                                                            <td>5%</td>
-                                                                            <td>5%</td>
-                                                                            <td>5%</td>
-                                                                            <td>5%</td>
-                                                                            
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <th class="color-primary" scope="row">2</th>
-                                                                            <td>3%</td>
-                                                                            <td>4%</td>
-                                                                            <td>5%</td>
-                                                                            <td>5%</td>
-                                                                            
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <th class="color-primary" scope="row">3</th>
-                                                                            <td>1%</td>
-                                                                            <td>3%</td>
-                                                                            <td>4%</td>
-                                                                            <td>5%</td>
-                                                                            
-                                                                        </tr>
-                                                                       
-                                                                    </tbody>
-                                                                </table>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                        <div class="col-lg-6 col-md-6 col-sm-6">
-                                                            <div class="form-group row" id="max-starter-parrent">
-                                                                <label class="col-lg-6 col-md-6 col-sm-6 col-form-label col-form-label" for="prime_max_forfait">Prime forfaitaire si le parrain est à 100% (€)<span class="text-danger">*</span></label>
-                                                                <div class="col-lg-4 col-md-4 col-sm-4">
-                                                                    <label class="color-primary">{{$prospect->contrat->prime_forfaitaire}} €</label>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                    
-                    
-                                                </div>
-                                            </div>
-                                        </fieldset>
-                                    </div>
-                                    <br>
-                    
-                                    <div class="panel-body">
-                                        <fieldset class="col-md-12">
-                                            <legend>Pack pub</legend>
-                                            <div class="panel panel-warning">
-                                                <div class="panel-body">
-                    
-                                                    <div class="row">
-                                                        <div class="col-lg-6 col-md-6 col-sm-6">
-                                                            <div class="form-group row">
-                                                                <label class="color-primary">{{$prospect->contrat->packpub->nom}} &nbsp;&nbsp;</label>
-                                                                <label class="color-danger">{{$prospect->contrat->packpub->tarif}} €</label>
-                                                            </div>
-                                                        </div>
-                                                        
-                                                    </div>
-                    
-                                                </div>
-                                            </div>
-                                        </fieldset>
-                                    </div>
-                                </div>
-                                @endif
-                            </div>
-                        </div>
-                    </div>
-            
-                
-        </div>
-        @endif
-    </div>
+  
 
 </div>
 
 @endsection
 @section('js-content')
 <script>
+
  $(function() {
         $.ajaxSetup({
             headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }

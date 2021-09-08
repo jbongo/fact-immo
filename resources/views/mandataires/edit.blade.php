@@ -44,7 +44,7 @@ Modifier mandataire {{$mandataire->nom}}
                                <option value="{{$mandataire->statut}}" >{{$mandataire->statut}}</option>
                                   <option value="independant">Indépendant</option>
                                   <option value="auto-entrepreneur">Auto Entrepreneur</option>
-                                  <option value="portage-salarial">Portage Salarial</option>
+                                  <option value="portage salarial">Portage Salarial</option>
                                </select>
                                @if ($errors->has('statut'))
                                <br>
