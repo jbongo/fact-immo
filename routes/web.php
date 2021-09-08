@@ -295,9 +295,6 @@ Route::middleware('auth')->group(function(){
 
 
 
-// Envoi de la fiche info au prospect
-Route::get('fiche/prospect/{prospect}/','ProspectController@create_fiche')->name('prospect.fiche');
-Route::post('fiche/prospect/{prospect}/','ProspectController@sauvegarder_fiche')->name('prospect.sauvegarder_fiche');
 
 
 // Agenda 
@@ -321,6 +318,9 @@ Route::get('/winfic/code-analytic-client','ExportwinficController@code_analytic_
 
 
 
+// Envoi de la fiche info au prospect
+Route::get('fiche/prospect/{prospect}/','ProspectController@create_fiche')->name('prospect.fiche');
+Route::post('fiche/prospect/{prospect}/','ProspectController@sauvegarder_fiche')->name('prospect.sauvegarder_fiche');
 // Tests
 
 // Route::get('/test', function () {
