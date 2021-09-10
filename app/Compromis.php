@@ -116,7 +116,7 @@ class Compromis extends Model
         // dd($chiffre_affaire_encai);
         if($contrat->est_soumis_tva == false ){
 
-            if( $mandataire->statut == "auto-entrepeneur"){
+            if( $mandataire->statut == "auto-entrepreneur"){
 
                 if($chiffre_affaire_encai < Parametre::montant_tva()){
                     $tva = 0;
@@ -220,7 +220,7 @@ class Compromis extends Model
                 // dd($chiffre_affaire_encai);
                 if($contrat->est_soumis_tva == false ){
 
-                    if( $mandataire->statut == "auto-entrepeneur"){
+                    if( $mandataire->statut == "auto-entrepreneur"){
 
                         if($chiffre_affaire_encai < Parametre::montant_tva()){
                             $tva = 0;

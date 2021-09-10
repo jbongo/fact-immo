@@ -106,7 +106,7 @@
     </td>
     <td style="width: 166px;">{{number_format($facture->montant_ht,'2',',',' ')}}</td>
     </tr>
-    @if( ($facture->compromis->user->statut == "auto-entrepeneur" && $facture->compromis->user->chiffre_affaire >= 35200 ) || $facture->compromis->user->statut != "auto-entrepeneur")
+    @if( ($facture->compromis->user->statut == "auto-entrepreneur" && $facture->compromis->user->chiffre_affaire >= 35200 ) || $facture->compromis->user->statut != "auto-entrepreneur")
 
     <tr>
     <td style="width: 166px;">T.V.A. 20 %</td>

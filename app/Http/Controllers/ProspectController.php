@@ -261,6 +261,9 @@ class ProspectController extends Controller
         $prospect->numero_siret = $request->numero_siret;
         $prospect->code_postaux = $request->code_postaux;
         
+        
+        $nom = str_replace(['/', '\\', '<','>',':','|','?','*','#'],"-",$prospect->nom) ;
+        
         if($file = $request->file('piece_identite')){
 
             $request->validate([
@@ -273,13 +276,13 @@ class ProspectController extends Controller
                 $extension = $file->getClientOriginalExtension();
                 
         
-                // on sauvegarde la facture dans le repertoire du mandataire
+                // on sauvegarde le fichier dans le repertoire du mandataire
                 $path = storage_path('app/public/prospects/');
         
                 if(!File::exists($path))
                     File::makeDirectory($path, 0755, true);
         
-                    $filename = strtoupper($prospect->nom)." piece_identite ".$prospect->id ;
+                    $filename = strtoupper($nom)." piece_identite ".$prospect->id ;
          
                     $file->move($path,$filename.'.'.$extension);            
                     $path = $path.'/'.$filename.'.'.$extension;
@@ -300,13 +303,13 @@ class ProspectController extends Controller
                 $extension = $file->getClientOriginalExtension();
                 
         
-                // on sauvegarde la facture dans le repertoire du mandataire
+                // on sauvegarde le fichier  dans le repertoire du mandataire
                 $path = storage_path('app/public/prospects/');
         
                 if(!File::exists($path))
                     File::makeDirectory($path, 0755, true);
         
-                    $filename = strtoupper($prospect->nom)." rib ".$prospect->id ;
+                    $filename = strtoupper($nom)." rib ".$prospect->id ;
          
                     $file->move($path,$filename.'.'.$extension);            
                     $path = $path.'/'.$filename.'.'.$extension;
@@ -327,13 +330,13 @@ class ProspectController extends Controller
                 $extension = $file->getClientOriginalExtension();
                 
         
-                // on sauvegarde la facture dans le repertoire du mandataire
+                // on sauvegarde le fichier dans le repertoire du mandataire
                 $path = storage_path('app/public/prospects/');
         
                 if(!File::exists($path))
                     File::makeDirectory($path, 0755, true);
         
-                    $filename = strtoupper($prospect->nom)." attestation_responsabilite ".$prospect->id ;
+                    $filename = strtoupper($nom)." attestation_responsabilite ".$prospect->id ;
          
                     $file->move($path,$filename.'.'.$extension);            
                     $path = $path.'/'.$filename.'.'.$extension;
@@ -354,13 +357,13 @@ class ProspectController extends Controller
                 $extension = $file->getClientOriginalExtension();
                 
         
-                // on sauvegarde la facture dans le repertoire du mandataire
+                // on sauvegarde le fichier dans le repertoire du mandataire
                 $path = storage_path('app/public/prospects/');
         
                 if(!File::exists($path))
                     File::makeDirectory($path, 0755, true);
         
-                    $filename = strtoupper($prospect->nom)." photo ".$prospect->id ;
+                    $filename = strtoupper($nom)." photo ".$prospect->id ;
          
                     $file->move($path,$filename.'.'.$extension);            
                     $path = $path.'/'.$filename.'.'.$extension;

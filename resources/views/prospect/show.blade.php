@@ -129,13 +129,13 @@
                                              </div>
                                              
                                              
-                                             
+{{--                                              
                                              <div class="basic-information">                                                
                                                 <div class="gender-content">
                                                    <span class="contact-title"><strong>Département de naissance :</strong></span>
                                                    <span class="gender">{{$prospect->departement_naissance}}</span>
                                                 </div>
-                                             </div>
+                                             </div> --}}
                                              
                                              <div class="basic-information">                                                
                                                 <div class="gender-content">

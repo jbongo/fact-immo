@@ -66,13 +66,13 @@
     <td style="width: 436px;">&nbsp;</td>
     <td style="width: 260px;"><strong>TOTAL HT&nbsp; &nbsp; &nbsp; {{number_format($facture->montant_ht,'2',',',' ')}}  &euro;</strong></td>
     </tr>
-    @if( ($facture->compromis->user->statut == "auto-entrepeneur" && $facture->compromis->user->chiffre_affaire >= 35200 ) || $facture->compromis->user->statut != "auto-entrepeneur")
+    @if( ($facture->compromis->user->statut == "auto-entrepreneur" && $facture->compromis->user->chiffre_affaire >= 35200 ) || $facture->compromis->user->statut != "auto-entrepreneur")
     <tr>
         <td style="width: 436px;">&nbsp;</td>
         <td style="width: 260px;"><strong>TOTAL TTC&nbsp; &nbsp; &nbsp; {{number_format($facture->montant_ttc,'2',',',' ')}}  &euro;</strong></td>
     </tr>
     @endif
-    @if($facture->compromis->user->statut == "auto-entrepeneur" && $facture->compromis->user->chiffre_affaire < 35200 )
+    @if($facture->compromis->user->statut == "auto-entrepreneur" && $facture->compromis->user->chiffre_affaire < 35200 )
     <tr>
     <td style="width: 436px;">&nbsp;</td>
     <td style="width: 260px;">TVA non applicable, art.293 B du CGI</td>
