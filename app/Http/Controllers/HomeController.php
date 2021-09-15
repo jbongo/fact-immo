@@ -177,7 +177,7 @@ class HomeController extends Controller
         else{
 
            
-            // CALCUL DES CA POUR LES MANDATAIRES
+            // CALCUL DES CA STYL et PERSO POUR LES MANDATAIRES
             $nb_global_N = 0;
             $nb_sous_offre_n = 0;
             $nb_sous_offre_N = 0;
@@ -187,6 +187,11 @@ class HomeController extends Controller
             $nb_en_attente_N = 0;
             $nb_encaisse_n = 0;
             $nb_encaisse_N = 0;
+            $commission = Auth::user()->commission /100;
+            
+            // dd($commission);
+            
+            
            
             //  ######## Sur l'année N ##########
             for ($i=1; $i <= 12 ; $i++) {                
@@ -196,7 +201,10 @@ class HomeController extends Controller
              
 
 
-                #####ca non encaissé, en attente de payement
+
+                ################### CA NON ENCAISSE  , en attente de payement ####################
+                
+                
                 $compros_styls = Compromis::where([['date_vente','like',"%$annee_n-$month%"],['demande_facture',2],['archive',false]])->get();
                 // on parcour les facture stylimmo non encaissée pour réccupérer les montant_ht  
                
@@ -204,7 +212,9 @@ class HomeController extends Controller
 
                                 // CA en attente non partagé
                                 $compro_attente_partage_pas_n = Compromis::where([['user_id',Auth::id()],['est_partage_agent',false],['demande_facture',2],['archive',false]])->get();
+                                    
                                     $ca_attente_partage_pas_n = 0;
+                                    
                                     if($compro_attente_partage_pas_n != null){
                                         // dd("dd");
                                         foreach ($compro_attente_partage_pas_n as $compros_att) {
@@ -245,21 +255,22 @@ class HomeController extends Controller
                                                 $ca_attente_porte_pas_n +=  $compros_att->frais_agence * (100-$compros_att->pourcentage_agent)/100;
                                                 $nb_en_attente_n++;
                                                 $nb_en_attente_N++;
-                                                // dd($nb_en_attente_N);
                                                
                                             }
                                         }
                                     }
 
-                                    // dd($nb_en_attente_N);
                              
                                 
                                 $ca_attente_n = round(($ca_attente_partage_pas_n+$ca_attente_porte_n+$ca_attente_porte_pas_n)/Tva::coefficient_tva(),2);
                                 $ca_attente_N [] = $ca_attente_n;
+                                $ca_attente_perso_N [] = $ca_attente_n * $commission;
+                                    
+                                    
+                                    
 
-                                    // dd($ca_attente_N);
+                                #####################  CA ENCAISSE #######################
 
-                                #####ca encaissé
 
                                 // CA encaissé non partagé
 
@@ -312,8 +323,15 @@ class HomeController extends Controller
                                 $ca_encaisse_n = round(($ca_encaisse_partage_pas_n+$ca_encaisse_porte_n+$ca_encaisse_porte_pas_n)/Tva::coefficient_tva(),2);
                                 $ca_encaisse_N [] = $ca_encaisse_n;
                                 
+                                
+                                $ca_encaisse_perso_N [] = $ca_encaisse_n * $commission;
+                                
 
-                            // CA SOUS OFFRE
+
+
+
+
+                         ###################### CA SOUS OFFRE  ##########################
                            
 
                             // CA Sous offre non partagé
@@ -343,13 +361,14 @@ class HomeController extends Controller
                             
                             $ca_sous_offre_n = round(($ca_offre_partage_pas_n+$ca_offre_porte_n+$ca_offre_porte_pas_n)/Tva::coefficient_tva(),2);
                             $ca_sous_offre_N [] = $ca_sous_offre_n;
+                            $ca_sous_offre_perso_N [] = $ca_sous_offre_n * $commission;
 
 
 
 
 
-                            // CA SOUS COMPROMIS
 
+                            ########################## CA SOUS COMPROMIS  ########################
 
                            
 
@@ -381,11 +400,19 @@ class HomeController extends Controller
                             
                             $ca_sous_compromis_n = round(($ca_compromis_partage_pas_n+$ca_compromis_porte_n+$ca_compromis_porte_pas_n)/Tva::coefficient_tva(),2);
                             $ca_sous_compromis_N [] = $ca_sous_compromis_n;
+                            $ca_sous_compromis_perso_N [] = $ca_sous_compromis_n * $commission;
+
+
 
                            
-                            // CA GLOBAL 
+                            ################### CA GLOBAL ###################
+                            
+                            
                             $ca_glo_n = $ca_encaisse_n + $ca_attente_n + $ca_sous_offre_n + $ca_sous_compromis_n;
+                            $ca_glo_perso_n = $ca_glo_n * $commission;
+                            
                             $ca_global_N [] = round($ca_glo_n,2);
+                            $ca_global_perso_N [] = round($ca_glo_perso_n,2);
 
                             $nb_global_N += ( $nb_encaisse_n + $nb_en_attente_n + $nb_sous_compromis_n + $nb_sous_offre_n);       
 
@@ -419,7 +446,19 @@ class HomeController extends Controller
             $CA_N[] = $ca_encaisse_N; 
             $CA_N[] = $ca_sous_offre_N; 
             $CA_N[] = $ca_sous_compromis_N; 
+            
+            if(Auth::user()->role == "mandataire"){
+            
+                $CA_N[] = $ca_global_perso_N; 
+                $CA_N[] = $ca_attente_perso_N; 
+                $CA_N[] = $ca_encaisse_perso_N; 
+                $CA_N[] = $ca_sous_offre_perso_N; 
+                $CA_N[] = $ca_sous_compromis_perso_N; 
+            
+            }
 
+            
+           
 // dd($CA_N);
 
             $STATS = array();
@@ -428,7 +467,8 @@ class HomeController extends Controller
 
 
 
-            // ####### AUTRE CALCULS 
+            ################## AUTRE CALCULS ########################## 
+            
     
             //    Nombre de mandataires actifs
             $nb_mandataires_actifs = Contrat::where('est_fin_droit_suite',false)->count();

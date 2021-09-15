@@ -297,7 +297,9 @@ Route::middleware('auth')->group(function(){
 
 
 
-// Agenda 
+// Agenda  général
+Route::get('/agendas/general','AgendaController@index')->name('agendas.index');
+
 Route::post('/agenda/store','AgendaController@store')->name('agenda.store');
 Route::post('/agenda/update','AgendaController@update')->name('agenda.update');
 Route::post('/agenda/delete/{agenda_id}','AgendaController@destroy')->name('agenda.delete');

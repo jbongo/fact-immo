@@ -4,7 +4,7 @@
     <td style="width: 348px;">
     <div><span style="color: #3366ff;"><strong>{{strtoupper($facture->compromis->user->prenom)}} {{ strtoupper($facture->compromis->user->nom) }}</strong></span></div>
     <div>&nbsp;</div>
-    <div><span style="color: #3366ff;">Conseiller en Immobilier</span></div>
+    <div><span style="color: #3366ff;">Mandataire Immobilier</span></div>
     <div><span style="color: #3366ff;">{{$facture->compromis->user->telephone1}}</span></div>
     
     

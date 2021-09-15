@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Agenda;
+use App\User;
+use App\Prospect;
 
 class AgendaController extends Controller
 {
@@ -14,7 +16,18 @@ class AgendaController extends Controller
      */
     public function index()
     {
-        //
+        
+        $agendas = Agenda::all()->toJson();
+       
+        $mandataires = User::join('contrats','users.id','=','contrats.user_id' )
+        ->select('*','contrats.id as contrat_id')
+        ->where('contrats.a_demission', false)->get();
+        
+        $prospects = Prospect::where([['archive',false], ['est_mandataire', false]])->get();
+        
+        // dd($prospects);
+  
+        return view('agenda.index',compact('agendas','mandataires', 'prospects'));
     }
 
    

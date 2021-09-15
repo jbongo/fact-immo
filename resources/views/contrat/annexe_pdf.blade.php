@@ -32,20 +32,20 @@ font-family: 'Times New Roman', Times, serif
 
 <h3><strong>ANNEXE 1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Bar&egrave;me du commissionnement direct</strong></h3>
 <hr /><hr />
-<p>La commission du mandataire est calcul&eacute;e en pourcentage du montant des honoraires d&rsquo;agence H.T. g&eacute;n&eacute;r&eacute;s par le mandataire. Ce pourcentage de base est d&eacute;fini selon le choix effectu&eacute; ci-dessous (STARTER ou EXPERT).</p>
+<p>La commission du MANDATAIRE est calcul&eacute;e en pourcentage du montant des honoraires d&rsquo;agence H.T. g&eacute;n&eacute;r&eacute;s par le MANDATAIRE. Ce pourcentage de base est d&eacute;fini selon le choix effectu&eacute; ci-dessous (STARTER ou EXPERT).</p>
 <p><strong><u>A &ndash; Pourcentage de base choisi</u></strong></p>
 <p>D&eacute;marrage en tant que&nbsp;:</p>
 <p><strong>&nbsp;&nbsp;   <input type="checkbox" name="" id=""> &nbsp; STARTER&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{$contrat->pourcentage_depart_starter}} % &nbsp; (des honoraires d&rsquo;agence H.T.)</strong></p>
 <p style="text-align: right;"><strong><u>conditions et tarifs en annexe 3</u></strong></p>
 <p><strong><u>ou</u></strong> d&eacute;marrage <u>directement</u> en tant que&nbsp;:</p>
-<p><strong>&nbsp;&nbsp; <input type="checkbox" name="" id=""> &nbsp; EXPERT&nbsp;: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </strong><strong>{{$contrat->pourcentage_depart_expert}}  %&nbsp;&nbsp; (des honoraires d&rsquo;agence H.T.)</strong></p>
+<p><strong>&nbsp;&nbsp; <input type="checkbox" name="" id=""> &nbsp; EXPERT&nbsp;: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  </strong><strong>{{$contrat->pourcentage_depart_expert}}  %&nbsp;&nbsp; (des honoraires d&rsquo;agence H.T.)</strong></p>
 <p style="text-align: right;"><strong><u>conditions et tarifs en annexe 3</u></strong></p>
-<p>Condition pour le passage &agrave; {{$contrat->pourcentage_depart_expert}} % : r&eacute;aliser 3 ventes.</p>
+<p>Condition pour le passage &agrave; {{$contrat->pourcentage_depart_expert}} % : r&eacute;aliser {{$contrat->nb_vente_passage_expert}} vente(s).</p>
 
 
 <p><strong><u>B - Progression du commissionnement</u></strong></p>
 
-<p>Le pourcentage de base en vigueur sera augment&eacute; en fonction des r&eacute;sultats du mandataire selon les paliers suivants. Ce calcul est fait &agrave; date anniversaire (date de votre entr&eacute;e)&nbsp; :</p>
+<p>Le pourcentage de base en vigueur sera augment&eacute; en fonction des r&eacute;sultats du MANDATAIRE selon les paliers suivants. Ce calcul est fait &agrave; date anniversaire (date de votre début d'activité)&nbsp; :</p>
 
 
 @php 
@@ -119,7 +119,7 @@ font-family: 'Times New Roman', Times, serif
 <li>sur le 4&egrave; filleul (du cycle) et suiv.&nbsp;: 5 % (soit 1.500 &euro;)</li>
 </ul>
 <p>&nbsp;</p>
-<p style="text-align: center;">Paraphe mandant&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; paraphe mandataire&nbsp;:</p>
+<p style="text-align: center;">Paraphe mandant&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; paraphe MANDATAIRE&nbsp;:</p>
 
 <div style="page-break-after: always;" ></div>
 <p><em>ANNEXE 2 SUITE</em></p>
@@ -150,10 +150,10 @@ font-family: 'Times New Roman', Times, serif
 <h3><strong>ANNEXE 3</strong><strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </strong>Engagement &agrave; payer</h3>
 <hr /><hr />
 <p>&nbsp;</p>
-<p><strong><u>FORFAIT D&rsquo;ENTREE</u></strong><strong> :</strong>&nbsp;&nbsp;&nbsp; factur&eacute; &agrave; la signature du contrat d&rsquo;agent: 225 HT + 55 € pour l'obtention de l'attestation professionnelle</p>
+<p><strong><u>FORFAIT D&rsquo;ENTREE</u></strong><strong> :</strong>&nbsp;&nbsp;&nbsp; factur&eacute; &agrave; la signature du contrat d&rsquo;agent: {{$contrat->forfait_administratif}} € HT + {{$contrat->forfait_carte_pro}} € pour l'obtention de l'attestation professionnelle</p>
 
-<p>Ouverture des comptes administratifs internes et externes (attestation de n&eacute;gociateur immobilier etc.).</p>
-<p>Remboursement&nbsp;: 225,00 &euro; HT &nbsp;sur la premi&egrave;re vente qui devra &ecirc;tre effectu&eacute;e dans les 8 mois suivant le d&eacute;but d&rsquo;activit&eacute;.</p>
+<p>Ouverture des comptes administratifs internes et externes (attestation de Mandataire immobilier etc.).</p>
+<p>Remboursement&nbsp;: {{$contrat->forfait_administratif}} &euro; HT &nbsp;sur la premi&egrave;re vente qui devra &ecirc;tre effectu&eacute;e dans les 8 mois suivant le d&eacute;but d&rsquo;activit&eacute;.</p>
 <p>&nbsp;</p>
 <p><strong><u>ET</u></strong></p>
 <p>&nbsp;</p>
@@ -166,16 +166,16 @@ font-family: 'Times New Roman', Times, serif
 <p>Le prix mensuel du forfait STARTER&nbsp;est de&nbsp;:</p>
 <ul>
 <li>Du 1<sup>er</sup> au 2&egrave; mois inclus*&nbsp;: gratuit</li>
-<li>Du 3&egrave; au 6&egrave; mois inclus*&nbsp;: 75 &euro; H.T. en pr&eacute;l&egrave;vement automatique jusqu'&agrave; 3 ventes.</li>
+<li>Du 3&egrave; au 6&egrave; mois inclus*&nbsp;: {{$contrat->forfait_pack_info}} &euro; H.T. en pr&eacute;l&egrave;vement automatique jusqu'&agrave; {{$contrat->nb_vente_passage_expert}} vente(s).</li>
 </ul>
 <p>Le forfait STARTER est valable au maximum les 6 premiers mois*.</p>
-<p>Au 7&egrave; mois* le mandataire passe automatiquement au forfait EXPERT (pack 10 sauf autre choix).</p>
+<p>Au 7&egrave; mois* le MANDATAIRE passe automatiquement au forfait EXPERT (pack 10 sauf autre choix).</p>
 <p><em>*&nbsp;: mois suivant la date de d&eacute;but d&rsquo;activit&eacute; inscrite dans le contrat.</em></p>
 <p>&nbsp;</p>
 <ul>
 <li><strong><u>FORFAIT MENSUEL &laquo;&nbsp;EXPERT&nbsp;&raquo;</u></strong>: </strong></li>
 </ul>
-<p>Ce forfait comprend&nbsp;: suivi/conseil + formations + outils informatiques + outils publicitaires correspondant au pack choisi par le mandataire.</p>
+<p>Ce forfait comprend&nbsp;: suivi/conseil + formations + outils informatiques + outils publicitaires correspondant au pack choisi par le MANDATAIRE.</p>
 <p>Prix mensuel du forfait EXPERT&nbsp;(&agrave; compter du d&eacute;marrage d&rsquo;activit&eacute;)&nbsp;:</p>
 <p>Tarifs &agrave; ce jour&nbsp;:</p>
 
@@ -186,7 +186,7 @@ font-family: 'Times New Roman', Times, serif
 @endforeach
 <p>&nbsp;</p>
 
-<p style="text-align: center;">Paraphe mandant&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; paraphe mandataire&nbsp;:</p>
+<p style="text-align: center;">Paraphe mandant&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; paraphe MANDATAIRE&nbsp;:</p>
 
 
 
@@ -201,12 +201,12 @@ font-family: 'Times New Roman', Times, serif
 <p>Logiciel de transaction immobili&egrave;re, logiciel de pige, logiciel de registre des mandats.</p>
 <p><strong>2. | Outils Publicitaires </strong></p>
 <p>Les annonces sont diffus&eacute;es sur les passerelles suivantes (liste qui peut &ecirc;tre amen&eacute;e &agrave; varier en fonction des n&eacute;gociations tarifaires avec nos fournisseurs, des changements impos&eacute;s par ceux-ci, de la performance des sites)&nbsp;:</p>
-<p>SE LOGER | OFFRE SPIR Puissance Trois : LE BON COIN - TOP ANNONCES - LOGIC IMMO</p>
-<p>LES CLES DU MIDI | PARU VENDU | GREEN-ACRES | BIEN ICI&hellip;..</p>
+<p>SE LOGER | LE BON COIN | LOGIC IMMO | BIEN ICI</p>
+<p>LES CLES DU MIDI | PARU VENDU | GREEN-ACRES &hellip;..</p>
 <p>&nbsp;</p>
-<p>Le paiement sera effectu&eacute; par pr&eacute;l&egrave;vement le 5 du mois en cours. En cas de rejet de pr&eacute;l&egrave;vement, de non-r&egrave;glement et/ou d&rsquo;impay&eacute;, un forfait de 20 &euro; H.T. par incident pour frais bancaires et de gestion associ&eacute;s sera factur&eacute; en sus au mandataire.</p>
+<p>Le paiement sera effectu&eacute; par pr&eacute;l&egrave;vement le 5 du mois en cours. En cas de rejet de pr&eacute;l&egrave;vement, de non-r&egrave;glement et/ou d&rsquo;impay&eacute;, un forfait de 20 &euro; H.T. par incident pour frais bancaires et de gestion associ&eacute;s sera factur&eacute; en sus au MANDATAIRE.</p>
 <p>Le mandant se r&eacute;serve le droit de suspendre ses prestations en cas de non-paiement du forfait.</p>
-<p>Tout mois entam&eacute; est d&ucirc; enti&egrave;rement. Les frais pay&eacute;s par le mandataire restent acquis &agrave; la soci&eacute;t&eacute; V4F. Dans tous les cas, aucun remboursement ne sera effectu&eacute;, pour aucun motif que ce soit, m&ecirc;me en cas de suspension pr&eacute;vue au paragraphe pr&eacute;c&eacute;dent.</p>
+<p>Tout mois entam&eacute; est d&ucirc; enti&egrave;rement. Les frais pay&eacute;s par le MANDATAIRE restent acquis &agrave; la soci&eacute;t&eacute; V4F. Dans tous les cas, aucun remboursement ne sera effectu&eacute;, pour aucun motif que ce soit, m&ecirc;me en cas de suspension pr&eacute;vue au paragraphe pr&eacute;c&eacute;dent.</p>
 <p>STYL&rsquo;IMMO s&rsquo;&eacute;vertue &agrave; obtenir des tarifs pr&eacute;f&eacute;rentiels aupr&egrave;s de ses partenaires&nbsp;; n&eacute;anmoins, les tarifs des packs peuvent &ecirc;tre amen&eacute;s &agrave; &ecirc;tre modifi&eacute;s &agrave; tout moment en fonction des n&eacute;gociations avec nos fournisseurs et des changements impos&eacute;s par ceux-ci.</p>
 <p>&nbsp;</p>
 <p>Accord particulier&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
@@ -289,7 +289,7 @@ font-family: 'Times New Roman', Times, serif
 <p>&nbsp;</p>
 
 <p><strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SIGNATURE POUR L&rsquo;ENSEMBLE DES ANNEXES 1 &agrave; 4 </strong></p>
-<p>La direction se r&eacute;serve le droit de modifier &agrave; tout moment et sans pr&eacute;avis les annexes 1 &agrave; 4. Toute modification ainsi faite est r&eacute;put&eacute;e accept&eacute;e par le mandataire d&egrave;s sa notification par mail. Exception&nbsp;: une modification du pourcentage de r&eacute;mun&eacute;ration directe ainsi que mentionn&eacute;e &agrave; l&rsquo;article 3.1. du contrat.</p>
+<p>La direction se r&eacute;serve le droit de modifier &agrave; tout moment et sans pr&eacute;avis les annexes 1 &agrave; 4. Toute modification ainsi faite est r&eacute;put&eacute;e accept&eacute;e par le MANDATAIRE d&egrave;s sa notification par mail. Exception&nbsp;: une modification du pourcentage de r&eacute;mun&eacute;ration directe ainsi que mentionn&eacute;e &agrave; l&rsquo;article 3.1. du contrat.</p>
 <p>&nbsp;</p>
 <p>Fait en deux exemplaires&nbsp;&nbsp;&nbsp; &agrave;&nbsp;&nbsp;&nbsp; BAGNOLS SUR CEZE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;le :&nbsp;...&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;.....&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;..&nbsp;&nbsp;</p>
 <p>&nbsp;</p>

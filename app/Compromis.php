@@ -111,7 +111,10 @@ class Compromis extends Model
         // Calcul de la commission
         $niveau_actuel = $this->calcul_niveau($paliers, $chiffre_affaire_sty);
 
-
+        // On calcul le chiffre d'affaire encaissé du mandataire depuis le 1er janvier, pour voir s'il passe à la TVA
+        $deb_annee = date("Y")."-01-01";
+        $chiffre_affaire_encai = Facture::where('user_id',$mandataire->id)->whereIn('type',['honoraire','partage','parrainage','parrainage_partage'])->where('reglee',true)->where('date_reglement','>=',$deb_annee)->sum('montant_ht');
+        
         $tva = Tva::coefficient_tva();
         // dd($chiffre_affaire_encai);
         if($contrat->est_soumis_tva == false ){
@@ -212,9 +215,14 @@ class Compromis extends Model
                     $paliers[$i][1] = $p; 
                 }
 
+                
                 // Calcul de la commission
                 $niveau_actuel = $this->calcul_niveau($paliers, $chiffre_affaire_sty);
-
+                
+                // On calcul le chiffre d'affaire encaissé du mandataire depuis le 1er janvier, pour voir s'il passe à la TVA
+                $deb_annee = date("Y")."-01-01";
+                $chiffre_affaire_encai = Facture::where('user_id',$mandataire->id)->whereIn('type',['honoraire','partage','parrainage','parrainage_partage'])->where('reglee',true)->where('date_reglement','>=',$deb_annee)->sum('montant_ht');
+                
 
                 $tva = Tva::coefficient_tva();
                 // dd($chiffre_affaire_encai);

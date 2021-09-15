@@ -494,6 +494,7 @@ class ProspectController extends Controller
     public function modele_contrat()
     {
         $parametre  = Parametre::first();
+        $contrat  = Contrat::where('est_modele', true)->first();
         $modele  = Contrat::where('est_modele', true)->first();
         $packs = Packpub::all();
         
@@ -504,8 +505,8 @@ class ProspectController extends Controller
         
         // dd($parametre);
         
+        return view('contrat.annexe_pdf',compact('parametre','modele','palier_expert','palier_starter','packs','prospect','contrat'));
         return view('contrat.modele_contrat_pdf', compact('parametre','prospect'));
-        return view('contrat.annexe_pdf',compact('parametre','modele','palier_expert','palier_starter','packs','prospect'));
 
     }
     

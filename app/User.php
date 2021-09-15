@@ -50,11 +50,19 @@ class User extends Authenticatable
     }
 
 
-    // Chiffre d'affaire encaissé par le mandataire compris entre date deb et date fin
+    // Chiffre d'affaires encaissé par le mandataire compris entre date deb et date fin
     public function  chiffre_affaire($date_deb, $date_fin){
    
         $chiffre_affaire_encai = Facture::where([['user_id',$this->id],['reglee',true]])->whereIn('type',['honoraire','partage','parrainage','parrainage_partage'])->whereBetween('date_reglement', [$date_deb, $date_fin])->sum('montant_ht');
         return $chiffre_affaire_encai; 
+     
+    }
+    
+    // Chiffre d'affaires non encaissé par le mandataire compris entre date deb et date fin
+    public function  chiffre_affaire_non_encaisse($date_deb, $date_fin){
+   
+        $chiffre_affaire_non_encai = Facture::where([['user_id',$this->id],['reglee',false]])->whereIn('type',['honoraire','partage','parrainage','parrainage_partage'])->whereBetween('date_reglement', [$date_deb, $date_fin])->sum('montant_ht');
+        return $chiffre_affaire_non_encai; 
      
     }
 
