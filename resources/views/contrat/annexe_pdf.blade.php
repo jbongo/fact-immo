@@ -75,9 +75,8 @@ font-family: 'Times New Roman', Times, serif
 
 <p><strong>La r&eacute;mun&eacute;ration directe est plafonn&eacute;e &agrave; {{$pourcentage_plafonne}} % quel que soit le pourcentage de d&eacute;part.</strong></p>
 <p>Fait en deux exemplaires&nbsp;&nbsp;&nbsp; &agrave;&nbsp;: {{$parametre->ville}} &nbsp;&nbsp;&nbsp;&nbsp;le&nbsp;: &hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;.................</p>
-<p> {{$parametre->gerant}} &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</p>
-<p style="text-align: center;">LE MANDANT (paraphe)&nbsp;:&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;LE MANDATAIRE (paraphe)&nbsp;:</p>
-
+<div class="paraphe" style="text-align: left;  margin-right: 1%; ; margin-top: 20px;" class="paraphes">{{$parametre->gerant}}  &nbsp;  &nbsp;  &nbsp;   <span style="margin-left: 21%">{{$contrat->user->nom}} {{$contrat->user->prenom}}</span> </div>
+<div class="paraphe" style="text-align: left;  margin-right: 1%; ; margin-top: 20px;" class="paraphes">Le MANDANT: <span style="margin-left: 25%">Le MANDATAIRE:</span> </div>
 
 <div style="page-break-after: always;" ></div>
 
@@ -119,7 +118,7 @@ font-family: 'Times New Roman', Times, serif
 <li>sur le 4&egrave; filleul (du cycle) et suiv.&nbsp;: 5 % (soit 1.500 &euro;)</li>
 </ul>
 <p>&nbsp;</p>
-<p style="text-align: center;">Paraphe mandant&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; paraphe MANDATAIRE&nbsp;:</p>
+<p style="text-align: left;">paraphe MANDANT&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; paraphe MANDATAIRE&nbsp;:</p>
 
 <div style="page-break-after: always;" ></div>
 <p><em>ANNEXE 2 SUITE</em></p>
@@ -137,8 +136,8 @@ font-family: 'Times New Roman', Times, serif
 <p style="text-align: left;">NOM&nbsp;:&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Pr&eacute;nom&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Le&nbsp;:</p>
 <p>&nbsp;</p>
 <p>Fait en deux exemplaires&nbsp;&nbsp;&nbsp; &agrave;&nbsp;: BAGNOLS SUR CEZE &nbsp;&nbsp;&nbsp;&nbsp;le&nbsp;: ......................................</p>
-<p>Mme Christine OCCELLI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;.</p>
-<p style="text-align: center;">LE MANDANT (paraphe)&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; LE MANDATAIRE (paraphe)&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+<div class="paraphe" style="text-align: left;  margin-right: 1%; ; margin-top: 20px;" class="paraphes">{{$parametre->gerant}}  &nbsp;  &nbsp;  &nbsp;   <span style="margin-left: 21%">{{$contrat->user->nom}} {{$contrat->user->prenom}}</span> </div>
+<div class="paraphe" style="text-align: left;  margin-right: 1%; ; margin-top: 20px;" class="paraphes">Le MANDANT: <span style="margin-left: 25%">Le MANDATAIRE:</span> </div>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 
@@ -216,9 +215,8 @@ font-family: 'Times New Roman', Times, serif
 <p>........................................................................................................................................................................................ <br> </p>
 <p>&nbsp;</p>
 <p>Fait en deux exemplaires&nbsp;&nbsp;&nbsp; &agrave;&nbsp;: BAGNOLS SUR CEZE &nbsp;&nbsp;&nbsp;&nbsp;le : ..........................</p>
-<p>Mme Christine OCCELLI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;</p>
-<p>&nbsp;</p>
-<p style="text-align: center;">LE MANDANT (paraphe)&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; LE MANDATAIRE (paraphe)&nbsp;:</p>
+<div class="paraphe" style="text-align: left;  margin-right: 1%; ; margin-top: 20px;" class="paraphes">{{$parametre->gerant}}  &nbsp;  &nbsp;  &nbsp;   <span style="margin-left: 21%">{{$contrat->user->nom}} {{$contrat->user->prenom}}</span> </div>
+<div class="paraphe" style="text-align: left;  margin-right: 1%; ; margin-top: 20px;" class="paraphes">Le MANDANT: <span style="margin-left: 25%">Le MANDATAIRE:</span> </div>
 <p>&nbsp;</p>
 
 
@@ -230,51 +228,52 @@ font-family: 'Times New Roman', Times, serif
 
 
 <h3><strong>ANNEXE 4 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Bar&egrave;me d&rsquo;honoraires</strong></h3>
+<hr /><hr />
 <p>&nbsp;</p>
 <table style="height: 190px; width: 692px;" border="1" cellspacing="0">
 <tbody>
 <tr>
-<td style="width: 252px;" colspan="2">
+<td style="width: 260px;" colspan="2">
 <p style="text-align: center;">Prix de vente</p>
 </td>
-<td style="width: 246px;" rowspan="2">
+<td style="width: 260px;" rowspan="2">
 <p style="text-align: center;">Honoraires</p>
 <p style="text-align: center;">&nbsp;</p>
 </td>
 </tr>
 <tr>
-<td style="width: 166px;">De:</td>
-<td style="width: 86px;">A:</td>
+<td style="width: 130px;">De:</td>
+<td style="width: 130px;">A:</td>
 </tr>
 <tr>
-<td style="width: 166px;">1&euro;</td>
-<td style="width: 86px;">50&nbsp;000,00 &euro;&nbsp;&nbsp;</td>
-<td style="width: 246px; text-align: center;">Forfait Minimum de 4 000,00 &euro; TTC</td>
+<td style="width: 130px;">1&euro;</td>
+<td style="width: 130px;">50&nbsp;000 &euro;&nbsp;&nbsp;</td>
+<td style="width: 246px; text-align: center;">Forfait Minimum de 4 000 &euro; TTC</td>
 </tr>
 <tr>
-<td style="width: 166px;">50&nbsp;001,00 &euro;</td>
-<td style="width: 86px;">100 000,00 &euro;</td>
-<td style="width: 246px; text-align: center;">Forfait Maximum de 8 000,00 &euro; TTC</td>
+<td style="width: 130px;">50&nbsp;001 &euro;</td>
+<td style="width: 130px;">100 000 &euro;</td>
+<td style="width: 246px; text-align: center;">Forfait Maximum de 8 000 &euro; TTC</td>
 </tr>
 <tr>
-<td style="width: 166px;">100 001,00 &euro;</td>
-<td style="width: 86px;">300 000,00 &euro;</td>
+<td style="width: 130px;">100 001 &euro;</td>
+<td style="width: 130px;">300 000 &euro;</td>
 <td style="width: 246px; text-align: center;">6%</td>
 </tr>
 <tr>
-<td style="width: 166px;">300 001,00 &euro;</td>
-<td style="width: 86px;">600 000,00 &euro;</td>
+<td style="width: 130px;">300 001 &euro;</td>
+<td style="width: 130px;">600 000 &euro;</td>
 <td style="width: 246px; text-align: center;">5.50%</td>
 </tr>
 <tr>
-<td style="width: 166px;">600 001,00 &euro;</td>
-<td style="width: 86px;">900 000,00 &euro;</td>
+<td style="width: 130px;">600 001 &euro;</td>
+<td style="width: 130px;">900 000 &euro;</td>
 <td style="width: 246px; text-align: center;">5,25%</td>
 </tr>
 <tr>
-<td style="width: 166px;">900 001,00 &euro;</td>
-<td style="width: 86px;">Et plus</td>
-<td style="width: 246px; text-align: center;">5,00%</td>
+<td style="width: 130px;">900 001 &euro;</td>
+<td style="width: 130px;">Et plus</td>
+<td style="width: 246px; text-align: center;">5%</td>
 </tr>
 </tbody>
 </table>
@@ -283,8 +282,8 @@ font-family: 'Times New Roman', Times, serif
 <p>Le MANDATAIRE s'engage &agrave; ne pas d&eacute;passer ou modifier ce bar&egrave;me &agrave; la hausse mais pourra cependant accorder des remises &agrave; la client&egrave;le sur le montant des commissions pr&eacute;vues au dit bar&egrave;me. Ce bar&egrave;me d&rsquo;honoraires s&rsquo;applique sur tous types de mandat (recherche&hellip;, vente&hellip;) li&eacute;s &agrave; une transaction immobili&egrave;re.</p>
 <p>&nbsp;</p>
 <p>Fait en deux exemplaires&nbsp;&nbsp;&nbsp; &agrave;&nbsp;&nbsp;&nbsp; BAGNOLS SUR CEZE&nbsp;&nbsp; &nbsp;le&nbsp; :&nbsp; &hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;</p>
-<p>Mme Christine OCCELLI&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;</p>
-<p style="text-align: center;">LE MANDANT (paraphe)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; LE MANDATAIRE (paraphe)</p>
+<div class="paraphe" style="text-align: left;  margin-right: 1%; ; margin-top: 20px;" class="paraphes">{{$parametre->gerant}}  &nbsp;  &nbsp;  &nbsp;   <span style="margin-left: 21%">{{$contrat->user->nom}} {{$contrat->user->prenom}}</span> </div>
+<div class="paraphe" style="text-align: left;  margin-right: 1%; ; margin-top: 20px;" class="paraphes">Le MANDANT: <span style="margin-left: 25%">Le MANDATAIRE:</span> </div>
 <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;</p>
 <p>&nbsp;</p>
 
@@ -293,9 +292,14 @@ font-family: 'Times New Roman', Times, serif
 <p>&nbsp;</p>
 <p>Fait en deux exemplaires&nbsp;&nbsp;&nbsp; &agrave;&nbsp;&nbsp;&nbsp; BAGNOLS SUR CEZE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;le :&nbsp;...&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;.....&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;..&nbsp;&nbsp;</p>
 <p>&nbsp;</p>
-<p>Mme Christine OCCELLI&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</p>
-<p>Le Mandant &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Le Mandataire</p>
-<p>Mention manuscrite&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Mention manuscrite&nbsp;:</p>
-<p>&laquo;&nbsp;Lu et approuv&eacute;, Bon pour mandat&nbsp;&raquo;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &laquo;&nbsp;Lu et approuv&eacute;, Bon pour acceptation de mandat&nbsp;&raquo;</p>
-<p style="text-align: center;">Signature&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Signature</p>
+<div class="paraphe" style="text-align: left;  margin-right: 1%; ; margin-top: 20px;" class="paraphes">{{$parametre->gerant}}  &nbsp;  &nbsp;  &nbsp;   <span style="margin-left: 21%">{{$contrat->user->nom}} {{$contrat->user->prenom}}</span> </div>
+<div class="paraphe" style="text-align: left;  margin-right: 1%; ; margin-top: 20px;" class="paraphes">Le MANDANT <span style="margin-left: 25%">Le MANDATAIRE</span> </div>
+
+
+
+<div class="paraphe" style="text-align: left;  margin-right: 1%; ; margin-top: 20px;" class="paraphes">Mention manuscrite:    <span style="margin-left: 25%">Mention manuscrite:</span> </div>
+<div class="paraphe" style="text-align: left;  margin-right: 1%; ; margin-top: 20px;" class="paraphes">&laquo;&nbsp;Lu et approuv&eacute;, Bon pour mandat &nbsp;&raquo; <span style="margin-left: 25%">&laquo;&nbsp;Lu et approuv&eacute;, Bon pour acceptation de mandat&nbsp;&raquo;</span> </div>
+
+<div class="paraphe" style="text-align: left;  margin-right: 1%; ; margin-top: 20px;" class="paraphes">Signature  &nbsp;  &nbsp;  &nbsp;   <span style="margin-left: 25%">Signature</span> </div>
+
 <p>&nbsp;</p>

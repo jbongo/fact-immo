@@ -495,7 +495,7 @@ class ProspectController extends Controller
     public function modele_contrat()
     {
         $parametre  = Parametre::first();
-        $contrat  = Contrat::where('est_modele', true)->first();
+        $contrat  = Contrat::where("id", 3)->first();
         $modele  = Contrat::where('est_modele', true)->first();
         $packs = Packpub::all();
         
