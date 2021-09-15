@@ -54,7 +54,7 @@ font-family: 'Times New Roman', Times, serif
 
   
 <h1 style="text-align: center;">CONTRAT D&rsquo;AGENT COMMERCIAL</h1>
-<h2 style="text-align: center;"><strong>&nbsp;N&eacute;gociateur en immobilier</strong></h2>
+<h2 style="text-align: center;"><strong>&nbsp;Mandataire immobilier</strong></h2>
 <h2 style="text-align: center;"><strong>Sans bureau ni r&eacute;ception de client&egrave;le</strong></h2>
 <p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</p>
 <p style="text-align: center;">Ce contrat est conforme&nbsp;:</p>
@@ -115,7 +115,7 @@ font-family: 'Times New Roman', Times, serif
 <p>Avant de commencer son activit&eacute; et sa prospection, le MANDATAIRE devra &ecirc;tre titulaire et porteur de cette attestation que le MANDANT s'oblige &agrave; lui faire d&eacute;livrer.</p>
 <p>En sa qualit&eacute; de travailleur ind&eacute;pendant l&eacute;galement habilit&eacute;, le MANDATAIRE exerce ses activit&eacute;s en dehors de tout lien hi&eacute;rarchique vis-&agrave;-vis de son MANDANT, jouit de la plus grande ind&eacute;pendance et n'est astreint &agrave; aucun horaire de travail ou permanence quelconque.</p>
 <p>&Agrave; ce titre, il prospecte &agrave; sa convenance, organise et effectue ses tourn&eacute;es comme bon lui semble et s'absente &agrave; son gr&eacute;. Il ne lui est donn&eacute; aucun ordre. Il n'est soumis &agrave; aucun rapport p&eacute;riodique. Il peut travailler dans toutes r&eacute;gions pour tout autre &eacute;tablissement de la marque et/ou pour son propre compte.</p>
-<p>Le MANDATAIRE s'interdit d'accepter la repr&eacute;sentation ou d'&ecirc;tre mandat&eacute;, pour toute autre raison que des actions de N&eacute;gociateur en immobilier, par une entreprise concurrente du MANDANT exer&ccedil;ant l'activit&eacute; d'agent immobilier, de marchand de biens ou de commercialisation de produits immobiliers de d&eacute;fiscalisation.</p>
+<p>Le MANDATAIRE s'interdit d'accepter la repr&eacute;sentation ou d'&ecirc;tre mandat&eacute;, pour toute autre raison que des actions de Mandataire immobilier, par une entreprise concurrente du MANDANT exer&ccedil;ant l'activit&eacute; d'agent immobilier, de marchand de biens ou de commercialisation de produits immobiliers de d&eacute;fiscalisation.</p>
 <p>Toutefois, il pourra collaborer en "Inter cabinets" avec d'autres agences immobili&egrave;res ou professionnels immobiliers de son choix en respectant les proc&eacute;dures l&eacute;gales de d&eacute;l&eacute;gation de mandat.</p>
 <p>Le MANDATAIRE pourra donc transmettre &agrave; d'autres agents ou agences immobili&egrave;res une affaire &agrave; vendre.</p>
 <p>Dans ce cas, il devra imp&eacute;rativement communiquer au MANDANT la copie de la d&eacute;l&eacute;gation de mandat qu'il accorde &agrave; ce confr&egrave;re.</p>
@@ -133,7 +133,7 @@ font-family: 'Times New Roman', Times, serif
 
 <p>Les parties reconnaissent express&eacute;ment que la pr&eacute;sente convention ne s'analyse pas comme un louage de service, mais qu'elle a le caract&egrave;re d'un mandat.</p>
 <p>S'il emploie un v&eacute;hicule pour son transport, il appartient au MANDATAIRE de prendre toutes les pr&eacute;cautions d'assurances n&eacute;cessaires car n'ayant aucune part dans ses d&eacute;cisions, le MANDANT ne peut encourir aucune responsabilit&eacute; &agrave; l'&eacute;gard de quiconque ou de tiers transport&eacute;s, ni dans le cas o&ugrave; le MANDATAIRE serait victime d'un accident dans l'exercice de son mandat.</p>
-<p>Il devra souscrire une police d'assurance couvrant sa responsabilit&eacute; civile professionnelle, tant &agrave; l'&eacute;gard des tiers que du MANDANT, pour son activit&eacute; de n&eacute;gociateur en immobilier ind&eacute;pendant telle que d&eacute;finie au pr&eacute;sent contrat.</p>
+<p>Il devra souscrire une police d'assurance couvrant sa responsabilit&eacute; civile professionnelle, tant &agrave; l'&eacute;gard des tiers que du MANDANT, pour son activit&eacute; de Mandataire immobilier ind&eacute;pendant telle que d&eacute;finie au pr&eacute;sent contrat.</p>
 <p>Le MANDATAIRE devra communiquer, &agrave; premi&egrave;re demande du MANDANT, une copie de ladite police et un justificatif du paiement de la derni&egrave;re quittance appel&eacute;e.</p>
 <p>Dans l'hypoth&egrave;se o&ugrave; le MANDATAIRE ne justifierait pas disposer des garanties ci-dessus d&eacute;finies dans les 8 jours suivant la demande faite par le MANDANT, le pr&eacute;sent contrat sera r&eacute;sili&eacute; sans pr&eacute;avis, aux torts exclusifs du MANDATAIRE.</p>
 <p>D'une fa&ccedil;on g&eacute;n&eacute;rale, le MANDATAIRE supportera tous les frais occasionn&eacute;s par sa prospection et prendra en charge, le cas &eacute;ch&eacute;ant, son propre secr&eacute;tariat.</p>
@@ -216,7 +216,7 @@ font-family: 'Times New Roman', Times, serif
 <p><strong><u>Article 8&nbsp;: OBLIGATIONS A LA CHARGE DU MANDANT</u></strong></p>
 <p>Le MANDANT mettra &agrave; disposition du MANDATAIRE&nbsp;:</p>
 <ul>
-<li>Un ensemble de fournitures contenant des imprim&eacute;s de base n&eacute;cessaires &agrave; l'exercice de ses fonctions et la documentation utile &agrave; l'activit&eacute; de n&eacute;gociateur en immobilier&nbsp;;</li>
+<li>Un ensemble de fournitures contenant des imprim&eacute;s de base n&eacute;cessaires &agrave; l'exercice de ses fonctions et la documentation utile &agrave; l'activit&eacute; de Mandataire immobilier&nbsp;;</li>
 <li>Un site Internet national dont chaque contact obtenu est redirig&eacute; vers le mail du MANDATAIRE gr&acirc;ce au polygramme personnel ;</li>
 <li>Une adresse e-mail personnalis&eacute;e r&eacute;serv&eacute;e au MANDATAIRE.</li>
 <li>Les codes d&rsquo;acc&egrave;s &agrave; un serveur vocal d&rsquo;attribution de num&eacute;ros de mandats (REGISTRE DES MANDATS).</li>
