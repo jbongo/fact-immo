@@ -526,6 +526,8 @@ class ProspectController extends Controller
        
         $parametre  = Parametre::first();
         $contrat  = Contrat::where('est_modele', true)->first();
+        $contrat  = Contrat::where("id", 3)->first();
+        
         $packs = Packpub::all();
         
         $palier_starter = Contrat::palier_unserialize($contrat->palier_starter);
