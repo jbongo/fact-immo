@@ -28,7 +28,8 @@ class ProspectController extends Controller
      */
     public function index()
     {
-        $prospects = Prospect::where([['archive', false], ['est_mandataire', false]])->get();
+        // $prospects = Prospect::where([['archive', false], ['est_mandataire', false]])->get();
+        $prospects = Prospect::where('archive', false)->get();
         
         
         
