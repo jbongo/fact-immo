@@ -504,7 +504,6 @@ class ProspectController extends Controller
         $palier_starter = Contrat::palier_unserialize($modele->palier_starter);
         $palier_expert = Contrat::palier_unserialize($modele->palier_expert);
         
-        // dd($parametre);
         
         return view('contrat.annexe_pdf',compact('parametre','modele','palier_expert','palier_starter','packs','prospect','contrat'));
         return view('contrat.modele_contrat_pdf', compact('parametre','prospect'));

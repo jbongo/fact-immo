@@ -179,7 +179,7 @@ font-family: 'Times New Roman', Times, serif
 <p>Tarifs &agrave; ce jour&nbsp;:</p>
 
 @foreach($packs as $pack)
-  @if($pack->type != "reseau")
+  @if($pack->type == "reseau")
   <p>&nbsp;- {{$pack->nom}}&nbsp;: {{$pack->tarif_ht}} &euro; H.T.,</p>
   @endif
 @endforeach
@@ -278,14 +278,14 @@ font-family: 'Times New Roman', Times, serif
 </tbody>
 </table>
 
-<p>&nbsp;</p>
+
 <p>Le MANDATAIRE s'engage &agrave; ne pas d&eacute;passer ou modifier ce bar&egrave;me &agrave; la hausse mais pourra cependant accorder des remises &agrave; la client&egrave;le sur le montant des commissions pr&eacute;vues au dit bar&egrave;me. Ce bar&egrave;me d&rsquo;honoraires s&rsquo;applique sur tous types de mandat (recherche&hellip;, vente&hellip;) li&eacute;s &agrave; une transaction immobili&egrave;re.</p>
 <p>&nbsp;</p>
 <p>Fait en deux exemplaires&nbsp;&nbsp;&nbsp; &agrave;&nbsp;&nbsp;&nbsp; BAGNOLS SUR CEZE&nbsp;&nbsp; &nbsp;le&nbsp; :&nbsp; &hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;</p>
 <div class="paraphe" style="text-align: left;  margin-right: 1%; ; margin-top: 20px;" class="paraphes">{{$parametre->gerant}}  &nbsp;  &nbsp;  &nbsp;   <span style="margin-left: 21%">{{$contrat->user->nom}} {{$contrat->user->prenom}}</span> </div>
 <div class="paraphe" style="text-align: left;  margin-right: 1%; ; margin-top: 20px;" class="paraphes">Le MANDANT: <span style="margin-left: 25%">Le MANDATAIRE:</span> </div>
 <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;</p>
-<p>&nbsp;</p>
+
 
 <p><strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SIGNATURE POUR L&rsquo;ENSEMBLE DES ANNEXES 1 &agrave; 4 </strong></p>
 <p>La direction se r&eacute;serve le droit de modifier &agrave; tout moment et sans pr&eacute;avis les annexes 1 &agrave; 4. Toute modification ainsi faite est r&eacute;put&eacute;e accept&eacute;e par le MANDATAIRE d&egrave;s sa notification par mail. Exception&nbsp;: une modification du pourcentage de r&eacute;mun&eacute;ration directe ainsi que mentionn&eacute;e &agrave; l&rsquo;article 3.1. du contrat.</p>
