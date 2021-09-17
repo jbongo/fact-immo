@@ -495,7 +495,7 @@ class ProspectController extends Controller
     public function modele_contrat()
     {
         $parametre  = Parametre::first();
-        $contrat  = Contrat::where("id", 3)->first();
+        $contrat  = Contrat::where("id", 80)->first();
         $modele  = Contrat::where('est_modele', true)->first();
         $packs = Packpub::all();
         
@@ -504,9 +504,11 @@ class ProspectController extends Controller
         $palier_starter = Contrat::palier_unserialize($modele->palier_starter);
         $palier_expert = Contrat::palier_unserialize($modele->palier_expert);
         
+        $comm_parrain = unserialize($parametre->comm_parrain);
+       
         
-        return view('contrat.annexe_pdf',compact('parametre','modele','palier_expert','palier_starter','packs','prospect','contrat'));
         return view('contrat.modele_contrat_pdf', compact('parametre','prospect'));
+        return view('contrat.annexe_pdf',compact('parametre','modele','palier_expert','palier_starter','packs','prospect','contrat','comm_parrain'));
 
     }
     
@@ -526,7 +528,7 @@ class ProspectController extends Controller
        
         $parametre  = Parametre::first();
         $contrat  = Contrat::where('est_modele', true)->first();
-        $contrat  = Contrat::where("id", 3)->first();
+        // $contrat  = Contrat::where("id", 82)->first();
         
         $packs = Packpub::all();
         
@@ -535,10 +537,11 @@ class ProspectController extends Controller
         
         $prospect = Prospect::where('id',Crypt::decrypt($prospect_id))->first();
         
+        $comm_parrain = unserialize($parametre->comm_parrain);
            
         $modele_contrat_pdf = PDF::loadView('contrat.modele_contrat_pdf',compact('parametre','prospect'));
         
-        $modele_annexe_pdf = PDF::loadView('contrat.annexe_pdf',compact('parametre','contrat','palier_expert','palier_starter','packs'));
+        $modele_annexe_pdf = PDF::loadView('contrat.annexe_pdf',compact('parametre','contrat','palier_expert','palier_starter','packs','comm_parrain'));
         
         
         $contrat_path = $path.'modele_contrat.pdf';

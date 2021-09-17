@@ -630,7 +630,7 @@ Détail de l'affaire de {{$compromis->user->prenom}} {{$compromis->user->nom}}
                                                 <div class="form-group">
                                                     <label for="date_signature">Date de signature du compromis / Bail </label>
                                                     <input class="form-control" type="date"  @if($compromis->date_signature != null)  value="{{ $compromis->date_signature->format('Y-m-d')}}" @endif id="date_signature" name="date_signature"  >
-                                                    <div id="label_pdf_compromis" class="alert alert-warning" style="color: #1e003c;" role="alert">Le champs Date de signature du compromis devient obligatoire quand vous renseignez le fichier (compromis signé) </div>
+                                                    {{-- <div id="label_pdf_compromis" class="alert alert-warning" style="color: #1e003c;" role="alert">Le champs Date de signature du compromis devient obligatoire quand vous renseignez le fichier (compromis signé) </div> --}}
                                                     
                                                 </div>
                                             </div>

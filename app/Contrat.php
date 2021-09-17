@@ -192,4 +192,22 @@ class Contrat extends Model
     }//-----------------------------------------------------------------------
     
     
+    /**
+     * Afficher le parrain du mandataire
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public  function parrain()
+    {
+        
+        
+        $parrain_id = $this->parrain_id;
+        
+        if($parrain_id == null) return null;
+        $parrain = User::where('id',$parrain_id )->first();
+
+        return $parrain;
+    }
+    
+    
 }

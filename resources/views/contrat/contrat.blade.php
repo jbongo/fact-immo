@@ -68,13 +68,20 @@ font-family: 'Times New Roman', Times, serif
 <p><strong>La soci&eacute;t&eacute; {{$parametre->raison_sociale}}&nbsp;, </strong>SARL au capital de {{$parametre->capital}} &euro; inscrite au R.C&nbsp;.S. de N&icirc;mes, sous le num&eacute;ro {{$parametre->numero_rcs}}, titulaire de la carte professionnelle &laquo;&nbsp;Agent Immobilier&nbsp;&raquo; n&deg; {{$parametre->num_carte_pro}} (transactions sur immeubles et fonds de commerce), d&eacute;livr&eacute;e le 12/06/2014 par {{$parametre->carte_pro_delivre_par}} (organisme de garantie&nbsp;: {{$parametre->adresse_organisme_de_garantie}}), dont le si&egrave;ge est sis {{$parametre->adresse}}, {{$parametre->code_postal}} {{$parametre->ville}}, l&eacute;galement repr&eacute;sent&eacute;e par {{$parametre->gerant}}, g&eacute;rante.</p>
 <p>Ci-apr&egrave;s d&eacute;nomm&eacute; &laquo;&nbsp;le MANDANT&nbsp;&raquo;</p>
 <p style="text-align: left;">D&rsquo;une part</p>
-<p>Et&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Pr&eacute;sent&eacute;(e) au R&eacute;seau par&nbsp;:</p>
+
+
 <p>NOM&nbsp;:&nbsp;  {{$contrat->user->nom}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; Pr&eacute;nom&nbsp;: &nbsp;  {{$contrat->user->prenom}}&nbsp;&nbsp;</p>
 <p>Demeurant au&nbsp;: &nbsp;  {{$contrat->user->adresse}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;</p>
 <p>Code postal et ville&nbsp;: &nbsp;  {{$contrat->user->code_postal}} - {{$contrat->user->ville}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;</p>
 <p>N&eacute;(e)&nbsp; : &nbsp;  @if($contrat->user->prospect != null) {{$contrat->user->prospect->date_naissance->format("d-m-Y")}} @endif &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &agrave;&nbsp;: &nbsp;  @if($contrat->user->prospect != null) {{$contrat->user->prospect->lieu_naissance}} @endif &nbsp;&nbsp;&nbsp;&nbsp;</p>
 <p>De nationalit&eacute;&nbsp;:&nbsp;  @if($contrat->user->prospect != null) {{$contrat->user->prospect->nationalite}} @endif &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;</p>
 <p>Situation familiale&nbsp;:&nbsp;  @if($contrat->user->prospect != null) {{$contrat->user->prospect->situation_familliale}} @endif  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;</p>
+
+@if($contrat->a_parrain == true)
+<p>Et&nbsp;&nbsp; Pr&eacute;sent&eacute;(e) au R&eacute;seau par&nbsp;:  {{$contrat->parrain()->nom}} {{$contrat->parrain()->prenom}}</p>
+
+@endif
+
 <p>Ci-apr&egrave;s d&eacute;nomm&eacute;(e) &laquo;&nbsp;le MANDATAIRE&nbsp;&raquo;</p>
 <p>D&rsquo;autre part</p>
 <p>&nbsp;</p>

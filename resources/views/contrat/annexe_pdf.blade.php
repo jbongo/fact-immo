@@ -12,22 +12,38 @@
   bottom: 0;
   /* border-top: 0.1pt solid rgb(19, 5, 5); */
 }
-.page-number:before {
-  content: counter(page) "/ 6"  ;
-}
+
 body {
 font-size: 14px;
 font-family: 'Times New Roman', Times, serif
 }
 </style>
 
+@if($contrat->est_demarrage_starter == true)
+
+<style>
+.page-number:before {
+  content: counter(page) " / 7"  ;
+}
+</style>
+
+@else 
+
+<style>
+  .page-number:before {
+    content: counter(page) " / 6"  ;
+  }
+  </style>
+
+@endif
+
 <div id="footer">
     <div class="page-number"></div>
 </div>
 {{-- {{dd($contrat)}} --}}
 
-<br>
-<hr>
+
+
 {{-- {{$parametre}} --}}
 
 <h3><strong>ANNEXE 1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Bar&egrave;me du commissionnement direct</strong></h3>
@@ -38,7 +54,8 @@ font-family: 'Times New Roman', Times, serif
 <p><strong>&nbsp;&nbsp;   <input type="checkbox" name="" id=""> &nbsp; STARTER&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{$contrat->pourcentage_depart_starter}} % &nbsp; (des honoraires d&rsquo;agence H.T.)</strong> <span style="text-align: right;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong><u>conditions et tarifs en annexe 3</u></strong>  </span> </p>
 <p><strong><u>ou</u></strong> d&eacute;marrage <u>directement</u> en tant que&nbsp;:</p>
 <p><strong>&nbsp;&nbsp; <input type="checkbox" name="" id=""> &nbsp; EXPERT&nbsp;: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  </strong><strong>{{$contrat->pourcentage_depart_expert}}  %&nbsp;&nbsp; (des honoraires d&rsquo;agence H.T.)</strong> <span style="text-align: right;"><strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <u>conditions et tarifs en annexe 3</u></strong> </span> </p>
-<p>Condition pour le passage &agrave; {{$contrat->pourcentage_depart_expert}} % : r&eacute;aliser {{$contrat->nb_vente_passage_expert}} vente(s).</p>
+
+<p>Condition pour le passage &agrave; {{$contrat->pourcentage_depart_expert}} % : @if($contrat->nb_vente_passage_expert > 0) r&eacute;aliser {{$contrat->nb_vente_passage_expert}} vente(s) @else avoir {{$contrat->duree_max_starter}} mois d'anncienneté @endif.</p>
 
 
 <p><strong><u>B - Progression du commissionnement</u></strong></p>
@@ -46,32 +63,79 @@ font-family: 'Times New Roman', Times, serif
 <p>Le pourcentage de base en vigueur sera augment&eacute; en fonction des r&eacute;sultats du MANDATAIRE selon les paliers suivants. Ce calcul est fait &agrave; date anniversaire (date de votre début d'activité)&nbsp; :</p>
 
 
-@php 
-
-    $pourcentage_plafonne = $contrat->pourcentage_depart_expert;
-
-@endphp 
-
-@foreach ($palier_expert as $key => $palier )
-    
-<ul>
-    <li>De &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{$palier[2]}} &euro; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &agrave; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; @if((sizeof($palier) - 1 )== $key ) PLUS de commissions annuelles HT @else {{$palier[3]}} &euro; HT de commissions annuelles @endif*</li>
-</ul>
-    <p>&nbsp;(De {{lettre_en_nombre($palier[2])}} &euro; hors taxes &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &agrave; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; @if((sizeof($palier) - 1 )== $key ) PLUS @else {{lettre_en_nombre($palier[3])}} &euro; hors taxes @endif ) </p>
-    @if($palier[1] > 1)
-    <p><strong>Pourcentage en vigueur + {{$palier[1]}} % </strong>&nbsp; &nbsp;</p>
-    @endif
-    
-    @php
-        $pourcentage_plafonne += $palier[1];
-    @endphp 
-    
-@endforeach
 
 
+@if($contrat->est_demarrage_starter == true)
+
+  <p><u>Palier starter</u></p>
+  
+  
+  @php 
+  
+      $pourcentage_plafonne_starter = $contrat->pourcentage_depart_starter;
+  
+  @endphp 
+  
+  @foreach ($palier_starter as $key => $palier )
+      
+  <ul>
+      <li>De &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{$palier[2]}} &euro; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &agrave; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; @if((sizeof($palier) - 1 )== $key ) PLUS de commissions annuelles HT @else {{$palier[3]}} &euro; HT de commissions annuelles @endif*</li>
+  </ul>
+      <p>&nbsp;(De {{lettre_en_nombre($palier[2])}} &euro; hors taxes &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &agrave; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; @if((sizeof($palier) - 1 )== $key ) PLUS @else {{lettre_en_nombre($palier[3])}} &euro; hors taxes @endif ) </p>
+      @if($palier[1] > 0)
+      <p><strong>Pourcentage en vigueur + {{$palier[1]}} % </strong>&nbsp; &nbsp;</p>
+      @endif
+      
+      @php
+          $pourcentage_plafonne_starter += $palier[1];
+      @endphp 
+      
+  @endforeach
+  
+  <p><strong>La r&eacute;mun&eacute;ration directe est plafonn&eacute;e &agrave; {{$pourcentage_plafonne_starter}} % quel que soit le pourcentage de d&eacute;part.</strong></p>
+  
+  <p>&nbsp;</p>
+
+  <p style="text-align: left;">paraphe MANDANT&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; paraphe MANDATAIRE&nbsp;:</p>
+
+  <div style="page-break-after: always;" ></div>
+
+  <p><em>ANNEXE 1 SUITE</em></p>
+  <p>&nbsp;</p>
+@endif
 
 
-<p><strong>La r&eacute;mun&eacute;ration directe est plafonn&eacute;e &agrave; {{$pourcentage_plafonne}} % quel que soit le pourcentage de d&eacute;part.</strong></p>
+<p><u>Palier expert</u></p>
+
+
+  @php 
+  
+      $pourcentage_plafonne_expert = $contrat->pourcentage_depart_expert;
+  
+  @endphp 
+  
+  @foreach ($palier_expert as $key => $palier )
+      
+  <ul>
+      <li>De &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{$palier[2]}} &euro; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &agrave; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; @if((sizeof($palier) - 1 )== $key ) PLUS de commissions annuelles HT @else {{$palier[3]}} &euro; HT de commissions annuelles @endif*</li>
+  </ul>
+      <p>&nbsp;(De {{lettre_en_nombre($palier[2])}} &euro; hors taxes &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &agrave; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; @if((sizeof($palier) - 1 )== $key ) PLUS @else {{lettre_en_nombre($palier[3])}} &euro; hors taxes @endif ) </p>
+      @if($palier[1] > 0)
+      <p><strong>Pourcentage en vigueur + {{$palier[1]}} % </strong>&nbsp; &nbsp;</p>
+      @endif
+      
+      @php
+          $pourcentage_plafonne_expert += $palier[1];
+      @endphp 
+      
+  @endforeach
+  
+  <p><strong>La r&eacute;mun&eacute;ration directe est plafonn&eacute;e &agrave; {{$pourcentage_plafonne_expert}} % quel que soit le pourcentage de d&eacute;part.</strong></p>
+
+
+
+
+
 <p>Fait en deux exemplaires&nbsp;&nbsp;&nbsp; &agrave;&nbsp;: {{$parametre->ville}} &nbsp;&nbsp;&nbsp;&nbsp;le&nbsp;: &hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;.................</p>
 
 
@@ -97,21 +161,22 @@ font-family: 'Times New Roman', Times, serif
 
 <h3><strong>ANNEXE 2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Bar&egrave;me du commissionnement indirect (parrainage)</strong></h3>
 <hr /><hr />
-<p>&nbsp;</p>
+
 <p><strong><u>R&eacute;mun&eacute;ration associ&eacute;e aux agents (filleuls) pr&eacute;sent&eacute;s au r&eacute;seau</u></strong></p>
 <p>La r&eacute;mun&eacute;ration indirecte pour parrainage se base sur l&rsquo;existence de &laquo;&nbsp;cycles de recrutement&nbsp;&raquo; de deux ans. La date de d&eacute;but du 1er cycle de recrutement est celle de l&rsquo;entr&eacute;e du tout premier filleul. Comptent dans ce cycle tous les filleuls entr&eacute;s dans le r&eacute;seau dans les deux ans (24 mois) qui suivent cette date.</p>
 <p>&Agrave; l&rsquo;expiration du 1er cycle, un 2&egrave; cycle peut commencer &agrave; la date d&rsquo;entr&eacute;e du prochain filleul. Ce 2&egrave; cycle durera &eacute;galement deux ans &agrave; compter de cette nouvelle date. Et ainsi de suite pour les cycles suivants.</p>
 <p>La r&eacute;mun&eacute;ration indirecte pour parrainage se fera pendant trois ans (36 mois) &agrave; compter de l&rsquo;entr&eacute;e du filleul concern&eacute;.</p>
 <p>La r&eacute;mun&eacute;ration du parrain se fait comme suit&nbsp;(la date de d&eacute;part pour l&rsquo;ann&eacute;e d&rsquo;exercice du filleul est la date de son entr&eacute;e dans le r&eacute;seau)&nbsp;:</p>
 <p>A partir de la 2<sup>ème</sup> année, le parrain devra avoir réalisé un chiffre d'affaires de 30 000 € HT sur les 12 derniers mois afin de pouvoir percevoir les commissions indirectes.</p>
-<p>&nbsp;</p>
+
 <p><u>1&egrave;re ann&eacute;e d&rsquo;exercice du filleul&nbsp;: </u></p>
-<p>Le parrain recevra 5 % du chiffre d&rsquo;affaires personnel du filleul d&egrave;s le 1er centime (pas de seuil de chiffre d&rsquo;affaires du filleul), en revanche le chiffre d&rsquo;affaires du filleul pour ce calcul est plafonn&eacute; &agrave; 30.000 &euro; HT, soit un maximum de 1.500 &euro; HT de commission indirecte pour l&rsquo;ann&eacute;e d&rsquo;exercice du filleul concern&eacute;. Cette r&egrave;gle s&rsquo;applique &agrave; tous les filleuls quel que soit leur rang.</p>
+<p>Le parrain recevra {{$comm_parrain["p_1_1"]}} % du chiffre d&rsquo;affaires personnel du filleul d&egrave;s le 1er centime (pas de seuil de chiffre d&rsquo;affaires du filleul), en revanche le chiffre d&rsquo;affaires du filleul pour ce calcul est plafonn&eacute; &agrave; 30.000 &euro; HT, soit un maximum de 1.500 &euro; HT de commission indirecte pour l&rsquo;ann&eacute;e d&rsquo;exercice du filleul concern&eacute;. Cette r&egrave;gle s&rsquo;applique &agrave; tous les filleuls quel que soit leur rang.</p>
 <p>Ce calcul du plafond des 30 000 &euro; HT est calcul&eacute; sur le chiffre d'affaires des 12 mois pr&eacute;c&eacute;dents du filleul.</p>
 
 
 <p><u>2&egrave; ann&eacute;e d&rsquo;exercice du filleul&nbsp;: </u></p>
-<p>- le filleul concern&eacute; doit avoir un chiffre d&rsquo;affaires annuel sup&eacute;rieur ou &eacute;gal &agrave; 30.000 &euro; HT (seuil)&nbsp;;</p>
+<p>- le filleul concern&eacute; doit avoir un chiffre d&rsquo;affaires annuel sup&eacute;rieur ou &eacute;gal &agrave; {{$comm_parrain["seuil_fill_2"]}} &euro; HT (seuil)&nbsp;;</p>
+<p>- le parrain concern&eacute; doit avoir un chiffre d&rsquo;affaires annuel sup&eacute;rieur ou &eacute;gal &agrave; {{$comm_parrain["seuil_parr_2"]}} &euro; HT (seuil)&nbsp;;</p>
 <p>- le parrain recevra un pourcentage sur 30.000 &euro; (plafond) comme suit&nbsp;:</p>
 <ul>
 <li>sur le 1er filleul (du cycle)&nbsp;: 3 % (soit 900 &euro;)</li>
@@ -121,7 +186,8 @@ font-family: 'Times New Roman', Times, serif
 </ul>
 
 <p><u>3&egrave; ann&eacute;e d&rsquo;exercice du filleul&nbsp;</u>(derni&egrave;re ann&eacute;e donnant droit &agrave; commission indirecte) :</p>
-<p>- le filleul concern&eacute; doit avoir un chiffre d&rsquo;affaires annuel sup&eacute;rieur ou &eacute;gal &agrave; 30.000 &euro; (seuil)&nbsp;;</p>
+<p>- le filleul concern&eacute; doit avoir un chiffre d&rsquo;affaires annuel sup&eacute;rieur ou &eacute;gal &agrave; {{$comm_parrain["seuil_fill_3"]}}&euro; (seuil)&nbsp;;</p>
+<p>- le parrain concern&eacute; doit avoir un chiffre d&rsquo;affaires annuel sup&eacute;rieur ou &eacute;gal &agrave; {{$comm_parrain["seuil_parr_3"]}}&euro; (seuil)&nbsp;;</p>
 <p>- le parrain recevra un pourcentage sur 30.000 &euro; (plafond) comme suit&nbsp;:</p>
 <ul>
 <li>sur le 1er filleul (du cycle)&nbsp;: 1 % (soit 300 &euro;)</li>

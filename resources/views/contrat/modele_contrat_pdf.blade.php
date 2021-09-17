@@ -75,6 +75,11 @@ font-family: 'Times New Roman', Times, serif
 <p>N&eacute;(e)&nbsp; : &nbsp;  {{$prospect->date_naissance}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &agrave;&nbsp;: &nbsp;  {{$prospect->lieu_naissance}}&nbsp;&nbsp;&nbsp;&nbsp;</p>
 <p>De nationalit&eacute;&nbsp;:&nbsp;  {{$prospect->nationnalite}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;</p>
 <p>Situation familiale&nbsp;:&nbsp;  {{$prospect->situation_familliale}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;</p>
+
+@if($contrat->a_parrain == true)
+<p>Et&nbsp;&nbsp; Pr&eacute;sent&eacute;(e) au R&eacute;seau par&nbsp;:  {{$contrat->parrain()->nom}} {{$contrat->parrain()->prenom}}</p>
+
+@endif
 <p>Ci-apr&egrave;s d&eacute;nomm&eacute;(e) &laquo;&nbsp;le MANDATAIRE&nbsp;&raquo;</p>
 <p>D&rsquo;autre part</p>
 <p>&nbsp;</p>

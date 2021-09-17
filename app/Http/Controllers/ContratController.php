@@ -1122,20 +1122,21 @@ class ContratController extends Controller
          if(!File::exists($path))
              File::makeDirectory($path, 0755, true);
          
-          $parametre  = Parametre::first();
+            $parametre  = Parametre::first();
           
-          $packs = Packpub::all();
+            $packs = Packpub::all();
           
-          $palier_starter = Contrat::palier_unserialize($contrat->palier_starter);
-          $palier_expert = Contrat::palier_unserialize($contrat->palier_expert);
+            $palier_starter = Contrat::palier_unserialize($contrat->palier_starter);
+            $palier_expert = Contrat::palier_unserialize($contrat->palier_expert);
+        
+            $comm_parrain = unserialize($parametre->comm_parrain);
           
          
-       
           
-             
+        
           $contrat_pdf = PDF::loadView('contrat.contrat',compact('parametre','contrat'));
           
-          $annexe_pdf = PDF::loadView('contrat.annexe_pdf',compact('parametre','contrat','palier_expert','palier_starter','packs'));
+          $annexe_pdf = PDF::loadView('contrat.annexe_pdf',compact('parametre','contrat','palier_expert','palier_starter','packs','comm_parrain'));
           
           
           $contrat_path = $path.'contrat.pdf';
