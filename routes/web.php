@@ -324,6 +324,7 @@ Route::get('/winfic/code-analytic-client','ExportwinficController@code_analytic_
 Route::get('fiche/prospect/{prospect}/','ProspectController@create_fiche')->name('prospect.fiche');
 Route::post('fiche/prospect/{prospect}/','ProspectController@sauvegarder_fiche')->name('prospect.sauvegarder_fiche');
 // Tests
+Route::get('test','TvaController@test')->name('test');
 
 // Route::get('/test', function () {
 //     return view('test');

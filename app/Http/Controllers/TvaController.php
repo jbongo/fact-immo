@@ -8,13 +8,44 @@ use Illuminate\Http\Request;
 class TvaController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * tests
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function test()
     {
-        //
+
+        
+        echo "<br>";
+
+        $libelle = "VIR OFFICE NOTARIAL DES BARO 0260670009996 FACTURE 16368 STYLIMMO VENTE SCHNEEEBAUER / DIMIE";
+        
+        $tab = explode(" ",$libelle);
+        echo "<pre>";
+        var_dump($tab);
+        echo "<pre>";
+        
+        $num_mandat = null;
+        
+        foreach ($tab as $value) {
+        
+        $value = (int) filter_var($value, FILTER_SANITIZE_NUMBER_INT);
+        
+        echo $value."<br>";
+          
+            
+        }
+        if(preg_match('([0-9]{5})', $libelle) ){
+        
+            echo "num facture OK";
+        }else{
+        
+             echo "num facture NOT OK";
+        }
+        
+        
+      
+
     }
 
     /**

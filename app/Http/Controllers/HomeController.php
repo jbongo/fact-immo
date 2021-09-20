@@ -82,6 +82,7 @@ class HomeController extends Controller
                 $nb_encaisse_N = 0;
                 
                 
+                
   /*****************
     ######              ADMIN        ######
 *****************/
@@ -187,6 +188,21 @@ class HomeController extends Controller
             $nb_en_attente_N = 0;
             $nb_encaisse_n = 0;
             $nb_encaisse_N = 0;
+            
+            $nb_global_perso_N = 0;
+            $nb_sous_offre_perso_N = 0;            
+            
+            $nb_sous_offre_perso_N = 0;
+            $nb_sous_compromis_perso_n = 0;            
+            
+            $nb_sous_compromis_perso_N = 0;
+            $nb_en_attente_perso_n = 0;            
+            
+            $nb_en_attente_perso_N = 0;
+            $nb_encaisse_perso_n = 0;            
+            
+            $nb_encaisse_perso_N = 0;
+            
             $commission = Auth::user()->commission /100;
             
             // dd($commission);
@@ -201,7 +217,9 @@ class HomeController extends Controller
              
 
 
-
+                $date_deb = "$annee_n-$month-01";
+                $date_fin = "$annee_n-$month-31";;
+                
                 ################### CA NON ENCAISSE  , en attente de payement ####################
                 
                 
@@ -264,10 +282,17 @@ class HomeController extends Controller
                                 
                                 $ca_attente_n = round(($ca_attente_partage_pas_n+$ca_attente_porte_n+$ca_attente_porte_pas_n)/Tva::coefficient_tva(),2);
                                 $ca_attente_N [] = $ca_attente_n;
-                                $ca_attente_perso_N [] = $ca_attente_n * $commission;
+                                
+                               
+                                
+                                $nb_en_attente_perso_n += Auth::user()->nb_affaire_non_encaisse($date_deb, $date_fin);
+                                $nb_en_attente_perso_N += $nb_en_attente_perso_n;
+                                
+                                $ca_attente_perso_n = Auth::user()->chiffre_affaire_non_encaisse($date_deb, $date_fin);
+                                $ca_attente_perso_N [] = $ca_attente_perso_n;
                                     
                                     
-                                    
+                
 
                                 #####################  CA ENCAISSE #######################
 
@@ -324,9 +349,12 @@ class HomeController extends Controller
                                 $ca_encaisse_N [] = $ca_encaisse_n;
                                 
                                 
-                                $ca_encaisse_perso_N [] = $ca_encaisse_n * $commission;
+                                $ca_encaisse_perso_n = Auth::user()->chiffre_affaire($date_deb, $date_fin);
+                                $ca_encaisse_perso_N [] =  $ca_encaisse_perso_n ;
                                 
-
+                                $nb_encaisse_perso_n += Auth::user()->nb_affaire_encaisse($date_deb, $date_fin);
+                                $nb_encaisse_perso_N +=  $nb_encaisse_perso_n;
+                                
 
 
 
@@ -361,6 +389,7 @@ class HomeController extends Controller
                             
                             $ca_sous_offre_n = round(($ca_offre_partage_pas_n+$ca_offre_porte_n+$ca_offre_porte_pas_n)/Tva::coefficient_tva(),2);
                             $ca_sous_offre_N [] = $ca_sous_offre_n;
+                            
                             $ca_sous_offre_perso_N [] = $ca_sous_offre_n * $commission;
 
 
@@ -409,18 +438,21 @@ class HomeController extends Controller
                             
                             
                             $ca_glo_n = $ca_encaisse_n + $ca_attente_n + $ca_sous_offre_n + $ca_sous_compromis_n;
-                            $ca_glo_perso_n = $ca_glo_n * $commission;
+                            $ca_glo_perso_n =$ca_encaisse_perso_n + $ca_attente_perso_n + $ca_sous_offre_n + $ca_sous_compromis_n;
                             
                             $ca_global_N [] = round($ca_glo_n,2);
                             $ca_global_perso_N [] = round($ca_glo_perso_n,2);
 
                             $nb_global_N += ( $nb_encaisse_n + $nb_en_attente_n + $nb_sous_compromis_n + $nb_sous_offre_n);       
+                            $nb_global_perso_N += ( $nb_encaisse_perso_n + $nb_en_attente_perso_n + $nb_sous_compromis_n + $nb_sous_offre_n);       
 
                             // on rénitiale les valeurs 
                             $nb_sous_compromis_n = 0;
                             $nb_encaisse_n = 0;
                             $nb_en_attente_n = 0;
                             $nb_sous_offre_n = 0;
+                            $nb_en_attente_perso_n = 0;
+                            $nb_encaisse_perso_n = 0;
 
             }
 
@@ -438,7 +470,7 @@ class HomeController extends Controller
 }
 // Fin else
 
-        // dd($ca_global_N);
+        // dd($ca_attente_perso_N);
 // dd( $ca_global_N);
         
             $CA_N[] = $ca_global_N; 
@@ -493,6 +525,10 @@ class HomeController extends Controller
             $STATS["nb_sous_compromis_N"] = $nb_sous_compromis_N;
             $STATS["nb_en_attente_N"] = $nb_en_attente_N;
             $STATS["nb_encaisse_N"] = $nb_encaisse_N;
+            if(Auth::user()->role == "mandataire"){
+            $STATS["nb_en_attente_perso_N"] = $nb_en_attente_perso_N;
+            $STATS["nb_encaisse_perso_N"] = $nb_encaisse_perso_N;
+            }
             $STATS["annee"] = $annee_n;
             $STATS["nb_mandataires_actifs_n"] = $nb_mandataires_actifs_n;
             $STATS["nb_mandataires_actifs"] = $nb_mandataires_actifs;

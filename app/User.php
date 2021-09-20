@@ -65,6 +65,22 @@ class User extends Authenticatable
         return $chiffre_affaire_non_encai; 
      
     }
+    
+    // nombre d'affaires encaissé par le mandataire compris entre date deb et date fin
+    public function  nb_affaire_encaisse($date_deb, $date_fin){
+   
+        $chiffre_affaire_encai = Facture::where([['user_id',$this->id],['reglee',true]])->whereIn('type',['honoraire','partage','parrainage','parrainage_partage'])->whereBetween('date_reglement', [$date_deb, $date_fin])->count();
+        return $chiffre_affaire_encai; 
+     
+    }
+    
+    // nombre d'affaires non encaissé par le mandataire compris entre date deb et date fin
+    public function  nb_affaire_non_encaisse($date_deb, $date_fin){
+   
+        $chiffre_affaire_non_encai = Facture::where([['user_id',$this->id],['reglee',false]])->whereIn('type',['honoraire','partage','parrainage','parrainage_partage'])->whereBetween('date_reglement', [$date_deb, $date_fin])->count();
+        return $chiffre_affaire_non_encai; 
+     
+    }
 
     // Chiffre d'affaire stylimmo encaissé compris entre date deb et date fin
         public function  chiffre_affaire_styl($date_deb, $date_fin){
