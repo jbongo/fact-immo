@@ -35,13 +35,7 @@ class TvaController extends Controller
           
             
         }
-        if(preg_match('([0-9]{5})', $libelle) ){
-        
-            echo "num facture OK";
-        }else{
-        
-             echo "num facture NOT OK";
-        }
+
         
         
       

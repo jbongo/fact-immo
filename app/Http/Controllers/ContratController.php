@@ -467,7 +467,7 @@ class ContratController extends Controller
             if(!File::exists($path))
                 File::makeDirectory($path, 0755, true);
     
-                $filename = 'contrat'.$contrat->nom.' '.$contrat->prenom ;
+                $filename = 'contrat_'.$contrat->user->nom.' '.$contrat->user->prenom ;
      
                 $file->move($path,$filename.'.'.$extension);            
                 $path = $path.'/'.$filename.'.'.$extension;
@@ -490,8 +490,8 @@ class ContratController extends Controller
   
         Historique::createHistorique( $user_id,$contrat->id,"contrat",$action );
         
-        if($request->file('contrat_pdf') != null)
-            return  redirect()->route('contrat.edit', Crypt::encrypt($contrat->id))->with('ok','Le contrat a été modifié ');
+        // if($request->file('contrat_pdf') != null)
+            // return  redirect()->route('contrat.edit', Crypt::encrypt($contrat->id))->with('ok','Le contrat a été modifié ');
         
         
 

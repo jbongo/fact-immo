@@ -1046,7 +1046,7 @@
 
 console.log($('#contrat_pdf').prop('files')[0]);
        
-        if($('#contrat_pdf').prop('files')[0] == undefined)
+        // if($('#contrat_pdf').prop('files')[0] == undefined)
         e.preventDefault();
 
         
@@ -1160,7 +1160,9 @@ console.log($('#contrat_pdf').prop('files')[0]);
                             'success'
                         )
                         .then(function() {
-                            window.location.href = "{{route('mandataire.index')}}";
+                            window.location.href = "{{route('contrat.edit',Crypt::encrypt($contrat->id))}}";
+                        
+                            // window.location.href = "{{route('mandataire.index')}}";
                         })
                         setInterval(() => {
                             // window.location.href = "{{route('mandataire.show',Crypt::encrypt($contrat->user->id))}}";

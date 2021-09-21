@@ -17,7 +17,7 @@ Route::middleware('auth')->group(function(){
 
     // Mandataires
    
-    Route::get('/mandataires','MandataireController@index')->name('mandataire.index');
+    Route::get('/mandataires','MandataireController@index')->name('mandataire.index')->middleware('admin');
     Route::get('/mandataire/create','MandataireController@create')->name('mandataire.create');
     Route::post('/mandataire/add','MandataireController@store')->name('mandataire.add');
     Route::get('/mandataire/show/{id}','MandataireController@show')->name('mandataire.show');
@@ -311,6 +311,13 @@ Route::get('/winfic/exporter_ecriture/{date_deb?}/{date_fin?}','ExportwinficCont
 Route::get('/winfic/exporter_ecrana/{date_deb?}/{date_fin?}','ExportwinficController@exporter_ecrana')->name('winfic.exporter_ecrana');
 
 Route::get('/winfic/code-analytic-client','ExportwinficController@code_analytic_client')->name('winfic.code_analytic_client');
+
+
+
+// Banque
+
+Route::get('/banque/traitement','BanqueController@traiter_encaissement')->name('banque.traitement');
+Route::get('/banque/lecture_fichier','BanqueController@lecture_fichier_banque')->name('banque.lecture.fichier');
 
 
 
