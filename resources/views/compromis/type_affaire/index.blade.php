@@ -27,8 +27,8 @@
                        <ul class="nav nav-pills nav-tabs" id="myTabs">
                            <li id="li_sous_offre_nav" class="active"><a href="#sous_offre_nav" data-toggle="pill"> <i class="material-icons" style="font-size: 15px;">trending_up</i> Sous offre</a></li>                       
                            <li id="li_sous_compromis_nav"><a href="#sous_compromis_nav" data-toggle="pill"> <i class="material-icons" style="font-size: 15px;">trending_up</i> Sous compromis</a></li>                       
-                           <li id="li_en_attente_nav"><a href="#en_attente_nav" data-toggle="pill"> <i class="material-icons" style="font-size: 15px;">timer</i> En attente d'encaissement</a></li>                       
-                           <li id="li_encaissee_nav" ><a href="#encaissee_nav" data-toggle="pill"> <i class="material-icons" style="font-size: 15px;">account_balance_wallet</i>  Encaissées </a></li>
+                           <li id="li_en_attente_nav"><a href="#en_attente_nav" data-toggle="pill"> <i class="material-icons" style="font-size: 15px;">timer</i> En attente d'encaissement  @if(Auth::user()->role == "mandataire") (STYL) @endif</a></li>                       
+                           <li id="li_encaissee_nav" ><a href="#encaissee_nav" data-toggle="pill"> <i class="material-icons" style="font-size: 15px;">account_balance_wallet</i>  Encaissées @if(Auth::user()->role == "mandataire") (STYL) @endif</a></li>
                        </ul>
                     </div>
                     <!-- Content -->

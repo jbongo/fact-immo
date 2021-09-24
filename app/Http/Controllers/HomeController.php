@@ -218,7 +218,7 @@ class HomeController extends Controller
 
 
                 $date_deb = "$annee_n-$month-01";
-                $date_fin = "$annee_n-$month-31";;
+                $date_fin = "$annee_n-$month-31";
                 
                 ################### CA NON ENCAISSE  , en attente de payement ####################
                 
@@ -348,7 +348,6 @@ class HomeController extends Controller
                                 $ca_encaisse_n = round(($ca_encaisse_partage_pas_n+$ca_encaisse_porte_n+$ca_encaisse_porte_pas_n)/Tva::coefficient_tva(),2);
                                 $ca_encaisse_N [] = $ca_encaisse_n;
                                 
-                                
                                 $ca_encaisse_perso_n = Auth::user()->chiffre_affaire($date_deb, $date_fin);
                                 $ca_encaisse_perso_N [] =  $ca_encaisse_perso_n ;
                                 
@@ -470,9 +469,10 @@ class HomeController extends Controller
 }
 // Fin else
 
-        // dd($ca_attente_perso_N);
-// dd( $ca_global_N);
-        
+
+$STATS = array();
+
+
             $CA_N[] = $ca_global_N; 
             $CA_N[] = $ca_attente_N; 
             $CA_N[] = $ca_encaisse_N; 
@@ -486,6 +486,15 @@ class HomeController extends Controller
                 $CA_N[] = $ca_encaisse_perso_N; 
                 $CA_N[] = $ca_sous_offre_perso_N; 
                 $CA_N[] = $ca_sous_compromis_perso_N; 
+                
+              
+                $date_deb = $annee_n."-01-01";
+                $date_fin = $annee_n."-12-31";
+                
+                
+                $STATS["ca_styl_encaisse_associe"] = Auth::user()->chiffre_affaire_styl_associe($date_deb, $date_fin);
+
+                
             
             }
 
@@ -493,7 +502,6 @@ class HomeController extends Controller
            
 // dd($CA_N);
 
-            $STATS = array();
             
 
 
@@ -533,7 +541,8 @@ class HomeController extends Controller
             $STATS["nb_mandataires_actifs_n"] = $nb_mandataires_actifs_n;
             $STATS["nb_mandataires_actifs"] = $nb_mandataires_actifs;
             $STATS["nb_filleuls"] = $nb_filleuls;
-
+            
+           
            
             Config::set('stats.CA_N',$CA_N);
             Config::set('stats.STATS',$STATS);

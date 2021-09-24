@@ -61,7 +61,7 @@ class User extends Authenticatable
     // Chiffre d'affaires non encaissé par le mandataire compris entre date deb et date fin
     public function  chiffre_affaire_non_encaisse($date_deb, $date_fin){
    
-        $chiffre_affaire_non_encai = Facture::where([['user_id',$this->id],['reglee',false]])->whereIn('type',['honoraire','partage','parrainage','parrainage_partage'])->whereBetween('date_reglement', [$date_deb, $date_fin])->sum('montant_ht');
+        $chiffre_affaire_non_encai = Facture::where([['user_id',$this->id],['reglee',false]])->whereIn('type',['honoraire','partage','parrainage','parrainage_partage'])->whereBetween('created_at', [$date_deb, $date_fin])->sum('montant_ht');
         return $chiffre_affaire_non_encai; 
      
     }
@@ -77,7 +77,7 @@ class User extends Authenticatable
     // nombre d'affaires non encaissé par le mandataire compris entre date deb et date fin
     public function  nb_affaire_non_encaisse($date_deb, $date_fin){
    
-        $chiffre_affaire_non_encai = Facture::where([['user_id',$this->id],['reglee',false]])->whereIn('type',['honoraire','partage','parrainage','parrainage_partage'])->whereBetween('date_reglement', [$date_deb, $date_fin])->count();
+        $chiffre_affaire_non_encai = Facture::where([['user_id',$this->id],['reglee',false]])->whereIn('type',['honoraire','partage','parrainage','parrainage_partage'])->whereBetween('created_at', [$date_deb, $date_fin])->count();
         return $chiffre_affaire_non_encai; 
      
     }
@@ -133,6 +133,46 @@ class User extends Authenticatable
         return $ca_encaisse_N ;    
          
         }
+
+
+
+    // Chiffre d'affaire stylimmo encaissé lié aux affaires réglée compris entre date deb et date fin 
+    public function  chiffre_affaire_styl_associe($date_deb, $date_fin){
+
+        $factures_encaissees = Facture::where([['user_id',$this->id],['reglee',true]])->whereIn('type',['honoraire','partage'])->whereBetween('date_reglement', [$date_deb, $date_fin])->get();
+        
+        $ca_encaisse = 0 ;
+        
+        foreach ($factures_encaissees as $facture) {
+            
+            $compromis = $facture->compromis;
+            
+            // Si l'affaire n'est pas partagée
+            if($compromis->est_partage_agent == false){
+            
+            
+                $ca_encaisse += $compromis->getFactureStylimmo()->montant_ht;
+            
+            // }Si l'affaire est partagée
+            }else{
+                // Si le mandataire porte l'affaire
+                if($compromis->user_id == $this->id){
+                
+                    $ca_encaisse += $compromis->getFactureStylimmo()->montant_ht * $compromis->pourcentage_agent/100;
+                    
+                } //Si le mandataire ne porte pas l'affaire
+                else{
+                    $ca_encaisse += $compromis->getFactureStylimmo()->montant_ht * (100 - $compromis->pourcentage_agent)/100 ;
+                }
+            
+            }
+            
+        }
+        
+
+        return $ca_encaisse;    
+     
+    }
 
 
 

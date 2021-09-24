@@ -797,14 +797,14 @@
 
                                     @endif
 
-                                        <div class="col-lg-6 col-md-6 col-sm-6 ">
+                                        {{-- <div class="col-lg-6 col-md-6 col-sm-6 ">
                                             <div class="form-group row">
                                                 <label class="col-lg-4 col-form-label" for="contrat_pdf">Contrat + annexes signés</label>
                                                 <div class="col-lg-4">
                                                     <input type="file" class="form-control" value="" id="contrat_pdf" name="contrat_pdf" accept=".pdf" >
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div> --}}
                                       
                                       
                                 </div>
@@ -1044,7 +1044,7 @@
     $('.form-valide3').submit(function(e) {
         var form = $(".form-valide3");
 
-console.log($('#contrat_pdf').prop('files')[0]);
+// console.log($('#contrat_pdf').prop('files')[0]);
        
         // if($('#contrat_pdf').prop('files')[0] == undefined)
         e.preventDefault();

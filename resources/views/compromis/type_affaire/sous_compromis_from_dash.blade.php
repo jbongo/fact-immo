@@ -152,7 +152,7 @@
                                             @endif
                                          
                                                 @if ($compromi_sous_compro->cloture_affaire == 0 && $compromi_sous_compro->demande_facture == 2 && $compromi_sous_compro->agent_id != Auth()->user()->id)
-                                                    <a class="cloturer" href="{{route('compromis.cloturer',Crypt::encrypt($compromi_sous_compro->id))}}" data-toggle="tooltip" data-mandat="{{$compromi_sous_compro->numero_mandat}}" title="@lang('Réitérer l\'affaire  ')"><i class="large material-icons color-success">thumb_up_alt</i></a> 
+                                                    <a class="cloturer" href="{{route('compromis.cloturer',Crypt::encrypt($compromi_sous_compro->id))}}" data-toggle="tooltip" data-mandat="{{$compromi_sous_compro->numero_mandat}}" title="@lang('Réitérer l\'affaire  ')"><img src="{{asset('images/logo-notaire.png')}}" width="25px" height="30px" alt=""></a> 
                                                 @elseif($compromi_sous_compro->cloture_affaire == 1  )
                                                     @if(Auth()->user()->role != "admin"  )
                                                         @if ($compromi_sous_compro->je_porte_affaire == 0  || $compromi_sous_compro->agent_id == Auth()->user()->id || ($compromi_sous_compro->je_porte_affaire == 1 && $compromi_sous_compro->est_partage_agent == 1) )

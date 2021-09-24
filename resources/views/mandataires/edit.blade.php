@@ -28,7 +28,7 @@ Modifier mandataire {{$mandataire->nom}}
          </div>
          <div class="card-body">
             <div class="form-validation">
-               <form class="form-valide form-horizontal" action="{{ route('mandataire.update',$mandataire->id) }}" method="post">
+               <form class="form-valide form-horizontal" action="{{ route('mandataire.update',$mandataire->id) }}" enctype="multipart/form-data" method="post">
                   {{ csrf_field() }}
 
                 <div class="row">
@@ -146,6 +146,30 @@ Modifier mandataire {{$mandataire->nom}}
                                  @endif     
                               </div>
                         </div>
+                        
+                        @if($mandataire->contrat != null)
+                        <div class="row form-group ">
+                              <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="contrat_pdf">Contrat + annexes signés</label>
+                              <div class="col-lg-8 col-md-8 col-sm-8">
+                                  <input type="file" class="form-control" value="" id="contrat_pdf" name="contrat_pdf" accept=".pdf" >
+                                  @if ($errors->has('contrat_pdf'))
+                                    <br>
+                                    <div class="alert alert-warning ">
+                                       <strong>{{$errors->first('contrat_pdf')}}</strong> 
+                                    </div>
+                                 @endif  
+                              </div>
+                        </div>
+                        
+                        <div class="row">
+                        
+                           @if($mandataire->contrat->contrat_pdf != null)
+                           <a href="{{route('contrat.telecharger', Crypt::encrypt($mandataire->contrat->id))}}"data-toggle="tooltip" title="Télécharger le contrat"  class="btn btn-danger btn-flat btn-addon "><i class="ti-download"></i>télécharger le contrat + annexes</a> 
+
+                           @endif
+                        </div>
+                        
+                        @endif
 
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-6">
@@ -241,7 +265,7 @@ Modifier mandataire {{$mandataire->nom}}
                         </div>
                         
                         <div class="form-group row">
-                      <span class="text-danger"> <strong>  (4 premières lettres du NOM et 1ere lettre du prénom ) </strong></span> 
+                      <span class="text-danger"> <strong>  ( "9" suivi des 4 premières lettres du NOM et 1ere lettre du prénom ) </strong></span> 
                         
                            <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="code_client"> WINFIC Code client </label>
                            <div class="col-lg-8 col-md-8 col-sm-8">

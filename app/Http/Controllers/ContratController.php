@@ -449,33 +449,7 @@ class ContratController extends Controller
     
     
     // Ajout du CONTRAT PDF
-    
-   
-    
-    if($file = $request->file('contrat_pdf')){
 
-        $request->validate([
-            'contrat_pdf' => 'mimes:pdf',
-        ]);
-
-            $extension = $file->getClientOriginalExtension();
-            
-    
-            // on sauvegarde la facture dans le repertoire du mandataire
-            $path = storage_path('app/public/'.$contrat->id.'/contrat');
-    
-            if(!File::exists($path))
-                File::makeDirectory($path, 0755, true);
-    
-                $filename = 'contrat_'.$contrat->user->nom.' '.$contrat->user->prenom ;
-     
-                $file->move($path,$filename.'.'.$extension);            
-                $path = $path.'/'.$filename.'.'.$extension;
-            
-                $contrat->contrat_pdf = $path;
-
-    }
-    
     
     
     

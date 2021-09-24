@@ -152,16 +152,11 @@
                                             @endif
                                            
                                                 @if ($compromi_attente->cloture_affaire == 0 && $compromi_attente->demande_facture == 2 && $compromi_attente->agent_id != Auth()->user()->id)
-                                                    <a class="cloturer" href="{{route('compromis.cloturer',Crypt::encrypt($compromi_attente->id))}}" data-toggle="tooltip" data-mandat="{{$compromi_attente->numero_mandat}}" title="@lang('Réitérer l\'affaire  ')"><i class="large material-icons color-success">thumb_up_alt</i></a> 
+                                                    <a class="cloturer" href="{{route('compromis.cloturer',Crypt::encrypt($compromi_attente->id))}}" data-toggle="tooltip" data-mandat="{{$compromi_attente->numero_mandat}}" title="@lang('Réitérer l\'affaire  ')"> <img src="{{asset('images/logo-notaire.png')}}" width="25px" height="30px" alt="">  </a> 
+                                                {{-- si réitéré et admin --}}
                                                 @elseif($compromi_attente->cloture_affaire == 1  )
                                                     @if(Auth()->user()->role != "admin"  )
-                                                        @if ($compromi_attente->je_porte_affaire == 0  || $compromi_attente->agent_id == Auth()->user()->id || ($compromi_attente->je_porte_affaire == 1 && $compromi_attente->est_partage_agent == 1) )
-                                                        <a target="blank" href="{{route('facture.preparer_facture_honoraire_partage',Crypt::encrypt($compromi_attente->id))}}" data-toggle="tooltip" title="@lang('Note honoraire  ')"><i class="large material-icons color-danger">insert_drive_file</i></a> 
-
-                                                        @else 
-                                                        <a target="blank" href="{{route('facture.preparer_facture_honoraire',Crypt::encrypt($compromi_attente->id))}}" data-toggle="tooltip" title="@lang('Note honoraire  ')"><i class="large material-icons color-danger">insert_drive_file</i></a> 
-                                                            
-                                                        @endif
+                                                        <a target="blank" data-toggle="tooltip" title="@lang('En attente... Facture STYL\'IMMO non encaissée  ')"><i class="large material-icons color-default ">insert_drive_file</i></a> 
                                                     @endif
                                                 @endif
                                            

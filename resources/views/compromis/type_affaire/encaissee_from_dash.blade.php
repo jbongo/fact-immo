@@ -149,7 +149,7 @@
                                             @endif
                                            
                                                 @if ($compromi_enc->cloture_affaire == 0 && $compromi_enc->demande_facture == 2 && $compromi_enc->agent_id != Auth()->user()->id)
-                                                    <a class="cloturer" href="{{route('compromis.cloturer',Crypt::encrypt($compromi_enc->id))}}" data-toggle="tooltip" data-mandat="{{$compromi_enc->numero_mandat}}" title="@lang('Réitérer l\'affaire  ')"><i class="large material-icons color-success">thumb_up_alt</i></a> 
+                                                    <a class="cloturer" href="{{route('compromis.cloturer',Crypt::encrypt($compromi_enc->id))}}" data-toggle="tooltip" data-mandat="{{$compromi_enc->numero_mandat}}" title="@lang('Réitérer l\'affaire  ')"> <img src="{{asset('images/logo-notaire.png')}}" width="25px" height="30px" alt=""> </a> 
                                                 @elseif($compromi_enc->cloture_affaire == 1  )
                                                     @if(Auth()->user()->role != "admin"  )
                                                         @if ($compromi_enc->je_porte_affaire == 0  || $compromi_enc->agent_id == Auth()->user()->id || ($compromi_enc->je_porte_affaire == 1 && $compromi_enc->est_partage_agent == 1) )

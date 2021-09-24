@@ -58,7 +58,7 @@
         <div class="col-md-2">
   
     <select name="annee" id="annee" class="form-control">
-            @for ($an = 2017; $an <= date('Y') +1 ; $an++)
+            @for ($an = 2019; $an <= date('Y') +1 ; $an++)
                 @if($an == config('stats.STATS.annee'))
                     <option selected="selected" value="{{config('stats.STATS.annee')}}">{{config('stats.STATS.annee')}}</option>
                 @else
@@ -99,8 +99,8 @@
                 <br><br>
                 <a href="{{route('compromis.index_from_dashboard',config('stats.STATS.annee'))}}#sous_offre_nav"><div title="Sous offre" class="button" style="background:#FF8C00;" href="{{route('compromis.index')}}#sous_offre_nav"><div  style=" color:black;font-family: Montserrat; font-size:13px;" >{{config('stats.STATS')["nb_sous_offre_N"]}}</div></div> </a></span> <span style="font-family: Montserrat; font-size:13px;  "> Les affaires sous offre</span> 
                 <a href="{{route('compromis.index_from_dashboard',config('stats.STATS.annee'))}}#sous_compromis_nav"><div title="Sous compromis" class="button" style="background: #0ad2ff;" href="{{route('compromis.index')}}#sous_compromis_nav"><div  style=" color:black;font-family: Montserrat; font-size:13px;" >{{config('stats.STATS')["nb_sous_compromis_N"]}}</div></div> </a></span> <span style="font-family: Montserrat; font-size:13px;  "> Les affaires sous compromis</span> 
-                <a href="{{route('compromis.index_from_dashboard',config('stats.STATS.annee'))}}#en_attente_nav"><div title="En attente d'encaissement" class="button" style="background: #e6e6e6;" ><div><div  style=" color:black;font-family: Montserrat; font-size:13px;" >{{config('stats.STATS')["nb_en_attente_perso_N"]}}</div></div></div> </a></span> <span style="font-family: Montserrat; font-size:13px;  "> Les affaires non encaissées</span>
-                <a href="{{route('compromis.index_from_dashboard',config('stats.STATS.annee'))}}#encaissee_nav"><div title="Encaissé" class="button" style="background: #2e5;" ><div><div  style=" color:black;font-family: Montserrat; font-size:13px;" >{{config('stats.STATS')["nb_encaisse_perso_N"]}}</div></div></div> </a></span> <span style="font-family: Montserrat; font-size:13px;  "> Les affaires encaissées</span>  
+                <a href="{{route('facture.index_honoraire_en_attente',config('stats.STATS.annee'))}}"><div title="En attente d'encaissement" class="button" style="background: #e6e6e6;" ><div><div  style=" color:black;font-family: Montserrat; font-size:13px;" >{{config('stats.STATS')["nb_en_attente_perso_N"]}}</div></div></div> </a></span> <span style="font-family: Montserrat; font-size:13px;  "> Les affaires non encaissées</span>
+                <a href="{{route('facture.index_honoraire_encaissee',config('stats.STATS.annee'))}}"><div title="Encaissé" class="button" style="background: #2e5;" ><div><div  style=" color:black;font-family: Montserrat; font-size:13px;" >{{config('stats.STATS')["nb_encaisse_perso_N"]}}</div></div></div> </a></span> <span style="font-family: Montserrat; font-size:13px;  "> Les affaires encaissées</span>  
                 <a href="{{route('compromis.index_from_dashboard',config('stats.STATS.annee'))}}"><div title="Général" class="button" style="background: #ff1a1a;" ><div><div  style=" color:black;font-family: Montserrat; font-size:13px;" >{{config('stats.STATS')["nb_global_N"]}}</div></div></div></a> <span style="font-family: Montserrat; font-size:13px;  "> Toutes les affaires</span> 
              <br><br>
             </div>
@@ -119,11 +119,7 @@
                 <button style="background-color:#ff1a1a; width:50px; height:20px"></button> <span style="font-family: Montserrat; font-size:16px; font-weight:bold; ">Mon Chiffre d'affaires HT Général : {{number_format( array_sum(config('stats.CA_N')[5]) ,2,'.',',')}}</span> 
             </div>
 
-            @if(Auth::user()->role == "mandataire")
-            <div>
-                <button style="background-color:#66556f; width:50px; height:20px"></button> <span style="font-family: Montserrat; font-size:16px; font-weight:bold; ">Mon Chiffre d'affaires HT encaissé : {{number_format( Auth::user()->chiffre_affaire(Auth::user()->date_anniv(), date('Y-m-d')) ,2,'.',',')}}</span> 
-            </div>
-            @endif
+           
 
         </div>
         
@@ -182,7 +178,7 @@
 
             @if(Auth::user()->role == "mandataire")
             <div>
-                <button style="background-color:#66556f; width:50px; height:20px"></button> <span style="font-family: Montserrat; font-size:16px; font-weight:bold; ">Chiffre d'affaires Styl HT contractuel : {{number_format( Auth::user()->chiffre_affaire_styl(Auth::user()->date_anniv(), date('Y-m-d')) ,2,'.',',')}}</span> 
+                {{-- <button style="background-color:#66556f; width:50px; height:20px"></button> <span style="font-family: Montserrat; font-size:16px; font-weight:bold; ">Chiffre d'affaires Styl HT contractuel : {{number_format( Auth::user()->chiffre_affaire_styl(Auth::user()->date_anniv(), date('Y-m-d')) ,2,'.',',')}}</span>  --}}
             </div>
             @endif
 
@@ -644,7 +640,7 @@
             value:  {{array_sum(config('stats.CA_N')[1])}}
         }, {
             label: "Encaissé",
-            value:  {{array_sum(config('stats.CA_N')[2])}}
+            value:  @if(Auth::user()->role == "mandataire")  {{config('stats.STATS')['ca_styl_encaisse_associe']}}  @else {{array_sum(config('stats.CA_N')[2])}} @endif
         } ],
         resize: true,
         colors:[ '#FFA500','#0ad2ff','#e6e6e6', '#6eff1a']

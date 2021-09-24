@@ -114,6 +114,8 @@ Route::middleware('auth')->group(function(){
     Route::get('/factures/pub','FactureController@index_pub')->name('facture.index_pub');
     
     Route::get('/factures/honoraire','FactureController@index_honoraire')->name('facture.index_honoraire');
+    Route::get('/factures/honoraire_encaissee/{annee}','FactureController@index_honoraire_encaissee')->name('facture.index_honoraire_encaissee');
+    Route::get('/factures/honoraire_en_attente/{annee}','FactureController@index_honoraire_en_attente')->name('facture.index_honoraire_en_attente');
     Route::get('/factures/communication','FactureController@index_communication')->name('facture.index_communication');
     
     Route::get('/factures/relance/{facture_id}','FactureController@relancer_paiement_facture')->name('facture.relancer_paiement_facture');

@@ -16,6 +16,8 @@ use Illuminate\Support\Facades\Mail;
 use Auth;
 use App\Historique;
 use App\Updatejeton;
+use Illuminate\Support\Facades\File ;
+
 
 
 class MandataireController extends Controller
@@ -269,6 +271,39 @@ class MandataireController extends Controller
         $mandataire->code_client = $request->code_client; 
         $mandataire->code_analytic = $request->code_analytic; 
 
+        
+        $contrat = $mandataire->contrat ;
+        if($contrat != null && ( $file = $request->file('contrat_pdf')) ){
+
+
+            // dd($request->file('contrat_pdf'));
+
+            // $request->validate([
+            //     'contrat_pdf' => 'mimes:pdf',
+            // ]);
+    
+                $extension = $file->getClientOriginalExtension();
+                
+        
+                // on sauvegarde la facture dans le repertoire du mandataire
+                $path = storage_path('app/public/'.$contrat->id.'/contrat');
+        
+                if(!File::exists($path))
+                    File::makeDirectory($path, 0755, true);
+        
+                    $filename = 'contrat_'.$mandataire->nom.' '.$mandataire->prenom ;
+         
+                    $file->move($path,$filename.'.'.$extension);            
+                    $path = $path.'/'.$filename.'.'.$extension;
+                
+                    $contrat->contrat_pdf = $path;
+                    
+                    
+                    $contrat->update();
+    
+        }
+
+            
         $mandataire->update();
         return redirect()->route('mandataire.edit', Crypt::encrypt($mandataire->id))->with('ok', __('mandataire modifié')  );
     }

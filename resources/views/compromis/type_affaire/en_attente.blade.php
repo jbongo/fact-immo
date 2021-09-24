@@ -153,21 +153,19 @@
                                                 {{-- <span><a  href="{{route('compromis.archive',[$compromi_attente->id,1])}}" class="delete" data-toggle="tooltip" title="@lang('Archiver ') {{ $compromi_attente->nom }}"><i class="large material-icons color-danger">thumb_down_alt</i> </a></span> --}}
                                                 @endif
                                             @endif
+                                            
                                             @if($page_filleul == null)
                                                 @if ($compromi_attente->cloture_affaire == 0 && $compromi_attente->demande_facture == 2 && $compromi_attente->agent_id != Auth()->user()->id)
-                                                    <a class="cloturer" href="{{route('compromis.cloturer',Crypt::encrypt($compromi_attente->id))}}" data-toggle="tooltip" data-mandat="{{$compromi_attente->numero_mandat}}" title="@lang('Réitérer l\'affaire  ')"><i class="large material-icons color-success">thumb_up_alt</i></a> 
+                                                    <a class="cloturer" href="{{route('compromis.cloturer',Crypt::encrypt($compromi_attente->id))}}" data-toggle="tooltip" data-mandat="{{$compromi_attente->numero_mandat}}" title="@lang('Réitérer l\'affaire  ')"><img src="{{asset('images/logo-notaire.png')}}" width="25px" height="30px" alt=""> </a> 
+                                                
+                                                {{-- si réitéré et admin --}}
                                                 @elseif($compromi_attente->cloture_affaire == 1  )
                                                     @if(Auth()->user()->role != "admin"  )
-                                                        @if ($compromi_attente->je_porte_affaire == 0  || $compromi_attente->agent_id == Auth()->user()->id || ($compromi_attente->je_porte_affaire == 1 && $compromi_attente->est_partage_agent == 1) )
-                                                        <a target="blank" href="{{route('facture.preparer_facture_honoraire_partage',Crypt::encrypt($compromi_attente->id))}}" data-toggle="tooltip" title="@lang('Note honoraire  ')"><i class="large material-icons color-danger">insert_drive_file</i></a> 
-
-                                                        @else 
-                                                        <a target="blank" href="{{route('facture.preparer_facture_honoraire',Crypt::encrypt($compromi_attente->id))}}" data-toggle="tooltip" title="@lang('Note honoraire  ')"><i class="large material-icons color-danger">insert_drive_file</i></a> 
-                                                            
-                                                        @endif
+                                                        <a target="blank" data-toggle="tooltip" title="@lang('En attente... Facture STYL\'IMMO non encaissée  ')"><i class="large material-icons color-default ">insert_drive_file</i></a> 
                                                     @endif
                                                 @endif
                                             @endif
+                                            
                                         @if ($compromi_attente->agent_id != Auth()->user()->id && ($compromi_attente->facture_stylimmo_valide == false || Auth()->user()->role =="admin") )
                                             @if($page_filleul == null)    
                                             {{-- <span><a href="{{route('compromis.show',Crypt::encrypt($compromi_attente->id))}}" data-toggle="tooltip" title="@lang('Modifier ') "><i class="large material-icons color-warning">edit</i></a></span> --}}

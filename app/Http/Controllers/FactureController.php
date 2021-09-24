@@ -91,6 +91,58 @@ class FactureController extends Controller
     }
     
     
+         /**
+     * Afficher toutes les factures d'honoraire encaissees
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index_honoraire_encaissee($annee)
+    {
+        //
+        //
+    
+        $nb_comm_non_regle  = "";
+    
+        if(auth()->user()->role == "admin"){
+            return redirect()->route('facture.index')  ;        
+                    
+        }else{
+            $factureHonoraires = Facture::where([['user_id',auth()->user()->id], ['reglee', true], ['date_reglement', 'like', "%$annee%"] ])->whereIn('type',['honoraire','partage','partage_externe','parrainage','parrainage_partage'])->latest()->get();
+          
+
+        }
+        
+        
+        return view ('facture.honoraire_encaissee',compact('factureHonoraires','annee'));
+    }
+    
+    
+         /**
+     * Afficher toutes les factures d'honoraire non encaissées
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index_honoraire_en_attente($annee)
+    {
+      
+    
+        $nb_comm_non_regle  = "";
+    
+        if(auth()->user()->role == "admin"){
+            return redirect()->route('facture.index')  ;        
+        }else{
+            $factureHonoraires = Facture::where([['user_id',auth()->user()->id], ['reglee', false], ['created_at', 'like', "%$annee%"] ])->whereIn('type',['honoraire','partage','partage_externe','parrainage','parrainage_partage'])->latest()->get();
+          
+        }
+        
+        
+        return view ('facture.honoraire_en_attente',compact('factureHonoraires','annee'));
+    }
+    
+    
+    
+    
+    
       /**
      * Afficher toutes les factures d'honoraire
      *
