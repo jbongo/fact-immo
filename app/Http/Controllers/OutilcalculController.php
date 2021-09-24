@@ -30,9 +30,11 @@ class OutilcalculController extends Controller
     {
 
         $user  = User::where('id', $request->user_id)->first();
+        
+        $ca =  $user->chiffre_affaire($request->date_deb, $request->date_fin);
+        $ca_assoc =  $user->chiffre_affaire_styl_associe($request->date_deb, $request->date_fin);
 
-
-        return $user->chiffre_affaire($request->date_deb, $request->date_fin);
+        return array($ca,$ca_assoc);
     }
 
 

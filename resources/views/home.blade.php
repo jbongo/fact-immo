@@ -220,7 +220,7 @@
 
 {{-- ############# --}}
 
-<div class="row">
+{{-- <div class="row">
 <div class="col-lg-2">
     <div class="card">
         <div class="stat-widget-five">
@@ -273,7 +273,7 @@
         </div>
     </div>
 </div>
-</div>
+</div> --}}
 
 </div>
 

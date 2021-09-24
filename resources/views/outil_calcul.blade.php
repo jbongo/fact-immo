@@ -84,8 +84,16 @@
                         </div>
                      <br><hr>
                         <div class="row">
-                            <div class="col-ld-6 col-md-6" style="font-size: 20px">
+                            <div class="col-lg-6 col-md-6" style="font-size: 20px">
                                 <span>Résultat : </span> <span style="color:#9f0000; font-weigth:bold " id="result" >  </span>
+                               
+                            </div>
+                        </div>
+                        
+                        <br><hr>
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6" style="font-size: 20px">
+                                <span>CA STYL'IMMO associé: </span> <span style="color:#261898; font-weigth:bold " id="result_assoc" >  </span>
                                
                             </div>
                         </div>
@@ -151,7 +159,7 @@
 
                         <br><hr>
                         <div class="row">
-                            <div class="col-ld-6 col-md-6" style="font-size: 20px">
+                            <div class="col-lg-6 col-md-6" style="font-size: 20px">
                                 <span>Résultat : </span> <span style="color:#48035d; font-weigth:bold " id="result_styl" >  </span>
                                
                             </div>
@@ -208,7 +216,10 @@
                     type: 'POST',
                     data: {user_id, date_deb, date_fin},
                     success: function(data){
-                    $('#result').text(data+" € HT");
+                    
+                    console.log(data);
+                    $('#result').text(data[0]+" € HT");
+                    $('#result_assoc').text(data[1]+" € HT");
                     },
                     error : function(data){
                     console.log(data);
