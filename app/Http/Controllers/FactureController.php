@@ -36,14 +36,31 @@ class FactureController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         //
         //
+            
+        
+        $date_deb = $request->date_deb;
+        $date_fin = $request->date_fin;
+        
+        if($date_deb == null || $date_fin == null || ($date_deb > $date_fin)){
+        
+            $date_fin = date('Y-m-d');
+            
+            $date_deb = strtotime($date_fin."-1 year");
+            
+            $date_deb = date("Y-m-d", $date_deb);
+            
+            // dd($date_deb);
+        }
+        
+        
     
         if(auth()->user()->role == "admin"){
         
-            $factureStylimmos = Facture::whereIn('type',['stylimmo','avoir','pack_pub','carte_visite','communication','autre','forfait_entree','cci'])->latest()->get();          
+            $factureStylimmos = Facture::whereIn('type',['stylimmo','avoir','pack_pub','carte_visite','communication','autre','forfait_entree','cci'])->whereBetween('date_facture',[$date_deb,$date_fin])->latest()->get();          
             $factureHonoraires = Facture::whereIn('type',['honoraire','partage','partage_externe','parrainage','parrainage_partage'])->latest()->get();            
             $factureCommunications = Facture::where('type',['pack_pub','carte_visite'])->latest()->get();
             
@@ -60,7 +77,7 @@ class FactureController extends Controller
         }
         
         
-        return view ('facture.index',compact(['factureHonoraires','factureStylimmos','factureCommunications','nb_comm_non_regle']));
+        return view ('facture.index',compact(['factureHonoraires','factureStylimmos','factureCommunications','nb_comm_non_regle','date_deb','date_fin']));
     }
     
     
@@ -605,12 +622,34 @@ public  function valider_facture_stylimmo( Request $request, $compromis)
 
 
         $facture = Facture::where('id', $facture_id)->first();
-    
+ 
         $facture->encaissee = true;
-        // $facture->date_encaissement = $date_encaissement;
         $facture->date_encaissement = $request->date_encaissement;
+        
+        
+        // Si c'est une facture pub, on marque le mandataire a reglé sa facture
+        if($facture->type == "pack_pub"){
+        
+            $facture->reglee = true;
+            $facture->date_reglement = $request->date_encaissement;
+        }
+        
+        
         $facture->update();
 
+
+        if($facture->type != "stylimmo"){
+            
+            $action = Auth::user()->nom." ".Auth::user()->prenom." a encaissé la facture $facture->type  $facture->numero";
+            $user_id = Auth::user()->id;
+        
+          
+            Historique::createHistorique( $user_id,$facture->id,"facture",$action );
+            return $facture->numero;
+        }
+    
+    
+    
         if($facture->compromis != null){
             Mail::to($facture->compromis->user->email)->send(new EncaissementFacture($facture));
         }

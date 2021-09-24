@@ -84,7 +84,7 @@
                         </div>
                      <br><hr>
                         <div class="row">
-                            <div class="col-lg-6 col-md-6" style="font-size: 20px">
+                            <div class="col-lg-12 col-md-12" style="font-size: 20px">
                                 <span>Résultat : </span> <span style="color:#9f0000; font-weigth:bold " id="result" >  </span>
                                
                             </div>
@@ -92,7 +92,7 @@
                         
                         <br><hr>
                         <div class="row">
-                            <div class="col-lg-6 col-md-6" style="font-size: 20px">
+                            <div class="col-lg-12 col-md-12" style="font-size: 20px">
                                 <span>CA STYL'IMMO associé: </span> <span style="color:#261898; font-weigth:bold " id="result_assoc" >  </span>
                                
                             </div>
