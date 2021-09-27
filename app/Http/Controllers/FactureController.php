@@ -49,7 +49,7 @@ class FactureController extends Controller
         
             $date_fin = date('Y-m-d');
             
-            $date_deb = strtotime($date_fin."-1 year");
+            $date_deb = strtotime($date_fin."-8 months");
             
             $date_deb = date("Y-m-d", $date_deb);
             
