@@ -94,6 +94,179 @@
                                                    <span class="gender">{{date('d-m-Y',strtotime($mandataire->created_at ))}}</span>
                                                 </div>
                                              </div>
+                                             
+                                             
+                                             
+                                             
+                                             @if($mandataire->prospect() != null )
+                                             
+                                             <div class="basic-information">
+                                                {{-- <h4 style="color: #32ade1;text-decoration: underline;">Role utilisateur</h4> --}}
+                                                
+                                                <div class="gender-content">
+                                                   <span class="contact-title"><strong>Commentaire pro:</strong></span>
+                                                   <span class="gender">{{$mandataire->prospect->commentaire_pro}}</span>
+                                                </div>
+                                             </div>
+                                             
+                                             <div class="basic-information">
+                                                {{-- <h4 style="color: #32ade1;text-decoration: underline;">Role utilisateur</h4> --}}
+                                                
+                                                <div class="gender-content">
+                                                   <span class="contact-title"><strong>Commentaire perso:</strong></span>
+                                                   <span class="gender">{{$mandataire->prospect->commentaire_perso}}</span>
+                                                </div>
+                                             </div>
+                                             
+                                             
+                                             <hr>
+                                             <br>
+                                             
+                                             @if($mandataire->prospect->renseigne == true )
+                                             
+                                             <div class="basic-information">                                                
+                                                <div class="gender-content">
+                                                   <span class="contact-title"><strong>Date de naissance :</strong></span>
+                                                   <span class="gender">{{$mandataire->prospect->date_naissance->format('d/m/Y')}}</span>
+                                                </div>
+                                             </div>
+                                             
+                                             <div class="basic-information">                                                
+                                                <div class="gender-content">
+                                                   <span class="contact-title"><strong>Lieu de naissance :</strong></span>
+                                                   <span class="gender">{{$mandataire->prospect->lieu_naissance}}</span>
+                                                </div>
+                                             </div>
+                                             
+                                             
+{{--                                              
+                                             <div class="basic-information">                                                
+                                                <div class="gender-content">
+                                                   <span class="contact-title"><strong>Département de naissance :</strong></span>
+                                                   <span class="gender">{{$mandataire->prospect->departement_naissance}}</span>
+                                                </div>
+                                             </div> --}}
+                                             
+                                             <div class="basic-information">                                                
+                                                <div class="gender-content">
+                                                   <span class="contact-title"><strong>Situation familliale :</strong></span>
+                                                   <span class="gender">{{$mandataire->prospect->situation_familliale}}</span>
+                                                </div>
+                                             </div>
+                                             
+                                             <div class="basic-information">                                                
+                                                <div class="gender-content">
+                                                   <span class="contact-title"><strong>Nationalité :</strong></span>
+                                                   <span class="gender">{{$mandataire->prospect->nationalite}}</span>
+                                                </div>
+                                             </div>
+                                             
+                                             <div class="basic-information">                                                
+                                                <div class="gender-content">
+                                                   <span class="contact-title"><strong>	Nom du père :</strong></span>
+                                                   <span class="gender">{{$mandataire->prospect->nom_pere}}</span>
+                                                </div>
+                                             </div>
+                                             <div class="basic-information">                                                
+                                                <div class="gender-content">
+                                                   <span class="contact-title"><strong>Nom de la mère :</strong></span>
+                                                   <span class="gender">{{$mandataire->prospect->nom_mere}}</span>
+                                                </div>
+                                             </div>
+                                             
+                                             <div class="basic-information">                                                
+                                                <div class="gender-content">
+                                                   <span class="contact-title"><strong>Statut souhaité :</strong></span>
+                                                   <span class="gender">{{$mandataire->prospect->statut_souhaite}}</span>
+                                                </div>
+                                             </div>
+                                             
+                                             
+                                             
+                                             <div class="basic-information">                                                
+                                                <div class="gender-content">
+                                                   <span class="contact-title"><strong>Codes postaux souhaités:</strong></span>
+                                                   <span class="gender">{{$mandataire->prospect->code_postaux}}</span>
+                                                </div>
+                                             </div>
+                                             <div class="basic-information">                                                
+                                                <div class="gender-content">
+                                                   <span class="contact-title"><strong>Numéro RSAC:</strong></span>
+                                                   <span class="gender">{{$mandataire->prospect->numero_rsac}}</span>
+                                                </div>
+                                             </div>
+                                             <div class="basic-information">                                                
+                                                <div class="gender-content">
+                                                   <span class="contact-title"><strong>Numéro SIRET:</strong></span>
+                                                   <span class="gender">{{$mandataire->prospect->numero_siret}}</span>
+                                                </div>
+                                             </div>
+                                             
+                                             <div class="basic-information">                                                
+                                                <div class="gender-content">
+                                                   <span class="contact-title"><strong>Carte d'identité :</strong></span>
+                                                   
+                                                   @if($mandataire->prospect->piece_identite != null)
+                                                        <a class="btn btn-warning color-info" title="Télécharger la pièce d'identité" style="color: #fff"   href="{{route('prospect.telecharger',[ Crypt::encrypt($mandataire->prospect->id),"piece_identite"])}}"  class="  m-b-10 m-l-5 ">Télécharger <i class="ti-download"></i> </a>
+                                                   
+                                                   @else 
+                                                        <span class="contact-title text-danger"><strong> Non Ajoutée </strong></span>                                                  
+                                                   @endif                                                
+                                                </div>
+                                             </div>
+                                             
+                                             <div class="basic-information">                                                
+                                                <div class="gender-content">
+                                                   <span class="contact-title"><strong>Attestion responsabilité  :</strong></span>
+                                                   
+                                                   @if($mandataire->prospect->attestation_responsabilite != null)
+                                                        <a class="btn btn-warning color-info" title="Télécharger la pièce d'identité" style="color: #fff"   href="{{route('prospect.telecharger',[ Crypt::encrypt($mandataire->prospect->id),"attestation_responsabilite"])}}"  class="  m-b-10 m-l-5 ">Télécharger <i class="ti-download"></i> </a>
+                                                   
+                                                   @else 
+                                                        <span class="contact-title text-danger"><strong> Non Ajoutée </strong></span>                                                  
+                                                   @endif                                                
+                                                </div>
+                                             </div>
+                                             
+                                             <div class="basic-information">                                                
+                                                <div class="gender-content">
+                                                   <span class="contact-title"><strong>Rib :</strong></span>
+                                                   
+                                                   @if($mandataire->prospect->rib != null)
+                                                        <a class="btn btn-warning color-info" title="Télécharger la pièce d'identité" style="color: #fff"   href="{{route('prospect.telecharger',[ Crypt::encrypt($mandataire->prospect->id),"rib"])}}"  class="  m-b-10 m-l-5 ">Télécharger <i class="ti-download"></i> </a>
+                                                   
+                                                   @else 
+                                                        <span class="contact-title text-danger"><strong> Non Ajoutée </strong></span>                                                  
+                                                   @endif                                                
+                                                </div>
+                                             </div>
+                                             
+                                             
+                                             <div class="basic-information">                                                
+                                                <div class="gender-content">
+                                                   <span class="contact-title"><strong>Photo :</strong></span>
+                                                   
+                                                   @if($mandataire->prospect->photo != null)
+                                                        <a class="btn btn-warning color-info" title="Télécharger la pièce d'identité" style="color: #fff"   href="{{route('prospect.telecharger',[ Crypt::encrypt($mandataire->prospect->id),"photo"])}}"  class="  m-b-10 m-l-5 ">Télécharger <i class="ti-download"></i> </a>
+                                                   
+                                                   @else 
+                                                        <span class="contact-title text-danger"><strong> Non Ajoutée </strong></span>                                                  
+                                                   @endif                                                
+                                                </div>
+                                             </div>
+                                             
+                                             @else 
+                                             
+                                             
+                                             
+                                             
+                                             @endif
+                                             
+                                             @endif
+                                             
+                                             
+                                             
+                                             
                                             
                                           </div>
                                        </div>
