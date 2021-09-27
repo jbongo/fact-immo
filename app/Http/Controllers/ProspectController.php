@@ -28,10 +28,8 @@ class ProspectController extends Controller
      */
     public function index()
     {
-        // $prospects = Prospect::where([['archive', false], ['est_mandataire', false]])->get();
-        $prospects = Prospect::where('archive', false)->get();
-        
-        
+        $prospects = Prospect::where([['archive', false], ['est_mandataire', false]])->get();
+        // $prospects = Prospect::where('archive', false)->get();
         
         return view('prospect.index', compact('prospects'));
     }
@@ -577,6 +575,12 @@ class ProspectController extends Controller
       
         $prospect = Prospect::where('id',Crypt::decrypt($prospect_id))->first();
         
+        $mandataire = User::where('email_perso',$prospect->email)->first();
+
+        
+        if($mandataire != null){
+            return  redirect()->route('prospect.index')->with('ok','Cette adresse email existe déjà');
+        }
         
         if($prospect->est_mandataire == false){
             
@@ -596,9 +600,6 @@ class ProspectController extends Controller
                 'adresse'=>$prospect->adresse,
                 'siret'=>$prospect->numero_siret,
               
-                
-               
-            
             ]);
         }
         else{

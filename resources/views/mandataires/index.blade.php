@@ -15,7 +15,7 @@
              @endif       
             <div class="card alert">
                 <!-- table -->
-            <a href="{{route('mandataire.create')}}" class="btn btn-success btn-rounded btn-addon btn-sm m-b-10 m-l-5"><i class="ti-user"></i>@lang('Nouveau mandataire')</a>
+            {{-- <a href="{{route('mandataire.create')}}" class="btn btn-success btn-rounded btn-addon btn-sm m-b-10 m-l-5"><i class="ti-user"></i>@lang('Nouveau mandataire')</a> --}}
               
             <div class="row">
                     <!-- Navigation Buttons -->
@@ -25,8 +25,6 @@
                           <li id="li_recrutement_nav"><a href="#recrutement_nav" data-toggle="pill"> <i class="material-icons" style="font-size: 15px;">account_balance_wallet</i> @lang('Recrutement')</a></li>
                           <li id="li_demissionnaire_nav"><a href="#demissionnaire_nav" data-toggle="pill"> <i class="material-icons" style="font-size: 15px;">account_balance_wallet</i> @lang('Démissionnaires')</a></li>
                           <li id="li_desactive_nav"><a href="#desactive_nav" data-toggle="pill"> <i class="material-icons" style="font-size: 15px;">account_balance_wallet</i> @lang('Mandataires Désactivés')</a></li>
-                         
-                         
                        </ul>
                     </div>
                     <!-- Content -->
@@ -42,9 +40,6 @@
                           </div>
                        </div>
                     </div>
-
-
-
 
                </div>
          </div>
