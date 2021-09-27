@@ -53,7 +53,7 @@ class FactureController extends Controller
             
             $date_deb = date("Y-m-d", $date_deb);
             
-            // dd($date_deb);
+            
         }
         
         
@@ -88,15 +88,28 @@ class FactureController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index_honoraire()
+    public function index_honoraire(Request $request)
     {
         //
         //
-    
+        $date_deb = $request->date_deb;
+        $date_fin = $request->date_fin;
+        
+        if($date_deb == null || $date_fin == null || ($date_deb > $date_fin)){
+        
+            $date_fin = date('Y-m-d');
+            
+            $date_deb = strtotime($date_fin."-8 months");
+            
+            $date_deb = date("Y-m-d", $date_deb);
+            
+            
+        }
+        
         $nb_comm_non_regle  = "";
     
         if(auth()->user()->role == "admin"){
-            $factureHonoraires = Facture::whereIn('type',['honoraire','partage','partage_externe','parrainage','parrainage_partage'])->latest()->get();                       
+            $factureHonoraires = Facture::whereIn('type',['honoraire','partage','partage_externe','parrainage','parrainage_partage'])->whereBetween('date_facture',[$date_deb,$date_fin])->latest()->get();                       
         }else{
             $factureHonoraires = Facture::where('user_id',auth()->user()->id)->whereIn('type',['honoraire','partage','partage_externe','parrainage','parrainage_partage'])->latest()->get();
             $nb_comm_non_regle  = Facture::where([['user_id',auth()->user()->id],['reglee',false]])->whereIn('type',['pack_pub','carte_visite'])->count();
@@ -104,7 +117,7 @@ class FactureController extends Controller
         }
         
         
-        return view ('facture.honoraire',compact(['factureHonoraires','nb_comm_non_regle']));
+        return view ('facture.honoraire',compact(['factureHonoraires','nb_comm_non_regle','date_deb','date_fin']));
     }
     
     

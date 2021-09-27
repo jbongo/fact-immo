@@ -40,6 +40,31 @@
              
                 <!-- table -->
                 
+                @if(Auth::user()->role == "admin")
+                <div class="row">
+
+                   <form action="{{route('facture.index_honoraire')}}" method="GET">
+                    @csrf
+                        <div class="col-md-4">
+                            <label>Date de début</label>
+                                <input type="date" required name="date_deb" id="date_deb" value="{{$date_deb}}" class="form-control">
+                        </div>
+                    
+                        <div class="col-md-4">
+                            <label>Date de fin</label>
+                                <input type="date" required name="date_fin" id="date_fin" value="{{$date_fin}}" class="form-control">
+                        </div>
+                        <div class="col-md-2">
+                            <label>.</label>
+                        
+                            <button id="trier" class="btn btn-danger form-control">Trier</button>
+                        </div>
+                    
+                   </form>
+                </div>
+                <br><hr>
+                @endif
+                
                 <div class="card-body">
                         <div class="panel panel-default m-t-15" id="cont">
                                 <div class="panel-heading"></div>
