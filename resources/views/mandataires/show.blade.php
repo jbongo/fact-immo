@@ -98,7 +98,7 @@
                                              
                                              
                                              
-                                             @if($mandataire->prospect() != null )
+                                             @if($mandataire->prospect != null )
                                              
                                              <div class="basic-information">
                                                 {{-- <h4 style="color: #32ade1;text-decoration: underline;">Role utilisateur</h4> --}}
