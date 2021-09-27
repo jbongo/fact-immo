@@ -117,7 +117,7 @@
                                              <div class="basic-information">                                                
                                                 <div class="gender-content">
                                                    <span class="contact-title"><strong>Date de naissance :</strong></span>
-                                                   <span class="gender">{{$prospect->date_naissance->format('d/m/Y')}}</span>
+                                                   <span class="gender"> @if($prospect->date_naissance != null) {{$prospect->date_naissance->format('d/m/Y')}} @endif </span>
                                                 </div>
                                              </div>
                                              
