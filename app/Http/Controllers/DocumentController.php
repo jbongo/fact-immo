@@ -10,7 +10,7 @@ use App\Fichier;
 use Illuminate\Support\Facades\File ;
 
 
-use Illuminate\Support\facades\Crypt;
+use Illuminate\Support\Facades\Crypt;
 class DocumentController extends Controller
 {
     /**
