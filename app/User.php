@@ -6,6 +6,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Facture;
+use App\Fichier;
 
 class User extends Authenticatable
 {
@@ -309,6 +310,16 @@ class User extends Authenticatable
     public function prospect(){
     
         return $this->hasOne('App\Prospect');
+    
+    }
+    
+    
+        
+    // Retourne le document du mandataire 
+    public function document($document_id){
+    
+        $fichier = Fichier::where([['document_id',$document_id], ['user_id', $this->id]])->first();
+        return $fichier;
     
     }
 

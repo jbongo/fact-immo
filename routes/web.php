@@ -322,6 +322,20 @@ Route::get('/banque/traitement','BanqueController@traiter_encaissement')->name('
 Route::get('/banque/lecture_fichier','BanqueController@lecture_fichier_banque')->name('banque.lecture.fichier');
 
 
+// Documents
+
+Route::get('/documents','DocumentController@index')->name('document.index');
+Route::get('/documents/liste','DocumentController@liste')->name('document.liste');
+Route::get('/documents/create','DocumentController@create')->name('document.create');
+Route::get('/documents/edit/{document_id}','DocumentController@edit')->name('document.edit');
+Route::get('/documents/show/{mandataire_id}','DocumentController@show')->name('document.show');
+Route::post('/documents/store','DocumentController@store')->name('document.store');
+Route::post('/documents/update/{document_id}','DocumentController@update')->name('document.update');
+Route::get('/documents/archiver/{document_id}','DocumentController@archiver')->name('document.archiver');
+Route::post('/documents/save_doc/{mandataire_id}','DocumentController@save_doc')->name('document.save_doc');
+Route::get('/documents/telecharger/{mandataire_id}/{document_id}','DocumentController@download_document')->name('document.telecharger');
+
+
 
 
 

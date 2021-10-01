@@ -32,7 +32,7 @@ class ExportwinficController extends Controller
     }
 
     /**
-     *exporter les fichiers ECRITURE.WIN 
+     *exporter les fichiers ECRITURE.WIN transfert des ventes, encaissements et décaissements
      *
      * @return \Illuminate\Http\Response
      */
@@ -57,6 +57,7 @@ class ExportwinficController extends Controller
             unlink("ECRITURE.WIN");
         }
         
+        // ########### TRANSFERT DES VENTES
         
         foreach ($factureStylimmos as $facture) {
            
@@ -157,6 +158,97 @@ class ExportwinficController extends Controller
             
         }
         
+        
+        
+        
+        
+        // TRANSFERT DES ENCAISSEMENTS
+        
+        
+        $factureEncaissees = Facture::whereIn('type',['stylimmo','pack_pub','carte_visite','communication','autre','forfait_entree','cci'])->whereBetween('date_encaissement',[$date_deb,$date_fin])->orderBy('numero','asc')->get();  
+        
+        
+        $data_encai = "";
+        
+        foreach ($factureEncaissees as $facture) {
+            
+            $code_journal_encai = $facture->type == "stylimmo" ?  "B2" : "B1";
+            $date_operation_encai = $facture->date_encaissement->format('dmY');
+            $num_folio_encai = 1;
+            $num_ecriture_encai = 1;
+            $jour_ecriture_encai =  $this->formatage_colonne(6,$facture->date_encaissement->format('d'), "droite");;
+            
+            
+            
+            // SI VENTE ET LOCATION = 9CLIEN, SI PACK pub, frais entrée etc = 9NON_CLIENT  si mandataire ou xxxxx   si client externe
+          
+            
+            if($facture->type == "stylimmo"){
+            
+                $compte_ttc_encai = "9CLIEN";
+                
+                $libelle = $facture->compromis->charge == "vendeur" ?  $facture->compromis->nom_vendeur." ".$facture->compromis->prenon_vendeur : $facture->compromis->nom_acquereur." ".$facture->compromis->prenon_acquereur;                
+                $libelle_encai = $this->formatage_colonne(30, $facture->compromis->scp_notaire." / ". $libelle);
+                
+                $compte_contrepartie_encai = "512003";
+            
+            }else{
+                
+ 
+                $compte_ttc_encai = $facture->user->code_client;
+                
+                $libelle_encai =  $this->formatage_colonne(30, $facture->user->nom." ".$facture->user->prenom);
+                
+                $compte_contrepartie_encai = "512002";
+
+            
+                
+                
+            }
+            
+            
+            
+           
+            
+            
+            
+            $montant_debit_ttc_encai = $this->formatage_colonne(13, " ", "droite");
+            $montant_credit_ttc_encai = $this->formatage_colonne(13, number_format($facture->montant_ttc,2, ",",""), "droite");
+            
+            $montant_debit_contrepartie_encai = $this->formatage_colonne(13, number_format($facture->montant_ttc,2, ",",""), "droite") ;
+            $montant_credit_contrepartie_encai = $this->formatage_colonne(13, " ", "droite");
+            
+   
+            
+            
+            $lettrage_encai = "  ";
+            $code_piece_encai = $this->formatage_colonne(5, $facture->numero);
+            $code_stat_encai = "    ";
+            $date_echeance_encai =  $facture->date_facture->format('dmY');
+            $monnaie_encai = 1;
+            $filler_encai = " ";
+            $ind_compteur_encai = " ";
+            $quantite_encai = "      0,000";
+            $code_pointage_encai = "  ";
+                    
+            $ligne1_encai = $code_journal_encai."|".$date_operation_encai."|".$this->formatage_colonne(6,$num_folio_encai,'droite')."|".$this->formatage_colonne(6,$num_ecriture_encai,'droite')."|".$jour_ecriture_encai."|".$compte_ttc_encai."|".$montant_debit_ttc_encai."|".$montant_credit_ttc_encai."|".$libelle_encai."|".$lettrage_encai."|".$code_piece_encai."|".$code_stat_encai."|".$date_echeance_encai."|".$monnaie_encai."|".$filler_encai."|".$ind_compteur_encai."|".$quantite_encai."|".$code_pointage_encai."|\r\n";
+            $num_ecriture_encai++;
+            
+            $ligne2_encai = $code_journal_encai."|".$date_operation_encai."|".$this->formatage_colonne(6,$num_folio_encai,'droite')."|".$this->formatage_colonne(6,$num_ecriture_encai,'droite')."|".$jour_ecriture_encai."|".$compte_contrepartie_encai."|".$montant_debit_contrepartie_encai."|".$montant_credit_contrepartie_encai."|".$libelle_encai."|".$lettrage_encai."|".$code_piece_encai."|".$code_stat_encai."|".$date_echeance_encai."|".$monnaie_encai."|".$filler_encai."|".$ind_compteur_encai."|".$quantite_encai."|".$code_pointage_encai."|\r\n";
+            $num_ecriture_encai++;
+            
+            $data_encai .= $ligne1_encai.$ligne2_encai.$ligne3_encai;
+            
+            
+           
+            
+            
+        }
+        
+        $montant_contre_partie = "000 ???";
+        $compte_contre_partie = "512003 ou 512002";
+        
+        dd($data_encai);
  
         file_put_contents("ECRITURE.WIN", $data);
         
@@ -169,7 +261,7 @@ class ExportwinficController extends Controller
 
 
 /**
-     *exporter les fichiers ECRITURE.WIN 
+     *exporter les fichiers ECRANA.WIN / transferts des factures des indépendants 
      *
      * @return \Illuminate\Http\Response
      */

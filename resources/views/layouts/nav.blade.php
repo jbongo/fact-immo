@@ -206,7 +206,7 @@
                         </ul>
                     </li>
                     
-                    <li class=""  style=" background:#aeefec"><a  href="{{route('winfic.index')}}" class=""> <i class="large material-icons" style="font-size:20px;">vertical_align_center</i></i>Export WINFIC   </a></li>
+                    <li class=""><a  href="{{route('winfic.index')}}" class=""> <i class="large material-icons" style="font-size:20px;">vertical_align_center</i></i>Export WINFIC   </a></li>
                         {{-- <li class=""><a  href="{{route('export_facture.index')}}" class=""> <i class="large material-icons" style="font-size:20px;">vertical_align_center</i></i>Export   </a> --}}
                     <li class=""><a  href="{{route('historique.index')}}" class=""> <i class="large material-icons" style="font-size:20px;">access_time</i></i>Historique   </a> </li>
                     {{-- <li class=""><a  href="{{route('etat_financier')}}" class=""> <i class="large material-icons" style="font-size:20px;">enhanced_encryption</i></i>Etat financier   </a></li> --}}
@@ -217,7 +217,9 @@
                            
                         </ul>
                     </li>
+                    <li class=""  style=" background:#144542"><a  href="{{route('document.index')}}" class=""> <i class="large material-icons" style="font-size:20px;">vertical_align_bottom</i></i> @if(Auth::user()->role == "admin")  Documents @else Mes documents  @endif </a></li>
                     @endif
+                    
 
                     {{-- @if(Auth()->user()->role == "admin"  ) --}}
                         <li  class="" ><a href="{{route('outil_calcul.index')}}" ><i class="large material-icons" style="font-size:20px;">iso</i> Outil de calcul </a></li>

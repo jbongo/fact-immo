@@ -3224,12 +3224,6 @@ public function valider_honoraire($action, $facture_id)
       
         return response()->download($avoir->url,$filename);
 
-    //     $pdf = PDF::loadView('facture.avoir.pdf_avoir_stylimmo',compact(['compromis','mandataire','facture','avoir']));
-    //     $path = storage_path('app/public/avoirs/avoir.pdf');
-    //     $pdf->save($path);
-    // //    return  $pdf->download($path);
-    //     // dd('ddd');
-    //    return $pdf->download('facture.pdf');
       
     }
 
