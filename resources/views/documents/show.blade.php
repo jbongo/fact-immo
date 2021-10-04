@@ -27,17 +27,50 @@
                 <a href="{{route('document.create')}}" class="btn btn-warning btn-rounded btn-addon btn-lg m-b-10 m-l-5"><i class="ti-plus"></i>@lang('Créer un nouveau document')</a>
 
               
-            
-                
             <div class="card-body">
                 <div class="panel panel-default m-t-15" id="cont">
                     <div class="panel-heading"></div>
                         <div class="panel-body">
+                        
+                      
+                    
                             
+                            
+                            <div class="row">
+                            
+                                <div class="col-lg-4 col-md-4 col-sm-4">
+                                    
+                                    <div class="row form-group ">
+                                        <label class="col-lg-12 col-md-12 col-sm-12 control-label" for="">Contrat Signé + annexes</label>
+                    
+                                        
+                                        <br>
+                             
+                                  </div>
+                                </div>
+                                
+                                <div class="col-lg-4 col-md-4 col-sm-4">
+                                </div>
+                                
+                                <div class="col-lg-4 col-md-4 col-sm-4" style="text-align: right">
+                                    @if($mandataire->contrat != null)
+                                    <a href="{{route('contrat.telecharger', Crypt::encrypt($mandataire->contrat->id))}}"data-toggle="tooltip" title="Télécharger le contrat"  class="btn btn-danger btn-flat btn-addon "><i class="ti-download"></i>télécharger le contrat + annexes</a>
+                                    @else 
+                                    
+                                    <label for=""><i>Aucun document</i></label>
+                                    @endif
+                                
+                                </div>
+                            </div>
+                            <hr style="border-top: 3px solid #272213;">
+
+                            
+                            <br><br>
+                              
                             <form action="{{route('document.save_doc', $mandataire->id)}}" method="POST" enctype="multipart/form-data">
                             
                             @csrf
-
+                            
                             @foreach ( $documents as $document )
                                 
                                 <div class="row">
@@ -89,7 +122,6 @@
                                     <div class="col-lg-4 col-md-4 col-sm-4" style="text-align: right">
                                         @if($mandataire->document($document->id) != null)
                                         <a href="{{route('document.telecharger', [$mandataire->id, $document->id])}}"data-toggle="tooltip" title="Télécharger {{$document->nom}}"  class="btn btn-danger btn-flat btn-addon "><i class="ti-download"></i>{{$document->nom}}</a> 
-                                        
                                         @else 
                                         
                                         <label for=""><i>Aucun document</i></label>

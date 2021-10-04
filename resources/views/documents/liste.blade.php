@@ -33,6 +33,7 @@
                                 <th>@lang('Référence')</th>
                                 <th>@lang('Description')</th>
                                 <th>@lang('Date d\'expiration')</th>
+                                <th>@lang('Suppression après démission')</th>
                 
                                
                                 <th>@lang('Action')</th>
@@ -57,6 +58,15 @@
                       
                                 <td>
                                     @if($document->a_date_expiration == true)
+                                    <span class="badge badge-success">Oui</span>
+                                    @else 
+                                    <span class="badge badge-danger">Non</span>
+                                    
+                                    @endif
+                                 </td> 
+                                 
+                                 <td>
+                                    @if($document->supprime_si_demissionne== true)
                                     <span class="badge badge-success">Oui</span>
                                     @else 
                                     <span class="badge badge-danger">Non</span>

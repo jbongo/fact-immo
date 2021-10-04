@@ -217,8 +217,8 @@
                            
                         </ul>
                     </li>
-                    <li class=""  style=" background:#144542"><a  href="{{route('document.index')}}" class=""> <i class="large material-icons" style="font-size:20px;">vertical_align_bottom</i></i> @if(Auth::user()->role == "admin")  Documents @else Mes documents  @endif </a></li>
                     @endif
+                    <li class=""  style=" background:#144542"><a  @if(Auth::user()->role == "admin")  href="{{route('document.index')}}" @else  href="{{route('document.show', Crypt::encrypt(Auth::user()->id)) }} "  @endif > <i class="large material-icons" style="font-size:20px;">vertical_align_bottom</i></i> @if(Auth::user()->role == "admin")  Documents @else Mes documents  @endif </a></li>
                     
 
                     {{-- @if(Auth()->user()->role == "admin"  ) --}}

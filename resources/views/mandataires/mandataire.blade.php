@@ -13,6 +13,7 @@
                                         <th>@lang('Statut')</th>
                                         <th>@lang('TVA')</th>
                                         <th>@lang('Jeton')</th>
+                                        <th>@lang('Facturation')</th>
                                         {{-- <th>@lang('Email')</th> --}}
                                         <th>@lang('Téléphone pro')</th>
                                         {{-- <th>@lang('Adresse')</th> --}}
@@ -52,13 +53,24 @@
                                         <a href="{{route('mandataire.historique_jeton', Crypt::encrypt($mandataire->id))}}" class="badge badge-default"><i style="font-size: 15px" class="material-icons color-success ">launch</i>  <span style="font-size: 22px"> {{$mandataire->nb_mois_pub_restant}} </span></a>
                                                 @else 
                                                     <span class="badge badge-danger">Non</span>
-                                                @endif
-
-
-                                                  
+                                                @endif                                                  
                                             @endif
                                             
                                         </td>
+                                        
+                                        <td style="color: #32ade1;  ">
+                                            @if($mandataire->contrat != null)
+                                                @if($mandataire->contrat->est_soumis_fact_pub == true)
+                                                    <span class="badge badge-success">Oui</span>
+                                                
+                                                @else 
+                                                    <span class="badge badge-danger">Non</span>
+                                                @endif                                                  
+                                            @endif
+                                            
+                                        </td>
+                                        
+                                        
                                         {{-- <td style="color: #32ade1; text-decoration: underline;">
                                         <strong>{{$mandataire->email}}</strong> 
                                         </td> --}}

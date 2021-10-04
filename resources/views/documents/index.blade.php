@@ -48,15 +48,20 @@
                                     {{$mandataire->prenom}}    {{$mandataire->nom}} 
                                 </td>
                                 <td>
-                                    {{-- @if($mandataire->document != null)
+                                    @if($mandataire->contrat != null)
                                         <a href="{{route('contrat.telecharger', Crypt::encrypt($mandataire->contrat->id))}}"data-toggle="tooltip" title="Télécharger le contrat"  class="btn btn-danger btn-flat btn-addon "><i class="ti-download"></i>télécharger le contrat + annexes</a> 
-                                    @endif --}}
+                                    @endif
                                 </td>
                                 <td>
-                                    {{$mandataire->rib}}
+                                    @if($mandataire->document("attestationcollaborateur") != null)
+                                        <a href="{{route('document.telecharger', [$mandataire->id, $document->id])}}"data-toggle="tooltip" title="Télécharger {{$document->nom}}"  class="btn btn-danger btn-flat btn-addon "><i class="ti-download"></i>{{$document->nom}}</a> 
+ 
+                                    @endif
                                 </td>
                                 <td>
-                                    {{$mandataire->rib}}
+                                    @if($mandataire->document("rib") != null)
+                                        <a href="{{route('contrat.telecharger', Crypt::encrypt($mandataire->contrat->id))}}"data-toggle="tooltip" title="Télécharger le contrat"  class="btn btn-danger btn-flat btn-addon "><i class="ti-download"></i>télécharger le contrat + annexes</a> 
+                                    @endif
                                 </td>
 
                                 <td width="15%">

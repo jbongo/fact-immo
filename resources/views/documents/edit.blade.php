@@ -73,10 +73,30 @@ Modification d'un document à fournir
                               @endif
                            </div>
                         </div>
+                        
+                        <div class="form-group row">
+                           <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="supprime_si_demissionne">Supprimer le document si le mandataire démissionne ? <span class="text-danger">*</span></label>
+                           <div class="col-lg-8 col-md-8 col-sm-8">
+                              <select class="js-select2 form-control {{$errors->has('supprime_si_demissionne') ? 'is-invalid' : ''}}" id="supprime_si_demissionne" name="supprime_si_demissionne" style="width: 100%;" data-placeholder="Choose one.." required>
+                               
+                                 <option value="{{$document->supprime_si_demissionne == true ? 'Oui': 'Non'}}">{{$document->supprime_si_demissionne == true ? 'Oui': 'Non'}}</option>
+                                 <option value="Oui">Oui</option>
+                                 <option value="Non">Non</option>
+                              </select>
+                              @if ($errors->has('supprime_si_demissionne'))
+                              <br>
+                              <div class="alert alert-warning ">
+                                 <strong>{{$errors->first('supprime_si_demissionne')}}</strong> 
+                              </div>
+                              @endif
+                           </div>
+                        </div>
 
                     </div>
                     
                     
+                  
+                  
                     <div class="col-lg-6 col-md-6 col-sm-6">
 
                         
