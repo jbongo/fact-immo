@@ -72,7 +72,7 @@ Modification facture {{$facture->type}} {{$facture->numero}}
                                     <option value="pack_pub" data-tokens="pub">Pub</option>
                                     <option value="communication" data-tokens="communication">Communication</option>
                                     <option value="communication" data-tokens="communication">Communication</option>
-                                    <option value="forfait_entree" data-tokens="forfait_entree">Forfait d'endrée</option>
+                                    <option value="forfait_entree" data-tokens="forfait_entree">Forfait d'entrée</option>
                                     <option value="autre" data-tokens="autre">Autre</option>
                                     
                                  </select>

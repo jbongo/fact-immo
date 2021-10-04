@@ -7,6 +7,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Facture;
 use App\Fichier;
+use App\Document;
 
 class User extends Authenticatable
 {
@@ -318,7 +319,15 @@ class User extends Authenticatable
     // Retourne le document du mandataire 
     public function document($document_id){
     
-        $fichier = Fichier::where([['document_id',$document_id], ['user_id', $this->id]])->first();
+        if(intval($document_id)){
+            $fichier = Fichier::where([['document_id',$document_id], ['user_id', $this->id]])->first();
+        
+        }else{
+        
+            $document = Document::where('reference', $document_id)->first();
+            $fichier = Fichier::where([['document_id',$document->id], ['user_id', $this->id]])->first();
+        
+        }
         return $fichier;
     
     }

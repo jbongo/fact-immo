@@ -80,7 +80,7 @@
                                         <div class="row form-group ">
                                             <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="{{$document->reference}}">{{$document->nom}}</label>
                                             <div class="col-lg-8 col-md-8 col-sm-8">
-                                                <input type="file" class="form-control" value="" id="{{$document->reference}}" name="{{$document->reference}}" accept=".pdf" >
+                                                <input type="file" class="form-control" value="" id="{{$document->reference}}" name="{{$document->reference}}" accept="" >
                                                 @if ($errors->has($document->reference))
                                                   <br>
                                                   <div class="alert alert-warning ">

@@ -8,6 +8,7 @@ use App\Document;
 use App\Fichier;
 
 use Illuminate\Support\Facades\File ;
+use Illuminate\Support\Facades\Storage;
 
 
 use Illuminate\Support\Facades\Crypt;
@@ -252,15 +253,26 @@ class DocumentController extends Controller
     public  function download_document($mandataire_id, $document_id)
     {
     
-    
+        
         $mandataire = User::where('id', $mandataire_id)->first();
-        $document = Document::where('id', $document_id)->first();
+        
+        if(intval($document_id)){
+            $document = Document::where('id', $document_id)->first();
+        
+        }else{
+        
+            $document = Document::where('reference', $document_id)->first();
+        
+        }
+       
         
         $fichier = $mandataire->document($document_id);
         
         $nom = strtolower(preg_replace('/[^A-Za-z0-9]/', '', $mandataire->nom));
 
         $filename = $document->reference.'_'.$nom.$fichier->extension ;
+        
+        // dd($fichier->url);
       
         return response()->download($fichier->url,$filename);
     
