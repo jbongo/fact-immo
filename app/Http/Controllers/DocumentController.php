@@ -261,7 +261,9 @@ class DocumentController extends Controller
                                 
                                 
                                 // On réccupère l'extension du fichier
-                                $extension_historique = '.'.explode(".",$fichier->url)[1];
+                                $extension_historique = explode(".",$fichier->url);
+                                
+                                $extension_historique = '.'.$extension_historique[sizeof($extension_historique) - 1];
                                 
                                 $filename_historique = $document->reference . "_".$mandataire->id."_".random_int(1, 10000).$extension_historique;
                                 
