@@ -25,7 +25,7 @@ class ExportwinficController extends Controller
             $date_fin = date("Y-m-d");        
         }     
         
-        $factureStylimmos = Facture::whereIn('type',['stylimmo','avoir','pack_pub','carte_visite','communication','autre','forfait_entree','cci'])->whereBetween('date_facture',[$date_deb,$date_fin])->where('user_id',77)->orderBy('numero','asc')->get();  
+        $factureStylimmos = Facture::whereIn('type',['stylimmo','avoir','pack_pub','carte_visite','communication','autre','forfait_entree','cci'])->whereBetween('date_facture',[$date_deb,$date_fin])->where('user_id','<>',77)->orderBy('numero','asc')->get();  
        
         return view ('winfic.index',compact(['factureStylimmos','date_deb','date_fin']));
         
@@ -47,7 +47,7 @@ class ExportwinficController extends Controller
             $date_fin = date("Y-m-d");        
         }     
         
-        $factureStylimmos = Facture::whereIn('type',['stylimmo','avoir','pack_pub','carte_visite','communication','autre','forfait_entree','cci'])->whereBetween('date_facture',[$date_deb,$date_fin])->where('user_id',77)->orderBy('numero','asc')->get();  
+        $factureStylimmos = Facture::whereIn('type',['stylimmo','avoir','pack_pub','carte_visite','communication','autre','forfait_entree','cci'])->whereBetween('date_facture',[$date_deb,$date_fin])->where('user_id','<>',77)->orderBy('numero','asc')->get();  
         
         $data = "";
         $num_folio = 1;
@@ -276,7 +276,7 @@ class ExportwinficController extends Controller
             $date_fin = date("Y-m-d");        
         }     
         
-        $factureStylimmos = Facture::whereIn('type',['stylimmo','avoir','pack_pub','carte_visite','communication','autre','forfait_entree','cci'])->whereBetween('date_facture',[$date_deb,$date_fin])->where('user_id',77)->orderBy('numero','asc')->get();    
+        $factureStylimmos = Facture::whereIn('type',['stylimmo','avoir','pack_pub','carte_visite','communication','autre','forfait_entree','cci'])->whereBetween('date_facture',[$date_deb,$date_fin])->where('user_id','<>',77)->orderBy('numero','asc')->get();    
         
         $data = "";
         $num_folio = 1;
