@@ -75,18 +75,36 @@ Modification d'un document à fournir
                         </div>
                         
                         <div class="form-group row">
-                           <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="supprime_si_demissionne">Supprimer le document si le mandataire démissionne ? <span class="text-danger">*</span></label>
+                           <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="supprime_si_demission">Supprimer le document si le mandataire démissionne ? <span class="text-danger">*</span></label>
                            <div class="col-lg-8 col-md-8 col-sm-8">
-                              <select class="js-select2 form-control {{$errors->has('supprime_si_demissionne') ? 'is-invalid' : ''}}" id="supprime_si_demissionne" name="supprime_si_demissionne" style="width: 100%;" data-placeholder="Choose one.." required>
+                              <select class="js-select2 form-control {{$errors->has('supprime_si_demission') ? 'is-invalid' : ''}}" id="supprime_si_demission" name="supprime_si_demission" style="width: 100%;" data-placeholder="Choose one.." required>
                                
-                                 <option value="{{$document->supprime_si_demissionne == true ? 'Oui': 'Non'}}">{{$document->supprime_si_demissionne == true ? 'Oui': 'Non'}}</option>
+                                 <option value="{{$document->supprime_si_demission == true ? 'Oui': 'Non'}}">{{$document->supprime_si_demission == true ? 'Oui': 'Non'}}</option>
                                  <option value="Oui">Oui</option>
                                  <option value="Non">Non</option>
                               </select>
-                              @if ($errors->has('supprime_si_demissionne'))
+                              @if ($errors->has('supprime_si_demission'))
                               <br>
                               <div class="alert alert-warning ">
-                                 <strong>{{$errors->first('supprime_si_demissionne')}}</strong> 
+                                 <strong>{{$errors->first('supprime_si_demission')}}</strong> 
+                              </div>
+                              @endif
+                           </div>
+                        </div>
+                        
+                        <div class="form-group row">
+                           <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="a_historique">Garder l'historique ? <span class="text-danger">*</span></label>
+                           <div class="col-lg-8 col-md-8 col-sm-8">
+                              <select class="js-select2 form-control {{$errors->has('a_historique') ? 'is-invalid' : ''}}" id="a_historique" name="a_historique" style="width: 100%;" data-placeholder="Choose one.." required>
+                               
+                                 <option value="{{$document->a_historique == true ? 'Oui': 'Non'}}">{{$document->a_historique == true ? 'Oui': 'Non'}}</option>
+                                 <option value="Oui">Oui</option>
+                                 <option value="Non">Non</option>
+                              </select>
+                              @if ($errors->has('a_historique'))
+                              <br>
+                              <div class="alert alert-warning ">
+                                 <strong>{{$errors->first('a_historique')}}</strong> 
                               </div>
                               @endif
                            </div>

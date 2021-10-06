@@ -24,8 +24,10 @@
              @endif       
             <div class="card alert">
                 <!-- table -->
-                <a href="{{route('document.create')}}" class="btn btn-warning btn-rounded btn-addon btn-lg m-b-10 m-l-5"><i class="ti-plus"></i>@lang('Créer un nouveau document')</a>
-
+                @if(Auth::user()->role == "admin")
+                <a href="{{route('document.index')}}" class="btn btn-warning btn-flat btn-addon m-b-10 m-l-5"><i class="ti-angle-double-left"></i>@lang('Retour')</a> <---->
+                <a href="{{route('document.historique', Crypt::encrypt($mandataire->id))}}" class="btn btn-default btn-flat btn-addon m-b-10 m-l-5"><i class="ti-timer"></i>@lang('Historique des docs')</a>
+                @endif
               
             <div class="card-body">
                 <div class="panel panel-default m-t-15" id="cont">
@@ -53,7 +55,7 @@
                                 </div>
                                 
                                 <div class="col-lg-4 col-md-4 col-sm-4" style="text-align: right">
-                                    @if($mandataire->contrat != null)
+                                    @if($mandataire->contrat != null && $mandataire->contrat->contrat_pdf != null)
                                     <a href="{{route('contrat.telecharger', Crypt::encrypt($mandataire->contrat->id))}}"data-toggle="tooltip" title="Télécharger le contrat"  class="btn btn-danger btn-flat btn-addon "><i class="ti-download"></i>télécharger le contrat + annexes</a>
                                     @else 
                                     
@@ -80,7 +82,7 @@
                                         <div class="row form-group ">
                                             <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="{{$document->reference}}">{{$document->nom}}</label>
                                             <div class="col-lg-8 col-md-8 col-sm-8">
-                                                <input type="file" class="form-control" value="" id="{{$document->reference}}" name="{{$document->reference}}" accept="" >
+                                                <input type="file" class="form-control" value="" id="{{$document->reference}}" name="{{$document->reference}}" accept=".jpeg,.jpg,.png,.pdf,.doc,.docx,.xls" >
                                                 @if ($errors->has($document->reference))
                                                   <br>
                                                   <div class="alert alert-warning ">
@@ -121,6 +123,7 @@
                                     
                                     <div class="col-lg-4 col-md-4 col-sm-4" style="text-align: right">
                                         @if($mandataire->document($document->id) != null)
+                                        {{$mandataire->document($document->id)->extension }}
                                         <a href="{{route('document.telecharger', [$mandataire->id, $document->id])}}"data-toggle="tooltip" title="Télécharger {{$document->nom}}"  class="btn btn-danger btn-flat btn-addon "><i class="ti-download"></i>{{$document->nom}}</a> 
                                         @else 
                                         

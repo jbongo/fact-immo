@@ -34,6 +34,7 @@
                                 <th>@lang('Description')</th>
                                 <th>@lang('Date d\'expiration')</th>
                                 <th>@lang('Suppression après démission')</th>
+                                <th>@lang('Sauvegarde d\'historique')</th>
                 
                                
                                 <th>@lang('Action')</th>
@@ -66,7 +67,15 @@
                                  </td> 
                                  
                                  <td>
-                                    @if($document->supprime_si_demissionne== true)
+                                    @if($document->supprime_si_demission== true)
+                                    <span class="badge badge-success">Oui</span>
+                                    @else 
+                                    <span class="badge badge-danger">Non</span>
+                                    
+                                    @endif
+                                 </td> 
+                                 <td>
+                                    @if($document->a_historique== true)
                                     <span class="badge badge-success">Oui</span>
                                     @else 
                                     <span class="badge badge-danger">Non</span>

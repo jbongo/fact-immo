@@ -48,7 +48,7 @@
                                     {{$mandataire->prenom}}    {{$mandataire->nom}} 
                                 </td>
                                 <td>
-                                    @if($mandataire->contrat != null)
+                                    @if($mandataire->contrat != null && $mandataire->contrat->contrat_pdf != null)
                                         <a href="{{route('contrat.telecharger', Crypt::encrypt($mandataire->contrat->id))}}"data-toggle="tooltip" title="Télécharger le contrat"  class="btn btn-danger btn-flat btn-addon "><i class="ti-download"></i>télécharger le contrat + annexes</a> 
                                     @endif
                                 </td>

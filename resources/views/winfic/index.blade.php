@@ -176,10 +176,10 @@
                                         </td>
                                    
                                         <td width="" >
-                                            <label class="color-info">{{$facture->user->code_client}} </label> 
+                                            <label class="color-info"> @if($facture->user != null) {{$facture->user->code_client}}  @endif</label> 
                                         </td>
                                         <td width="" >
-                                            <label class="color-danger">{{$facture->user->code_analytic}} </label> 
+                                            <label class="color-danger"> @if($facture->user != null) {{$facture->user->code_analytic}}  @endif</label> 
                                         </td>
                                         <td  width="" >
                                         {{number_format($facture->montant_ht,'2','.','')}}

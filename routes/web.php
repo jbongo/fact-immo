@@ -334,6 +334,8 @@ Route::post('/documents/update/{document_id}','DocumentController@update')->name
 Route::get('/documents/archiver/{document_id}','DocumentController@archiver')->name('document.archiver');
 Route::post('/documents/save_doc/{mandataire_id}','DocumentController@save_doc')->name('document.save_doc');
 Route::get('/documents/telecharger/{mandataire_id}/{document_id}','DocumentController@download_document')->name('document.telecharger');
+Route::get('/documents/telecharger_historique/{historique_id}/','DocumentController@download_historique_document')->name('document.telecharger.historique');
+Route::get('/documents/historique/{mandataire_id}','DocumentController@historique')->name('document.historique');
 
 
 

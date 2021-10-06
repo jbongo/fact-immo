@@ -19,6 +19,7 @@ class CreateDocumentsTable extends Migration
             $table->string('reference')->nullable();
             $table->text('description')->nullable();
             $table->boolean('a_date_expiration')->default(false);
+            $table->boolean('a_historique')->default(false);
             $table->boolean('supprime_si_demission')->default(false);
             $table->boolean('archive')->default(false);
             

@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use App\User;
 use App\Document;
 use App\Fichier;
+use App\Historiquefichier;
+use App\Historique;
+use Auth;
 
 use Illuminate\Support\Facades\File ;
 use Illuminate\Support\Facades\Storage;
@@ -75,6 +78,8 @@ class DocumentController extends Controller
             "description"=> $request->description,
             "reference"=> $reference,
             "a_date_expiration"=> $request->a_date_expiration == "Oui" ? true : false,
+            "supprime_si_demission"=> $request->supprime_si_demission == "Oui" ? true : false,
+            "a_historique"=> $request->a_historique == "Oui" ? true : false,
         
         ]);
         
@@ -143,6 +148,8 @@ class DocumentController extends Controller
     
         
         $document->a_date_expiration = $request->a_date_expiration == "Oui" ? true : false;
+        $document->supprime_si_demission = $request->supprime_si_demission == "Oui" ? true : false;
+        $document->a_historique = $request->a_historique == "Oui" ? true : false;
         $document->nom = $request->nom;
         $document->description = $request->description;
         $document->reference = $reference;
@@ -189,7 +196,7 @@ class DocumentController extends Controller
             if($file = $request->file($document->reference)){
     
 
-                
+            
                 
                 // on sauvegarde le document
                 $path = storage_path('app/public/'.$mandataire->id.'/documents');
@@ -203,29 +210,110 @@ class DocumentController extends Controller
                     
                
          
-                    $file->move($path,$filename.$extension);            
-                    $path = $path.'/'.$filename.$extension;
+                  
                 
                     $fichier = $mandataire->document($document->id);
-                 
+                
+                    // On vérifie si le fichier n'existe pas
                     if( $fichier == null){
                     
-                    // dd($extension);
-                        Fichier::create([                        
+                        // On déplace le fichier dans le dossier document 
+                        $file->move($path,$filename.$extension);  
+                        // on enregistre le chemin complet du fichier déplacé dans la variable path
+                        $path = $path.'/'.$filename.$extension;
+                        
+                        
+                        $fichier =   Fichier::create([                        
                             "user_id" => $mandataire->id,
                             "document_id" => $document->id,
                             "url" => $path,
                             "extension" => $extension,
                             "date_expiration" => $request["date_expiration_$reference"]
                         ]);
+                        
+                        
+                        
+                        $action = Auth::user()->nom." ".Auth::user()->prenom." a ajouté le fichier $document->nom de $mandataire->prenom $mandataire->nom";
+                        $user_id = Auth::user()->id;
+                  
+                        Historique::createHistorique( $user_id,$fichier->id,"autre",$action );
                
                     }else {
                     
+                    
+                     
+                        
+                        // Si le fichier doit être gardé en historique
+                        if($document->a_historique == true){
+                        
+                        
+                            
+                            $path_historique = $fichier->url;
+                      
+                             // Sauvegarde de l'ancien fichier dans le dossier historique
+                            if(file_exists($fichier->url)){
+                            
+                                $path_historique = storage_path('app/public/'.$mandataire->id.'/documents/historique/');
+                                
+                                if(!File::exists($path_historique))
+                                File::makeDirectory($path_historique, 0755, true);
+                                
+                                
+                                
+                                // On réccupère l'extension du fichier
+                                $extension_historique = '.'.explode(".",$fichier->url)[1];
+                                
+                                $filename_historique = $document->reference . "_".$mandataire->id."_".random_int(1, 10000).$extension_historique;
+                                
+                   
+                                
+                                // Chemin complet du fichier
+                                
+                                $path_historique = $path_historique.$filename_historique;
+                                
+                               
+                                
+                                // On renomme le fichier et on le deplace dans le repertoire des historiques
+                               rename($fichier->url, $path_historique );
+                              
+                                // dd($mandataire->nom."".$mandataire->id);
+                            }
+         
+                            
+                            Historiquefichier::create([
+                                "user_id" => $mandataire->id,
+                                "document_id" => $document->id,
+                                "url" => $path_historique,
+                                "modif_url" => $fichier->url == $path ? false : true,
+                                "extension" => $fichier->extension,
+                                "modif_extension" => $fichier->extension == $extension_historique ? false : true,
+                                "date_expiration" => $fichier->date_expiration,
+                                "modif_date_expiration" =>$fichier->date_expiration == $request["date_expiration_$reference"] ? false : true
+                            ]);
+                            
+                            
+                           
+                        }
+                        
+                         // On déplace le fichier dans le dossier document 
+                         $file->move($path,$filename.$extension);  
+                         // on enregistre le chemin complet du fichier déplacé dans la variable path
+                         $path = $path.'/'.$filename.$extension;
+                         
+                         
                         $fichier->url = $path;
                         $fichier->extension = $extension;
                         $fichier->date_expiration = $request["date_expiration_$reference"] ;
                         
+                      
+                        
                         $fichier->update();
+                        
+                        $action = Auth::user()->nom." ".Auth::user()->prenom." a modifié le fichier $document->nom de $mandataire->prenom $mandataire->nom";
+                        $user_id = Auth::user()->id;
+                  
+                //   dd($fichier->id);
+                        Historique::createHistorique( $user_id,$fichier->id,"autre",$action );
                     
                     }
                 
@@ -244,7 +332,7 @@ class DocumentController extends Controller
     
     
     /**
-     *  telecharger facture avoir
+     *  telecharger documents
      *
      * @param  string  $avoir_id
      * @return \Illuminate\Http\Response
@@ -268,6 +356,8 @@ class DocumentController extends Controller
         
         $fichier = $mandataire->document($document_id);
         
+        // dd($fichier);
+        
         $nom = strtolower(preg_replace('/[^A-Za-z0-9]/', '', $mandataire->nom));
 
         $filename = $document->reference.'_'.$nom.$fichier->extension ;
@@ -277,5 +367,62 @@ class DocumentController extends Controller
         return response()->download($fichier->url,$filename);
     
       
+    }
+    
+    
+    
+    
+    /**
+     *  telecharger historique des documents
+     *
+     * @param  string  $avoir_id
+     * @return \Illuminate\Http\Response
+    */
+     
+    public  function download_historique_document($historique_id)
+    {
+    
+        
+        
+        $historiquefichier = Historiquefichier::where('id', $historique_id)->first(); 
+        $mandataire = $historiquefichier->user;
+        
+        
+        
+     
+        // On réccupère l'extension du fichier
+        $extension = '.'.explode(".",$historiquefichier->url)[1];
+        
+        
+        $document = $historiquefichier->document();
+        
+        $nom = strtolower(preg_replace('/[^A-Za-z0-9]/', '', $mandataire->nom));
+
+        $filename = $document->reference.'_'.$nom.'_historique'.$extension ;
+        
+     
+      
+        return response()->download($historiquefichier->url,$filename);
+    
+      
+    }
+    
+    
+    
+    /**
+     * Afficher l'historique des documents
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function historique($mandataire_id)
+    {
+       $historiqueDocuments = Historiquefichier::where('user_id',  Crypt::decrypt($mandataire_id))->get();
+       
+       $mandataire = User::where('id', Crypt::decrypt($mandataire_id))->first();
+        // $mandataire = User::where('id', $mandataire_id)->first();
+       
+        
+        return view('documents.historique', compact('historiqueDocuments','mandataire'));
+
     }
 }

@@ -89,6 +89,23 @@ Ajout d'un document à fournir
                               @endif
                            </div>
                         </div>
+                        
+                        <div class="form-group row">
+                           <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="a_historique">Garder l'historique ? <span class="text-danger">*</span></label>
+                           <div class="col-lg-8 col-md-8 col-sm-8">
+                              <select class="js-select2 form-control {{$errors->has('a_historique') ? 'is-invalid' : ''}}" id="a_historique" name="a_historique" style="width: 100%;" data-placeholder="Choose one.." required>
+                                 <option value="{{old('a_historique')}}">{{old('a_historique')}}</option>
+                                 <option value="Oui">Oui</option>
+                                 <option value="Non">Non</option>
+                              </select>
+                              @if ($errors->has('a_historique'))
+                              <br>
+                              <div class="alert alert-warning ">
+                                 <strong>{{$errors->first('supprime_si_demissionne')}}</strong> 
+                              </div>
+                              @endif
+                           </div>
+                        </div>
 
                     </div>
                     
