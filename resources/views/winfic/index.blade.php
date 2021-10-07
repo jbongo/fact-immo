@@ -2,7 +2,7 @@
  @extends('layouts.app')
  @section('content')
      @section ('page_title')
-     Export WINFIC    <a href="{{route('winfic.code_analytic_client')}}" target="_blank" class=" btn btn-default btn-flat btn-addon m-b-10 m-l-5"><i class="ti-list"></i>liste des Codes clients et analytiques</a>
+     Export WINFIC    <a href="{{route('winfic.code_analytic_client')}}" target="_blank" class=" btn btn-default btn-flat btn-addon m-b-10 m-l-5"><i class="ti-list"></i>liste des Codes clients</a>
      @endsection
  
      <div class="row"> 
@@ -106,7 +106,7 @@
                                        
                                         <th>@lang('Mandataire')</th>
                                         <th>@lang('Code client')</th>
-                                        <th>@lang('Code analytique')</th>
+                                        {{-- <th>@lang('Code analytique')</th> --}}
                                     
                                         {{-- <th>@lang('Type Facture')</th> --}}
                                         <th>@lang('Montant HT ')</th>
@@ -178,9 +178,9 @@
                                         <td width="" >
                                             <label class="color-info"> @if($facture->user != null) {{$facture->user->code_client}}  @endif</label> 
                                         </td>
-                                        <td width="" >
+                                        {{-- <td width="" >
                                             <label class="color-danger"> @if($facture->user != null) {{$facture->user->code_analytic}}  @endif</label> 
-                                        </td>
+                                        </td> --}}
                                         <td  width="" >
                                         {{number_format($facture->montant_ht,'2','.','')}}
                                         </td>

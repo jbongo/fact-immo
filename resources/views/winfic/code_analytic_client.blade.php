@@ -40,7 +40,7 @@
                                 <tr>
                                     <th>@lang('Nom')</th>
                                     <th>@lang('Code client')</th>
-                                    <th>@lang('Code analytique')</th>
+                                    {{-- <th>@lang('Code analytique')</th> --}}
                                    
                                  
                                     <th>@lang('Action')</th>
@@ -61,9 +61,9 @@
                                     <td style="color: #e05555;; text-decoration: underline;">
                                         <strong> {{$mandataire->code_client}} </strong> 
                                     </td>
-                                    <td style="color: #e05555;; text-decoration: underline;">
+                                    {{-- <td style="color: #e05555;; text-decoration: underline;">
                                         <strong> {{$mandataire->code_analytic}} </strong> 
-                                    </td>
+                                    </td> --}}
                                    
                                     <td width="13%">
                                         <span><a href="{{route('mandataire.show',Crypt::encrypt($mandataire->id) )}}" target="_blank" data-toggle="tooltip" title="@lang('Détails de ') {{ $mandataire->nom }}"><i class="large material-icons color-info">visibility</i></a> </span>

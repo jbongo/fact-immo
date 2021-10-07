@@ -110,7 +110,7 @@ class MandataireController extends Controller
             'adresse'=>$request->adresse,
             'complement_adresse'=>$request->compl_adresse,
             'code_client'=>$request->code_client,
-            'code_analytic'=>$request->code_analytic,
+            'numero_rsac'=>$request->numero_rsac,
         
         ]);
 
@@ -201,111 +201,118 @@ class MandataireController extends Controller
     public function update(Request $request, User $mandataire)
     {
      
-        if($request->email == $mandataire->email){
-            
-            if($request->email_perso == $mandataire->email_perso){
-
-                $request->validate([
-                    'statut' => 'required|string',
-                    'nom' => 'required|string|max:150',
-                    'prenom' => 'required|string',
-                ]);
-            }
-            else{
-                $request->validate([
-                    'statut' => 'required|string',
-                    'nom' => 'required|string|max:150',
-                    'prenom' => 'required|string',
-                    'email_perso' => 'required|email|unique:users',
-
-                ]);
-            }
-        }else{
-
-            if($request->email_perso == $mandataire->email_perso){
-                $request->validate([
-                    'statut' => 'required|string',
-                    'nom' => 'required|string|max:150',
-                    'prenom' => 'required|string',
-                    'email' => 'required|email|unique:users',
-                ]);
-            }
-            else{
-                $request->validate([
-                    'statut' => 'required|string',
-                    'nom' => 'required|string|max:150',
-                    'prenom' => 'required|string',
-                    'email' => 'required|email|unique:users',
-                    'email_perso' => 'required|email|unique:users',
-                ]);
-            }
-
-        }
-
-        
-        if($request->code_client != $mandataire->code_client){        
-            $request->validate(['code_client' => 'unique:users',]);
-        }
-        
-        if($request->code_analytic != $mandataire->code_analytic){
-        
-            $request->validate(['code_analytic' => 'unique:users',]);
-        }
+     
+        if(Auth::user()->role == "admin"){
         
         
-        $mandataire->civilite = $request->civilite; 
-        $mandataire->nom = $request->nom; 
-        $mandataire->prenom = $request->prenom; 
-        $mandataire->telephone1 = $request->telephone1; 
-        $mandataire->telephone2 = $request->telephone2; 
-        $mandataire->ville = $request->ville; 
-        $mandataire->code_postal = $request->code_postal; 
-        $mandataire->pays = $request->pays; 
-        $mandataire->statut = $request->statut; 
-        $mandataire->siret = $request->siret; 
-        $mandataire->numero_tva = $request->numero_tva; 
-        $mandataire->email = $request->email; 
-        $mandataire->email_perso = $request->email_perso; 
-        $mandataire->adresse = $request->adresse; 
-        $mandataire->complement_adresse = $request->compl_adresse; 
-        $mandataire->code_client = $request->code_client; 
-        $mandataire->code_analytic = $request->code_analytic; 
-
         
-        $contrat = $mandataire->contrat ;
-        if($contrat != null && ( $file = $request->file('contrat_pdf')) ){
-
-
-            // dd($request->file('contrat_pdf'));
-
-            // $request->validate([
-            //     'contrat_pdf' => 'mimes:pdf',
-            // ]);
-    
-                $extension = $file->getClientOriginalExtension();
+            if($request->email == $mandataire->email){
                 
-        
-                // on sauvegarde la facture dans le repertoire du mandataire
-                $path = storage_path('app/public/'.$contrat->id.'/contrat');
-        
-                if(!File::exists($path))
-                    File::makeDirectory($path, 0755, true);
-        
-                    $filename = 'contrat_'.$mandataire->nom.' '.$mandataire->prenom ;
-         
-                    $file->move($path,$filename.'.'.$extension);            
-                    $path = $path.'/'.$filename.'.'.$extension;
-                
-                    $contrat->contrat_pdf = $path;
-                    
-                    
-                    $contrat->update();
+                if($request->email_perso == $mandataire->email_perso){
     
-        }
-
+                    $request->validate([
+                        'statut' => 'required|string',
+                        'nom' => 'required|string|max:150',
+                        'prenom' => 'required|string',
+                    ]);
+                }
+                else{
+                    $request->validate([
+                        'statut' => 'required|string',
+                        'nom' => 'required|string|max:150',
+                        'prenom' => 'required|string',
+                        'email_perso' => 'required|email|unique:users',
+    
+                    ]);
+                }
+            }else{
+    
+                if($request->email_perso == $mandataire->email_perso){
+                    $request->validate([
+                        'statut' => 'required|string',
+                        'nom' => 'required|string|max:150',
+                        'prenom' => 'required|string',
+                        'email' => 'required|email|unique:users',
+                    ]);
+                }
+                else{
+                    $request->validate([
+                        'statut' => 'required|string',
+                        'nom' => 'required|string|max:150',
+                        'prenom' => 'required|string',
+                        'email' => 'required|email|unique:users',
+                        'email_perso' => 'required|email|unique:users',
+                    ]);
+                }
+    
+            }
+    
             
+            if($request->code_client != $mandataire->code_client){        
+                $request->validate(['code_client' => 'unique:users',]);
+            }
+            
+       
+        
+        
+            $mandataire->civilite = $request->civilite; 
+            $mandataire->nom = $request->nom; 
+            $mandataire->prenom = $request->prenom; 
+            $mandataire->telephone1 = $request->telephone1; 
+            $mandataire->telephone2 = $request->telephone2; 
+            $mandataire->ville = $request->ville; 
+            $mandataire->code_postal = $request->code_postal; 
+            $mandataire->pays = $request->pays; 
+            $mandataire->statut = $request->statut; 
+            $mandataire->email = $request->email; 
+            $mandataire->email_perso = $request->email_perso; 
+            $mandataire->adresse = $request->adresse; 
+            $mandataire->complement_adresse = $request->compl_adresse; 
+            $mandataire->code_client = $request->code_client; 
+      
+            
+           
+
+        
+            $contrat = $mandataire->contrat ;
+            if($contrat != null && ( $file = $request->file('contrat_pdf')) ){
+    
+    
+                // dd($request->file('contrat_pdf'));
+    
+                // $request->validate([
+                //     'contrat_pdf' => 'mimes:pdf',
+                // ]);
+        
+                    $extension = $file->getClientOriginalExtension();
+                    
+            
+                    // on sauvegarde la facture dans le repertoire du mandataire
+                    $path = storage_path('app/public/'.$contrat->id.'/contrat');
+            
+                    if(!File::exists($path))
+                        File::makeDirectory($path, 0755, true);
+            
+                        $filename = 'contrat_'.$mandataire->nom.' '.$mandataire->prenom ;
+             
+                        $file->move($path,$filename.'.'.$extension);            
+                        $path = $path.'/'.$filename.'.'.$extension;
+                    
+                        $contrat->contrat_pdf = $path;
+                        
+                        
+                        $contrat->update();
+        
+            }
+            
+        }
+            $mandataire->numero_tva = $request->numero_tva; 
+            $mandataire->siret = $request->siret; 
+            $mandataire->numero_rsac = $request->numero_rsac; 
+       
+        
         $mandataire->update();
-        return redirect()->route('mandataire.edit', Crypt::encrypt($mandataire->id))->with('ok', __('mandataire modifié')  );
+        return redirect()->route('mandataire.edit', Crypt::encrypt($mandataire->id))->with('ok', __('Infos modifiées')  );
     }
 
     /**

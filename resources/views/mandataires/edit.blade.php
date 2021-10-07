@@ -13,18 +13,35 @@ Modifier mandataire {{$mandataire->nom}}
       @endif      
       <div class="card">
          <div class="col-lg-12">
-            <a href="{{route('mandataire.index')}}" class="btn btn-default btn-flat btn-addon m-b-10 m-l-5"><i class="ti-angle-double-left"></i>@lang('Liste des mandataires')</a>
+          
             
-            @if($mandataire->contrat != null) 
-            <a href="{{route('contrat.edit',Crypt::encrypt($mandataire->contrat->id) )}}"  class="btn btn-warning btn-flat btn-addon m-b-10 m-l-5"><i class="ti-pencil"></i>Modifier le contrat</a>
-            @else
-               @if( filter_var($mandataire->email, FILTER_VALIDATE_EMAIL)  ) 
-                  <a href="{{route('contrat.create',Crypt::encrypt($mandataire->id) )}}"  class="btn btn-warning btn-flat btn-addon m-b-10 m-l-5"><i class="ti-pencil"></i>Ajouter un contrat</a>
+            
+            @if(Auth::user()->role =="mandataire")   
+               <a href="{{route('mandataire.show', Crypt::encrypt($mandataire->id))}}" class="btn btn-warning btn-flat btn-addon m-b-10 m-l-5"><i class="ti-angle-double-left"></i>@lang('Retour')</a>
+            
+            @else 
+               
+               <a href="{{route('mandataire.index')}}" class="btn btn-default btn-flat btn-addon m-b-10 m-l-5"><i class="ti-angle-double-left"></i>@lang('Liste des mandataires')</a>
+               
+               @if($mandataire->contrat != null) 
+                  <a href="{{route('contrat.edit',Crypt::encrypt($mandataire->contrat->id) )}}"  class="btn btn-warning btn-flat btn-addon m-b-10 m-l-5"><i class="ti-pencil"></i>Modifier le contrat</a>
+               @else
+                  @if( filter_var($mandataire->email, FILTER_VALIDATE_EMAIL)  ) 
+                     <a href="{{route('contrat.create',Crypt::encrypt($mandataire->id) )}}"  class="btn btn-warning btn-flat btn-addon m-b-10 m-l-5"><i class="ti-pencil"></i>Ajouter un contrat</a>
                   @else 
-                  <span class="color-warning" style="font-size:16px"> Modifiez l'adresse mail pro avant de créer le contrat</span>
-                  
+                     <span class="color-warning" style="font-size:16px"> Modifiez l'adresse mail pro avant de créer le contrat</span>
+                     
+                  @endif
                @endif
+            
+            
             @endif
+            
+            
+
+            
+            
+            
          </div>
          <div class="card-body">
             <div class="form-validation">
@@ -40,7 +57,7 @@ Modifier mandataire {{$mandataire->nom}}
                         <div class="form-group row">
                             <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="statut">Statut <span class="text-danger">*</span></label>
                             <div class="col-lg-8 col-md-8 col-sm-8">
-                               <select class="js-select2 form-control {{$errors->has('statut') ? 'is-invalid' : ''}}" id="statut" name="statut" style="width: 100%;" data-placeholder="Choose one.." required>
+                               <select class="js-select2 form-control {{$errors->has('statut') ? 'is-invalid' : ''}} no_mandataire " id="statut" name="statut" style="width: 100%;" data-placeholder="Choose one.." required>
                                <option value="{{$mandataire->statut}}" >{{$mandataire->statut}}</option>
                                   <option value="independant">Indépendant</option>
                                   <option value="auto-entrepreneur">Auto Entrepreneur</option>
@@ -58,7 +75,7 @@ Modifier mandataire {{$mandataire->nom}}
                          <div class="form-group row">
                             <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="civilite">@lang('Civilité') <span class="text-danger">*</span></label>
                             <div class="col-lg-8 col-md-8 col-sm-8">
-                            <select class="js-select2 form-control {{$errors->has('civilite') ? 'is-invalid' : ''}}"  id="civilite" name="civilite" style="width: 100%;" data-placeholder="Choose one.." required>
+                            <select class="js-select2 form-control {{$errors->has('civilite') ? 'is-invalid' : ''}} no_mandataire "  id="civilite" name="civilite" style="width: 100%;" data-placeholder="Choose one.." required>
                                   <option value="{{$mandataire->civilite}}" > {{$mandataire->civilite}}</option>
                                   <option value="M.">M.</option>
                                   <option value="Mme.">Mme.</option>
@@ -75,7 +92,7 @@ Modifier mandataire {{$mandataire->nom}}
                          <div class="form-group row">
                             <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="nom">Nom <span class="text-danger">*</span></label>
                             <div class="col-lg-8 col-md-8 col-sm-8">
-                               <input type="text" class="form-control {{$errors->has('nom') ? 'is-invalid' : ''}}" value="{{old('nom') ? old('nom') : $mandataire->nom}}" id="nom" name="nom" placeholder="Nom.." required>
+                               <input type="text" class="form-control {{$errors->has('nom') ? 'is-invalid' : ''}} no_mandataire " value="{{old('nom') ? old('nom') : $mandataire->nom}}" id="nom" name="nom" placeholder="Nom.." required>
                                @if ($errors->has('val-lastname'))
                                <br>
                                <div class="alert alert-warning ">
@@ -88,7 +105,7 @@ Modifier mandataire {{$mandataire->nom}}
                          <div class="form-group row">
                             <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="prenom">Prénom <span class="text-danger">*</span></label>
                             <div class="col-lg-8 col-md-8 col-sm-8">
-                               <input type="text"  class="form-control {{ $errors->has('prenom') ? ' is-invalid' : '' }}" value="{{old('prenom')? old('prenom') : $mandataire->prenom}}" id="prenom" name="prenom" placeholder="Prénom.." required>
+                               <input type="text"  class="form-control {{ $errors->has('prenom') ? ' is-invalid' : '' }} no_mandataire" value="{{old('prenom')? old('prenom') : $mandataire->prenom}}" id="prenom" name="prenom" placeholder="Prénom.." required>
                                @if ($errors->has('val-firstname'))
                                <br>
                                <div class="alert alert-warning ">
@@ -101,7 +118,7 @@ Modifier mandataire {{$mandataire->nom}}
                          <div class="form-group row">
                             <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="val-email">Email pro <span class="text-danger">*</span></label>
                             <div class="col-lg-8 col-md-8 col-sm-8">
-                               <input type="email" class="form-control {{ $errors->has('email') ? ' is-invalid' : '' }}" id="val-email" value="{{old('email')? old('email') : $mandataire->email}}" name="email" placeholder="Email.." required>
+                               <input type="email" class="form-control {{ $errors->has('email') ? ' is-invalid' : '' }} no_mandataire" id="val-email" value="{{old('email')? old('email') : $mandataire->email}}" name="email" placeholder="Email.." required>
                                @if ($errors->has('email'))
                                <br>
                                <div class="alert alert-warning ">
@@ -113,7 +130,7 @@ Modifier mandataire {{$mandataire->nom}}
                          <div class="form-group row">
                               <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="val-email_perso">Email perso<span class="text-danger">*</span></label>
                               <div class="col-lg-8 col-md-8 col-sm-8">
-                                 <input type="email" class="form-control {{ $errors->has('email_perso') ? ' is-invalid' : '' }}" id="val-email_perso" value="{{old('email_perso')? old('email_perso') : $mandataire->email_perso}}" name="email_perso" placeholder="Email.." required>
+                                 <input type="email" class="form-control {{ $errors->has('email_perso') ? ' is-invalid' : '' }} no_mandataire " id="val-email_perso" value="{{old('email_perso')? old('email_perso') : $mandataire->email_perso}}" name="email_perso" placeholder="Email.." required>
                                  @if ($errors->has('email_perso'))
                                  <br>
                                  <div class="alert alert-warning ">
@@ -125,7 +142,7 @@ Modifier mandataire {{$mandataire->nom}}
                          <div class="form-group row">
                               <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="siret">Numero siret </label>
                               <div class="col-lg-8 col-md-8 col-sm-8">
-                                 <input type="text" class="form-control {{ $errors->has('siret') ? ' is-invalid' : '' }}" value="{{old('siret')? old('siret') : $mandataire->siret}}" id="siret" name="siret" placeholder="Ex: 2561452136582" >
+                                 <input type="text" class="form-control {{ $errors->has('siret') ? ' is-invalid' : '' }}  " value="{{old('siret')? old('siret') : $mandataire->siret}}" id="siret" name="siret" placeholder="Ex: 2561452136582" >
                                  @if ($errors->has('siret'))
                                     <br>
                                     <div class="alert alert-warning ">
@@ -137,7 +154,7 @@ Modifier mandataire {{$mandataire->nom}}
                         <div class="form-group row">
                               <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="numero_tva">Numéro TVA intracommunautaire </label>
                               <div class="col-lg-8 col-md-8 col-sm-8">
-                                 <input type="text" class="form-control {{ $errors->has('numero_tva') ? ' is-invalid' : '' }}" value="{{old('numero_tva')? old('numero_tva') : $mandataire->numero_tva}}" id="numero_tva" name="numero_tva"  >
+                                 <input type="text" class="form-control {{ $errors->has('numero_tva') ? ' is-invalid' : '' }}  " value="{{old('numero_tva')? old('numero_tva') : $mandataire->numero_tva}}" id="numero_tva" name="numero_tva"  >
                                  @if ($errors->has('numero_tva'))
                                     <br>
                                     <div class="alert alert-warning ">
@@ -147,11 +164,134 @@ Modifier mandataire {{$mandataire->nom}}
                               </div>
                         </div>
                         
+                        <div class="form-group row">
+                           <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="numero_rsac">Numéro RSAC </label>
+                           <div class="col-lg-8 col-md-8 col-sm-8">
+                              <input type="text" class="form-control {{ $errors->has('numero_rsac') ? ' is-invalid' : '' }} " value="{{$mandataire->numero_rsac}}" id="numero_rsac" name="numero_rsac" placeholder="" >
+                              @if ($errors->has('numero_rsac'))
+                              <br>
+                              <div class="alert alert-warning ">
+                                 <strong>{{$errors->first('numero_rsac')}}</strong> 
+                              </div>
+                              @endif     
+                           </div>
+
+                        </div>
+
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+
+                        <div class="form-group row">
+                            <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="adresse">Adresse </label>
+                            <div class="col-lg-8 col-md-8 col-sm-8">
+                               <input type="text" class="form-control {{ $errors->has('adresse') ? ' is-invalid' : '' }} no_mandataire " value="{{old('adresse')? old('adresse') : $mandataire->adresse}}" id="adresse" name="adresse" placeholder="N° et Rue.." >
+                               @if ($errors->has('adresse'))
+                               <br>
+                               <div class="alert alert-warning ">
+                                  <strong>{{$errors->first('adresse')}}</strong> 
+                               </div>
+                               @endif   
+                            </div>
+                         </div>
+       
+                         <div class="form-group row">
+                            <label class="col-lg-4 col-md-4 col-sm-4 control-label" value="" for="compl_adresse">Complément d'adresse</label>
+                            <div class="col-lg-8 col-md-8 col-sm-8">
+                               <input type="text" id="compl_adresse" class="form-control {{ $errors->has('compl_adresse') ? ' is-invalid' : '' }} no_mandataire" value="{{old('compl_adresse')? old('compl_adresse') : $mandataire->complement_adresse}}" name="compl_adresse" placeholder="Complément d'adresse..">
+                               @if ($errors->has('compl_adresse'))
+                               <br>
+                               <div class="alert alert-warning ">
+                                  <strong>{{$errors->first('compl_adresse')}}</strong> 
+                               </div>
+                               @endif 
+                            </div>
+                         </div>
+       
+                         <div class="form-group row">
+                            <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="code_postal">Code postal</label>
+                            <div class="col-lg-8 col-md-8 col-sm-8">
+                               <input type="text" class="form-control {{ $errors->has('code_postal') ? ' is-invalid' : '' }} no_mandataire" value="{{old('code_postal')? old('code_postal') : $mandataire->code_postal}}" id="code_postal" name="code_postal" placeholder="Ex: 75001.." >
+                               @if ($errors->has('code_postal'))
+                               <br>
+                               <div class="alert alert-warning ">
+                                  <strong>{{$errors->first('code_postal')}}</strong> 
+                               </div>
+                               @endif 
+                            </div>
+                         </div>
+       
+                         <div class="form-group row">
+                            <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="ville">Ville </label>
+                            <div class="col-lg-8 col-md-8 col-sm-8">
+                               <input type="text" class="form-control {{ $errors->has('ville') ? ' is-invalid' : '' }} no_mandataire" value="{{old('ville')? old('ville') : $mandataire->ville}}" id="ville" name="ville" placeholder="EX: Paris.." >
+                               @if ($errors->has('ville'))
+                               <br>
+                               <div class="alert alert-warning ">
+                                  <strong>{{$errors->first('ville')}}</strong> 
+                               </div>
+                               @endif 
+                            </div>
+                         </div>
+       
+                         <div class="form-group row">
+                            <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="pays">Pays </label>
+                            <div class="col-lg-8 col-md-8 col-sm-8">
+                               <input type="text" class="form-control {{ $errors->has('pays') ? ' is-invalid' : '' }} no_mandataire" value="{{old('pays')? old('pays') : $mandataire->pays}}" id="pays" name="pays" placeholder="Entez une lettre et choisissez.." >
+                               @if ($errors->has('pays'))
+                               <br>
+                               <div class="alert alert-warning ">
+                                  <strong>{{$errors->first('pays')}}</strong> 
+                               </div>
+                               @endif 
+                            </div>
+                         </div>
+       
+                         <div class="form-group row">
+                            <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="telephone1">Téléphone pro </label>
+                            <div class="col-lg-8 col-md-8 col-sm-8">
+                               <input type="text" class="form-control {{ $errors->has('telephone1') ? ' is-invalid' : '' }} no_mandataire" value="{{old('telephone1')? old('telephone1') : $mandataire->telephone1}}" id="telephone1" name="telephone1" placeholder="Ex: 0600000000.." >
+                               @if ($errors->has('telephone1'))
+                               <br>
+                               <div class="alert alert-warning ">
+                                  <strong>{{$errors->first('telephone1')}}</strong> 
+                               </div>
+                               @endif     
+                            </div>
+                         </div>
+                         <div class="form-group row">
+                           <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="telephone2">Téléphone perso </label>
+                           <div class="col-lg-8 col-md-8 col-sm-8">
+                              <input type="text" class="form-control {{ $errors->has('telephone2') ? ' is-invalid' : '' }} no_mandataire" value="{{old('telephone2')? old('telephone2') : $mandataire->telephone2}}" id="telephone2" name="telephone2" placeholder="Ex: 0600000000.." >
+                              @if ($errors->has('telephone2'))
+                              <br>
+                              <div class="alert alert-warning ">
+                                 <strong>{{$errors->first('telephone2')}}</strong> 
+                              </div>
+                              @endif     
+                           </div>
+                        </div>
+                        
+                        <div class="form-group row">
+                      <span class="text-danger"> <strong>  ( "9" suivi des 4 premières lettres du NOM et 1ere lettre du prénom ) </strong></span> 
+                        
+                           <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="code_client"> WINFIC Code client <span class="text-danger">*</span> </label>
+                           <div class="col-lg-8 col-md-8 col-sm-8">
+                              <input type="text" class="form-control {{ $errors->has('code_client') ? ' is-invalid' : '' }} no_mandataire" value="{{$mandataire->code_client}}" id="code_client" name="code_client" required placeholder="" >
+                              @if ($errors->has('code_client'))
+                              <br>
+                              <div class="alert alert-warning ">
+                                 <strong>{{$errors->first('code_client')}}</strong> 
+                              </div>
+                              @endif     
+                           </div>
+
+                        </div>
+                        
                         @if($mandataire->contrat != null)
                         <div class="row form-group ">
                               <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="contrat_pdf">Contrat + annexes signés</label>
                               <div class="col-lg-8 col-md-8 col-sm-8">
-                                  <input type="file" class="form-control" value="" id="contrat_pdf" name="contrat_pdf" accept=".pdf" >
+                                  <input type="file" class="form-control no_mandataire" value="" id="contrat_pdf" name="contrat_pdf" accept=".pdf" >
                                   @if ($errors->has('contrat_pdf'))
                                     <br>
                                     <div class="alert alert-warning ">
@@ -172,129 +312,6 @@ Modifier mandataire {{$mandataire->nom}}
                         @endif
 
                     </div>
-                    <div class="col-lg-6 col-md-6 col-sm-6">
-
-                        <div class="form-group row">
-                            <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="adresse">Adresse </label>
-                            <div class="col-lg-8 col-md-8 col-sm-8">
-                               <input type="text" class="form-control {{ $errors->has('adresse') ? ' is-invalid' : '' }}" value="{{old('adresse')? old('adresse') : $mandataire->adresse}}" id="adresse" name="adresse" placeholder="N° et Rue.." >
-                               @if ($errors->has('adresse'))
-                               <br>
-                               <div class="alert alert-warning ">
-                                  <strong>{{$errors->first('adresse')}}</strong> 
-                               </div>
-                               @endif   
-                            </div>
-                         </div>
-       
-                         <div class="form-group row">
-                            <label class="col-lg-4 col-md-4 col-sm-4 control-label" value="" for="compl_adresse">Complément d'adresse</label>
-                            <div class="col-lg-8 col-md-8 col-sm-8">
-                               <input type="text" id="compl_adresse" class="form-control {{ $errors->has('compl_adresse') ? ' is-invalid' : '' }}" value="{{old('compl_adresse')? old('compl_adresse') : $mandataire->complement_adresse}}" name="compl_adresse" placeholder="Complément d'adresse..">
-                               @if ($errors->has('compl_adresse'))
-                               <br>
-                               <div class="alert alert-warning ">
-                                  <strong>{{$errors->first('compl_adresse')}}</strong> 
-                               </div>
-                               @endif 
-                            </div>
-                         </div>
-       
-                         <div class="form-group row">
-                            <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="code_postal">Code postal</label>
-                            <div class="col-lg-8 col-md-8 col-sm-8">
-                               <input type="text" class="form-control {{ $errors->has('code_postal') ? ' is-invalid' : '' }}" value="{{old('code_postal')? old('code_postal') : $mandataire->code_postal}}" id="code_postal" name="code_postal" placeholder="Ex: 75001.." >
-                               @if ($errors->has('code_postal'))
-                               <br>
-                               <div class="alert alert-warning ">
-                                  <strong>{{$errors->first('code_postal')}}</strong> 
-                               </div>
-                               @endif 
-                            </div>
-                         </div>
-       
-                         <div class="form-group row">
-                            <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="ville">Ville </label>
-                            <div class="col-lg-8 col-md-8 col-sm-8">
-                               <input type="text" class="form-control {{ $errors->has('ville') ? ' is-invalid' : '' }}" value="{{old('ville')? old('ville') : $mandataire->ville}}" id="ville" name="ville" placeholder="EX: Paris.." >
-                               @if ($errors->has('ville'))
-                               <br>
-                               <div class="alert alert-warning ">
-                                  <strong>{{$errors->first('ville')}}</strong> 
-                               </div>
-                               @endif 
-                            </div>
-                         </div>
-       
-                         <div class="form-group row">
-                            <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="pays">Pays </label>
-                            <div class="col-lg-8 col-md-8 col-sm-8">
-                               <input type="text" class="form-control {{ $errors->has('pays') ? ' is-invalid' : '' }}" value="{{old('pays')? old('pays') : $mandataire->pays}}" id="pays" name="pays" placeholder="Entez une lettre et choisissez.." >
-                               @if ($errors->has('pays'))
-                               <br>
-                               <div class="alert alert-warning ">
-                                  <strong>{{$errors->first('pays')}}</strong> 
-                               </div>
-                               @endif 
-                            </div>
-                         </div>
-       
-                         <div class="form-group row">
-                            <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="telephone1">Téléphone pro </label>
-                            <div class="col-lg-8 col-md-8 col-sm-8">
-                               <input type="text" class="form-control {{ $errors->has('telephone1') ? ' is-invalid' : '' }}" value="{{old('telephone1')? old('telephone1') : $mandataire->telephone1}}" id="telephone1" name="telephone1" placeholder="Ex: 0600000000.." >
-                               @if ($errors->has('telephone1'))
-                               <br>
-                               <div class="alert alert-warning ">
-                                  <strong>{{$errors->first('telephone1')}}</strong> 
-                               </div>
-                               @endif     
-                            </div>
-                         </div>
-                         <div class="form-group row">
-                           <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="telephone2">Téléphone perso </label>
-                           <div class="col-lg-8 col-md-8 col-sm-8">
-                              <input type="text" class="form-control {{ $errors->has('telephone2') ? ' is-invalid' : '' }}" value="{{old('telephone2')? old('telephone2') : $mandataire->telephone2}}" id="telephone2" name="telephone2" placeholder="Ex: 0600000000.." >
-                              @if ($errors->has('telephone2'))
-                              <br>
-                              <div class="alert alert-warning ">
-                                 <strong>{{$errors->first('telephone2')}}</strong> 
-                              </div>
-                              @endif     
-                           </div>
-                        </div>
-                        
-                        <div class="form-group row">
-                      <span class="text-danger"> <strong>  ( "9" suivi des 4 premières lettres du NOM et 1ere lettre du prénom ) </strong></span> 
-                        
-                           <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="code_client"> WINFIC Code client </label>
-                           <div class="col-lg-8 col-md-8 col-sm-8">
-                              <input type="text" class="form-control {{ $errors->has('code_client') ? ' is-invalid' : '' }}" value="{{$mandataire->code_client}}" id="code_client" name="code_client" placeholder="" >
-                              @if ($errors->has('code_client'))
-                              <br>
-                              <div class="alert alert-warning ">
-                                 <strong>{{$errors->first('code_client')}}</strong> 
-                              </div>
-                              @endif     
-                           </div>
-
-                        </div>
-                        <div class="form-group row">
-                           <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="code_analytic">WINFIC Code analytique </label>
-                           <div class="col-lg-8 col-md-8 col-sm-8">
-                              <input type="text" class="form-control {{ $errors->has('code_analytic') ? ' is-invalid' : '' }}" value="{{$mandataire->code_analytic}}" id="code_analytic" name="code_analytic" placeholder="" >
-                              @if ($errors->has('code_analytic'))
-                              <br>
-                              <div class="alert alert-warning ">
-                                 <strong>{{$errors->first('code_analytic')}}</strong> 
-                              </div>
-                              @endif     
-                           </div>
-
-                        </div>
-                        
-                        
-                    </div>
                 </div>
                   
                   <div class="form-group row" style="text-align: center; margin-top: 50px;">
@@ -313,4 +330,11 @@ Modifier mandataire {{$mandataire->nom}}
 
 @stop
 @section('js-content') 
+
+<script>
+   @if(Auth::user()->role =="mandataire")   
+      $('.no_mandataire').attr('disabled', true);   
+   @endif
+</script>
+
 @endsection

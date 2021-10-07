@@ -137,6 +137,18 @@ Ajout d'un mandataire
                               </div>
                         </div>
                        
+                        <div class="form-group row">
+                           <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="numero_rsac">Numéro RSAC   </label>
+                           <div class="col-lg-8 col-md-8 col-sm-8">
+                              <input type="text" class="form-control {{ $errors->has('numero_rsac') ? ' is-invalid' : '' }}" value="{{old('numero_rsac')}}" id="numero_rsac" name="numero_rsac"  placeholder="" >
+                              @if ($errors->has('numero_rsac'))
+                              <br>
+                              <div class="alert alert-warning ">
+                                 <strong>{{$errors->first('numero_rsac')}}</strong> 
+                              </div>
+                              @endif     
+                           </div>
+                        </div>
 
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-6">
@@ -236,7 +248,7 @@ Ajout d'un mandataire
                         <div class="form-group row">
                            <span class="text-danger"> <strong>  (4 premières lettres du NOM et 1ere lettre du prénom ) </strong></span> 
 
-                           <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="code_client">WINFIC Code client <span>*</span> </label>
+                           <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="code_client">WINFIC Code client <span class="text-danger">*</span> </label>
                            <div class="col-lg-8 col-md-8 col-sm-8">
                               <input type="text" class="form-control {{ $errors->has('code_client') ? ' is-invalid' : '' }}" value="{{old('code_client')}}" id="code_client" name="code_client" required placeholder="" >
                               @if ($errors->has('code_client'))
@@ -248,19 +260,8 @@ Ajout d'un mandataire
                            </div>
 
                         </div>
-                        <div class="form-group row">
-                           <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="code_analytic">WINFIC Code analytique  <span>*</span> </label>
-                           <div class="col-lg-8 col-md-8 col-sm-8">
-                              <input type="text" class="form-control {{ $errors->has('code_analytic') ? ' is-invalid' : '' }}" value="{{old('code_analytic')}}" id="code_analytic" name="code_analytic" required placeholder="" >
-                              @if ($errors->has('code_analytic'))
-                              <br>
-                              <div class="alert alert-warning ">
-                                 <strong>{{$errors->first('code_analytic')}}</strong> 
-                              </div>
-                              @endif     
-                           </div>
+                        
 
-                        </div>
                     </div>
                 </div>
                   

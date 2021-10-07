@@ -24,9 +24,9 @@
     
                                     <div class="user-skill">
                                        <h4 style="color: #32ade1;text-decoration: underline;">Options</h4>
-                                        @if (auth()->user()->role == "admin")
-                                            <a href="{{route('mandataire.edit',Crypt::encrypt($mandataire->id) )}}"  class="btn btn-warning btn-rounded btn-addon btn-xs m-b-10"><i class="ti-pencil"></i>Modifier</a>
-                                        @endif
+                                      
+                                            <a href="{{route('mandataire.edit',Crypt::encrypt($mandataire->id) )}}"  class="btn btn-warning btn-rounded btn-addon btn-lg m-b-10"><i class="ti-pencil"></i>Modifier</a>
+                                     
                                         
                                         @if (auth()->user()->role == "admin" && $mandataire->contrat != null)
                                        <a href="{{route('mandataire.send_access',[ Crypt::encrypt($mandataire->id) ,Crypt::encrypt($mandataire->contrat->id) ])}}" title="Envoyer les accès au mandataire" class="btn btn-default btn-rounded btn-addon btn-xs m-b-10 send-access"><i class="ti-pencil"></i>Envoyer les accès </a>
@@ -308,8 +308,9 @@
                                                 <span><i class="ti-money f-s-48 color-white"></i></span>
                                             </div>
                                             <div class="media-body media-text-right">
-                                                <h4>{{number_format($mandataire->chiffre_affaire,2,'.',' ')}}€</h4>
-                                                <h5>Chiffre d'affaires</h5>
+                                                <h4>{{number_format($mandataire->chiffre_affaire( date('Y').'01-01-', date('Y-m-d')) ,2,'.',' ')}}€</h4>
+                                                <h5>CA encaissé HT</h5>
+                                                <h6><i>Pour l'année en cours.</i></h6>
                                             </div>
                                         </div>
                                     </div>
