@@ -105,11 +105,7 @@
                                     @foreach ($factureHonoraires as $facture)
 
                                     <tr>
-                                        <td  >
-                                            @if($facture->date_facture != null) 
-                                            <label class="color-info"> {{$facture->date_facture->format('Y-m-d')}}</label> 
-                                            @endif
-                                        </td>
+                                     
 
                                         <td  >
                                             @if($facture->statut == "valide" && $facture->numero != null )
@@ -124,7 +120,11 @@
                                             @endif 
                                         </td>
 
-
+                                        <td  >
+                                            @if($facture->date_facture != null) 
+                                            <label class="color-info"> {{$facture->date_facture->format('Y-m-d')}}</label> 
+                                            @endif
+                                        </td>
 
 
                                         <td  >
