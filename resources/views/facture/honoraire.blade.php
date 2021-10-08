@@ -76,6 +76,7 @@
                                     <tr>
                                        
                                         <th>@lang('Facture Honoraire')</th>
+                                        <th>@lang('Date Fact Hono')</th>
                                         <th>@lang('Facture Stylimmo')</th>
                                         <th>@lang('Mandat')</th>
                                         @if(auth()->user()->role == "admin")
@@ -104,16 +105,11 @@
                                     @foreach ($factureHonoraires as $facture)
 
                                     <tr>
-                                        {{-- <td  >
-                                            @if($facture->statut != "en attente de validation" && $facture->url != null) 
-                                            <label class="color-info"> </label> 
-                                                <a class="color-info" title="Télécharger la facture d'honoraire "  href="{{route('facture.telecharger_pdf_facture', Crypt::encrypt($facture->id))}}"  class="  m-b-10 m-l-5 " id="ajouter">{{$facture->numero}} <i class="ti-download"></i> </a>
-                                            @else 
-                                                <label class="color-danger" ><strong> Non dispo </strong> </label>
+                                        <td  >
+                                            @if($facture->date_facture != null) 
+                                            <label class="color-info"> {{$facture->date_facture->format('Y-m-d')}}</label> 
                                             @endif
-
-                                           
-                                        </td> --}}
+                                        </td>
 
                                         <td  >
                                             @if($facture->statut == "valide" && $facture->numero != null )
