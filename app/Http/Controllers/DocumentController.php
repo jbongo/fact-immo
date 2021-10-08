@@ -274,7 +274,7 @@ class DocumentController extends Controller
                                 $path_historique = $path_historique.$filename_historique;
                                 
                                
-                                dd($path_historique);
+                                dd($path_historique.'<br>-----'.$fichier->url.'<br>---'.$extension_historique);
                                 // On renomme le fichier et on le deplace dans le repertoire des historiques
                                 rename($fichier->url, $path_historique );
                               
