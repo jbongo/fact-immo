@@ -47,6 +47,9 @@ class FactpubController extends Controller
     
    
         $factpub = Factpub::where('id',$fact_pub_id)->first();
+        
+        if($factpub->validation == 1)
+            return redirect()->route('facture.pub_a_valider')->with('ok', "Facture déjà validée");
         $factpub->validation = $validation;
         
         // Si la facture a été validé
@@ -105,6 +108,10 @@ class FactpubController extends Controller
         
         foreach ($factpubs as $factpub) {
             
+             
+            //  On passe à la prochaine facture si la facture à déjà été validée
+             if($factpub->validation == 1)
+                continue;
       
             $factpub->validation = $validation;
             
@@ -112,6 +119,9 @@ class FactpubController extends Controller
             if($validation == 1){
                
                 $numero = Facture::whereIn('type',['avoir','stylimmo','pack_pub','carte_visite','communication','autre'])->max('numero') + 1;
+                
+              
+                
                 
                 $facture = Facture::create([
                     "numero"=> $numero,
@@ -127,13 +137,20 @@ class FactpubController extends Controller
                 $factpub->facture_id = $facture->id;
                 $factpub->update();
                 
+                // 
+        
+                $tabmois = ['','Janvier','Février','Mars','Avril', 'Mai','Juin','Juillet','Aôut', 'Septembre','Octobre','Novembre','Décembre'];
+                
+                $mois = $tabmois[$facture->factpublist()->created_at->format('m')*1];
+                
+                $this->generer_pdf_fact_pub(Crypt::encrypt($facture->id));
+                
                 
                 // return Crypt::encrypt($facture->id);
             }else{
                 $factpub->update();
                 
                 // return redirect()->route('facture.pub_a_valider');
-                
             }
      
         }
@@ -150,7 +167,7 @@ class FactpubController extends Controller
     public  function generer_fact_pub($facture_id)
     {
     
-        $facture = Facture::where([['id',Crypt::decrypt($facture_id)],])->first();
+        $facture = Facture::where([['id',Crypt::decrypt($facture_id)],])->first();  
         
         $tabmois = ['','Janvier','Février','Mars','Avril', 'Mai','Juin','Juillet','Aôut', 'Septembre','Octobre','Novembre','Décembre'];
         
