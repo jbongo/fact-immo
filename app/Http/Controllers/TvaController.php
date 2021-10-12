@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Tva;
+use App\Mail\EncaissementFacture;
+use App\Facture;
+use Mail;
 use Illuminate\Http\Request;
 
 class TvaController extends Controller
@@ -15,28 +18,17 @@ class TvaController extends Controller
     public function test()
     {
 
+      
+      $facture = Facture::where('id',1287)->first();
+      
+    
         
-        echo "<br>";
-
-        $libelle = "VIR OFFICE NOTARIAL DES BARO 0260670009996 FACTURE 16368 STYLIMMO VENTE SCHNEEEBAUER / DIMIE";
-        
-        $tab = explode(" ",$libelle);
-        echo "<pre>";
-        var_dump($tab);
-        echo "<pre>";
-        
-        $num_mandat = null;
-        
-        foreach ($tab as $value) {
-        
-        $value = (int) filter_var($value, FILTER_SANITIZE_NUMBER_INT);
-        
-        echo $value."<br>";
-          
-            
+        for ($i = 0; $i<=4 ; $i++ ) {
+            Mail::to("support@stylimmo.com")->send(new EncaissementFacture($facture));
         }
-
-        
+      
+      
+      echo "TERMINE";
         
       
 
