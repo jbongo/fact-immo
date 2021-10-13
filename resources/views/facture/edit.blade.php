@@ -178,7 +178,7 @@ Modification facture {{$facture->type}} {{$facture->numero}}
                            <label class="col-lg-3 col-md-3 col-sm-4  control-label" value="" for="montant_ht">Montant HT produit(s) <span class="text-danger">*</span></label>
                            <div class="col-lg-3 col-md-3 col-sm-3 ">
 
-                              <input type="number" class="form-control" min="0"  id="montant_ht" name="montant_ht" value="{{old('montant_ht') ? old('montant_ht') : $facture->montant_ht  }}" required/>
+                              <input type="number" class="form-control" min="0" step="any"  id="montant_ht" name="montant_ht" value="{{old('montant_ht') ? old('montant_ht') : $facture->montant_ht  }}" required/>
 
                               @if ($errors->has('montant_ht'))
                               <br>
