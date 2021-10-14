@@ -31,8 +31,13 @@
                             <tr>
                                 <th>@lang('Mandataire')</th>
                                 <th>@lang('Contrat')</th>
-                                <th>@lang('Attestation collaborateur')</th>
-                                <th>@lang('Rib')</th>
+                                
+                                @foreach ($documents as $document)
+                                
+                                <th>{{$document->nom}}</th>
+                                    
+                                @endforeach
+                                
                         
                                
                                 <th>@lang('Action')</th>
@@ -50,21 +55,26 @@
                                 </td>
                                 <td>
                                     @if($mandataire->contrat != null && $mandataire->contrat->contrat_pdf != null)
-                                        <a href="{{route('contrat.telecharger', Crypt::encrypt($mandataire->contrat->id))}}"data-toggle="tooltip" title="Télécharger le contrat"  class="btn btn-danger btn-flat btn-addon "><i class="ti-download"></i>télécharger le contrat + annexes</a> 
+                                        <a href="{{route('contrat.telecharger', Crypt::encrypt($mandataire->contrat->id))}}"data-toggle="tooltip" title="Télécharger le contrat + annexes"  class="btn btn-danger btn-flat btn-addon "><i class="ti-download"></i>Télécharger</a> 
                                     @endif
                                 </td>
+                                
+                                @foreach ($documents as $document)
+                                
                                 <td>
-                                    @if($mandataire->document("attestationcollaborateur") != null)
-                                        <a href="{{route('document.telecharger', [$mandataire->id, "attestationcollaborateur"])}}" data-toggle="tooltip" title="Télécharger Attestation collaborateur"  class="btn btn-danger btn-flat btn-addon "><i class="ti-download"></i>Attestation collaborateur</a> 
+                                    @if($mandataire->document($document->reference) != null)
+                                        <a href="{{route('document.telecharger', [$mandataire->id, $document->reference])}}" data-toggle="tooltip" title="Télécharger {{$document->nom}}"  class="btn btn-danger btn-flat btn-addon "><i class="ti-download"></i>Télécharger</a> 
  
                                     @endif
                                 </td>
-                                <td>
-                                    @if($mandataire->document("rib") != null)
-                                        <a href="{{route('document.telecharger', [$mandataire->id, "rib"])}}" data-toggle="tooltip" title="Télécharger le Rib"  class="btn btn-danger btn-flat btn-addon "><i class="ti-download"></i>Rib</a> 
-
-                                    @endif
-                                </td>
+                                    
+                                @endforeach
+                                
+                                
+                          
+                                
+                                
+                                
 
                                 <td width="15%">
                                     <span><a href="{{route('document.show',Crypt::encrypt($mandataire->id) )}}" data-toggle="tooltip" target="_blank" title="@lang('Détails de ') {{ $mandataire->nom }}"><i class="large material-icons color-info">visibility</i> Voir les documents</a>  </span>

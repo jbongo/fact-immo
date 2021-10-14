@@ -25,8 +25,10 @@ class DocumentController extends Controller
     public function index()
     {
         $mandataires = User::where('role','mandataire')->orderBy('nom')->get();
+        $documents = Document::where('archive', false)->get();
+
         
-        return view('documents.index', compact('mandataires'));
+        return view('documents.index', compact('mandataires','documents'));
 
     }
 
