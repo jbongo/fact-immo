@@ -3076,7 +3076,8 @@ public function valider_honoraire($action, $facture_id)
     public function create_avoir($facture_id)
     {
         $facture = Facture::where('id',  Crypt::decrypt($facture_id))->first();
-        $numero = Facture::whereIn('type', ['avoir','stylimmo','pack_pub','carte_visite','communication','autre'])->max('numero') + 1;
+        $numero = Facture::whereIn('type', ['avoir','stylimmo','pack_pub','carte_visite','communication','autre','forfait_entree','cci'])->max('numero') + 1;
+        
 
        return view('facture.avoir.add_avoir', compact(['facture','numero']) );
     }
