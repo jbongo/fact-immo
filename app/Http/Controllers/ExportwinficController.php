@@ -264,7 +264,7 @@ class ExportwinficController extends Controller
         
         
         $date_operation_contrepartie_encai = date('dmY',strtotime($date_fin));
-        $jour_ecriture_contrepartie_encai= date('d',strtotime($date_fin));
+        $jour_ecriture_contrepartie_encai=  $this->formatage_colonne(6, date('d',strtotime($date_fin)), "droite");
         $lettrage_contrepartie_encai = "  ";
         $code_piece_contrepartie_encai = $this->formatage_colonne(5, " ");
         $code_stat_contrepartie_encai = "    ";
