@@ -171,12 +171,14 @@ class ExportwinficController extends Controller
         $data_encai = "";
         $total_transac_ttc = 0;
         $total_autre_ttc = 0;
+        $num_folio_encai = 1;
+        $num_ecriture_encai = 1;
+        
         foreach ($factureEncaissees as $facture) {
         
             $code_journal_encai = $facture->type == "stylimmo" ?  "B2" : "B1";
             $date_operation_encai = $facture->date_encaissement->format('dmY');
-            $num_folio_encai = 1;
-            $num_ecriture_encai = 1;
+        
             $jour_ecriture_encai =  $this->formatage_colonne(6,$facture->date_encaissement->format('d'), "droite");;
             
             
@@ -235,8 +237,11 @@ class ExportwinficController extends Controller
            
             
             $data_encai .= $ligne1_encai;
-            // .$ligne3_encai;
             
+            if($num_ecriture_encai > 47 ){
+                $num_folio_encai ++;
+                $num_ecriture_encai = 1;
+            }
             
         }
         
@@ -256,7 +261,7 @@ class ExportwinficController extends Controller
         
         $code_journal_contrepartie_autre_encai = "B1";
         $compte_contrepartie_autre_encai = "512002";
-        $libelle_contrepartie_autre_encai = $this->formatage_colonne(30, "Cumul dépenses ".date('m/Y',strtotime($date_fin)));
+        $libelle_contrepartie_autre_encai = $this->formatage_colonne(30, "Cumul recettes ".date('m/Y',strtotime($date_fin)));
         
         $montant_debit_contrepartie_autre_encai = $this->formatage_colonne(13, number_format($total_autre_ttc,2, ",",""), "droite") ;
         $montant_credit_contrepartie_autre_encai = $this->formatage_colonne(13, " ", "droite");
@@ -285,7 +290,116 @@ class ExportwinficController extends Controller
         $data_encai .= $ligne2_contrepartie_transac_encai.$ligne2_contrepartie_autre_encai;
         
         
-        dd($data_encai);
+        
+        
+       // TRANSFERT DES DECAISSEMENTS
+        
+        
+       $factureDecaissees = Facture::whereIn('type',['honoraire','partage','parrainage','parrainage_partage','partage_externe'])->whereBetween('date_reglement',[$date_deb,$date_fin])->orderBy('numero','asc')->get();  
+        
+   
+       $data_decai = "";
+       $total_ttc = 0;
+       $num_folio_decai = 1;
+       $num_ecriture_decai = 1;
+       foreach ($factureDecaissees as $facture) {
+       
+           $code_journal_decai = "B2" ;
+           $date_operation_decai = $facture->date_reglement->format('dmY');
+          
+           $jour_ecriture_decai =  $this->formatage_colonne(6,$facture->date_reglement->format('d'), "droite");;
+           
+           
+           
+           // SI VENTE ET LOCATION = 9CLIEN, SI PACK pub, frais entrée etc = 9NON_CLIENT  si mandataire ou xxxxx   si client externe
+         
+               $compte_ttc_decai = str_replace('9','0',$facture->user->code_client);
+               
+               $libelle_decai =  $this->formatage_colonne(30, $facture->user->nom." ".$facture->user->prenom." VTE ".$facture->compromis->getFactureStylimmo()->numero);
+
+      
+           
+    
+            $ttc = $facture->montant_ttc > 0 ? $facture->montant_ttc : $facture->montant_ht;
+            $montant_debit_ttc_decai = $this->formatage_colonne(13, number_format($ttc,2, ",",""), "droite");
+            $montant_credit_ttc_decai = $this->formatage_colonne(13, " ", "droite");
+           
+           
+           // Pour la contraprtie, faire une seule ligne ------------> sortie de la boucleb  somme des ttc
+             
+    
+               $total_ttc+= $ttc;
+           
+          
+           
+  
+           
+           
+           $lettrage_decai = "  ";
+           $code_piece_decai = $this->formatage_colonne(5, $facture->numero);
+           $code_stat_decai = "    ";
+           $date_echeance_decai =  $facture->date_facture->format('dmY');
+           $monnaie_decai = 1;
+           $filler_decai = " ";
+           $ind_compteur_decai = " ";
+           $quantite_decai = "      0,000";
+           $code_pointage_decai = "  ";
+                   
+           $ligne1_decai = $code_journal_decai."|".$date_operation_decai."|".$this->formatage_colonne(6,$num_folio_decai,'droite')."|".$this->formatage_colonne(6,$num_ecriture_decai,'droite')."|".$jour_ecriture_decai."|".$compte_ttc_decai."|".$montant_debit_ttc_decai."|".$montant_credit_ttc_decai."|".$libelle_decai."|".$lettrage_decai."|".$code_piece_decai."|".$code_stat_decai."|".$date_echeance_decai."|".$monnaie_decai."|".$filler_decai."|".$ind_compteur_decai."|".$quantite_decai."|".$code_pointage_decai."|\r\n";
+           $num_ecriture_decai++;
+           
+          
+           
+           $data_decai .= $ligne1_decai;
+           // .$ligne3_decai;
+           if($num_ecriture_decai > 47 ){
+            $num_folio_decai ++;
+            $num_ecriture_decai = 1;
+            }
+           
+       }
+       
+       
+       // ######### CONTREPARTIE deCAISSEMENT
+        // Pour la contraprtie, faire une seule ligne ------------> sortie de la boucleb  somme des ttc
+    
+       // Factures transaction
+       $code_journal_contrepartie_decai = "B2";
+       $compte_contrepartie_decai = "512003";
+       $libelle_contrepartie_decai = $this->formatage_colonne(30, "Cumul dépenses ".date('m/Y',strtotime($date_fin)));
+       
+       $montant_debit_contrepartie_decai = $this->formatage_colonne(13, " ", "droite");
+       $montant_credit_contrepartie_decai = $this->formatage_colonne(13, number_format($total_ttc,2, ",",""), "droite") ;
+       
+       
+       
+       $date_operation_contrepartie_decai = date('dmY',strtotime($date_fin));
+       $jour_ecriture_contrepartie_decai=  $this->formatage_colonne(6, date('d',strtotime($date_fin)), "droite");
+       $lettrage_contrepartie_decai = "  ";
+       $code_piece_contrepartie_decai = $this->formatage_colonne(5, " ");
+       $code_stat_contrepartie_decai = "    ";
+       $date_echeance_contrepartie_decai =   date('dmY',strtotime($date_fin));
+       $monnaie_contrepartie_decai = 1;
+       $filler_contrepartie_decai = " ";
+       $ind_compteur_contrepartie_decai = " ";
+       $quantite_contrepartie_decai = "      0,000";
+       $code_pointage_contrepartie_decai = "  ";
+       
+       
+       $ligne2_contrepartie_transac_decai = "B2"."|".$date_operation_contrepartie_decai."|".$this->formatage_colonne(6,$num_folio_decai,'droite')."|".$this->formatage_colonne(6,$num_ecriture_decai,'droite')."|".$jour_ecriture_contrepartie_decai."|".$compte_contrepartie_decai."|".$montant_debit_contrepartie_decai."|".$montant_credit_contrepartie_decai."|".$libelle_contrepartie_decai."|".$lettrage_contrepartie_decai."|".$code_piece_contrepartie_decai."|".$code_stat_contrepartie_decai."|".$date_echeance_contrepartie_decai."|".$monnaie_contrepartie_decai."|".$filler_contrepartie_decai."|".$ind_compteur_contrepartie_decai."|".$quantite_contrepartie_decai."|".$code_pointage_contrepartie_decai."|\r\n";
+       $num_ecriture_decai++;
+       
+      
+       
+       $data_decai .= $ligne2_contrepartie_transac_decai;
+       
+        
+        
+        
+        
+        $data.= $data_encai.$data_decai;
+       
+   
  
         file_put_contents("ECRITURE.WIN", $data);
         

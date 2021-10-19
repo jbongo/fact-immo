@@ -435,7 +435,7 @@ if($("#date_encaissement").val() != ""){
  });
        $.ajax({
              type: "GET",
-             url: "regler/factures-honoraire/"+facture_id ,
+             url: "/regler/factures-honoraire/"+facture_id ,
              data:  $("#form_regler").serialize(),
              success: function (result) {
                 swal(
@@ -483,7 +483,7 @@ if($("#date_encaissement").val() != ""){
  });
        $.ajax({
              type: "GET",
-             url: "regler/factures-honoraire/"+facture_id ,
+             url: "/regler/factures-honoraire/"+facture_id ,
              data:  $("#form_regler_pub").serialize(),
              success: function (result) {
                 swal(
