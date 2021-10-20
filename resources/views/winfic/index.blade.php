@@ -75,13 +75,28 @@
                             </div>
                         </div>
                         
-                        
+                                    
                             
                          
                          </form>
+                         
+                         
+                        
+                         
                     </div>
 
+               <div class="row">
                
+               
+                <div class="col-md-2 col-lg-2 col-sm-2">
+                    <label for="" style="font-size:17px; font-weight:bold; color:#ff0000">Débit: {{$montant_credit_debit}}</label>
+                    
+                </div>
+                
+                <div class="col-md-2 col-lg-2 col-sm-2">
+                    <label for="" style="font-size:17px; font-weight:bold; color:#06cd2e">Crédit: {{$montant_credit_debit}}</label>
+                </div>
+               </div>
                      
                     
              <div class="row">

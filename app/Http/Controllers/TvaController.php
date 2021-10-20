@@ -9,6 +9,9 @@ use App\User;
 use Mail;
 use Illuminate\Http\Request;
 
+use iio\libmergepdf\Merger;
+use iio\libmergepdf\Pages;
+
 class TvaController extends Controller
 {
     /**
@@ -18,6 +21,20 @@ class TvaController extends Controller
      */
     public function test()
     {
+
+
+        $merger = new Merger;
+        $merger->addFile('one.pdf');
+        $merger->addFile('two.pdf', new Pages('1-10'));
+        $createdPdf = $merger->merge();
+
+
+
+
+
+
+
+
 
 
 
@@ -32,6 +49,7 @@ class TvaController extends Controller
 
 
 dd("cc");
+
       $ligne = '
       "1,""0"",""organization"",""public"",""Services"","""","""","""","""","""","""","""",""WebCdesign"",""Création site internet"",""Cédric"",""MONNOT"","""","""","""","""","""","""","""","""","""","""","""","""","""",""11 route des Vignerons"","""","""","""","""","""",""Saint Victor la Coste"","""",""30290"","""",""44.068700000000"",""4.654160000000"",""public"","""","""","""","""",""06 28 58 29 44"",""public"","""","""",""contact@webcdesign.com"",""public"","""","""","""","""",""https://webcdesign.com"",""webCdesign"",""public"","""","""",""Société de création de sites Web, réservation de nom de domaine, hébergement, messagerie, certificat SSL, référencement, ..."","""","""",""http://2021.saintvictorlacoste.com/maquette2/wp-content/uploads/connections-images/webcdesign/logo_webcdesign.png""	
         "2,""0"",""organization"",""public"",""Services,Immobilier"","""","""","""","""","""","""","""",""optimhome"",""Agent immobilier"",""Daniel"",""Specchio"",""2 rue Balzac"","""","""","""","""","""",""Saint Victor la Coste"","""",""30290"","""",""44.064100000000"",""4.647090000000"",""public"","""","""","""","""","""","""","""","""","""","""","""","""","""","""","""","""","""",""06 74 94 96 45"",""public"",""daniel.specchio@hopimhome.com"",""public"","""","""","""","""","""","""",""https://www.optimhome.com/conseillers/specchio"",""https://www.optimhome.com/conseillers/specchio"",""public"","""","""","""","""","""",""""	

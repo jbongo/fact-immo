@@ -15,7 +15,7 @@ class CreateAvoirsTable extends Migration
     {
         Schema::create('avoirs', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->interger('numero')->nullable();
+            $table->integer('numero')->nullable();
             $table->integer('facture_id')->nullable();
 
             $table->text('motif')->nullable();
