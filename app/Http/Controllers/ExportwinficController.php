@@ -332,7 +332,7 @@ class ExportwinficController extends Controller
            // Pour la contraprtie, faire une seule ligne ------------> sortie de la boucleb  somme des ttc
              
     
-               $total_ttc+= $ttc;
+               $total_ttc+=  round($ttc,2);
            
           
            
