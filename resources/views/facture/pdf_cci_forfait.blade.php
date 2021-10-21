@@ -1,116 +1,55 @@
-@extends('layouts.app')
-
-@section('content')
-    @section ('page_title')
-Facture N° {{$facture->numero}}
-
- @endsection
-
-<div class="row"> 
-       
-      <div class="col-lg-12">
-              @if (session('ok'))
-     
-              <div class="alert alert-success alert-dismissible fade in">
-                      <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                      <a href="#" class="alert-link"><strong> {{ session('ok') }}</strong></a> 
-              </div>
-           @endif       
-          <div class="card alert">
-         <div class="row">
-         
-            @if($facture->url != null)
-            <div class="col-lg-3 col-md-3 col-sm-6">
-               <a href="{{route('facture.telecharger_pdf_facture_autre', Crypt::encrypt($facture->id))}}"  class="btn btn-default btn-flat btn-addon  m-b-10 m-l-5 " id="ajouter"><i class="ti-download"></i>Télécharger</a>
-            </div>
-            @else 
-
-            <div class="col-lg-3 col-md-3 col-sm-6">
-                <a href="{{route('facture.edit_libre', Crypt::encrypt($facture->id))}}"  class="btn btn-default btn-flat btn-addon  m-b-10 m-l-5 " id="ajouter"><i class="ti-pencil"></i>Modifier</a>
-             </div>
-            <div class="col-lg-3 col-md-3 col-sm-6">
-                <a href="{{route('facture.generer_pdf_facture_autre', Crypt::encrypt($facture->id))}}"  class="btn btn-danger btn-flat btn-addon  m-b-10 m-l-5 " id="ajouter"><i class="ti-reload"></i>Générer la facture et envoyer par mail</a>
-             </div>
-
-
-            @endif
-            
-
-           
-            
-
-         </div>
-               <hr>
-
 <table style="width: 50%">
     <tbody>
-        <tr>           
-            <td style="width: 382px;"><img src="https://www.stylimmo.com/images/logo.jpg" alt="" width="219" height="114" /></td>
+        <tr>
+            <td style="width: 320px;"><img src="https://www.stylimmo.com/images/logo.jpg" alt="" width="279" height="124" /></td>
             <td style="width: 380px;">
-                {{-- {{ dd($facture)}} --}}
-
-                @if($facture->destinataire_est_mandataire == true)
-                    <p>  {{$facture->user->nom}} {{$facture->user->prenom}}</p>
+             
+                    <p> {{$facture->user->nom}} {{$facture->user->prenom}}</p>
                     <p>{{$facture->user->adresse}}</p> 
                     <p>{{$facture->user->code_postal}} {{$facture->user->ville}}</p>
 
-                @else
-
-                    <p> {!! $facture->destinataire !!}  </p>
-                @endif
-               
             </td>
         </tr>
     </tbody>
 </table>
+<table style="height: 30px; width: 20%">
+    <tbody>
+        <tr>
+            <td style="width: 216px;">Bagnols sur C&egrave;ze, le @if($facture->date_facture != null) {{$facture->date_facture->format('d/m/Y')}} @else{{$facture->created_at->format('d/m/Y')}}  @endif</td>
+            {{-- <td style="width: 194px;"></td> --}}
+        </tr>
+    </tbody>
+</table>
 <br>
+
 
 <table style="height: 53px;" width="50%">
     <tbody>
         <tr>
-            <td style="width: 343px;"><span style="color: #ff0000;"></span></td>
-            <td style="width: 344px;"><span style="text-decoration: underline; font-size:20px"><strong>FACTURE N&deg;   {{$facture->numero}}</strong></span></td>
+            <td style="width: 443px;"><span style="color: #ff0000;">Merci d'indiquer le num&eacute;ro de facture en r&eacute;f&eacute;rence du virement.</span></td>
+            <td style="width: 344px;"><span style="text-decoration: underline;font-size:20px"><strong>FACTURE N&deg; {{$facture->numero}}</strong></span></td>
         </tr>
     </tbody>
 </table>
-{{-- <table style="height: 59px; width: 311px;">
-    <tbody>
-        <tr>
-            <td style="width: 158px;"><span style="text-decoration: underline;"><strong> TRANSACTION</strong></span></td>
-        <td style="width: 143px;"><span style="text-decoration: underline;"><strong> {{strtoupper($facture->type)}}</strong></span></td>
-        </tr>
-    </tbody>
-</table> --}}
 
 <br>
-<table style=" width: 100%">
+<br>
+<br>
+
+
+<table style="height: 47px; width: 672px;">
     <tbody>
-        <tr>
-            <td style="width: 150px;">&nbsp;</td>
-            <td style="width: 528px;"><span style="text-decoration: underline;"><strong>DESCRIPTION</strong> </td>
-            <td style="width: 30px;">&nbsp;</td>
-        </tr>
-        
+    <tr style="height: 18px;">
+        <td style="width: 400px;"> <strong>  @if($facture->type =="cci")   Attestation professionnelle (CCI)  @elseif($facture->type =="forfait_entree") Forfait d'entrée @else {!! $facture->description_produit !!}   @endif </strong></td>
+        <td style="width: 160px;">&nbsp; </td>
+        <td style="width: 100px; text-align:right;" >{{ number_format($facture->montant_ht,2,',',' ')}} &euro; </td>
+    </tr>
     </tbody>
 </table>
+    
 
+<br>
 
-
-
-<table style="height: 63px; width:20% ">
-    <tbody>
-        <tr>
-            <td style="width: 48px;">&nbsp;</td>
-            <td style=""><span style="">&nbsp;</span></td>
-        </tr>
-        <tr style="">
-            <td style="width: 48px;">&nbsp;</td>
-            <td style="width: 528px;">{!! $facture->description_produit !!} </td>
-            {{-- <td style="width: 391px;"></td> --}}
-
-        </tr>
-    </tbody>
-</table>
 <br><br>
 <table style="height: 47px; width: 672px;">
     <tbody>
@@ -132,31 +71,32 @@ Facture N° {{$facture->numero}}
     </tbody>
 </table>
 <br>
-
+<br>
+<br>
+<br>
+<br>
+<br>
 <table style="height: 30px; width: 50%;">
     <tbody>
         <tr style="height: 25px;">
             <td style="width: 300px; height: 25px;">Valeur en votre aimable r&egrave;glement de :</td>
-            <td style="width: 200px; height: 25px;">{{number_format($facture->montant_ttc,2,'.',' ')}} &euro; TTC</td>
+            <td style="width: 200px; height: 25px;">{{number_format($facture->montant_ttc,2,',',' ')}} &euro; TTC</td>
             <td style="width: 187px; height: 25px;"><span style="color: #ff0000; font-size:18px; font-weight:bold">&nbsp;R&eacute;f &agrave; rappeler: {{$facture->numero}}</span></td>
         </tr>
     </tbody>
 
 </table>
 <br>
-<br>
-<br>
-<br>
 
 <style>
     @page { margin: 50px 45px; }
-    /* .footer {
+    .footer {
         position: fixed;
         bottom: 90px;
         left: 0px; right: 0px;  height: 130px; 
         align-content: center;
     
-    } */
+    }
   
   
   
@@ -230,5 +170,6 @@ Facture N° {{$facture->numero}}
         </p>
     </div>
 </div>
+   
 
-@endsection
+

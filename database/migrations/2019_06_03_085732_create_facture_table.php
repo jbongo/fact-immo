@@ -21,7 +21,7 @@ class CreateFactureTable extends Migration
             $table->integer('facture_id')->nullable();
             $table->text('motif')->nullable();
             $table->integer('compromis_id')->nullable();
-            $table->enum('type',['stylimmo','honoraire','pack_pub','carte_visite','parrainage','partage','partage_externe','parrainage_partage','communication','autre'])->nullable();
+            $table->enum('type',['stylimmo','honoraire','pack_pub','carte_visite','parrainage','partage','partage_externe','parrainage_partage','communication','autre','forfait_entree','cci'])->nullable();
             $table->boolean('encaissee')->default(false);
             $table->date('date_encaissement')->nullable();
             $table->boolean('reglee')->default(false);

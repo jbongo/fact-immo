@@ -3585,7 +3585,6 @@ return 4444;
             $request->validate([
                 'numero' => 'required|numeric|unique:factures',
                 'type' => 'required',
-                'description_produit' => 'required',
             ]);
 
             $destinataire_est_mandataire = true;
@@ -3596,14 +3595,24 @@ return 4444;
             $request->validate([
                 'numero' => 'required|numeric|unique:factures',
                 'type' => 'required',
-                'destinataire' => 'required',
-                'description_produit' => 'required',
+                'destinataire' => 'required'
             ]);
             
             $user_id = null;
             $destinataire_est_mandataire = false;
 
        }
+       
+       
+       if($request->type!= "forfait_entree" && $request->type != "cci" ){
+        
+        $request->validate([
+            'description_produit' => 'required',
+        ]);
+   
+   }
+       
+       
 
        $facture = Facture::create([
             "numero"=> $request->numero,
@@ -3618,7 +3627,6 @@ return 4444;
             "destinataire"=> $request->destinataire,
             "description_produit"=> $request->description_produit,
        ]);
-       
        
         return view ('facture.generer_facture_autre',compact('facture'));
     }
@@ -3666,7 +3674,6 @@ return 4444;
 
             $request->validate([
                 'type' => 'required',
-                'description_produit' => 'required',
             ]);
 
             $destinataire_est_mandataire = true;
@@ -3678,13 +3685,20 @@ return 4444;
             $request->validate([
                 'type' => 'required',
                 'destinataire' => 'required',
-                'description_produit' => 'required',
             ]);
             
             $user_id = null;
             $destinataire_est_mandataire = false;
 
        }
+       
+           if($facture->type!= "forfait_entree" && $facture->type != "cci" ){
+        
+                $request->validate([
+                    'description_produit' => 'required',
+                ]);
+           
+           }
 
 
             $facture->numero = $request->numero;
@@ -3728,7 +3742,13 @@ return 4444;
             $filename = "F".$facture->numero." ".$facture->type." ".$facture->montant_ttc."€.pdf" ;
         }
 
-        $pdf = PDF::loadView('facture.pdf_autre',compact(['facture']));
+        if($facture->type == "cci" || $facture->type=="forfait_entree"){
+            $pdf = PDF::loadView('facture.pdf_cci_forfait',compact(['facture']));
+                
+        }else{
+            $pdf = PDF::loadView('facture.pdf_autre',compact(['facture']));
+            
+        }
 
         $path = storage_path('app/public/factures/'.$filename);
       
@@ -3759,7 +3779,14 @@ return 4444;
         
             $facture = Facture::where('id', crypt::decrypt($facture_id))->first();
           
-            $pdf = PDF::loadView('facture.pdf_autre',compact(['facture']));
+            if($facture->type == "cci" || $facture->type=="forfait_entree"){
+                $pdf = PDF::loadView('facture.pdf_cci_forfait',compact(['facture']));
+                    
+            }else{
+                $pdf = PDF::loadView('facture.pdf_autre',compact(['facture']));
+                
+            }
+           
 
 
         if($facture->destinataire_est_mandataire == true ){
@@ -3773,9 +3800,17 @@ return 4444;
         
         $facture->url = $path;
         $facture->update();
+        
+        if($facture->destinataire_est_mandataire == true){
+        
+            $mandataire = $facture->user;
+            Mail::to($mandataire->email)->send(new EnvoyerFactureStylimmoMandataire($mandataire,$facture));
+            return   redirect()->route('facture.index')->with("ok", "Votre facture ". $facture->type." " .$facture->numero." a été créée et envoyée à $mandataire->email ");
+            
+       }
   
 
-        return   redirect()->route('facture.index')->with("ok", "Votre facture ". $facture->type." " .$facture->numero." a été crée");
+        return   redirect()->route('facture.index')->with("ok", "Votre facture ". $facture->type." " .$facture->numero." a été créée ");
  
 
     }

@@ -9,9 +9,6 @@ use App\User;
 use Mail;
 use Illuminate\Http\Request;
 
-use iio\libmergepdf\Merger;
-use iio\libmergepdf\Pages;
-
 class TvaController extends Controller
 {
     /**
@@ -23,19 +20,6 @@ class TvaController extends Controller
     {
 
 
-        $merger = new Merger;
-        $merger->addFile('one.pdf');
-        $merger->addFile('two.pdf', new Pages('1-10'));
-        $createdPdf = $merger->merge();
-
-
-
-
-
-
-
-
-
 
 
         $mandataires = User::where('role','mandataire')->orderBy('nom')->get();
@@ -43,7 +27,7 @@ class TvaController extends Controller
         foreach ($mandataires as $mandataire) {
             if(($mandataire->contrat != null && $mandataire->contrat->a_demission == false && $mandataire->contrat->est_fin_droit_suite == false) ) {
             
-                echo $mandataire->email.",<br>";
+                echo $mandataire->email.", $mandataire->email_perso,<br>";
             }
         }
 
