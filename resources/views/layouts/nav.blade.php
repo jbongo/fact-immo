@@ -122,7 +122,7 @@
     $nb_a_payer= App\Facture::nb_facture_a_payer();
     $nb_liste_pub = App\Factpub::where([['validation',0]])->orderBy('id','desc')->get()->count();
     
-    $nb_notif_pub = Auth()->user()->role == "mandataire" ? App\Facture::where([['user_id',auth()->user()->id],['reglee',false]])->whereIn('type',['pack_pub','carte_visite'])->count() : 0;
+    $nb_notif_pub = Auth()->user()->role == "mandataire" ? App\Facture::where([['user_id',auth()->user()->id],['reglee',false], ['a_avoir', false]])->whereIn('type',['pack_pub','carte_visite'])->count() : 0;
 
     $nb_notif =  auth()->user()->demande_facture + $nb + $nb_a_payer + $nb_liste_pub;
     
