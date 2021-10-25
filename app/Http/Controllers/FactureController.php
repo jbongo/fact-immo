@@ -64,14 +64,14 @@ class FactureController extends Controller
             $factureHonoraires = Facture::whereIn('type',['honoraire','partage','partage_externe','parrainage','parrainage_partage'])->latest()->get();            
             $factureCommunications = Facture::where('type',['pack_pub','carte_visite'])->latest()->get();
             
-            $nb_comm_non_regle  = Facture::where('reglee',false)->whereIn('type',['pack_pub','carte_visite'])->count();
+            $nb_comm_non_regle  = Facture::where([['reglee',false], ['a_avoir', false]])->whereIn('type',['pack_pub','carte_visite'])->count();
             
         }else{
             $factureHonoraires = Facture::where('user_id',auth()->user()->id)->whereIn('type',['honoraire','partage','partage_externe','parrainage','parrainage_partage'])->latest()->get();
             $factureStylimmos = Facture::where('user_id',auth()->user()->id)->where('type',['stylimmo','avoir','pack_pub','carte_visite','communication','autre','forfait_entree','cci'])->latest()->get();
             $factureCommunications = Facture::where('user_id',auth()->user()->id)->whereIn('type',['pack_pub','carte_visite'])->latest()->get();
             
-            $nb_comm_non_regle  = Facture::where([['user_id',auth()->user()->id],['reglee',false]])->whereIn('type',['pack_pub','carte_visite'])->count();
+            $nb_comm_non_regle  = Facture::where([['user_id',auth()->user()->id],['reglee',false], ['a_avoir', false]])->whereIn('type',['pack_pub','carte_visite'])->count();
          
 
         }
@@ -112,7 +112,7 @@ class FactureController extends Controller
             $factureHonoraires = Facture::whereIn('type',['honoraire','partage','partage_externe','parrainage','parrainage_partage'])->whereBetween('date_facture',[$date_deb,$date_fin])->latest()->get();                       
         }else{
             $factureHonoraires = Facture::where('user_id',auth()->user()->id)->whereIn('type',['honoraire','partage','partage_externe','parrainage','parrainage_partage'])->latest()->get();
-            $nb_comm_non_regle  = Facture::where([['user_id',auth()->user()->id],['reglee',false]])->whereIn('type',['pack_pub','carte_visite'])->count();
+            $nb_comm_non_regle  = Facture::where([['user_id',auth()->user()->id],['reglee',false], ['a_avoir', false]])->whereIn('type',['pack_pub','carte_visite'])->count();
 
         }
         
