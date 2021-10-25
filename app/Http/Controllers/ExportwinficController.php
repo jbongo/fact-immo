@@ -169,14 +169,17 @@ class ExportwinficController extends Controller
         // TRANSFERT DES ENCAISSEMENTS
         
         
-        $factureEncaissees = Facture::whereIn('type',['stylimmo','pack_pub','carte_visite','communication','autre','forfait_entree','cci'])->whereBetween('date_encaissement',[$date_deb,$date_fin])->orderBy('numero','asc')->get();  
+        $factureEncaissees = Facture::whereIn('type',['stylimmo','pack_pub','carte_visite','communication','autre','forfait_entree','cci'])->where('user_id','<>',null)->whereBetween('date_encaissement',[$date_deb,$date_fin])->orderBy('numero','asc')->get();  
         
         
         $data_encai = "";
         $total_transac_ttc = 0;
         $total_autre_ttc = 0;
-        $num_folio_encai = 1;
-        $num_ecriture_encai = 1;
+        $num_folio_encai_B1 = 1;
+        $num_ecriture_encai_B1 = 1;
+        
+        $num_folio_encai_B2 = 1;
+        $num_ecriture_encai_B2 = 1;
         
         foreach ($factureEncaissees as $facture) {
         
@@ -199,6 +202,7 @@ class ExportwinficController extends Controller
             
             }else{
                 
+                if(!$facture->user) dd($facture);
                 $compte_ttc_encai = $facture->user->code_client;
                 
                 $libelle_encai =  $this->formatage_colonne(30, $facture->user->nom." ".$facture->user->prenom);
@@ -235,16 +239,33 @@ class ExportwinficController extends Controller
             $quantite_encai = "      0,000";
             $code_pointage_encai = "  ";
                     
-            $ligne1_encai = $code_journal_encai."|".$date_operation_encai."|".$this->formatage_colonne(6,$num_folio_encai,'droite')."|".$this->formatage_colonne(6,$num_ecriture_encai,'droite')."|".$jour_ecriture_encai."|".$compte_ttc_encai."|".$montant_debit_ttc_encai."|".$montant_credit_ttc_encai."|".$libelle_encai."|".$lettrage_encai."|".$code_piece_encai."|".$code_stat_encai."|".$date_echeance_encai."|".$monnaie_encai."|".$filler_encai."|".$ind_compteur_encai."|".$quantite_encai."|".$code_pointage_encai."|\r\n";
-            $num_ecriture_encai++;
+            
+            
+            if($code_journal_encai == "B2"){
+                $ligne1_encai = $code_journal_encai."|".$date_operation_encai."|".$this->formatage_colonne(6,$num_folio_encai_B2,'droite')."|".$this->formatage_colonne(6,$num_ecriture_encai_B2,'droite')."|".$jour_ecriture_encai."|".$compte_ttc_encai."|".$montant_debit_ttc_encai."|".$montant_credit_ttc_encai."|".$libelle_encai."|".$lettrage_encai."|".$code_piece_encai."|".$code_stat_encai."|".$date_echeance_encai."|".$monnaie_encai."|".$filler_encai."|".$ind_compteur_encai."|".$quantite_encai."|".$code_pointage_encai."|\r\n";
+                $num_ecriture_encai_B2++;
+                
+            
+            }else{
+                $ligne1_encai = $code_journal_encai."|".$date_operation_encai."|".$this->formatage_colonne(6,$num_folio_encai_B1,'droite')."|".$this->formatage_colonne(6,$num_ecriture_encai_B1,'droite')."|".$jour_ecriture_encai."|".$compte_ttc_encai."|".$montant_debit_ttc_encai."|".$montant_credit_ttc_encai."|".$libelle_encai."|".$lettrage_encai."|".$code_piece_encai."|".$code_stat_encai."|".$date_echeance_encai."|".$monnaie_encai."|".$filler_encai."|".$ind_compteur_encai."|".$quantite_encai."|".$code_pointage_encai."|\r\n";
+                $num_ecriture_encai_B1++;
+                
+            
+            }
+            
             
            
             
             $data_encai .= $ligne1_encai;
             
-            if($num_ecriture_encai > 47 ){
-                $num_folio_encai ++;
-                $num_ecriture_encai = 1;
+            if($num_ecriture_encai_B1 > 50 ){
+                $num_folio_encai_B1 ++;
+                $num_ecriture_encai_B1 = 1;
+            }
+            
+            if($num_ecriture_encai_B2 > 50 ){
+                $num_folio_encai_B2 ++;
+                $num_ecriture_encai_B2 = 1;
             }
             
         }
@@ -285,11 +306,11 @@ class ExportwinficController extends Controller
         $code_pointage_contrepartie_encai = "  ";
         
         
-        $ligne2_contrepartie_transac_encai = "B2"."|".$date_operation_contrepartie_encai."|".$this->formatage_colonne(6,$num_folio_encai,'droite')."|".$this->formatage_colonne(6,$num_ecriture_encai,'droite')."|".$jour_ecriture_contrepartie_encai."|".$compte_contrepartie_transac_encai."|".$montant_debit_contrepartie_transac_encai."|".$montant_credit_contrepartie_transac_encai."|".$libelle_contrepartie_transac_encai."|".$lettrage_contrepartie_encai."|".$code_piece_contrepartie_encai."|".$code_stat_contrepartie_encai."|".$date_echeance_contrepartie_encai."|".$monnaie_contrepartie_encai."|".$filler_contrepartie_encai."|".$ind_compteur_contrepartie_encai."|".$quantite_contrepartie_encai."|".$code_pointage_contrepartie_encai."|\r\n";
-        $num_ecriture_encai++;
+        $ligne2_contrepartie_transac_encai = "B2"."|".$date_operation_contrepartie_encai."|".$this->formatage_colonne(6,$num_folio_encai_B2,'droite')."|".$this->formatage_colonne(6,$num_ecriture_encai_B2,'droite')."|".$jour_ecriture_contrepartie_encai."|".$compte_contrepartie_transac_encai."|".$montant_debit_contrepartie_transac_encai."|".$montant_credit_contrepartie_transac_encai."|".$libelle_contrepartie_transac_encai."|".$lettrage_contrepartie_encai."|".$code_piece_contrepartie_encai."|".$code_stat_contrepartie_encai."|".$date_echeance_contrepartie_encai."|".$monnaie_contrepartie_encai."|".$filler_contrepartie_encai."|".$ind_compteur_contrepartie_encai."|".$quantite_contrepartie_encai."|".$code_pointage_contrepartie_encai."|\r\n";
+        $num_ecriture_encai_B2++;
         
-        $ligne2_contrepartie_autre_encai = "B1"."|".$date_operation_contrepartie_encai."|".$this->formatage_colonne(6,$num_folio_encai,'droite')."|".$this->formatage_colonne(6,$num_ecriture_encai,'droite')."|".$jour_ecriture_contrepartie_encai."|".$compte_contrepartie_autre_encai."|".$montant_debit_contrepartie_autre_encai."|".$montant_credit_contrepartie_autre_encai."|".$libelle_contrepartie_autre_encai."|".$lettrage_contrepartie_encai."|".$code_piece_contrepartie_encai."|".$code_stat_contrepartie_encai."|".$date_echeance_contrepartie_encai."|".$monnaie_contrepartie_encai."|".$filler_contrepartie_encai."|".$ind_compteur_contrepartie_encai."|".$quantite_contrepartie_encai."|".$code_pointage_contrepartie_encai."|\r\n";
-        $num_ecriture_encai++;
+        $ligne2_contrepartie_autre_encai = "B1"."|".$date_operation_contrepartie_encai."|".$this->formatage_colonne(6,$num_folio_encai_B1,'droite')."|".$this->formatage_colonne(6,$num_ecriture_encai_B1,'droite')."|".$jour_ecriture_contrepartie_encai."|".$compte_contrepartie_autre_encai."|".$montant_debit_contrepartie_autre_encai."|".$montant_credit_contrepartie_autre_encai."|".$libelle_contrepartie_autre_encai."|".$lettrage_contrepartie_encai."|".$code_piece_contrepartie_encai."|".$code_stat_contrepartie_encai."|".$date_echeance_contrepartie_encai."|".$monnaie_contrepartie_encai."|".$filler_contrepartie_encai."|".$ind_compteur_contrepartie_encai."|".$quantite_contrepartie_encai."|".$code_pointage_contrepartie_encai."|\r\n";
+        $num_ecriture_encai_B1++;
         
         $data_encai .= $ligne2_contrepartie_transac_encai.$ligne2_contrepartie_autre_encai;
         
@@ -304,8 +325,8 @@ class ExportwinficController extends Controller
    
        $data_decai = "";
        $total_ttc = 0;
-       $num_folio_decai = 1;
-       $num_ecriture_decai = 1;
+       $num_folio_decai = $num_ecriture_encai_B2;
+       $num_ecriture_decai = $num_ecriture_encai_B2;
        foreach ($factureDecaissees as $facture) {
        
            $code_journal_decai = "B2" ;
@@ -356,7 +377,7 @@ class ExportwinficController extends Controller
            
            $data_decai .= $ligne1_decai;
            // .$ligne3_decai;
-           if($num_ecriture_decai > 47 ){
+           if($num_ecriture_decai > 50 ){
             $num_folio_decai ++;
             $num_ecriture_decai = 1;
             }
@@ -403,7 +424,7 @@ class ExportwinficController extends Controller
         
         $data.= $data_encai.$data_decai;
        
-   dd($data);
+//    dd($data);
  
         file_put_contents("ECRITURE.WIN", $data);
         

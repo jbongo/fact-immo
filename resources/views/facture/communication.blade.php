@@ -124,12 +124,7 @@
                                         @endif
                                     </td>
                                     
-                                    
-                               
-                                          
-                                  
 
-                              
                                 </tr> 
                            
                         @endforeach

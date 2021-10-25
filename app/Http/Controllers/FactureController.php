@@ -102,8 +102,7 @@ class FactureController extends Controller
             $date_deb = strtotime($date_fin."-8 months");
             
             $date_deb = date("Y-m-d", $date_deb);
-            
-            
+
         }
         
         $nb_comm_non_regle  = "";
