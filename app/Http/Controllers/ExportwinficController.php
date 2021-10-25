@@ -175,6 +175,7 @@ class ExportwinficController extends Controller
         $data_encai = "";
         $total_transac_ttc = 0;
         $total_autre_ttc = 0;
+        
         $num_folio_encai_B1 = 1;
         $num_ecriture_encai_B1 = 1;
         
@@ -325,7 +326,7 @@ class ExportwinficController extends Controller
    
        $data_decai = "";
        $total_ttc = 0;
-       $num_folio_decai = $num_ecriture_encai_B2;
+       $num_folio_decai = $num_folio_encai_B2;
        $num_ecriture_decai = $num_ecriture_encai_B2;
        foreach ($factureDecaissees as $facture) {
        
