@@ -403,7 +403,7 @@ class ExportwinficController extends Controller
         
         $data.= $data_encai.$data_decai;
        
-   
+   dd($data);
  
         file_put_contents("ECRITURE.WIN", $data);
         

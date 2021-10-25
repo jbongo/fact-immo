@@ -188,14 +188,14 @@ class FactureController extends Controller
         // Liste des factures de publicité
             $facturePubs = Facture::where('type',['pack_pub'])->latest()->get();
 
-            $nb_comm_non_regle  = Facture::where('reglee',false)->whereIn('type',['pack_pub','carte_visite'])->count();
+            $nb_comm_non_regle  = Facture::where([['reglee',false], ['a_avoir', false]])->whereIn('type',['pack_pub','carte_visite'])->count();
             
             return view ('facture.pubs',compact(['facturePubs','nb_comm_non_regle']));
             
         }else{
         
             $factureCommunications = Facture::where('user_id',auth()->user()->id)->whereIn('type',['pack_pub','carte_visite'])->latest()->get();
-            $nb_comm_non_regle  = Facture::where([['user_id',auth()->user()->id],['reglee',false]])->whereIn('type',['pack_pub','carte_visite'])->count();
+            $nb_comm_non_regle  = Facture::where([['user_id',auth()->user()->id],['reglee',false], ['a_avoir', false]])->whereIn('type',['pack_pub','carte_visite'])->count();
             
             return view ('facture.communication',compact(['factureCommunications','nb_comm_non_regle']));
 

@@ -63,6 +63,7 @@
                                     <th>@lang('Pour le mois de')</th>
                                    
                                     <th>@lang('Régler')</th>
+                                    <th>@lang('Avoir')</th>
                                     {{-- <th>@lang('Action')</th> --}}
                                 </tr>
                             </thead>
@@ -102,28 +103,30 @@
                                   
 
                                     <td>
-                                        @if($facture->reglee == 0)
-                                   
-                                            <button data-toggle="modal"   data-target="#myModal2" onclick="getIdPayer('{{Crypt::encrypt($facture->id)}}')" id="{{Crypt::encrypt($facture->id)}}"  class="btn btn-success btn-flat btn-addon  m-b-10 m-l-5 payer" ><i class="ti-wallet"></i>
-                                               A payer</button>
-                                        
-                                        @else 
-                                            <label class="color-warning">@if($facture->date_reglement != null) Réglée le {{$facture->date_reglement->format('d/m/Y')}} @else Réglée @endif</label> 
-                                        @endif 
+                                        @if($facture->a_avoir == 1 && $facture->avoir() != null)
+                                            <label class="color-primary"> annulée par AVOIR {{$facture->avoir()->numero}}</label> 
+    
+                                        @else
+                                            @if($facture->reglee == 0)                                       
+                                                <button data-toggle="modal"   data-target="#myModal2" onclick="getIdPayer('{{Crypt::encrypt($facture->id)}}')" id="{{Crypt::encrypt($facture->id)}}"  class="btn btn-success btn-flat btn-addon  m-b-10 m-l-5 payer" ><i class="ti-wallet"></i>
+                                                   A payer</button>
+                                            @else 
+                                                <label class="color-warning">@if($facture->date_reglement != null) Réglée le {{$facture->date_reglement->format('d/m/Y')}} @else Réglée @endif</label> 
+                                            @endif 
+                                        @endif
                                     </td>
-                                  
-                                    {{--  paiement--}}
-                                    @php
-                                        // $datevente = date_create($facture->compromis->date_vente->format('Y-m-d'));
-                                        // $today = date_create(date('Y-m-d'));
-                                        // $interval = date_diff($today, $datevente);
-                                    @endphp
-                                  
-                           
-
+                                    
+                                    
+                                    <td width="" >
+                                     
+                                        @if($facture->a_avoir == 1 && $facture->avoir() != null)
+                                            <a href="{{route('facture.telecharger_pdf_avoir', Crypt::encrypt($facture->avoir()->id))}}"  class="btn btn-danger btn-flat btn-addon m-b-10 m-l-5 " id=""><i class="ti-download"></i>avoir {{$facture->avoir()->numero}}</a>
+                                        @endif
+                                    </td>
+                                    
                                     
                                
-                                    
+                                          
                                   
 
                               

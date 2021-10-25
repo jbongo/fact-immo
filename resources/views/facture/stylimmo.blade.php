@@ -222,11 +222,11 @@
                                             @if($facture->type != "avoir")
                                                 @if($facture->a_avoir == 0 && $facture->encaissee == 0 && $facture->compromis != null  && auth()->user()->role == "admin") 
 
-                                                    <a href="{{route('facture.avoir.create', Crypt::encrypt($facture->id))}}" target="_blank"  class="btn btn-info  btn-flat btn-addon  m-b-10 m-l-5 " id=""><i class="ti-link"></i>créer</a>
+                                                    <a href="{{route('facture.avoir.create', Crypt::encrypt($facture->id))}}"   class="btn btn-info  btn-flat btn-addon  m-b-10 m-l-5 " id=""><i class="ti-link"></i>créer</a>
 
                                                 @elseif($facture->a_avoir == 0 && $facture->encaissee == 0 && $facture->compromis == null  && auth()->user()->role == "admin") 
 
-                                                    <a href="{{route('facture.avoir.create', Crypt::encrypt($facture->id))}}" target="_blank"  class="btn btn-info  btn-flat btn-addon  m-b-10 m-l-5 " id=""><i class="ti-link"></i>créer</a>
+                                                    <a href="{{route('facture.avoir.create', Crypt::encrypt($facture->id))}}"  class="btn btn-info  btn-flat btn-addon  m-b-10 m-l-5 " id=""><i class="ti-link"></i>créer</a>
                                                 @elseif($facture->a_avoir == 1 && $facture->avoir() != null)
                                                     <a href="{{route('facture.telecharger_pdf_avoir', Crypt::encrypt($facture->avoir()->id))}}"  class="btn btn-danger btn-flat btn-addon m-b-10 m-l-5 " id=""><i class="ti-download"></i>avoir {{$facture->avoir()->numero}}</a>
                                                 @endif
