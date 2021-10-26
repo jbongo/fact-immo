@@ -193,12 +193,17 @@ class DocumentController extends Controller
         $documents = Document::where('archive', false)->get();
         
        foreach ($documents as $document) {
-           
+  
            
             if($file = $request->file($document->reference)){
-    
 
-            
+
+                if($document->a_date_expiration == true ){
+                                
+                    $request->validate([
+                        "date_expiration_".$document->reference => "required"
+                    ]);
+                }
                 
                 // on sauvegarde le document
                 $path = storage_path('app/public/'.$mandataire->id.'/documents');
@@ -242,8 +247,6 @@ class DocumentController extends Controller
                
                     }else {
                     
-                    
-                     
                         
                         // Si le fichier doit être gardé en historique
                         if($document->a_historique == true){
@@ -323,6 +326,22 @@ class DocumentController extends Controller
                 
                     
                  
+            }//SI LE MANDATAIRE N'A PAS RENSEIGNE DE FICHIER 
+            else {
+               
+                // si le fichier existe déjà, on modifie juste la date d'expiration
+                $fichier = $mandataire->document($document->id);
+                if( $fichier != null){
+                
+                    $reference = $document->reference;
+                    $fichier->date_expiration = $request["date_expiration_$reference"] ;                        
+                    $fichier->update();
+                    
+                    $action = Auth::user()->nom." ".Auth::user()->prenom." a modifié la date d'expiration du fichier $document->nom de $mandataire->prenom $mandataire->nom";
+                    $user_id = Auth::user()->id;
+
+                    Historique::createHistorique( $user_id,$fichier->id,"autre",$action );
+                }
             }
            
            

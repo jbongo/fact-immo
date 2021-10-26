@@ -105,10 +105,10 @@
                                             <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="date_expiration_{{$document->reference}}">Date d'expiration</label>
                                             <div class="col-lg-8 col-md-8 col-sm-8">
                                                 <input type="date" class="form-control" value="{{$mandataire->document($document->id) != null && $mandataire->document($document->id)->date_expiration != null  ? $mandataire->document($document->id)->date_expiration->format("Y-m-d")  : null }}" id="date_expiration_{{$document->reference}}" name="date_expiration_{{$document->reference}}" accept=".pdf" >
-                                                @if ($errors->has($document->reference))
+                                                @if ($errors->has("date_expiration_".$document->reference))
                                                   <br>
                                                   <div class="alert alert-warning ">
-                                                     <strong>{{$errors->first($document->reference)}}</strong> 
+                                                     <strong>{{$errors->first("date_expiration_".$document->reference)}}</strong> 
                                                   </div>
                                                @endif  
                                             </div>
