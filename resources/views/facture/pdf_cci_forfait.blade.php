@@ -40,7 +40,7 @@
 <table style="height: 47px; width: 672px;">
     <tbody>
     <tr style="height: 18px;">
-        <td style="width: 400px;"> <strong>  @if($facture->type =="cci")   Attestation professionnelle (CCI)  @elseif($facture->type =="forfait_entree") Forfait d'entrée @else {!! $facture->description_produit !!}   @endif </strong></td>
+        <td style="width: 400px;"> <strong>  @if($facture->type =="cci")   Attestation de Collaborateur (CCI)  @elseif($facture->type =="forfait_entree") Forfait d'entrée @else {!! $facture->description_produit !!}   @endif </strong></td>
         <td style="width: 160px;">&nbsp; </td>
         <td style="width: 100px; text-align:right;" >{{ number_format($facture->montant_ht,2,',',' ')}} &euro; </td>
     </tr>

@@ -5,7 +5,7 @@ Vous trouverez en pièce jointe la facture
 @if($facture->type == "stylimmo")
 STYL'IMMO 
 @elseif($facture->type == "cci")
-Attestation professionnelle (CCI) 
+Attestation de Collaborateur (CCI) 
 @elseif($facture->type == "forfait_entree")
 Forfait d'entrée
 @elseif($facture->type == "pack_pub")
@@ -17,8 +17,8 @@ Communication
 <br>
 
 @if($facture->type == "stylimmo")
-    Mandat : {{$facture->compromis->numero_mandat}} <br>
-    Date de vente prévue le : {{$facture->compromis->date_vente->format('d/m/Y')}} <br>
+Mandat : <strong>  {{$facture->compromis->numero_mandat}}</strong> <br>
+Date de vente prévue le : <strong>  {{$facture->compromis->date_vente->format('d/m/Y')}}</strong> <br>
 @endif
 
 Bonne réception. <br>
