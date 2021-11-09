@@ -852,6 +852,7 @@ class ExportwinficController extends Controller
 
         foreach ($factureStylimmos as $facture) {
         
+        if($facture->url != null)
             $merger->addFile($facture->url);
 
             
