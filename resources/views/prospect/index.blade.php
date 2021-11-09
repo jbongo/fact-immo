@@ -182,13 +182,13 @@
                                     {{$biblio->reference}}
                                 </th>
                                 @endforeach
+                                <th>@lang('Fiche prospect')</th>
                                 <th>@lang('Email')</th>
                                 <th>@lang('Téléphone')</th>
                                 <th>@lang('Code postal')</th>
                                 <th>@lang('Ville')</th>
                                 {{-- <th>@lang('Contrat')</th> --}}
-                                <th>@lang('Fiche consultée')</th>
-                                <th>@lang('Fiche renseignée')</th>
+                                {{-- <th>@lang('Fiche renseignée')</th> --}}
                                 {{-- <th>@lang('Envois mails')</th> --}}
                                 <th>@lang('Date de création')</th>
                                
@@ -236,6 +236,41 @@
                                     @endif
                                     </td>
                                 @endforeach
+                                
+                                <td>
+                                    
+                                
+                                    
+                                        @if($prospect->fiche_envoyee == true)
+                                        
+                                      
+                                            @if($prospect->a_ouvert_fiche == true && $prospect->renseigne == false)
+                                             
+                                            <i class="large material-icons color-success">visibility_on</i>
+                                            
+                                            
+                                            @elseif($prospect->a_ouvert_fiche == true && $prospect->renseigne == true)
+                                                <i class="large material-icons color-success">done</i>
+                                            
+                                            @else                                        
+                                                {{-- <i class="large material-icons color-danger">done_all</i> --}}
+                                                <i class="large material-icons color-warning">visibility_off</i>
+                                                
+                                            
+                                            
+                                            @endif
+                                        @else 
+                                        
+                                        <i class="large material-icons color-danger">highlight_off</i>
+                                        {{-- <i class="large material-icons color-danger">help_outline</i> --}}
+                                        
+                                        
+                                        
+                                        @endif
+                                     
+                                
+                                </td>
+                                
                                 <td>
                                     {{$prospect->email}} 
                                 </td>
@@ -254,7 +289,7 @@
                                 
                                 </td> --}}
                                 
-                                <td>
+                                {{-- <td>
                                     @if($prospect->a_ouvert_fiche == true)
                                     <span class="badge badge-success">Oui</span>
                                     @else 
@@ -270,7 +305,7 @@
                                    <span class="badge badge-danger">Non</span>
                                    
                                    @endif
-                                </td>  
+                                </td>   --}}
                                 
                                 {{-- <td>
                                 <a href="{{route('prospect.envoi_mail_fiche',Crypt::encrypt($prospect->id) )}}" class="btn btn-warning btn-flat btn-addon m-b-10 m-l-5" data-toggle="tooltip" title="@lang('Envoyer la fiche à remplir à ') {{ $prospect->nom }}"><i class="ti-email"></i>@if($prospect->fiche_envoyee == true) Renvoyer @else Envoyer @endif  fiche prospect </a>

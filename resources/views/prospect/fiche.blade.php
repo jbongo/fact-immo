@@ -197,7 +197,7 @@
   
   <body>
     <div class="testbox">
-    <form action="{{route('prospect.sauvegarder_fiche', Crypt::encrypt($user->id))}}" method="POST" enctype="multipart/form-data">
+    <form action="{{route('prospect.sauvegarder_fiche', Crypt::encrypt($prospect->id))}}" method="POST" enctype="multipart/form-data">
     @csrf
         <div class="banner">
         
@@ -213,8 +213,8 @@
         @endif       
        <br>
        
-       @if($user->commentaire_pro != null )
-       <span> <strong>Commentaire:  </strong> {{$user->commentaire_pro}}</span>
+       @if($prospect->commentaire_pro != null )
+       <span> <strong>Commentaire:  </strong> {{$prospect->commentaire_pro}}</span>
        <br><br>
        @endif
        
@@ -232,8 +232,8 @@
             <div class="form-group col-3">
               <label for="civilite">Civilité <span>*</span> </label>
               <select name="civilite" id="civilite" required>
-              @if($user->civilite != null)
-              <option value="{{$user->civilite}}" >{{$user->civilite}}</option>
+              @if($prospect->civilite != null)
+              <option value="{{$prospect->civilite}}" >{{$prospect->civilite}}</option>
               @endif
               <option value="M">M</option>
               <option value="Mme">Mme</option>
@@ -257,7 +257,7 @@
         <div class="form-row item">
             <div class="form-group col-md-6">
               <label for="nom">Nom de naissance <span>*</span></label>
-              <input type="text" name="nom" value="{{old('nom') ? old('nom') : $user->nom}}" required class="form-control" id="nom" placeholder="">
+              <input type="text" name="nom" value="{{old('nom') ? old('nom') : $prospect->nom}}" required class="form-control" id="nom" placeholder="">
                 @if ($errors->has('nom'))
                    <br>
                    <div class="alert alert-warning ">
@@ -267,7 +267,7 @@
             </div>
             <div class="form-group col-md-6">
               <label for="nom_usage">Nom d'usage</label>
-              <input type="text" name="nom_usage" value="{{old('nom_usage') ? old('nom_usage') : $user->nom_usage}}"  class="form-control" id="nom_usage" placeholder="">
+              <input type="text" name="nom_usage" value="{{old('nom_usage') ? old('nom_usage') : $prospect->nom_usage}}"  class="form-control" id="nom_usage" placeholder="">
                 @if ($errors->has('nom_usage'))
                    <br>
                    <div class="alert alert-warning ">
@@ -280,7 +280,7 @@
         <div class="form-row item">
             <div class="form-group col-md-12">
               <label for="prenom">Prénom <span>*</span></label>
-              <input type="text" name="prenom" value="{{old('prenom') ? old('prenom') : $user->prenom}}" required class="form-control" id="prenom" placeholder="">
+              <input type="text" name="prenom" value="{{old('prenom') ? old('prenom') : $prospect->prenom}}" required class="form-control" id="prenom" placeholder="">
                 @if ($errors->has('prenom'))
                    <br>
                    <div class="alert alert-warning ">
@@ -298,7 +298,7 @@
         <div class="form-row item">
             <div class="form-group col-md-12">
               <label for="adresse">Adresse <span>*</span></label>
-              <input type="text" name="adresse" value="{{old('adresse') ? old('adresse') : $user->adresse}}" required class="form-control" id="adresse" placeholder="">
+              <input type="text" name="adresse" value="{{old('adresse') ? old('adresse') : $prospect->adresse}}" required class="form-control" id="adresse" placeholder="">
                 @if ($errors->has('adresse'))
                    <br>
                    <div class="alert alert-warning ">
@@ -312,7 +312,7 @@
         <div class="form-row item">
             <div class="form-group col-md-6">
               <label for="code_postal">Code Postal <span>*</span></label>
-              <input type="text" name="code_postal" value="{{old('code_postal') ? old('code_postal') : $user->code_postal}}" required class="form-control" id="code_postal" placeholder="">
+              <input type="text" name="code_postal" value="{{old('code_postal') ? old('code_postal') : $prospect->code_postal}}" required class="form-control" id="code_postal" placeholder="">
                 @if ($errors->has('code_postal'))
                    <br>
                    <div class="alert alert-warning ">
@@ -322,7 +322,7 @@
             </div>
             <div class="form-group col-md-6">
               <label for="ville">Ville <span>*</span></label>
-              <input type="text" name="ville" value="{{old('ville') ? old('ville') : $user->ville}}" required class="form-control" id="ville" placeholder="" >
+              <input type="text" name="ville" value="{{old('ville') ? old('ville') : $prospect->ville}}" required class="form-control" id="ville" placeholder="" >
                 @if ($errors->has('ville'))
                    <br>
                    <div class="alert alert-warning ">
@@ -335,7 +335,7 @@
         <div class="form-row item">
             <div class="form-group col-md-6">
               <label for="telephone_fixe">Téléphone Fixe (personnel)</label>
-              <input type="text" name="telephone_fixe"  value="{{old('telephone_fixe') ? old('telephone_fixe') : $user->telephone_fixe}}" class="form-control" id="telephone_fixe" placeholder="">
+              <input type="text" name="telephone_fixe"  value="{{old('telephone_fixe') ? old('telephone_fixe') : $prospect->telephone_fixe}}" class="form-control" id="telephone_fixe" placeholder="">
                 @if ($errors->has('telephone_fixe'))
                    <br>
                    <div class="alert alert-warning ">
@@ -345,7 +345,7 @@
             </div>
             <div class="form-group col-md-6">
               <label for="telephone_portable">Téléphone portable (personnel/professionnel) <span>*</span> </label>
-              <input type="text" name="telephone_portable"  value="{{old('telephone_portable') ? old('telephone_portable') : $user->telephone_portable}}" class="form-control" id="telephone_portable" placeholder="" required>
+              <input type="text" name="telephone_portable"  value="{{old('telephone_portable') ? old('telephone_portable') : $prospect->telephone_portable}}" class="form-control" id="telephone_portable" placeholder="" required>
                 @if ($errors->has('telephone_portable'))
                   <br>
                   <div class="alert alert-warning ">
@@ -362,7 +362,7 @@
         <div class="form-row item">
             <div class="form-group col-md-12">
               <label for="email">Email (personnel) <span>*</span></label>
-              <input type="email" name="email"  value="{{old('email') ? old('email') : $user->email}}" class="form-control" id="email" reqired    >
+              <input type="email" name="email"  value="{{old('email') ? old('email') : $prospect->email}}" class="form-control" id="email" reqired    >
               @if ($errors->has('email'))
                  <br>
                  <div class="alert alert-warning ">
@@ -376,7 +376,7 @@
         <div class="form-row ">
             <div class="form-group col-md-6">
               <label for="date_naissance">Date de naissance <span>*</span></label>
-              <input type="date" name="date_naissance"  value="{{old('date_naissance') ? old('date_naissance') : ( $user->date_naissance != null ? $user->date_naissance->format('Y-m-d') : null )}}" class="form-control" id="date_naissance" placeholder    ="" required>
+              <input type="date" name="date_naissance"  value="{{old('date_naissance') ? old('date_naissance') : ( $prospect->date_naissance != null ? $prospect->date_naissance->format('Y-m-d') : null )}}" class="form-control" id="date_naissance" placeholder    ="" required>
               @if ($errors->has('date_naissance'))
                  <br>
                  <div class="alert alert-warning ">
@@ -386,7 +386,7 @@
             </div>
             <div class="form-group col-md-6">
               <label for="lieu_naissance">Lieu de naissance <span>*</span> </label>
-              <input type="text" name="lieu_naissance"  value="{{old('lieu_naissance') ? old('lieu_naissance') : $user->lieu_naissance}}" class="form-control" id="lieu_naissance" placeholder    ="" required>
+              <input type="text" name="lieu_naissance"  value="{{old('lieu_naissance') ? old('lieu_naissance') : $prospect->lieu_naissance}}" class="form-control" id="lieu_naissance" placeholder    ="" required>
               @if ($errors->has('lieu_naissance'))
                  <br>
                  <div class="alert alert-warning ">
@@ -401,8 +401,8 @@
               <label for="situation_familliale">Situation familliale <span>*</span> </label>
               <select name="situation_familliale"  class="form-control"  id="situation_familliale">
               
-              @if($user->situation_familliale != null)
-              <option value="{{$user->situation_familliale}}" >{{$user->situation_familliale}}</option>
+              @if($prospect->situation_familliale != null)
+              <option value="{{$prospect->situation_familliale}}" >{{$prospect->situation_familliale}}</option>
               @endif
               
               <option value="marié">marié</option>
@@ -417,7 +417,7 @@
             </div>
             <div class="form-group col-md-6">
               <label for="nationalite">Nationalité <span>*</span> </label>
-              <input type="text" name="nationalite"  value="{{old('nationalite') ? old('nationalite') : $user->nationalite}}" class="form-control" id="nationalite" placeholder   ="" required>
+              <input type="text" name="nationalite"  value="{{old('nationalite') ? old('nationalite') : $prospect->nationalite}}" class="form-control" id="nationalite" placeholder   ="" required>
               @if ($errors->has('nationalite'))
                  <br>
                  <div class="alert alert-warning ">
@@ -440,7 +440,7 @@
        <div class="form-row item">
         <div class="form-group col-md-6">
           <label for="nom_pere">Nom et prénom(s) du père <span>*</span> </label>
-          <input type="text" name="nom_pere"  value="{{old('nom_pere') ? old('nom_pere') : $user->nom_pere}}" class="form-control" id="nom_pere" placeholder=""  required>
+          <input type="text" name="nom_pere"  value="{{old('nom_pere') ? old('nom_pere') : $prospect->nom_pere}}" class="form-control" id="nom_pere" placeholder=""  required>
               @if ($errors->has('nom_pere'))
                  <br>
                  <div class="alert alert-warning ">
@@ -450,7 +450,7 @@
         </div>
         <div class="form-group col-md-6">
           <label for="nom_mere">Nom (de jeune fille) et prénom(s) de la mère <span>*</span> </label>
-          <input type="text" name="nom_mere"  value="{{old('nom_mere') ? old('nom_mere') : $user->nom_mere}}" class="form-control" id="nom_mere" placeholder="" required>
+          <input type="text" name="nom_mere"  value="{{old('nom_mere') ? old('nom_mere') : $prospect->nom_mere}}" class="form-control" id="nom_mere" placeholder="" required>
               @if ($errors->has('nom_mere'))
                  <br>
                  <div class="alert alert-warning ">
@@ -466,16 +466,16 @@
           <div class="question">
             <p>Statut souhaité:<span>*</span></p> 
             <div class="question-answer">
-              <input type="radio" value="auto-entrepreneur" @if($user->statut_souhaite == "auto-entrepreneur") checked @endif  id="radio_1" name="statut_souhaite"  required/>
+              <input type="radio" value="auto-entrepreneur" @if($prospect->statut_souhaite == "auto-entrepreneur") checked @endif  id="radio_1" name="statut_souhaite"  required/>
               <label for="radio_1" class="radio"><span>Auto-entrepreneur</span></label>
               
-              <input type="radio" value="portage salarial" @if($user->statut_souhaite == "portage salarial") checked @endif  id="radio_2" name="statut_souhaite" />
+              <input type="radio" value="portage salarial" @if($prospect->statut_souhaite == "portage salarial") checked @endif  id="radio_2" name="statut_souhaite" />
               <label for="radio_2" class="radio"><span>Portage salarial</span></label>
               
-              <input type="radio" value="independant" @if($user->statut_souhaite == "independant") checked @endif  id="radio_4" name="statut_souhaite" />
+              <input type="radio" value="independant" @if($prospect->statut_souhaite == "independant") checked @endif  id="radio_4" name="statut_souhaite" />
               <label for="radio_4" class="radio"><span>Indépendant</span></label>
               
-              <input type="radio" value="Autre" @if($user->statut_souhaite == "Autre") checked @endif  id="radio_3" name="statut_souhaite" />
+              <input type="radio" value="Autre" @if($prospect->statut_souhaite == "Autre") checked @endif  id="radio_3" name="statut_souhaite" />
               <label for="radio_3" class="radio"><span>Autre</span></label>
             </div>
           </div>
@@ -495,7 +495,7 @@
         <div class="form-row item">
           <div class="form-group col-md-6">
             <label for="numero_rsac">Numéro R.S.A.C</label>
-            <input type="text" name="numero_rsac"  value="{{old('numero_rsac') ? old('numero_rsac') : $user->numero_rsac}}" class="form-control" id="numero_rsac" placeholder="">
+            <input type="text" name="numero_rsac"  value="{{old('numero_rsac') ? old('numero_rsac') : $prospect->numero_rsac}}" class="form-control" id="numero_rsac" placeholder="">
                 @if ($errors->has('numero_rsac'))
                  <br>
                  <div class="alert alert-warning ">
@@ -505,7 +505,7 @@
           </div>
           <div class="form-group col-md-6">
             <label for="numero_siret">Numéro de SIRET</label>
-            <input type="text" name="numero_siret"  value="{{old('numero_siret') ? old('numero_siret') : $user->numero_siret}}" class="form-control" id="numero_siret" placeholder="">
+            <input type="text" name="numero_siret"  value="{{old('numero_siret') ? old('numero_siret') : $prospect->numero_siret}}" class="form-control" id="numero_siret" placeholder="">
                 @if ($errors->has('numero_siret'))
                  <br>
                  <div class="alert alert-warning ">
@@ -519,7 +519,7 @@
         <div class="form-row item">
           <div class="form-group col-md-6">
             <label for="code_postaux">Codes postaux (plus précis que le département) que vous souhaitez utiliser sur votre zone d'action (séparez les codes postaux par une virgule)</label>
-          <textarea name="code_postaux" class="form-control" id="code_postaux" cols="30" rows="10">{{old('code_postaux') ? old('code_postaux') : $user->code_postaux}}</textarea>
+          <textarea name="code_postaux" class="form-control" id="code_postaux" cols="30" rows="10">{{old('code_postaux') ? old('code_postaux') : $prospect->code_postaux}}</textarea>
           </div>
          
         </div>
@@ -529,8 +529,8 @@
         <div class="form-row item">
           <div class="form-group col-md-6">
             <label for="piece_identite">Carte d'identité scannée recto verso</label>
-            @if($user->piece_identite != null)
-            <a class="btn btn-warning color-info" title="Télécharger la pièce d'identité' "  href="{{route('prospect.telecharger',[ Crypt::encrypt($user->id),"piece_identite"])}}"  class="  m-b-10 m-l-5 " id="ajouter">Télécharger <i class="ti-download"></i> </a>
+            @if($prospect->piece_identite != null)
+            <a class="btn btn-warning color-info" title="Télécharger la pièce d'identité' "  href="{{route('prospect.telecharger',[ Crypt::encrypt($prospect->id),"piece_identite"])}}"  class="  m-b-10 m-l-5 " id="ajouter">Télécharger <i class="ti-download"></i> </a>
             @endif
             <input type="file" name="piece_identite" class="form-control" id="piece_identite" placeholder="" accept=".pdf, image/png, image/jpeg">
              @if ($errors->has('piece_identite'))
@@ -542,8 +542,8 @@
           </div>
           <div class="form-group col-md-6">
             <label for="rib">Le RIB que vous utiliserez pour votre activité</label>
-            @if($user->rib != null)
-              <a class="btn btn-warning color-info" title="Télécharger le rib' "  href="{{route('prospect.telecharger',[ Crypt::encrypt($user->id),"rib"])}}"  class="  m-b-10 m-l-5 " id="ajouter">Télécharger <i class="ti-download"></i> </a>
+            @if($prospect->rib != null)
+              <a class="btn btn-warning color-info" title="Télécharger le rib' "  href="{{route('prospect.telecharger',[ Crypt::encrypt($prospect->id),"rib"])}}"  class="  m-b-10 m-l-5 " id="ajouter">Télécharger <i class="ti-download"></i> </a>
            @endif
             <input type="file" name="rib" class="form-control" id="rib" placeholder="" accept=".pdf,image/png, image/jpeg">
              @if ($errors->has('rib'))
@@ -562,8 +562,8 @@
         
           <div class="form-group col-md-6">
             <label for="attestation_responsabilite">Attestation responsabilité civile</label>
-            @if($user->attestation_responsabilite != null)
-              <a class="btn btn-warning color-info" title="Télécharger l'Attestation responsabilité civile' "  href="{{route('prospect.telecharger',[ Crypt::encrypt($user->id),"attestation_responsabilite"])}}"  class="  m-b-10 m-l-5 " id="ajouter">Télécharger <i class="ti-download"></i> </a>
+            @if($prospect->attestation_responsabilite != null)
+              <a class="btn btn-warning color-info" title="Télécharger l'Attestation responsabilité civile' "  href="{{route('prospect.telecharger',[ Crypt::encrypt($prospect->id),"attestation_responsabilite"])}}"  class="  m-b-10 m-l-5 " id="ajouter">Télécharger <i class="ti-download"></i> </a>
             @endif
             <input type="file" name="attestation_responsabilite" class="form-control" id="attestation_responsabilite" placeholder="" accept=".pdf, image/png, image/jpeg">
                 @if ($errors->has('attestation_responsabilite'))
@@ -577,8 +577,8 @@
           
           <div class="form-group col-md-6">
             <label for="photo">Photo professionnelle </label>
-            @if($user->photo != null)
-              <a class="btn btn-warning color-info" title="Télécharger la photo' "  href="{{route('prospect.telecharger',[ Crypt::encrypt($user->id),"photo"])}}"  class="  m-b-10 m-l-5 " id="ajouter">Télécharger <i class="ti-download"></i> </a>
+            @if($prospect->photo != null)
+              <a class="btn btn-warning color-info" title="Télécharger la photo' "  href="{{route('prospect.telecharger',[ Crypt::encrypt($prospect->id),"photo"])}}"  class="  m-b-10 m-l-5 " id="ajouter">Télécharger <i class="ti-download"></i> </a>
             @endif
             <input type="file" name="photo" class="form-control" id="photo" placeholder="" accept="image/png, image/jpeg">
              @if ($errors->has('photo'))
