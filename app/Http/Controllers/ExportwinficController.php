@@ -9,7 +9,9 @@ use App\User;
 
 use iio\libmergepdf\Merger;
 use iio\libmergepdf\Pages;
-
+use PDF;
+use Illuminate\Support\Facades\File ;
+use Illuminate\Support\Facades\Storage;
 
 class ExportwinficController extends Controller
 {
@@ -34,6 +36,7 @@ class ExportwinficController extends Controller
         $montant_debit = Facture::whereIn('type',['stylimmo','avoir','pack_pub','carte_visite','communication','autre','forfait_entree','cci'])->whereBetween('date_facture',[$date_deb,$date_fin])->where('user_id','<>',77)->sum('montant_ht');
         
       
+        $this->generer_pdf_facture($date_deb, $date_fin);
        
         return view ('winfic.index',compact(['factureStylimmos','date_deb','date_fin','montant_credit_debit']));
         
@@ -852,7 +855,7 @@ class ExportwinficController extends Controller
 
         foreach ($factureStylimmos as $facture) {
         
-        if($facture->url != null)
+        // if($facture->url != null)
             $merger->addFile($facture->url);
 
             
@@ -872,6 +875,62 @@ class ExportwinficController extends Controller
     
     
     
+        
+    /**
+     *  générer les factures qui n'ont pas étés générées
+     *
+     * @param  string  $compromis_id
+     * @return \Illuminate\Http\Response
+    */
+
+    public  function generer_pdf_facture($date_deb = null, $date_fin = null)
+    {
+
+
+        if($date_deb == null || $date_fin == null || $date_fin < $date_deb){        
+            $date_deb = date("Y-m")."-01";
+            $date_fin = date("Y-m-d");        
+        }   
+        
+        
+        $factures = Facture::whereIn('type',['pack_pub','carte_visite','communication','autre','forfait_entree','cci'])->where('url',null)->whereBetween('date_facture',[$date_deb,$date_fin])->where('user_id','<>',77)->orderBy('numero','asc')->get();
+        
+        
+        // on sauvegarde la facture dans le repertoire du mandataire
+        $path = storage_path('app/public/factures/factures_autres');
+
+        if(!File::exists($path))
+            File::makeDirectory($path, 0755, true);
+        
+            
+            foreach ($factures as $facture) {
+                
+         
+          
+            if($facture->type == "cci" || $facture->type=="forfait_entree"){
+                $pdf = PDF::loadView('facture.pdf_cci_forfait',compact(['facture']));
+                    
+            }else{
+                $pdf = PDF::loadView('facture.pdf_autre',compact(['facture']));
+                
+            }          
+
+
+            if($facture->destinataire_est_mandataire == true ){
+                $filename = "F".$facture->numero." ".$facture->type." ".$facture->montant_ttc."€ ".strtoupper($facture->user->nom)." ".strtoupper(substr($facture->user->prenom,0,1)).".pdf" ;
+            }else{
+                $filename = "F".$facture->numero." ".$facture->type." ".$facture->montant_ttc."€.pdf" ;
+            }
+            
+            $path = $path.'/'.$filename;
+            $pdf->save($path);
+            
+            $facture->url = $path;
+            $facture->update();
+            
+        }
+
+    }
 
     
     
