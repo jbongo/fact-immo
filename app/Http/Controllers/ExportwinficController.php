@@ -855,7 +855,7 @@ class ExportwinficController extends Controller
 
         foreach ($factureStylimmos as $facture) {
         
-        // if($facture->url != null)
+        if($facture->url != null && file_exists($facture->url))
             $merger->addFile($facture->url);
 
             
@@ -896,39 +896,42 @@ class ExportwinficController extends Controller
         $factures = Facture::whereIn('type',['pack_pub','carte_visite','communication','autre','forfait_entree','cci'])->where('url',null)->whereBetween('date_facture',[$date_deb,$date_fin])->where('user_id','<>',77)->orderBy('numero','asc')->get();
         
         
+   
         // on sauvegarde la facture dans le repertoire du mandataire
-        $path = storage_path('app/public/factures/factures_autres');
+        $chemin = storage_path('app/public/factures/factures_autres');
 
-        if(!File::exists($path))
-            File::makeDirectory($path, 0755, true);
+        if(!File::exists($chemin))
+            File::makeDirectory($chemin, 0755, true);
         
             
             foreach ($factures as $facture) {
                 
+                $path = $chemin;
          
           
-            if($facture->type == "cci" || $facture->type=="forfait_entree"){
-                $pdf = PDF::loadView('facture.pdf_cci_forfait',compact(['facture']));
+                if($facture->type == "cci" || $facture->type=="forfait_entree"){
+                    $pdf = PDF::loadView('facture.pdf_cci_forfait',compact(['facture']));
+                        
+                }else{
+                    $pdf = PDF::loadView('facture.pdf_autre',compact(['facture']));
                     
-            }else{
-                $pdf = PDF::loadView('facture.pdf_autre',compact(['facture']));
+                }          
+    
+    
+                if($facture->destinataire_est_mandataire == true ){
+                    $filename = "F".$facture->numero." ".$facture->type." ".$facture->montant_ttc."€ ".strtoupper($facture->user->nom)." ".strtoupper(substr($facture->user->prenom,0,1)).".pdf" ;
+                }else{
+                    $filename = "F".$facture->numero." ".$facture->type." ".$facture->montant_ttc."€.pdf" ;
+                }
                 
-            }          
-
-
-            if($facture->destinataire_est_mandataire == true ){
-                $filename = "F".$facture->numero." ".$facture->type." ".$facture->montant_ttc."€ ".strtoupper($facture->user->nom)." ".strtoupper(substr($facture->user->prenom,0,1)).".pdf" ;
-            }else{
-                $filename = "F".$facture->numero." ".$facture->type." ".$facture->montant_ttc."€.pdf" ;
+                $path = $path.'/'.$filename;
+                
+                $pdf->save($path);
+                
+                $facture->url = $path;
+                $facture->update();
+                
             }
-            
-            $path = $path.'/'.$filename;
-            $pdf->save($path);
-            
-            $facture->url = $path;
-            $facture->update();
-            
-        }
 
     }
 
