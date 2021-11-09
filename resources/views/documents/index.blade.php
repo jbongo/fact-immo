@@ -16,6 +16,7 @@
             <div class="card alert">
                 <!-- table -->
             <a href="{{route('document.liste')}}" class="btn btn-default btn-rounded btn-addon btn-lg m-b-10 m-l-5" target="_blank"><i class="ti-list"></i>@lang('Liste des documents à fournir')</a>
+            <a href="{{route('bibliotheque.index')}}" class="btn btn-default btn-rounded btn-addon btn-lg m-b-10 m-l-5" ><i class="ti-list"></i>@lang('Voir la bibliothèque')</a>
               
               <br><br>
             
@@ -55,7 +56,7 @@
                                 </td>
                                 <td>
                                     @if($mandataire->contrat != null && $mandataire->contrat->contrat_pdf != null)
-                                        <a href="{{route('contrat.telecharger', Crypt::encrypt($mandataire->contrat->id))}}"data-toggle="tooltip" title="Télécharger le contrat + annexes"  class="btn btn-danger btn-flat btn-addon "><i class="ti-download"></i>Télécharger</a> 
+                                        <a href="{{route('contrat.telecharger', Crypt::encrypt($mandataire->contrat->id))}}"data-toggle="tooltip" title="Télécharger le contrat + annexes"  class="btn btn-danger btn-flat btn-addon "><i class="ti-download"></i>Voir</a> 
                                     @endif
                                 </td>
                                 
@@ -63,7 +64,7 @@
                                 
                                 <td>
                                     @if($mandataire->document($document->reference) != null)
-                                        <a href="{{route('document.telecharger', [$mandataire->id, $document->reference])}}" data-toggle="tooltip" title="Télécharger {{$document->nom}}"  class="btn btn-danger btn-flat btn-addon "><i class="ti-download"></i>Télécharger</a> 
+                                        <a href="{{route('document.telecharger', [$mandataire->id, $document->reference])}}" data-toggle="tooltip" title="Télécharger {{$document->nom}}"  class="btn btn-danger btn-flat btn-addon "><i class="ti-download"></i>Voir</a> 
  
                                     @endif
                                 </td>

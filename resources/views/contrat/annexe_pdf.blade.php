@@ -144,7 +144,7 @@ font-family: 'Times New Roman', Times, serif
   <tbody>
   <tr>
   <td style="width: 40%;">{{$parametre->gerant}}  </td>
-  <td style="width: 60%;">{{$contrat->user->nom}} {{$contrat->user->prenom}}  </td>
+  <td style="width: 60%;"> @if($contrat->user!= null) {{$contrat->user->nom}} {{$contrat->user->prenom}} @else ....................   @endif  </td>
   </tr>
   <tr>
   <td style="width: 40%;">Le MANDANT:   </td>
@@ -220,7 +220,7 @@ font-family: 'Times New Roman', Times, serif
   <tbody>
   <tr>
   <td style="width: 40%;">{{$parametre->gerant}}  </td>
-  <td style="width: 60%;">{{$contrat->user->nom}} {{$contrat->user->prenom}}  </td>
+  <td style="width: 60%;">@if($contrat->user!= null) {{$contrat->user->nom}} {{$contrat->user->prenom}} @else ....................   @endif  </td>
   </tr>
   <tr>
   <td style="width: 40%;">Le MANDANT:   </td>
@@ -312,7 +312,7 @@ font-family: 'Times New Roman', Times, serif
   <tbody>
   <tr>
   <td style="width: 40%;">{{$parametre->gerant}}  </td>
-  <td style="width: 60%;">{{$contrat->user->nom}} {{$contrat->user->prenom}}  </td>
+  <td style="width: 60%;">@if($contrat->user!= null) {{$contrat->user->nom}} {{$contrat->user->prenom}} @else ....................   @endif   </td>
   </tr>
   <tr>
   <td style="width: 40%;">Le MANDANT:   </td>
@@ -390,7 +390,7 @@ font-family: 'Times New Roman', Times, serif
   <tbody>
   <tr>
   <td style="width: 40%;">{{$parametre->gerant}}  </td>
-  <td style="width: 60%;">{{$contrat->user->nom}} {{$contrat->user->prenom}}  </td>
+  <td style="width: 60%;">@if($contrat->user!= null) {{$contrat->user->nom}} {{$contrat->user->prenom}} @else ....................   @endif   </td>
   </tr>
   <tr>
   <td style="width: 40%;">Le MANDANT:   </td>
@@ -413,7 +413,7 @@ font-family: 'Times New Roman', Times, serif
   <tbody>
   <tr>
   <td style="width: 40%;">{{$parametre->gerant}}  </td>
-  <td style="width: 60%;">{{$contrat->user->nom}} {{$contrat->user->prenom}}  </td>
+  <td style="width: 60%;">@if($contrat->user!= null) {{$contrat->user->nom}} {{$contrat->user->prenom}} @else ....................   @endif   </td>
   </tr>
   <tr>
   <td style="width: 40%;">Le MANDANT   </td>

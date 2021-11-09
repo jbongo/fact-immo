@@ -16,7 +16,7 @@
             
             
                <div class="panel panel-default lobipanel-basic">
-                  <div class="panel-heading">Fiche utilisateur.</div>
+                  <div class="panel-heading">Fiche Prospect.</div>
                   <div class="panel-body">
                      <div class="card alert">
                         <div class="card-body">
@@ -277,14 +277,14 @@
                         <div class="card">
                             <div class="media">
                                 <div class="media-left media-middle">
-                                    <i class="ti-id-badge f-s-48 color-danger m-r-1"></i>
+                                    <i class="ti-id-badge f-s-48 color-danger m-r-1"></i> <label  style="font-weight: bold">Fiche (formulaire) envoyée par mail au prospect</label>
                                 </div>
-                                
+                                <br>
                                 
                                 <div class="media-body">
-                                    <h4>Fiche (formulaire) envoyée par mail au prospect</h4>
-                                    <p><label class="color-primary">La fiche a t'elle été consultée par le prospect ? :</label>  @if($prospect->a_ouvert_fiche == true)<span  style="color:white" class="badge badge-success">Oui</span>@else <span class="badge badge-danger">Non</span> @endif </p>
-                                    <p><label class="color-primary">La fiche a t'elle été renseignée par le prospect ? :</label>  @if($prospect->renseigne == true)<span  style="color:white" class="badge badge-success">Oui</span>@else <span class="badge badge-danger">Non</span> @endif </p>
+                                    
+                                    <p><label class="color-primary">La fiche a t'elle été consultée par le prospect ? :</label>  @if($prospect->a_ouvert_fiche == true)<span  style="color:white" class="badge badge-success">Oui</span>@else <span class="badge badge-danger" style="color:white"  >Non</span> @endif </p>
+                                    <p><label class="color-primary">La fiche a t'elle été renseignée par le prospect ? :</label>  @if($prospect->renseigne == true)<span  style="color:white" class="badge badge-success">Oui</span>@else <span class="badge badge-danger" style="color:white"  >Non</span> @endif </p>
                                 </div>
                                 
                                 
@@ -305,7 +305,76 @@
                     </div>
                 </div>
 
-     
+   
+   
+<hr style="border:2px solid red">
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="media">
+                <div class="media-left media-middle">
+                    <i class="ti-folder f-s-48 color-danger m-r-1"></i> <label for="" style="font-weight: bold">Bibliothèque</label>
+                </div>
+               
+                  <br>
+                  <br>
+
+                
+              
+    
+                
+                <div class="col-lg-12">
+                  <div class="card alert">
+                      <div class="card-body">
+                          <div class="table-responsive">
+                              <table class="table table-hover">
+                                  <thead>
+                                      <tr>
+                                          <th>Document</th>
+                                          <th>Envoyé le</th>
+                                          <th>Lu le</th>
+                                          <th>avez-vous compris ?</th>
+                                          <th></th>
+                                      </tr>
+                                  </thead>
+                                  <tbody>
+                                  
+                                    @foreach ($documents as $document)
+                                    
+                                    <tr>
+                                       <td>{{$document->nom}}</td>
+                                       <td>@if($prospect->getBibliotheque($document->id)!= null) <span class="text-success" style="font-size: 13px"> {{$prospect->getBibliotheque($document->id)->pivot->created_at->format('d/m/Y') }} </span> @else <span class="text-danger" style="font-size: 13px"> non envoyé   @endif</td>
+                                       
+                                       
+                                       <td>@if($prospect->getBibliotheque($document->id) && $prospect->getBibliotheque($document->id)->pivot->est_fichier_vu == true ) <span class="text-warning" style="font-size: 13px">{{$prospect->getBibliotheque($document->id)->pivot->updated_at->format('d/m/Y') }} </span>  @endif</td>
+                                       <td>@if($prospect->getBibliotheque($document->id)!= null) 
+                                       
+                                         @if($prospect->getBibliotheque($document->id)->pivot->question1 == "Oui") <span  style="color:white; font-size: 10px" class="badge badge-success">Oui</span>@elseif($prospect->getBibliotheque($document->id)->pivot->question1 == "Non") <span class="badge badge-danger" style="color:white; font-size: 10px" >Non</span> @endif
+                                     
+                                       
+                                       @endif</td>
+                                       <td><a href="{{route('bibliotheque.envoyer', [$document->id,$prospect->id, "prospect" ])}}"  style="background: #3b4842" class="btn btn-default btn-flat btn-addon m-b-10 m-l-5" data-toggle="tooltip" title="Envoyer par mail"><i class="ti-email"></i>Envoyer  </a></td>
+
+                                   </tr>
+                                    @endforeach
+                                  
+                                     
+                                     
+                         
+                                  </tbody>
+                              </table>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+                <hr>
+                
+              
+            </div>
+        </div>
+    </div>
+</div>
 
 
              

@@ -16,6 +16,7 @@ class CreateAgendasTable extends Migration
         Schema::create('agendas', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('titre')->nullable();
+            $table->string('type_rappel')->nullable();
             $table->text('description')->nullable();
             $table->date('date_deb')->nullable();
             $table->date('date_fin')->nullable();

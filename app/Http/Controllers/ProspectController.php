@@ -9,6 +9,7 @@ use App\Contrat;
 use App\Packpub;
 use App\User;
 use App\Agenda;
+use App\Bibliotheque;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\File ;
 use Illuminate\Support\Facades\Storage;
@@ -31,7 +32,16 @@ class ProspectController extends Controller
         $prospects = Prospect::where([['archive', false], ['est_mandataire', false]])->get();
         // $prospects = Prospect::where('archive', false)->get();
         
-        return view('prospect.index', compact('prospects'));
+        $agendas = Agenda::all()->toJson();
+              
+        $mandataires = User::join('contrats','users.id','=','contrats.user_id' )
+        ->select('*','contrats.id as contrat_id')
+        ->where('contrats.a_demission', false)->get();
+        
+        $bibliotheques = Bibliotheque::all();
+        
+
+        return view('prospect.index', compact('prospects','agendas', 'mandataires','bibliotheques'));
     }
 
     /**
@@ -91,7 +101,9 @@ class ProspectController extends Controller
     {
         $prospect = Prospect::where('id', Crypt::decrypt($id))->first();
         
-        return view('prospect.show', compact('prospect'));
+        $documents = Bibliotheque::all();
+        
+        return view('prospect.show', compact('prospect', 'documents'));
     }
 
     /**
@@ -526,7 +538,7 @@ class ProspectController extends Controller
        
         $parametre  = Parametre::first();
         $contrat  = Contrat::where('est_modele', true)->first();
-        // $contrat  = Contrat::where("id", 82)->first();
+        $contrat  = Contrat::where("id", 19)->first();
         
         $packs = Packpub::all();
         
@@ -541,11 +553,14 @@ class ProspectController extends Controller
         
         $modele_annexe_pdf = PDF::loadView('contrat.annexe_pdf',compact('parametre','contrat','palier_expert','palier_starter','packs','comm_parrain'));
         
+       
         
         $contrat_path = $path.'modele_contrat.pdf';
         $annexe_path = $path.'modele_annexe.pdf';
         
         $modele_contrat_pdf->save($contrat_path);
+        // dd($contrat_path);
+        
         $modele_annexe_pdf->save($annexe_path);
    
    
@@ -555,6 +570,7 @@ class ProspectController extends Controller
    
         $modele_contrat_pdf_path = storage_path('app/public/contrat/').'modele_contrat.pdf';
         $modele_annexe_pdf_path = storage_path('app/public/contrat/').'modele_annexe.pdf';
+   
    
   
         Mail::to($prospect->email)->send(new SendModeleContrat($prospect,$modele_contrat_pdf_path, $modele_annexe_pdf_path));

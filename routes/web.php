@@ -338,6 +338,17 @@ Route::get('/documents/telecharger_historique/{historique_id}/','DocumentControl
 Route::get('/documents/historique/{mandataire_id}','DocumentController@historique')->name('document.historique');
 
 
+// Blibliotheque
+Route::get('/bibliotheque','BibliothequeController@index')->name('bibliotheque.index');
+Route::get('/bibliotheque/create','BibliothequeController@create')->name('bibliotheque.create');
+Route::get('/bibliotheque/edit/{bibliotheque_id}','BibliothequeController@edit')->name('bibliotheque.edit');
+Route::get('/bibliotheque/show/{bibliotheque_id}/{user_id}/{type_user}','BibliothequeController@show')->name('bibliotheque.show');
+Route::post('/bibliotheque/store','BibliothequeController@store')->name('bibliotheque.store');
+Route::post('/bibliotheque/update/{bibliotheque_id}','BibliothequeController@update')->name('bibliotheque.update');
+Route::get('/bibliotheque/telecharger/{bibliotheque_id}','BibliothequeController@download_bibliotheque')->name('bibliotheque.telecharger');
+Route::get('/bibliotheque/delete/{bibliotheque_id}','BibliothequeController@destroy')->name('bibliotheque.delete');
+Route::get('/bibliotheque/envoyer/{bibliotheque_id}/{user_id}/{type?}','BibliothequeController@envoyer_document')->name('bibliotheque.envoyer');
+Route::post('/bibliotheque/reponseuser/{bibliotheque_id}/{user_id}/{type?}','BibliothequeController@reponseUser')->name('bibliotheque.reponseuser');
 
 
 

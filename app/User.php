@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Facture;
 use App\Fichier;
 use App\Document;
+use App\Bibliotheque;
 
 class User extends Authenticatable
 {
@@ -329,6 +330,21 @@ class User extends Authenticatable
         
         }
         return $fichier;
+    
+    }
+    
+    
+    // Retourne tous les documents qui lui ont étés envoyés
+    public function bibliotheques(){
+
+        return $this->belongsToMany(Bibliotheque::class, 'user_bibliotheque', 'user_id', 'bibliotheque_id');
+    
+    }
+    
+    // Retourne tous les documents qui lui ont étés envoyés
+    public function getBibliotheque($bibliotheque_id){
+
+        return $this->bibliotheques()->wherePivot('bibliotheque_id', $bibliotheque_id)->withPivot('est_prospect','est_fichier_vu','question1','created_at','updated_at')->first();
     
     }
 

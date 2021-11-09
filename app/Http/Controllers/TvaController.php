@@ -8,6 +8,11 @@ use App\Facture;
 use App\User;
 use Mail;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+
+use iio\libmergepdf\Merger;
+use iio\libmergepdf\Pages;
+
 
 class TvaController extends Controller
 {
@@ -19,6 +24,13 @@ class TvaController extends Controller
     public function test()
     {
 
+        $merger = new Merger;
+        $merger->addFile('one.pdf');
+        // $merger->addFile('two.pdf');
+        $merger->addFile('three.pdf');
+        $createdPdf = $merger->merge();
+        return new Response($createdPdf, 200, array('Content-Type' => 'application/pdf'));
+dd($createdPdf);
 
 
 
