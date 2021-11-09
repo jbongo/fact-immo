@@ -23,12 +23,24 @@ class TvaController extends Controller
      */
     public function test()
     {
-
+    
+        $factures = Facture::where('type', 'stylimmo')->get();
+        
+  
         $merger = new Merger;
-        $merger->addFile('one.pdf');
-        // $merger->addFile('two.pdf');
-        $merger->addFile('three.pdf');
+
+        foreach ($factures as $facture) {
+        
+            $merger->addFile($facture->url);
+
+            
+        }
         $createdPdf = $merger->merge();
+        // $merger = new Merger;
+        // $merger->addFile('one.pdf');
+        // // $merger->addFile('two.pdf');
+        // $merger->addFile('three.pdf');
+        // $createdPdf = $merger->merge();
         return new Response($createdPdf, 200, array('Content-Type' => 'application/pdf'));
 dd($createdPdf);
 
