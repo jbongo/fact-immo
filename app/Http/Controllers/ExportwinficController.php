@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Response;
 use Illuminate\Http\Request;
 use App\Facture;
 use App\User;
+
+use iio\libmergepdf\Merger;
+use iio\libmergepdf\Pages;
 
 
 class ExportwinficController extends Controller
@@ -826,6 +830,54 @@ class ExportwinficController extends Controller
         
         return view ('winfic.code_analytic_client',compact('mandataires'));
     }
+    
+    
+    
+    /**
+     *Concatener toutes les factures selectionnées dans un seul pdf
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function merge_factures($date_deb = null, $date_fin = null)
+    {
+       
+        if($date_deb == null || $date_fin == null || $date_fin < $date_deb){        
+            $date_deb = date("Y-m")."-01";
+            $date_fin = date("Y-m-d");        
+        }     
+        
+        $factureStylimmos = Facture::whereIn('type',['stylimmo','avoir','pack_pub','carte_visite','communication','autre','forfait_entree','cci'])->whereBetween('date_facture',[$date_deb,$date_fin])->where('user_id','<>',77)->orderBy('numero','asc')->get();
+        
+        $merger = new Merger;
+
+        foreach ($factureStylimmos as $facture) {
+        
+            $merger->addFile($facture->url);
+
+            
+        }
+        $createdPdf = $merger->merge();
+        // $merger = new Merger;
+        // $merger->addFile('one.pdf');
+        // // $merger->addFile('two.pdf');
+        // $merger->addFile('three.pdf');
+        // $createdPdf = $merger->merge();
+        return new Response($createdPdf, 200, array('Content-Type' => 'application/pdf'));
+        
+    
+    
+    }
+
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
 
     /**
      * Show the form for editing the specified resource.

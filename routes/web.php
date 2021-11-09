@@ -311,8 +311,9 @@ Route::post('/agenda/delete/{agenda_id}','AgendaController@destroy')->name('agen
 Route::get('/winfic','ExportwinficController@index')->name('winfic.index');
 Route::get('/winfic/exporter_ecriture/{date_deb?}/{date_fin?}','ExportwinficController@exporter_ecriture')->name('winfic.exporter_ecriture');
 Route::get('/winfic/exporter_ecrana/{date_deb?}/{date_fin?}','ExportwinficController@exporter_ecrana')->name('winfic.exporter_ecrana');
-
 Route::get('/winfic/code-analytic-client','ExportwinficController@code_analytic_client')->name('winfic.code_analytic_client');
+
+Route::get('/merge_facture/{date_deb?}/{date_fin?}','ExportwinficController@merge_factures')->name('merge_facture');
 
 
 
@@ -342,18 +343,21 @@ Route::get('/documents/historique/{mandataire_id}','DocumentController@historiqu
 Route::get('/bibliotheque','BibliothequeController@index')->name('bibliotheque.index');
 Route::get('/bibliotheque/create','BibliothequeController@create')->name('bibliotheque.create');
 Route::get('/bibliotheque/edit/{bibliotheque_id}','BibliothequeController@edit')->name('bibliotheque.edit');
-Route::get('/bibliotheque/show/{bibliotheque_id}/{user_id}/{type_user}','BibliothequeController@show')->name('bibliotheque.show');
 Route::post('/bibliotheque/store','BibliothequeController@store')->name('bibliotheque.store');
 Route::post('/bibliotheque/update/{bibliotheque_id}','BibliothequeController@update')->name('bibliotheque.update');
 Route::get('/bibliotheque/telecharger/{bibliotheque_id}','BibliothequeController@download_bibliotheque')->name('bibliotheque.telecharger');
 Route::get('/bibliotheque/delete/{bibliotheque_id}','BibliothequeController@destroy')->name('bibliotheque.delete');
 Route::get('/bibliotheque/envoyer/{bibliotheque_id}/{user_id}/{type?}','BibliothequeController@envoyer_document')->name('bibliotheque.envoyer');
-Route::post('/bibliotheque/reponseuser/{bibliotheque_id}/{user_id}/{type?}','BibliothequeController@reponseUser')->name('bibliotheque.reponseuser');
+
+
 
 
 
 });
 
+// Blibliotheque
+Route::get('/bibliotheque/show/{bibliotheque_id}/{user_id}/{type_user}','BibliothequeController@show')->name('bibliotheque.show');
+Route::post('/bibliotheque/reponseuser/{bibliotheque_id}/{user_id}/{type?}','BibliothequeController@reponseUser')->name('bibliotheque.reponseuser');
 
 
 // Envoi de la fiche info au prospect
