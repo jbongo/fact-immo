@@ -131,16 +131,16 @@
                                                     {{-- <span class="badge badge-success">Oui</span> --}}
                                                     
                                                         @if($facture->compromis->getPartage()!= null && $facture->compromis->partage_reseau == 1) 
-                                                            <strong> <a href="{{route('switch_user',Crypt::encrypt($facture->compromis->getPartage()->id) )}}" data-toggle="tooltip" title="@lang('Se connecter en tant que ') {{$facture->compromis->getPartage()->nom}}">{{$facture->compromis->getPartage()->nom}} {{$facture->compromis->getPartage()->prenom}} <i style="font-size: 17px" class="material-icons color-success">person_pin</i></a> </strong> 
+                                                            <strong> <a href="{{route('switch_user',Crypt::encrypt($facture->compromis->getPartage()->id) )}}" data-toggle="tooltip" title="@lang('Se connecter en tant que ') {{$facture->compromis->getPartage()->nom}}">{{$facture->compromis->getPartage()->nom}} {{$facture->compromis->getPartage()->prenom}}  <i style="font-size: 17px" class="material-icons color-success">person_pin</i> <span class="color-danger"> ({{100-$facture->compromis->pourcentage_agent}}%)</a> </strong> 
                                                         @else 
-                                                            <strong> <a  data-toggle="tooltip" title="@lang('Agence / Agent externe au réseau STYL\'IMMO') ">{{$facture->compromis->nom_agent}} </a> </strong> 
+                                                            <strong> <a  data-toggle="tooltip" title="@lang('Agence / Agent externe au réseau STYL\'IMMO') ">{{$facture->compromis->nom_agent}} <span class="color-danger"> ({{100-$facture->compromis->pourcentage_agent}}%) </a> </strong> 
                                                         @endif
                                                     @else 
                                                         @if($facture->compromis->getPartage() != null)
                                                             @if ($facture->compromis->getPartage()->id == Auth()->user()->id)
-                                                        <strong> <a >{{$facture->compromis->user->nom}} {{$facture->compromis->user->prenom}} <span class="color-danger"> ({{$facture->compromis->pourcentage_agent}} %) </span></a> </strong>
+                                                        <strong> <a >{{$facture->compromis->user->nom}} {{$facture->compromis->user->prenom}} <span class="color-danger"> ({{$facture->compromis->pourcentage_agent}}%) </span></a> </strong>
                                                             @else 
-                                                                <strong> <a >{{$facture->compromis->getPartage()->nom}} {{$facture->compromis->getPartage()->prenom}}  <span class="color-danger"> ({{100-$facture->compromis->pourcentage_agent}} %) </span></a> </strong>
+                                                                <strong> <a >{{$facture->compromis->getPartage()->nom}} {{$facture->compromis->getPartage()->prenom}}  <span class="color-danger"> ({{100-$facture->compromis->pourcentage_agent}}%) </span></a> </strong>
                                                             @endif
                                                         @else 
                                                             {{$facture->compromis->nom_agent}}
