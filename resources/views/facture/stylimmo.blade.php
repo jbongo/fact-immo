@@ -264,7 +264,7 @@
 
                                                     <a href="{{route('facture.avoir.create', Crypt::encrypt($facture->id))}}"  class="btn btn-info  btn-flat btn-addon  m-b-10 m-l-5 " id=""><i class="ti-link"></i>créer</a>
                                                 @elseif($facture->a_avoir == 1 && $facture->avoir() != null)
-                                                    <a href="{{route('facture.telecharger_pdf_avoir', Crypt::encrypt($facture->avoir()->id))}}"  class="btn btn-danger btn-flat btn-addon m-b-10 m-l-5 " id=""><i class="ti-download"></i>AV {{$facture->avoir()->numero}}</a>
+                                                    <a href="{{route('facture.telecharger_pdf_avoir', Crypt::encrypt($facture->avoir()->id))}}"  class="btn btn-danger btn-flat btn-addon m-b-10 m-l-5 " id=""><i class="ti-download"></i> {{$facture->avoir()->numero}}</a>
                                                 @endif
                                             @endif
                                         </td>
