@@ -623,7 +623,7 @@
 
                                                     @if($compromis->getFactureParrainPartage() != null )
 
-                                                    <span> {{number_format($compromis->getFactureParrainPartage()->date_reglement->montant_ht,'2','.',' ')}} </span> 
+                                                    <span> {{number_format($compromis->getFactureParrainPartage()->montant_ht,'2','.',' ')}} </span> 
 
                                                     @else 
                                                     <span class="color-warning">{{number_format($compromis->getFactureParrainPartageProvi()['montant_ht'],'2','.',' ')}}</span>

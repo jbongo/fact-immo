@@ -243,6 +243,8 @@
     var table1 = $('#example1').DataTable({
         "order": [],
         "iDisplayLength": 50,
+        "scrollY": 800,
+        "scrollX": true,
 
         "language": {
         "decimal":        "",

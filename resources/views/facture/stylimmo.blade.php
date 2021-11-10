@@ -25,34 +25,36 @@
                 </div>
                 <br><hr>
                 @endif
-                
+                                
                 <div class="card-body">
                         <div class="panel panel-default m-t-15" id="cont">
                                 <div class="panel-heading"></div>
                                 <div class="panel-body">
 
-                        <div class="table-responsive" >
-                            <table  id="example1" class=" table student-data-table  table-striped table-hover dt-responsive display    "  style="width:100%"  >
-                                <thead>
+                        <div class="table-responsive " >
+                            <table  id="example1" class=" table student-data-table   table-striped table-hover dt-responsivexxxxxxxx display    "  style="width:100%"  >
+                                <thead class="test">
                                     <tr>
                                        
-                                        <th>@lang('Facture Stylimmo')</th>
+                                        <th>@lang('Fact Stylimmo')</th>
                                         <th>@lang('Mandat')</th>
+                                        @if(auth()->user()->role != "admin")                                        
                                         <th>@lang('Charge')</th>
-                                        @if(auth()->user()->role == "admin")
+                                        @else
                                         <th>@lang('Mandataire')</th>
                                         @endif
-                                        {{-- <th>@lang('Type Facture')</th> --}}
+                                        <th>@lang('Partage')</th>
+                                  
                                         <th>@lang('Montant HT ')</th>
                                         <th>@lang('Montant TTC ')</th>
-                                        {{-- <th>@lang('Date Facture')</th> --}}
+                                   
                                         <th>@lang('Date de l\'acte')</th>
-                                        {{-- @if(auth()->user()->role == "admin") --}}
+                                   
                                         <th>@lang('Alerte paiement')</th>
                                         @if(auth()->user()->role == "admin")
                                         <th>@lang('Encaissement')</th>
 
-                                        <th>@lang('Etat Affaire')</th>
+                                        <th>@lang('Etat')</th>
 
                                         @endif
                                         {{-- @endif --}}
@@ -94,6 +96,9 @@
                                                 <label class="color-danger">{{$facture->type}}  </label>
                                             @endif
                                         </td>
+                                   
+                                        
+                                        @if(auth()->user()->role != "admin")
                                         <td  style="">
 
                                             @if($facture->compromis != null) 
@@ -105,7 +110,7 @@
                                                 @endif   
                                             @endif
                                         </td>
-                                        @if(auth()->user()->role == "admin")
+                                        @else
                                         <td width="" >
                                             <label class="color-info">
                                                 @if($facture->user !=null)
@@ -114,9 +119,40 @@
                                             </label> 
                                         </td>
                                         @endif
-                                        {{-- <td width="" >
-                                            <label class="color-info">{{$facture->type}} </label> 
-                                        </td> --}}
+                                        
+                                        
+                                            
+                                        <td width="">
+                                            @if($facture->compromis != null) 
+                                                @if($facture->compromis->est_partage_agent == 0)
+                                                    <span class="badge badge-danger">Non</span>
+                                                @else
+                                                    @if(Auth()->user()->role == "admin")
+                                                    {{-- <span class="badge badge-success">Oui</span> --}}
+                                                    
+                                                        @if($facture->compromis->getPartage()!= null && $facture->compromis->partage_reseau == 1) 
+                                                            <strong> <a href="{{route('switch_user',Crypt::encrypt($facture->compromis->getPartage()->id) )}}" data-toggle="tooltip" title="@lang('Se connecter en tant que ') {{$facture->compromis->getPartage()->nom}}">{{$facture->compromis->getPartage()->nom}} {{$facture->compromis->getPartage()->prenom}} <i style="font-size: 17px" class="material-icons color-success">person_pin</i></a> </strong> 
+                                                        @else 
+                                                            <strong> <a  data-toggle="tooltip" title="@lang('Agence / Agent externe au réseau STYL\'IMMO') ">{{$facture->compromis->nom_agent}} </a> </strong> 
+                                                        @endif
+                                                    @else 
+                                                        @if($facture->compromis->getPartage() != null)
+                                                            @if ($facture->compromis->getPartage()->id == Auth()->user()->id)
+                                                        <strong> <a >{{$facture->compromis->user->nom}} {{$facture->compromis->user->prenom}} <span class="color-danger"> ({{$facture->compromis->pourcentage_agent}} %) </span></a> </strong>
+                                                            @else 
+                                                                <strong> <a >{{$facture->compromis->getPartage()->nom}} {{$facture->compromis->getPartage()->prenom}}  <span class="color-danger"> ({{100-$facture->compromis->pourcentage_agent}} %) </span></a> </strong>
+                                                            @endif
+                                                        @else 
+                                                            {{$facture->compromis->nom_agent}}
+        
+                                                        @endif
+        
+                                                    @endif
+        
+                                                @endif
+                                            @endif
+                                        </td>    
+                                        
                                         <td  width="" >
                                         {{number_format($facture->montant_ht,'2','.','')}}
                                         </td>
@@ -202,7 +238,7 @@
                                         
                                         <td width="" >
                                             @if($facture->encaissee == true && $facture->compromis != null )
-                                            <a href="{{route('compromis.etat', Crypt::encrypt($facture->compromis->id))}}"  target="_blank"  class="btn btn-warning btn-flat btn-addon  m-b-10 m-l-5 " id="visualiser"><i class="ti-eye"></i>Visualiser</a>
+                                            <a href="{{route('compromis.etat', Crypt::encrypt($facture->compromis->id))}}"  target="_blank"  class="text-warning " id="visualiser">  <i class="material-icons">remove_red_eye</i> </a>
                                             
                                             {{-- @elseif($facture->type == "pack_pub" && $facture->reglee == true) --}}
                                             
@@ -210,7 +246,7 @@
                                             
                                             @elseif($facture->type == "pack_pub" && $facture->reglee == false && $facture->encaissee == false && $facture->a_avoir != 1 )
                                                 
-                                            <a href="{{route('facture.relancer_paiement_facture',$facture->id)}}" target="_blank" title="Relancer le mandataire pour le payement de la facture" data-toggle="tooltip"  class="btn btn-danger  btn-flat btn-addon  m-b-10 m-l-5 relancer " id=""><i class="ti-email"></i>Relancer</a>
+                                            {{-- <a href="{{route('facture.relancer_paiement_facture',$facture->id)}}" target="_blank" title="Relancer le mandataire pour le payement de la facture" data-toggle="tooltip"  class="btn btn-danger  btn-flat btn-addon  m-b-10 m-l-5 relancer " id=""><i class="ti-email"></i>Relancer</a> --}}
                                                 
                                             
                                             @endif
@@ -228,7 +264,7 @@
 
                                                     <a href="{{route('facture.avoir.create', Crypt::encrypt($facture->id))}}"  class="btn btn-info  btn-flat btn-addon  m-b-10 m-l-5 " id=""><i class="ti-link"></i>créer</a>
                                                 @elseif($facture->a_avoir == 1 && $facture->avoir() != null)
-                                                    <a href="{{route('facture.telecharger_pdf_avoir', Crypt::encrypt($facture->avoir()->id))}}"  class="btn btn-danger btn-flat btn-addon m-b-10 m-l-5 " id=""><i class="ti-download"></i>avoir {{$facture->avoir()->numero}}</a>
+                                                    <a href="{{route('facture.telecharger_pdf_avoir', Crypt::encrypt($facture->avoir()->id))}}"  class="btn btn-danger btn-flat btn-addon m-b-10 m-l-5 " id=""><i class="ti-download"></i>AV {{$facture->avoir()->numero}}</a>
                                                 @endif
                                             @endif
                                         </td>

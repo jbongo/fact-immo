@@ -582,17 +582,12 @@ public  function valider_facture_stylimmo( Request $request, $compromis)
 
         $compromis = Compromis::where('id', $facture->compromis_id)->first();
         $mandataire = $compromis->user;
- 
-        $filename = "F".$facture->numero." ".$facture->montant_ttc."€ ".strtoupper($mandataire->nom)." ".strtoupper(substr($mandataire->prenom,0,1)).".pdf" ;
-        return response()->download($facture->url,$filename);
         
-    
-        // dd('ddd');
-    //     $pdf = PDF::loadView('facture.pdf_stylimmo',compact(['compromis','mandataire','facture']));
-    //     $path = storage_path('app/public/factures/'.$filename);
-    //     // $pdf->save($path);
-    //     // $pdf->download($path);
-    //    return $pdf->download($filename);
+        $nom =  str_replace(['/', '\\', '<','>',':','|','?','*','#'],"-",$mandataire->nom) ;
+        $prenom =  str_replace(['/', '\\', '<','>',':','|','?','*','#'],"-",$mandataire->prenom) ;
+ 
+        $filename = "F".$facture->numero." ".$facture->montant_ttc."€ ".strtoupper($nom)." ".strtoupper(substr($prenom,0,1)).".pdf" ;
+        return response()->download($facture->url,$filename);
       
     }
     
@@ -2893,8 +2888,11 @@ public function store_upload_pdf_honoraire(Request $request , $facture_id)
 
         if(!File::exists($path))
             File::makeDirectory($path, 0755, true);
+            
+            $nom =  str_replace(['/', '\\', '<','>',':','|','?','*','#'],"-",$facture->user->nom) ;
+            $prenom =  str_replace(['/', '\\', '<','>',':','|','?','*','#'],"-",$facture->user->prenom) ;
 
-            $filename = strtoupper($facture->user->nom)." ".strtoupper(substr($facture->user->prenom,0,1))." F".$numero." ".$request->montant_ht."€ F".$facture->compromis->getFactureStylimmo()->numero ;
+            $filename = strtoupper($nom)." ".strtoupper(substr($prenom,0,1))." F".$numero." ".$request->montant_ht."€ F".$facture->compromis->getFactureStylimmo()->numero ;
  
             $file->move($path,$filename.'.pdf');            
             $path = $path.'/'.$filename.'.pdf';
@@ -2925,7 +2923,10 @@ public function store_upload_pdf_honoraire(Request $request , $facture_id)
             if(!File::exists($path_externe))
                 File::makeDirectory($path_externe, 0755, true);
     
-                $filename_externe = strtoupper($facture_externe->compromis->nom_agent)." F".$numero_externe." ".$request->montant_ht_externe."€ F".$facture_externe->compromis->getFactureStylimmo()->numero ;
+                $nom_agent =  str_replace(['/', '\\', '<','>',':','|','?','*','#'],"-",$facture_externe->compromis->nom_agent) ;
+                
+            
+                $filename_externe = strtoupper($nom_agent)." F".$numero_externe." ".$request->montant_ht_externe."€ F".$facture_externe->compromis->getFactureStylimmo()->numero ;
      
                 $file_externe->move($path_externe,$filename_externe.'.pdf');            
                 $path_externe = $path_externe.'/'.$filename_externe.'.pdf';
@@ -2951,8 +2952,10 @@ public function store_upload_pdf_honoraire(Request $request , $facture_id)
 
         if(!File::exists($path_rib))
             File::makeDirectory($path_rib, 0755, true);
+            
+            $nom_agent =  str_replace(['/', '\\', '<','>',':','|','?','*','#'],"-",$facture_externe->compromis->nom_agent) ;
 
-            $filename_rib = strtoupper($facture_externe->compromis->nom_agent)."_rib_".$facture_externe->compromis->getFactureStylimmo()->numero ;
+            $filename_rib = strtoupper($nom_agent)."_rib_".$facture_externe->compromis->getFactureStylimmo()->numero ;
  
             $rib->move($path_rib,$filename_rib.'.pdf');            
             $path_rib = $path_rib.'/'.$filename_rib.'.pdf';
@@ -3151,7 +3154,11 @@ public function valider_honoraire($action, $facture_id)
         $facture = Facture::where('id',$avoir->facture_id)->first() ; 
         $compromis = $facture->compromis;
         $mandataire = $avoir->user;
-        $filename = "FAVOIR ".$avoir->numero." ".$avoir->montant_ttc."€ ".strtoupper($mandataire->nom)." ".strtoupper(substr($mandataire->prenom,0,1)).".pdf" ;
+        
+        $nom =  str_replace(['/', '\\', '<','>',':','|','?','*','#'],"-",$mandataire->nom) ;
+        $prenom =  str_replace(['/', '\\', '<','>',':','|','?','*','#'],"-",$mandataire->prenom) ;
+            
+        $filename = "FAVOIR ".$avoir->numero." ".$avoir->montant_ttc."€ ".strtoupper($nom)." ".strtoupper(substr($prenom,0,1)).".pdf" ;
 
         
           // on sauvegarde la facture dans le repertoire du mandataire
@@ -3219,7 +3226,9 @@ public function valider_honoraire($action, $facture_id)
         }
         
         
-        
+        $nom =  str_replace(['/', '\\', '<','>',':','|','?','*','#'],"-",$nom) ;
+        $prenom =  str_replace(['/', '\\', '<','>',':','|','?','*','#'],"-",$prenom) ;
+            
         $filename = "FAVOIR".$avoir->numero." ".$avoir->montant_ttc."€ ".strtoupper($nom)." ".strtoupper(substr($prenom,0,1)).".pdf" ;
       
         return response()->download($avoir->url,$filename);
@@ -3736,7 +3745,11 @@ return 4444;
 
         $facture = Facture::where('id', crypt::decrypt($facture_id))->first();
         if($facture->destinataire_est_mandataire == true ){
-            $filename = "F".$facture->numero." ".$facture->type." ".$facture->montant_ttc."€ ".strtoupper($facture->user->nom)." ".strtoupper(substr($facture->user->prenom,0,1)).".pdf" ;
+        
+            $nom =  str_replace(['/', '\\', '<','>',':','|','?','*','#'],"-",$facture->user->nom) ;
+            $prenom =  str_replace(['/', '\\', '<','>',':','|','?','*','#'],"-",$facture->user->prenom) ;
+            
+            $filename = "F".$facture->numero." ".$facture->type." ".$facture->montant_ttc."€ ".strtoupper($nom)." ".strtoupper(substr($prenom,0,1)).".pdf" ;
         }else{
             $filename = "F".$facture->numero." ".$facture->type." ".$facture->montant_ttc."€.pdf" ;
         }
@@ -3789,7 +3802,11 @@ return 4444;
 
 
         if($facture->destinataire_est_mandataire == true ){
-            $filename = "F".$facture->numero." ".$facture->type." ".$facture->montant_ttc."€ ".strtoupper($facture->user->nom)." ".strtoupper(substr($facture->user->prenom,0,1)).".pdf" ;
+        
+            $nom =  str_replace(['/', '\\', '<','>',':','|','?','*','#'],"-",$facture->user->nom) ;
+            $prenom =  str_replace(['/', '\\', '<','>',':','|','?','*','#'],"-",$facture->user->prenom) ;
+            
+            $filename = "F".$facture->numero." ".$facture->type." ".$facture->montant_ttc."€ ".strtoupper($nom)." ".strtoupper(substr($prenom,0,1)).".pdf" ;
         }else{
             $filename = "F".$facture->numero." ".$facture->type." ".$facture->montant_ttc."€.pdf" ;
         }
