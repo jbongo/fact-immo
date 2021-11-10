@@ -208,7 +208,7 @@ class Facture extends Model
         $formule = unserialize($this->formule);
         
         
-        return $formule[0][0][1];
+        return $formule != null ?  $formule[0][0][1] : null;
     }
     
     
