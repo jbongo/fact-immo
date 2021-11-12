@@ -276,12 +276,12 @@ class ExportwinficController extends Controller
             
             
             if($code_journal_encai == "B2"){
-                $data_encai_B2= $code_journal_encai."|".$date_operation_encai."|".$this->formatage_colonne(6,$num_folio_encai_B2,'droite')."|".$this->formatage_colonne(6,$num_ecriture_encai_B2,'droite')."|".$jour_ecriture_encai."|".$compte_ttc_encai."|".$montant_debit_ttc_encai."|".$montant_credit_ttc_encai."|".$libelle_encai."|".$lettrage_encai."|".$code_piece_encai."|".$code_stat_encai."|".$date_echeance_encai."|".$monnaie_encai."|".$filler_encai."|".$ind_compteur_encai."|".$quantite_encai."|".$code_pointage_encai."|\r\n";
+                $data_encai_B2 .= $code_journal_encai."|".$date_operation_encai."|".$this->formatage_colonne(6,$num_folio_encai_B2,'droite')."|".$this->formatage_colonne(6,$num_ecriture_encai_B2,'droite')."|".$jour_ecriture_encai."|".$compte_ttc_encai."|".$montant_debit_ttc_encai."|".$montant_credit_ttc_encai."|".$libelle_encai."|".$lettrage_encai."|".$code_piece_encai."|".$code_stat_encai."|".$date_echeance_encai."|".$monnaie_encai."|".$filler_encai."|".$ind_compteur_encai."|".$quantite_encai."|".$code_pointage_encai."|\r\n";
                 $num_ecriture_encai_B2++;
                 
             
             }else{
-                $data_encai_B1 = $code_journal_encai."|".$date_operation_encai."|".$this->formatage_colonne(6,$num_folio_encai_B1,'droite')."|".$this->formatage_colonne(6,$num_ecriture_encai_B1,'droite')."|".$jour_ecriture_encai."|".$compte_ttc_encai."|".$montant_debit_ttc_encai."|".$montant_credit_ttc_encai."|".$libelle_encai."|".$lettrage_encai."|".$code_piece_encai."|".$code_stat_encai."|".$date_echeance_encai."|".$monnaie_encai."|".$filler_encai."|".$ind_compteur_encai."|".$quantite_encai."|".$code_pointage_encai."|\r\n";
+                $data_encai_B1 .= $code_journal_encai."|".$date_operation_encai."|".$this->formatage_colonne(6,$num_folio_encai_B1,'droite')."|".$this->formatage_colonne(6,$num_ecriture_encai_B1,'droite')."|".$jour_ecriture_encai."|".$compte_ttc_encai."|".$montant_debit_ttc_encai."|".$montant_credit_ttc_encai."|".$libelle_encai."|".$lettrage_encai."|".$code_piece_encai."|".$code_stat_encai."|".$date_echeance_encai."|".$monnaie_encai."|".$filler_encai."|".$ind_compteur_encai."|".$quantite_encai."|".$code_pointage_encai."|\r\n";
                 $num_ecriture_encai_B1++;
                 
             
