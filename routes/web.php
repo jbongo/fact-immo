@@ -309,7 +309,8 @@ Route::post('/agenda/delete/{agenda_id}','AgendaController@destroy')->name('agen
 
 // Export WINFIC
 Route::get('/winfic','ExportwinficController@index')->name('winfic.index');
-Route::get('/winfic/exporter_ecriture/{date_deb?}/{date_fin?}','ExportwinficController@exporter_ecriture')->name('winfic.exporter_ecriture');
+Route::get('/winfic/exporter_ecriture1/{date_deb?}/{date_fin?}','ExportwinficController@exporter_ecriture1')->name('winfic.exporter_ecriture1');
+Route::get('/winfic/exporter_ecriture2/{date_deb?}/{date_fin?}','ExportwinficController@exporter_ecriture2')->name('winfic.exporter_ecriture2');
 Route::get('/winfic/exporter_ecrana/{date_deb?}/{date_fin?}','ExportwinficController@exporter_ecrana')->name('winfic.exporter_ecrana');
 Route::get('/winfic/code-analytic-client','ExportwinficController@code_analytic_client')->name('winfic.code_analytic_client');
 
@@ -348,9 +349,6 @@ Route::post('/bibliotheque/update/{bibliotheque_id}','BibliothequeController@upd
 Route::get('/bibliotheque/telecharger/{bibliotheque_id}','BibliothequeController@download_bibliotheque')->name('bibliotheque.telecharger');
 Route::get('/bibliotheque/delete/{bibliotheque_id}','BibliothequeController@destroy')->name('bibliotheque.delete');
 Route::get('/bibliotheque/envoyer/{bibliotheque_id}/{user_id}/{type?}','BibliothequeController@envoyer_document')->name('bibliotheque.envoyer');
-
-
-
 
 
 });

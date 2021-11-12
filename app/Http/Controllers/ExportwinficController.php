@@ -41,13 +41,16 @@ class ExportwinficController extends Controller
         return view ('winfic.index',compact(['factureStylimmos','date_deb','date_fin','montant_credit_debit']));
         
     }
+    
+    
+    
 
     /**
-     *exporter les fichiers ECRITURE.WIN transfert des ventes, encaissements et décaissements
+     *exporter les fichiers ECRITURE.WIN transfert des ventes
      *
      * @return \Illuminate\Http\Response
      */
-    public function exporter_ecriture($date_deb = null, $date_fin = null)
+    public function exporter_ecriture1($date_deb = null, $date_fin = null)
     {
         
         
@@ -168,9 +171,29 @@ class ExportwinficController extends Controller
             }
             
         }
+ 
+        file_put_contents("ECRITURE.WIN", $data);
         
+        return response()->download("ECRITURE.WIN");
         
+    }
+    
+    
+    
+    
+    /**
+     *exporter les fichiers ECRITURE.WIN transfert des encaissements et décaissements
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function exporter_ecriture2($date_deb = null, $date_fin = null)
+    {
         
+
+        if($date_deb == null || $date_fin == null || $date_fin < $date_deb){        
+            $date_deb = date("Y-m")."-01";
+            $date_fin = date("Y-m-d");        
+        }    
         
         
         // TRANSFERT DES ENCAISSEMENTS
@@ -180,6 +203,9 @@ class ExportwinficController extends Controller
         
         
         $data_encai = "";
+        $data_encai_B1 = "";
+        $data_encai_B2 = "";
+        
         $total_transac_ttc = 0;
         $total_autre_ttc = 0;
         
@@ -210,7 +236,7 @@ class ExportwinficController extends Controller
             
             }else{
                 
-                if(!$facture->user) dd($facture);
+                if(!$facture->user) dd("Erreur: Facture liée à aucun mandataire du réseau");
                 $compte_ttc_encai = $facture->user->code_client;
                 
                 $libelle_encai =  $this->formatage_colonne(30, $facture->user->nom." ".$facture->user->prenom);
@@ -250,12 +276,12 @@ class ExportwinficController extends Controller
             
             
             if($code_journal_encai == "B2"){
-                $ligne1_encai = $code_journal_encai."|".$date_operation_encai."|".$this->formatage_colonne(6,$num_folio_encai_B2,'droite')."|".$this->formatage_colonne(6,$num_ecriture_encai_B2,'droite')."|".$jour_ecriture_encai."|".$compte_ttc_encai."|".$montant_debit_ttc_encai."|".$montant_credit_ttc_encai."|".$libelle_encai."|".$lettrage_encai."|".$code_piece_encai."|".$code_stat_encai."|".$date_echeance_encai."|".$monnaie_encai."|".$filler_encai."|".$ind_compteur_encai."|".$quantite_encai."|".$code_pointage_encai."|\r\n";
+                $data_encai_B2= $code_journal_encai."|".$date_operation_encai."|".$this->formatage_colonne(6,$num_folio_encai_B2,'droite')."|".$this->formatage_colonne(6,$num_ecriture_encai_B2,'droite')."|".$jour_ecriture_encai."|".$compte_ttc_encai."|".$montant_debit_ttc_encai."|".$montant_credit_ttc_encai."|".$libelle_encai."|".$lettrage_encai."|".$code_piece_encai."|".$code_stat_encai."|".$date_echeance_encai."|".$monnaie_encai."|".$filler_encai."|".$ind_compteur_encai."|".$quantite_encai."|".$code_pointage_encai."|\r\n";
                 $num_ecriture_encai_B2++;
                 
             
             }else{
-                $ligne1_encai = $code_journal_encai."|".$date_operation_encai."|".$this->formatage_colonne(6,$num_folio_encai_B1,'droite')."|".$this->formatage_colonne(6,$num_ecriture_encai_B1,'droite')."|".$jour_ecriture_encai."|".$compte_ttc_encai."|".$montant_debit_ttc_encai."|".$montant_credit_ttc_encai."|".$libelle_encai."|".$lettrage_encai."|".$code_piece_encai."|".$code_stat_encai."|".$date_echeance_encai."|".$monnaie_encai."|".$filler_encai."|".$ind_compteur_encai."|".$quantite_encai."|".$code_pointage_encai."|\r\n";
+                $data_encai_B1 = $code_journal_encai."|".$date_operation_encai."|".$this->formatage_colonne(6,$num_folio_encai_B1,'droite')."|".$this->formatage_colonne(6,$num_ecriture_encai_B1,'droite')."|".$jour_ecriture_encai."|".$compte_ttc_encai."|".$montant_debit_ttc_encai."|".$montant_credit_ttc_encai."|".$libelle_encai."|".$lettrage_encai."|".$code_piece_encai."|".$code_stat_encai."|".$date_echeance_encai."|".$monnaie_encai."|".$filler_encai."|".$ind_compteur_encai."|".$quantite_encai."|".$code_pointage_encai."|\r\n";
                 $num_ecriture_encai_B1++;
                 
             
@@ -264,7 +290,8 @@ class ExportwinficController extends Controller
             
            
             
-            $data_encai .= $ligne1_encai;
+            // $data_encai_B1 .= $ligne1_encai_B1;
+            // $data_encai_B2 .= $ligne1_encai_B2;
             
             if($num_ecriture_encai_B1 > 50 ){
                 $num_folio_encai_B1 ++;
@@ -320,8 +347,13 @@ class ExportwinficController extends Controller
         $ligne2_contrepartie_autre_encai = "B1"."|".$date_operation_contrepartie_encai."|".$this->formatage_colonne(6,$num_folio_encai_B1,'droite')."|".$this->formatage_colonne(6,$num_ecriture_encai_B1,'droite')."|".$jour_ecriture_contrepartie_encai."|".$compte_contrepartie_autre_encai."|".$montant_debit_contrepartie_autre_encai."|".$montant_credit_contrepartie_autre_encai."|".$libelle_contrepartie_autre_encai."|".$lettrage_contrepartie_encai."|".$code_piece_contrepartie_encai."|".$code_stat_contrepartie_encai."|".$date_echeance_contrepartie_encai."|".$monnaie_contrepartie_encai."|".$filler_contrepartie_encai."|".$ind_compteur_contrepartie_encai."|".$quantite_contrepartie_encai."|".$code_pointage_contrepartie_encai."|\r\n";
         $num_ecriture_encai_B1++;
         
-        $data_encai .= $ligne2_contrepartie_transac_encai.$ligne2_contrepartie_autre_encai;
+        // $data_encai = $data_encai_B1.$data_encai_B2;
         
+        $data_encai .= $data_encai_B1.$ligne2_contrepartie_autre_encai.$data_encai_B2.$ligne2_contrepartie_transac_encai;
+        
+        
+        
+        // dd( $data_encai_B2);
         
         
         
@@ -427,10 +459,7 @@ class ExportwinficController extends Controller
        $data_decai .= $ligne2_contrepartie_transac_decai;
        
         
-        
-        
-        
-        $data.= $data_encai.$data_decai;
+        $data = $data_encai.$data_decai;
        
 //    dd($data);
  
@@ -444,7 +473,7 @@ class ExportwinficController extends Controller
 
 
 
-/**
+    /**
      *exporter les fichiers ECRANA.WIN / transferts des factures des indépendants 
      *
      * @return \Illuminate\Http\Response
