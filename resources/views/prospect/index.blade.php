@@ -683,7 +683,7 @@ agendas = JSON.parse(agendas.replaceAll('&quot;','"') );
             var val;
             agendas.forEach( function (agenda)  {
                     
-                    val = {title:agenda.titre,
+                    val = {title:agenda.type_rappel+": "+agenda.titre,
                     start: agenda.date_deb+'T',
                     // start: agenda.date_deb+'T'+agenda.heure_deb,
                     end: agenda.date_fin+'T',

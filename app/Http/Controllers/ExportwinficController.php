@@ -380,7 +380,7 @@ class ExportwinficController extends Controller
          
                $compte_ttc_decai = str_replace('9','0',$facture->user->code_client);
                
-               $libelle_decai =  $this->formatage_colonne(30, $facture->user->nom." ".$facture->user->prenom." VTE ".$facture->compromis->getFactureStylimmo()->numero);
+               $libelle_decai =  $this->formatage_colonne(30, $facture->user->nom." VTE ".$facture->compromis->getFactureStylimmo()->numero);
 
       
            

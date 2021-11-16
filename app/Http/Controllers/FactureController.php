@@ -108,7 +108,7 @@ class FactureController extends Controller
         $nb_comm_non_regle  = "";
     
         if(auth()->user()->role == "admin"){
-            $factureHonoraires = Facture::whereIn('type',['honoraire','partage','partage_externe','parrainage','parrainage_partage'])->whereBetween('date_facture',[$date_deb,$date_fin])->latest()->get();                       
+            $factureHonoraires = Facture::whereIn('type',['honoraire','partage','partage_externe','parrainage','parrainage_partage'])->whereBetween('date_facture',[$date_deb,$date_fin])->orWhere('date_facture',null)->latest()->get();                       
         }else{
             $factureHonoraires = Facture::where('user_id',auth()->user()->id)->whereIn('type',['honoraire','partage','partage_externe','parrainage','parrainage_partage'])->latest()->get();
             $nb_comm_non_regle  = Facture::where([['user_id',auth()->user()->id],['reglee',false], ['a_avoir', false]])->whereIn('type',['pack_pub','carte_visite'])->count();
@@ -1022,8 +1022,12 @@ public  function preparer_facture_honoraire($compromis)
         $niveau_actuel = $this->calcul_niveau($paliers, ($chiffre_affaire_styl - $montant_vnt_ht ));
 
     
+    // dd($chiffre_affaire_styl - $montant_vnt_ht  );
+    
         $formule = $this->calcul_com($paliers, $montant_vnt_ht, $chiffre_affaire_styl, $niveau_actuel-1, $mandataire);
         $deb_annee = date("Y")."-01-01";
+        
+        // dd($chiffre_affaire_styl - $montant_vnt_ht);
 
         // On calcul le chiffre d'affaire encaissé du mandataire depuis le 1er janvier, pour voir s'il passe à la TVA
         $chiffre_affaire_encai = Facture::where('user_id',$mandataire->id)->whereIn('type',['honoraire','partage','parrainage','parrainage_partage'])->where('reglee',true)->where('date_reglement','>=',$deb_annee)->sum('montant_ht');
@@ -2719,18 +2723,25 @@ public function calcul_com($palier, $montant_vnt_ht, $ca, $niveau)
 public function calcul_niveau($paliers, $chiffre_affaire)
 {
     $niveau = 1;
+    $chiffre_affaire = 50000.5;
     $nb_niveau = sizeof($paliers) -1  ;
-    // dd($chiffre_affaire);
+    // dd($paliers);
     foreach ($paliers as $palier) {
        
-        if($chiffre_affaire >= $palier[2] && $chiffre_affaire <= $palier[3] ){
+       
+       
+    //    echo "<br> $chiffre_affaire > ". ($palier[2] -1) ." && $chiffre_affaire <= $palier[3] ";
+       
+       
+    // $palier[2] -1 correspond au CA max du palier précédent 
+       
+        if($chiffre_affaire > $palier[2] -1  && $chiffre_affaire <= $palier[3] ){
             $niveau = $palier[0];
         }elseif($chiffre_affaire > $paliers[ $nb_niveau ][3]){
             $niveau = $paliers[ $nb_niveau ][0];
         }
     }
 
-// dd($niveau);
     return $niveau;
 }
 
@@ -3313,16 +3324,18 @@ return 4444;
 
         if($facture->type == "honoraire"){
         
-        // On vérifie qu'il ne sagit pas de la première déduiction de jetons après encaissement de la facture styl
-            if($facture->nb_mois_deduis !== null){
+      
+        // On vérifie qu'il ne sagit pas de la première déduiction de jetons après encaissement de la facture styl si le mandataire est soumis aux jetons
+            if( ($mandataire->contrat->deduis_jeton == true &&  $facture->nb_mois_deduis !== null) || $mandataire->contrat->deduis_jeton == false ){
                 $compromis->facture_honoraire_cree = 0 ;
                 $compromis->update();
                 // dd($facture);
                 $facture->delete();
-            
+                // dd('ici');
+                
             }
        
-                
+        
                 
                 return redirect()->route('facture.preparer_facture_honoraire', [ Crypt::encrypt( $compromis->id)]);
         }elseif($facture->type == "partage"){
@@ -3343,7 +3356,7 @@ return 4444;
                 
                 
                   // On vérifie qu'il ne sagit pas de la première déduiction de jetons après encaissement de la facture styl
-            if($facture->nb_mois_deduis !== null){
+            if( ($mandataire->contrat->deduis_jeton == true &&  $facture->nb_mois_deduis !== null) || $mandataire->contrat->deduis_jeton == false){
                 $compromis->update();
                 $facture->delete();
             }

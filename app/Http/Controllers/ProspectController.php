@@ -685,7 +685,8 @@ class ProspectController extends Controller
             'date_deb' => $request->date_deb, 
             'date_fin' => $request->date_fin, 
             'heure_deb' => $request->heure_deb, 
-            'heure_fin' => $request->heure_fin, 
+            'type_rappel' => $request->type_rappel, 
+            // 'heure_fin' => $request->heure_fin, 
             // 'est_agenda_prospect' => $request->est_agenda_prospect,            
             'est_agenda_prospect' => true,
             // 'est_agenda_mandataire' => $request->est_agenda_mandataire,            
@@ -721,7 +722,8 @@ class ProspectController extends Controller
         $agenda->date_deb =  $request->date_deb; 
         $agenda->date_fin =  $request->date_fin; 
         $agenda->heure_deb =  $request->heure_deb; 
-        $agenda->heure_fin =  $request->heure_fin; 
+        $agenda->type_rappel =  $request->type_rappel; 
+        // $agenda->heure_fin =  $request->heure_fin; 
          $agenda->est_agenda_prospect = true;
         // $agenda->est_agenda_mandataire =  $request->est_agenda_mandataire;            
          $agenda->est_agenda_mandataire = false;
