@@ -40,8 +40,16 @@ class ProspectController extends Controller
         
         $bibliotheques = Bibliotheque::all();
         
+        //  Tableau contenant les ids et noms des p^rospects pour faciliter l'affichage dans le code js
+        $tab_id_nom_prospect = array();
+        foreach ($prospects as $prospect) {
+            $tab_id_nom_prospect[$prospect->id] = $prospect->nom. " ".$prospect->prenom ;
+        }
+        
+        $tab_id_nom_prospect =  json_encode($tab_id_nom_prospect);
+   
 
-        return view('prospect.index', compact('prospects','agendas', 'mandataires','bibliotheques'));
+        return view('prospect.index', compact('prospects','agendas', 'mandataires','bibliotheques','tab_id_nom_prospect'));
     }
 
     /**
@@ -103,7 +111,9 @@ class ProspectController extends Controller
         
         $documents = Bibliotheque::all();
         
-        return view('prospect.show', compact('prospect', 'documents'));
+        $agendas = Agenda::where('prospect_id',Crypt::decrypt($id) )->get();
+        
+        return view('prospect.show', compact('prospect', 'documents', 'agendas'));
     }
 
     /**

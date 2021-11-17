@@ -5,6 +5,25 @@
     @endsection
     <div class="row"> 
        
+       <style>
+       .rdv{
+            background: #ff4949;
+            color: #fff;
+        }
+        .appel{
+            background: #0b7de8;
+            color: #fff;
+        }
+        .rappel{
+            background: #425f7e;
+            color: #fff;
+        }
+        .autre{
+            background: #136557;
+            color: #fff;
+        }
+   
+       </style>
         <div class="col-lg-12">
                 @if (session('ok'))
        
@@ -16,7 +35,14 @@
             <div class="card alert">
                 <!-- table -->
               
-            
+                <div class="col-lg-10">
+                    <a href="{{url()->previous()}}" class="btn btn-warning btn-flat btn-addon m-b-10 m-l-5"><i class="ti-arrow-left "></i>@lang('Retour')</a> <---->
+                    <span><a href="{{route('prospect.show',Crypt::encrypt($prospect->id) )}}" class="btn btn-danger btn-flat btn-addon m-b-10 m-l-5" data-toggle="tooltip" title="@lang('Détails de ') {{ $prospect->nom }}"><i class="ti-eye "></i>
+                        Voir profil
+                    </a> </span>
+                    
+                </div>
+                
             <div class="row">
                 <div class="col-lg-12">
                     <div class="card alert">
@@ -26,9 +52,9 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-lg-3">
-                                    <a href="#" data-toggle="modal" data-target="#add-agenda" class="btn btn-lg btn-danger btn-block waves-effect waves-light">
+                                    {{-- <a href="#" data-toggle="modal" data-target="#add-agenda" class="btn btn-lg btn-danger btn-block waves-effect waves-light">
                                         <i class="fa fa-plus"></i> Nouvelle tâche
-                                    </a>
+                                    </a> --}}
                                     <div id="external-events" class="m-t-20">
                                         <br>
                                      
@@ -225,12 +251,22 @@ console.log(agendas);
                             </div>
                             
                             <div class="col-md-6">
+                                <label class="control-label">Type de rappel</label>
+                                <select name="type_rappel" class="form-control form-white" id="type_rappel" required>
+                                    <option value="${calEvent.extendedProps.type_rappel}">${calEvent.extendedProps.type_rappel}</option>
+                                    <option value="appel">appel</option>                                    
+                                    <option value="rappel">rappel</option>
+                                    <option value="rdv">rdv</option>
+                                    <option value="autre">autre</option>
+                                </select>
+                            </div>
+                            
+                            <div class="col-md-6">
                                 <label class="control-label">Heure début</label>
                                 <input class="form-control form-white" placeholder="" type="time"  min="06:00" max="23:00" required name="heure_deb" value="${calEvent.extendedProps.heure_deb}" />
-                            </div><div class="col-md-6">
-                                <label class="control-label">Heure Fin</label>
-                                <input class="form-control form-white" placeholder="" type="time"  min="06:00" max="23:00" required name="heure_fin" value="${calEvent.extendedProps.heure_fin}"/>
                             </div>
+                            
+                           
                         
                         </div>
                         <hr>
@@ -286,19 +322,28 @@ console.log(agendas);
 
                             <div class="col-md-6">
                                 <label class="control-label">Date début</label>
-                                <input class="form-control form-white" placeholder="" type="date" name="date_deb" />
+                                <input class="form-control form-white" placeholder="" value="${start.format('YYYY-MM-DD')}"  type="date" name="date_deb" />
                             </div><div class="col-md-6">
                                 <label class="control-label">Date Fin</label>
-                                <input class="form-control form-white" placeholder="" type="date" name="date_fin" />
+                                <input class="form-control form-white" placeholder="" value="${start.format('YYYY-MM-DD')}"  type="date" name="date_fin" />
                             </div>
                             
                             <div class="col-md-6">
+                                <label class="control-label">Type de rappel</label>
+                                <select name="type_rappel" class="form-control form-white" id="type_rappel" required>
+                                    <option value=""></option>
+                                    <option value="appel">appel</option>                                    
+                                    <option value="rappel">rappel</option>
+                                    <option value="rdv">rdv</option>
+                                    <option value="autre">autre</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
                                 <label class="control-label">Heure début</label>
                                 <input class="form-control form-white" placeholder="" type="time"  min="06:00" max="23:00" required name="heure_deb" />
-                            </div><div class="col-md-6">
-                                <label class="control-label">Heure Fin</label>
-                                <input class="form-control form-white" placeholder="" type="time"  min="06:00" max="23:00" required name="heure_fin" />
                             </div>
+                            
+                            
                         
                         </div>
                         <hr>
@@ -379,21 +424,36 @@ console.log(agendas);
             var list = Array();
             var val;
             agendas.forEach( function (agenda)  {
+            
+            
+                if(agenda.type_rappel == "rdv"){
+                        var bgclass = "rdv";
+                    }
+                    else if(agenda.type_rappel == "appel"){
+                        var bgclass = "appel";
+                    }
+                    else if(agenda.type_rappel == "rappel"){
+                        var bgclass = "rappel";
+                    }
+                    else{
+                        var bgclass = "autre";
+                    }
                     
                     val = {title:agenda.titre,
                     start: agenda.date_deb+'T'+agenda.heure_deb,
-                    end: agenda.date_fin+'T'+agenda.heure_fin,
+                    // end: agenda.date_fin+'T'+agenda.heure_fin,
                     extendedProps: {
                         id:agenda.id,
                         prospect_id:agenda.prospect_id,
                         date_deb:agenda.date_deb,
                         date_fin:agenda.date_fin,
                         heure_deb:agenda.heure_deb,
-                        heure_fin:agenda.heure_fin,
+                        type_rappel:agenda.type_rappel,
+                        // heure_fin:agenda.heure_fin,
                         description:agenda.description,
                     },
                    
-                    className:'bg-danger'
+                    className:bgclass
                     };
                                         
                     list.push(val)

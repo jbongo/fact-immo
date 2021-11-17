@@ -17,6 +17,22 @@
     text-transform: uppercase;
 }
 
+.rdv{
+    background: #ff4949;
+    color: #fff;
+}
+.appel{
+    background: #0b7de8;
+    color: #fff;
+}
+.rappel{
+    background: #425f7e;
+    color: #fff;
+}
+.autre{
+    background: #136557;
+    color: #fff;
+}
     
     </style>
     
@@ -96,7 +112,8 @@
                                                 <label class="control-label">Type de rappel</label>
                                                 <select name="type_rappel"  class="form-control form-white" id="type_rappel" required>
                                                     <option value=""></option>
-                                                    <option value="appel">appel</option>
+                                                    <option value="appel">appel</option>                                                    
+                                                    <option value="rappel">rappel</option>
                                                     <option value="rdv">rdv</option>
                                                     <option value="autre">autre</option>
                                                 </select>
@@ -109,6 +126,19 @@
                                                 <label class="control-label">Heure Fin</label>
                                                 <input class="form-control form-white" placeholder="" type="time"  min="06:00" max="23:00" required name="heure_fin" />
                                             </div> --}}
+                                        
+                                        </div>
+                                        <hr>
+                                        <div class="row">
+                        
+                                            <div class="col-md-6">
+                                                <label class="control-label">Choisir le prospect</label>
+                                                <select name="prospect_id" class="form-control form-white" id="prospect_id" required>
+                                                    @foreach($prospects as $prosp)
+                                                    <option value="{{$prosp->id}}">{{$prosp->nom}} {{$prosp->prenom}}</option>                                    
+                                                    @endforeach
+                                                </select>
+                                            </div>
                                         
                                         </div>
                                         <hr>
@@ -450,9 +480,13 @@
 <script>
 
 var agendas = "{{$agendas}}";
+var tab_id_nom_prospect = "{{$tab_id_nom_prospect}}";
 
 agendas = JSON.parse(agendas.replaceAll('&quot;','"') );
+tab_id_nom_prospect = JSON.parse(tab_id_nom_prospect.replaceAll('&quot;','"') );
 
+
+console.log(tab_id_nom_prospect);
 
 
 ! function($) {
@@ -502,7 +536,7 @@ agendas = JSON.parse(agendas.replaceAll('&quot;','"') );
      
             form.append(`@csrf <div class="row">
                         <input type="hidden" name="id" value="${calEvent.extendedProps.id}" />
-            
+                        <div class="row">
                             <div class="col-md-6">
                                 <label class="control-label">Date début</label>
                                 <input class="form-control form-white" placeholder="" type="date" name="date_deb" value="${calEvent.extendedProps.date_deb}" />
@@ -515,7 +549,8 @@ agendas = JSON.parse(agendas.replaceAll('&quot;','"') );
                                 <label class="control-label">Type de rappel</label>
                                 <select name="type_rappel" class="form-control form-white" id="type_rappel" required>
                                     <option value="${calEvent.extendedProps.type_rappel}">${calEvent.extendedProps.type_rappel}</option>
-                                    <option value="appel">appel</option>
+                                    <option value="appel">appel</option>                                    
+                                    <option value="rappel">rappel</option>
                                     <option value="rdv">rdv</option>
                                     <option value="autre">autre</option>
                                 </select>
@@ -528,6 +563,21 @@ agendas = JSON.parse(agendas.replaceAll('&quot;','"') );
                          
                         
                         </div>
+                        <hr>
+                        <div class="row">
+                        
+                            <div class="col-md-6">
+                                <label class="control-label">Choisir le prospect</label>
+                                <select name="prospect_id" class="form-control form-white" id="prospect_id" required>
+                                    <option value="${calEvent.extendedProps.prospect_id}">${calEvent.extendedProps.nom_prospect}</option>
+                                    @foreach($prospects as $prosp)
+                                    <option value="{{$prosp->id}}">{{$prosp->nom}} {{$prosp->prenom}}</option>                                    
+                                    @endforeach
+                                </select>
+                            </div>
+                        
+                        </div>
+                        
                         <hr>
                         <div class="row">
                             <div class="col-md-12">
@@ -573,16 +623,18 @@ agendas = JSON.parse(agendas.replaceAll('&quot;','"') );
             $this.$modal.modal({
                 backdrop: 'static'
             });
+            
+            
             var form = $(`<form action="{{route('prospect.agenda.store')}}" method="post"></form>`);
             form.append(" <div class='row'></div>");
             form.find(".row")
                 .append(` @csrf <div class="row">
                             <div class="col-md-6">
                                 <label class="control-label">Date début</label>
-                                <input class="form-control form-white" placeholder="" type="date" name="date_deb" />
+                                <input class="form-control form-white" placeholder="" value="${start.format('YYYY-MM-DD')}" type="date" name="date_deb" />
                             </div><div class="col-md-6">
                                 <label class="control-label">Date Fin</label>
-                                <input class="form-control form-white" placeholder="" type="date" name="date_fin" />
+                                <input class="form-control form-white" placeholder="" value="${start.format('YYYY-MM-DD')}" type="date" name="date_fin" />
                             </div>
                             
                             
@@ -590,7 +642,8 @@ agendas = JSON.parse(agendas.replaceAll('&quot;','"') );
                                 <label class="control-label">Type de rappel</label>
                                 <select name="type_rappel" class="form-control form-white" id="type_rappel" required>
                                     <option value=""></option>
-                                    <option value="appel">appel</option>
+                                    <option value="appel">appel</option>                                    
+                                    <option value="rappel">rappel</option>
                                     <option value="rdv">rdv</option>
                                     <option value="autre">autre</option>
                                 </select>
@@ -604,6 +657,21 @@ agendas = JSON.parse(agendas.replaceAll('&quot;','"') );
                           
                         
                         </div>
+                        
+                        <hr>
+                        <div class="row">
+                        
+                        <div class="col-md-6">
+                            <label class="control-label">Choisir le prospect</label>
+                            <select name="prospect_id" class="form-control form-white" id="prospect_id" required>
+                               
+                                @foreach($prospects as $prosp)
+                                <option value="{{$prosp->id}}">{{$prosp->nom}} {{$prosp->prenom}}</option>                                    
+                                @endforeach
+                            </select>
+                        </div>
+                    
+                    </div>
                         <hr>
                         <div class="row">
                             <div class="col-md-12">
@@ -678,12 +746,29 @@ agendas = JSON.parse(agendas.replaceAll('&quot;','"') );
             this.enableDrag();
             /*  Initialize the calendar  */
          
-
+            
             var list = Array();
             var val;
             agendas.forEach( function (agenda)  {
                     
-                    val = {title:agenda.type_rappel+": "+agenda.titre,
+                    if(agenda.type_rappel == "rdv"){
+                        var bgclass = "rdv";
+                    }
+                    else if(agenda.type_rappel == "appel"){
+                        var bgclass = "appel";
+                    }
+                    else if(agenda.type_rappel == "rappel"){
+                        var bgclass = "rappel";
+                    }
+                    else{
+                        var bgclass = "autre";
+                    }
+                    
+               
+                    var nom_prospect = tab_id_nom_prospect[agenda.prospect_id];
+                    
+                    val = {
+                    title:agenda.titre,
                     start: agenda.date_deb+'T',
                     // start: agenda.date_deb+'T'+agenda.heure_deb,
                     end: agenda.date_fin+'T',
@@ -691,6 +776,8 @@ agendas = JSON.parse(agendas.replaceAll('&quot;','"') );
                     extendedProps: {
                         id:agenda.id,
                         type_rappel:agenda.type_rappel,
+                        prospect_id:agenda.prospect_id,
+                        nom_prospect:nom_prospect,
                         date_deb:agenda.date_deb,
                         date_fin:agenda.date_fin,
                         heure_deb:agenda.heure_deb,
@@ -698,7 +785,7 @@ agendas = JSON.parse(agendas.replaceAll('&quot;','"') );
                         description:agenda.description,
                     },
                    
-                    className:'bg-danger'
+                    className:bgclass,
                     };
                                         
                     list.push(val)

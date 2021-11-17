@@ -313,63 +313,144 @@
     <div class="col-md-12">
         <div class="card">
             <div class="media">
-                <div class="media-left media-middle">
-                    <i class="ti-folder f-s-48 color-danger m-r-1"></i> <label for="" style="font-weight: bold">Bibliothèque</label>
-                </div>
-               
-                  <br>
-                  <br>
 
-                
               
-    
-                
+               <div class="media-left media-middle">
+                  <i class="ti-list f-s-48 color-danger m-r-1"></i> <label for="" style="font-weight: bold">Liste des tâches </label>
+               </div>
                 <div class="col-lg-12">
                   <div class="card alert">
-                      <div class="card-body">
-                          <div class="table-responsive">
-                              <table class="table table-hover">
-                                  <thead>
-                                      <tr>
-                                          <th>Document</th>
-                                          <th>Envoyé le</th>
-                                          <th>Lu le</th>
-                                          <th>avez-vous compris ?</th>
-                                          <th></th>
-                                      </tr>
-                                  </thead>
-                                  <tbody>
-                                  
-                                    @foreach ($documents as $document)
-                                    
-                                    <tr>
-                                       <td>{{$document->nom}}</td>
-                                       <td>@if($prospect->getBibliotheque($document->id)!= null) <span class="text-success" style="font-size: 13px"> {{$prospect->getBibliotheque($document->id)->pivot->created_at->format('d/m/Y') }} </span> @else <span class="text-danger" style="font-size: 13px"> non envoyé   @endif</td>
-                                       
-                                       
-                                       <td>@if($prospect->getBibliotheque($document->id) && $prospect->getBibliotheque($document->id)->pivot->est_fichier_vu == true ) <span class="text-warning" style="font-size: 13px">{{$prospect->getBibliotheque($document->id)->pivot->updated_at->format('d/m/Y') }} </span>  @endif</td>
-                                       <td>@if($prospect->getBibliotheque($document->id)!= null) 
-                                       
-                                         @if($prospect->getBibliotheque($document->id)->pivot->question1 == "Oui") <span  style="color:white; font-size: 10px" class="badge badge-success">Oui</span>@elseif($prospect->getBibliotheque($document->id)->pivot->question1 == "Non") <span class="badge badge-danger" style="color:white; font-size: 10px" >Non</span> @endif
-                                     
-                                       
-                                       @endif</td>
-                                       <td><a href="{{route('bibliotheque.envoyer', [$document->id,$prospect->id, "prospect" ])}}"  style="background: #3b4842" class="btn btn-default btn-flat btn-addon m-b-10 m-l-5" data-toggle="tooltip" title="Envoyer par mail"><i class="ti-email"></i>Envoyer  </a></td>
-
-                                   </tr>
-                                    @endforeach
-                                  
-                                     
-                                     
+                      <div class="card-header">
                          
-                                  </tbody>
-                              </table>
+                          
+                          <div class="card-header-right-icon">
+                              <ul>
+                                  <li class="card-close" data-dismiss="alert"><i class="ti-close"></i></li>
+                                  <li class="doc-link"><a href="#"><i class="ti-link"></i></a></li>
+                              </ul>
                           </div>
                       </div>
+                      <div class="recent-comment m-t-20">
+                      
+                      
+                      @foreach ($agendas as $agenda)
+                            <div class="media">
+                             
+                              <div class="media-body">
+                                  <h4 class="media-heading">{{$agenda->type_rappel}}</h4>
+                                  <p>{{$agenda->titre}} : <i>{{$agenda->description}} </i>  </p>
+                                  <div class="comment-action">
+                                      <div class="badge badge-success">Terminée</div>
+                                      <span class="m-l-10">
+                             <a href="#"><i class="ti-check color-success"></i></a>
+                             <a href="#"><i class="ti-close color-danger"></i></a>
+                             <a href="#"><i class="fa fa-reply color-primary"></i></a>
+                          </span>
+                                  </div>
+                                  <p class="comment-date">{{$agenda->date_deb->format('d/m/Y')}} à {{$agenda->heure_deb}}</p>
+                              </div>
+                          </div>
+                    
+                      @endforeach
+                      
+                   
+                          
+                          
+                          {{-- <div class="media">
+                              <div class="media-left">
+                                  <a href="#"><img class="media-object" src="assets/images/avatar/2.jpg" alt="..."></a>
+                              </div>
+                              <div class="media-body">
+                                  <h4 class="media-heading">Mr.  Ajay</h4>
+                                  <p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. </p>
+                                  <div class="comment-action">
+                                      <div class="badge badge-warning">Pending</div>
+                                      <span class="m-l-10">
+                             <a href="#"><i class="ti-check color-success"></i></a>
+                             <a href="#"><i class="ti-close color-danger"></i></a>
+                             <a href="#"><i class="fa fa-reply color-primary"></i></a>
+                          </span>
+                                  </div>
+                                  <p class="comment-date">October 21, 2017</p>
+                              </div>
+                          </div>
+                          <div class="media no-border">
+                              <div class="media-left">
+                                  <a href="#"><img class="media-object" src="assets/images/avatar/3.jpg" alt="..."></a>
+                              </div>
+                              <div class="media-body">
+                                  <h4 class="media-heading">Mr.  Ajay</h4>
+                                  <p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. </p>
+                                  <div class="comment-action">
+                                      <div class="badge badge-danger">Rejected</div>
+                                      <span class="m-l-10">
+                             <a href="#"><i class="ti-check color-success"></i></a>
+                             <a href="#"><i class="ti-close color-danger"></i></a>
+                             <a href="#"><i class="fa fa-reply color-primary"></i></a>
+                          </span>
+                                  </div>
+                                  <div class="comment-date">October 21, 2017</div>
+                              </div>
+                          </div> --}}
+                      </div>
                   </div>
+                  <!-- /# card -->
               </div>
-                <hr>
-                
+              
+              
+              <div class="media-left media-middle">
+               <i class="ti-folder f-s-48 color-danger m-r-1"></i> <label for="" style="font-weight: bold">Bibliothèque</label>
+               </div>
+          
+             <br>
+             <br>
+           
+           <div class="col-lg-12">
+             <div class="card alert">
+                 <div class="card-body">
+                     <div class="table-responsive">
+                         <table class="table table-hover">
+                             <thead>
+                                 <tr>
+                                     <th>Document</th>
+                                     <th>Envoyé le</th>
+                                     <th>Lu le</th>
+                                     <th>avez-vous compris ?</th>
+                                     <th></th>
+                                 </tr>
+                             </thead>
+                             <tbody>
+                             
+                               @foreach ($documents as $document)
+                               
+                               <tr>
+                                  <td>{{$document->nom}}</td>
+                                  <td>@if($prospect->getBibliotheque($document->id)!= null) <span class="text-success" style="font-size: 13px"> {{$prospect->getBibliotheque($document->id)->pivot->created_at->format('d/m/Y') }} </span> @else <span class="text-danger" style="font-size: 13px"> non envoyé   @endif</td>
+                                  
+                                  
+                                  <td>@if($prospect->getBibliotheque($document->id) && $prospect->getBibliotheque($document->id)->pivot->est_fichier_vu == true ) <span class="text-warning" style="font-size: 13px">{{$prospect->getBibliotheque($document->id)->pivot->updated_at->format('d/m/Y') }} </span>  @endif</td>
+                                  <td>@if($prospect->getBibliotheque($document->id)!= null) 
+                                  
+                                    @if($prospect->getBibliotheque($document->id)->pivot->question1 == "Oui") <span  style="color:white; font-size: 10px" class="badge badge-success">Oui</span>@elseif($prospect->getBibliotheque($document->id)->pivot->question1 == "Non") <span class="badge badge-danger" style="color:white; font-size: 10px" >Non</span> @endif
+                                
+                                  
+                                  @endif</td>
+                                  <td><a href="{{route('bibliotheque.envoyer', [$document->id,$prospect->id, "prospect" ])}}"  style="background: #3b4842" class="btn btn-default btn-flat btn-addon m-b-10 m-l-5" data-toggle="tooltip" title="Envoyer par mail"><i class="ti-email"></i>Envoyer  </a></td>
+
+                              </tr>
+                               @endforeach
+                             
+                                
+                                
+                    
+                             </tbody>
+                         </table>
+                     </div>
+                 </div>
+             </div>
+         </div>
+           <hr>
+              
               
             </div>
         </div>
