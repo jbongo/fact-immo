@@ -316,7 +316,9 @@
 
               
                <div class="media-left media-middle">
-                  <i class="ti-list f-s-48 color-danger m-r-1"></i> <label for="" style="font-weight: bold">Liste des tâches </label>
+                  <i class="ti-list f-s-48 color-danger m-r-1"></i> <label for="" style="font-weight: bold">Liste des tâches </label>  <hr>  
+                  <span><a href="{{route('prospect.agenda.show',$prospect->id )}}" class="btn btn-success btn-flat btn-addon m-b-10 m-l-5" data-toggle="tooltip" title="@lang('Détails de ') {{ $prospect->nom }}"><i class="ti-pencil "></i>
+                     Modifier agenda</a></span>
                </div>
                 <div class="col-lg-12">
                   <div class="card alert">
@@ -337,61 +339,117 @@
                             <div class="media">
                              
                               <div class="media-body">
-                                  <h4 class="media-heading">{{$agenda->type_rappel}}</h4>
-                                  <p>{{$agenda->titre}} : <i>{{$agenda->description}} </i>  </p>
+                                                                       
+                                    <h4 class="media-heading">{{$agenda->type_rappel}} <span> <a href="#" data-toggle="modal" data-target="#add-agenda-{{$agenda->id}}" data-toggle="tooltip" title="@lang('Modifier ')"><i class=" material-icons color-warning">edit</i></a></span>  </h4>
+                                  <p>{{$agenda->titre}} : <i>{{$agenda->description}} </i>  </p> 
                                   <div class="comment-action">
-                                      <div class="badge badge-success">Terminée</div>
+                                 @if($agenda->est_terminee == true )
+                                    <div class="badge badge-success">Terminée</div>
+                                 @else 
+                                    <div class="badge badge-danger">Non Terminée</div>
+                                 @endif
                                       <span class="m-l-10">
-                             <a href="#"><i class="ti-check color-success"></i></a>
+                             {{-- <a href="#"><i class="ti-check color-success"></i></a>
                              <a href="#"><i class="ti-close color-danger"></i></a>
-                             <a href="#"><i class="fa fa-reply color-primary"></i></a>
+                             <a href="#"><i class="fa fa-reply color-primary"></i></a> --}}
                           </span>
                                   </div>
-                                  <p class="comment-date">{{$agenda->date_deb->format('d/m/Y')}} à {{$agenda->heure_deb}}</p>
+                                  @php 
+                                       $date_deb = new DateTime($agenda->date_deb);
+                                  @endphp
+                                  <p class="comment-date">{{$date_deb->format('d/m/Y')}} à {{$agenda->heure_deb}}</p>
                               </div>
                           </div>
                     
-                      @endforeach
+                    
+                    
+                       <!-- Modal Add agenda -->
+                     <div class="modal fade none-border" id="add-agenda-{{$agenda->id}}">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                    <h4 class="modal-title"><strong>Ajouter un évènement</strong></h4>
+                                </div>
+                                <div class="modal-body">
+                                    <form action="{{route('prospect.agenda.update')}}" method="post">
+                                    
+                                    @csrf
+                                    <input type="hidden" name="id" value="{{$agenda->id}}" />
+                                    <input type="hidden" name="prospect_id" value="{{$prospect->id}}" />
+                                    
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label class="control-label">Date début</label>
+                                            <input class="form-control form-white" placeholder="" value="{{$agenda->date_deb}}" type="date" name="date_deb" />
+                                        </div><div class="col-md-6">
+                                            <label class="control-label">Date Fin</label>
+                                            <input class="form-control form-white" placeholder="" value="{{$agenda->date_fin}}" type="date" name="date_fin" />
+                                        </div>
+                                        
+                                        <div class="col-md-6">
+                                          <label class="control-label">Type de rappel</label>
+                                          <select name="type_rappel"  class="form-control form-white" id="type_rappel" required>
+                                              <option value="{{$agenda->type_rappel}} ">{{$agenda->type_rappel}} </option>
+                                              <option value="appel">appel</option>                                                    
+                                              <option value="rappel">rappel</option>
+                                              <option value="rdv">rdv</option>
+                                              <option value="autre">autre</option>
+                                          </select>
+                                      </div>
+                                      
+                                        <div class="col-md-6">
+                                            <label class="control-label">Heure début</label>
+                                            <input class="form-control form-white" placeholder="" type="time" value="{{$agenda->heure_deb}}"  min="06:00" max="23:00" required name="heure_deb" />
+                                        </div>
+                  
+                                    </div>
+                                    <hr>
+                                    <div class="row">
+                                    
+                                        
+                                        
+                                        <div class="col-md-6">
+                                            <label class="control-label text-danger">Tâche terminée ?</label>
+                                            <select name="est_terminee" class="form-control form-white" id="est_terminee" required>
+                                                <option value="{{$agenda->est_terminee == true ? 'true' : 'false'}}">{{$agenda->est_terminee == true ? 'Oui' : 'Non'}}</option>
+                                               
+                                                <option value="true">Oui </option>                                    
+                                                <option value="false">Non</option>                                    
+                                              
+                                            </select>
+                                        </div>
+                                    
+                                    </div>
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <label class="control-label">Titre</label>
+                                            <input class="form-control form-white" placeholder="" value="{{$agenda->titre}} " type="text" name="titre" />
+                                        </div>
+                                        <div class="col-md-12">
+                                            <label class="control-label">Description</label>
+                                           <textarea name="description" class="form-control" id="" cols="30" rows="5">{{$agenda->description}} </textarea>
+                                        </div>
+                                    </div>
+                                    
+                                    
+                                   
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Fermer</button>
+                                    
+                                    <input type="submit" class="btn btn-success waves-effect waves-light save-agenda"  value="Modifier">
+                                </div>
+                            </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- END MODAL -->
+  
+  
+                       @endforeach
                       
-                   
-                          
-                          
-                          {{-- <div class="media">
-                              <div class="media-left">
-                                  <a href="#"><img class="media-object" src="assets/images/avatar/2.jpg" alt="..."></a>
-                              </div>
-                              <div class="media-body">
-                                  <h4 class="media-heading">Mr.  Ajay</h4>
-                                  <p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. </p>
-                                  <div class="comment-action">
-                                      <div class="badge badge-warning">Pending</div>
-                                      <span class="m-l-10">
-                             <a href="#"><i class="ti-check color-success"></i></a>
-                             <a href="#"><i class="ti-close color-danger"></i></a>
-                             <a href="#"><i class="fa fa-reply color-primary"></i></a>
-                          </span>
-                                  </div>
-                                  <p class="comment-date">October 21, 2017</p>
-                              </div>
-                          </div>
-                          <div class="media no-border">
-                              <div class="media-left">
-                                  <a href="#"><img class="media-object" src="assets/images/avatar/3.jpg" alt="..."></a>
-                              </div>
-                              <div class="media-body">
-                                  <h4 class="media-heading">Mr.  Ajay</h4>
-                                  <p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. </p>
-                                  <div class="comment-action">
-                                      <div class="badge badge-danger">Rejected</div>
-                                      <span class="m-l-10">
-                             <a href="#"><i class="ti-check color-success"></i></a>
-                             <a href="#"><i class="ti-close color-danger"></i></a>
-                             <a href="#"><i class="fa fa-reply color-primary"></i></a>
-                          </span>
-                                  </div>
-                                  <div class="comment-date">October 21, 2017</div>
-                              </div>
-                          </div> --}}
                       </div>
                   </div>
                   <!-- /# card -->
@@ -467,7 +525,6 @@
 </div>
 
 
-  
 
 </div>
 

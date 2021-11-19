@@ -269,6 +269,21 @@ console.log(agendas);
                            
                         
                         </div>
+                            <hr>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="control-label text-danger">Tâche terminée ?</label>
+                                <select name="est_terminee" class="form-control form-white" id="est_terminee" required>
+                                    <option value="${calEvent.extendedProps.est_terminee}">${calEvent.extendedProps.est_terminee == true ? 'Oui' : 'Non'}</option>
+                                   
+                                    <option value="true">Oui </option>                                    
+                                    <option value="false">Non</option>                                    
+                                  
+                                </select>
+                            </div>
+                        
+                        </div>
+                        
                         <hr>
                         <div class="row">
                             <div class="col-md-12">
@@ -448,6 +463,7 @@ console.log(agendas);
                         date_deb:agenda.date_deb,
                         date_fin:agenda.date_fin,
                         heure_deb:agenda.heure_deb,
+                        est_terminee:agenda.est_terminee,
                         type_rappel:agenda.type_rappel,
                         // heure_fin:agenda.heure_fin,
                         description:agenda.description,

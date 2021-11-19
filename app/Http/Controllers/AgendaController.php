@@ -93,6 +93,7 @@ class AgendaController extends Controller
         $agenda->est_agenda_general =  true;
         $agenda->prospect_id =  $request->prospect_id; 
         $agenda->mandataire_id =  $request->mandataire_id; 
+        $agenda->est_terminee = $request->est_terminee == "true" ? true : false;             
         
         $agenda->update();
         

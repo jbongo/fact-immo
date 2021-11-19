@@ -742,6 +742,10 @@ class ProspectController extends Controller
         $agenda->prospect_id =  $request->prospect_id; 
         $agenda->mandataire_id =  $request->mandataire_id; 
         
+        
+        $agenda->est_terminee = $request->est_terminee == "true" ? true : false;             
+        // dd($agenda->est_terminee);
+        
         $agenda->update();
         
         return redirect()->back()->with('ok', 'tâche modifiée '.$agenda->titre);

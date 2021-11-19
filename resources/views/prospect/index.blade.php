@@ -486,8 +486,6 @@ agendas = JSON.parse(agendas.replaceAll('&quot;','"') );
 tab_id_nom_prospect = JSON.parse(tab_id_nom_prospect.replaceAll('&quot;','"') );
 
 
-console.log(tab_id_nom_prospect);
-
 
 ! function($) {
     "use strict";
@@ -573,6 +571,17 @@ console.log(tab_id_nom_prospect);
                                     @foreach($prospects as $prosp)
                                     <option value="{{$prosp->id}}">{{$prosp->nom}} {{$prosp->prenom}}</option>                                    
                                     @endforeach
+                                </select>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label class="control-label text-danger">Tâche terminée ?</label>
+                                <select name="est_terminee" class="form-control form-white" id="est_terminee" required>
+                                    <option value="${calEvent.extendedProps.est_terminee}">${calEvent.extendedProps.est_terminee == true ? 'Oui' : 'Non'}</option>
+                                   
+                                    <option value="true">Oui </option>                                    
+                                    <option value="false">Non</option>                                    
+                                  
                                 </select>
                             </div>
                         
@@ -767,6 +776,11 @@ console.log(tab_id_nom_prospect);
                
                     var nom_prospect = tab_id_nom_prospect[agenda.prospect_id];
                     
+                 
+                    var date_deb = agenda.date_deb.substring(0,10);
+                    var date_fin = agenda.date_fin.substring(0,10);
+                    
+                    // console.log(date_deb.length);
                     val = {
                     title:agenda.titre,
                     start: agenda.date_deb+'T',
@@ -777,9 +791,10 @@ console.log(tab_id_nom_prospect);
                         id:agenda.id,
                         type_rappel:agenda.type_rappel,
                         prospect_id:agenda.prospect_id,
+                        est_terminee:agenda.est_terminee,
                         nom_prospect:nom_prospect,
-                        date_deb:agenda.date_deb,
-                        date_fin:agenda.date_fin,
+                        date_deb:date_deb,
+                        date_fin:date_fin,
                         heure_deb:agenda.heure_deb,
                         // heure_fin:agenda.heure_fin,
                         description:agenda.description,
