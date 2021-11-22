@@ -832,7 +832,7 @@
 @stop @section('js-content') 
 {{-- ###### Parrainage --}}
 <script>
-
+console.log($("#a_parrain").prop('checked') );
     if ("{{$contrat->a_parrain}}" == false){
          $('#parrain-id').hide();
     $('#parrainage_div').hide();

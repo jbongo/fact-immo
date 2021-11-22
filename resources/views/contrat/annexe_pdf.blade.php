@@ -246,26 +246,26 @@ font-family: 'Times New Roman', Times, serif
 <p>&nbsp;</p>
 <p><strong><u>ET</u></strong></p>
 <p>&nbsp;</p>
-<p><strong><u>FORFAIT MENSUEL</u></strong>&nbsp;(STARTER <strong><em><u>ou</u></em></strong> EXPERT)&nbsp;:</p>
+<p><strong><u>FORFAITS MENSUEL</u></strong>&nbsp;:</p>
 <p><strong>&nbsp;</strong></p>
 <ul>
-<li><strong><u>FORFAIT MENSUEL &laquo;&nbsp;STARTER&nbsp;&raquo;</u></strong> :</li>
+<li><strong><u>FORFAIT MENSUEL &laquo;&nbsp;PACK INFORMATIQUE&nbsp;&raquo;</u></strong> :</li>
 </ul>
-<p>Ce forfait comprend&nbsp;: suivi/conseil + formations + outils informatiques + outils publicitaires correspondant au pack 10.</p>
-<p>Le prix mensuel du forfait STARTER&nbsp;est de&nbsp;:</p>
+<p>Ce forfait comprend&nbsp;: suivi/conseil + outils informatiques + outils publicitaires correspondant au pack 10.</p>
+<p>Le prix mensuel du forfait pack informatique&nbsp;est de&nbsp;:</p>
 <ul>
-<li>Du 1<sup>er</sup> au 2&egrave; mois inclus*&nbsp;: gratuit</li>
-<li>Du 3&egrave; au 6&egrave; mois inclus*&nbsp;: {{$contrat->forfait_pack_info}} &euro; H.T. en pr&eacute;l&egrave;vement automatique jusqu'&agrave; {{$contrat->nb_vente_passage_expert}} vente(s).</li>
+<li>Du 1<sup>er</sup> au  {{$contrat->duree_gratuite_starter}}&egrave; mois inclus*&nbsp;: gratuit</li>
+<li>Du {{$contrat->duree_gratuite_starter + 1}}&egrave; au {{$contrat->duree_gratuite_starter + $contrat->duree_pack_info_starter }}&egrave; mois inclus*&nbsp;: {{$contrat->forfait_pack_info}} &euro; H.T. en pr&eacute;l&egrave;vement automatique jusqu'&agrave; {{$contrat->nb_vente_passage_expert}} vente(s).</li>
 </ul>
-<p>Le forfait STARTER est valable au maximum les 6 premiers mois*.</p>
-<p>Au 7&egrave; mois* le MANDATAIRE passe automatiquement au forfait EXPERT (pack 10 sauf autre choix).</p>
+<p>Le forfait est valable au maximum les  {{$contrat->duree_gratuite_starter + $contrat->duree_pack_info_starter }} premiers mois*.</p>
+<p>Au {{$contrat->duree_gratuite_starter + $contrat->duree_pack_info_starter +1}}&egrave; mois* le MANDATAIRE passe automatiquement au pack pub (pack 10 sauf autre choix).</p>
 <p><em>*&nbsp;: mois suivant la date de d&eacute;but d&rsquo;activit&eacute; inscrite dans le contrat.</em></p>
 <p>&nbsp;</p>
 <ul>
-<li><strong><u>FORFAIT MENSUEL &laquo;&nbsp;EXPERT&nbsp;&raquo;</u></strong>: </strong></li>
+<li><strong><u>FORFAIT MENSUEL &laquo;&nbsp;PACK PUB&nbsp;&raquo;</u></strong>: </strong></li>
 </ul>
-<p>Ce forfait comprend&nbsp;: suivi/conseil + formations + outils informatiques + outils publicitaires correspondant au pack choisi par le MANDATAIRE.</p>
-<p>Prix mensuel du forfait EXPERT&nbsp;(&agrave; compter du d&eacute;marrage d&rsquo;activit&eacute;)&nbsp;:</p>
+<p>Ce forfait comprend&nbsp;: suivi/conseil + outils informatiques + outils publicitaires correspondant au pack choisi par le MANDATAIRE.</p>
+<p>Prix mensuel du forfait &nbsp;(&agrave; compter du d&eacute;marrage d&rsquo;activit&eacute;)&nbsp;:</p>
 <p>Tarifs &agrave; ce jour&nbsp;:</p>
 
 @foreach($packs as $pack)

@@ -465,7 +465,8 @@
                                                                                    </div>
                                                                                </div>
                                                                                @php
-                                                                                   $check_exp =  ($modele->a_condition_expert == true) ? "checked" : "unchecked";
+                                                                                //    $check_exp =  ($modele->a_condition_expert == true) ? "checked" : "unchecked";
+                                                                                   $check_exp = "unchecked";
                                                                                @endphp
                                                                                <div class="form-group row">
                                                                                    <label class="col-lg-6 col-form-label" for="a_condition_expert">Appliquer ces conditions au mandataire ?</label>
@@ -850,6 +851,7 @@
 {{-- Envoi des données en ajax pour le stockage --}}
 <script>
 
+console.log($("#a_parrain").prop('checked') );
     $('.form-valide3').submit(function(e) {
         e.preventDefault();
         var form = $(".form-valide3");
@@ -868,8 +870,11 @@
             "ca_depart" : $('#ca_depart').val(),
             "ca_depart_sty" : $('#ca_depart_sty').val(),
             "est_starter" : $("#est_starter").prop('checked'),            
+            "a_condition_parrain" : $("#a_condition_parrain").prop('checked') ,
             "a_parrain" : $("#a_parrain").prop('checked') ,
             "parrain_id" : $('#parrain_id').val(),
+            "est_soumis_tva" : $("#est_soumis_tva").prop('checked') ,
+            "deduis_jeton" : $("#deduis_jeton").prop('checked') ,
             "nb_vente_passage_expert" : $('#nb_vente_passage_expert').val(),
             
             
@@ -881,6 +886,9 @@
             "duree_gratuite_starter" : $('#duree_gratuite_starter').val(),
             "check_palier_starter" : $("#check_palier_starter").prop('checked'),
             "palier_starter" : $('#palier_starter input').serialize(),
+            "est_soumis_fact_pub" : $("#est_soumis_fact_pub").prop('checked'),
+            "a_condition_expert" : $("#a_condition_expert").prop('checked'),
+            
 
             "pourcentage_depart_expert" : $('#pourcentage_depart_expert').val(),
             "duree_gratuite_expert" : $('#duree_gratuite_expert').val(),
@@ -892,6 +900,30 @@
             "a_soustraitre" : $('#a_soustraitre').val(),
             "prime_max_forfait_parrain" : $('#prime_max_forfait').val(),
             "pack_pub" : $('#pack_pub').val(),
+            
+            "p_1_1" : $('#p_1_1').val(),
+            "p_1_2" : $('#p_1_2').val(),
+            "p_1_3" : $('#p_1_3').val(),
+            "p_1_n" : $('#p_1_n').val(),
+            "seuil_parr_1" : $('#seuil_parr_1').val(),
+            "seuil_fill_1" : $('#seuil_fill_1').val(),
+
+            "p_2_1" : $('#p_2_1').val(),
+            "p_2_2" : $('#p_2_2').val(),
+            "p_2_3" : $('#p_2_3').val(),
+            "p_2_n" : $('#p_2_n').val(),
+            "seuil_parr_2" : $('#seuil_parr_2').val(),
+            "seuil_fill_2" : $('#seuil_fill_2').val(),
+
+            
+            "p_3_1" : $('#p_3_1').val(),
+            "p_3_2" : $('#p_3_2').val(),
+            "p_3_3" : $('#p_3_3').val(),
+            "p_3_n" : $('#p_3_n').val(),
+            "seuil_parr_3" : $('#seuil_parr_3').val(),
+            "seuil_fill_3" : $('#seuil_fill_3').val(),
+
+            "seuil_comm" : $('#seuil_comm').val(),
 
         }
 

@@ -3,7 +3,12 @@
 @section ('page_title') 
     Profil du prospect 
 @endsection
-
+<style>
+.modal-content {
+    border-radius: 50px;
+    width: 90%;
+}
+</style>
 <div class="row">
 
    <div class="col-lg-12">
