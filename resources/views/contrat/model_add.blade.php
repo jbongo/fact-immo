@@ -79,7 +79,8 @@
                                                                    </div>
                                                                    
                                                                    @php
-                                                                       $check_parr =  ($modele->a_condition_parrain == true) ? "checked" : "unchecked";
+                                                                    //    $check_parr =  ($modele->a_condition_parrain == true) ? "checked" : "unchecked";
+                                                                       $check_parr = "unchecked";
                                                                    @endphp
                                                                  
                                                                    <div class="form-group row">
