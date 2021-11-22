@@ -851,7 +851,6 @@
 {{-- Envoi des données en ajax pour le stockage --}}
 <script>
 
-console.log($("#a_parrain").prop('checked') );
     $('.form-valide3').submit(function(e) {
         e.preventDefault();
         var form = $(".form-valide3");
