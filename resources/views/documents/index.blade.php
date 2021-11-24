@@ -64,8 +64,14 @@
                                 
                                 <td>
                                     @if($mandataire->document($document->reference) != null)
-                                        <a href="{{route('document.telecharger', [$mandataire->id, $document->reference])}}" data-toggle="tooltip" title="Télécharger {{$document->nom}}"  class="btn btn-danger btn-flat btn-addon "><i class="ti-download"></i>Voir</a> 
- 
+                                         
+                                        
+                                        @if($mandataire->document($document->id)->est_image())                                            
+                                            <a href="{{$mandataire->document($document->id)->lien_public_image()}}" data-toggle="tooltip" target="_blank" title="Télécharger {{$document->nom}}"  class="btn btn-success btn-flat btn-addon "><i class="ti-download"></i>{{$document->nom}}</a> 
+                                        @else                                        
+                                                <a href="{{route('document.telecharger', [$mandataire->id, $document->reference])}}" data-toggle="tooltip" title="Télécharger {{$document->nom}}"  class="btn btn-danger btn-flat btn-addon "><i class="ti-download"></i>Voir</a>
+                                        @endif
+                                        
                                     @endif
                                 </td>
                                     

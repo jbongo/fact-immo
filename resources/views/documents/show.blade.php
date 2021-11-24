@@ -124,7 +124,16 @@
                                     <div class="col-lg-4 col-md-4 col-sm-4" style="text-align: right">
                                         @if($mandataire->document($document->id) != null)
                                         {{$mandataire->document($document->id)->extension }}
-                                        <a href="{{route('document.telecharger', [$mandataire->id, $document->id])}}"data-toggle="tooltip" title="Télécharger {{$document->nom}}"  class="btn btn-danger btn-flat btn-addon "><i class="ti-download"></i>{{$document->nom}}</a> 
+                                        
+                                            @if($mandataire->document($document->id)->est_image())
+                                            
+                                            <a href="{{$mandataire->document($document->id)->lien_public_image()}}" data-toggle="tooltip" target="_blank" title="Télécharger {{$document->nom}}"  class="btn btn-success btn-flat btn-addon "><i class="ti-download"></i>{{$document->nom}}</a> 
+                                            @else 
+                                            
+                                            <a href="{{route('document.telecharger', [$mandataire->id, $document->id])}}"data-toggle="tooltip" title="Télécharger {{$document->nom}}"  class="btn btn-danger btn-flat btn-addon "><i class="ti-download"></i>{{$document->nom}}</a> 
+                                            
+                                            @endif
+                                        
                                         @else 
                                         
                                         <label for=""><i>Aucun document</i></label>
