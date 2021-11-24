@@ -25,8 +25,8 @@ class Fichier extends Model
     // Si le fichier est une image, on copie le fichier dans un repertoir tmp public et on renvoie le lien vers le fichier
     public function lien_public_image(){
         
-        if(file_exists($this->url) && copy($this->url, "tmp/{$this->document->reference}")){
-            return "/tmp/{$this->document->reference}";
+        if(file_exists($this->url) && copy($this->url, "tmp/{$this->document->reference}_{$this->user_id}")){
+            return "/tmp/{$this->document->reference}_{$this->user_id}";
         
         }
     }
