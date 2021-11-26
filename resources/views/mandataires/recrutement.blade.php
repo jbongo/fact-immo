@@ -29,7 +29,7 @@
                                 <tr>
                                     
                                     <td>
-                                        <a href="{{route('switch_user',Crypt::encrypt($mandataire->id) )}}" data-toggle="tooltip" title="@lang('Se connecter en tant que ') {{ $mandataire->nom }}">{{$mandataire->nom}} {{$mandataire->prenom}}<i style="font-size: 17px" class="material-icons color-success">person_pin</i></a> 
+                                        {{$mandataire->nom}} {{$mandataire->prenom}}
                                     </td>
                                     <td>
                                     {{$mandataire->statut}} 

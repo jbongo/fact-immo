@@ -2723,7 +2723,7 @@ public function calcul_com($palier, $montant_vnt_ht, $ca, $niveau)
 public function calcul_niveau($paliers, $chiffre_affaire)
 {
     $niveau = 1;
-    $chiffre_affaire = 50000.5;
+    $chiffre_affaire = $chiffre_affaire;
     $nb_niveau = sizeof($paliers) -1  ;
     // dd($paliers);
     foreach ($paliers as $palier) {
