@@ -3,7 +3,9 @@
 
 Félicitation vous pouvez maintenant vous connecter sur l'outil de facturation : <a href="{{config('app.url')}}">Cliquez ici</a> pour vous connecter<br>
 Login {{$mandataire->email}} <br>
-Mot de passe : {{$password}}
+Mot de passe : {{$password}} <br>
+
+Vous trouverez en pièce jointe vos factures  <strong> Attestation de Collaborateur (CCI) </strong> et <strong>Forfait d'entrée</strong>.
 
 
 @component('mail::button', ['url' => config('app.url') ])

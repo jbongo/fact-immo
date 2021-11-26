@@ -6,7 +6,7 @@
                             <div class="panel-body">
 
                     <div class="table-responsive" style="overflow-x: inherit !important;">
-                        <table  id="example1" class=" table student-data-table  table-striped table-hover dt-responsive display    "  style="width:100%">
+                        <table  id="example3" class=" table student-data-table  table-striped table-hover dt-responsive display    "  style="width:100%">
                             <thead>
                                 <tr>
                                     <th>@lang('Nom')</th>

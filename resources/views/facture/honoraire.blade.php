@@ -215,7 +215,7 @@
                                                 @endif
                                             @else 
                                                 <label class="color-success">@if($facture->date_reglement != null) Réglée le {{$facture->date_reglement->format('d/m/Y')}} @else Réglée @endif</label> 
-                                                <a data-toggle="modal"  data-target="#myModal" onclick="getIdPayer('{{Crypt::encrypt($facture->id)}}')" id="{{Crypt::encrypt($facture->id)}}"  class="text-danger  payer" ><i class="ti-pencil"></i></a>
+                                             @if(Auth::user()->role == "admin")   <a data-toggle="modal"  data-target="#myModal" onclick="getIdPayer('{{Crypt::encrypt($facture->id)}}')" id="{{Crypt::encrypt($facture->id)}}"  class="text-danger  payer" ><i class="ti-pencil"></i></a>@endif
                                                     
                               
 

@@ -12,6 +12,8 @@ use App\Parametre;
 use App\Historique;
 use App\Historiquecontrat;
 use App\Article;
+use App\Facture;
+use App\TVA;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\CreationMandataire;
 use App\Mail\SendContratSignature;
@@ -714,7 +716,73 @@ class ContratController extends Controller
 
         }
 
-        Mail::to($mandataire->email)->send(new CreationMandataire($mandataire,$password));
+
+        // Création de la facture CCI et Forfait d'entree
+        
+        
+        $numero = Facture::whereIn('type',['avoir','stylimmo','pack_pub','carte_visite','communication','autre','forfait_entree','cci'])->max('numero') + 1;
+        
+        $facture_cci = Facture::create([
+            "numero"=> $numero,
+            "user_id"=> $mandataire->id,
+           
+            "type"=> "cci",
+            "encaissee"=> false,
+            "montant_ht"=>  $request->forfait_carte_pro / Tva::coefficient_tva(),
+            "montant_ttc"=> $request->forfait_carte_pro ,
+            "date_facture"=> date('Y-m-d'),
+            "destinataire_est_mandataire"=> true,
+       ]);
+       
+        $numero++;
+        
+        $facture_forfait = Facture::create([
+            "numero"=> $numero,
+            "user_id"=> $mandataire->id,
+           
+            "type"=> "forfait_entree",
+            "encaissee"=> false,
+            "montant_ht"=>  $request->forfait_administratif,
+            "montant_ttc"=> $request->forfait_administratif * Tva::coefficient_tva(),
+            "date_facture"=> date('Y-m-d'),
+            "destinataire_est_mandataire"=> true,
+       ]);
+        
+        
+    // on sauvegarde les factures dans le repertoire du mandataire
+    $path = storage_path('app/public/factures/factures_autres');
+
+    if(!File::exists($path))
+        File::makeDirectory($path, 0755, true);
+        
+        $facture = $facture_cci;
+        $pdf_cci = PDF::loadView('facture.pdf_cci_forfait',compact(['facture']));
+        
+        $facture = $facture_forfait;        
+        $pdf_forfait = PDF::loadView('facture.pdf_cci_forfait',compact(['facture']));
+
+    
+        $nom =  str_replace(['/', '\\', '<','>',':','|','?','*','#'],"-",$mandataire->nom) ;
+        $prenom =  str_replace(['/', '\\', '<','>',':','|','?','*','#'],"-",$mandataire->prenom) ;
+        
+        $filename_cci = "F".$facture_cci->numero." ".$facture_cci->type." ".$facture_cci->montant_ttc."€ ".strtoupper($nom)." ".strtoupper(substr($prenom,0,1)).".pdf" ;
+        $filename_forfait = "F".$facture_forfait->numero." ".$facture_forfait->type." ".$facture_forfait->montant_ttc."€ ".strtoupper($nom)." ".strtoupper(substr($prenom,0,1)).".pdf" ;
+   
+    
+    $path_cci = $path.'/'.$filename_cci;
+    $path_forfait = $path.'/'.$filename_forfait;
+    
+    $pdf_cci->save($path_cci);
+    $pdf_forfait->save($path_forfait);
+    
+    $facture_cci->url = $path_cci;
+    $facture_forfait->url = $path_forfait;
+    $facture_cci->update();
+    $facture_forfait->update();
+    
+    
+
+        Mail::to($mandataire->email)->send(new CreationMandataire($mandataire,$password, $path_forfait, $path_cci));
         // Mail::to("gestion@stylimmo.com")->send(new CreationMandataire($mandataire,$password));
         // Envoyer les accès aussi à tous les admins
         // $admins = User::where('role','admin')->get();

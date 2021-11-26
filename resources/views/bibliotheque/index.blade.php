@@ -15,6 +15,7 @@
              @endif       
             <div class="card alert">
                 <!-- table -->
+                <a href="{{route('document.index')}}" class="btn btn-warning btn-flat btn-addon m-b-10 m-l-5"><i class="ti-arrow-left "></i>@lang('Retour')</a><----->
             <a href="{{route('bibliotheque.create')}}" class="btn btn-default btn-rounded btn-addon btn-lg m-b-10 m-l-5" ><i class="ti-plus"></i>Ajouter un document</a>
               
               <br><br>

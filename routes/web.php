@@ -18,10 +18,10 @@ Route::middleware('auth')->group(function(){
     // Mandataires
    
     Route::get('/mandataires','MandataireController@index')->name('mandataire.index')->middleware('admin');
-    Route::get('/mandataire/create','MandataireController@create')->name('mandataire.create');
-    Route::post('/mandataire/add','MandataireController@store')->name('mandataire.add');
+    Route::get('/mandataire/create','MandataireController@create')->name('mandataire.create')->middleware('admin');
+    Route::post('/mandataire/add','MandataireController@store')->name('mandataire.add')->middleware('admin');
     Route::get('/mandataire/show/{id}','MandataireController@show')->name('mandataire.show');
-    Route::get('/mandataire/edit/{mandataire}','MandataireController@edit')->name('mandataire.edit');
+    Route::get('/mandataire/edit/{mandataire}','MandataireController@edit')->name('mandataire.edit')->middleware('admin');
     Route::post('/mandataire/update/{mandataire}','MandataireController@update')->name('mandataire.update');
     Route::delete('/mandataire/delete/{mandataire}','MandataireController@destroy')->name('mandataire.delete');
     Route::delete('/mandataire/archive/{mandataire}','MandataireController@archive')->name('mandataire.archive');
@@ -30,19 +30,19 @@ Route::middleware('auth')->group(function(){
     
     // Prospects
     
-    Route::get('/prospects','ProspectController@index')->name('prospect.index');
-    Route::get('/prospect/create','ProspectController@create')->name('prospect.create');
-    Route::post('/prospect/add','ProspectController@store')->name('prospect.add');
-    Route::get('/prospect/show/{id}','ProspectController@show')->name('prospect.show');
-    Route::get('/prospect/edit/{prospect}','ProspectController@edit')->name('prospect.edit');
-    Route::post('/prospect/update/{prospect}','ProspectController@update')->name('prospect.update');
+    Route::get('/prospects','ProspectController@index')->name('prospect.index')->middleware('admin');
+    Route::get('/prospect/create','ProspectController@create')->name('prospect.create')->middleware('admin');
+    Route::post('/prospect/add','ProspectController@store')->name('prospect.add')->middleware('admin');
+    Route::get('/prospect/show/{id}','ProspectController@show')->name('prospect.show')->middleware('admin');
+    Route::get('/prospect/edit/{prospect}','ProspectController@edit')->name('prospect.edit')->middleware('admin');
+    Route::post('/prospect/update/{prospect}','ProspectController@update')->name('prospect.update')->middleware('admin');
     Route::delete('/prospect/delete/{prospect}','ProspectController@destroy')->name('prospect.delete');
     Route::get('/prospect/archives/','ProspectController@archives')->name('prospect.archives');
     Route::get('/prospect/archiver/{prospect}/{action}','ProspectController@archiver')->name('prospect.archiver');
     Route::get('/prospect/agenda','ProspectController@agenda_general')->name('prospect.agenda');
-    Route::get('/prospect/agenda/{prospect_id}','ProspectController@show_agenda_prospect')->name('prospect.agenda.show');
-    Route::post('/prospect/agenda/store','ProspectController@store_agenda_prospect')->name('prospect.agenda.store');
-    Route::post('/prospect/agenda/update','ProspectController@update_agenda_prospect')->name('prospect.agenda.update');
+    Route::get('/prospect/agenda/{prospect_id}','ProspectController@show_agenda_prospect')->name('prospect.agenda.show')->middleware('admin');
+    Route::post('/prospect/agenda/store','ProspectController@store_agenda_prospect')->name('prospect.agenda.store')->middleware('admin');
+    Route::post('/prospect/agenda/update','ProspectController@update_agenda_prospect')->name('prospect.agenda.update')->middleware('admin');
     
     
     Route::get('/prospect/telecharger/{url}/{type}','ProspectController@telecharger_doc')->name('prospect.telecharger');
@@ -54,7 +54,7 @@ Route::middleware('auth')->group(function(){
     
         
     // Gestion des Jetons
-    Route::get('/mandataires/jetons','MandataireController@mandataires_jetons')->name('mandataires.jetons');
+    Route::get('/mandataires/jetons','MandataireController@mandataires_jetons')->name('mandataires.jetons')->middleware('admin');
     // Route::get('/jetons/{mandataire_id}','MandataireController@jeton_mandataire')->name('jeton_mandataire');
     Route::get('/historique-jeton/{user_id}','MandataireController@historique_jeton')->name('mandataire.historique_jeton');
     Route::post('/jetons/update/{user_id}','MandataireController@update_jetons')->name('jetons.update');
@@ -285,7 +285,7 @@ Route::middleware('auth')->group(function(){
 
     // Se connecter sur une autre session utilisateur
 
-    Route::get('/switch/{user_id}','MandataireController@switch_user')->name('switch_user');
+    Route::get('/switch/{user_id}','MandataireController@switch_user')->name('switch_user')->middleware('admin');
     Route::get('/unswitch','MandataireController@unswitch_user')->name('unswitch_user');
 
 
@@ -326,10 +326,10 @@ Route::get('/banque/lecture_fichier','BanqueController@lecture_fichier_banque')-
 
 // Documents
 
-Route::get('/documents','DocumentController@index')->name('document.index');
+Route::get('/documents','DocumentController@index')->name('document.index')->middleware('admin');
 Route::get('/documents/liste','DocumentController@liste')->name('document.liste');
-Route::get('/documents/create','DocumentController@create')->name('document.create');
-Route::get('/documents/edit/{document_id}','DocumentController@edit')->name('document.edit');
+Route::get('/documents/create','DocumentController@create')->name('document.create')->middleware('admin');
+Route::get('/documents/edit/{document_id}','DocumentController@edit')->name('document.edit')->middleware('admin');
 Route::get('/documents/show/{mandataire_id}','DocumentController@show')->name('document.show');
 Route::post('/documents/store','DocumentController@store')->name('document.store');
 Route::post('/documents/update/{document_id}','DocumentController@update')->name('document.update');

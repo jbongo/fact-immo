@@ -29,19 +29,19 @@
                                                            <div class="col-lg-6 col-md-6 col-sm-6">
                    
                                                                <div class="form-group row">
-                                                                   <label class="col-lg-4 col-form-label" for="forfait_administratif">Forfait administratif (€)<span class="text-danger">*</span></label>
+                                                                   <label class="col-lg-6 col-form-label" for="forfait_administratif">Forfait administratif (€)<span class="text-danger">*</span></label>
                                                                    <div class="col-lg-4">
                                                                        <input type="number" class="form-control" min="0" value="{{$modele->forfait_administratif}}" id="forfait_administratif" name="forfait_administratif" required>
                                                                    </div>
                                                                </div>
                                                                <div class="form-group row">
-                                                                   <label class="col-lg-4 col-form-label" for="forfait_carte_pro">Attestation de collaborateur (€)<span class="text-danger">*</span></label>
+                                                                   <label class="col-lg-6 col-form-label" for="forfait_carte_pro">Attestation de collaborateur TTC (€)<span class="text-danger">*</span></label>
                                                                    <div class="col-lg-4">
                                                                        <input type="number" class="form-control" min="0" value="{{$modele->forfait_carte_pro}}" id="forfait_carte_pro" name="forfait_carte_pro" required>
                                                                    </div>
                                                                </div>
                                                                <div class="form-group row">
-                                                                   <label class="col-lg-4 col-form-label" for="forfait_pack_info">Forfait pack informatique (€)<span class="text-danger">*</span></label>
+                                                                   <label class="col-lg-6 col-form-label" for="forfait_pack_info">Forfait pack informatique (€)<span class="text-danger">*</span></label>
                                                                    <div class="col-lg-4">
                                                                        <input type="number" class="form-control" min="0" value="{{$modele->forfait_pack_info}}" id="forfait_pack_info" name="forfait_pack_info" required>
                                                                    </div>
@@ -51,21 +51,25 @@
                                                                @endphp
                                                                <div class="form-group row">
                                                                    <label class="col-lg-6 col-form-label" for="est_starter">Démarrage en tant que Starter ?</label>
-                                                                   <input type="checkbox" {{$check}} data-toggle="toggle" id="est_starter" name="est_starter" data-off="Non" data-on="Oui" data-onstyle="success" data-offstyle="danger">
+                                                                   <div class="col-lg-6">
+                                                                        <input type="checkbox"  {{$check}} data-toggle="toggle" id="est_starter" name="est_starter" data-off="Non" data-on="Oui" data-onstyle="success" data-offstyle="danger">
+                                                                   </div>
                                                                </div>
                                                                @php
                                                                   $check_p =  ($modele->a_parrain == true) ? "checked" : "unchecked";
                                                                @endphp
                                                                <div class="form-group row">
                                                                    <label class="col-lg-6 col-form-label" for="a_parrain">Le mandataire a t'il un parrain ?</label>
-                                                                   <input type="checkbox" {{$check_p}} data-toggle="toggle" id="a_parrain" name="a_parrain" data-off="Non" data-on="Oui" data-onstyle="success" data-offstyle="danger">
+                                                                   <div class="col-lg-6">
+                                                                        <input type="checkbox"  {{$check_p}} data-toggle="toggle" id="a_parrain" name="a_parrain" data-off="Non" data-on="Oui" data-onstyle="success" data-offstyle="danger">
+                                                                   </div>
                                                                </div>
                                                         
                                                                <div id="parrain-id">
                    
                                                                
                                                                    <div class="form-group row">
-                                                                   <label class="col-lg-4 col-form-label" for="parrain_id">Choisir le parrain</label>
+                                                                   <label class="col-lg-6 col-form-label" for="parrain_id">Choisir le parrain</label>
                                                                        <div class="col-lg-8">
                                                                            <select class="selectpicker col-lg-6" id="parrain_id" name="parrain_id" data-live-search="true" data-style="btn-warning btn-rounded">
                                                                                @if ($modele->a_parrain == true)
@@ -100,13 +104,13 @@
                    
                                                            <div class="col-lg-6 col-md-6 col-sm-6">
                                                                <div class="form-group row">
-                                                                   <label class="col-lg-4 col-form-label" for="date_entree">Date d'entrée<span class="text-danger">*</span></label>
+                                                                   <label class="col-lg-6 col-form-label" for="date_entree">Date d'entrée<span class="text-danger">*</span></label>
                                                                    <div class="col-lg-4">
                                                                        <input type="date" class="form-control" value="" id="date_entree" name="date_entree" required>
                                                                    </div>
                                                                </div>
                                                                <div class="form-group row">
-                                                                   <label class="col-lg-4 col-form-label" for="date_debut">Date de début d'activité<span class="text-danger">*</span></label>
+                                                                   <label class="col-lg-6 col-form-label" for="date_debut">Date de début d'activité<span class="text-danger">*</span></label>
                                                                    <div class="col-lg-4">
                                                                        <input type="date" class="form-control" value="" id="date_debut" name="date_debut" required>
                                                                    </div>
@@ -114,7 +118,7 @@
                                                            </div>
                                                            <div class="col-lg-6 col-md-6 col-sm-6">
                                                                <div class="form-group row">
-                                                                   <label class="col-lg-4 col-form-label" for="ca_depart">Chiffre d'affaires de depart HT<span class="text-danger">*</span></label>
+                                                                   <label class="col-lg-6 col-form-label" for="ca_depart">Chiffre d'affaires de depart HT<span class="text-danger">*</span></label>
                                                                    <div class="col-lg-4">
                                                                        <input type="number" min="0" step="0.01" class="form-control" value="{{$modele->ca_depart}}" id="ca_depart" name="ca_depart" required>
                                                                    </div>
@@ -123,7 +127,7 @@
                                                            </div>
                                                            <div class="col-lg-6 col-md-6 col-sm-6">
                                                                <div class="form-group row">
-                                                                   <label class="col-lg-4 col-form-label" for="ca_depart_sty">Chiffre d'affaires rapporté à stylimmo HT<span class="text-danger">*</span></label>
+                                                                   <label class="col-lg-6 col-form-label" for="ca_depart_sty">Chiffre d'affaires rapporté à stylimmo HT<span class="text-danger">*</span></label>
                                                                    <div class="col-lg-4">
                                                                        <input type="number" min="0" class="form-control" value="{{$modele->ca_depart_sty}}" id="ca_depart_sty" name="ca_depart_sty" required>
                                                                    </div>
