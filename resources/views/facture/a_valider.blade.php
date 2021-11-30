@@ -21,7 +21,7 @@
                             <div class="panel-body">
 
                     <div class="table-responsive" >
-                        <table  id="example1" class=" table table-striped table-hover dt-responsive "  >
+                        <table  id="example2" class=" table table-striped table-hover dt-responsive "  >
                             <thead>
                                 <tr>
                                    

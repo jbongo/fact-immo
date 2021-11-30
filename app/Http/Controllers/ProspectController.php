@@ -10,6 +10,8 @@ use App\Packpub;
 use App\User;
 use App\Agenda;
 use App\Bibliotheque;
+use App\Document;
+use App\Fichier;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\File ;
 use Illuminate\Support\Facades\Storage;
@@ -288,7 +290,9 @@ class ProspectController extends Controller
         if($file = $request->file('piece_identite')){
 
             $request->validate([
-                "piece_identite" => "required|mimes:jpeg,png,pdf|max:5000",
+                "piece_identite" => "required|mimes:jpeg,jpg,png,pdf|max:5000",
+                "date_expiration_carteidentite" => "required",
+                
             ]);
           
 
@@ -298,7 +302,7 @@ class ProspectController extends Controller
                 
         
                 // on sauvegarde le fichier dans le repertoire du mandataire
-                $path = storage_path('app/public/prospects/');
+                $path = storage_path('app/public/prospects');
         
                 if(!File::exists($path))
                     File::makeDirectory($path, 0755, true);
@@ -309,13 +313,14 @@ class ProspectController extends Controller
                     $path = $path.'/'.$filename.'.'.$extension;
                 
                     $prospect->piece_identite = $path;
+                    $prospect->date_expiration_carteidentite = $request->date_expiration_carteidentite;
 
         }
         
         if($file = $request->file('rib')){
 
             $request->validate([
-                "rib" => "required|mimes:jpeg,png,pdf|max:5000",
+                "rib" => "required|mimes:jpeg,jpg,png,pdf|max:5000",
             ]);
           
 
@@ -339,37 +344,37 @@ class ProspectController extends Controller
 
         }
         
-        if($file = $request->file('attestation_responsabilite')){
+        // if($file = $request->file('attestation_responsabilite')){
 
-            $request->validate([
-                "attestation_responsabilite" => "required|mimes:jpeg,png,pdf|max:5000",
-            ]);
+        //     $request->validate([
+        //         "attestation_responsabilite" => "required|mimes:jpeg,png,pdf|max:5000",
+        //     ]);
           
 
 
-                $name = $file->getClientOriginalName();
-                $extension = $file->getClientOriginalExtension();
+        //         $name = $file->getClientOriginalName();
+        //         $extension = $file->getClientOriginalExtension();
                 
         
-                // on sauvegarde le fichier dans le repertoire du mandataire
-                $path = storage_path('app/public/prospects/');
+        //         // on sauvegarde le fichier dans le repertoire du mandataire
+        //         $path = storage_path('app/public/prospects/');
         
-                if(!File::exists($path))
-                    File::makeDirectory($path, 0755, true);
+        //         if(!File::exists($path))
+        //             File::makeDirectory($path, 0755, true);
         
-                    $filename = strtoupper($nom)." attestation_responsabilite ".$prospect->id ;
+        //             $filename = strtoupper($nom)." attestation_responsabilite ".$prospect->id ;
          
-                    $file->move($path,$filename.'.'.$extension);            
-                    $path = $path.'/'.$filename.'.'.$extension;
+        //             $file->move($path,$filename.'.'.$extension);            
+        //             $path = $path.'/'.$filename.'.'.$extension;
                 
-                    $prospect->attestation_responsabilite = $path;
+        //             $prospect->attestation_responsabilite = $path;
 
-        }
+        // }
         
         if($file = $request->file('photo')){
 
             $request->validate([
-                "photo" => "required|mimes:jpeg,png|max:5000",
+                "photo" => "required|mimes:jpeg,jpg,png|max:5000",
             ]);
           
 
@@ -599,7 +604,7 @@ class ProspectController extends Controller
     public function prospect_a_mandataire($prospect_id)
     {
       
-        $prospect = Prospect::where('id',Crypt::decrypt($prospect_id))->first();
+        $prospect = Prospect::where('id',Crypt::decrypt($prospect_id))->first();        
         
         $mandataire = User::where('email_perso',$prospect->email)->first();
 
@@ -627,6 +632,8 @@ class ProspectController extends Controller
                 'siret'=>$prospect->numero_siret,
               
             ]);
+            
+            // $user = User::where('id',92)->first();
         }
         else{
         
@@ -636,6 +643,116 @@ class ProspectController extends Controller
         $prospect->user_id = $user->id;
         $prospect->est_mandataire = true;
         $prospect->update();
+        
+        // Transfert des documents dans la liste des documents du mandataire
+        
+        $document = Document::where('reference', 'cartedidentit')->first();        
+        if($prospect->piece_identite != null && $document != null){
+    
+
+            // on sauvegarde le document
+            $path = storage_path('app/public/'.$user->id.'/documents');
+            $reference = $document->reference;
+            
+            $split = explode('.', $prospect->piece_identite);
+            $extension = '.'.$split[sizeof($split)-1];
+    
+            if(!File::exists($path))
+                File::makeDirectory($path, 0755, true);
+    
+                $filename = $reference . "_".$user->id;
+               
+
+                $fichier = $user->document($document->id);
+            
+               
+                $path = $path.'/'.$filename.$extension;
+              
+                    // On copie le fichier dans le dossier document 
+                    copy($prospect->piece_identite,$path );
+               
+                    
+                    $fichier =   Fichier::create([                        
+                        "user_id" => $user->id,
+                        "document_id" => $document->id,
+                        "url" => $path,
+                        "extension" => $extension,
+                        "date_expiration" => $prospect->date_expiration_carte_identite
+                    ]);
+
+        }
+        
+        $document = Document::where('reference', 'rib')->first();        
+        if($prospect->rib != null && $document != null){
+    
+
+            // on sauvegarde le document
+            $path = storage_path('app/public/'.$user->id.'/documents');
+            $reference = $document->reference;
+            
+            $split = explode('.', $prospect->rib);
+            $extension = '.'.$split[sizeof($split)-1];
+    
+            if(!File::exists($path))
+                File::makeDirectory($path, 0755, true);
+    
+                $filename = $reference . "_".$user->id;
+               
+
+                $fichier = $user->document($document->id);
+            
+              
+               // on enregistre le chemin complet du fichier déplacé dans la variable path
+               $path = $path.'/'.$filename.$extension;
+                    
+                // On copie le fichier dans le dossier document en le renommant
+                copy($prospect->rib,$path );
+                
+
+                    $fichier =   Fichier::create([                        
+                        "user_id" => $user->id,
+                        "document_id" => $document->id,
+                        "url" => $path,
+                        "extension" => $extension,
+                    ]);
+
+        }
+        
+        
+        $document = Document::where('reference', 'photo')->first();        
+        if($prospect->photo != null && $document != null){
+    
+
+            // on sauvegarde le document
+            $path = storage_path('app/public/'.$user->id.'/documents');
+            $reference = $document->reference;
+            
+            $split = explode('.', $prospect->photo);
+            $extension = '.'.$split[sizeof($split)-1];
+    
+            if(!File::exists($path))
+                File::makeDirectory($path, 0755, true);
+    
+                $filename = $reference . "_".$user->id;
+               
+
+                $fichier = $user->document($document->id);
+            
+                    // on enregistre le chemin complet du fichier déplacé dans la variable path
+                    $path = $path.'/'.$filename.$extension;
+              
+                     // On copie le fichier dans le dossier document en le renommant
+                     copy($prospect->photo,$path );
+
+                    
+                    $fichier =   Fichier::create([                        
+                        "user_id" => $user->id,
+                        "document_id" => $document->id,
+                        "url" => $path,
+                        "extension" => $extension,
+                    ]);
+
+        }
 
          return redirect()->route('mandataire.edit', ['user_id'=>Crypt::encrypt($user->id)]);
      

@@ -227,6 +227,16 @@
        <hr style="border-top: 4px solid #3e3a92">
        <br>
        
+       @if ($errors->any())
+      <div class="alert alert-danger">
+          <ul>
+              @foreach ($errors->all() as $error)
+                  <li>{{ $error }}</li>
+              @endforeach
+          </ul>
+      </div>
+      @endif
+      
         <br>
         <div class="form-row item">
             <div class="form-group col-3">
@@ -540,6 +550,26 @@
                  </div>
                @endif
           </div>
+          
+          
+          <div class="form-group col-md-6">
+            <label for="date_expiration_carteidentite">Date d'expiration de la carte d'identité</label>
+       
+            <input type="date" name="date_expiration_carteidentite" class="form-control" @if($prospect->date_expiration_carteidentite != null) value="{{$prospect->date_expiration_carteidentite->format('Y-m-d')}}" @endif id="date_expiration_carteidentite" placeholder="" >
+             @if ($errors->has('date_expiration_carteidentite'))
+                 <br>
+                 <div class="alert alert-warning ">
+                    <strong>{{$errors->first('date_expiration_carteidentite')}}</strong> 
+                 </div>
+               @endif
+          </div>
+          
+         
+        </div>
+        
+        <br>
+        <div class="form-row item">
+        
           <div class="form-group col-md-6">
             <label for="rib">Le RIB que vous utiliserez pour votre activité</label>
             @if($prospect->rib != null)
@@ -553,14 +583,8 @@
                  </div>
                @endif
           </div>
-          
-         
-        </div>
         
-        <br>
-        <div class="form-row item">
-        
-          <div class="form-group col-md-6">
+          {{-- <div class="form-group col-md-6">
             <label for="attestation_responsabilite">Attestation responsabilité civile</label>
             @if($prospect->attestation_responsabilite != null)
               <a class="btn btn-warning color-info" title="Télécharger l'Attestation responsabilité civile' "  href="{{route('prospect.telecharger',[ Crypt::encrypt($prospect->id),"attestation_responsabilite"])}}"  class="  m-b-10 m-l-5 " id="ajouter">Télécharger <i class="ti-download"></i> </a>
@@ -573,7 +597,7 @@
                  </div>
                 @endif
           
-          </div>
+          </div> --}}
           
           <div class="form-group col-md-6">
             <label for="photo">Photo professionnelle </label>

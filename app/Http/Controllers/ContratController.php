@@ -572,7 +572,12 @@ class ContratController extends Controller
             $date_anniversaire = date('Y-m-d', strtotime("+$duree_max_starter months", strtotime($request->date_debut)));
 
         }      
-
+        
+        // On vérifie que le contrat n'existe pas
+        
+        $cont = Contrat::where('user_id', Crypt::decrypt($request->user_id) )->first();
+        if($cont != null) return 0;
+        
 
         // return "".$request->forfait_administratif;
         $contrat = Contrat::create([
