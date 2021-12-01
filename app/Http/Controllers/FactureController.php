@@ -312,6 +312,7 @@ class FactureController extends Controller
 
         // 0 = facture non demandée, 1= facture demandée en attente de validation, 2 = demande traitée par stylimmo
         $compromis->demande_facture = 1;
+        $compromis->date_demande_facture = date('Y-m-d');
 
         $compromis->update();
 
@@ -2912,6 +2913,8 @@ public function store_upload_pdf_honoraire(Request $request , $facture_id)
             $facture->numero = $request->numero_facture;
             $facture->date_facture = $date_facture;
             $facture->statut = "en attente de validation";
+            $facture->date_ajout_facture = date('Y-m-d');
+            
             $facture->update();
     }
     

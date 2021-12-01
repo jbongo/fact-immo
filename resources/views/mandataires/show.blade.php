@@ -1,8 +1,16 @@
 @extends('layouts.app') 
 @section('content') 
 @section ('page_title') 
-    Profil du mandataire 
+<a href="{{route('mandataire.index')}}" class="btn btn-warning btn-flat btn-addon m-b-10 m-l-5"><i class="ti-angle-double-left"></i> Retour</a>   Profil du mandataire 
 @endsection
+
+<style>
+.panel-info .panel-heading {
+    background: #8d9da5;
+    border-color: #8d9da5;
+    color: #fff;
+}
+</style>
 <div class="row">
    <div class="col-lg-12">
       <div class="card">
@@ -100,6 +108,10 @@
                                              
                                              @if($mandataire->prospect != null )
                                              
+                                             <hr>
+                                            <a href="{{route('prospect.show',Crypt::encrypt($mandataire->prospect->id) )}}"  class="btn btn-default btn-rounded btn-addon btn-sm m-b-10"><i class="ti-link"></i>Fiche prospect</a>
+                                             
+                                             <hr>
                                              <div class="basic-information">
                                                 {{-- <h4 style="color: #32ade1;text-decoration: underline;">Role utilisateur</h4> --}}
                                                 
@@ -284,52 +296,60 @@
           
             <div class="col-lg-6">
               
-               <div class="panel panel-success lobipanel-basic">
-                     <div class="panel-heading">Statistiques.</div>
-                     <div class="panel-body">
-                           <div class="col-lg-4 col-md-4 col-sm-4 ">
-                                 <div class="card bg-danger">
-                                     <div class="media">
-                                         <div class="media-left meida media-middle">
-                                             <span><i class="ti-home f-s-48 color-white"></i></span>
-                                         </div>
-                                         <div class="media-body media-text-right">
-                                         <h4>{{$nb_affaire}}</h4>
-                                             <h5>Affaires</h5>
-                                         </div>
-                                     </div>
-                                 </div>
-                                </div>
-                            
-                                <div class="col-lg-4 col-md-4 col-sm-4 ">
-                                    <div class="card bg-primary">
-                                        <div class="media">
-                                            <div class="media-left meida media-middle">
-                                                <span><i class="ti-money f-s-48 color-white"></i></span>
-                                            </div>
-                                            <div class="media-body media-text-right">
-                                                <h4>{{number_format($mandataire->chiffre_affaire( date('Y').'01-01-', date('Y-m-d')) ,2,'.',' ')}}€</h4>
-                                                <h5>CA encaissé HT</h5>
-                                                <h6><i>Pour l'année en cours.</i></h6>
-                                            </div>
+              
+      
+                    <div class="card alert">
+                        <div class="card-header">
+                            <h4 class="m-l-5">Statistiques </h4>
+                            <div class="card-header-right-icon">
+                                <ul>
+                                    <li><i class="ti-reload"></i></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="media-stats-content text-center">
+                                <div class="row">
+                                    <div class="col-lg-4 border-bottom">
+                                        <div class="stats-content">
+                                            <div class="stats-digit">{{$nb_affaire}}</div>
+                                            <div class="stats-text">Affaires</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 border-bottom border-left">
+                                        <div class="stats-content">
+                                            <div class="stats-digit">{{number_format($mandataire->chiffre_affaire( date('Y').'01-01-', date('Y-m-d')) ,2,'.',' ')}}€</div>
+                                            <div class="stats-text">CA Ht encaissé <i> {{date('Y')}}</i></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 border-bottom  border-left">
+                                        <div class="stats-content">
+                                            <div class="stats-digit">{{number_format($mandataire->chiffre_affaire_styl_associe( date('Y').'01-01-', date('Y-m-d')) ,2,'.',' ')}}€</div>
+                                            <div class="stats-text">CA Ht Stylimmo <i> {{date('Y')}}</i> </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="stats-content">
+                                            <div class="stats-digit">{{$nb_filleul}}</div>
+                                            <div class="stats-text">Filleuls</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 border-left">
+                                        <div class="stats-content">
+                                            <div class="stats-digit">{{$mandataire->commission}} %</div>
+                                            <div class="stats-text">Pourcentage actuel</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 border-left">
+                                        <div class="stats-content">
+                                            <div class="stats-digit">{{$mandataire->pack_actuel}}</div>
+                                            <div class="stats-text">Statut</div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-lg-4 col-md-4 col-sm-4 ">
-                                    <div class="card bg-success">
-                                        <div class="media">
-                                            <div class="media-left meida media-middle">
-                                                <span><i class="ti-money f-s-48 color-white"></i></span>
-                                            </div>
-                                            <div class="media-body media-text-right">
-                                                <h4>{{$nb_filleul}}</h4>
-                                                <h5>Filleuls</h5>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                     </div>
-                  </div>
+                            </div>
+                        </div>
+                    </div>
 
 
             @if($parrain != null)
@@ -402,6 +422,48 @@
                         </div>
                     </div>
                     @endif
+                    
+                   <!-- /# column -->
+                   <div class="col-lg-6">
+                    <div class="card alert">
+                        <div class="card-header">
+                            <h4 class="f-s-14"> Les 5 dernières connexions:</h4>
+                        </div>
+                        <div class="card-body">
+                            <ul class="timeline">
+                            
+                                @if( sizeof($connexions) > 0)
+                               
+                                    @foreach ($connexions as $connexion)
+                                    <li>
+                                        <div class="timeline-badge primary"><i class="fa fa-smile-o"></i></div>
+                                        <div class="timeline-panel">                                          
+                                            <div class="timeline-body">
+                                                <p>{{$connexion->created_at->format('d/m/Y')}} à {{$connexion->created_at->format('H:i')}}</p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    @endforeach
+                                @else 
+                                    <li>
+                                        <div class="timeline-badge primary"><i class="fa fa-smile-o"></i></div>
+                                        <div class="timeline-panel">
+                                           
+                                            <div class="timeline-body">
+                                                <p>Aucune connexion enregistrée à ce jour</p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                
+                                @endif
+                                
+                               
+     
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- /# card -->
+                </div>
              
             </div>
             @endif

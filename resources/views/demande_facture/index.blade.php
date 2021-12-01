@@ -27,7 +27,7 @@
                                     <tr>
                                        
                                         <th>@lang('Mandataire')</th>
-                                        {{-- <th>@lang('Désignation')</th> --}}
+                                        <th>@lang('Date demande Fact')</th>
                                         <th>@lang('Mandat')</th>
                                         <th>@lang('Net Vendeur')</th>
                                         <th>@lang('Frais agence')</th>
@@ -42,9 +42,9 @@
                                         <td >
                                            <label class="color-info"> <a href="{{route('switch_user',Crypt::encrypt($compromi->user->id) )}}" data-toggle="tooltip" title="@lang('Se connecter en tant que ') {{$compromi->user->nom}}">{{$compromi->user->civilite}} {{$compromi->user->nom}} {{$compromi->user->prenom}}<i style="font-size: 17px" class="material-icons color-success">person_pin</i></a>   </label> 
                                         </td>
-                                        {{-- <td >
-                                        <strong>{{$compromi->description_bien}}</strong> 
-                                        </td> --}}
+                                        <td  style="color: #342867;" >
+                                        <strong>@if($compromi->date_demande_facture != null) {{$compromi->date_demande_facture->format('d/m/Y')}} @endif</strong> 
+                                        </td>
                                         <td style="color: #e05555;">
                                             <strong> {{$compromi->numero_mandat}}</strong> 
                                         </td>

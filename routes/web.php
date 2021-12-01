@@ -83,7 +83,7 @@ Route::middleware('auth')->group(function(){
     // Affaires cloturées
     Route::get('/affaires-clotures','CompromisController@affaire_cloture')->name('compromis.affaire_cloture');
 
-    // Affaire en cour
+    // Affaire en cours
     Route::get('/affaires-toutes','CompromisController@affaire_toutes')->name('compromis.affaire_toutes');
 
 

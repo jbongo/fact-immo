@@ -141,7 +141,12 @@ class MandataireController extends Controller
         $filleuls = Filleul::where('parrain_id', $id)->get();
 
         $parrain_id =   Filleul::where('user_id',$mandataire->id)->select('parrain_id')->first();
-        $parrain = User::where('id',$parrain_id['parrain_id'])->first();
+        
+        $parrain = $parrain_id != null ? User::where('id',$parrain_id['parrain_id'])->first() : null;
+        
+        // historique de connexions
+        $connexions = Historique::where([['user_id', $id], ['ressource', 'connexion']])->latest()->take(5)->get();
+       
 
         $niveau_starter = 1;
         if($palier_starter != null){
@@ -173,7 +178,7 @@ class MandataireController extends Controller
                 }
             }
         }
-        return view('mandataires.show', compact(['mandataire','palier_starter','palier_expert','nb_affaire','nb_filleul','filleuls','parrain','niveau_starter','niveau_expert']));
+        return view('mandataires.show', compact(['mandataire','palier_starter','palier_expert','nb_affaire','nb_filleul','filleuls','parrain','niveau_starter','niveau_expert','connexions']));
     }
 
     /**

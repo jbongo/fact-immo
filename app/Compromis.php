@@ -12,7 +12,7 @@ class Compromis extends Model
 {
     //
     protected $guarded =[];
-    protected $dates = ['date_vente','date_mandat','date_signature'];
+    protected $dates = ['date_vente','date_mandat','date_signature','date_demande_facture'];
 
 
     public function  user(){

@@ -68,7 +68,8 @@ class CreateCompromisTable extends Migration
             // demande facture
         // 0 = facture non demandée, 1= facture demandée en attente de validation, 2 = demande traitée par stylimmo
             $table->boolean('demande_facture')->default(false); 
-
+            $table->date('date_demande_facture')->nullable(); 
+            
             $table->integer('agent_id')->nullable(); 
             $table->integer('parrain_partage_id')->nullable(); 
             $table->boolean('je_porte_affaire')->default(false); 

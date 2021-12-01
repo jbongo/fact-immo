@@ -42,6 +42,7 @@ class CreateProspectsTable extends Migration
             
             $table->text('code_postaux')->nullable();
             $table->string('piece_identite')->nullable();
+            $table->date('date_expiration_carteidentite')->nullable();
             $table->string('rib')->nullable();
             $table->string('attestation_responsabilite')->nullable();
             $table->string('photo')->nullable();

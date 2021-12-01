@@ -30,6 +30,7 @@ class CreateFactureTable extends Migration
             $table->double('montant_ttc')->nullable();
             $table->integer('nb_mois_deduis')->nullable();
             $table->string('url')->nullable();
+            $table->date('date_ajout_facture')->nullable(); 
             $table->text('formule')->nullable();
             $table->boolean('a_avoir')->default(false);
             $table->date('date_facture')->nullable();

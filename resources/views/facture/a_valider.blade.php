@@ -25,17 +25,18 @@
                             <thead>
                                 <tr>
                                    
-                                    <th>@lang('Facture Honoraire')</th>
-                                    <th>@lang('Facture Stylimmo')</th>
+                                    <th>@lang('Fact Hono')</th>
+                                    <th>@lang('Date Ajout ')</th>
+                                    <th>@lang('Fact Styl')</th>
                                     <th>@lang('Mandat')</th>
                                     @if(auth()->user()->role == "admin")
                                     <th>@lang('Mandataire')</th>
                                     @endif
-                                    <th>@lang('Type Facture')</th>
+                                    <th>@lang('Type Fact')</th>
                                     <th>@lang('Montant HT ')</th>
                                     <th>@lang('Montant TTC ')</th>
 
-                                    <th>@lang('Note honoraire')</th>
+                                    <th>@lang('Note hono')</th>
                                     <th>@lang('Télécharger')</th>
                                     <th>@lang('Action')</th>
 
@@ -48,6 +49,9 @@
                                     <td  >
                                         <label class="color-info">{{$facture->numero}} </label> 
                                     </td>
+                                    <td  style="color: #342867;" >
+                                        <strong>@if($facture->date_ajout_facture != null) {{$facture->date_ajout_facture->format('d/m/Y')}} @endif</strong> 
+                                        </td>
                                     <td  >
                                         {{-- <label class="color-info">{{$facture->compromis->getFactureStylimmo()->numero}} </label>  --}}
                                     <a href="{{route('facture.telecharger_pdf_facture_stylimmo', Crypt::encrypt($facture->compromis->getFactureStylimmo()->id))}}"  class="  m-b-10 m-l-5 " id="ajouter"><label class="color-info">{{$facture->compromis->getFactureStylimmo()->numero}}  <i class="ti-download"></i> </label></a>

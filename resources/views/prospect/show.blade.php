@@ -115,7 +115,10 @@
                                              
                                              
                                              <hr>
-                                             <br>
+                                             @if($prospect->est_mandataire == true )
+                                                <a href="{{route('mandataire.show',Crypt::encrypt($prospect->user_id) )}}"  class="btn btn-default btn-rounded btn-addon btn-sm m-b-10"><i class="ti-link"></i>Profil mandataire</a>
+                                             @endif
+                                             <hr>
                                              
                                              @if($prospect->renseigne == true )
                                              
