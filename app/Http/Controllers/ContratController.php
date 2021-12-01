@@ -727,13 +727,15 @@ class ContratController extends Controller
         
         $numero = Facture::whereIn('type',['avoir','stylimmo','pack_pub','carte_visite','communication','autre','forfait_entree','cci'])->max('numero') + 1;
         
+        $tva = Tva::coefficient_tva() ;
+        
         $facture_cci = Facture::create([
             "numero"=> $numero,
             "user_id"=> $mandataire->id,
            
             "type"=> "cci",
             "encaissee"=> false,
-            "montant_ht"=>  $request->forfait_carte_pro / Tva::coefficient_tva(),
+            "montant_ht"=>  $request->forfait_carte_pro / $tva,
             "montant_ttc"=> $request->forfait_carte_pro ,
             "date_facture"=> date('Y-m-d'),
             "destinataire_est_mandataire"=> true,
