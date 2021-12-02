@@ -13,7 +13,7 @@ use App\Historique;
 use App\Historiquecontrat;
 use App\Article;
 use App\Facture;
-use App\TVA;
+use App\Tva;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\CreationMandataire;
 use App\Mail\SendContratSignature;
