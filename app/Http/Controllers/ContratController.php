@@ -498,7 +498,7 @@ class ContratController extends Controller
 
         $comm_parrain = unserialize($modele->comm_parrain); 
         
-        dd($comm_parrain);
+        // dd($comm_parrain);
         
         $user_id =$user_id;
         if($modele == null){
