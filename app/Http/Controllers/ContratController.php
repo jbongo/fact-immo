@@ -498,6 +498,8 @@ class ContratController extends Controller
 
         $comm_parrain = unserialize($modele->comm_parrain); 
         
+        dd($comm_parrain);
+        
         $user_id =$user_id;
         if($modele == null){
             return view ('contrat.add', compact(['parrains','user_id','packs_pub','modele']));
@@ -722,7 +724,7 @@ class ContratController extends Controller
         }
 
 
-        // Création de la facture CCI et Forfait d'entree
+        // ************ Création de la facture CCI et Forfait d'entree *************
         
         
         $numero = Facture::whereIn('type',['avoir','stylimmo','pack_pub','carte_visite','communication','autre','forfait_entree','cci'])->max('numero') + 1;
@@ -756,46 +758,78 @@ class ContratController extends Controller
        ]);
         
         
-    // on sauvegarde les factures dans le repertoire du mandataire
-    $path = storage_path('app/public/factures/factures_autres');
-
-    if(!File::exists($path))
-        File::makeDirectory($path, 0755, true);
+        // on sauvegarde les factures dans le repertoire du mandataire
+        $path = storage_path('app/public/factures/factures_autres');
+    
+        if(!File::exists($path))
+            File::makeDirectory($path, 0755, true);
+            
+            $facture = $facture_cci;
+            $pdf_cci = PDF::loadView('facture.pdf_cci_forfait',compact(['facture']));
+            
+            $facture = $facture_forfait;        
+            $pdf_forfait = PDF::loadView('facture.pdf_cci_forfait',compact(['facture']));
+    
         
-        $facture = $facture_cci;
-        $pdf_cci = PDF::loadView('facture.pdf_cci_forfait',compact(['facture']));
+            $nom =  str_replace(['/', '\\', '<','>',':','|','?','*','#'],"-",$mandataire->nom) ;
+            $prenom =  str_replace(['/', '\\', '<','>',':','|','?','*','#'],"-",$mandataire->prenom) ;
+            
+            $filename_cci = "F".$facture_cci->numero." ".$facture_cci->type." ".$facture_cci->montant_ttc."€ ".strtoupper($nom)." ".strtoupper(substr($prenom,0,1)).".pdf" ;
+            $filename_forfait = "F".$facture_forfait->numero." ".$facture_forfait->type." ".$facture_forfait->montant_ttc."€ ".strtoupper($nom)." ".strtoupper(substr($prenom,0,1)).".pdf" ;
+       
         
-        $facture = $facture_forfait;        
-        $pdf_forfait = PDF::loadView('facture.pdf_cci_forfait',compact(['facture']));
-
-    
-        $nom =  str_replace(['/', '\\', '<','>',':','|','?','*','#'],"-",$mandataire->nom) ;
-        $prenom =  str_replace(['/', '\\', '<','>',':','|','?','*','#'],"-",$mandataire->prenom) ;
+        $path_cci = $path.'/'.$filename_cci;
+        $path_forfait = $path.'/'.$filename_forfait;
         
-        $filename_cci = "F".$facture_cci->numero." ".$facture_cci->type." ".$facture_cci->montant_ttc."€ ".strtoupper($nom)." ".strtoupper(substr($prenom,0,1)).".pdf" ;
-        $filename_forfait = "F".$facture_forfait->numero." ".$facture_forfait->type." ".$facture_forfait->montant_ttc."€ ".strtoupper($nom)." ".strtoupper(substr($prenom,0,1)).".pdf" ;
-   
+        $pdf_cci->save($path_cci);
+        $pdf_forfait->save($path_forfait);
+        
+        $facture_cci->url = $path_cci;
+        $facture_forfait->url = $path_forfait;
+        $facture_cci->update();
+        $facture_forfait->update();
+        
+        
+        
+        //********** Création du contrat et de l'annexe ************
+        
+        $path = storage_path('app/public/'.$contrat->user->id.'contrat/');
+        
+        if(!File::exists($path))
+            File::makeDirectory($path, 0755, true);
+        
+           $parametre  = Parametre::first();
+         
+           $packs = Packpub::all();
+         
+           $palier_starter = Contrat::palier_unserialize($contrat->palier_starter);
+           $palier_expert = Contrat::palier_unserialize($contrat->palier_expert);
+       
+           $comm_parrain = unserialize($parametre->comm_parrain);
+         
+        
+         
+       
+         $contrat_pdf = PDF::loadView('contrat.contrat',compact('parametre','contrat'));
+         
+         $annexe_pdf = PDF::loadView('contrat.annexe_pdf',compact('parametre','contrat','palier_expert','palier_starter','packs','comm_parrain'));
+         
+         
+         $path_contrat = $path.'contrat.pdf';
+         $path_annexe = $path.'annexe.pdf';
+         
+         $contrat_pdf->save($path_contrat);
+         $annexe_pdf->save($path_annexe);
     
-    $path_cci = $path.'/'.$filename_cci;
-    $path_forfait = $path.'/'.$filename_forfait;
     
-    $pdf_cci->save($path_cci);
-    $pdf_forfait->save($path_forfait);
+       //   $contrat->contrat_envoye = true ;
     
-    $facture_cci->url = $path_cci;
-    $facture_forfait->url = $path_forfait;
-    $facture_cci->update();
-    $facture_forfait->update();
+         $contrat->update();
     
     
 
-        Mail::to($mandataire->email)->send(new CreationMandataire($mandataire,$password, $path_forfait, $path_cci));
-        // Mail::to("gestion@stylimmo.com")->send(new CreationMandataire($mandataire,$password));
-        // Envoyer les accès aussi à tous les admins
-        // $admins = User::where('role','admin')->get();
-        // foreach ($admins as $admin) {
-        //     Mail::to($admin->email)->send(new CreationMandataire($mandataire,$password)); 
-        // }
+        Mail::to($mandataire->email_perso)->send(new CreationMandataire($mandataire,$password, $path_forfait, $path_cci,$path_contrat,$path_annexe));
+ 
 
         
         $action = Auth::user()->nom." ".Auth::user()->prenom." a crée le contrat de $mandataire->nom $mandataire->prenom";

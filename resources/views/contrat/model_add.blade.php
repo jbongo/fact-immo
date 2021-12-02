@@ -548,7 +548,7 @@
                                                                        </tr>
                                                                    </thead>
                                                                    <tbody>
-                                                                       {{-- {{dd($comm_parrain)}} --}}
+                                                                       {{dd($comm_parrain)}}
                                                                        <tr>
                                                                            <th class="color-primary" scope="row">1</th>
                                                                            <td><input type="number" style="background-color:#ecf0f9;" min="0" max="50" class="form-control" value="{{$comm_parrain['p_1_1']}}" id="p_1_1" name="p_1_1" >                                                            </td>

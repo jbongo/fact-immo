@@ -14,13 +14,15 @@ class CreationMandataire extends Mailable
     public $password;
     public $path_forfait;
     public $path_cci;
+    public $path_contrat;
+    public $path_annexe;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($mandataire,$password,$path_forfait,$path_cci)
+    public function __construct($mandataire,$password,$path_forfait,$path_cci,$path_contrat,$path_annexe)
     {
         //
         $this->mandataire = $mandataire;
@@ -28,6 +30,8 @@ class CreationMandataire extends Mailable
         
         $this->path_forfait = $path_forfait;
         $this->path_cci = $path_cci;
+        $this->path_contrat = $path_contrat;
+        $this->path_annexe = $path_annexe;
     }
 
     /**
@@ -39,6 +43,8 @@ class CreationMandataire extends Mailable
     {
         return $this->subject("Outil de facturation - Vos informations de connexion")->markdown('email.creation_mandataire')
         ->attach($this->path_forfait)
-        ->attach($this->path_cci);
+        ->attach($this->path_cci)
+        ->attach($this->path_annexe)
+        ->attach($this->path_contrat);
     }
 }

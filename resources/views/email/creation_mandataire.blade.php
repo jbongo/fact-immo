@@ -2,10 +2,14 @@
 # Bonjour {{$mandataire->prenom}} {{$mandataire->nom}}
 
 Félicitation vous pouvez maintenant vous connecter sur l'outil de facturation : <a href="{{config('app.url')}}">Cliquez ici</a> pour vous connecter<br>
-Login {{$mandataire->email}} <br>
+Login : {{$mandataire->email}} <br>
 Mot de passe : {{$password}} <br>
 
-Vous trouverez en pièce jointe vos factures  <strong> Attestation de Collaborateur (CCI) </strong> et <strong>Forfait d'entrée</strong>.
+Vous trouverez en pièce jointe les fichiers ci-dessous: 
+- <strong>Contrat STYL'IMMO</strong>
+- <strong>Annexes au Contrat </strong>
+- <strong>Facture Attestation de Collaborateur (CCI)</strong>
+- <strong>Facture Forfait d'entrée</strong>
 
 
 @component('mail::button', ['url' => config('app.url') ])
