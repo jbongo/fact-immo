@@ -74,7 +74,7 @@ Modifier prospect {{$prospect->nom}}
                          </div>
        
                          <div class="form-group row">
-                            <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="val-email">Email <span class="text-danger">*</span></label>
+                            <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="val-email">Email Perso <span class="text-danger">*</span></label>
                             <div class="col-lg-8 col-md-8 col-sm-8">
                                <input type="email" class="form-control {{ $errors->has('email') ? ' is-invalid' : '' }}" id="val-email" value="{{old('email')? old('email') : $prospect->email}}" name="email" placeholder="Email.." required>
                                @if ($errors->has('email'))
@@ -86,6 +86,53 @@ Modifier prospect {{$prospect->nom}}
                             </div>
                          </div>
                          
+                         @php
+                             $ischecked = $prospect->a_parrain == true ? "checked":"unchecked";
+                         
+                         @endphp
+                         <div class="form-group row">
+                           <label  class="col-lg-4 col-md-4 col-sm-4 control-label" for="a_parrain">Le prospect a t'il un parrain ?</label>
+                           <div class="col-lg-6">
+                               <input type="checkbox"  {{$ischecked}} data-toggle="toggle" id="a_parrain" name="a_parrain" data-off="Non" data-on="Oui" data-onstyle="success" data-offstyle="danger">
+                           </div>
+                          </div>
+                          <div id="parrain_div">
+                              <div class="form-group row" >
+                                  <label  class="col-lg-4 col-md-4 col-sm-4 control-label" for="parrain_id">Choisir le parrain</label>
+                                  <div class="col-lg-8">
+                                      <select class="selectpicker col-lg-6" id="parrain_id" name="parrain_id" data-live-search="true" data-style="btn-warning btn-rounded">
+                                       @if($parr != null)
+                                       <option value="{{ $parr->id }}" data-tokens="{{ $parr->nom }} {{ $parr->prenom }}">{{ $parr->nom }} {{ $parr->prenom }}</option>
+                                       
+                                       @endif
+                                          @foreach ($parrains as $parrain )
+                                          <option value="{{ $parrain->id }}" data-tokens="{{ $parrain->nom }} {{ $parrain->prenom }}">{{ $parrain->nom }} {{ $parrain->prenom }}</option>
+                                          @endforeach
+                                      </select>
+                                  </div>
+                              </div>
+                          </div>
+                          
+                          <div id="source_div">
+                              <div class="form-group row" >
+                               <label  class="col-lg-4 col-md-4 col-sm-4 control-label" for="source">Choisir la source du prospect</label>
+                               <div class="col-lg-8">
+                                   <select class="selectpicker col-lg-6" id="source" name="source" data-live-search="true" data-style="btn-warning btn-rounded">
+                                      
+                                    @if($prospect->source != null)
+                                    <option value="{{$prospect->source}}">{{$prospect->source}}</option>
+                                    @endif
+                                    <option value="Réseaux sociaux">Réseaux sociaux</option>
+                                    <option value="Bouche à oreille">Bouche à oreille</option>
+                                    <option value="Internet">Internet</option>
+                                    <option value="Autre">Autre</option>
+                                      
+                                   </select>
+                               </div>
+                              </div>
+                          </div>
+                          
+                          
                          <div class="form-group row">
                            <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="commentaire_perso">Commentaire perso</label>
                            <div class="col-lg-8 col-md-8 col-sm-8">
@@ -202,4 +249,34 @@ Modifier prospect {{$prospect->nom}}
 
 @stop
 @section('js-content') 
+
+{{-- ###### Parrainage --}}
+<script>
+    
+    var isparrain = "{{$prospect->a_parrain}}";
+    console.log(isparrain);
+   // $('#parrain-id').hide();
+    if(isparrain == false ){    
+       $('#parrain_div').hide();
+       $('#source_div').show();
+       
+    }else{
+       $('#source_div').hide();
+       $('#parrain_div').show();
+    }
+
+   $('#a_parrain').change(function(e) {
+       e.preventDefault();
+       if($("#a_parrain").prop('checked')){
+           $('#parrain_div').slideDown();
+           $('#source_div').slideUp();
+       }else{
+           $('#parrain_div').slideUp();
+           $('#source_div').slideDown();
+           
+       }
+       
+
+   });
+</script>
 @endsection

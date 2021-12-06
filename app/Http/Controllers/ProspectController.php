@@ -61,7 +61,9 @@ class ProspectController extends Controller
      */
     public function create()
     {
-        return view('prospect.add');
+        $parrains = User::where([['role','mandataire']])->get();
+    
+        return view('prospect.add',compact('parrains') );
     }
 
     /**
@@ -93,6 +95,10 @@ class ProspectController extends Controller
             "telephone_fixe" => $request->telephone_fixe,
             "telephone_portable" => $request->telephone_portable,
             "email" => $request->email,
+            "a_parrain" => $request->a_parrain == "on" ? true : false,
+            // "type_parrain" => $request->type_parrain,
+            "parrain_id" => $request->parrain_id,
+            "source" => $request->source,
             "commentaire_pro" => $request->commentaire_pro,
             "commentaire_perso" => $request->commentaire_perso,
         ]);
@@ -126,9 +132,11 @@ class ProspectController extends Controller
      */
     public function edit($id)
     {
+        $parrains = User::where([['role','mandataire']])->get();
         $prospect = Prospect::where('id', Crypt::decrypt($id))->first();
+        $parr = User::where('id',$prospect->parrain_id)->first();
         
-        return view('prospect.edit', compact('prospect'));
+        return view('prospect.edit', compact('prospect','parrains','parr'));
     }
 
     /**
@@ -161,6 +169,10 @@ class ProspectController extends Controller
         $prospect->telephone_fixe = $request->telephone_fixe;
         $prospect->telephone_portable = $request->telephone_portable;
         $prospect->email = $request->email;
+        $prospect->a_parrain = $request->a_parrain == "on" ? true : false;
+        // $prospect->type_parrain = $request->type_parrain;
+        $prospect->parrain_id = $request->parrain_id;
+        $prospect->source = $request->source;
         $prospect->commentaire_pro = $request->commentaire_pro;
         $prospect->commentaire_perso = $request->commentaire_perso;
         

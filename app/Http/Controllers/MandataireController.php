@@ -145,7 +145,7 @@ class MandataireController extends Controller
         $parrain = $parrain_id != null ? User::where('id',$parrain_id['parrain_id'])->first() : null;
         
         // historique de connexions
-        $connexions = Historique::where([['user_id', $id], ['ressource', 'connexion']])->latest()->take(5)->get();
+        $connexions = Historique::where([['user_id', $id], ['ressource', 'connexion']])->orderBy('id','desc')->take(5)->get();
        
 
         $niveau_starter = 1;

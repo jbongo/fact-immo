@@ -528,7 +528,7 @@ class ContratController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Cre=éation de contrat du mandataire
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -656,11 +656,11 @@ class ContratController extends Controller
         // Maj jeton ************************************************************************************************************************************************************************
         if($contrat->est_demarrage_starter == true && $contrat->deduis_jeton == true ){
             
-            $mandataire->nb_mois_pub_restant = $mandataire->nb_mois_pub_restant - $contrat->duree_gratuite_starter;
+            $mandataire->nb_mois_pub_restant = $mandataire->nb_mois_pub_restant - ($contrat->duree_gratuite_starter + $request->duree_pack_info_starter );
         
         }elseif($contrat->est_demarrage_starter == false && $contrat->deduis_jeton == true){
         
-            $mandataire->nb_mois_pub_restant = $mandataire->nb_mois_pub_restant - $contrat->duree_gratuite_expert;
+            $mandataire->nb_mois_pub_restant = $mandataire->nb_mois_pub_restant - ($contrat->duree_gratuite_expert + $request->duree_pack_info_expert );
                     
         }
         
