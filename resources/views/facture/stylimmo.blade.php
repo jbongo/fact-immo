@@ -150,6 +150,11 @@
                                                     @endif
         
                                                 @endif
+                                                
+                                            @else 
+                                                
+                                                @if($facture->date_relance_paiement != null ) <span class="badge badge-danger"> {{$facture->nb_relance_paiement}}</span> <span> relance(s), dernière: {{$facture->date_relance_paiement->format('d/m/Y')}}     </span> @endif
+                                                
                                             @endif
                                         </td>    
                                         
@@ -244,9 +249,9 @@
                                             
                                             {{-- <a href="{{route('facture.avoir.create', Crypt::encrypt($facture->id))}}" target="_blank" title="Confirmez que vous avez bien reçu le virement du mandataire" data-toggle="tooltip"  class="btn btn-info  btn-flat btn-addon  m-b-10 m-l-5 " id=""><i class="ti-help"></i>Confirmer l'encaissement</a> --}}
                                             
-                                            @elseif($facture->type == "pack_pub" && $facture->reglee == false && $facture->encaissee == false && $facture->a_avoir != 1 )
+                                            @elseif( ($facture->type == "pack_pub" || $facture->type == "cci" || $facture->type == "forfait_entree") && $facture->reglee == false && $facture->encaissee == false && $facture->a_avoir != 1 )
                                                 
-                                            {{-- <a href="{{route('facture.relancer_paiement_facture',$facture->id)}}" target="_blank" title="Relancer le mandataire pour le payement de la facture" data-toggle="tooltip"  class="btn btn-danger  btn-flat btn-addon  m-b-10 m-l-5 relancer " id=""><i class="ti-email"></i>Relancer</a> --}}
+                                            <a href="{{route('facture.relancer_paiement_facture',$facture->id)}}" target="_blank" title="Relancer le mandataire pour le payement de la facture" data-toggle="tooltip"  class="btn btn-danger  btn-flat btn-addon  m-b-10 m-l-5 relancer " id=""><i class="ti-email"></i>Relancer</a>
                                                 
                                             
                                             @endif
