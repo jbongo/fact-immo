@@ -293,7 +293,7 @@ console.log("***mand id :{{$mandataire->id}}***");
               })
     
         swalWithBootstrapButtons({
-           title: '@lang('Voulez-vous vraiment réfuser la facture ?')',
+           title: '@lang('Voulez-vous vraiment refuser la facture ?')',
            type: 'warning',
            showCancelButton: true,
            confirmButtonColor: '#DD6B55',
@@ -318,7 +318,7 @@ console.log("***mand id :{{$mandataire->id}}***");
                     })
     
               swalWithBootstrapButtons(
-              'Réfusée!',
+              'Refusée!',
               'Le mandatataire sera notifié par mail.',
               'success'
               )

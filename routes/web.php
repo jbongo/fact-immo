@@ -327,6 +327,8 @@ Route::get('/banque/lecture_fichier','BanqueController@lecture_fichier_banque')-
 // Documents
 
 Route::get('/documents','DocumentController@index')->name('document.index')->middleware('admin');
+Route::get('/documents/a_valider','DocumentController@a_valider')->name('document.a_valider')->middleware('admin');
+Route::get('/documents/valider/{validation}/{fichier_id}','DocumentController@valider')->name('document.valider')->middleware('admin');
 Route::get('/documents/liste','DocumentController@liste')->name('document.liste');
 Route::get('/documents/create','DocumentController@create')->name('document.create')->middleware('admin');
 Route::get('/documents/edit/{document_id}','DocumentController@edit')->name('document.edit')->middleware('admin');

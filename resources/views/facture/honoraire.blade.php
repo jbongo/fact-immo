@@ -113,7 +113,7 @@
                                             @elseif($facture->statut == "en attente de validation" && $facture->numero != null) 
                                                 <label class="color-default"><strong> En attente de validation </strong></label> 
                                             @elseif($facture->statut == "refuse" && $facture->numero != null) 
-                                                <label class="color-success"><strong>Réfusée </strong></label>
+                                                <label class="color-success"><strong>Refusée </strong></label>
                                             @else
                                                 <label class="color-danger"><strong>Non ajoutée </strong></label> 
 

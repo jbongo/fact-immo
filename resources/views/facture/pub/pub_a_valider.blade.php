@@ -34,7 +34,7 @@
     
             <select class="" style="padding: 6px 12px; height: 32px;" name="action" id="action">
                <option value="1">Valider les factures</option>
-               <option value="2">Réfuser les factures</option>
+               <option value="2">Refuser les factures</option>
                
             </select>
             
@@ -113,7 +113,7 @@
                                                 <td width="" >
                                                   
                                                      <a href="{{route('facture.valider_fact_pub', [$facture->id,1])}}"  target="_blank"  class="btn btn-success btn-flat btn-addon  m-b-10 m-l-5 valider " id="visualiser"><i class="ti-check"></i>valider</a>
-                                                    <a href="{{route('facture.valider_fact_pub', [$facture->id,2])}}"  target="_blank"  class="btn btn-danger btn-flat btn-addon  m-b-10 m-l-5 refuser" id="visualiser"><i class="ti-close"></i>réfuser</a> 
+                                                    <a href="{{route('facture.valider_fact_pub', [$facture->id,2])}}"  target="_blank"  class="btn btn-danger btn-flat btn-addon  m-b-10 m-l-5 refuser" id="visualiser"><i class="ti-close"></i>refuser</a> 
                                                 
                                                 </td> 
                                         
@@ -298,7 +298,7 @@
             
                 var validation = $('#action').val();
                 
-                var type_validation = validation == 1 ?  "valider" : "réfuser"; 
+                var type_validation = validation == 1 ?  "valider" : "refuser"; 
                 
                 
          

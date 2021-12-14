@@ -22,7 +22,7 @@ class CreateFactpubsTable extends Migration
             $table->double('montant_ht')->nullable();
             $table->double('montant_ttc')->nullable();
             
-            // 0 = en attente, 1 = accepté 2 = réfusé
+            // 0 = en attente, 1 = accepté 2 = refusé
             $table->integer('validation')->default(0);
             
             $table->date('date_validation')->nullable();

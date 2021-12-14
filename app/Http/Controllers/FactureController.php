@@ -3058,7 +3058,7 @@ public function valider_honoraire($action, $facture_id)
         $facture->statut = "refuse";
         $facture->url = null;
         
-            $action = Auth::user()->nom." ".Auth::user()->prenom." a réfusé la facture $facture->numero";
+            $action = Auth::user()->nom." ".Auth::user()->prenom." a refusé la facture $facture->numero";
             $user_id = Auth::user()->id;
    
         Mail::to($facture->user->email)->send(new NotifierValidationHonoraire($facture));

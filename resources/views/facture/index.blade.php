@@ -110,7 +110,7 @@
                                     </div>
                                     <div class="modal-footer">
                                        <input type="submit" class="btn btn-success" id="valider_encaissement"  value="Valider" />
-                                       <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                       <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
                                     </div>
                               </form> 
                            </div>

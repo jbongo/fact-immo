@@ -4,8 +4,9 @@
     $curent_url = explode("/", $curent_url);
 
 
-    $li_home = $li_mandataire = $li_prospect_gestion = $li_prospect_archive = $li_affaire = $li_affaire_filleul = $li_affaire_archive=  $li_facture = $li_facture_gestion = $li_facture_demande = $li_facture_a_payer = $li_facture_a_valider = $li_parametre = $li_parametre_modele =
-    $li_parametre_fournisseur = $li_parametre_pack_pub = $li_parametre_generaux = $li_outil = $li_affaire_toutes = $li_affaire_cloture = $li_facture_hors_delais = $li_jetons ="";
+    $li_home = $li_mandataire = $li_prospect_gestion = $li_prospect_archive = $li_affaire = $li_affaire_filleul = $li_affaire_archive=  $li_facture = $li_facture_gestion = $li_facture_demande = $li_facture_a_payer = $li_facture_a_valider = 
+    $li_parametre = $li_parametre_modele = $li_parametre_fournisseur = $li_parametre_pack_pub = $li_parametre_generaux = $li_outil = $li_affaire_toutes = $li_affaire_cloture = $li_facture_hors_delais =     
+    $li_jetons = $li_documents = $li_documents_gestion = $li_documents_a_valider = "";
     
     switch ($curent_url[1]) {
         case 'home':       
@@ -47,6 +48,11 @@
         case 'parametre':
             $li_parametre= "active open";
             break;
+        case 'documents':
+            $li_documents= "active open";
+            $li_documents_gestion = "active";
+            
+            break;
         
         default:
             // dd("default");
@@ -85,6 +91,14 @@
                 }
             break;
             
+            case 'a_valider' :
+            if($curent_url[1] == "documents"){
+                        $li_documents_a_valider = "active";
+                        $li_documents_gestion = "";
+                      
+                    }
+            break;
+            
             
         
             default:
@@ -121,6 +135,7 @@
     $nb = App\Facture::where('statut','en attente de validation')->get()->count();
     $nb_a_payer= App\Facture::nb_facture_a_payer();
     $nb_liste_pub = App\Factpub::where([['validation',0]])->orderBy('id','desc')->get()->count();
+    $nb_doc_a_valider = App\Fichier::where([['valide',0]])->get()->count();
     
     $nb_notif_pub = Auth()->user()->role == "mandataire" ? App\Facture::where([['user_id',auth()->user()->id],['reglee',false], ['a_avoir', false]])->whereIn('type',['pack_pub','carte_visite'])->count() : 0;
 
@@ -165,7 +180,8 @@
                     @endif
 
                 @endif
-                <li class="{{$li_affaire}} {{$li_affaire_archive}} {{$li_affaire_toutes}} {{$li_affaire_cloture}} {{ $li_affaire_filleul}}"><a class="sidebar-sub-toggle" href="" ><i class="large material-icons" style="font-size:20px;">folder_open</i>  Affaires <span class="sidebar-collapse-icon ti-angle-down"></span> </a>
+                <li class="{{$li_affaire}} {{$li_affaire_archive}} {{$li_affaire_toutes}} {{$li_affaire_cloture}} {{ $li_affaire_filleul}}"><a class="sidebar-sub-toggle" href="" ><i class="large material-icons" style="font-size:20px;">folder_open</i>  
+                Affaires <span class="sidebar-collapse-icon ti-angle-down"></span> </a>
                     <ul>
                         @if(Auth()->user()->role == "admin")
                         <li class="{{ $li_affaire}}" ><a href="{{route('compromis.index')}}">En cours</a></li>
@@ -181,7 +197,11 @@
                     </ul>
                 </li>
                 
-                <li class="{{$li_facture}} {{$li_facture_demande}} {{$li_facture_a_payer}} {{$li_facture_hors_delais}} {{$li_facture_a_valider}}" ><a  class="sidebar-sub-toggle"><i class="large material-icons">description</i> Factures @if($nb_notif > 0 && Auth()->user()->role == "admin") <span class="badge badge-danger">{{$nb_notif}}</span> @endif     @if($nb_notif_pub > 0 && Auth()->user()->role == "mandataire") <span class="badge badge-danger">{{$nb_notif_pub}}</span> @endif      <span class="sidebar-collapse-icon ti-angle-down"></span></a>
+                <li class="{{$li_facture}} {{$li_facture_demande}} {{$li_facture_a_payer}} {{$li_facture_hors_delais}} {{$li_facture_a_valider}}" ><a  class="sidebar-sub-toggle"><i class="large material-icons">description</i> Factures
+                @if($nb_notif > 0 && Auth()->user()->role == "admin") <span class="badge badge-danger">{{$nb_notif}}</span> @endif
+                @if($nb_notif_pub > 0 && Auth()->user()->role == "mandataire") <span class="badge badge-danger">{{$nb_notif_pub}}</span> @endif 
+                
+                <span class="sidebar-collapse-icon ti-angle-down"></span></a>
                     <ul>
                         <li class="{{$li_facture_gestion}}" ><a href="{{route('facture.index')}}">Gestion</a></li>
                         @if (Auth()->user()->role == "admin")
@@ -223,7 +243,24 @@
                         </ul>
                     </li>
                     @endif
-                    <li class=""  style=" background:#144542"><a  @if(Auth::user()->role == "admin")  href="{{route('document.index')}}" @else  href="{{route('document.show', Crypt::encrypt(Auth::user()->id)) }} "  @endif > <i class="large material-icons" style="font-size:20px;">vertical_align_bottom</i></i> @if(Auth::user()->role == "admin")  Documents @else Mes documents  @endif </a></li>
+                    
+                    
+                    @if (Auth()->user()->role == "admin")
+                    <li class="{{$li_documents}}"><a  class="sidebar-sub-toggle"><i class="large material-icons" style="font-size:20px;">vertical_align_bottom</i> Documents  @if($nb_doc_a_valider > 0) <span class="badge badge-danger">{{$nb_doc_a_valider}}@endif</span>  <span class="sidebar-collapse-icon ti-angle-down"></span></a>
+                        <ul>
+                            {{-- <li><a href="page-login.html">Info Entreprise</a></li> --}}
+                            <li class="{{$li_documents_gestion}}"><a  href="{{route('document.index')}}" >Gestion</a></li>
+                            <li class="{{$li_documents_a_valider}}"><a  href="{{route('document.a_valider')}}" >A valider  @if($nb_doc_a_valider > 0) <span class="badge badge-danger">{{$nb_doc_a_valider}}@endif</span> </a></li>
+                           
+                        </ul>
+                    </li>
+                    @else
+                    <li class=""  style=" background:#144542"><a  href="{{route('document.show', Crypt::encrypt(Auth::user()->id)) }} " > <i class="large material-icons" style="font-size:20px;">vertical_align_bottom</i></i>Mes documents </a></li>
+                    
+                    @endif
+                    
+                    
+                    
                     
 
                     {{-- @if(Auth()->user()->role == "admin"  ) --}}

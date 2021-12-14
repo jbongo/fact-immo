@@ -123,17 +123,28 @@
                                     
                                     <div class="col-lg-4 col-md-4 col-sm-4" style="text-align: right">
                                         @if($mandataire->document($document->id) != null)
-                                        {{$mandataire->document($document->id)->extension }}
                                         
-                                            @if($mandataire->document($document->id)->est_image())
+                                            @if($mandataire->document($document->id)->valide < 2)
                                             
-                                            <a href="{{$mandataire->document($document->id)->lien_public_image()}}" data-toggle="tooltip" target="_blank" title="Télécharger {{$document->nom}}"  class="btn btn-success btn-flat btn-addon "><i class="ti-download"></i>{{$document->nom}}</a> 
-                                            @else 
-                                            
-                                            <a href="{{route('document.telecharger', [$mandataire->id, $document->id])}}"data-toggle="tooltip" title="Télécharger {{$document->nom}}"  class="btn btn-danger btn-flat btn-addon "><i class="ti-download"></i>{{$document->nom}}</a> 
-                                            
+                                                {{$mandataire->document($document->id)->extension }}
+                                                
+                                                
+                                                @if($mandataire->document($document->id)->est_image())
+                                                
+                                                <a href="{{$mandataire->document($document->id)->lien_public_image()}}" data-toggle="tooltip" target="_blank" title="Télécharger {{$document->nom}}"  class="btn btn-success btn-flat btn-addon "><i class="ti-download"></i>{{$document->nom}}</a> 
+                                                @else 
+                                                
+                                                <a href="{{route('document.telecharger', [$mandataire->id, $document->id])}}"data-toggle="tooltip" title="Télécharger {{$document->nom}}"  class="btn btn-danger btn-flat btn-addon "><i class="ti-download"></i>{{$document->nom}}</a> 
+                                                
+                                                @endif
+                                                
+                                              <br>  @if($mandataire->document($document->id)->valide == 0)  <label for="" class="text-success"><i>Document en attente de validation</i></label> @endif
+                                                
+                                            @elseif($mandataire->document($document->id)->valide == 2)
+                                                <label for="" class="text-danger"><i>Document refusé</i></label> <br>
+                                                <small> * Motif: <i> {{$mandataire->document($document->id)->motif_refu}} </i>  </small>
+                                                
                                             @endif
-                                        
                                         @else 
                                         
                                         <label for=""><i>Aucun document</i></label>

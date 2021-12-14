@@ -95,10 +95,10 @@
                          <label class="color-danger" ><strong> Facture en attente de validation </strong> &nbsp;  </label> 
                          @if(Auth()->user()->role == "admin")
                             <a href="{{route('facture.valider_honoraire', [1,Crypt::encrypt($facture->id)] )}}"  class="btn btn-success btn-flat btn-addon  m-b-10 m-l-5 valider" id="valider"><i class="ti-check"></i>Valider</a>
-                            <a href="{{route('facture.valider_honoraire', [0,Crypt::encrypt($facture->id)] )}}"  class="btn btn-danger btn-flat btn-addon  m-b-10 m-l-5 refuser" id="refuser"><i class="ti-close"></i>Réfuser</a>
+                            <a href="{{route('facture.valider_honoraire', [0,Crypt::encrypt($facture->id)] )}}"  class="btn btn-danger btn-flat btn-addon  m-b-10 m-l-5 refuser" id="refuser"><i class="ti-close"></i>Refuser</a>
                         @endif
                     @elseif($facture->statut == "refuse")
-                         <label class="color-danger" ><strong> Facture réfusée </strong> </label>
+                         <label class="color-danger" ><strong> Facture refusée </strong> </label>
                      @else
                      <label class="color-danger" ><strong> Facture non Ajoutée </strong> </label>
                      @endif 
@@ -452,7 +452,7 @@
               })
     
         swalWithBootstrapButtons({
-           title: '@lang('Voulez-vous vraiment réfuser la facture ?')',
+           title: '@lang('Voulez-vous vraiment refuser la facture ?')',
            type: 'warning',
            showCancelButton: true,
            confirmButtonColor: '#DD6B55',
@@ -477,7 +477,7 @@
                     })
     
               swalWithBootstrapButtons(
-              'Réfusée!',
+              'Refusée!',
               'Le mandatataire sera notifié par mail.',
               'success'
               )

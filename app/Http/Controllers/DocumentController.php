@@ -9,16 +9,17 @@ use App\Fichier;
 use App\Historiquefichier;
 use App\Historique;
 use Auth;
-
+use App\Mail\ValidationFichier;
 use Illuminate\Support\Facades\File ;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Mail;
 
 
 use Illuminate\Support\Facades\Crypt;
 class DocumentController extends Controller
 {
     /**
-     * Page listant tous les mandataires
+     * Page listant tous les mandataires avec leurs documents
      *
      * @return \Illuminate\Http\Response
      */
@@ -445,13 +446,51 @@ class DocumentController extends Controller
      */
     public function historique($mandataire_id)
     {
-       $historiqueDocuments = Historiquefichier::where('user_id',  Crypt::decrypt($mandataire_id))->get();
+        $historiqueDocuments = Historiquefichier::where('user_id',  Crypt::decrypt($mandataire_id))->get();
        
-       $mandataire = User::where('id', Crypt::decrypt($mandataire_id))->first();
+        $mandataire = User::where('id', Crypt::decrypt($mandataire_id))->first();
         // $mandataire = User::where('id', $mandataire_id)->first();
-       
-        
+
         return view('documents.historique', compact('historiqueDocuments','mandataire'));
+
+    }
+    
+    
+    /**
+     * Afficher la liste des documents à valider
+     *
+     * @return \Illuminate\Http\Response
+    */
+    public function a_valider()
+    {
+        $fichiers = Fichier::where('valide', false)->get();      
+
+        return view('documents.a_valider', compact('fichiers'));
+
+    }
+    
+    
+    /**
+     * Validation d'un document
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function valider(Request $request, $validation, $fichier_id)
+    {
+      
+        $fichier = Fichier::where('id', $fichier_id)->first();
+       
+        if($fichier->valide == 2 ) return 0;
+        
+        $fichier->valide = $validation;
+        $fichier->motif_refu = $request->motif;
+        
+        $fichier->update();
+       
+        // Si le fichié est refusé
+        $fichier->valide == 2 ?  Mail::to($fichier->user->email)->send(new ValidationFichier($fichier)) : "";
+       
+        return 0;
 
     }
 }
