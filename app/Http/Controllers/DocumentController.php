@@ -308,6 +308,7 @@ class DocumentController extends Controller
                          // on enregistre le chemin complet du fichier déplacé dans la variable path
                          $path = $path.'/'.$filename.$extension;
                          
+                         $fichier->valide = 0 ;
                          
                         $fichier->url = $path;
                         $fichier->extension = $extension;
