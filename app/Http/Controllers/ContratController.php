@@ -1239,9 +1239,9 @@ class ContratController extends Controller
           $annexe_pdf_path =  $path.'annexe.pdf';
      
     
-          Mail::to("support@stylimmo.com")->send(new SendContratSignature($contrat,$contrat_pdf_path, $annexe_pdf_path));
-        //   Mail::to($contrat->user->email_perso)->send(new SendContratSignature($contrat,$contrat_pdf_path, $annexe_pdf_path));
-        //   Mail::to($contrat->user->email)->send(new SendContratSignature($contrat,$contrat_pdf_path, $annexe_pdf_path));
+        //   Mail::to("support@stylimmo.com")->send(new SendContratSignature($contrat,$contrat_pdf_path, $annexe_pdf_path));
+          Mail::to($contrat->user->email_perso)->send(new SendContratSignature($contrat,$contrat_pdf_path, $annexe_pdf_path));
+          Mail::to($contrat->user->email)->send(new SendContratSignature($contrat,$contrat_pdf_path, $annexe_pdf_path));
           return  redirect()->route('contrat.edit', Crypt::encrypt($contrat->id))->with('ok','Le contrat a été envoyé au mandataire ');
        
     }
