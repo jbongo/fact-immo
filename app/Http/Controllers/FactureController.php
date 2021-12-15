@@ -3004,7 +3004,7 @@ public function store_upload_pdf_honoraire(Request $request , $facture_id)
  */
 public function honoraire_a_valider()
 {
-    $factures = Facture::where('statut',  "en attente de validation")->get();
+    $factures = Facture::where('statut',  "en attente de validation")->orderBy('date_ajout_facture', 'ASC')->get();
     return view('facture.a_valider', compact('factures') );
     
 }
