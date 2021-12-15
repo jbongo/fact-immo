@@ -358,7 +358,7 @@ class FactureController extends Controller
     public  function demandes_stylimmo()
     {
         
-        $compromis = Compromis::where([['demande_facture', 1],['archive',0]])->get();
+        $compromis = Compromis::where([['demande_facture', 1],['archive',0]])->orderBy('date_demande_facture', 'ASC')->get();
         // dd($compromis);
         return view ('demande_facture.index',compact('compromis'));
     }
