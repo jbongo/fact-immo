@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\SendFicheProspect;
 use App\Mail\SendModeleContrat;
 
-
+use Auth;
 use PDF;
 
 class ProspectController extends Controller
@@ -416,6 +416,10 @@ class ProspectController extends Controller
         $prospect->renseigne = true;
         $prospect->update();
         
+        if(Auth::check() && $prospect->user_id != null ){
+            return redirect()->route('mandataire.show', Crypt::encrypt($prospect->user_id))->with('ok', 'Vos modifications ont été prises en compte ');
+        
+        }
         
         return redirect()->route('prospect.fiche', Crypt::encrypt($prospect->id))->with('ok', 'Vos modifications ont été prises en compte ');
         

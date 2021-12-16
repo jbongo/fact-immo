@@ -109,8 +109,13 @@
                                              @if($mandataire->prospect != null )
                                              
                                              <hr>
-                                            <a href="{{route('prospect.show',Crypt::encrypt($mandataire->prospect->id) )}}"  class="btn btn-default btn-rounded btn-addon btn-sm m-b-10"><i class="ti-link"></i>Fiche prospect</a>
-                                             
+                                            <a href="{{route('prospect.fiche',Crypt::encrypt($mandataire->prospect->id) )}}"  class="btn btn-default btn-rounded btn-addon btn-sm m-b-10"><i class="ti-pencil"></i>Fiche prospect</a>
+                                                @if (session('ok'))
+                                                <div class="alert alert-success alert-dismissible fade in" style="color: red">
+                                                   <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                                   <strong> {{ session('ok') }}</strong>
+                                                </div>
+                                                @endif   
                                              <hr>
                                              <div class="basic-information">
                                                 {{-- <h4 style="color: #32ade1;text-decoration: underline;">Role utilisateur</h4> --}}
@@ -216,39 +221,66 @@
                                              
                                              <div class="basic-information">                                                
                                                 <div class="gender-content">
-                                                   <span class="contact-title"><strong>Carte d'identité :</strong></span>
+                                                   <span class="contact-title"><strong>Pièce d'identité :</strong></span>
                                                    
                                                    @if($mandataire->prospect->piece_identite != null)
-                                                        <a class="btn btn-warning color-info" title="Télécharger la pièce d'identité" style="color: #fff"   href="{{route('prospect.telecharger',[ Crypt::encrypt($mandataire->prospect->id),"piece_identite"])}}"  class="  m-b-10 m-l-5 ">Télécharger <i class="ti-download"></i> </a>
                                                    
+                                                                
+                                                        @if(est_image($mandataire->prospect->piece_identite))
+                                                        
+                                                            <a href="{{lien_public_fichier($mandataire->prospect->piece_identite, "piece_identite_$mandataire->id")}}" data-toggle="tooltip" target="_blank" title="Télécharger pièce d'identité"  class="btn btn-success btn-flat btn-addon "><i class="ti-download"></i>Télécharger</a> 
+                                                        @else 
+                                                        
+                                                            <a  title="Télécharger la pièce d'identité" style="color: #fff"   href="{{route('prospect.telecharger',[ Crypt::encrypt($mandataire->prospect->id),"piece_identite"])}}"  class="btn btn-warning color-info  m-b-10 m-l-5 btn-flat btn-addon "> <i class="ti-download"></i> Télécharger</a>
+                                                      
+                                                        @endif
+                                                        
+                                                              
                                                    @else 
                                                         <span class="contact-title text-danger"><strong> Non Ajoutée </strong></span>                                                  
                                                    @endif                                                
                                                 </div>
                                              </div>
+                                             
                                              
                                              <div class="basic-information">                                                
                                                 <div class="gender-content">
                                                    <span class="contact-title"><strong>Attestion responsabilité  :</strong></span>
                                                    
                                                    @if($mandataire->prospect->attestation_responsabilite != null)
-                                                        <a class="btn btn-warning color-info" title="Télécharger la pièce d'identité" style="color: #fff"   href="{{route('prospect.telecharger',[ Crypt::encrypt($mandataire->prospect->id),"attestation_responsabilite"])}}"  class="  m-b-10 m-l-5 ">Télécharger <i class="ti-download"></i> </a>
-                                                   
-                                                   @else 
-                                                        <span class="contact-title text-danger"><strong> Non Ajoutée </strong></span>                                                  
-                                                   @endif                                                
+                                                      
+                                                        @if(est_image($mandataire->prospect->attestation_responsabilite))
+                                                        
+                                                            <a href="{{lien_public_fichier($mandataire->prospect->attestation_responsabilite, "attestation_$mandataire->id")}}" data-toggle="tooltip" target="_blank" title="Télécharger Attestation RCPRO"  class="btn btn-success btn-flat btn-addon "><i class="ti-download"></i>Télécharger</a> 
+                                                        @else 
+                                                        
+                                                        <a  title="Télécharger la pièce d'identité" style="color: #fff"   href="{{route('prospect.telecharger',[ Crypt::encrypt($mandataire->prospect->id),"attestation_responsabilite"])}}"  class=" btn btn-warning color-info m-b-10 m-l-5 btn-flat btn-addon "> <i class="ti-download"></i> Télécharger</a>
+                                                      
+                                                        @endif
+                                                    @else 
+                                                            <span class="contact-title text-danger"><strong> Non Ajoutée </strong></span>                                                  
+                                                    @endif                                                
                                                 </div>
                                              </div>
+                                             
                                              
                                              <div class="basic-information">                                                
                                                 <div class="gender-content">
                                                    <span class="contact-title"><strong>Rib :</strong></span>
                                                    
                                                    @if($mandataire->prospect->rib != null)
-                                                        <a class="btn btn-warning color-info" title="Télécharger la pièce d'identité" style="color: #fff"   href="{{route('prospect.telecharger',[ Crypt::encrypt($mandataire->prospect->id),"rib"])}}"  class="  m-b-10 m-l-5 ">Télécharger <i class="ti-download"></i> </a>
-                                                   
+                                                      
+                                                        @if(est_image($mandataire->prospect->rib))
+                                                        
+                                                            <a href="{{lien_public_fichier($mandataire->prospect->rib, "rib_$mandataire->id")}}" data-toggle="tooltip" target="_blank" title="Télécharger Rib"  class="btn btn-success btn-flat btn-addon "><i class="ti-download"></i>Télécharger</a> 
+                                                        @else 
+                                                        
+                                                            <a  title="Télécharger la pièce d'identité" style="color: #fff"   href="{{route('prospect.telecharger',[ Crypt::encrypt($mandataire->prospect->id),"rib"])}}"  class="btn btn-warning color-info  m-b-10 m-l-5 btn-flat btn-addon"> <i class="ti-download"></i>Télécharger </a>
+                                                        
+                                                        @endif
+                                                        
                                                    @else 
-                                                        <span class="contact-title text-danger"><strong> Non Ajoutée </strong></span>                                                  
+                                                        <span class="contact-title text-danger"><strong> Non Ajouté </strong></span>                                                  
                                                    @endif                                                
                                                 </div>
                                              </div>
@@ -259,8 +291,15 @@
                                                    <span class="contact-title"><strong>Photo :</strong></span>
                                                    
                                                    @if($mandataire->prospect->photo != null)
-                                                        <a class="btn btn-warning color-info" title="Télécharger la pièce d'identité" style="color: #fff"   href="{{route('prospect.telecharger',[ Crypt::encrypt($mandataire->prospect->id),"photo"])}}"  class="  m-b-10 m-l-5 ">Télécharger <i class="ti-download"></i> </a>
-                                                   
+                                                    
+                                                        @if(est_image($mandataire->prospect->photo))
+                                                                
+                                                            <a href="{{lien_public_fichier($mandataire->prospect->photo, "photo_$mandataire->id")}}" data-toggle="tooltip" target="_blank" title="Télécharger photo"  class="btn btn-success btn-flat btn-addon "><i class="ti-download"></i>Télécharger</a> 
+                                                        @else 
+                                                        
+                                                            <a title="Télécharger la pièce d'identité" style="color: #fff"   href="{{route('prospect.telecharger',[ Crypt::encrypt($mandataire->prospect->id),"photo"])}}"  class="btn btn-warning color-info  m-b-10 m-l-5 btn-flat btn-addon"> <i class="ti-download"></i> Télécharger</a>
+
+                                                        @endif
                                                    @else 
                                                         <span class="contact-title text-danger"><strong> Non Ajoutée </strong></span>                                                  
                                                    @endif                                                

@@ -29,7 +29,7 @@ class NotifUpdateJeton extends Mailable
      */
     public function build()
     {
-        return $this->subject("STYL'IMMO - Mise à jour de votre jetons")->markdown('email.notif_update_jeton');
+        return $this->subject("STYL'IMMO - Mise à jour de vos jetons")->markdown('email.notif_update_jeton');
 
     }
 }

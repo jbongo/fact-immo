@@ -1,5 +1,6 @@
 <?php
 
+// Convertir un nombre en lettre
 function lettre_en_nombre($a){
 	if ($a<0) return 'moins '.lettre_en_nombre(-$a);
 	if ($a<17){
@@ -56,7 +57,7 @@ function lettre_en_nombre($a){
 	} else if ($a<1000000){
 		return lettre_en_nombre((int)($a/1000)).' '.lettre_en_nombre(1000).' '.($a%1000!=0?lettre_en_nombre($a%1000):'');
 	}  
-	//on pourrait pousser pour aller plus loin, mais c'est sans interret pour ce projet, et pas interessant, c'est pas non plus compliqué...
+	
 	else return $a;
 }
 

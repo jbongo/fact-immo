@@ -53,7 +53,8 @@
             "app/Helper/Get_avoir_facture.php",
             "app/Helper/Get_facture_avoir.php",
             "app/Helper/Get_facture_stylimmo.php",
-            "app/Helper/Pourcentage_actuel.php"
+            "app/Helper/Pourcentage_actuel.php",
+            "app/Helper/Fichier.php"
 
 
         ]
