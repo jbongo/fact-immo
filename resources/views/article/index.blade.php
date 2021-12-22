@@ -30,15 +30,16 @@
                                 <thead>
                                 
                                     <tr>
-                                        <th>@lang('libelle')</th>
-                                        <th>@lang('description')</th>
-                                        <th>@lang('quantite')</th>
-                                        <th>@lang('prix d\'achat')</th>
-                                        <th>@lang('coefficient')</th>
-                                        <th>@lang('expiration')</th>
-                                        <th>@lang('date_ d\'chat')</th>
-                                        <th>@lang('date d\'expiration')</th>
-                                        <th>@lang('action')</th>
+                                        <th>Type d'article</th>
+                                        <th>libelle</th>
+                                        <th>description</th>
+                                        <th>quantite</th>
+                                        <th>prix d'achat</th>
+                                        <th>coefficient</th>
+                                        <th>expiration</th>
+                                        <th>date d'achat</th>
+                                        <th>date d'expiration</th>
+                                        <th>action</th>
 
                                     </tr>
                                 </thead>
@@ -47,8 +48,11 @@
                                 @foreach ($articles as $article)
                                     <tr>
 
+                                        <td style="color: #450854; ">
+                                            <strong>{{$article->type}}</strong> 
+                                        </td>
                                         <td style="color: #e05555; ">
-                                        <strong>{{$article->libelle}}</strong> 
+                                            <strong>{{$article->libelle}}</strong> 
                                         </td>
                                         <td style="color: #32ade1;">
                                             <strong>{{$article->description}}</strong> 

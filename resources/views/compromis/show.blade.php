@@ -828,6 +828,7 @@ $("#partage").change(function(){
     if($('#partage').val() == "Oui"){
         $("#div_partage").show();
         $('#div_hors_reseau').show();
+        $('#hors_reseau').val("Non");
         $('#div_agent_reseau').show();
         $('#div_pourcentage_agent').show();
 

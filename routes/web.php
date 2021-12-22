@@ -222,6 +222,7 @@ Route::middleware('auth')->group(function(){
     Route::get('parametre/pack_pub/create','PackpubController@create')->name('pack_pub.create');
     Route::post('parametre/pack_pub/store','PackpubController@store')->name('pack_pub.store');
     Route::post('parametre/pack_pub/update/{pack_pub}','PackpubController@update')->name('pack_pub.update');    
+    Route::get('parametre/pack_pub/archiver/{pack_pub}','PackpubController@archiver')->name('pack_pub.archiver');    
     // Modèle contrat    
     Route::get('parametre/modele_contrat/create','ContratController@create_model_contrat')->name('modele_contrat.create');
     Route::post('parametre/modele_contrat/store','ContratController@store_model_contrat')->name('modele_contrat.store');

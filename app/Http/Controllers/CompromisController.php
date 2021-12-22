@@ -632,7 +632,7 @@ class CompromisController extends Controller
             $compromis->type_affaire = $request->type_affaire;
             $compromis->nom_agent = $request->nom_agent;
 
-            $compromis->agent_id = $request->agent_id;
+            $compromis->agent_id = ( $request->partage == "Oui" && $request->hors_reseau == "Non" )? $request->agent_id : null ;
 
             $compromis->description_bien = $request->description_bien;
             $compromis->code_postal_bien = $request->code_postal_bien;

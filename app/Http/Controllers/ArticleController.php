@@ -17,7 +17,7 @@ class ArticleController extends Controller
      */
     public function index($fournisseur_id)
     {
-        $articles = Article::where('fournisseur_id',Crypt::decrypt($fournisseur_id))->get();
+        $articles = Article::where('fournisseur_id',Crypt::decrypt($fournisseur_id))->latest()->get();
         $fournisseur = Fournisseur::where('id', Crypt::decrypt($fournisseur_id))->first();
    
         // dd($articles);
@@ -51,6 +51,7 @@ class ArticleController extends Controller
 
         $request->validate([
             'libelle' => 'required',
+            'type' => 'required',
             'quantite' => 'required',
             'prix_achat' => 'required',
             'coefficient' => 'required',
@@ -64,6 +65,7 @@ class ArticleController extends Controller
 
         
         Article::create([
+            "type"=>$request->type,
             "libelle"=>$request->libelle,
             "description"=>$request->description,
             "quantite"=>$request->quantite,
@@ -120,6 +122,7 @@ class ArticleController extends Controller
     
             $article = Article::where('id', Crypt::decrypt($article_id))->first();
             
+        $modif_type =  $article->type == $request->type ? false : true;
         $modif_libelle =  $article->libelle == $request->libelle ? false : true;
         $modif_description =  $article->description == $request->description ? false : true;
         $modif_quantite =  $article->quantite == $request->quantite ? false : true;
@@ -130,6 +133,8 @@ class ArticleController extends Controller
         
         Historiquearticle::create([        
             "article_id"=>$article->id,            
+            "type"=>$article->type,            
+            "modif_type"=> $modif_type,            
             "libelle"=>$article->libelle,            
             "modif_libelle"=> $modif_libelle,            
             "description"=>$article->description,            
@@ -149,6 +154,7 @@ class ArticleController extends Controller
         
         Article::where('id', Crypt::decrypt($article_id))
         ->update([
+            "type"=>$request->type,
             "libelle"=>$request->libelle,
             "description"=>$request->description,
             "quantite"=>$request->quantite,

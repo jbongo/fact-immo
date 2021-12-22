@@ -27,6 +27,7 @@
                                 <thead>
                                     <tr>
                                         <th>@lang('Nom Pack')</th>
+                                        <th>@lang('Quantité annonce ')</th>
                                         <th>@lang('Tarif HT')</th>
                                         <th>@lang('Tarif TTC')</th>
                                         <th>@lang('Type du pack')</th>
@@ -38,24 +39,27 @@
                                 @foreach ($packs as $pack)
                                     <tr>
 
-                                        <td style="color: #32ade1; text-decoration: underline;">
+                                        <td style="color: #32ade1; ">
                                         <strong>{{$pack->nom}}</strong> 
                                         </td>
-                                        <td style="color: #e05555;; text-decoration: underline;">
+                                        <td style="color: #33460c;">
+                                            <strong>{{$pack->qte_annonce}}</strong> 
+                                        </td>
+                                        <td style="color: #e05555;;">
                                             <strong> {{$pack->tarif_ht}} €</strong> 
                                         </td>
-                                        <td style="color: #e05555;; text-decoration: underline;">
+                                        <td style="color: #e05555;;">
                                             <strong> {{$pack->tarif}} €</strong> 
                                         </td>
                                         
-                                        <td style="color: #3811c7;; text-decoration: underline;">
+                                        <td style="color: #3811c7;;">
                                             <strong> {{$pack->type}} </strong> 
                                         </td>
                                                                          
                                 
                                         <td>
                                             <span><a href="{{route('pack_pub.edit',Crypt::encrypt($pack->id))}}" data-toggle="tooltip" title="@lang('Modifier ') {{ $pack->nom }}"><i class="large material-icons color-warning">edit</i></a></span>
-                                        <span><a  href="{{route('pack_pub.edit',$pack->id)}}" class="delete" data-toggle="tooltip" title="@lang('Archiver ') {{ $pack->nom }}"><i class="large material-icons color-danger">delete</i> </a></span>
+                                        <span><a  href="{{route('pack_pub.archiver',$pack->id)}}" class="archive" data-toggle="tooltip" title="@lang('Archiver ') {{ $pack->nom }}"><i class="large material-icons color-danger">delete</i> </a></span>
                                         </td>
                                     </tr>
                             @endforeach
@@ -79,7 +83,7 @@
                 headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
             })
             $('[data-toggle="tooltip"]').tooltip()
-            $('a.delete').click(function(e) {
+            $('a.archive').click(function(e) {
                 let that = $(this)
                 e.preventDefault()
                 const swalWithBootstrapButtons = swal.mixin({
@@ -101,18 +105,30 @@
                 $('[data-toggle="tooltip"]').tooltip('hide')
                     $.ajax({                        
                         url: that.attr('href'),
-                        type: 'PUT'
-                    })
-                    .done(function () {
-                            that.parents('tr').remove()
+                        type: 'GET',
+                        success: function (result) {
+                            swal(
+                                 'Archivé',
+                                 'Pack archivé ',
+                                 'success'
+                              )
+                              .then(function() {
+                                       window.location.href = "{{route('pack_pub.index')}}";
+                                })
+                           },
+                        error: function(error){
+                              console.log(error);
+                              
+                              swal(
+                                       'Echec',
+                                       'Vous avez une erreur '+error,
+                                       'error'
+                                    )
+                                    
+                              
+                           }
                     })
 
-                swalWithBootstrapButtons(
-                'Archivé!',
-                'L\'pack_pub a bien été archivé.',
-                'success'
-                )
-                
                 
             } else if (
                 // Read more about handling dismissals
@@ -120,7 +136,7 @@
             ) {
                 swalWithBootstrapButtons(
                 'Annulé',
-                'L\'utlisateur n\'a pas été archivé :)',
+                'Le Pack n\'a pas été archivé :)',
                 'error'
                 )
             }

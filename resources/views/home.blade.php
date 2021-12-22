@@ -285,7 +285,7 @@
 
 {{-- CA PERSO --}}
 
-
+{{-- ####################### TABLEAU DES CHIFFRES D'AFFAIRES POUR LES MANDATAIRES ####################### --}}
 @if(Auth::user()->role =="mandataire")
 <script>
 
@@ -476,8 +476,7 @@
 
 
 {{-- CA STYL'IMMO --}}
-
-
+{{-- ####################### TABLEAU DES CHIFFRES D'AFFAIRES POUR LES ADMINISTRATEURS ####################### --}}
 
 
 <script>

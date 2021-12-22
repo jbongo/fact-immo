@@ -24,9 +24,9 @@ Ajouter un pack pub
                     <hr>
                     <hr>
                     <hr>
-                    <div class="col-lg-3 col-md-4 col-sm-4">
+                    <div class="col-lg-6 col-md-6 col-sm-6">
                         <div class="form-group row">
-                            <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="adresse">Nom pack_pub<span class="text-danger">*</span> </label>
+                            <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="nom">Nom pack_pub<span class="text-danger">*</span> </label>
                             <div class="col-lg-5 col-md-5 col-sm-5">
                                <input type="text" class="form-control {{ $errors->has('nom') ? ' is-invalid' : '' }}" value="{{old('nom')}}" id="nom" name="nom" required >
                                @if ($errors->has('nom'))
@@ -38,9 +38,23 @@ Ajouter un pack pub
                             </div>
                          </div>
                     </div>
-                    <div class="col-lg-3 col-md-4 col-sm-4">
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                     <div class="form-group row">
+                         <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="qte_annonce">Quantité d'annonces<span class="text-danger">*</span> </label>
+                         <div class="col-lg-5 col-md-5 col-sm-5">
+                            <input type="number" class="form-control {{ $errors->has('qte_annonce') ? ' is-invalid' : '' }}" value="{{old('qte_annonce')}}" id="qte_annonce" name="qte_annonce" required >
+                            @if ($errors->has('qte_annonce'))
+                            <br>
+                            <div class="alert alert-warning ">
+                               <strong>{{$errors->first('qte_annonce')}}</strong> 
+                            </div>
+                            @endif   
+                         </div>
+                      </div>
+                 </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6">
                          <div class="form-group row">
-                            <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="pays">Tarif HT <span class="text-danger">*</span></label>
+                            <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="tarif_ht">Tarif HT <span class="text-danger">*</span></label>
                             <div class="col-lg-5 col-md-5 col-sm-5">
                                <input type="text" class="form-control {{ $errors->has('tarif_ht') ? ' is-invalid' : '' }}" value="{{old('tarif_ht')}}" id="tarif_ht" name="tarif_ht" required>
                                @if ($errors->has('tarif_ht'))
@@ -53,7 +67,7 @@ Ajouter un pack pub
                          </div>
                     </div>
                     
-                    <div class="col-lg-3 col-md-4 col-sm-4">
+                    <div class="col-lg-6 col-md-6 col-sm-6">
                      <div class="form-group row">
                         <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="type">Type du pack <span class="text-danger">*</span></label>
                         <div class="col-lg-5 col-md-5 col-sm-5">

@@ -16,6 +16,7 @@ class CreateArticlesTable extends Migration
         Schema::create('articles', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('libelle')->nullable();
+            $table->string('type')->nullable();
             $table->integer('quantite')->nullable();
             $table->double('prix_achat')->nullable();
             $table->double('coefficient')->nullable();

@@ -31,7 +31,8 @@
                             <tr>
                                 <th>@lang('Mandataire')</th>
                                 <th>@lang('Document')</th>
-                                <th>@lang('Date d\'ajout')</th>
+                                <th>@lang('Date d\'expiration')</th>
+                                <th>@lang('Date d\'ajout du doc')</th>
                                 <th>@lang('Action')</th>
                             
                             </tr>
@@ -60,10 +61,12 @@
                                     @endif
                                 </td>
                                 
-                            
+                                <td>
+                                    <span class="text-danger "> <strong> @if($fichier->date_expiration != null) {{$fichier->date_expiration->format('d/m/Y')}} @endif</strong></span>
+                                </td>
                                 
                                 <td>
-                                    <span class="text-danger">{{$fichier->created_at->format('d/m/Y')}}</span>
+                                    <span class="text-default">{{$fichier->created_at->format('d/m/Y')}}</span>
                                 </td>
                                     
 

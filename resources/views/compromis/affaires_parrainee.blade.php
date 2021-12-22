@@ -86,7 +86,7 @@
                                     <td  style="{{$grise}}">
 
                                         @php
-                                            $com = number_format($compromi->frais_agence / 1000, '2','.',',') . ' K';
+                                            $com = number_format($compromi->frais_agence() / 1000, '2','.',',') . ' K';
                                             
                                         @endphp
                                         <span class="color-success">{{$com}} €</span>   

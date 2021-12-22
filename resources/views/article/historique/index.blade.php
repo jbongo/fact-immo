@@ -32,16 +32,16 @@
                                 <thead>
                                 
                                     <tr>
-                                        <th>@lang('libelle')</th>
-                                        <th>@lang('description')</th>
-                                        <th>@lang('quantite')</th>
-                                        <th>@lang('prix d\'achat')</th>
-                                        <th>@lang('coefficient')</th>
-                                        <th>@lang('expiration')</th>
-                                        <th>@lang('date_ d\'achat')</th>
-                                        <th>@lang('date d\'expiration')</th>
-                                        <th>@lang('date de modification')</th>
-                                        <th>@lang('action')</th>
+                                        <th>libelle</th>
+                                        <th>description</th>
+                                        <th>quantite</th>
+                                        <th>prix d\'achat</th>
+                                        <th>coefficient</th>
+                                        <th>expiration</th>
+                                        <th>date d\'achat</th>
+                                        <th>date d\'expiration</th>
+                                        <th>date de modification</th>
+                                        <th>action</th>
 
                                     </tr>
                                 </thead>
@@ -76,10 +76,7 @@
                                         </td>
                                         <td style=" color: #800a14;">
                                            <span>  @if($arti->created_at!= null)  {{$arti->created_at->format('d/m/Y')}} @endif</span>
-                                         </td>
-                                     
-                                     
-                                                                         
+                                        </td>            
                                 
                                         <td>
                                             {{-- <span><a href="{{route('article.historique.show',Crypt::encrypt($article->id))}}" data-toggle="tooltip" title="@lang('voir l\'article' ) "><i class="large material-icons color-warning">visibility</i></a></span> --}}

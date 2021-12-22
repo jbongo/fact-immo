@@ -41,10 +41,12 @@ class PackpubController extends Controller
     
         $request->validate([
             'nom' => 'required|unique:packpubs',
+            'qte_annonce' => 'required|numeric',
             'tarif_ht' => 'required|numeric',
         ]);
         Packpub::create([
             "nom"=>$request->nom,
+            "qte_annonce"=>$request->qte_annonce,
             "tarif_ht"=>$request->tarif_ht,
             "tarif"=>$request->tarif_ht * Tva::coefficient_tva(),
             "type"=>$request->type,
@@ -86,16 +88,19 @@ class PackpubController extends Controller
         if($request->nom == $pack->nom){
             $request->validate([
                 'nom' => 'required',
+                'qte_annonce' => 'required|numeric',
                 'tarif_ht' => 'required|numeric',
             ]);
         }else{
             $request->validate([
                 'nom' => 'required|unique:packpubs',
+                'qte_annonce' => 'required|numeric',
                 'tarif_ht' => 'required|numeric',
             ]);
         }
         
         $pack->nom = $request->nom;
+        $pack->qte_annonce = $request->qte_annonce;
         $pack->tarif_ht = $request->tarif_ht;
         $pack->tarif = $request->tarif_ht * Tva::coefficient_tva();
         $pack->type = $request->type;
@@ -105,13 +110,17 @@ class PackpubController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     *Archiver un pack
      *
      * @param  \App\Packpub  $packpub
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Packpub $packpub)
+    public function archiver($packpub)
     {
-        //
+        $pack = Packpub::where('id',$packpub)->first();
+
+        $pack->archive = true;
+        $pack->update();
+        return "true";
     }
 }

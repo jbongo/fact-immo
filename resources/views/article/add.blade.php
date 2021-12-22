@@ -25,7 +25,25 @@ Ajout d'un article
                     <hr>
                     <hr>
                     <div class="col-lg-6 col-md-6 col-sm-6">
-
+                     
+                        <div class="form-group row">
+                           <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="type">Type d'article <span class="text-danger">*</span></label>
+                           <div class="col-lg-8 col-md-8 col-sm-8">
+                              <select name="type" class="form-control" id="type" required>
+                                 <option value="annonce">annonce</option>
+                                 <option value="remontée">remontée</option>
+                                 <option value="autre">autre</option>
+                              </select>
+                              
+                              @if ($errors->has('type'))
+                              <br>
+                              <div class="alert alert-warning ">
+                                 <strong>{{$errors->first('type')}}</strong> 
+                              </div>
+                              @endif
+                           </div>
+                        </div>
+                     
                         <div class="form-group row">
                             <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="libelle">Libellé <span class="text-danger">*</span></label>
                             <div class="col-lg-8 col-md-8 col-sm-8">
@@ -41,7 +59,7 @@ Ajout d'un article
 
                 
                         <div class="form-group row">
-                            <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="nom">Description </label>
+                            <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="description">Description </label>
                             <div class="col-lg-8 col-md-8 col-sm-8">
                             <textarea  class="form-control" name="description" id="description" cols="30" rows="4"></textarea>
                                @if ($errors->has('description'))
@@ -66,18 +84,7 @@ Ajout d'un article
                             </div>
                          </div>
        
-                         <div class="form-group row">
-                            <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="prix_achat">Prix d'achat <span class="text-danger">*</span></label>
-                            <div class="col-lg-8 col-md-8 col-sm-8">
-                               <input type="number" step="0.01" class="form-control {{$errors->has('prix_achat') ? 'is-invalid' : ''}}" value="{{old('prix_achat')}}" id="prix_achat" name="prix_achat" required>
-                               @if ($errors->has('prix_achat'))
-                               <br>
-                               <div class="alert alert-warning ">
-                                  <strong>{{$errors->first('prix_achat')}}</strong> 
-                               </div>
-                               @endif
-                            </div>
-                         </div>
+                        
        
                      
 
@@ -85,7 +92,19 @@ Ajout d'un article
 
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-6">
-
+                        <div class="form-group row">
+                           <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="prix_achat">Prix d'achat <span class="text-danger">*</span></label>
+                           <div class="col-lg-8 col-md-8 col-sm-8">
+                              <input type="number" step="0.01" class="form-control {{$errors->has('prix_achat') ? 'is-invalid' : ''}}" value="{{old('prix_achat')}}" id="prix_achat" name="prix_achat" required>
+                              @if ($errors->has('prix_achat'))
+                              <br>
+                              <div class="alert alert-warning ">
+                                 <strong>{{$errors->first('prix_achat')}}</strong> 
+                              </div>
+                              @endif
+                           </div>
+                        </div>
+                     
                         <div class="form-group row">
                             <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="coefficient">Coefficient <span class="text-danger">*</span></label>
                             <div class="col-lg-8 col-md-8 col-sm-8">
@@ -100,7 +119,7 @@ Ajout d'un article
                          </div>
 
                           <div class="form-group row">
-                               <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="login">Date d'achat <span class="text-danger">*</span></label>
+                               <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="date_achat">Date d'achat <span class="text-danger">*</span></label>
                                <div class="col-lg-8 col-md-8 col-sm-8">
                                   <input type="date" class="form-control {{ $errors->has('date_achat') ? ' is-invalid' : '' }}" value="{{old('date_achat')}}" id="date_achat" name="date_achat" required placeholder=""  >
                                   @if ($errors->has('date_achat'))
@@ -113,7 +132,7 @@ Ajout d'un article
                          </div>
                         
                          <div class="form-group row">
-                           <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="login">Date d'expiration </label>
+                           <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="date_expiration">Date d'expiration </label>
                            <div class="col-lg-8 col-md-8 col-sm-8">
                               <input type="date" class="form-control {{ $errors->has('date_expiration') ? ' is-invalid' : '' }}" value="{{old('date_expiration')}}" id="date_expiration" name="date_expiration"  placeholder=""  >
                               @if ($errors->has('date_expiration'))

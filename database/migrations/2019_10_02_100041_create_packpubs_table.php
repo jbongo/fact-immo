@@ -16,7 +16,9 @@ class CreatePackpubsTable extends Migration
         Schema::create('packpubs', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('nom')->nullable();
+            $table->integer('qte_annonce')->nullable();
             $table->double('tarif')->nullable();
+            $table->boolean('archive')->default(false);
             $table->timestamps();
         });
     }

@@ -630,7 +630,9 @@ public  function valider_facture_stylimmo( Request $request, $compromis)
 
 
         $facture = Facture::where('id', $facture_id)->first();
- 
+        
+        if($facture->encaissee == true) return "Déjà encaissée";
+        
         $facture->encaissee = true;
         $facture->date_encaissement = $request->date_encaissement;
         
@@ -3861,8 +3863,8 @@ return 4444;
         $facturesAPayer = Facture::whereIn('type',['honoraire','partage','partage_externe','parrainage','parrainage_partage'])->where([['reglee', false], ['statut','valide']])->latest()->get();
         $facturesNonAjou = Facture::whereIn('type',['honoraire','partage','partage_externe','parrainage','parrainage_partage'])->where([['reglee', false], ['statut','<>','valide']])->latest()->get();
         
-        // Liste des affaires réitérée, encaissée mais dont les notes d'honoraires n'ont pas été générée
-        $compromisR = Compromis::where([['facture_stylimmo_valide', true], ['cloture_affaire', 1]])->where(function ($query) {
+        // Liste des affaires réitérée, encaissée mais dont les notes d'honoraires n'ont pas été générée / Ou recalculés sans que que le jeton ne soit déduis
+        $compromisR = Compromis::where([['facture_stylimmo_valide', true], ['cloture_affaire','>', 1],['partage_reseau', true]])->where(function ($query) {
         
             // $query->where([['est_partage_agent', false], ['facture_honoraire_cree', false], ['facture_honoraire_parrainage_cree', false]])
             $query->where([['est_partage_agent', false], ['facture_honoraire_cree', false]])
