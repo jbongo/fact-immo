@@ -31,6 +31,7 @@
                                         <th>@lang('Tarif HT')</th>
                                         <th>@lang('Tarif TTC')</th>
                                         <th>@lang('Type du pack')</th>
+                                        <th>@lang('Archivé')</th>                                        
                                         <th>@lang('Action')</th>
                                        
                                     </tr>
@@ -55,11 +56,23 @@
                                         <td style="color: #3811c7;;">
                                             <strong> {{$pack->type}} </strong> 
                                         </td>
-                                                                         
+                                        
+                                        <td>
+                                            @if($pack->archive == true)
+                                            <span class="badge badge-success">Oui</span>
+                                            @else 
+                                            <span class="badge badge-danger">Non</span>
+                                            
+                                            @endif
+                                         </td>                       
                                 
                                         <td>
                                             <span><a href="{{route('pack_pub.edit',Crypt::encrypt($pack->id))}}" data-toggle="tooltip" title="@lang('Modifier ') {{ $pack->nom }}"><i class="large material-icons color-warning">edit</i></a></span>
-                                        <span><a  href="{{route('pack_pub.archiver',$pack->id)}}" class="archive" data-toggle="tooltip" title="@lang('Archiver ') {{ $pack->nom }}"><i class="large material-icons color-danger">delete</i> </a></span>
+                                            @if($pack->archive == true)
+                                                <span><a  style="cursor: pointer;" data-href="{{route('pack_pub.archiver',[$pack->id, 2])}}" class="desarchive" data-toggle="tooltip" title="@lang('Désarchiver ') {{ $pack->nom }}"><i class="large material-icons color-success">settings_backup_restore</i> </a></span>
+                                            @else 
+                                                <span><a style="cursor: pointer;"  data-href="{{route('pack_pub.archiver',$pack->id)}}" class="archive" data-toggle="tooltip" title="@lang('Archiver ') {{ $pack->nom }}"><i class="large material-icons color-danger">delete</i> </a></span>
+                                            @endif
                                         </td>
                                     </tr>
                             @endforeach
@@ -78,6 +91,8 @@
 
 @section('js-content')
 <script>
+        // ################ Archiver un pack ################ 
+
         $(function() {
             $.ajaxSetup({
                 headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
@@ -87,60 +102,131 @@
                 let that = $(this)
                 e.preventDefault()
                 const swalWithBootstrapButtons = swal.mixin({
-            confirmButtonClass: 'btn btn-success',
-            cancelButtonClass: 'btn btn-danger',
-            buttonsStyling: false,
-})
-
-        swalWithBootstrapButtons({
-            title: '@lang('Vraiment archiver cet pack_pub  ?')',
-            type: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#DD6B55',
-            confirmButtonText: '@lang('Oui')',
-            cancelButtonText: '@lang('Non')',
-            
-        }).then((result) => {
-            if (result.value) {
-                $('[data-toggle="tooltip"]').tooltip('hide')
-                    $.ajax({                        
-                        url: that.attr('href'),
-                        type: 'GET',
-                        success: function (result) {
-                            swal(
-                                 'Archivé',
-                                 'Pack archivé ',
-                                 'success'
-                              )
-                              .then(function() {
-                                       window.location.href = "{{route('pack_pub.index')}}";
-                                })
-                           },
-                        error: function(error){
-                              console.log(error);
-                              
-                              swal(
-                                       'Echec',
-                                       'Vous avez une erreur '+error,
-                                       'error'
-                                    )
-                                    
-                              
-                           }
-                    })
-
+                confirmButtonClass: 'btn btn-success',
+                cancelButtonClass: 'btn btn-danger',
+                buttonsStyling: false,
+                })
+    
+            swalWithBootstrapButtons({
+                title: '@lang('Vraiment archiver cet pack_pub  ?')',
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#DD6B55',
+                confirmButtonText: '@lang('Oui')',
+                cancelButtonText: '@lang('Non')',
                 
-            } else if (
-                // Read more about handling dismissals
-                result.dismiss === swal.DismissReason.cancel
-            ) {
-                swalWithBootstrapButtons(
-                'Annulé',
-                'Le Pack n\'a pas été archivé :)',
-                'error'
-                )
-            }
+            }).then((result) => {
+                if (result.value) {
+                    $('[data-toggle="tooltip"]').tooltip('hide')
+                        $.ajax({                        
+                            url: that.attr('data-href'),
+                            type: 'GET',
+                            success: function (result) {
+                                swal(
+                                     'Archivé',
+                                     'Pack archivé ',
+                                     'success'
+                                  )
+                                  .then(function() {
+                                           window.location.href = "{{route('pack_pub.index')}}";
+                                    })
+                               },
+                            error: function(error){
+                                  console.log(error);
+                                  
+                                  swal(
+                                           'Echec',
+                                           'Vous avez une erreur '+error,
+                                           'error'
+                                        )
+                                        
+                                  
+                               }
+                        })
+    
+                    
+                } else if (
+                    // Read more about handling dismissals
+                    result.dismiss === swal.DismissReason.cancel
+                ) {
+                    swalWithBootstrapButtons(
+                    'Annulé',
+                    'Le Pack n\'a pas été archivé :)',
+                    'error'
+                    )
+                }
+            })
+            })
         })
+        
+        
+        
+        
+        // ################ Désarchiver un pack ################ 
+        
+        $(function() {
+            $.ajaxSetup({
+                headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
+            })
+            $('[data-toggle="tooltip"]').tooltip()
+            $('a.desarchive').click(function(e) {
+                let that = $(this)
+                e.preventDefault()
+                const swalWithBootstrapButtons = swal.mixin({
+                confirmButtonClass: 'btn btn-success',
+                cancelButtonClass: 'btn btn-danger',
+                buttonsStyling: false,
+                })
+    
+            swalWithBootstrapButtons({
+                title: '@lang('Vraiment désarchiver cet pack_pub  ?')',
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#DD6B55',
+                confirmButtonText: '@lang('Oui')',
+                cancelButtonText: '@lang('Non')',
+                
+            }).then((result) => {
+                if (result.value) {
+                    $('[data-toggle="tooltip"]').tooltip('hide')
+                        $.ajax({                        
+                            url: that.attr('data-href'),
+                            type: 'GET',
+                            success: function (result) {
+                                swal(
+                                     'Désarchivé',
+                                     'Pack désarchivé ',
+                                     'success'
+                                  )
+                                  .then(function() {
+                                           window.location.href = "{{route('pack_pub.index')}}";
+                                    })
+                               },
+                            error: function(error){
+                                  console.log(error);
+                                  
+                                  swal(
+                                           'Echec',
+                                           'Vous avez une erreur '+error,
+                                           'error'
+                                        )
+                                        
+                                  
+                               }
+                        })
+    
+                    
+                } else if (
+                    // Read more about handling dismissals
+                    result.dismiss === swal.DismissReason.cancel
+                ) {
+                    swalWithBootstrapButtons(
+                    'Annulé',
+                    'Le Pack n\'a pas été désarchivé :)',
+                    'error'
+                    )
+                }
+            })
             })
         })
     </script>

@@ -24,7 +24,7 @@
                           <li id="li_a_payer" class="active"><a href="#a_payer" data-toggle="pill"> <i class="material-icons" style="font-size: 15px;">account_balance_wallet</i> @lang('Honoraires à payer')<span class="badge badge-warning"> {{App\Facture::nb_facture_a_payer()}}</span></a> </li>
                           <li id="li_non_ajoute_nav"><a href="#non_ajoute_nav" data-toggle="pill"> <i class="material-icons" style="font-size: 15px;">account_balance_wallet</i> @lang('Honoraires non ajoutées + Attente de Valid.')</a></li>
                           <li id="li_etat_fin_nav"><a href="#etat_fin_nav" data-toggle="pill"> <i class="material-icons" style="font-size: 15px;">account_balance_wallet</i> @lang('Etat Financier')</a></li>
-                          <li id="li_reitere_nav"><a href="#reitere_nav" data-toggle="pill"> <i class="material-icons" style="font-size: 15px;">account_balance_wallet</i> @lang('Honoraires réitérées non crées')</a></li>
+                          {{-- <li id="li_reitere_nav"><a href="#reitere_nav" data-toggle="pill"> <i class="material-icons" style="font-size: 15px;">account_balance_wallet</i> @lang('Honoraires réitérées non crées')</a></li> --}}
                          
                          
                        </ul>
@@ -37,7 +37,7 @@
                                 <div class="tab-pane active" id="a_payer"> @include('facture.a_payer.a_payer')</div>
                                 <div class="tab-pane" id="non_ajoute_nav">@include('facture.a_payer.non_ajoute')</div>
                                 <div class="tab-pane" id="etat_fin_nav">@include('facture.a_payer.etat_fin')</div>
-                                <div class="tab-pane" id="reitere_nav">@include('facture.a_payer.compro_r')</div>
+                                {{-- <div class="tab-pane" id="reitere_nav">@include('facture.a_payer.compro_r')</div> --}}
                              </div>
                           </div>
                        </div>

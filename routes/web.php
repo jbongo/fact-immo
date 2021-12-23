@@ -222,7 +222,7 @@ Route::middleware('auth')->group(function(){
     Route::get('parametre/pack_pub/create','PackpubController@create')->name('pack_pub.create');
     Route::post('parametre/pack_pub/store','PackpubController@store')->name('pack_pub.store');
     Route::post('parametre/pack_pub/update/{pack_pub}','PackpubController@update')->name('pack_pub.update');    
-    Route::get('parametre/pack_pub/archiver/{pack_pub}','PackpubController@archiver')->name('pack_pub.archiver');    
+    Route::get('parametre/pack_pub/archiver/{pack_pub}/{action?}','PackpubController@archiver')->name('pack_pub.archiver');    
     // Modèle contrat    
     Route::get('parametre/modele_contrat/create','ContratController@create_model_contrat')->name('modele_contrat.create');
     Route::post('parametre/modele_contrat/store','ContratController@store_model_contrat')->name('modele_contrat.store');
@@ -247,6 +247,9 @@ Route::middleware('auth')->group(function(){
     Route::post('article/store','ArticleController@store')->name('article.store');
     Route::get('/article/historique/{article_id}','ArticleController@historique')->name('article.historique');
     Route::get('/article/historique/show/{article_id}','ArticleController@historique_show')->name('article.historique.show');
+    
+    // Passerelles ou articles de type annonce
+    Route::get('passerelles','ArticleController@passerelles')->name('passerelles.index');
 
     // Etat financier
     Route::get('/etat-financier/{date_deb?}/{date_fin?}', 'FactureController@etat_financier')->name('etat_financier');       

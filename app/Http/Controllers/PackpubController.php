@@ -115,12 +115,13 @@ class PackpubController extends Controller
      * @param  \App\Packpub  $packpub
      * @return \Illuminate\Http\Response
      */
-    public function archiver($packpub)
+    public function archiver($packpub, $action = 1)
     {
         $pack = Packpub::where('id',$packpub)->first();
 
-        $pack->archive = true;
+        $pack->archive = $action == 1 ? true : false;
         $pack->update();
-        return "true";
+        return  redirect()->route('pack_pub.index')->with('ok',__('le pack pub a été modifié'));
+
     }
 }
