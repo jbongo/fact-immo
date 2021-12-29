@@ -6,12 +6,13 @@ use Illuminate\Http\Request;
 use App\Article;
 use App\Historiquearticle;
 use App\Fournisseur;
+use App\Contrat;
 use Illuminate\Support\Facades\Crypt;
 
 class ArticleController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Afficher la liste des articles du fournisseur passé en paramètre
      *
      * @return \Illuminate\Http\Response
      */
@@ -23,9 +24,31 @@ class ArticleController extends Controller
         // dd($articles);
         return view('article.index', compact('articles','fournisseur'));
     }
+    
+    /**
+     * Afficher la liste des articles de type annonces
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function passerelles()
+    {
+        $articles = Article::where([['type','annonce'], ['a_expire', false]])->latest()->get();
+        
+        $contrats = Contrat::where([['est_fin_droit_suite', false],['user_id', '<>', null]])->get();
+        // ->select('packpub_id')
+    
+        $annonces_consommee = 0;
+        foreach ($contrats as $contrat) {
+            $annonces_consommee += $contrat->packpub->qte_annonce;
+        }
+      
+      
+        
+        return view('article.passerelles', compact('articles','annonces_consommee'));
+    }
 
     /**
-     * Show the form for creating a new resource.
+     * Page de création d'un article du fournisseur passé en paramètre
      *
      * @return \Illuminate\Http\Response
      */
@@ -38,7 +61,7 @@ class ArticleController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Création d'un article
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -96,7 +119,7 @@ class ArticleController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * page de Modification d'un article
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -109,7 +132,7 @@ class ArticleController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Modification d'un article
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
@@ -169,7 +192,7 @@ class ArticleController extends Controller
     }
 
     
-            /**
+    /**
      * Retourne l'historique des articles
      *
      * @return \Illuminate\Http\Response
@@ -193,11 +216,7 @@ class ArticleController extends Controller
     public function historique_show($article_id)
     {
         $article = Historiquearticle::where('id',Crypt::decrypt($article_id))->first() ;        
-    
-      
-    
-    
-//   dd($parrain);
+
         return view('article.historique.show', compact(['article']));
 
     }

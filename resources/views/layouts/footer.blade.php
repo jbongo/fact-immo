@@ -15,17 +15,11 @@
     <script src="{{ asset('js/lib/chartist/chartist.min.js')}}"></script>
     <script src="{{ asset('js/lib/chartist/chartist-init.js')}}"></script> --}}
 
-{{-- 
-    <script src="{{ asset('js/lib/morris-chart/raphael-min.js')}}"></script>
-    <script src="{{ asset('js/lib/morris-chart/morris.js')}}"></script> --}}
-    {{-- <script src="{{ asset('js/lib/morris-chart/morris-init.js')}}"></script> --}}
 
 
 
 
-
-    {{-- <script src="{{ asset('js/lib/sparklinechart/jquery.sparkline.min.js')}}"></script>
-    <script src="{{ asset('js/lib/sparklinechart/sparkline.init.js')}}"></script>
+    {{-- 
     <script src="{{ asset('js/lib/owl-carousel/owl.carousel.min.js')}}"></script>
     <script src="{{ asset('js/lib/owl-carousel/owl.carousel-init.js')}}"></script> --}}
     <script src="{{ asset('js/scripts.js')}}"></script>
@@ -45,23 +39,26 @@
 
 {{-- DASHBOARD --}}
 
-{{-- <script src="{{ asset('js/lib/preloader/pace.min.js') }}"></script> --}}
-{{-- <script src="{{ asset('js/lib/bootstrap.min.js') }}"></script> --}}
-{{-- <script src="{{ asset('js/lib/circle-progress/circle-progress.min.js') }}"></script>
-<script src="{{ asset('js/lib/circle-progress/circle-progress-init.js') }}"></script>
-<script src="{{ asset('js/lib/owl-carousel/owl.carousel.min.js') }}"></script>
-<script src="{{ asset('js/lib/owl-carousel/owl.carousel-init.js') }}"></script> --}}
 <script src="{{ asset('js/lib/select2/select2.full.min.js') }}"></script>
 <!--range sliders-->
 <script src="{{ asset('js/lib/rangeSlider/ion.rangeSlider.min.js') }}"></script>
 <script src="{{ asset('js/lib//rangeSlider/rangeslider.init.js') }}"></script>
 <!--range sliders end-->
-<!--charts-->
-<script src="{{ asset('js/lib/morris-chart/raphael-min.js') }}"></script>
+
+<!-- moment.js (gestion des dates) -->
 <script src="{{ asset('js/lib/moment/moment.js') }}"></script>
 {{-- <script src="{{ asset('js/lib/moment/locale/fr.js') }}"></script> --}}
-<!-- moment.js (gestion des dates) -->
-<script src="{{ asset('js/lib/morris-chart/morris.js') }}"></script>
+
+
+<!--charts morris JETON DASHBOARD-->
+<script src="{{ asset('js/lib/morris-chart/raphael-min.js')}}"></script>
+<script src="{{ asset('js/lib/morris-chart/morris.js')}}"></script> 
+<script src="{{ asset('js/lib/morris-chart/morris-init.js')}}"></script>
+
+<!--charts sparkline JETON DASHBOARD-->
+<script src="{{ asset('js/lib/sparklinechart/jquery.sparkline.min.js')}}"></script>
+    
+    
 <!--chartsend-->
 <!--toastr-->
 <script src="{{ asset('js/lib/toastr/toastr.min.js') }}"></script>
@@ -79,8 +76,10 @@
 {{-- <script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js"></script> --}}
 <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
 <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.js"></script>
-<!--stack tables-->
-{{-- <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/123941/stacktable.js"></script> --}}
+
+
+
+
 <!--calendar-->
 <script src="{{ asset('js/lib/jquery-ui/jquery-ui.min.js') }}"></script>
 <script src="https://cdn.datatables.net/buttons/1.6.2/js/dataTables.buttons.min.js"></script>

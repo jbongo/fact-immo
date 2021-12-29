@@ -16,6 +16,7 @@
             <div class="card alert">
                 <!-- table -->
             <a href="{{route('fournisseur.create')}}" class="btn btn-success btn-rounded btn-addon btn-sm m-b-10 m-l-5"><i class="ti-user"></i>@lang('Ajouter un fournisseur')</a>
+            <a href="{{route('passerelles.index')}}" class="btn btn-warning btn-rounded btn-addon btn-sm m-b-10 m-l-5"><i class="ti-direction"></i>@lang('Passerelles')</a>
                 
                 <div class="card-body">
                         <div class="panel panel-warning m-t-15" id="cont" >
@@ -67,7 +68,7 @@
                                                                          
                                 
                                         <td>
-                                            <span><a class="btn btn-default" href="{{route('article.index', Crypt::encrypt($fournisseur->id))}}" data-toggle="tooltip" title="@lang('Voir les annonces ') "><i class="large material-icons color-warning">remove_red_eye</i>Annonces</a></span>
+                                            <span><a class="btn btn-default" href="{{route('article.index', Crypt::encrypt($fournisseur->id))}}" data-toggle="tooltip" title="@lang('Voir les annonces ') "><i class="large material-icons color-warning">remove_red_eye</i>Articles</a></span>
                                             <span><a href="{{route('fournisseur.edit',Crypt::encrypt($fournisseur->id))}}" data-toggle="tooltip" title="@lang('Modifier ') {{ $fournisseur->nom }}"><i class="large material-icons color-warning">edit</i></a></span>
                                         <span><a  href="{{route('fournisseur.edit',$fournisseur->id)}}" class="delete" data-toggle="tooltip" title="@lang('Archiver ') {{ $fournisseur->nom }}"><i class="large material-icons color-danger">delete</i> </a></span>
                                         </td>

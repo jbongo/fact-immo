@@ -2273,6 +2273,8 @@ public  function deduire_pub(Request $request, $facture_id)
         $facture->montant_ttc = $montant_ttc;
         
         $facture->nb_mois_deduis =  $request->nb_mois_deduire;
+        $facture->montant_ttc_deduis = $request->nb_mois_deduire * $facture->user->contrat->packpub->tarif  ;
+        $facture->date_deduction = date('Y-m-d') ;
       
     //   dd($request->nb_mois_deduire);
 
@@ -2399,7 +2401,10 @@ public  function deduire_pub_facture_honoraire(Request $request, $compromis)
             "montant_ttc"=> $montant_ttc,
             "formule" => serialize($formule),
             "nb_mois_deduis"=> $request->nb_mois_deduire,
+            "montant_ttc_deduis" => $request->nb_mois_deduire * $mandataire->contrat->packpub->tarif  ,
+            "date_deduction" => date('Y-m-d') ,
         ]);
+
 
         $mandataire->nb_mois_pub_restant -= $request->nb_mois_deduire;
         $mandataire->update();
@@ -2552,6 +2557,8 @@ if($compromis->je_porte_affaire == 1 && $compromis->est_partage_agent == 1 && (A
                 "montant_ht"=>  $montant_ht,
                 "montant_ttc"=> $montant_ttc,
                 "nb_mois_deduis"=> $request->nb_mois_deduire,
+                "montant_ttc_deduis" => $request->nb_mois_deduire * $mandataire->contrat->packpub->tarif  ,
+                "date_deduction" => date('Y-m-d') ,
                 "formule" => serialize($formule)
             ]);   
         
@@ -2602,6 +2609,8 @@ else{
             "montant_ht"=>  $montant_ht,
             "montant_ttc"=> $montant_ttc,
             "nb_mois_deduis"=> $request->nb_mois_deduire,
+            "montant_ttc_deduis" => $request->nb_mois_deduire * $mandataire->contrat->packpub->tarif  ,
+            "date_deduction" => date('Y-m-d') ,
             "formule" => serialize($formule)
         ]);   
 

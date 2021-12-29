@@ -9,6 +9,8 @@ use App\Filleul;
 use App\Parametre;
 use App\Contrat;
 use App\Facture;
+use App\Packpub;
+use App\Article;
 use Auth;
 use Config;
 use App\Tva;
@@ -58,9 +60,7 @@ class HomeController extends Controller
             }else{
                 $annee_n = date('Y');
             }
-            
-            $annee_n_1 = $annee_n-1;
-        
+                    
         
             $CA_N = array();
                 $ca_global_N = array();
@@ -68,18 +68,17 @@ class HomeController extends Controller
                 $ca_encaisse_N = array();
                 $ca_sous_offre_N = array();
                 $ca_sous_compromis_N = array();
-            $CA_N_1 = array();
-                $ca_global_N_1 = array();
-                $ca_attente_N_1 = array();
-                $ca_encaisse_N_1 = array();
-                $ca_sous_offre_N_1 = array();
-                $ca_sous_compromis_N_1 = array();
+            
 
                 $nb_global_N = 0;
                 $nb_sous_offre_N = 0;
                 $nb_sous_compromis_N = 0;
                 $nb_en_attente_N = 0;
                 $nb_encaisse_N = 0;
+                
+            $PUB_N = array();
+            
+            $PUB_ACH = 0 ; 
                 
                 
                 
@@ -91,13 +90,9 @@ class HomeController extends Controller
             //  ######## Sur l'année N ##########
             for ($i=1; $i <= 12 ; $i++) {                
                        
-                $i < 10 ? $month = "0$i" : $month = $i;
+                $month = $i < 10 ? "0$i" : $i;
                
-               
-        
-        
-                // $compros_styls = Compromis::where([['date_vente','like',"%$annee_n-$month%"],['demande_facture',2],['archive',false]])->get();
-        
+                       
                 #####ca non encaissé, en attente de payement
 
 
@@ -107,19 +102,7 @@ class HomeController extends Controller
                 $nb_en_attente_N += $nb_en_attente_n ;
 
 
-                
-                // on parcour les facture stylimmo non encaissée pour réccupérer les montant_ht  
-                // $ca_att_n = 0;
-                // if($compros_styls != null){
-                //     foreach ($compros_styls as $compros_styl) {
-                //         if($compros_styl->getFactureStylimmo()->encaissee == 0){
-                //             $ca_att_n +=  $compros_styl->frais_agence ;
-                //             $nb_en_attente_N++;
-                //         }
-                //     }
-                // }
                 $ca_attente_N [] = round($ca_att_n,2);
-                // $ca_attente_N [] = round($ca_att_n/Tva::coefficient_tva(),2);
         
                 #####ca encaissé
                 //  on réccupère toutes les factures stylimmo encaissées au cours du mois
@@ -134,10 +117,7 @@ class HomeController extends Controller
                 // $ca_encai_n -=  round($ca_externe/Tva::coefficient_tva(),2);
                 
                 $ca_encaisse_N [] = round($ca_encai_n,2);
-                // $ca_encaisse_N [] = round($ca_encai_n/Tva::coefficient_tva(),2);
-                
-                // dd(Tva::coefficient_tva());
-                
+               
                 
                 $ca_sous_offre_n = Compromis::where([['created_at','like',"%$annee_n-$month%"],['demande_facture','<',2],['pdf_compromis',null],['archive',false]])->sum('frais_agence');
                 $nb_sous_offre_n = Compromis::where([['created_at','like',"%$annee_n-$month%"],['demande_facture','<',2],['pdf_compromis',null],['archive',false]])->count();
@@ -158,7 +138,26 @@ class HomeController extends Controller
                 
                 
                 
+                // ########## PUB #############
                 
+                
+                for ($y=1; $y <= 12 ; $y++) { 
+                    $month = $y < 10 ? "0$y" : $y;
+                    
+                    $montant_jeton = Facture::where([['nb_mois_deduis', '<>', null], ['date_deduction','like',"%$annee_n-$month%"]])->sum('montant_ttc_deduis');
+                    $montant_pub = Facture::where([['type','pack_pub'], ['date_encaissement','like',"%$annee_n-$month%"]])->sum('montant_ttc');
+                    
+                    
+                    
+                   $PUB_N[$y] =  $montant_jeton + $montant_pub;
+                    
+                }
+                
+                
+               
+                $PUB_ACH = Article::where([['type', 'annonce'], ['a_expire', false]])->sum('prix_achat');
+                
+            
                // ########### Autres chiffres
 
                 //Nombre d'affaires en cours (Nombre d'affaires non cloturées)
@@ -543,7 +542,12 @@ $STATS = array();
             $STATS["nb_filleuls"] = $nb_filleuls;
             
            
-           
+            $STATS['PUB_N'] = $PUB_N ;
+            $STATS['PUB_ACH'] = $PUB_ACH ; 
+            $STATS['TOTAL_PUB_N'] = array_sum($PUB_N)  ;
+            $STATS['TOTAL_PUB_ACH'] = $PUB_ACH * 12 ; 
+            
+        
             Config::set('stats.CA_N',$CA_N);
             Config::set('stats.STATS',$STATS);
             

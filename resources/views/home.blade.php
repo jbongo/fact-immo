@@ -172,6 +172,7 @@
                 <h4 class="card-title">Chiffre d'affaires Styl HT annuel {{config('stats.STATS.annee')}} </h4>
                 <div id="morris-donut-chart"></div>
             </div>
+            <hr>
             <div>
                 <button style="background-color:#ff1a1a; width:50px; height:20px"></button> <span style="font-family: Montserrat; font-size:16px; font-weight:bold; ">Chiffre d'affaires Styl HT Général : {{number_format( array_sum(config('stats.CA_N')[0]) ,2,'.',',')}}</span> 
             </div>
@@ -213,9 +214,40 @@
   
 </div>
 
+{{-- ####################### PUBS CONSOMMES ####################### --}}
 
+@if(Auth::user()->role == "admin")
 
+<div class="row">
 
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title"> Pub mensuelle </h4>
+                <div id="morris-bar-chart"></div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-4">
+        <div class="card alert nestable-cart">
+            <div class="card-header">
+                <h4>Pub annuelle</h4>               
+            </div>
+            <div class="sparkline-unix">
+                <div id="sparkline11" class="text-center"></div>
+            </div>
+            <hr>
+            <div>
+                <button style="background-color:#39ff1a; width:50px; height:20px"></button> <span style="font-family: Montserrat; font-size:16px; font-weight:bold; ">Pub totale encaissée en {{config('stats.STATS')['annee']}} : {{number_format( (config('stats.STATS')['TOTAL_PUB_N']) ,2,'.',',')}}</span> <br>
+                <button style="background-color:#ff1a1a; width:50px; height:20px"></button> <span style="font-family: Montserrat; font-size:16px; font-weight:bold; ">Pub Totale achetée en {{config('stats.STATS')['annee']}} : {{number_format( (config('stats.STATS')['TOTAL_PUB_ACH']) ,2,'.',',')}}</span> 
+            </div>
+        </div>
+        <!-- /# card -->
+    </div>
+</div>
+
+@endif
 
 
 {{-- ############# --}}
@@ -275,7 +307,6 @@
 </div>
 </div> --}}
 
-</div>
 
 
 @stop
@@ -654,9 +685,142 @@
 
 
 
+{{-- ####################### JETONS CONSOMMES ####################### --}}
 
+<script>
+// Dashboard 1 Morris-chart
+$(function () {
+    "use strict";
 
+// Morris bar chart
+    Morris.Bar({
+        element: 'morris-bar-chart',
+        
+        data: [
+        { 
+            y:'Janvier',
+            a:{{config('stats.STATS')['PUB_N'][1]}},
+            b:{{config('stats.STATS')['PUB_ACH']}},
+          
+        },
+        
+        { 
+            y:'Février',
+            a:{{config('stats.STATS')['PUB_N'][2]}},
+            b:{{config('stats.STATS')['PUB_ACH']}},
+           
+        },
+        
+        { 
+            y:'Mars',
+            a:{{config('stats.STATS')['PUB_N'][3]}},
+            b:{{config('stats.STATS')['PUB_ACH']}},
+          
+        },
+        
+        { 
+            y:'Avril',
+            a:{{config('stats.STATS')['PUB_N'][4]}},
+            b:{{config('stats.STATS')['PUB_ACH']}},
+         
+        },
+        
+        { 
+            y:'Mai',
+            a:{{config('stats.STATS')['PUB_N'][5]}},
+            b:{{config('stats.STATS')['PUB_ACH']}},
+         
+        },
+        
+        { 
+            y:'Juin',
+            a:{{config('stats.STATS')['PUB_N'][6]}},
+            b:{{config('stats.STATS')['PUB_ACH']}},
+          
+        },
+        
+        { 
+            y:'Juillet',
+            a:{{config('stats.STATS')['PUB_N'][7]}},
+            b:{{config('stats.STATS')['PUB_ACH']}},
+           
+        },
+        
+        { 
+            y:'Août',
+            a:{{config('stats.STATS')['PUB_N'][8]}},
+            b:{{config('stats.STATS')['PUB_ACH']}},
+           
+        },
+        
+        { 
+            y:'Septembre',
+            a:{{config('stats.STATS')['PUB_N'][9]}},
+            b:{{config('stats.STATS')['PUB_ACH']}},
+          
+        },
+        
+        { 
+            y:'Octobre',
+            a: {{config('stats.STATS')['PUB_N'][10]}},
+            b:{{config('stats.STATS')['PUB_ACH']}},
+           
+        },
+        
+        { 
+            y:'Novembre',
+            a:{{config('stats.STATS')['PUB_N'][11]}},
+            b:{{config('stats.STATS')['PUB_ACH']}},
+        
+        },
+        
+        { 
+            y:'Décembre',        
+            a:{{config('stats.STATS')['PUB_N'][12]}},
+            b:{{config('stats.STATS')['PUB_ACH']}},
+            
+        },
+    ],
+        xkey: 'y',
+        ykeys: ['a', 'b'],
+        labels: ['Encaissé', 'Acheté',],
+        barColors:['#6eff1a', '#ff1a1a', ],
+        hideHover: 'auto',
+        gridLineColor: '#eef0f2',
+        resize: true
+    });
+ });    
+</script>
 
+<script>
+
+$(document).ready(function() {
+	"use strict";
+	
+    var sparklineLogin = function() {
+
+        $('#sparkline11').sparkline([{{config('stats.STATS')['TOTAL_PUB_N']}}, {{config('stats.STATS')['TOTAL_PUB_ACH']}}], {
+            type: 'pie',
+            height: '300',
+            resize: true,
+            sliceColors: ['#6eff1a', '#ff1a1a']
+        });
+        
+    }
+    var sparkResize;
+
+    $(window).resize(function(e) {
+        clearTimeout(sparkResize);
+        sparkResize = setTimeout(sparklineLogin, 500);
+    });
+    sparklineLogin();
+
+});
+</script>
+
+{{-- ####################### FIN JETONS CONSOMMES ####################### --}}
+
+0ad2ff
 
 
 <script>
