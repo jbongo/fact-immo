@@ -174,7 +174,7 @@
             </div>
             <hr>
             <div>
-                <button style="background-color:#ff1a1a; width:50px; height:20px"></button> <span style="font-family: Montserrat; font-size:16px; font-weight:bold; ">Chiffre d'affaires Styl HT Général : {{number_format( array_sum(config('stats.CA_N')[0]) ,2,'.',',')}}</span> 
+                <button style="background-color:#ff1a1a; width:50px; height:20px"></button> <span style="font-family: Montserrat; font-size:16px; font-weight:bold; ">Chiffre d'affaires Styl HT Général :  <span style="color: #ff1a1a"> {{number_format( array_sum(config('stats.CA_N')[0]) ,2,'.',',')}} </span></span> 
             </div>
 
             @if(Auth::user()->role == "mandataire")
@@ -239,8 +239,8 @@
             </div>
             <hr>
             <div>
-                <button style="background-color:#39ff1a; width:50px; height:20px"></button> <span style="font-family: Montserrat; font-size:16px; font-weight:bold; ">Pub totale encaissée en {{config('stats.STATS')['annee']}} : {{number_format( (config('stats.STATS')['TOTAL_PUB_N']) ,2,'.',',')}}</span> <br>
-                <button style="background-color:#ff1a1a; width:50px; height:20px"></button> <span style="font-family: Montserrat; font-size:16px; font-weight:bold; ">Pub Totale achetée en {{config('stats.STATS')['annee']}} : {{number_format( (config('stats.STATS')['TOTAL_PUB_ACH']) ,2,'.',',')}}</span> 
+                <button style="background-color:#39ff1a; width:50px; height:20px"></button> <span style="font-family: Montserrat; font-size:16px; font-weight:bold; ">Pub totale encaissée en {{config('stats.STATS')['annee']}} : <span style="color: #39ff1a">  {{number_format( (config('stats.STATS')['TOTAL_PUB_N']) ,2,'.',',')}} </span> </span> <br>
+                <button style="background-color:#ff1a1a; width:50px; height:20px"></button> <span style="font-family: Montserrat; font-size:16px; font-weight:bold; ">Pub Totale achetée en {{config('stats.STATS')['annee']}} : <span style="color: #ff1a1a">  {{number_format( (config('stats.STATS')['TOTAL_PUB_ACH']) ,2,'.',',')}} </span> </span> 
             </div>
         </div>
         <!-- /# card -->
@@ -686,7 +686,7 @@
 
 
 {{-- ####################### JETONS CONSOMMES ####################### --}}
-
+@if(Auth::user()->role =="admin")
 <script>
 // Dashboard 1 Morris-chart
 $(function () {
@@ -817,10 +817,9 @@ $(document).ready(function() {
 
 });
 </script>
-
+@endif
 {{-- ####################### FIN JETONS CONSOMMES ####################### --}}
 
-0ad2ff
 
 
 <script>

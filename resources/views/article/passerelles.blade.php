@@ -35,7 +35,7 @@
                                 
                                     <tr style="background-color: #2a596d;">
                                         <th   style=" color:#fff">Fournisseur</th>
-                                        <th   style=" color:#fff">Quantité</th>
+                                        <th   style=" color:#fff">Quantité restante</th>
                                         <th   style=" color:#fff">Prix d'achat</th>
                                         <th   style=" color:#fff">Date d'achat</th>
                                         <th   style=" color:#fff">Fin de contrat</th>
