@@ -31,6 +31,6 @@ class PartageAffaire extends Mailable
      */
     public function build()
     {
-        return $this->markdown('email.partage_affaire');
+        return $this->subject("MINICURIEUX - Partage affaire")->markdown('email.partage_affaire');
     }
 }

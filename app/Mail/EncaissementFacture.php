@@ -29,6 +29,6 @@ class EncaissementFacture extends Mailable
      */
     public function build()
     {
-        return $this->markdown('email.encaissement_facture');
+        return $this->subject("MINICURIEUX - Encaissement de facture STYL'IMMO")->markdown('email.encaissement_facture');
     }
 }

@@ -51,7 +51,7 @@ class NotifMandataireAZero extends Mailable
     public function build()
     {
     
-        return $this->subject("Mise à jour de votre commission")->markdown('email.notif_mandataire_zero');
+        return $this->subject("MINICURIEUX - Mise à jour de votre commission")->markdown('email.notif_mandataire_zero');
        
 
     }

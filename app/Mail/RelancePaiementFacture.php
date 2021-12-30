@@ -30,7 +30,7 @@ class RelancePaiementFacture extends Mailable
      */
     public function build()
     {
-        return $this->subject("STYL'IMMO - Relance facture")->markdown('email.relance_paiement_facture')
+        return $this->subject("MINICURIEUX - Relance facture")->markdown('email.relance_paiement_facture')
         ->attach($this->facture->url);
     }
 }

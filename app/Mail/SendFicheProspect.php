@@ -32,7 +32,7 @@ public $url;
      */
     public function build()
     {
-        return $this->subject("STYL'IMMO - Mise à jour de votre fiche Info")->markdown('email.sendficheprospect');
+        return $this->subject("MINICURIEUX - Mise à jour de votre fiche Info")->markdown('email.sendficheprospect');
 
     }
 }

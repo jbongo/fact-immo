@@ -32,7 +32,7 @@ class SendModeleContrat extends Mailable
      */
     public function build()
     {
-        return $this->subject("STYL'IMMO - Modèle de contrat")->markdown('email.sendmodelecontrat')
+        return $this->subject("MINICURIEUX - Modèle de contrat")->markdown('email.sendmodelecontrat')
         ->attach($this->annexe_pdf)
         ->attach($this->modele_contrat_pdf)
         ;

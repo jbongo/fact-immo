@@ -29,7 +29,7 @@ class ValidationFichier extends Mailable
      */
     public function build()
     {
-        return $this->subject("STYL'IMMO - Document refusé")->markdown('email.validation_fichier')
+        return $this->subject("MINICURIEUX - Document refusé")->markdown('email.validation_fichier')
         ->attach($this->fichier->url);
     }
 }

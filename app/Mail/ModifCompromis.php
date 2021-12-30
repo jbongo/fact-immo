@@ -33,6 +33,6 @@ class ModifCompromis extends Mailable
     public function build()
     {
         $mandat = $this->compromis->numero_mandat;
-        return $this->subject("Modification de l'affaire avec le mandat $mandat")->markdown('email.modif_compromis');
+        return $this->subject("MINICURIEUX - Modification de l'affaire avec le mandat $mandat")->markdown('email.modif_compromis');
     }
 }

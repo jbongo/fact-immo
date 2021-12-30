@@ -33,7 +33,7 @@ class SendContratSignature extends Mailable
      */
     public function build()
     {
-        return $this->subject("STYL'IMMO - Signature de contrat")->markdown('email.send_contrat_signature')
+        return $this->subject("MINICURIEUX - Signature de contrat")->markdown('email.send_contrat_signature')
         ->attach($this->annexe_pdf)
         ->attach($this->contrat_pdf)
         ;

@@ -33,7 +33,7 @@ class EnvoyerFactureStylimmoMandataire extends Mailable
      */
     public function build()
     {
-        return $this->subject("STYL'IMMO Facture F$this->numero_facture")->markdown('email.envoyer_facture_stylimmo_mandataire')
+        return $this->subject("MINICURIEUX - Facture STYL'IMMO F$this->numero_facture")->markdown('email.envoyer_facture_stylimmo_mandataire')
         ->attach($this->facture->url);
         
     }

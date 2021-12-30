@@ -38,7 +38,7 @@ class EnvoyerFactPub extends Mailable
      */
     public function build()
     {
-        return $this->subject("Facture Pub et logiciel $this->mois F$this->numero_facture")->markdown('email.envoyer_fact_pub')
+        return $this->subject("MINICURIEUX - Facture Pub et logiciel $this->mois F$this->numero_facture")->markdown('email.envoyer_fact_pub')
         ->attach($this->facture->url);
     }
 }

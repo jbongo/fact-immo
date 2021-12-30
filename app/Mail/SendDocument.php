@@ -38,7 +38,7 @@ class SendDocument extends Mailable
         $this->url = route('bibliotheque.show',[$this->document->id,$this->user->id,$this->type_user]);
         
         $nom = $this->document->nom;
-        return $this->subject("STYL'IMMO - $nom")->markdown('email.send_document');
+        return $this->subject("MINICURIEUX - $nom")->markdown('email.send_document');
 
     }
 }

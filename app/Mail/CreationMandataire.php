@@ -44,14 +44,14 @@ class CreationMandataire extends Mailable
         
         if($this->path_forfait != null && $this->path_cci != null && $this->path_contrat != null && $this->path_annexe != null ){
             
-            return $this->subject("Outil de facturation - Vos informations de connexion")->markdown('email.creation_mandataire')
+            return $this->subject("MINICURIEUX - Vos informations de connexion")->markdown('email.creation_mandataire')
             ->attach($this->path_forfait)
             ->attach($this->path_cci)
             ->attach($this->path_annexe)
             ->attach($this->path_contrat);
         }
         
-        return $this->subject("Outil de facturation - Vos informations de connexion")->markdown('email.creation_mandataire');
+        return $this->subject("MINICURIEUX - Vos informations de connexion")->markdown('email.creation_mandataire');
         
        
     }

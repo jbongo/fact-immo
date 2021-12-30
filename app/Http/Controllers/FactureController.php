@@ -1081,8 +1081,7 @@ public  function preparer_facture_honoraire($compromis)
         $niveau = $this->calcul_niveau($paliers, $chiffre_affaire_styl );
 
         // ENVOI MAIL SI COMMISSION EVOLUE ######################################################################################################################################### 
-        $mandataire->commission = $paliers[$niveau-1][1];
-        $mandataire->update();
+        $mandataire->updateCommission($paliers[$niveau-1][1]);
 
             // Faire la facture du parrain s'il y'a un parrain 
 
@@ -1906,8 +1905,7 @@ public  function preparer_facture_honoraire_partage($compromis,$mandataire_id = 
             // on incremente le chiffre d'affaire et on modifie s'il le faut le pourcentage
        
             $niveau = $this->calcul_niveau($paliers, $chiffre_affaire_styl );
-            $mandataire->commission = $paliers[$niveau-1][1];
-            $mandataire->update();
+            $mandataire->updateCommission($paliers[$niveau-1][1]);
 
             // Faire la facture du parrain de celui pas l'affaire s'il a un parrain 
 
@@ -1979,8 +1977,7 @@ public  function preparer_facture_honoraire_partage($compromis,$mandataire_id = 
             // on incremente le chiffre d'affaire et on modifie s'il le faut le pourcentage
       
             $niveau = $this->calcul_niveau($paliers, $chiffre_affaire_styl );
-            $mandataire->commission = $paliers[$niveau-1][1];
-            $mandataire->update();
+            $mandataire->updateCommission($paliers[$niveau-1][1]);
 
             // // Faire la facture du parrain de celui qui ne porte pas l'affaire s'il a un parrain 
 
@@ -2219,8 +2216,7 @@ public  function preparer_facture_honoraire_encaissement($compromis_id, $leporte
             // on incremente le chiffre d'affaire et on modifie s'il le faut le pourcentage
             $niveau = $this->calcul_niveau($paliers, $chiffre_affaire_styl );
     
-            $mandataire->commission = $paliers[$niveau-1][1];
-            $mandataire->update();
+            $mandataire->updateCommission($paliers[$niveau-1][1]);
     
         
   
@@ -2435,8 +2431,7 @@ public  function deduire_pub_facture_honoraire(Request $request, $compromis)
     // on incremente le chiffre d'affaire et on modifie s'il le faut le pourcentage
 
     $niveau = $this->calcul_niveau($paliers, $chiffre_affaire_styl );
-    $mandataire->commission = $paliers[$niveau-1][1];
-    $mandataire->update();
+    $mandataire->updateCommission($paliers[$niveau-1][1]);
 
 
     $factureStylimmo = Facture::where([ ['type','stylimmo'],['compromis_id',$compromis->id]])->first();
@@ -2573,8 +2568,7 @@ if($compromis->je_porte_affaire == 1 && $compromis->est_partage_agent == 1 && (A
 
         // on incremente le chiffre d'affaire et on modifie s'il le faut le pourcentage
         $niveau = $this->calcul_niveau($paliers, $chiffre_affaire_styl );
-        $mandataire->commission = $paliers[$niveau-1][1];
-        $mandataire->update();
+        $mandataire->updateCommission($paliers[$niveau-1][1]);
 
         // Faire la facture du parrain de celui pas l'affaire s'il a un parrain 
 
@@ -2623,8 +2617,7 @@ else{
         // on incremente le chiffre d'affaire et on modifie s'il le faut le pourcentage
 
         $niveau = $this->calcul_niveau($paliers, $chiffre_affaire_styl );
-        $mandataire->commission = $paliers[$niveau-1][1];
-        $mandataire->update();
+        $mandataire->updateCommission($paliers[$niveau-1][1]);
 
         // // Faire la facture du parrain de celui qui ne porte pas l'affaire s'il a un parrain 
 

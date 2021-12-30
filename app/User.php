@@ -9,6 +9,9 @@ use App\Facture;
 use App\Fichier;
 use App\Document;
 use App\Bibliotheque;
+use App\Mail\NotifChangementPalier;
+use Illuminate\Support\Facades\Mail;
+
 
 class User extends Authenticatable
 {
@@ -52,8 +55,12 @@ class User extends Authenticatable
         return $this->hasOne('App\Filleul');
     }
 
+/*******
 
-    // Chiffre d'affaires encaissé par le mandataire compris entre date deb et date fin
+*   Chiffre d'affaires encaissé par le mandataire compris entre date deb et date fin
+
+*******/
+    
     public function  chiffre_affaire($date_deb, $date_fin){
    
         $chiffre_affaire_encai = Facture::where([['user_id',$this->id],['reglee',true]])->whereIn('type',['honoraire','partage','parrainage','parrainage_partage'])->whereBetween('date_reglement', [$date_deb, $date_fin])->sum('montant_ht');
@@ -61,7 +68,12 @@ class User extends Authenticatable
      
     }
     
-    // Chiffre d'affaires non encaissé par le mandataire compris entre date deb et date fin
+    
+/*******
+
+*   Retourne le Chiffre d'affaires non encaissé par le mandataire compris entre date deb et date fin
+
+*******/
     public function  chiffre_affaire_non_encaisse($date_deb, $date_fin){
    
         $chiffre_affaire_non_encai = Facture::where([['user_id',$this->id],['reglee',false]])->whereIn('type',['honoraire','partage','parrainage','parrainage_partage'])->whereBetween('created_at', [$date_deb, $date_fin])->sum('montant_ht');
@@ -69,7 +81,13 @@ class User extends Authenticatable
      
     }
     
-    // nombre d'affaires encaissé par le mandataire compris entre date deb et date fin
+    
+/*******
+
+*  Retourne le nombre d'affaires encaissé par le mandataire compris entre date deb et date fin
+
+*******/
+    
     public function  nb_affaire_encaisse($date_deb, $date_fin){
    
         $chiffre_affaire_encai = Facture::where([['user_id',$this->id],['reglee',true]])->whereIn('type',['honoraire','partage','parrainage','parrainage_partage'])->whereBetween('date_reglement', [$date_deb, $date_fin])->count();
@@ -77,7 +95,12 @@ class User extends Authenticatable
      
     }
     
-    // nombre d'affaires non encaissé par le mandataire compris entre date deb et date fin
+/*******
+
+*  Retourne le nombre d'affaires non encaissé par le mandataire compris entre date deb et date fin
+
+*******/
+
     public function  nb_affaire_non_encaisse($date_deb, $date_fin){
    
         $chiffre_affaire_non_encai = Facture::where([['user_id',$this->id],['reglee',false]])->whereIn('type',['honoraire','partage','parrainage','parrainage_partage'])->whereBetween('created_at', [$date_deb, $date_fin])->count();
@@ -85,8 +108,13 @@ class User extends Authenticatable
      
     }
 
-    // Chiffre d'affaire stylimmo encaissé compris entre date deb et date fin
-        public function  chiffre_affaire_styl($date_deb, $date_fin){
+/*******
+
+*  Chiffre d'affaire stylimmo encaissé compris entre date deb et date fin
+
+*******/
+
+    public function  chiffre_affaire_styl($date_deb, $date_fin){
 
 
             $compro_encaisse_partage_pas_n = Compromis::where([['user_id',$this->id],['est_partage_agent',false],['demande_facture',2],['archive',false]])->get();
@@ -139,7 +167,11 @@ class User extends Authenticatable
 
 
 
-    // Chiffre d'affaire stylimmo encaissé lié aux affaires réglée compris entre date deb et date fin 
+/*******
+
+* Chiffre d'affaire stylimmo encaissé lié aux affaires réglée compris entre date deb et date fin 
+
+*******/
     public function  chiffre_affaire_styl_associe($date_deb, $date_fin){
 
         $factures_encaissees = Facture::where([['user_id',$this->id],['reglee',true]])->whereIn('type',['honoraire','partage'])->whereBetween('date_reglement', [$date_deb, $date_fin])->get();
@@ -178,9 +210,11 @@ class User extends Authenticatable
     }
 
 
+/*******
 
+*  Calucl le nombre vente du mandataire,  
 
-    // Calucl le nombre vente du mandataire, 
+*******/
 
     public function  nombre_vente($date_deb, $date_fin){
 
@@ -203,7 +237,13 @@ class User extends Authenticatable
     }
     
 
-    // Retourn le nombre de filleuls parrainné dans sur une période
+     
+    
+/*******
+
+* Retourne le nombre de filleuls parrainné dans sur une période
+
+*******/
 
     public function  nombre_filleul($date_deb, $date_fin){
 
@@ -224,6 +264,11 @@ class User extends Authenticatable
     }
 
 
+/*******
+
+* Retourne la prochaine date d'anniversaire du mandataire
+
+*******/
     public function  date_anniv($lang = "en"){
 
             // On va determiner la dernière date d'anniv de sa date d'anniversaire
@@ -271,8 +316,12 @@ class User extends Authenticatable
     }
 
 
-     
-    // Retourne le max à deduire et le reste à déduire
+/*******
+
+* Retourne le jeton max à deduire et le reste à déduire
+
+*******/
+
     public function etat_jeton(){
         
         $mandataire = User::where('id', $this->id)->first();
@@ -309,7 +358,11 @@ class User extends Authenticatable
     }
     
     
-    // Retourne les infos prospect lorsque le mandataire étatit prospect
+/*******
+
+* Retourne les infos prospect lorsque le mandataire étatit prospect
+
+*******/
     public function prospect(){
     
         return $this->hasOne('App\Prospect');
@@ -317,8 +370,11 @@ class User extends Authenticatable
     }
     
     
-        
-    // Retourne le document du mandataire 
+/*******
+
+*  Retourne le document du mandataire dont l'id est passé en paramètre
+
+*******/
     public function document($document_id){
     
         if(intval($document_id)){
@@ -334,19 +390,49 @@ class User extends Authenticatable
     
     }
     
-    
-    // Retourne tous les documents qui lui ont étés envoyés
+/*******
+
+*  Retourne tous les documents qui ont étés envoyés aumandataire
+
+*******/    
     public function bibliotheques(){
 
         return $this->belongsToMany(Bibliotheque::class, 'user_bibliotheque', 'user_id', 'bibliotheque_id');
     
     }
     
-    // Retourne tous les documents qui lui ont étés envoyés
+/*******
+
+*  Retourne tous le document qui a été envoyé au mandataire
+
+*******/  
     public function getBibliotheque($bibliotheque_id){
 
         return $this->bibliotheques()->wherePivot('bibliotheque_id', $bibliotheque_id)->withPivot('est_prospect','est_fichier_vu','question1','created_at','updated_at')->first();
     
+    }
+    
+
+
+/*******
+
+*  Met à jour la commission du mandataire avec la nouvelle comm passée en paramètre, puis envois un mail en cas de nouvelle commission
+
+*******/  
+    public function updateCommission($new_commission){
+    
+        if($this->commission < $new_commission){
+            
+            Mail::to($this->email)->send(new NotifChangementPalier($this, $this->commission , $new_commission));
+            Mail::to("support@stylimmo.com")->send(new NotifChangementPalier($this, $this->commission , $new_commission));
+            
+            $this->commission = $new_commission;
+            $this->update();
+            return true;
+        
+        }
+        
+        return false;
     }
 
 }

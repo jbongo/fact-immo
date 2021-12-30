@@ -3,8 +3,8 @@
 
 Vous venez de changer de palier <br>
 
-Ancien pourcentage : {{$ancien_pourcentant}} % <br>
-Nouveau pourcentage : {{$nouveau_pourcentant}} % <br>
+Ancienne commission : {{$ancien_pourcentant}} % <br>
+Nouvelle commission : {{$nouveau_pourcentant}} % <br>
 
 @component('mail::button', ['url' => config('app.url') ])
 Se connecter

@@ -30,6 +30,6 @@ class DemandeFactureStylimmo extends Mailable
      */
     public function build()
     {
-        return $this->markdown('email.demande_facture_stylimmo');
+        return $this->subject("MINICURIEUX - Demande de facture STYL'IMMO")->markdown('email.demande_facture_stylimmo');
     }
 }

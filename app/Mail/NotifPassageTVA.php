@@ -33,6 +33,6 @@ class NotifPassageTVA extends Mailable
      */
     public function build()
     {
-        return $this->view('email.notif_passage_tva');
+        return $this->subject("MINICURIEUX -Passage à la TVA")->markdown('email.notif_passage_tva');
     }
 }

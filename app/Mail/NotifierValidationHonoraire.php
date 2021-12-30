@@ -29,6 +29,6 @@ class NotifierValidationHonoraire extends Mailable
      */
     public function build()
     {
-        return $this->subject("Validation facture Honoraire")->markdown('email.validation_honoraire');
+        return $this->subject("MINICURIEUX - Validation facture Honoraire")->markdown('email.validation_honoraire');
     }
 }

@@ -30,7 +30,7 @@ class PassageTVA extends Mailable
      */
     public function build()
     {
-        return $this->subject("Outil de facturation - Passage à la TVA")->markdown('email.passage_tva');
+        return $this->subject("MINICURIEUX - Outil de facturation - Passage à la TVA")->markdown('email.passage_tva');
 
     }
 }

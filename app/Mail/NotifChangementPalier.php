@@ -33,6 +33,7 @@ class NotifChangementPalier extends Mailable
      */
     public function build()
     {
-        return $this->view('email.notif_changement_palier');
+        return $this->subject("MINICURIEUX - Nouveau palier")->markdown('email.notif_changement_palier');    
+     
     }
 }

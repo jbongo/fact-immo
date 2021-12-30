@@ -32,7 +32,7 @@ class ChangementTVA extends Mailable
      */
     public function build()
     {
-        return $this->subject("Outil de facturation - Changement TVA")->markdown('email.changement_tva');
+        return $this->subject("MINICURIEUX - Changement TVA")->markdown('email.changement_tva');
 
     }
 }
