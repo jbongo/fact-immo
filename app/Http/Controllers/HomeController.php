@@ -77,6 +77,7 @@ class HomeController extends Controller
                 $nb_encaisse_N = 0;
                 
             $PUB_N = array();
+            $PUB_VENDU = array();
             
             $PUB_ACH = 0 ; 
                 
@@ -150,10 +151,22 @@ class HomeController extends Controller
                     
                     
                    $PUB_N[$y] =  $montant_jeton + $montant_pub;
+                   
+                   
+                   $vendu_y = Packpub::join('contrats', 'packpubs.id','contrats.packpub_id')
+                   ->where([['contrats.a_demission',false], ['date_deb_activite', '<=',"$annee_n-$month-01"]])
+               
+                   ->sum('packpubs.tarif')
+                // ->get()
+                   ;
+               
+                   
+                    $PUB_VENDU[$y] = $vendu_y;
                     
                 }
+                       
                 
-                
+                // dd($PUB_VENDU);
                
                 $PUB_ACH = Article::where([['type', 'annonce'], ['a_expire', false]])->sum('prix_achat');
                 
@@ -544,6 +557,8 @@ $STATS = array();
            
             $STATS['PUB_N'] = $PUB_N ;
             $STATS['PUB_ACH'] = $PUB_ACH ; 
+            $STATS['PUB_VENDU'] = $PUB_VENDU ; 
+            
             $STATS['TOTAL_PUB_N'] = array_sum($PUB_N)  ;
             $STATS['TOTAL_PUB_ACH'] = $PUB_ACH * 12 ; 
             

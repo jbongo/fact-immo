@@ -3,11 +3,11 @@
 
 @if($facture->statut == "refuse")
 
-Votre facture <strong> {{$facture->numero}}</strong> a été refusé. <br>
+Votre facture <strong> {{$facture->numero}}</strong> a été refusée. <br>
 Contactez l'administrateur pour plus d'informations.
 @else
 
-Votre facture <strong> {{$facture->numero}}</strong> a été accepté. <br>
+Votre facture <strong> {{$facture->numero}}</strong> a été acceptée. <br>
 
 
 @endif

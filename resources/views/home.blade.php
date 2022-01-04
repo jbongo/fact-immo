@@ -226,6 +226,10 @@
                 <h4 class="card-title"> Pub mensuelle </h4>
                 <div id="morris-bar-chart"></div>
             </div>
+            <hr>
+            <button style="background-color:#39ff1a; width:50px; height:20px"></button> <span style="font-family: Montserrat; font-size:16px; font-weight:bold; ">Pub encaissée   </span>
+            <button style="background-color:#0ad2ff; width:50px; height:20px"></button> <span style="font-family: Montserrat; font-size:16px; font-weight:bold; ">Pub vendue  </span>
+            <button style="background-color:#ff1a1a; width:50px; height:20px"></button> <span style="font-family: Montserrat; font-size:16px; font-weight:bold; ">Pub achetée  </span> 
         </div>
     </div>
     
@@ -700,91 +704,103 @@ $(function () {
         { 
             y:'Janvier',
             a:{{config('stats.STATS')['PUB_N'][1]}},
-            b:{{config('stats.STATS')['PUB_ACH']}},
+            b:{{config('stats.STATS')['PUB_VENDU'][1]}},            
+            c:{{config('stats.STATS')['PUB_ACH']}},
           
         },
         
         { 
             y:'Février',
             a:{{config('stats.STATS')['PUB_N'][2]}},
-            b:{{config('stats.STATS')['PUB_ACH']}},
+            b:{{config('stats.STATS')['PUB_VENDU'][2]}},            
+            c:{{config('stats.STATS')['PUB_ACH']}},
            
         },
         
         { 
             y:'Mars',
             a:{{config('stats.STATS')['PUB_N'][3]}},
-            b:{{config('stats.STATS')['PUB_ACH']}},
+            b:{{config('stats.STATS')['PUB_VENDU'][3]}},            
+            c:{{config('stats.STATS')['PUB_ACH']}},
           
         },
         
         { 
             y:'Avril',
             a:{{config('stats.STATS')['PUB_N'][4]}},
-            b:{{config('stats.STATS')['PUB_ACH']}},
+            b:{{config('stats.STATS')['PUB_VENDU'][4]}},            
+            c:{{config('stats.STATS')['PUB_ACH']}},
          
         },
         
         { 
             y:'Mai',
             a:{{config('stats.STATS')['PUB_N'][5]}},
-            b:{{config('stats.STATS')['PUB_ACH']}},
+            b:{{config('stats.STATS')['PUB_VENDU'][5]}},            
+            c:{{config('stats.STATS')['PUB_ACH']}},
          
         },
         
         { 
             y:'Juin',
             a:{{config('stats.STATS')['PUB_N'][6]}},
-            b:{{config('stats.STATS')['PUB_ACH']}},
+            b:{{config('stats.STATS')['PUB_VENDU'][6]}},            
+            c:{{config('stats.STATS')['PUB_ACH']}},
           
         },
         
         { 
             y:'Juillet',
             a:{{config('stats.STATS')['PUB_N'][7]}},
-            b:{{config('stats.STATS')['PUB_ACH']}},
+            b:{{config('stats.STATS')['PUB_VENDU'][7]}},            
+            c:{{config('stats.STATS')['PUB_ACH']}},
            
         },
         
         { 
             y:'Août',
             a:{{config('stats.STATS')['PUB_N'][8]}},
-            b:{{config('stats.STATS')['PUB_ACH']}},
+            b:{{config('stats.STATS')['PUB_VENDU'][8]}},            
+            c:{{config('stats.STATS')['PUB_ACH']}},
            
         },
         
         { 
             y:'Septembre',
             a:{{config('stats.STATS')['PUB_N'][9]}},
-            b:{{config('stats.STATS')['PUB_ACH']}},
+            b:{{config('stats.STATS')['PUB_VENDU'][9]}},            
+            c:{{config('stats.STATS')['PUB_ACH']}},
           
         },
         
         { 
             y:'Octobre',
             a: {{config('stats.STATS')['PUB_N'][10]}},
-            b:{{config('stats.STATS')['PUB_ACH']}},
+            b:{{config('stats.STATS')['PUB_VENDU'][10]}},            
+            c:{{config('stats.STATS')['PUB_ACH']}},
            
         },
         
         { 
             y:'Novembre',
             a:{{config('stats.STATS')['PUB_N'][11]}},
-            b:{{config('stats.STATS')['PUB_ACH']}},
+            b:{{config('stats.STATS')['PUB_VENDU'][11]}},            
+            c:{{config('stats.STATS')['PUB_ACH']}},
         
         },
         
         { 
             y:'Décembre',        
             a:{{config('stats.STATS')['PUB_N'][12]}},
-            b:{{config('stats.STATS')['PUB_ACH']}},
+            b:{{config('stats.STATS')['PUB_VENDU'][12]}},            
+            c:{{config('stats.STATS')['PUB_ACH']}},
             
         },
     ],
         xkey: 'y',
-        ykeys: ['a', 'b'],
-        labels: ['Encaissé', 'Acheté',],
-        barColors:['#6eff1a', '#ff1a1a', ],
+        ykeys: ['a', 'b','c'],
+        labels: ['Encaissé','Vendu','Acheté',],
+        barColors:['#6eff1a','#0ad2ff', '#ff1a1a', ],
         hideHover: 'auto',
         gridLineColor: '#eef0f2',
         resize: true
