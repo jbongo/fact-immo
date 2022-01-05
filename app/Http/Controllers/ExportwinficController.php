@@ -252,9 +252,9 @@ class ExportwinficController extends Controller
             // Pour la contraprtie, faire une seule ligne ------------> sortie de la boucleb  somme des ttc
               
             if($facture->type == "stylimmo"){
-                $total_transac_ttc+= number_format($facture->montant_ttc,2, ",","");            
+                $total_transac_ttc+= number_format($facture->montant_ttc,2, ".","");            
             }else{            
-                $total_autre_ttc+= number_format($facture->montant_ttc,2, ",","");            
+                $total_autre_ttc+= number_format($facture->montant_ttc,2, ".","");            
             }
             
    
