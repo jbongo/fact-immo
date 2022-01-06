@@ -55,12 +55,12 @@
                                             <div class="col-lg-3 col-md-3 col-sm-3">
                                                <input type="number" max="{{$mandataire->nb_mois_pub_restant}}"  @if(Auth::user()->role =="admin") min="0" @else min="{{$etat_jeton['jeton_min_a_deduire']}}" @endif class="form-control {{ $errors->has('nb_mois_deduire') ? ' is-invalid' : '' }}" value="{{old('nb_mois_deduire')}}" id="nb_mois_deduire" name="nb_mois_deduire" required >
                                             
-                                            @if ($errors->has('nb_mois_deduire'))
-                                            <br>
-                                            <div class="alert alert-warning ">
-                                                <strong>{{$errors->first('nb_mois_deduire')}}</strong> 
-                                            </div>
-                                            @endif   
+                                                @if ($errors->has('nb_mois_deduire'))
+                                                <br>
+                                                <div class="alert alert-warning ">
+                                                    <strong>{{$errors->first('nb_mois_deduire')}}</strong> 
+                                                </div>
+                                                @endif   
                                             </div>
                                         </div>
                                     </div>
