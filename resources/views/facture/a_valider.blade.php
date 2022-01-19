@@ -98,7 +98,12 @@
 
                                           
                                             @elseif($facture->type == "parrainage_partage" || $facture->type == "parrainage")
-                                                <a target="blank" href="{{route('facture.preparer_facture_honoraire_parrainage',[Crypt::encrypt($facture->compromis->id), $facture->user_id])}}" data-toggle="tooltip" title="@lang('Note honoraire parrainnage ')"><i class="large material-icons color-danger">insert_drive_file</i></a> 
+                                            
+                                                @if($facture->filleul_id != null)
+                                                    <a target="blank" href="{{route('facture.preparer_facture_honoraire_parrainage',[Crypt::encrypt($facture->compromis->id), $facture->filleul_id])}}" data-toggle="tooltip" title="@lang('Note honoraire parrainnage ')"><i class="large material-icons color-danger">insert_drive_file</i></a> 
+                                                @else 
+                                                    <a target="blank" href="{{route('facture.preparer_facture_honoraire_parrainage',[Crypt::encrypt($facture->compromis->id), $facture->user_id])}}" data-toggle="tooltip" title="@lang('Note honoraire parrainnage ')"><i class="large material-icons color-danger">insert_drive_file</i></a> 
+                                                @endif 
                                             
                                             @else 
                                                 <a target="blank" href="{{route('facture.preparer_facture_honoraire',Crypt::encrypt($facture->compromis->id))}}" data-toggle="tooltip" title="@lang('Note honoraire  ')"><i class="large material-icons color-danger">insert_drive_file</i></a> 
