@@ -73,9 +73,10 @@
                                     @if($document->reference != null)
                                         <a href="{{route('bibliotheque.telecharger', $document->id)}}" data-toggle="tooltip" title="Télécharger {{$document->nom}}"  class="btn btn-default btn-flat btn-addon "><i class="ti-download"></i>Voir</a>    
                                     @endif
-                                    <span><a  href="{{route('bibliotheque.edit',$document->id)}}" class="delete" data-toggle="tooltip" title="@lang('Modifier ') {{ $document->nom }}"><i class="large material-icons color-success">edit</i> </a></span>
-                                    <span><a  href="{{route('bibliotheque.delete',$document->id)}}" class="delete" data-toggle="tooltip" title="@lang('Supprimer ') {{ $document->nom }}"><i class="large material-icons color-danger">delete</i> </a></span>
-                                    
+                                    @if(Auth::user()->role == "admin")
+                                        <span><a  href="{{route('bibliotheque.edit',$document->id)}}" class="delete" data-toggle="tooltip" title="@lang('Modifier ') {{ $document->nom }}"><i class="large material-icons color-success">edit</i> </a></span>
+                                        <span><a  href="{{route('bibliotheque.delete',$document->id)}}" class="delete" data-toggle="tooltip" title="@lang('Supprimer ') {{ $document->nom }}"><i class="large material-icons color-danger">delete</i> </a></span>
+                                    @endif
                                 </td>
                             </tr>
 
