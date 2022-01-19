@@ -62,7 +62,7 @@ Facture N° {{$facture->numero}}
                             @endif     
                         </div>
                         <div class="form-group col-lg-4 col-md-4 col-sm-6 col-xs-6">
-                        <div class="">  <input class="form-control " style="height:35px; border-color:royalblue" type="date"  name="date_facture" id="date_facture"  required> </div>
+                        <div class="">  <input class="form-control " style="height:35px; border-color:royalblue" type="date"  name="date_facture" max="{{date('Y-m-d')}}" id="date_facture"  required> </div>
                             @if ($errors->has('date_facture'))
                             <br>
                             <div class="alert alert-warning ">

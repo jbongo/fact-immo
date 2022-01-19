@@ -12,4 +12,8 @@ class Article extends Model
     public function  fournisseur(){
         return $this->belongsTo('App\Fournisseur');
     }
+    
+    public function  contratfournisseur(){
+        return $this->belongsTo('App\Contratfournisseur');
+    }
 }

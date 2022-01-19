@@ -232,13 +232,30 @@ Route::middleware('auth')->group(function(){
     Route::post('parametre/generaux/store','ParametreController@store_parametre_generaux')->name('parametre_generaux.store');
     Route::post('parametre/generaux/update','ParametreController@update_parametre_generaux')->name('parametre_generaux.update');
 
-    // Forunisseur
-    Route::get('fournisseur/','FournisseurController@index')->name('fournisseur.index');
-    Route::get('fournisseur/edit/{fournisseur}','FournisseurController@edit')->name('fournisseur.edit');
-    Route::post('fournisseur/update/{fournisseur}','FournisseurController@update')->name('fournisseur.update');
+    // Fournisseur
+    Route::get('fournisseur/type/{type?}','FournisseurController@index')->name('fournisseur.index');
+    Route::get('fournisseur/edit/{fournisseur_id}','FournisseurController@edit')->name('fournisseur.edit');
+    Route::get('fournisseur/show/{fournisseur_id}','FournisseurController@show')->name('fournisseur.show');
+    Route::post('fournisseur/update/{fournisseur_id}','FournisseurController@update')->name('fournisseur.update');
     Route::get('fournisseur/create','FournisseurController@create')->name('fournisseur.create');
     Route::post('fournisseur/store','FournisseurController@store')->name('fournisseur.store');
+    
+    // Facturefournisseur
 
+     Route::get('fournisseur/facture/edit/{facturefournisseur_id}','FournisseurController@edit_facture')->name('fournisseur.facture.edit');
+     Route::post('fournisseur/facture/update/{facturefournisseur_id}','FournisseurController@update_facture')->name('fournisseur.facture.update');
+     Route::get('fournisseur/facture/create/{fournisseur_id}','FournisseurController@create_facture')->name('fournisseur.facture.create');
+     Route::post('fournisseur/facture/store','FournisseurController@store_facture')->name('fournisseur.facture.store');
+     Route::get('fournisseur/facture/archiver/facturefournisseur_id}','FournisseurController@archiver_facture')->name('fournisseur.facture.archiver'); 
+     
+     // Contratfournisseur
+
+     Route::get('fournisseur/contrat/edit/{contratfournisseur_id}','ContratfournisseurController@edit')->name('fournisseur.contrat.edit');
+     Route::post('fournisseur/contrat/update/{contratfournisseur_id}','ContratfournisseurController@update')->name('fournisseur.contrat.update');
+     Route::get('fournisseur/contrat/create/{fournisseur_id}','ContratfournisseurController@create')->name('fournisseur.contrat.create');
+     Route::post('fournisseur/contrat/store','ContratfournisseurController@store')->name('fournisseur.contrat.store');
+     Route::get('fournisseur/contrat/archiver/{contratfournisseur_id}','ContratfournisseurController@archiver')->name('fournisseur.contrat.archiver'); 
+     
     // Article
     Route::get('articles/{fournisseur}','ArticleController@index')->name('article.index');
     Route::get('article/edit/{article}','ArticleController@edit')->name('article.edit');
@@ -247,6 +264,7 @@ Route::middleware('auth')->group(function(){
     Route::post('article/store','ArticleController@store')->name('article.store');
     Route::get('/article/historique/{article_id}','ArticleController@historique')->name('article.historique');
     Route::get('/article/historique/show/{article_id}','ArticleController@historique_show')->name('article.historique.show');
+    Route::get('article/archiver/{article}','ArticleController@archiver')->name('article.archiver');
     
     // Passerelles ou articles de type annonce
     Route::get('passerelles','ArticleController@passerelles')->name('passerelles.index');

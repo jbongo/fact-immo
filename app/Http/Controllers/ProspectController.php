@@ -103,7 +103,7 @@ class ProspectController extends Controller
             "commentaire_perso" => $request->commentaire_perso,
         ]);
         
-        return  redirect()->route('prospect.index')->with('ok','prospect crée');
+        return  redirect()->route('prospect.index')->with('ok','prospect créé');
        
     }
 
@@ -662,7 +662,7 @@ class ProspectController extends Controller
         
         // Transfert des documents dans la liste des documents du mandataire
         
-        $document = Document::where('reference', 'cartedidentit')->first();        
+        $document = Document::where('reference', 'picedidentit')->first();        
         if($prospect->piece_identite != null && $document != null){
     
 

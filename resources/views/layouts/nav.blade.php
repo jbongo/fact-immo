@@ -6,7 +6,7 @@
 
     $li_home = $li_mandataire = $li_prospect_gestion = $li_prospect_archive = $li_affaire = $li_affaire_filleul = $li_affaire_archive=  $li_facture = $li_facture_gestion = $li_facture_demande = $li_facture_a_payer = $li_facture_a_valider = 
     $li_parametre = $li_parametre_modele = $li_parametre_fournisseur = $li_parametre_pack_pub = $li_parametre_generaux = $li_outil = $li_affaire_toutes = $li_affaire_cloture = $li_facture_hors_delais =     
-    $li_jetons = $li_documents = $li_documents_gestion = $li_documents_a_valider = "";
+    $li_jetons = $li_documents = $li_documents_gestion = $li_documents_a_valider = $li_fournisseurs = $li_fournisseurs_passerelle = $li_fournisseurs_autre = "";
     
     switch ($curent_url[1]) {
         case 'home':       
@@ -53,7 +53,7 @@
             $li_documents_gestion = "active";
             
             break;
-        
+
         default:
             // dd("default");
             break;
@@ -85,22 +85,30 @@
                 
                 }
             break;
+            
             case 'page_filleul' :
                 if($curent_url[1] == "compromis"){
                     $li_prospect_archive = "active open";
                 }
-            break;
+                break;
             
             case 'a_valider' :
-            if($curent_url[1] == "documents"){
-                        $li_documents_a_valider = "active";
-                        $li_documents_gestion = "";
-                      
-                    }
-            break;
+                if($curent_url[1] == "documents"){
+                            $li_documents_a_valider = "active";
+                            $li_documents_gestion = "";
+                          
+                        }
+                break;
             
+            case 'type' :
+                if($curent_url[1] == "documents"){
+                           
+                          
+                        }
+                break;
             
-        
+                
+                
             default:
                 // dd("default");
                 break;
@@ -114,13 +122,27 @@
                     if($curent_url[2] == "honoraire"){
                         $li_facture_a_payer = "active open";
                     }
-                break;
+                    break;
                 case 'a_valider' :
                     if($curent_url[2] == "honoraire"){
                         $li_facture_a_valider = "active open";
                     }
-                break;
+                    break;
                 
+            
+                case 'passerelle' :
+                if($curent_url[1] == "fournisseur" && $curent_url[2] == "type"){                    
+                        $li_fournisseurs= "active open";
+                        $li_fournisseurs_passerelle = "active";
+                    }
+                    break;
+                    
+                case 'autre' :
+                    if($curent_url[1] == "fournisseur" && $curent_url[2] == "type"){
+                        $li_fournisseurs= "active open";
+                        $li_fournisseurs_autre = "active";
+                    }
+                    break;
             
                 default:
                     // dd("default");
@@ -248,7 +270,7 @@
                     @if (Auth()->user()->role == "admin")
                     <li class="{{$li_documents}}"><a  class="sidebar-sub-toggle"><i class="large material-icons" style="font-size:20px;">vertical_align_bottom</i> Documents  @if($nb_doc_a_valider > 0) <span class="badge badge-danger">{{$nb_doc_a_valider}}@endif</span>  <span class="sidebar-collapse-icon ti-angle-down"></span></a>
                         <ul>
-                            {{-- <li><a href="page-login.html">Info Entreprise</a></li> --}}
+                       
                             <li class="{{$li_documents_gestion}}"><a  href="{{route('document.index')}}" >Gestion</a></li>
                             <li class="{{$li_documents_a_valider}}"><a  href="{{route('document.a_valider')}}" >A valider  @if($nb_doc_a_valider > 0) <span class="badge badge-danger">{{$nb_doc_a_valider}}@endif</span> </a></li>
                            
@@ -259,6 +281,18 @@
                     
                     @endif
                     
+                    
+                         
+                    @if (Auth()->user()->role == "admin")
+                        <li class="{{$li_fournisseurs}}"><a  class="sidebar-sub-toggle"><i class="large material-icons" style="font-size:20px;">business</i> Fournisseurs <span class="sidebar-collapse-icon ti-angle-down"></span></a>
+                            <ul>
+                      
+                                <li class="{{$li_fournisseurs_passerelle}}"><a  href="{{route('fournisseur.index',['passerelle'])}}" >Passerelles</a></li>
+                                <li class="{{$li_fournisseurs_autre}}"><a  href="{{route('fournisseur.index',['autre'])}}" >Autres </a></li>
+                               
+                            </ul>
+                        </li>
+                    @endif
                     
                     
                     

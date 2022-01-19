@@ -15,16 +15,21 @@ class CreateArticlesTable extends Migration
     {
         Schema::create('articles', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->integer('fournisseur_id')->nullable();
+            $table->integer('contratfournisseur_id')->nullable();
             $table->string('libelle')->nullable();
-            $table->string('type')->nullable();
+            // Annonce - Remontée - Autre
+            $table->string('type')->default("autre");                  
+            // une fois, mensuelle, trimestruelle, annuelle, autre
+            $table->string('periodicite_facturation')->nullable();
             $table->integer('quantite')->nullable();
             $table->double('prix_achat')->nullable();
             $table->double('coefficient')->nullable();
-            $table->integer('fournisseur_id')->nullable();
             $table->date('date_achat')->nullable();
             $table->date('date_expiration')->nullable();
             $table->boolean('a_expire')->default(false);
             $table->string('description')->nullable();
+            $table->boolean('archive')->default(false);
 
             $table->timestamps();
         });

@@ -1,7 +1,8 @@
 @extends('layouts.app')
 @section('content')
     @section ('page_title')
-    Documents | {{$mandataire->prenom}} {{$mandataire->nom}}
+    Documents | {{$mandataire->prenom}} {{$mandataire->nom}} 
+    <a href="{{route('bibliotheque.index')}}" class="btn btn-default btn-rounded btn-addon btn-lg m-b-10 m-l-5" ><i class="ti-list"></i>@lang('Voir la bibliothèque')</a>
     @endsection
     
     

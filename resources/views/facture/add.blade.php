@@ -45,7 +45,7 @@ Création de facture
                         <div class="form-group row">
                            <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="date_facture">Date de la facture <span class="text-danger">*</span> </label>
                            <div class="col-lg-8 col-md-8 col-sm-8">
-                              <input type="date" class="form-control {{ $errors->has('date_facture') ? ' is-invalid' : '' }}" value="{{old('date_facture')}}" id="date_facture" name="date_facture" required >
+                              <input type="date" class="form-control {{ $errors->has('date_facture') ? ' is-invalid' : '' }}" value="{{old('date_facture')}}" id="date_facture" name="date_facture" max="{{date('Y-m-d')}}" required >
                               @if ($errors->has('date_facture'))
                               <br>
                               <div class="alert alert-warning ">

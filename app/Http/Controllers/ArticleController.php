@@ -98,13 +98,14 @@ class ArticleController extends Controller
             "date_expiration"=>$request->date_expiration,
             "a_expire"=>false,
             "fournisseur_id"=>$request->fournisseur_id,
+            "contratfournisseur_id"=>$request->contrat_id,
             
         ]);
 
 
       
 
-        return redirect()->route('article.index', Crypt::encrypt($request->fournisseur_id))->with('ok', __("Nouvel article ajouté ")  );
+        return redirect()->route('fournisseur.show', Crypt::encrypt($request->fournisseur_id))->with('ok', __("Nouvel article ajouté:  << $request->libelle >> ")  );
     }
 
     /**
@@ -188,7 +189,7 @@ class ArticleController extends Controller
         ]);
              
                             
-        return redirect()->route('article.index', Crypt::encrypt($request->fournisseur_id))->with('ok', __("article modifié ")  );
+        return redirect()->route('fournisseur.show', Crypt::encrypt($request->fournisseur_id))->with('ok', __("article  <<$request->libelle>> modifié")  );
     }
 
     
@@ -221,6 +222,23 @@ class ArticleController extends Controller
 
     }
     
+    
+    /**
+     * archiver un article
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function archiver($article_id)
+    {
+        $article = Article::where('id',$article_id)->first() ;      
+        
+        $article->archive = true ;
+        $article->update();
+
+        return redirect()->route('fournisseur.show', Crypt::encrypt($request->fournisseur_id))->with('ok', __("article  <<$$article->libelle>> archivé")  );
+
+
+    }
     
     
 }

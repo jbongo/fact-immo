@@ -48,7 +48,7 @@
                                             <div class="form-group row">
                                                 <label class="col-lg-4 col-form-label" for="date_facture">Date de la facture<span class="text-danger">*</span></label>
                                                 <div class="col-lg-6">
-                                                    <input type="date" class="form-control" value="{{old('date_facture')}}" id="date_facture" name="date_facture" required>
+                                                    <input type="date" class="form-control" value="{{old('date_facture')}}" id="date_facture" name="date_facture" max="{{date('Y-m-d')}}" required>
                                                 </div>
                                                  @if ($errors->has('date_facture'))
                                                     <br>
@@ -180,7 +180,7 @@
                                                 <div class="form-group row">
                                                     <label class="col-lg-4 col-form-label" for="date_facture_externe">Date de la facture de l'agence<span class="text-danger">*</span></label>
                                                     <div class="col-lg-6">
-                                                        <input type="date" class="form-control" value="{{old('date_facture_externe')}}" id="date_facture_externe" name="date_facture_externe" required>
+                                                        <input type="date" class="form-control" value="{{old('date_facture_externe')}}" id="date_facture_externe" name="date_facture_externe" max="{{date('Y-m-d')}}" required>
                                                     </div>
                                                      @if ($errors->has('date_facture_externe'))
                                                         <br>

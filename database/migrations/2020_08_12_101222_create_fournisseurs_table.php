@@ -18,10 +18,13 @@ class CreateFournisseursTable extends Migration
             $table->string('nom')->nullable();
             $table->enum('type',['passerelle'])->nullable();
             $table->string('site_web')->nullable();
-            $table->string('telephone')->nullable();
+            $table->string('telephone1')->nullable();
+            $table->string('telephone2')->nullable();
             $table->string('email')->nullable();
             $table->string('login')->nullable();
             $table->string('password')->nullable();
+            $table->boolean('archive')->default(false);
+            
 
             $table->timestamps();
         });
