@@ -1193,11 +1193,11 @@ public  function preparer_facture_honoraire_partage_externe($compromis)
  * @param  string  $compromis
  * @return \Illuminate\Http\Response
 */
-public  function preparer_facture_honoraire_parrainage($compromis_id, $id_parrain = null)
+public  function preparer_facture_honoraire_parrainage($compromis_id, $id_filleul = null)
 {
 
     $compromis = Compromis::where('id',Crypt::decrypt($compromis_id))->first();
-    // dd($id_parrain);
+    // dd($id_filleul);
     $deux_filleuls = false;
     $facture = null;
     
@@ -1212,7 +1212,7 @@ public  function preparer_facture_honoraire_parrainage($compromis_id, $id_parrai
         // Si les 2 filleuls ont un parrain
         if($filleul1 != null & $filleul2 != null){
 
-            // si les 2 filleuls ont le même parrain  dans ce cas le parametre id_parain = id_filleul
+            // si les 2 filleuls ont le même parrain  
             if($filleul1->parrain_id == $filleul2->parrain_id  ){
                
                 // dd("2 filleuls");
@@ -1220,9 +1220,9 @@ public  function preparer_facture_honoraire_parrainage($compromis_id, $id_parrai
                 
 
                
-                // id_parrain est en réalité l'id du filleul passé en parametre 
+                // id_filleul est en réalité l'id du filleul passé en parametre 
                 // on determine le filleul passé en parametre
-                $filleul = Filleul::where('user_id',$id_parrain)->first();
+                $filleul = Filleul::where('user_id',$id_filleul)->first();
 
                 // On determine le parrain 
                 $parrain = User::where('id',$filleul->parrain_id)->first();
@@ -1239,7 +1239,7 @@ public  function preparer_facture_honoraire_parrainage($compromis_id, $id_parrai
 
 
                  //  On determine le pourcentage parrain du filleul
-                $pourcentage_parrain =  Filleul::where('user_id',$id_parrain)->select('pourcentage')->first();
+                $pourcentage_parrain =  Filleul::where('user_id',$id_filleul)->select('pourcentage')->first();
                 $pourcentage_parrain = $pourcentage_parrain['pourcentage'];
 
 
@@ -1333,12 +1333,12 @@ public  function preparer_facture_honoraire_parrainage($compromis_id, $id_parrai
                     // FACTURE PARRAINAGE DU FILLEUL QUI NE PORTE L'AFFAIRE 2
 
 
-        #############################################
+            #############################################
 
-        $filleul = User::where('id',$id_parrain)->first();
-
-
-        return view ('facture.preparer_honoraire_parrainage',compact(['compromis','parrain','filleul','facture','pourcentage_parrain','result']));
+            $filleul = User::where('id',$id_filleul)->first();
+    
+    
+            return view ('facture.preparer_honoraire_parrainage',compact(['compromis','parrain','filleul','facture','pourcentage_parrain','result']));
 
 
 
@@ -1346,15 +1346,9 @@ public  function preparer_facture_honoraire_parrainage($compromis_id, $id_parrai
             else{
             // dd('pas le meme parrain');
 
-                // il faut mettre un params parrain_id, au cas où c'est l'admin qui fait la note, (cas de recalcul)
-                if($id_parrain != null){
-                    // dd($filleul1->user_id);
-                    $filleul_id =  $filleul1->parrain_id == $id_parrain ? $filleul1->user_id : $filleul2->user_id ;
-                }else{
-                    $filleul_id =  $filleul1->parrain_id == auth::id() ? $filleul1->user_id : $filleul2->user_id ;
-                }
+        
 
-                $filleul = User::where('id',$filleul_id)->first();
+                $filleul = User::where('id',$id_filleul)->first();
                 $pourcentage_parrain =  Filleul::where('user_id',$filleul->id)->select('pourcentage')->first();
                 $pourcentage_parrain = $pourcentage_parrain['pourcentage'];
 
@@ -1466,7 +1460,7 @@ public  function preparer_facture_honoraire_parrainage($compromis_id, $id_parrai
                 $pourcentage_parrain =  Filleul::where('user_id',$filleul->id)->select('pourcentage')->first();
                 $pourcentage_parrain = $pourcentage_parrain['pourcentage']; 
 
-// dd('porte pas');
+            // dd('porte pas');
                 // On determine le parrain 
                 $parrain_id =  Filleul::where('user_id',$filleul->id)->select('parrain_id')->first();    
                 $parrain = User::where('id',$parrain_id['parrain_id'])->first();
@@ -3393,7 +3387,7 @@ return 4444;
                 return redirect()->route('facture.preparer_facture_honoraire_parrainage', [ Crypt::encrypt( $compromis->id),$facture->filleul_id]);
 
             }else{
-                return redirect()->route('facture.preparer_facture_honoraire_parrainage', [ Crypt::encrypt( $compromis->id)]);
+                return  redirect()->back()->with("ok", "la propriété filleul_id dans facture est vide");
 
             }
 
@@ -3405,7 +3399,15 @@ return 4444;
 
             $compromis->update();
             $facture->delete();
-            return redirect()->route('facture.preparer_facture_honoraire_parrainage', [ Crypt::encrypt( $compromis->id)]);
+            
+            if($facture->filleul_id !=null){
+                return redirect()->route('facture.preparer_facture_honoraire_parrainage', [ Crypt::encrypt( $compromis->id),$facture->filleul_id]);
+
+            }else{
+                return  redirect()->back()->with("ok", "la propriété filleul_id dans facture est vide");
+
+            }
+
 
         }else{
             return  redirect()->back()->with("ok", "La note d'honoraire n'a pas été recalculée");
