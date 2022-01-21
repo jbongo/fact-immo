@@ -1289,8 +1289,8 @@ public  function preparer_facture_honoraire_parrainage($compromis_id, $id_filleu
         
          
 
-                $facture = Facture::where([ ['type','parrainage'],['user_id',$parrain->id],['filleul_id',$filleul->user_id],['compromis_id',$compromis->id]])->first();
-
+                $facture = Facture::where([['user_id',$parrain->id],['filleul_id',$filleul->user_id],['compromis_id',$compromis->id]])->whereIn('type',["parrainage","parrainage_partage"])->first();
+                
                 if($facture == null ){
 
                   
@@ -1322,12 +1322,12 @@ public  function preparer_facture_honoraire_parrainage($compromis_id, $id_filleu
                         
                         
                         $compromis->update();
-                        }
-                        else{
+                    }
+                    else{
                         $facture = null;
             
-                        }
                     }
+                }
 
 
                     // FACTURE PARRAINAGE DU FILLEUL QUI NE PORTE L'AFFAIRE 2
@@ -1517,7 +1517,7 @@ public  function preparer_facture_honoraire_parrainage($compromis_id, $id_filleu
         
 
 
-// Si l'affaire n'est pas partagée ---- filleul sans partage
+//##################### Si l'affaire n'est pas partagée ---- filleul sans partage ################
     }else{ 
 
         //   dd("un filleul sans partage");
