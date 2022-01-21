@@ -6,6 +6,7 @@ use App\Tva;
 use App\Mail\EncaissementFacture;
 use App\Facture;
 use App\User;
+use App\Filleul;
 use Mail;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -24,18 +25,15 @@ class TvaController extends Controller
     public function test()
     {
     
-       
-        $fact_jeton = Facture::where('nb_mois_deduis', '<>', null)->get();
-        
-             
-        foreach ($fact_jeton as $fact) {
+
+    $filleuls = Filleul::all();
+    
+        foreach ($filleuls as $fill) {
             
-            $fact->montant_ttc_deduis = $fact->nb_mois_deduis * $fact->user->contrat->packpub->tarif  ;
-            $fact->date_deduction = $fact->created_at ;
+            $expire = $fill->expire == 0 ? "": "expiré";
             
-            echo "<br>".  $fact->user->contrat->packpub->tarif; 
+            echo " Parrain: {$fill->parrain()->nom} {$fill->parrain()->prenom} |  Filleul: {$fill->user->nom } {$fill->user->prenom} ===> $expire <br><br>";
             
-            $fact->update();
         }
 
 exit;

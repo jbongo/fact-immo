@@ -9,10 +9,18 @@ class Filleul extends Model
     //
     protected $guarded =[];
 
+    // Retourne le filleul
     public function user()
     {
         return $this->belongsTo(User::class);
     }
+    
+     // Retourne le filleul
+     public function parrain()
+     {
+        $parrain = User::where('id', $this->parrain_id)->first();
+         return $parrain;
+     }
 
     // ## Veérifier si un parrain a le droit de toucher une commission de parrainage, 
     public static function droitParrainage($parrain_id, $filleul_id, $compromis_id){
