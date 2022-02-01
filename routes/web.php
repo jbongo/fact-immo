@@ -51,6 +51,7 @@ Route::middleware('auth')->group(function(){
     
     Route::get('/contrat/modele/','ProspectController@modele_contrat')->name('prospect.modele');
     Route::get('/contrat/envoyer/modele/{prospect}','ProspectController@envoyer_modele_contrat')->name('prospect.envoyer_modele_contrat');
+    Route::get('/contrat/telecharger/modele/{prospect}','ProspectController@telecharger_modele_contrat')->name('prospect.telecharger_modele_contrat');
     
         
     // Gestion des Jetons
@@ -209,6 +210,7 @@ Route::middleware('auth')->group(function(){
     Route::get('/historiquecontrat/telecharger/{contrat_id}','ContratController@telecharger_historiquecontrat')->name('historiquecontrat.telecharger');
     Route::get('/contrat/envoyer-contrat-mail/','ContratController@envoyer_contrat_mail')->name('contrat.envoyer_contrat_mail');
     Route::get('/contrat/envoyer-contrat-non-signe-mail/{contrat_id}','ContratController@envoyer_contrat_non_signe_mail')->name('contrat.envoyer_contrat_non_signe_mail');
+    Route::get('/contrat/telecharger-contrat-non-signe/{contrat_id}','ContratController@telecharger_contrat_non_signe')->name('contrat.telecharger_contrat_non_signe');
     
     
     // 

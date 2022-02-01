@@ -20,6 +20,7 @@
                 
                 @if($contrat->contrat_pdf == null)
                     <a href="{{route('contrat.envoyer_contrat_non_signe_mail', Crypt::encrypt($contrat->id))}}"  data-toggle="tooltip" title="Envoyer le contrat pour signature au mandataire" style="background: #3b4842" class="btn btn-warning btn-flat btn-addon"><i class="ti-email"></i>Envoyer contrat pour signature</a> 
+                    <a href="{{route('contrat.telecharger_contrat_non_signe', Crypt::encrypt($contrat->id))}}" target="_blank"  data-toggle="tooltip" title="Télécharger le contrat à signer" style="background: #641142" class="btn btn-warning btn-flat btn-addon"><i class="ti-download"></i>Télécharger contrat </a> 
                 @endif
                 
                 <div class="panel-body">

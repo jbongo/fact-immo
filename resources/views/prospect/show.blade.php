@@ -300,6 +300,7 @@
                                 <hr>
                                 
                                 <span><a href="{{route('prospect.envoyer_modele_contrat',Crypt::encrypt($prospect->id) )}}" style="background: #3b4842" class="btn btn-default btn-flat btn-addon m-b-10 m-l-5" data-toggle="tooltip" title="@lang('Envoyer le modèle de contrat à  ') {{ $prospect->nom }}"><i class="ti-email"></i>@if($prospect->modele_contrat_envoye == true) Renvoyer @else Envoyer @endif le modèle de contrat </a> </span>
+                                <span><a href="{{route('prospect.telecharger_modele_contrat',Crypt::encrypt($prospect->id) )}}" target="_blank" style="background: #641142" class="btn btn-danger btn-flat btn-addon m-b-10 m-l-5" data-toggle="tooltip" title="@lang('Télécharger le modèle de contrat à  ') {{ $prospect->nom }}"><i class="ti-download"></i>Télécharger le modèle de contrat </a> </span>
                                 
                               <hr>
                                 <span><a href="{{route('prospect.envoi_mail_fiche',Crypt::encrypt($prospect->id) )}}"class="btn btn-warning btn-flat btn-addon m-b-10 m-l-5"  data-toggle="tooltip" title="@lang('Envoyer la fiche à remplir à ') {{ $prospect->nom }}"><i class="ti-email"></i>@if($prospect->fiche_envoyee == true) Renvoyer @else Envoyer @endif  fiche prospect </a> </span>

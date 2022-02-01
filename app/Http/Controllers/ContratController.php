@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Crypt;
 use App\User;
 use App\Packpub;
@@ -22,6 +23,7 @@ use Illuminate\Support\Facades\File ;
 use Illuminate\Support\Facades\Storage;
 use Auth;
 use PDF;
+use iio\libmergepdf\Merger;
 
 
 
@@ -1191,7 +1193,7 @@ class ContratController extends Controller
     
     
     /**
-     * Envoyer le contrat par le mail pour signature
+     * Envoyer le contrat par mail pour signature
      *
      * @return \Illuminate\Http\Response
      */
@@ -1239,12 +1241,69 @@ class ContratController extends Controller
           $annexe_pdf_path =  $path.'annexe.pdf';
      
     
-          Mail::to("gestion@stylimmo.com")->send(new SendContratSignature($contrat,$contrat_pdf_path, $annexe_pdf_path));
-          Mail::to($contrat->user->email_perso)->send(new SendContratSignature($contrat,$contrat_pdf_path, $annexe_pdf_path));
-          Mail::to($contrat->user->email)->send(new SendContratSignature($contrat,$contrat_pdf_path, $annexe_pdf_path));
-          return  redirect()->route('contrat.edit', Crypt::encrypt($contrat->id))->with('ok','Le contrat a été envoyé au mandataire ');
+    }
+
+        
+    /**
+     * Télécharger le contrat à envoyer par mail
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function telecharger_contrat_non_signe($contrat_id)
+    {
+    
+    
+ 
+         // on sauvegarde la modele de contrat
+         $contrat  = Contrat::where('id',Crypt::decrypt($contrat_id))->first();
+         $path = storage_path('app/public/'.$contrat->user->id.'contrat/');
+    
+         if(!File::exists($path))
+             File::makeDirectory($path, 0755, true);
+         
+            $parametre  = Parametre::first();
+          
+            $packs = Packpub::all();
+          
+            $palier_starter = Contrat::palier_unserialize($contrat->palier_starter);
+            $palier_expert = Contrat::palier_unserialize($contrat->palier_expert);
+        
+            $comm_parrain = unserialize($parametre->comm_parrain);
+          
+         
+          
+        
+          $contrat_pdf = PDF::loadView('contrat.contrat',compact('parametre','contrat'));
+          
+          $annexe_pdf = PDF::loadView('contrat.annexe_pdf',compact('parametre','contrat','palier_expert','palier_starter','packs','comm_parrain'));
+          
+          
+          $contrat_path = $path.'contrat.pdf';
+          $annexe_path = $path.'annexe.pdf';
+          
+          $contrat_pdf->save($contrat_path);
+          $annexe_pdf->save($annexe_path);
+     
+     
+        //   $contrat->contrat_envoye = true ;
+     
+          $contrat->update();
+     
+          $contrat_pdf_path =  $path.'contrat.pdf';
+          $annexe_pdf_path =  $path.'annexe.pdf';
+     
+    
+         
+        $merger = new Merger;     
+        $merger->addFile($contrat_pdf_path);
+        $merger->addFile($annexe_pdf_path);
+
+        $createdPdf = $merger->merge();
+      
+        return new Response($createdPdf, 200, array('Content-Type' => 'application/pdf'));
        
     }
+    
     
 
 }

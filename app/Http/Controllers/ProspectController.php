@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use App\Prospect;
 use App\Parametre;
 use App\Contrat;
@@ -21,6 +22,7 @@ use App\Mail\SendModeleContrat;
 
 use Auth;
 use PDF;
+use iio\libmergepdf\Merger;
 
 class ProspectController extends Controller
 {
@@ -610,6 +612,67 @@ class ProspectController extends Controller
 
     }
     
+    /**
+     * télécharger un modele de contrat et les annexes
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function telecharger_modele_contrat($prospect_id)
+    {
+       // on sauvegarde la modele de contrat
+       $path = storage_path('app/public/contrat/');
+
+       if(!File::exists($path))
+           File::makeDirectory($path, 0755, true);
+       
+        $parametre  = Parametre::first();
+        $contrat  = Contrat::where('est_modele', true)->first();
+        $contrat  = Contrat::where("id", 19)->first();
+        
+        $packs = Packpub::all();
+        
+        $palier_starter = Contrat::palier_unserialize($contrat->palier_starter);
+        $palier_expert = Contrat::palier_unserialize($contrat->palier_expert);
+        
+        $prospect = Prospect::where('id',Crypt::decrypt($prospect_id))->first();
+        
+        $comm_parrain = unserialize($parametre->comm_parrain);
+           
+        $modele_contrat_pdf = PDF::loadView('contrat.modele_contrat_pdf',compact('parametre','prospect'));
+        
+        $modele_annexe_pdf = PDF::loadView('contrat.annexe_pdf',compact('parametre','contrat','palier_expert','palier_starter','packs','comm_parrain'));
+        
+       
+        
+        $contrat_path = $path.'modele_contrat.pdf';
+        $annexe_path = $path.'modele_annexe.pdf';
+        
+        $modele_contrat_pdf->save($contrat_path);
+        // dd($contrat_path);
+        
+        $modele_annexe_pdf->save($annexe_path);
+   
+   
+        $prospect->modele_contrat_envoye = true ;
+   
+        $prospect->update();
+   
+        $modele_contrat_pdf_path = storage_path('app/public/contrat/').'modele_contrat.pdf';
+        $modele_annexe_pdf_path = storage_path('app/public/contrat/').'modele_annexe.pdf';
+   
+        $merger = new Merger;     
+        $merger->addFile($modele_contrat_pdf_path);
+        $merger->addFile($modele_annexe_pdf_path);
+
+        $createdPdf = $merger->merge();
+      
+        return new Response($createdPdf, 200, array('Content-Type' => 'application/pdf'));
+   
+        return response()->download($modele_contrat_pdf_path);
+       
+
+    }
+
     
     
      /**
