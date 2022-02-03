@@ -22,6 +22,7 @@ class CreateFichiersTable extends Migration
             $table->string('extension')->nullable();
             // 0 = en attente de validation, 1 = validé, 2 = refusé
             $table->boolean('valide')->default(0);
+            $table->boolean('expire')->default(false);
             $table->string('motif_refu')->nullable();
             
             

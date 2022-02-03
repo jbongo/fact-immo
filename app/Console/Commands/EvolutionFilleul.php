@@ -8,7 +8,8 @@ use App\User;
 use App\Parametre;
 
 use App\Cronjob;
-
+use Illuminate\Support\Facades\Mail;
+use App\Mail\NotifEvolutionFilleul;
 
 class EvolutionFilleul extends Command
 {
@@ -60,7 +61,6 @@ class EvolutionFilleul extends Command
             foreach($filleuls as $filleul){
             // dd($filleul->user_id);
 
-           
                 $date_ent =  $filleul->user->contrat->date_entree->format('Y-m-d') >= "2019-01-01" ?  $filleul->user->contrat->date_entree : "2019-01-01";
                 $date_entree =  strtotime($date_ent);
                 $rang = $filleul->rang <= 3 ? $filleul->rang : 'n';
@@ -83,7 +83,13 @@ class EvolutionFilleul extends Command
 
                    $filleul->expire = 1;
                    $filleul->update();
+
+                   $mandataire = User::where('id', $filleul->parrain_id)->first(); 
+                   $mandataire_filleul = $filleul->user;
                    
+                //    ENVOI MAIL
+                Mail::to($mandataire->email)->send(new NotifEvolutionFilleul($mandataire,$mandataire_filleul));
+
 
                 //    echo 'update '.$filleul->id;
                 }else{
