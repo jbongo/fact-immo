@@ -10,15 +10,19 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 class NotifDocumentExpire extends Mailable
 {
     use Queueable, SerializesModels;
+    public $mandataire;
+    public $documents;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($mandataire, $documents)
     {
-        //
+        
+        $this->mandataire = $mandataire;
+        $this->documents = $documents;
     }
 
     /**
@@ -28,6 +32,7 @@ class NotifDocumentExpire extends Mailable
      */
     public function build()
     {
-        return $this->view('view.name');
+        return $this->subject("MINICURIEUX - Expiration document")->markdown('email.notif_expiration_document');
+
     }
 }

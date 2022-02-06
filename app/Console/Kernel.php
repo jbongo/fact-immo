@@ -48,6 +48,9 @@ class Kernel extends ConsoleKernel
   
         $schedule->command('command:listerfactpub')
                  ->monthlyOn(28, '01:00');	;
+
+        $schedule->command('command:documentexpire')
+                 ->monthlyOn(28, '02:00');	;
                  
     }
 

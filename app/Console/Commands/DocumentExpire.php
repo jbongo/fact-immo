@@ -5,6 +5,9 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 
 use App\Fichier;
+use App\Contrat;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\NotifDocumentExpire;
 
 class DocumentExpire extends Command
 {
@@ -39,23 +42,31 @@ class DocumentExpire extends Command
      */
     public function handle()
     {
-        $fichiers = Fichier::where('expire',0)->get();
+        
+        $contrats = Contrat::where([['a_demission', false],['user_id','<>', null]])->get();
+        $today = date('Y-m-d');
 
-      
-        if($fichiers != null){
+        foreach ($contrats as $contrat) {
+            
+            $fichiers = Fichier::where([['user_id',$contrat->user_id],['date_expiration','<', $today]])->get();
+            
+            if(sizeof($fichiers) > 0){
+            
+                foreach($fichiers as $fichier){  
+                 
+                    if($fichier->expire == false){
+                        $fichier->expire = true;
+                        $fichier->update();
+                    }
+                }
 
-            foreach($fichiers as $fichier){
-
-                $today = strtotime (date('Y-m-d'));
-                $diff = $today - $date_entree;
-
-                   
                 //    ENVOI MAIL
-                Mail::to($mandataire->email)->send(new NotifEvolutionfichier($mandataire,$mandataire_fichier));
-
-                
+                if($contrat->user != null)
+                Mail::to($contrat->user->email)->send(new NotifDocumentExpire($contrat->user, $fichiers));
             }
         }
+      
+  
         Cronjob::create([
             "nom" => "documentexpire",
             ]);

@@ -7,9 +7,14 @@ use App\Mail\EncaissementFacture;
 use App\Facture;
 use App\User;
 use App\Filleul;
-use Mail;
+use App\Fichier;
+use App\Contrat;
+// use Mail;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+
+use Illuminate\Support\Facades\Mail;
+use App\Mail\NotifDocumentExpire;
 
 use iio\libmergepdf\Merger;
 use iio\libmergepdf\Pages;
@@ -25,6 +30,35 @@ class TvaController extends Controller
     public function test()
     {
     
+
+      
+        $contrats = Contrat::where([['a_demission', false],['user_id','<>', null]])->get();
+        $today = date('Y-m-d');
+
+    
+        foreach ($contrats as $contrat) {
+            
+            $fichiers = Fichier::where([['user_id',$contrat->user_id],['date_expiration','<', $today]])->get();
+            
+            if(sizeof($fichiers)> 0){
+                // dd($fichiers);
+
+                foreach($fichiers as $fichier){  
+                 
+                    if($fichier->expire == false){
+                        $fichier->expire = true;
+                        $fichier->update();
+                    }
+                }
+
+                //    ENVOI MAIL
+                if($contrat->user != null)
+                Mail::to($contrat->user->email)->send(new NotifDocumentExpire($contrat->user, $fichiers));
+            }
+        }
+
+
+dd($fichiers);
 
     $filleuls = Filleul::all();
     
