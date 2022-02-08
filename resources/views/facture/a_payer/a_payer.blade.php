@@ -25,18 +25,15 @@
                                     <th>@lang('Type Facture')</th>
                                     <th>@lang('Montant HT ')</th>
                                     <th>@lang('Montant TTC ')</th>
-                                    {{-- <th>@lang('Date Facture')</th> --}}
-                                    <th>@lang('Date de l\'acte')</th>
+                                   
+                                    <th>@lang('Retard Pub')</th>
                                     <th>@lang('Etat (Fac Stylimmo)')</th>
-                                    {{-- <th>Validation (Fac honoraire)</th> --}}
+                                   
                                     <th>@lang('Paiement')</th>
-
-                                    {{-- @if(auth()->user()->role == "admin")
-                                    <th>@lang('Encaissement')</th>
-                                    @endif --}}
+                            
 
                                     <th>@lang('Note honoraire')</th>
-                                    {{-- <th>@lang('Télécharger')</th> --}}
+                             
 
                                 </tr>
                             </thead>
@@ -105,14 +102,16 @@
                                             <td   >
                                             {{number_format($facture->montant_ttc,2,'.','')}} €
                                             </td>
-                                            {{-- <td   class="color-info">
-                                                    {{$facture->created_at->format('d/m/Y')}}
-                                            </td> --}}
+                                         
                                            
                                             <td >
-                                                <label class="color-info">
-                                                    {{$facture->compromis->date_vente->format('d/m/Y')}} 
-                                                </label> 
+                                                @if($facture->user->contrat->deduis_jeton == false)
+                                                    <a href="{{route('mandataire.historique_facture_pub', Crypt::encrypt($facture->user->id))}}" target="_blank" data-toggle="tooltip" title="@lang('Factures Pub')" class="badge @if($facture->user->nb_facture_pub_retard == 0) badge-success @elseif($facture->user->nb_facture_pub_retard > 0 && $facture->user->nb_facture_pub_retard < 4) badge-warning @else badge-danger @endif ">{{$facture->user->nb_facture_pub_retard}}</a>
+                                                  
+                                                @else
+                                                <a  href="{{route('mandataire.historique_jeton', Crypt::encrypt($facture->user->id))}}" target="_blank" data-toggle="tooltip" title="@lang('Détails des jetons ')" class="badge @if($facture->user->nb_mois_pub_restant == 0) badge-success @elseif($facture->user->nb_mois_pub_restant > 0 && $facture->user->nb_mois_pub_restant < 4) badge-warning @else badge-danger @endif ">{{$facture->user->nb_mois_pub_restant}}</a>
+
+                                                @endif
                                             </td>
                                             <td  >
                                                 @if($facture->compromis->getFactureStylimmo()->encaissee == 0 )
@@ -130,7 +129,7 @@
                                                 $today = date_create(date('Y-m-d'));
                                                 $interval = date_diff($today, $datevente);
                                             @endphp
-                                            {{-- @if($facture->type == "stylimmo") --}}
+                                          
                                             <td  >
                                                 @if($facture->reglee == 0)
                                                     @if(Auth()->user()->role == "admin")
@@ -148,8 +147,7 @@
                                             
                                             
                                             <td  >
-                                                {{-- @if(auth::user()->role=="admin") --}}
-                                                {{-- @if ($facture->compromis->je_porte_affaire == 0  || $facture->compromis->agent_id == auth::user()->id || ($facture->compromis->je_porte_affaire == 1 && $facture->compromis->est_partage_agent == 1) ) --}}
+                                               
                                                     @if ($facture->type == "partage" )
                                                         <a target="blank" href="{{route('facture.preparer_facture_honoraire_partage',[Crypt::encrypt($facture->compromis->id), $facture->user_id ])}}" data-toggle="tooltip" title="@lang('Note honoraire  ')"><i class="large material-icons color-danger">insert_drive_file</i></a> 
                                                     @elseif ($facture->type == "partage_externe" )
@@ -166,10 +164,7 @@
                                                         <a target="blank" href="{{route('facture.preparer_facture_honoraire',Crypt::encrypt($facture->compromis->id))}}" data-toggle="tooltip" title="@lang('Note honoraire  ')"><i class="large material-icons color-danger">insert_drive_file</i></a> 
                                                         
                                                     @endif
-                                                {{-- @else
-                                                    <a href="{{route('facture.telecharger_pdf_facture_stylimmo', Crypt::encrypt($facture->compromis->id))}}"  class="btn btn-warning btn-flat btn-addon  m-b-10 m-l-5 " id="ajouter"><i class="ti-download"></i>Télécharger</a>
-        
-                                                @endif --}}
+                                               
                                             </td> 
         
                                       

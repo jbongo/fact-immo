@@ -629,6 +629,7 @@ public  function valider_facture_stylimmo( Request $request, $compromis)
     {
 
 
+
         $facture = Facture::where('id', $facture_id)->first();
         
         if($facture->encaissee == true) return "Déjà encaissée";
@@ -642,6 +643,11 @@ public  function valider_facture_stylimmo( Request $request, $compromis)
         
             $facture->reglee = true;
             $facture->date_reglement = $request->date_encaissement;
+            
+            $mandataire = $facture->user;
+            // On met à jour le nombre de factures pub non encaissée du mandataire
+            $mandataire->nb_facture_pub_retard =  Facture::where([['user_id', $facture->user_id], ['type', 'pack_pub'], ['encaissee', false]])->count() - 1;
+            $mandataire->update();
         }
         
         

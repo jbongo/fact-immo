@@ -32,33 +32,22 @@ class TvaController extends Controller
     
 
       
-        $contrats = Contrat::where([['a_demission', false],['user_id','<>', null]])->get();
-        $today = date('Y-m-d');
+        $contrats = Contrat::where([['est_fin_droit_suite', false],['deduis_jeton', false],['user_id','<>', null]])->get();      
+
+
 
     
         foreach ($contrats as $contrat) {
-            
-            $fichiers = Fichier::where([['user_id',$contrat->user_id],['date_expiration','<', $today]])->get();
-            
-            if(sizeof($fichiers)> 0){
-                // dd($fichiers);
-
-                foreach($fichiers as $fichier){  
-                 
-                    if($fichier->expire == false){
-                        $fichier->expire = true;
-                        $fichier->update();
-                    }
-                }
-
-                //    ENVOI MAIL
-                if($contrat->user != null)
-                Mail::to($contrat->user->email)->send(new NotifDocumentExpire($contrat->user, $fichiers));
-            }
+        
+            $mandataire = $contrat->user;
+            // On met à jour le nombre de factures pub non encaissée du mandataire
+            $mandataire->nb_facture_pub_retard =  Facture::where([['user_id', $contrat->user_id], ['type', 'pack_pub'], ['encaissee', false]])->count() ;
+            $mandataire->update();
+           
         }
 
 
-dd($fichiers);
+dd("");
 
     $filleuls = Filleul::all();
     

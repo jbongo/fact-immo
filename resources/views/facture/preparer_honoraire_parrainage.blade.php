@@ -87,6 +87,19 @@
                      <label class="color-danger" ><strong> Facture non Ajoutée </strong> </label>
                      @endif 
                 @endif 
+                
+                <br>
+                <br>
+                <br>
+                
+                @if(Auth()->user()->role == "admin" )
+                    @if ($facture->user->contrat->deduis_jeton == false  )
+                       <span class="text-danger" style="font-weight: bold">Factures Pub à régler:</span> <a href="{{route('mandataire.historique_facture_pub', Crypt::encrypt($facture->user->id))}}" target="_blank" data-toggle="tooltip" title="@lang('Factures Pub')" class="badge @if($facture->user->nb_facture_pub_retard == 0) badge-success @elseif($facture->user->nb_facture_pub_retard > 0 && $facture->user->nb_facture_pub_retard < 4) badge-warning @else badge-danger @endif ">{{$facture->user->nb_facture_pub_retard}}</a>
+                    
+                    @else                     
+                    <span class="text-danger" style="font-weight: bold">Jetons à déduire:</span>  <a href="{{route('mandataire.historique_jeton', Crypt::encrypt($facture->user->id))}}" target="_blank" data-toggle="tooltip" title="@lang('Détails des jetons ')" class="badge @if($facture->user->nb_mois_pub_restant == 0) badge-success @elseif($facture->user->nb_mois_pub_restant > 0 && $facture->user->nb_mois_pub_restant < 4) badge-warning @else badge-danger @endif ">{{$facture->user->nb_mois_pub_restant}}</a>
+                    @endif
+                @endif
                 </div>
             </div>
                 

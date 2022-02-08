@@ -47,6 +47,19 @@
                             <a class="color-warning" title="Télécharger le rib de l'agence "  href="{{route('facture.telecharger_pdf_rib', Crypt::encrypt($facture->id))}}"  class="  m-b-10 m-l-5 " id="ajouter">Télécharger rib <i class="ti-download"></i> </a>
                         @endif
                     @endif
+                    
+                    <br>
+                    <br>
+                    <br>
+                    
+                    @if(Auth()->user()->role == "admin" )
+                        @if ($facture->user->contrat->deduis_jeton == false  )
+                           <span class="text-danger" style="font-weight: bold">Factures Pub à régler:</span> <a href="{{route('mandataire.historique_facture_pub', Crypt::encrypt($facture->user->id))}}" target="_blank" data-toggle="tooltip" title="@lang('Factures Pub')" class="badge @if($facture->user->nb_facture_pub_retard == 0) badge-success @elseif($facture->user->nb_facture_pub_retard > 0 && $facture->user->nb_facture_pub_retard < 4) badge-warning @else badge-danger @endif ">{{$facture->user->nb_facture_pub_retard}}</a>
+                        
+                        @else                     
+                        <span class="text-danger" style="font-weight: bold">Jetons à déduire:</span>  <a href="{{route('mandataire.historique_jeton', Crypt::encrypt($facture->user->id))}}" target="_blank" data-toggle="tooltip" title="@lang('Détails des jetons ')" class="badge @if($facture->user->nb_mois_pub_restant == 0) badge-success @elseif($facture->user->nb_mois_pub_restant > 0 && $facture->user->nb_mois_pub_restant < 4) badge-warning @else badge-danger @endif ">{{$facture->user->nb_mois_pub_restant}}</a>
+                        @endif
+                    @endif
                    </div>
                </div>
    

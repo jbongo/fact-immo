@@ -685,6 +685,41 @@ class MandataireController extends Controller
 
     
 
+    /**
+     *Affiche l'historique des factures pub pour chaqsue mandataire
+     *
+     * @param  int  $user_id
+     * @return \Illuminate\Http\Response
+     */
+    public function historique_facture_pub($user_id)
+    {
+       
+        $mandataire = User::where('id', Crypt::decrypt($user_id))->first();
+       
+        $factures = Facture::where([['user_id', Crypt::decrypt($user_id)], ['type', 'pack_pub']])->orderBy('encaissee', 'ASC')->get();
+        
+        $montant_du =  Facture::where([['user_id', Crypt::decrypt($user_id)], ['type', 'pack_pub'], ['encaissee', false]])->sum('montant_ttc');
+        
+      
+        
+        return view('mandataires.historique_facture_pub',compact('factures','mandataire','montant_du'));
+    
+    }
+    
+    
+    /**
+     *Affiche la liste des mandataires et leurs factures pub
+     * @param  int  $user_id
+     * @return \Illuminate\Http\Response
+     */
+    public function mandataires_facture_pub()
+    {
+       
+        $contrats = Contrat::where([['est_fin_droit_suite', false],['deduis_jeton', false],['user_id','<>', null]])->get();      
+       
+        return view('mandataires.facture_pub',compact('contrats'));
+    
+    }
 
     
 }

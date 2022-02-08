@@ -56,11 +56,12 @@ Route::middleware('auth')->group(function(){
         
     // Gestion des Jetons
     Route::get('/mandataires/jetons','MandataireController@mandataires_jetons')->name('mandataires.jetons')->middleware('admin');
-    // Route::get('/jetons/{mandataire_id}','MandataireController@jeton_mandataire')->name('jeton_mandataire');
     Route::get('/historique-jeton/{user_id}','MandataireController@historique_jeton')->name('mandataire.historique_jeton');
     Route::post('/jetons/update/{user_id}','MandataireController@update_jetons')->name('jetons.update');
-
-  
+    // Gestion des factures pub
+    Route::get('/mandataires/facture-pub','MandataireController@mandataires_facture_pub')->name('mandataires.facture_pub')->middleware('admin');
+    Route::get('/historique-facture-pub/{user_id}','MandataireController@historique_facture_pub')->name('mandataire.historique_facture_pub');
+ 
     // compromis  
     Route::get('/compromis','CompromisController@index')->name('compromis.index');
     Route::get('/compromis/from_dashboard/{annee}','CompromisController@index_from_dashboard')->name('compromis.index_from_dashboard');
