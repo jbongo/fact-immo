@@ -521,46 +521,82 @@ $STATS = array();
 
             ################## AUTRE CALCULS ########################## 
             
-    
+        if(Auth::user()->role == "admin"){
             //    Nombre de mandataires actifs
-            $nb_mandataires_actifs = Contrat::where('est_fin_droit_suite',false)->count();
+            $nb_mandataires_actifs = Contrat::where([['est_fin_droit_suite',false], ['user_id', '<>', null]])->count();
             
             // Nb mandataire ayants saisis une affaire à l'année N
             $nb_mandataires_actifs_n = sizeof(Compromis::where('created_at','like',"%$annee_n%" )->select('user_id')->distinct()->get()->toArray() ); 
             
+             //    Nombre de mandataires aux jetons
+             $nb_mandataires_jetons = Contrat::where([['deduis_jeton',true], ['user_id', '<>', null],['est_fin_droit_suite',false]])->count();
+            
+            //    Nombre de mandataires à la facturation
+            $nb_mandataires_facture_pub = Contrat::where([['est_soumis_fact_pub', true], ['deduis_jeton',false], ['user_id', '<>', null],['est_fin_droit_suite',false]])->count();
+            
+            // Nombre de filleuls actifs
+            $nb_filleuls = Filleul::where('expire',0)->select('user_id')->distinct()->count();
+
+
+            // Classement des mandataires
+            
+            $contrat_actifs = Contrat::where([['est_fin_droit_suite',false], ['user_id', '<>', null]])->get();
+         
+         
+         
+            // Classement sur l'année N
+            $classements_n = array();
+            foreach ($contrat_actifs as $cont) {
+            $classements_n[] = [$cont->user->chiffre_affaire_styl("$annee_n-01-01", date("Y-m-d")), $cont->user ]  ;
+             
+            }
+            // Trier dans l'ordre decroissant 
+            rsort($classements_n );
+
             
             
-            
-            $nb_filleuls = Filleul::where('expire',0)->count();
-
-
-
-
-
-
+             // Classement générale
+             $classements = array();
+             foreach ($contrat_actifs as $cont) {
+             $classements[] = [$cont->user->chiffre_affaire_styl("2020-01-01", date("Y-m-d")), $cont->user ]  ;
+              
+             }
+             // Trier dans l'ordre decroissant 
+             rsort($classements );
 
             $STATS["nb_affaires_en_cours"] = $nb_affaires_en_cours;
+            $STATS["nb_mandataires_actifs_n"] = $nb_mandataires_actifs_n;
+            $STATS["nb_mandataires_actifs"] = $nb_mandataires_actifs;
+            $STATS["nb_filleuls"] = $nb_filleuls;
+            $STATS["nb_mandataires_jetons"] = $nb_mandataires_jetons;
+            $STATS["nb_mandataires_facture_pub"] = $nb_mandataires_facture_pub;
+            
+            $STATS["classements"] = $classements;
+            $STATS["classements_n"] = $classements_n;
+               
+            $STATS['TOTAL_PUB_N'] = array_sum($PUB_N)  ;
+            $STATS['TOTAL_PUB_ACH'] = $PUB_ACH * 12 ;           
+            $STATS['PUB_N'] = $PUB_N ;
+            $STATS['PUB_ACH'] = $PUB_ACH ; 
+            $STATS['PUB_VENDU'] = $PUB_VENDU ; 
+            
+        }    
+            
+            
+            $STATS["annee"] = $annee_n;
+            
+            if(Auth::user()->role == "mandataire"){
+            $STATS["nb_en_attente_perso_N"] = $nb_en_attente_perso_N;
+            $STATS["nb_encaisse_perso_N"] = $nb_encaisse_perso_N;
+            }
             $STATS["nb_global_N"] = $nb_global_N;
             $STATS["nb_sous_offre_N"] = $nb_sous_offre_N;
             $STATS["nb_sous_compromis_N"] = $nb_sous_compromis_N;
             $STATS["nb_en_attente_N"] = $nb_en_attente_N;
             $STATS["nb_encaisse_N"] = $nb_encaisse_N;
-            if(Auth::user()->role == "mandataire"){
-            $STATS["nb_en_attente_perso_N"] = $nb_en_attente_perso_N;
-            $STATS["nb_encaisse_perso_N"] = $nb_encaisse_perso_N;
-            }
-            $STATS["annee"] = $annee_n;
-            $STATS["nb_mandataires_actifs_n"] = $nb_mandataires_actifs_n;
-            $STATS["nb_mandataires_actifs"] = $nb_mandataires_actifs;
-            $STATS["nb_filleuls"] = $nb_filleuls;
             
-           
-            $STATS['PUB_N'] = $PUB_N ;
-            $STATS['PUB_ACH'] = $PUB_ACH ; 
-            $STATS['PUB_VENDU'] = $PUB_VENDU ; 
-            
-            $STATS['TOTAL_PUB_N'] = array_sum($PUB_N)  ;
-            $STATS['TOTAL_PUB_ACH'] = $PUB_ACH * 12 ; 
+      
+         
             
         
             Config::set('stats.CA_N',$CA_N);

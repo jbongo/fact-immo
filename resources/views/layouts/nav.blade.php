@@ -176,7 +176,7 @@
 
 
                 <ul>
-                <li class="{{$li_home}}" ><a href="{{route('home')}}" ><i class="large material-icons" style="font-size:20px;">home</i> Accueil </a></li>
+                <li class="{{$li_home}}"  @if (Auth()->user()->role == "admin")   style=" background:#e6ea9a" @endif ><a href="{{route('home')}}" ><i class="large material-icons" style="font-size:20px;">home</i> Accueil </a></li>
                 @if (Auth()->user()->role == "mandataire")                        
                
                     <li class="{{$li_mandataire}}"><a  href="{{route('mandataire.show', Crypt::encrypt(Auth()->user()->id))}}" class=""> <i class="large material-icons" style="font-size:20px;">person</i></i>Mon profil  </a></li>

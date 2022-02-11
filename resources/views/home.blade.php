@@ -47,6 +47,11 @@
     .button > .ld {
       font-size: initial
     }
+    
+    .stats-text{
+        font-weight: 900;
+    
+    }
   </style>
   
   
@@ -254,62 +259,238 @@
 @endif
 
 
-{{-- ############# --}}
+{{-- #######  STATS ###### --}}
 
-{{-- <div class="row">
-<div class="col-lg-2">
-    <div class="card">
-        <div class="stat-widget-five">
-            <div class="stat-icon">
-                <i class="ti-home bg-primary"></i>
+@if(Auth::user()->role == "admin")
+
+<div class="row">
+
+    <div class="col-lg-12">
+        <div class="card alert">
+            <div class="card-header">
+                <h4 class="m-l-5">Infos générales</h4>
+                <div class="card-header-right-icon">
+                    <ul>
+                        <li><i class="ti-reload"></i></li>
+                    </ul>
+                </div>
             </div>
-            <div class="stat-content">
-                <div class="stat-heading color-primary"><strong>Affaires en cours</strong></div>
-                <div class="stat-text">{{config('stats.STATS')["nb_affaires_en_cours"]}}</div>
+            <div class="card-body">
+                <div class="media-stats-content text-center">
+                    <div class="row">
+                        <div class="col-lg-4 border-bottom">
+                            <div class="stats-content">
+                                <div class="stats-digit text-danger">{{config('stats.STATS')["nb_affaires_en_cours"]}}</div>
+                                <div class="stats-text">Affaires en cours (Non cloturées)</div>
+                            </div>
+                        </div>
+                       
+                        <div class="col-lg-4 border-bottom border-left border-right">
+                            <div class="stats-content">
+                                <div class="stats-digit text-danger">{{config('stats.STATS')["nb_mandataires_actifs"] }}</div>
+                                <div class="stats-text">Mandataires actifs</div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 border-bottom border-left">
+                            <div class="stats-content">
+                                <div class="stats-digit text-danger">{{config('stats.STATS')["nb_filleuls"]}}</div>
+                                <div class="stats-text">Parrainages Actifs</div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 ">
+                            <div class="stats-content">
+                                <div class="stats-digit text-danger">{{config('stats.STATS')["nb_mandataires_actifs_n"] }}</div>
+                                <div class="stats-text">Mandataires ayants saisi au moins <h1>1</h1> affaire en {{config('stats.STATS.annee')}}</div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 border-left">
+                            <div class="stats-content">
+                                <div class="stats-digit text-danger">{{config('stats.STATS')["nb_mandataires_jetons"] }}</div>
+                                <div class="stats-text">Mandataires aux jetons</div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 border-left border-right">
+                            <div class="stats-content">
+                                <div class="stats-digit text-danger">{{config('stats.STATS')["nb_mandataires_facture_pub"] }}</div>
+                                <div class="stats-text">Mandataires à la facturation</div>
+                            </div>
+                        </div>
+                       
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+
+
+
 </div>
-<div class="col-lg-3">
-    <div class="card">
-        <div class="stat-widget-five">
-            <div class="stat-icon">
-                <i class="ti-user bg-success"></i>
+
+
+<br>
+<div class="row">
+
+
+    <div class="col-lg-6">
+        <div class="col-md-12">
+       
+            <div class="card">
+                <div class="media">
+                    <div class="media-left meida media-middle">
+                        <span><i class="ti-cup f-s-22 color-primary border-primary round-widget"></i></span>
+                    </div>
+                    <div class="media-body media-text-right text-primary" style="font-size: 25px">
+                        <h4>Classement mandataires en {{config('stats.STATS.annee')}}</h4>
+                    </div>
+                </div>
             </div>
-            <div class="stat-content">
-                <div class="stat-heading color-success"><strong>Mandataires actifs</strong></div>
-                <div class="stat-text">{{config('stats.STATS')["nb_mandataires_actifs"] }}</div>
+        </div>
+        <div class="card alert">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Rang </th>
+                                <th>#</th>
+                                <th><strong>Chiffre d'affaires STYL </strong></th>
+                                {{-- <th><strong>Chiffre d'affaires prévisionnel</strong></th> --}}
+                               
+                               
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (config('stats.STATS.classements_n') as $key => $classement_n)
+                            
+                
+                            <tr>
+                                <td> <span class="color-default" style="font-size: 25px"> <strong> {{$key +1}} </strong></span></td>
+                                <td><span class="color-default" style="font-size: 18px"> <strong> {{$classement_n[1]->nom}} {{$classement_n[1]->prenom}} </strong></td>
+                                <td> <span class="color-primary" style="font-size: 25px"> <strong>  {{number_format( $classement_n[0] ,2,'.',',')}}  €  </strong></span></td>
+                                {{-- <td> <span class="color-default" style="font-size: 25px"> <strong>  {{number_format( $classement_n[0] ,2,'.',',')}}  €  </strong></span></td> --}}
+                                
+                                
+                            </tr>
+
+                            @endforeach
+
+                           
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
-</div>
-<div class="col-lg-3">
-    <div class="card">
-        <div class="stat-widget-five">
-            <div class="stat-icon">
-                <i class="ti-money bg-warning"></i>
+
+
+
+    <div class="col-lg-6">
+        <div class="col-md-12">
+       
+            <div class="card">
+                <div class="media">
+                    <div class="media-left meida media-middle">
+                        <span><i class="ti-cup f-s-22 color-danger border-danger round-widget"></i></span>
+                    </div>
+                    <div class="media-body media-text-right text-danger" style="font-size: 25px">
+                        <h4>Classement mandataires depuis 2020</h4>
+                    </div>
+                </div>
             </div>
-            <div class="stat-content">
-                <div class="stat-heading color-primary"><strong>Chiffre d'affaires Styl HT</strong></div>
-                <div class="stat-text">{{number_format( array_sum(config('stats.CA_N')[0]) ,2,',',' ')}}</div>
+        </div>
+        <div class="card alert">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Rang </th>
+                                <th>#</th>
+                                <th><strong>Chiffre d'affaires STYL </strong></th>
+                               
+                               
+                               
+                            </tr>
+                        </thead>
+                        <tbody>
+                        @foreach (config('stats.STATS.classements') as $key => $classement)
+                            
+                
+                            <tr>
+                                <td> <span class="color-default" style="font-size: 25px"> <strong> {{$key +1}} </strong></span></td>
+                                <td><span class="color-default" style="font-size: 18px"> <strong> {{$classement[1]->nom}} {{$classement[1]->prenom}} </strong></td>
+                                <td> <span class="color-danger" style="font-size: 25px"> <strong>  {{number_format( $classement[0] ,2,'.',',')}}  €  </strong></span></td>
+                                
+                                
+                            </tr>
+
+                        @endforeach
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
+
 </div>
-<div class="col-lg-3">
-    <div class="card">
-        <div class="stat-widget-five">
-            <div class="stat-icon bg-danger">
-                <i class="ti-medall-alt"></i>
-            </div>
-            <div class="stat-content">
-                <div class="stat-heading color-primary"><strong>Parrainages</strong></div>
-                <div class="stat-text">{{config('stats.STATS')["nb_filleuls"]}}</div>
-            </div>
-        </div>
-    </div>
-</div>
-</div> --}}
+
+
+@endif
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
