@@ -6,7 +6,7 @@
 
     $li_home = $li_mandataire = $li_prospect_gestion = $li_prospect_archive = $li_affaire = $li_affaire_filleul = $li_affaire_archive=  $li_facture = $li_facture_gestion = $li_facture_demande = $li_facture_a_payer = $li_facture_a_valider = 
     $li_parametre = $li_parametre_modele = $li_parametre_fournisseur = $li_parametre_pack_pub = $li_parametre_generaux = $li_outil = $li_affaire_toutes = $li_affaire_cloture = $li_facture_hors_delais =     
-    $li_jetons = $li_facture_pub = $li_documents = $li_documents_gestion = $li_documents_a_valider = $li_fournisseurs = $li_fournisseurs_passerelle = $li_fournisseurs_autre = "";
+    $li_jetons = $li_facture_pub = $li_parrainage= $li_documents = $li_documents_gestion = $li_documents_a_valider = $li_fournisseurs = $li_fournisseurs_passerelle = $li_fournisseurs_autre = "";
     
     switch ($curent_url[1]) {
         case 'home':       
@@ -17,6 +17,9 @@
             break;
         case 'mandataires':
             $li_mandataire = "active";
+            break;
+        case 'parrainage':
+            $li_parrainage = "active";
             break;
         case 'prospects':
             $li_prospect_gestion = "active";
@@ -199,6 +202,7 @@
                   
                     <li   class="{{$li_jetons}}"><a  href="{{route('mandataires.jetons')}}" class=""> <i class="large material-icons" style="font-size:20px;">adjust</i></i>Gestion des jetons  </a></li>
                     <li   class="{{$li_facture_pub}}" style=" background:#e6ea9a"><a  href="{{route('mandataires.facture_pub')}}" class=""> <i class="large material-icons" style="font-size:20px;">receipt</i></i>Gestion des Facts pub  </a></li>
+                    <li   class="{{$li_parrainage}}" style=" background:#e6ea9a"><a  href="{{route('parrainage.index')}}" class=""> <i class="large material-icons" style="font-size:20px;">receipt</i></i>Gestion des Parrainages  </a></li>
                 @else 
                     
                     @if(Auth()->user()->contrat->deduis_jeton == true)

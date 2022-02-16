@@ -61,6 +61,9 @@ Route::middleware('auth')->group(function(){
     // Gestion des factures pub
     Route::get('/mandataires/facture-pub','MandataireController@mandataires_facture_pub')->name('mandataires.facture_pub')->middleware('admin');
     Route::get('/historique-facture-pub/{user_id}','MandataireController@historique_facture_pub')->name('mandataire.historique_facture_pub');
+    
+    // Gestion des parrainages
+    Route::get('/parrainage','ParrainageController@index')->name('parrainage.index')->middleware('admin');
  
     // compromis  
     Route::get('/compromis','CompromisController@index')->name('compromis.index');

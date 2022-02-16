@@ -15,12 +15,22 @@ class Filleul extends Model
         return $this->belongsTo(User::class);
     }
     
-     // Retourne le filleul
-     public function parrain()
-     {
+    // Retourne le filleul
+    public function parrain()
+    {
         $parrain = User::where('id', $this->parrain_id)->first();
-         return $parrain;
-     }
+        return $parrain;
+    }
+    
+    /**
+    * Retourne la commission touchée par le parrain sur le filleul
+    */
+   public function commission()
+   {      
+      $com = Facture::whereIn('type', ['parrainage','parrainage_partage'])->where([['user_id', $this->parrain_id], ['filleul_id', $this->user_id],['reglee', true]])->sum('montant_ttc');
+      return $com;
+   }
+      
 
     // ## Veérifier si un parrain a le droit de toucher une commission de parrainage, 
     public static function droitParrainage($parrain_id, $filleul_id, $compromis_id){
