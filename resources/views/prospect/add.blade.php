@@ -122,7 +122,7 @@ Ajout d'un prospect
                     </div>
                        
                         <div class="form-group row">
-                           <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="commentaire_perso">Commentaire perso</label>
+                           <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="commentaire_perso">Commentaire admin</label>
                            <div class="col-lg-8 col-md-8 col-sm-8">
                              <textarea name="commentaire_perso" id="commentaire_perso" class="form-control" cols="30" rows="5"> {{old('commentaire_perso')}}</textarea>
                               @if ($errors->has('commentaire_perso'))

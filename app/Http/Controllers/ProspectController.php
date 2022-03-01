@@ -36,7 +36,7 @@ class ProspectController extends Controller
         $prospects = Prospect::where([['archive', false], ['est_mandataire', false]])->get();
         // $prospects = Prospect::where('archive', false)->get();
         
-        $agendas = Agenda::all()->toJson();
+        $agendas = Agenda::where('est_agenda_prospect', true)->get()->toJson();
               
         $mandataires = User::join('contrats','users.id','=','contrats.user_id' )
         ->select('*','contrats.id as contrat_id')
@@ -44,7 +44,7 @@ class ProspectController extends Controller
         
         $bibliotheques = Bibliotheque::all();
         
-        //  Tableau contenant les ids et noms des p^rospects pour faciliter l'affichage dans le code js
+        //  Tableau contenant les ids et noms des prospects pour faciliter l'affichage dans le code js
         $tab_id_nom_prospect = array();
         foreach ($prospects as $prospect) {
             $tab_id_nom_prospect[$prospect->id] = $prospect->nom. " ".$prospect->prenom ;
@@ -607,7 +607,10 @@ class ProspectController extends Controller
    
   
         Mail::to($prospect->email)->send(new SendModeleContrat($prospect,$modele_contrat_pdf_path, $modele_annexe_pdf_path));
-        return  redirect()->route('prospect.index')->with('ok','Le modèle de contrat a été envoyé au prospect ');
+        
+        return  redirect()->route('prospect.agenda.show',  $prospect->id )->with('ok','Le modèle du contrat a été envoyé au prospect ');
+        
+        // return  redirect()->route('prospect.index')->with('ok','Le modèle de contrat a été envoyé au prospect ');
 
 
     }
@@ -869,7 +872,7 @@ class ProspectController extends Controller
     {
         $agendas = Agenda::where('prospect_id', $prospect_id)->get()->toJson();
         $prospect = Prospect::where('id', $prospect_id)->first();
-        // dd($agendas);
+        // dd($prospect);
         return view('prospect.agenda',compact('agendas', 'prospect'));
            
     }

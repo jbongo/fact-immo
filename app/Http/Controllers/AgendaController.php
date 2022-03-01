@@ -30,6 +30,28 @@ class AgendaController extends Controller
         return view('agenda.index',compact('agendas','mandataires', 'prospects'));
     }
 
+
+/**
+     * Agenda général
+     * en listing
+     * @return \Illuminate\Http\Response
+     */
+    public function listing()
+    {
+        
+        $agendas = Agenda::all();
+       
+        $mandataires = User::join('contrats','users.id','=','contrats.user_id' )
+        ->select('*','contrats.id as contrat_id')
+        ->where('contrats.a_demission', false)->get();
+        
+        $prospects = Prospect::where([['archive',false], ['est_mandataire', false]])->get();
+        
+        // dd($prospects);
+  
+        return view('agenda.listing',compact('agendas','mandataires', 'prospects'));
+    }
+
    
 
     /**
@@ -44,6 +66,7 @@ class AgendaController extends Controller
         $agenda = Agenda::create([
         
             'titre' => $request->titre, 
+            'type_rappel' => $request->type_rappel, 
             'description' => $request->description, 
             'date_deb' => $request->date_deb, 
             'date_fin' => $request->date_fin, 
@@ -55,6 +78,7 @@ class AgendaController extends Controller
             'est_agenda_mandataire' => false,
             // 'est_agenda_prospect' => $request->est_agenda_prospect,            
             'est_agenda_general' => true,
+            'liee_a' => $request->liee_a,
             'prospect_id' => $request->prospect_id, 
             'mandataire_id' => $request->mandataire_id, 
         
@@ -78,8 +102,9 @@ class AgendaController extends Controller
     {
         //
         $agenda = Agenda::where('id',$request->id)->first();
-        
+        // dd( $request->heure_fin);
         $agenda->titre =  $request->titre; 
+        $agenda->type_rappel =  $request->type_rappel; 
         $agenda->description =  $request->description; 
         $agenda->date_deb =  $request->date_deb; 
         $agenda->date_fin =  $request->date_fin; 
@@ -91,6 +116,7 @@ class AgendaController extends Controller
          $agenda->est_agenda_mandataire = false;
         // $agenda->est_agenda_prospect =  $request->est_agenda_prospect;            
         $agenda->est_agenda_general =  true;
+        $agenda->liee_a =  $request->liee_a; 
         $agenda->prospect_id =  $request->prospect_id; 
         $agenda->mandataire_id =  $request->mandataire_id; 
         $agenda->est_terminee = $request->est_terminee == "true" ? true : false;             

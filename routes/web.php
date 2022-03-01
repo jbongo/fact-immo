@@ -39,7 +39,7 @@ Route::middleware('auth')->group(function(){
     Route::delete('/prospect/delete/{prospect}','ProspectController@destroy')->name('prospect.delete');
     Route::get('/prospect/archives/','ProspectController@archives')->name('prospect.archives');
     Route::get('/prospect/archiver/{prospect}/{action}','ProspectController@archiver')->name('prospect.archiver');
-    Route::get('/prospect/agenda','ProspectController@agenda_general')->name('prospect.agenda');
+    Route::get('/prospects/agenda','ProspectController@agenda_general')->name('prospect.agenda');
     Route::get('/prospect/agenda/{prospect_id}','ProspectController@show_agenda_prospect')->name('prospect.agenda.show')->middleware('admin');
     Route::post('/prospect/agenda/store','ProspectController@store_agenda_prospect')->name('prospect.agenda.store')->middleware('admin');
     Route::post('/prospect/agenda/update','ProspectController@update_agenda_prospect')->name('prospect.agenda.update')->middleware('admin');
@@ -111,6 +111,7 @@ Route::middleware('auth')->group(function(){
 
     // factures
     Route::get('/factures','FactureController@index')->name('facture.index');
+    Route::get('/factures/all','FactureController@index_all')->name('facture.index_all')->middleware('admin');
     Route::get('/factures/hors-delais','FactureController@hors_delais')->name('facture.hors_delais');
     Route::get('/factures/create','FactureController@create')->name('facture.create');
     Route::get('/factures/packpub','FactureController@packpub')->name('facture.packpub');
@@ -329,6 +330,7 @@ Route::middleware('auth')->group(function(){
 
 // Agenda  général
 Route::get('/agendas/general','AgendaController@index')->name('agendas.index');
+Route::get('/agendas/general/listing','AgendaController@listing')->name('agendas.listing');
 
 Route::post('/agenda/store','AgendaController@store')->name('agenda.store');
 Route::post('/agenda/update','AgendaController@update')->name('agenda.update');

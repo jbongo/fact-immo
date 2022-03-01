@@ -18,7 +18,8 @@
                 <!-- table -->
                 @if(Auth::user()->role == "admin")
                 
-                  <a href="{{route('facture.create_libre')}}" class="btn btn-success btn-flat btn-addon m-b-10 m-l-5"><i class="ti-plus"></i>@lang('Créer facture STYL\'IMMO')</a>
+                <a href="{{route('facture.create_libre')}}" class="btn btn-success btn-flat btn-addon m-b-10 m-l-5"><i class="ti-plus"></i>@lang('Créer facture STYL\'IMMO')</a> 
+                <span class="color-primary"><a href="{{route('facture.index_all')}}" target="_blank"> Voir toutes les factures STYL'IMMO </a></span>
                   <br> <hr>
              
                @endif

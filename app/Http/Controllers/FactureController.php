@@ -32,7 +32,7 @@ class FactureController extends Controller
 {    
     
     /**
-     * Afficher toutes les factures
+     * Afficher les factures en fonction des dates
      *
      * @return \Illuminate\Http\Response
      */
@@ -80,6 +80,24 @@ class FactureController extends Controller
         return view ('facture.index',compact(['factureHonoraires','factureStylimmos','factureCommunications','nb_comm_non_regle','date_deb','date_fin']));
     }
     
+    /**
+     * Afficher toutes les factures STYLIMMO
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index_all()
+    {
+        //
+     
+            
+        
+        $factureStylimmos = Facture::whereIn('type',['stylimmo','avoir','pack_pub','carte_visite','communication','autre','forfait_entree','cci'])->latest()->get();          
+                       
+        
+        
+        return view ('facture.index_all',compact('factureStylimmos'));
+    }
+    
     
     
     
@@ -119,6 +137,19 @@ class FactureController extends Controller
         return view ('facture.honoraire',compact(['factureHonoraires','nb_comm_non_regle','date_deb','date_fin']));
     }
     
+    
+    
+    /**
+     * Afficher toutes les factures d'honoraire
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index_honoraire_all()
+    {
+       
+        $factureHonoraires = Facture::whereIn('type',['honoraire','partage','partage_externe','parrainage','parrainage_partage'])->orWhere('date_facture',null)->latest()->get();                       
+        return view ('facture.honoraire_all',compact('factureHonoraires'));
+    }
     
          /**
      * Afficher toutes les factures d'honoraire encaissees
@@ -1926,7 +1957,7 @@ public  function preparer_facture_honoraire_partage($compromis,$mandataire_id = 
             $facture = Facture::where([ ['type','partage'],['user_id',$mandataire->id],['compromis_id',$compromis->id]])->first();
             
    
-            $formule = unserialize( $facture->formule);
+            $formule = $facture != null ? unserialize( $facture->formule) : null;
         }
     }
 // facture du mandataire qui ne porte pas l'affaire

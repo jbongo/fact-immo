@@ -36,9 +36,11 @@
     
                                     <div class="user-skill">
                                        <h4 style="color: #32ade1;text-decoration: underline;">Options</h4>
-                                        @if (auth()->user()->role == "admin")
+                                       @if (auth()->user()->role == "admin")
                                             <a href="{{route('prospect.edit',Crypt::encrypt($prospect->id) )}}"  class="btn btn-warning btn-rounded btn-addon btn-xs m-b-10"><i class="ti-pencil"></i>Modifier</a>
-                                        @endif
+                                       @endif
+                                            <a href="{{route('prospect.fiche',Crypt::encrypt($prospect->id) )}}" target="_blank"  class="btn btn-danger btn-rounded btn-addon btn-xs m-b-10"><i class="ti-pencil"></i>Fiche prospect</a>
+                          
                                         
                                         @if (auth()->user()->role == "admin" && $prospect->contrat != null)
                                        <a href="{{route('prospect.send_access',[ Crypt::encrypt($prospect->id) ,Crypt::encrypt($prospect->contrat->id) ])}}" title="Envoyer les accès au prospect" class="btn btn-default btn-rounded btn-addon btn-xs m-b-10 send-access"><i class="ti-pencil"></i>Envoyer les accès </a>
@@ -108,7 +110,7 @@
                                                 {{-- <h4 style="color: #32ade1;text-decoration: underline;">Role utilisateur</h4> --}}
                                                 
                                                 <div class="gender-content">
-                                                   <span class="contact-title"><strong>Commentaire perso:</strong></span>
+                                                   <span class="contact-title"><strong>Commentaire admin:</strong></span>
                                                    <span class="gender">{{$prospect->commentaire_perso}}</span>
                                                 </div>
                                              </div>
@@ -297,15 +299,15 @@
                                 
                                 
                                 
-                                <hr>
-                                
-                                <span><a href="{{route('prospect.envoyer_modele_contrat',Crypt::encrypt($prospect->id) )}}" style="background: #3b4842" class="btn btn-default btn-flat btn-addon m-b-10 m-l-5" data-toggle="tooltip" title="@lang('Envoyer le modèle de contrat à  ') {{ $prospect->nom }}"><i class="ti-email"></i>@if($prospect->modele_contrat_envoye == true) Renvoyer @else Envoyer @endif le modèle de contrat </a> </span>
-                                <span><a href="{{route('prospect.telecharger_modele_contrat',Crypt::encrypt($prospect->id) )}}" target="_blank" style="background: #641142" class="btn btn-danger btn-flat btn-addon m-b-10 m-l-5" data-toggle="tooltip" title="@lang('Télécharger le modèle de contrat à  ') {{ $prospect->nom }}"><i class="ti-download"></i>Télécharger le modèle de contrat </a> </span>
                                 
                               <hr>
                                 <span><a href="{{route('prospect.envoi_mail_fiche',Crypt::encrypt($prospect->id) )}}"class="btn btn-warning btn-flat btn-addon m-b-10 m-l-5"  data-toggle="tooltip" title="@lang('Envoyer la fiche à remplir à ') {{ $prospect->nom }}"><i class="ti-email"></i>@if($prospect->fiche_envoyee == true) Renvoyer @else Envoyer @endif  fiche prospect </a> </span>
                               <hr>
                                 
+                                <span><a href="{{route('prospect.envoyer_modele_contrat',Crypt::encrypt($prospect->id) )}}" style="background: #3b4842" class="btn btn-default btn-flat btn-addon m-b-10 m-l-5" data-toggle="tooltip" title="@lang('Envoyer le modèle de contrat à  ') {{ $prospect->nom }}"><i class="ti-email"></i>@if($prospect->modele_contrat_envoye == true) Renvoyer @else Envoyer @endif le modèle de contrat </a> </span>
+                                <span><a href="{{route('prospect.telecharger_modele_contrat',Crypt::encrypt($prospect->id) )}}" target="_blank" style="background: #641142" class="btn btn-danger btn-flat btn-addon m-b-10 m-l-5" data-toggle="tooltip" title="@lang('Télécharger le modèle de contrat à  ') {{ $prospect->nom }}"><i class="ti-download"></i>Télécharger le modèle de contrat </a> </span>
+                                
+                              <hr>                                
                                 <span><a href="{{route('prospect.prospect_a_mandataire',Crypt::encrypt($prospect->id) )}}"  class="btn btn-danger btn-flat btn-addon m-b-10 m-l-5" data-toggle="tooltip" title="@lang('Passer le prospect à mandataire ') {{ $prospect->nom }}"><i class="ti-email"></i>Passer à mandataire </a> </span>
                                 
                               

@@ -1,9 +1,18 @@
 @extends('layouts.app')
 @section('content')
     @section ('page_title')
-    Agenda Général
+    <span class="control-label">Agenda Général</span> 
     @endsection
+    <style>
+        .modal-header .close {
+            font-size: 55px;
+            margin-right: 15px;  
+            color: red;
+        }
+    </style>
+    
     <div class="row"> 
+
        
         <div class="col-lg-12">
                 @if (session('ok'))
@@ -29,7 +38,7 @@
                                     <a href="#" data-toggle="modal" data-target="#add-agenda" class="btn btn-lg btn-danger btn-block waves-effect waves-light"><i class="fa fa-plus"></i>Nouvelle tâche</a>
                                 </div>
                                 <div class="col-lg-3">
-                                        <a href="#"  class="btn btn-sm btn-default"><i class="fa fa-list"></i>  Affichage en listing</a>
+                                        <a href="{{route('agendas.listing')}}"  class="btn btn-lg btn-default"><i class="fa fa-list"></i>  Affichage en listing</a>
                                 </div>
                                 <div class="col-md-12">
                                     <div class="card-box">
@@ -66,42 +75,59 @@
                                                 <h4 class="modal-title"><strong>Ajouter une tâche</strong></h4>
                                             </div>
                                             <div class="modal-body">
-                                                <form action="{{route('prospect.agenda.store')}}" method="post">
+                                                <form action="{{route('agenda.store')}}" method="post">
                                                 
                                                 @csrf
                                                 
                                                 <div class="row">
                                                     <div class="col-md-6">
-                                                        <label class="control-label">Date début</label>
+                                                        <label class="control-label">Date début  <span class="text-danger">*</span></label>
                                                         <input class="form-control form-white" placeholder="" type="date" required name="date_deb" />
-                                                    </div><div class="col-md-6">
-                                                        <label class="control-label">Date Fin</label>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label class="control-label">Date Fin  <span class="text-danger">*</span></label>
                                                         <input class="form-control form-white" placeholder="" type="date" required name="date_fin" />
                                                     </div>
                                                     
                                                     <div class="col-md-6">
-                                                        <label class="control-label">Heure début</label>
+                                                        <label class="control-label">Heure début  <span class="text-danger">*</span></label>
                                                         <input class="form-control form-white" placeholder="" type="time"  min="06:00" max="23:00" required name="heure_deb" />
-                                                    </div><div class="col-md-6">
-                                                        <label class="control-label">Heure Fin</label>
-                                                        <input class="form-control form-white" placeholder="" type="time"  min="06:00" max="23:00" required name="heure_fin" />
                                                     </div>
+                                                    {{-- <div class="col-md-6">
+                                                        <label class="control-label">Heure Fin</label>
+                                                        <input class="form-control form-white" placeholder="" type="time"  min="06:00" max="23:00" name="heure_fin" />
+                                                    </div> --}}
                                                 
                                                 </div>
+                                                  <hr>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <label class="control-label">Type de rappel</label>
+                                                        <select name="type_rappel" class="form-control form-white " id="type_rappel" required>
+                                                         
+                                                            <option value="appel">appel</option>                                    
+                                                            <option value="rappel">rappel</option>
+                                                            <option value="rdv">rdv</option>
+                                                            <option value="autre">autre</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                              
+                                                
                                                 <hr>
                                                 <div class="row">
                                                     <div class="col-md-6">
                                                         <label class="control-label">Tâche liée à :</label>
-                                                        <select name="liee_a" class="form-control" class="liee_a" id="liee_a" >
+                                                        <select name="liee_a" onchange="selectIdNew()" class="form-control " id="liee_a_add_new"  >
                                                             <option value="mandataire">Mandataire</option>
                                                             <option value="prospect">Prospect</option>
                                                             <option value="aucun">Aucun</option>
                                                         </select>
                                                     </div>
                                                     
-                                                    <div class="col-lg-6 col-md-6 col-sm-6" id="div_mandataire_add">
+                                                    <div class="col-lg-6 col-md-6 col-sm-6 " id="div_mandataire_add_new" >
                                                         <div class="form-group row" >
-                                                            <label class="col-lg-8 col-md-8 col-sm-8 col-form-label" for="mandataire_id">Choisir un mandataire <span class="text-danger">*</span> </label>
+                                                            <label class="col-lg-8 col-md-8 col-sm-8 col-form-label" for="mandataire_id">Choisir un mandataire </label>
                                                             <div class="col-lg-6 col-md-6 col-sm-6">
                                                                 <select class="selectpicker " id="mandataire_id_add" name="mandataire_id" data-live-search="true" data-style="btn-warning btn-rounded" >
                                                                      @foreach ($mandataires as $mandataire )
@@ -111,9 +137,9 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="col-lg-6 col-md-6 col-sm-6" id="div_prospect_add">
+                                                    <div class="col-lg-6 col-md-6 col-sm-6 " id="div_prospect_add_new" >
                                                         <div class="form-group row" >
-                                                            <label class="col-lg-8 col-md-8 col-sm-8 col-form-label" for="prospect_id">Choisir un prospect <span class="text-danger">*</span> </label>
+                                                            <label class="col-lg-8 col-md-8 col-sm-8 col-form-label" for="prospect_id">Choisir un prospect  </label>
                                                             <div class="col-lg-6 col-md-6 col-sm-6">
                                                                 <select class="selectpicker " id="prospect_id" name="prospect_id" data-live-search="true" data-style="btn-warning btn-rounded" >
                                                                     @foreach ($prospects as $prospect )
@@ -128,16 +154,16 @@
                                                 <hr>
                                                 <div class="row">
                                                     <div class="col-md-12">
-                                                        <label class="control-label">Titre</label>
-                                                        <input class="form-control form-white" placeholder="" type="text" name="titre" />
+                                                        <label class="control-label">Titre  <span class="text-danger">*</span></label>
+                                                        <input class="form-control form-white" placeholder="" required type="text" name="titre" />
                                                     </div>
                                                     <div class="col-md-12">
                                                         <label class="control-label">Description</label>
                                                        <textarea name="description" class="form-control" id="" cols="30" rows="5"></textarea>
                                                     </div>
                                                 </div>
-                                                
-                                                
+                                                                                                
+                                                                                                
                                                
                                             </div>
                                             <div class="modal-footer">
@@ -238,69 +264,97 @@ agendas = JSON.parse(agendas.replaceAll('&quot;','"') );
         CalendarApp.prototype.onEventClick = function(calEvent, jsEvent, view) {
             var $this = this;
             
-            var form = $(`<form action="{{route('prospect.agenda.update')}}" method="post" ></form>`);
+            var form = $(`<form action="{{route('agenda.update')}}" method="post" ></form>`);
      
             form.append(`@csrf <div class="row">
                         <input type="hidden" name="id" value="${calEvent.extendedProps.id}" />
             
+                            <div class="col-md-6">                            
+                                <label class="control-label">Date début  <span class="text-danger">*</span> </label>
+                                <input class="form-control form-white" placeholder="" type="date" name="date_deb" required value="${calEvent.extendedProps.date_deb}" />
+                            </div>
                             <div class="col-md-6">
-                                <label class="control-label">Date début</label>
-                                <input class="form-control form-white" placeholder="" type="date" name="date_deb" value="${calEvent.extendedProps.date_deb}" />
-                            </div><div class="col-md-6">
-                                <label class="control-label">Date Fin</label>
-                                <input class="form-control form-white" placeholder="" type="date" name="date_fin" value="${calEvent.extendedProps.date_fin}" />
+                                <label class="control-label">Date Fin  <span class="text-danger">*</span> </label>
+                                <input class="form-control form-white" placeholder="" type="date" name="date_fin" required value="${calEvent.extendedProps.date_fin}" />
                             </div>
                             
                             <div class="col-md-6">
-                                <label class="control-label">Heure début</label>
+                                <label class="control-label">Heure début  <span class="text-danger">*</span> </label>
                                 <input class="form-control form-white" placeholder="" type="time"  min="06:00" max="23:00" required name="heure_deb" value="${calEvent.extendedProps.heure_deb}" />
-                            </div><div class="col-md-6">
-                                <label class="control-label">Heure Fin</label>
-                                <input class="form-control form-white" placeholder="" type="time"  min="06:00" max="23:00" required name="heure_fin" value="${calEvent.extendedProps.heure_fin}"/>
                             </div>
+                          
                         
                         </div>
                         <hr>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <label class="control-label">Tâche liée à :</label>
-                                    <select name="liee_a" class="form-control" class="liee_a" >
-                                        <option value="mandataire">Mandataire</option>
-                                        <option value="prospect">Prospect</option>
-                                        <option value="aucun">Aucun</option>
-                                    </select>
-                                </div>
-                                
-                                <div class="col-lg-6 col-md-6 col-sm-6" class="div_mandataire_edit">
-                                    <div class="form-group row" >
-                                        <label class="col-lg-8 col-md-8 col-sm-8 col-form-label" for="mandataire_id">Choisir un mandataire <span class="text-danger">*</span> </label>
-                                        <div class="col-lg-6 col-md-6 col-sm-6">
-                                            <select class="selectpicker " id="mandataire_id" name="mandataire_id" data-live-search="true" data-style="btn-warning btn-rounded" >
-                                                 @foreach ($mandataires as $mandataire )
-                                                    <option value="{{ $mandataire->id }}" data-tokens="{{ $mandataire->nom }} {{ $mandataire->prenom }}">{{ $mandataire->nom }} {{ $mandataire->prenom }}</option>
-                                                @endforeach 
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 col-md-6 col-sm-6" class="div_prospect_edit">
-                                    <div class="form-group row" >
-                                        <label class="col-lg-8 col-md-8 col-sm-8 col-form-label" for="prospect_id">Choisir un prospect <span class="text-danger">*</span> </label>
-                                        <div class="col-lg-6 col-md-6 col-sm-6">
-                                            <select class="selectpicker " id="prospect_id" name="prospect_id" data-live-search="true" data-style="btn-warning btn-rounded" >
-                                                @foreach ($prospects as $prospect )
-                                                    <option value="{{ $prospect->id }}" data-tokens="{{ $prospect->nom }} {{ $prospect->prenom }}">{{ $prospect->nom }} {{ $prospect->prenom }}</option>
-                                                @endforeach 
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="control-label">Type de rappel</label>
+                                <select name="type_rappel" class="form-control form-white" id="type_rappel" required>
+                                    <option value="${calEvent.extendedProps.type_rappel}">${calEvent.extendedProps.type_rappel}</option>
+                                    <option value="appel">appel</option>                                    
+                                    <option value="rappel">rappel</option>
+                                    <option value="rdv">rdv</option>
+                                    <option value="autre">autre</option>
+                                </select>
                             </div>
+                            <div class="col-md-6">
+                                <label class="control-label text-danger">Tâche terminée ?</label>
+                                <select name="est_terminee" class="form-control form-white" id="est_terminee" required>
+                                    <option value="${calEvent.extendedProps.est_terminee}">${calEvent.extendedProps.est_terminee == true ? 'Oui' : 'Non'}</option>
+                                   
+                                    <option value="true">Oui </option>                                    
+                                    <option value="false">Non</option>                                    
+                                  
+                                </select>
+                            </div>
+                        </div>
+                        <hr>
+                     
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="control-label">Tâche liée à :</label>
+                                <select name="liee_a" onchange="selectIdEdit()" class="form-control liee_a_edit"  id="liee_a">
+                                    <option value="${calEvent.extendedProps.liee_a}">${calEvent.extendedProps.liee_a}</option>
+                                    <option value="mandataire">Mandataire</option>
+                                    <option value="prospect">Prospect</option>
+                                    <option value="aucun">Aucun</option>
+                                </select>
+                            </div>
+                            
+                            <div id="div_mandataire_edit">
+                            <div class="col-lg-6 col-md-6 col-sm-6 div_mandataire_edit"  >
+                                <div class="form-group row" >
+                                    <label class="col-lg-8 col-md-8 col-sm-8 col-form-label" for="mandataire_id2">Choisir un mandataire  </label>
+                                    <div class="col-lg-12 col-md-12 col-sm-12">
+                                        <select class="selectpickerx form-control " id="mandataire_id2" name="mandataire_id2" data-live-search="true" data-style="btn-warning btn-rounded" >
+                                             @foreach ($mandataires as $mandataire )
+                                                <option value="{{ $mandataire->id }}" data-tokens="{{ $mandataire->nom }} {{ $mandataire->prenom }}">{{ $mandataire->nom }} {{ $mandataire->prenom }}</option>
+                                            @endforeach 
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                            <div id="div_prospect_edit" >
+                            <div class="col-lg-6 col-md-6 col-sm-6 div_prospect_edit" >
+                                <div class="form-group row" >
+                                    <label class="col-lg-8 col-md-8 col-sm-8 col-form-label" for="prospect_id">Choisir un prospect </label>
+                                    <div class="col-lg-12 col-md-12 col-sm-12">
+                                        <select class="selectpickerx form-control" id="prospect_id" name="prospect_id" data-live-search="true" data-style="btn-warning btn-rounded" >
+                                            @foreach ($prospects as $prospect )
+                                                <option value="{{ $prospect->id }}" data-tokens="{{ $prospect->nom }} {{ $prospect->prenom }}">{{ $prospect->nom }} {{ $prospect->prenom }}</option>
+                                            @endforeach 
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                            
+                        </div>
                         <hr>
                         <div class="row">
                             <div class="col-md-12">
-                                <label class="control-label">Titre</label>
+                                <label class="control-label">Titre  <span class="text-danger">*</span></label>
                                 <input class="form-control form-white" placeholder="" value=" ${calEvent.title} " type="text" required name="titre" />
                             </div>
                             <div class="col-md-12">
@@ -331,6 +385,18 @@ agendas = JSON.parse(agendas.replaceAll('&quot;','"') );
             $this.$modal.find('form').on('submit', function() {
                
             });
+            
+            if(calEvent.extendedProps.liee_a =="mandataire"){
+                document.getElementById('div_prospect_edit').style.display= 'none';
+            }else if (calEvent.extendedProps.liee_a =="prospect"){
+                document.getElementById('div_mandataire_edit').style.display= 'none';
+                
+            }else{
+                document.getElementById('div_mandataire_edit').style.display= 'none';
+                document.getElementById('div_prospect_edit').style.display= 'none';
+                
+                
+            }
         },
         
         
@@ -342,43 +408,56 @@ agendas = JSON.parse(agendas.replaceAll('&quot;','"') );
             $this.$modal.modal({
                 backdrop: 'static'
             });
-            var form = $(`<form action="{{route('prospect.agenda.store')}}" method="post"></form>`);
+            var form = $(`<form action="{{route('agenda.store')}}" method="post"></form>`);
             form.append(" <div class='row'></div>");
             form.find(".row")
-                .append(` @csrf <div class="row">
+                .append(`@csrf <div class="row">
                             <div class="col-md-6">
-                                <label class="control-label">Date début</label>
-                                <input class="form-control form-white" placeholder="" type="date" name="date_deb" />
-                            </div><div class="col-md-6">
-                                <label class="control-label">Date Fin</label>
-                                <input class="form-control form-white" placeholder="" type="date" name="date_fin" />
+                                <label class="control-label">Date début  <span class="text-danger">*</span> </label>
+                                <input class="form-control form-white" placeholder="" type="date" name="date_deb" value="${start.format('YYYY-MM-DD')}" required />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="control-label">Date Fin  <span class="text-danger">*</span> </label>
+                                <input class="form-control form-white" placeholder="" type="date" name="date_fin" value="${start.format('YYYY-MM-DD')}"  required />
                             </div>
                             
                             <div class="col-md-6">
-                                <label class="control-label">Heure début</label>
-                                <input class="form-control form-white" placeholder="" type="time"  min="06:00" max="23:00" required name="heure_deb" />
-                            </div><div class="col-md-6">
-                                <label class="control-label">Heure Fin</label>
-                                <input class="form-control form-white" placeholder="" type="time"  min="06:00" max="23:00" required name="heure_fin" />
+                                <label class="control-label">Heure début  <span class="text-danger">*</span> </label>
+                                <input class="form-control form-white" placeholder="" type="time"  min="06:00" max="23:00"  required name="heure_deb" />
                             </div>
+                           
                         
                         </div>
                         <hr>
                         <div class="row">
                             <div class="col-md-6">
+                                <label class="control-label">Type de rappel</label>
+                                <select name="type_rappel" class="form-control form-white" id="type_rappel" required>
+                                    <option value="appel">appel</option>                                    
+                                    <option value="rappel">rappel</option>
+                                    <option value="rdv">rdv</option>
+                                    <option value="autre">autre</option>
+                                </select>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-6">
                                 <label class="control-label">Tâche liée à :</label>
-                                <select name="liee_a" class="form-control" class="liee_a" >
+                                <select name="liee_a" onchange="selectId()" class="form-control liee_a_add"  >
                                     <option value="mandataire">Mandataire</option>
                                     <option value="prospect">Prospect</option>
                                     <option value="aucun">Aucun</option>
                                 </select>
                             </div>
                             
-                            <div class="col-lg-6 col-md-6 col-sm-6" class="div_mandataire_edit">
+               
+                            <div class="col-lg-6 col-md-6 col-sm-6 "  id="div_mandataire_add" >
                                 <div class="form-group row" >
-                                    <label class="col-lg-8 col-md-8 col-sm-8 col-form-label" for="mandataire_id">Choisir un mandataire <span class="text-danger">*</span> </label>
-                                    <div class="col-lg-6 col-md-6 col-sm-6">
-                                        <select class="selectpicker " id="mandataire_id" name="mandataire_id" data-live-search="true" data-style="btn-warning btn-rounded" >
+                                    <label class="col-lg-8 col-md-8 col-sm-8 col-form-label" for="mandataire_id1">Choisir un mandataire </label>
+                                    <div class="col-lg-12 col-md-12 col-sm-12">
+                                    
+                                        <select class="selectpickerx form-control " id="mandataire_id1" name="mandataire_id1" data-live-search="true" data-style="btn-warning btn-rounded" >
                                              @foreach ($mandataires as $mandataire )
                                                 <option value="{{ $mandataire->id }}" data-tokens="{{ $mandataire->nom }} {{ $mandataire->prenom }}">{{ $mandataire->nom }} {{ $mandataire->prenom }}</option>
                                             @endforeach 
@@ -386,11 +465,13 @@ agendas = JSON.parse(agendas.replaceAll('&quot;','"') );
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-6 col-md-6 col-sm-6" class="div_prospect_edit">
+                         
+                            
+                            <div class="col-lg-6 col-md-6 col-sm-6 "  id="div_prospect_add">
                                 <div class="form-group row" >
-                                    <label class="col-lg-8 col-md-8 col-sm-8 col-form-label" for="prospect_id">Choisir un prospect <span class="text-danger">*</span> </label>
-                                    <div class="col-lg-6 col-md-6 col-sm-6">
-                                        <select class="selectpicker " id="prospect_id" name="prospect_id" data-live-search="true" data-style="btn-warning btn-rounded" >
+                                    <label class="col-lg-8 col-md-8 col-sm-8 col-form-label"  for="prospect_id">Choisir un prospect  </label>
+                                    <div class="col-lg-12 col-md-12 col-sm-12">
+                                        <select class="selectpickerx form-control " id="prospect_id" name="prospect_id" data-live-search="true" data-style="btn-warning btn-rounded" >
                                             @foreach ($prospects as $prospect )
                                                 <option value="{{ $prospect->id }}" data-tokens="{{ $prospect->nom }} {{ $prospect->prenom }}">{{ $prospect->nom }} {{ $prospect->prenom }}</option>
                                             @endforeach 
@@ -398,13 +479,14 @@ agendas = JSON.parse(agendas.replaceAll('&quot;','"') );
                                     </div>
                                 </div>
                             </div>
+                     
                             
                         </div>
                         <hr>
                         <div class="row">
                             <div class="col-md-12">
-                                <label class="control-label">Titre</label>
-                                <input class="form-control form-white" placeholder="" type="text" name="titre" />
+                                <label class="control-label">Titre  <span class="text-danger">*</span></label>
+                                <input class="form-control form-white" placeholder="" type="text" name="titre" required />
                             </div>
                             <div class="col-md-12">
                                 <label class="control-label">Description</label>
@@ -425,6 +507,11 @@ agendas = JSON.parse(agendas.replaceAll('&quot;','"') );
             $this.$modal.find('.delete-event').hide().end().find('.save-event').show().end().find('.modal-body').empty().prepend(form).end().find('.save-event').unbind('click').on("click", function() {
                 form.submit();
             });
+            
+            document.getElementById('div_prospect_add').style.display= 'none';
+            
+          
+            
             $this.$modal.find('form').on('submit', function() {
                 var title = form.find("input[name='title']").val();
                 var beginning = form.find("input[name='beginning']").val();
@@ -479,6 +566,12 @@ agendas = JSON.parse(agendas.replaceAll('&quot;','"') );
             var val;
             agendas.forEach( function (agenda)  {
                     
+                if(agenda.est_terminee == true){
+                    var color = "bg-success";
+                }else{
+                    var color = "bg-danger";
+                } 
+
                     val = {title:agenda.titre,
                     start: agenda.date_deb+'T'+agenda.heure_deb,
                     end: agenda.date_fin+'T'+agenda.heure_fin,
@@ -488,10 +581,13 @@ agendas = JSON.parse(agendas.replaceAll('&quot;','"') );
                         date_fin:agenda.date_fin,
                         heure_deb:agenda.heure_deb,
                         heure_fin:agenda.heure_fin,
+                        type_rappel:agenda.type_rappel,
+                        liee_a:agenda.liee_a,
+                        est_terminee:agenda.est_terminee,
                         description:agenda.description,
                     },
                    
-                    className:'bg-danger'
+                    className: color
                     };
                                         
                     list.push(val)
@@ -543,7 +639,7 @@ agendas = JSON.parse(agendas.replaceAll('&quot;','"') );
                 var titre = $this.$categoryForm.find("input[name='titre']").val();
                 var categoryColor = $this.$categoryForm.find("select[name='category-color']").val();
                 if (titre !== null && titre.length != 0) {
-                    $this.$extEvents.append('<div class="external-event bg-warning" data-class="bg-warning" style="position: relative;"><i class="fa fa-move"></i>' + titre + '</div>')
+                    $this.$extEvents.append('<div class="external-event bg-warning" data-class="bg-warning" style="position: relative;"><i class="fa fa-move"></i>' +  titre + '</div>')
                     $this.enableDrag();
                 }
 
@@ -569,34 +665,77 @@ function($) {
 
 
 
-<script>
-
-$('#div_mandataire_add').hide();
-$('#div_prospect_add').hide();
-
-$('.div_mandataire_edit').hide();
-$('.div_prospect_edit').hide();
-
-console.log($('.liee_a').val());
-
-$('.liee_a').on('change', function(){
-
-console.log("fff");
-})
+<script type="text/javascript">
 
 
-$('#liee_a').change(function(){
+$('#div_prospect_add_new').hide();
 
-console.log("rrrrr");
-console.log($('#liee_a').val());
-    if($('.liee_a').val() == "mandataire"){
+
+
+function selectId() {
+
+//  #########
     
-    }else if($('.liee_a').val() == "prospect"){
+    if($('.liee_a_add').val() == "mandataire"){
+        document.getElementById('div_mandataire_add').style.display= 'inline';
+        document.getElementById('div_prospect_add').style.display= 'none';
+     
+        
+    }else if($('.liee_a_add').val() == "prospect"){
     
-    }else{
-    
-    
+        document.getElementById('div_mandataire_add').style.display= 'none';
+        document.getElementById('div_prospect_add').style.display= 'inline';
+      
+    }else{        
+ 
+        document.getElementById('div_mandataire_add').style.display= 'none';
+        document.getElementById('div_prospect_add').style.display= 'none';
     }
-})
+
+    
+
+}
+
+function selectIdNew(){
+
+     
+// #########
+        
+    if($('#liee_a_add_new').val() == "mandataire"){
+        $('#div_mandataire_add_new').show();
+        $('#div_prospect_add_new').hide();
+        
+        
+    }else if($('#liee_a_add_new').val() == "prospect"){
+        $('#div_prospect_add_new').show();
+        $('#div_mandataire_add_new').hide();
+        
+    }else{        
+        $('#div_prospect_add_new').hide();
+        $('#div_mandataire_add_new').hide();
+        
+    }
+}
+function selectIdEdit(){
+
+    
+    // ############
+    
+    if($('.liee_a_edit').val() == "mandataire"){
+        
+        document.getElementById('div_mandataire_edit').style.display= 'inline';
+        document.getElementById('div_prospect_edit').style.display= 'none';
+        
+    }else if($('.liee_a_edit').val() == "prospect"){
+    
+        document.getElementById('div_mandataire_edit').style.display= 'none';
+        document.getElementById('div_prospect_edit').style.display= 'inline';
+    }else{        
+        document.getElementById('div_mandataire_edit').style.display= 'none';
+        document.getElementById('div_prospect_edit').style.display= 'none';
+    }
+
+}
+
 </script>
 @endsection

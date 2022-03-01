@@ -130,7 +130,7 @@
                                                 {{-- <h4 style="color: #32ade1;text-decoration: underline;">Role utilisateur</h4> --}}
                                                 
                                                 <div class="gender-content">
-                                                   <span class="contact-title"><strong>Commentaire perso:</strong></span>
+                                                   <span class="contact-title"><strong>Commentaire admin:</strong></span>
                                                    <span class="gender">{{$mandataire->prospect->commentaire_perso}}</span>
                                                 </div>
                                              </div>

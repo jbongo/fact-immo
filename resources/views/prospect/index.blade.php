@@ -111,7 +111,6 @@
                                             <div class="col-md-6">
                                                 <label class="control-label">Type de rappel</label>
                                                 <select name="type_rappel"  class="form-control form-white" id="type_rappel" required>
-                                                    <option value=""></option>
                                                     <option value="appel">appel</option>                                                    
                                                     <option value="rappel">rappel</option>
                                                     <option value="rdv">rdv</option>
@@ -192,10 +191,10 @@
               
             <label for="">Légende:</label><br>
             
-            <span>Non envoyé :</span> <i class="large material-icons color-danger">highlight_off</i> <br>
+            {{-- <span>Non envoyé :</span> <i class="large material-icons color-danger">highlight_off</i> <br>
             <span> Envoyé mais non lu :</span> <i class="large material-icons color-warning">visibility_off</i>  <br>
             <span> Lu:</span> <i class="large material-icons color-success">visibility_on</i> <br>
-            <span> Questionnaire renseigné:</span> <i class="large material-icons color-success">done</i> 
+            <span> Questionnaire renseigné:</span> <i class="large material-icons color-success">done</i>  --}}
                 
             <div class="card-body">
                 <div class="panel panel-info m-t-15" id="cont">
@@ -207,19 +206,19 @@
                         <thead>
                             <tr>
                                 <th>@lang('Nom')</th>
-                                @foreach ($bibliotheques as $biblio )
+                                {{-- @foreach ($bibliotheques as $biblio )
                                 <th>
                                     {{$biblio->reference}}
                                 </th>
-                                @endforeach
-                                <th>@lang('Fiche prospect')</th>
+                                @endforeach --}}
                                 <th>@lang('Email')</th>
                                 <th>@lang('Téléphone')</th>
                                 <th>@lang('Code postal')</th>
                                 <th>@lang('Ville')</th>
-                                {{-- <th>@lang('Contrat')</th> --}}
-                                {{-- <th>@lang('Fiche renseignée')</th> --}}
-                                {{-- <th>@lang('Envois mails')</th> --}}
+                                <th>@lang('Fiche prospect')</th>
+                                <th>@lang('Fiche consultée')</th>
+                                <th>@lang('Fiche renseignée')</th>
+                                <th>@lang('Contrat')</th>
                                 <th>@lang('Date de création')</th>
                                
                                 <th>@lang('Action')</th>
@@ -235,7 +234,7 @@
                                     {{$prospect->prenom}} {{$prospect->nom}} 
                                 </td>
                                 
-                                @foreach ($bibliotheques as $biblio )
+                                {{-- @foreach ($bibliotheques as $biblio )
                                     <td>
                                     
                                     @if($biblio->getProspect($prospect->id))
@@ -250,7 +249,6 @@
                                             <i class="large material-icons color-success">done</i>
                                         
                                         @else                                        
-                                            {{-- <i class="large material-icons color-danger">done_all</i> --}}
                                             <i class="large material-icons color-warning">visibility_off</i>
                                             
                                         
@@ -259,17 +257,14 @@
                                     @else 
                                     
                                     <i class="large material-icons color-danger">highlight_off</i>
-                                    {{-- <i class="large material-icons color-danger">help_outline</i> --}}
                                     
                                     
                                     
                                     @endif
                                     </td>
-                                @endforeach
+                                @endforeach --}}
                                 
-                                <td>
-                                    
-                                
+                                {{-- <td>
                                     
                                         @if($prospect->fiche_envoyee == true)
                                         
@@ -283,23 +278,17 @@
                                                 <i class="large material-icons color-success">done</i>
                                             
                                             @else                                        
-                                                {{-- <i class="large material-icons color-danger">done_all</i> --}}
-                                                <i class="large material-icons color-warning">visibility_off</i>
-                                                
-                                            
-                                            
+                                                <i class="large material-icons color-warning">visibility_off</i>                                            
                                             @endif
                                         @else 
                                         
-                                        <i class="large material-icons color-danger">highlight_off</i>
-                                        {{-- <i class="large material-icons color-danger">help_outline</i> --}}
-                                        
+                                        <i class="large material-icons color-danger">highlight_off</i>                              
                                         
                                         
                                         @endif
                                      
                                 
-                                </td>
+                                </td> --}}
                                 
                                 <td>
                                     {{$prospect->email}} 
@@ -314,12 +303,11 @@
                                     {{$prospect->ville}}
                                 </td>
                                 
-                                {{-- <td>
-                                    <a href="{{route('prospect.envoyer_modele_contrat',Crypt::encrypt($prospect->id) )}}"  style="background: #3b4842" class="btn btn-default btn-flat btn-addon m-b-10 m-l-5" data-toggle="tooltip" title="@lang('Envoyer le modèle de contrat à  ') {{ $prospect->nom }}"><i class="ti-email"></i>@if($prospect->modele_contrat_envoye == true) Renvoyer @else Envoyer @endif le modèle </a>
-                                
-                                </td> --}}
-                                
-                                {{-- <td>
+                              
+                                <td>
+                                    <a href="{{route('prospect.envoi_mail_fiche',Crypt::encrypt($prospect->id) )}}" class="btn btn-warning btn-flat btn-addon m-b-10 m-l-5" data-toggle="tooltip" title="@lang('Envoyer la fiche à remplir à ') {{ $prospect->nom }}"><i class="ti-email"></i>@if($prospect->fiche_envoyee == true) Renvoyer @else Envoyer @endif  fiche prospect </a>
+                                    </td>
+                                <td>
                                     @if($prospect->a_ouvert_fiche == true)
                                     <span class="badge badge-success">Oui</span>
                                     @else 
@@ -335,11 +323,13 @@
                                    <span class="badge badge-danger">Non</span>
                                    
                                    @endif
-                                </td>   --}}
+                                </td>  
                                 
-                                {{-- <td>
-                                <a href="{{route('prospect.envoi_mail_fiche',Crypt::encrypt($prospect->id) )}}" class="btn btn-warning btn-flat btn-addon m-b-10 m-l-5" data-toggle="tooltip" title="@lang('Envoyer la fiche à remplir à ') {{ $prospect->nom }}"><i class="ti-email"></i>@if($prospect->fiche_envoyee == true) Renvoyer @else Envoyer @endif  fiche prospect </a>
-                                </td> --}}
+                                <td>
+                                    <a href="{{route('prospect.envoyer_modele_contrat',Crypt::encrypt($prospect->id) )}}"  style="background: #3b4842" class="btn btn-default btn-flat btn-addon m-b-10 m-l-5" data-toggle="tooltip" title="@lang('Envoyer le modèle de contrat à  ') {{ $prospect->nom }}"><i class="ti-email"></i>@if($prospect->modele_contrat_envoye == true) Renvoyer @else Envoyer @endif le modèle </a>
+                                
+                                </td>
+                              
                                 
                                 <td>
                                     <span>{{$prospect->created_at->format('d/m/Y')}}</span>
@@ -536,11 +526,12 @@ tab_id_nom_prospect = JSON.parse(tab_id_nom_prospect.replaceAll('&quot;','"') );
                         <input type="hidden" name="id" value="${calEvent.extendedProps.id}" />
                         <div class="row">
                             <div class="col-md-6">
-                                <label class="control-label">Date début</label>
-                                <input class="form-control form-white" placeholder="" type="date" name="date_deb" value="${calEvent.extendedProps.date_deb}" />
-                            </div><div class="col-md-6">
-                                <label class="control-label">Date Fin</label>
-                                <input class="form-control form-white" placeholder="" type="date" name="date_fin" value="${calEvent.extendedProps.date_fin}" />
+                                <label class="control-label">Date début <span class="text-danger">*</span>  </label>
+                                <input class="form-control form-white" placeholder="" type="date" required name="date_deb" value="${calEvent.extendedProps.date_deb}" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="control-label">Date Fin <span class="text-danger">*</span>  </label>
+                                <input class="form-control form-white" placeholder="" type="date" required name="date_fin" value="${calEvent.extendedProps.date_fin}" />
                             </div>
                             
                             <div class="col-md-6">
@@ -554,7 +545,7 @@ tab_id_nom_prospect = JSON.parse(tab_id_nom_prospect.replaceAll('&quot;','"') );
                                 </select>
                             </div>
                             <div class="col-md-6">
-                                <label class="control-label">Heure début</label>
+                                <label class="control-label">Heure début <span class="text-danger">*</span> </label>
                                 <input class="form-control form-white" placeholder="" type="time"  min="06:00" max="23:00" required name="heure_deb" value="${calEvent.extendedProps.heure_deb}" />
                             </div>
                             
@@ -590,8 +581,8 @@ tab_id_nom_prospect = JSON.parse(tab_id_nom_prospect.replaceAll('&quot;','"') );
                         <hr>
                         <div class="row">
                             <div class="col-md-12">
-                                <label class="control-label">Titre</label>
-                                <input class="form-control form-white" placeholder="" value=" ${calEvent.title} " type="text" required name="titre" />
+                                <label class="control-label">Titre <span class="text-danger">*</span>  </label>
+                                <input class="form-control form-white" placeholder="" value=" ${calEvent.title}"  type="text" required name="titre" />
                             </div>
                             <div class="col-md-12">
                                 <label class="control-label">Description</label>
@@ -639,18 +630,19 @@ tab_id_nom_prospect = JSON.parse(tab_id_nom_prospect.replaceAll('&quot;','"') );
             form.find(".row")
                 .append(` @csrf <div class="row">
                             <div class="col-md-6">
-                                <label class="control-label">Date début</label>
-                                <input class="form-control form-white" placeholder="" value="${start.format('YYYY-MM-DD')}" type="date" name="date_deb" />
-                            </div><div class="col-md-6">
-                                <label class="control-label">Date Fin</label>
-                                <input class="form-control form-white" placeholder="" value="${start.format('YYYY-MM-DD')}" type="date" name="date_fin" />
+                                <label class="control-label">Date début <span class="text-danger">*</span> </label>
+                                <input class="form-control form-white" placeholder="" value="${start.format('YYYY-MM-DD')}" required type="date" name="date_deb" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="control-label">Date Fin <span class="text-danger">*</span> </label>
+                                <input class="form-control form-white" placeholder="" value="${start.format('YYYY-MM-DD')}" required type="date" name="date_fin" />
                             </div>
                             
                             
                             <div class="col-md-6">
                                 <label class="control-label">Type de rappel</label>
                                 <select name="type_rappel" class="form-control form-white" id="type_rappel" required>
-                                    <option value=""></option>
+                   
                                     <option value="appel">appel</option>                                    
                                     <option value="rappel">rappel</option>
                                     <option value="rdv">rdv</option>
@@ -659,7 +651,7 @@ tab_id_nom_prospect = JSON.parse(tab_id_nom_prospect.replaceAll('&quot;','"') );
                             </div>
                             
                             <div class="col-md-6">
-                                <label class="control-label">Heure début</label>
+                                <label class="control-label">Heure début <span class="text-danger">*</span> </label>
                                 <input class="form-control form-white" placeholder="" type="time"  min="06:00" max="23:00" required name="heure_deb" />
                             </div>
                             
@@ -684,8 +676,8 @@ tab_id_nom_prospect = JSON.parse(tab_id_nom_prospect.replaceAll('&quot;','"') );
                         <hr>
                         <div class="row">
                             <div class="col-md-12">
-                                <label class="control-label">Titre</label>
-                                <input class="form-control form-white" placeholder="" type="text" name="titre" />
+                                <label class="control-label">Titre <span class="text-danger">*</span> </label>
+                                <input class="form-control form-white" placeholder="" required type="text" name="titre" />
                             </div>
                             <div class="col-md-12">
                                 <label class="control-label">Description</label>
@@ -760,20 +752,12 @@ tab_id_nom_prospect = JSON.parse(tab_id_nom_prospect.replaceAll('&quot;','"') );
             var val;
             agendas.forEach( function (agenda)  {
                     
-                    if(agenda.type_rappel == "rdv"){
-                        var bgclass = "rdv";
-                    }
-                    else if(agenda.type_rappel == "appel"){
-                        var bgclass = "appel";
-                    }
-                    else if(agenda.type_rappel == "rappel"){
-                        var bgclass = "rappel";
-                    }
-                    else{
-                        var bgclass = "autre";
-                    }
-                    
-               
+                                     
+                    if(agenda.est_terminee == true){
+                        var color = "bg-success";
+                    }else{
+                        var color = "bg-danger";
+                    } 
                     var nom_prospect = tab_id_nom_prospect[agenda.prospect_id];
                     
                  
@@ -800,7 +784,7 @@ tab_id_nom_prospect = JSON.parse(tab_id_nom_prospect.replaceAll('&quot;','"') );
                         description:agenda.description,
                     },
                    
-                    className:bgclass,
+                    className:color,
                     };
                                         
                     list.push(val)
