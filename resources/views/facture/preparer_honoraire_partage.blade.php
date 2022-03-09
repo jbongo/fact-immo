@@ -115,6 +115,7 @@
                     <br>
                     
                     @if(Auth()->user()->role == "admin" )
+                    
                         @if ($facture->user->contrat->deduis_jeton == false  )
                            <span class="text-danger" style="font-weight: bold">Factures Pub à régler:</span> <a href="{{route('mandataire.historique_facture_pub', Crypt::encrypt($facture->user->id))}}" target="_blank" data-toggle="tooltip" title="@lang('Factures Pub')" class="badge @if($facture->user->nb_facture_pub_retard == 0) badge-success @elseif($facture->user->nb_facture_pub_retard > 0 && $facture->user->nb_facture_pub_retard < 4) badge-warning @else badge-danger @endif ">{{$facture->user->nb_facture_pub_retard}}</a>
                         
