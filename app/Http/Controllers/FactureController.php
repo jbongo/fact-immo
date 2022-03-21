@@ -2658,6 +2658,7 @@ else{
 }
 //  dd($formule);
 $mandataire->update();
+
 if( session('is_switch') == true ){
     $action = "a déduit $request->nb_mois_deduire mois de pub sur la facture $facture->type du mandat $compromis->numero_mandat pour  ".Auth::user()->nom." ".Auth::user()->prenom;
     $user_id = session('admin_id');

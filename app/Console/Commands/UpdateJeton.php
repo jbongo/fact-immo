@@ -69,6 +69,7 @@ class UpdateJeton extends Command
                     ]);
                     
                     Mail::to($contrat->user->email)->send(new NotifUpdateJeton($contrat->user));
+                    Mail::to("support@stylimmo.com")->send(new NotifUpdateJeton($contrat->user));
 
                     
                 }
