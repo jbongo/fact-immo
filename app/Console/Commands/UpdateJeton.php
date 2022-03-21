@@ -49,12 +49,14 @@ class UpdateJeton extends Command
         foreach ($contrats as $contrat) {
             
             if($contrat->user != null ){
-                
+              
                 // calcul de la date anniv (date deb activite + gratuite expert)
-                $date_anniv = $contrat->est_demarrage_starter ? date('m-d', strtotime($contrat->duree_gratuite_starter."months", strtotime($contrat->date_deb_activite)))  : $contrat->date_deb_activite->format('m-d') ;
+                // $date_anniv = $contrat->est_demarrage_starter ? date('m-d', strtotime($contrat->duree_gratuite_starter."months", strtotime($contrat->date_deb_activite)))  : $contrat->date_deb_activite->format('m-d') ;
+                $date_anniv = $contrat->date_deb_activite->format('m-d') ;
                 
                 // echo $date_anniv."<br>";
                 if(date('m-d')  == $date_anniv ){
+                   
                     $contrat->user->nb_mois_pub_restant += 12;
                     $contrat->user->update();
                     
