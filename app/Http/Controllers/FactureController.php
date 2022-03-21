@@ -2271,7 +2271,7 @@ public  function deduire_pub(Request $request, $facture_id)
     $facture = Facture::where('id', Crypt::decrypt($facture_id))->first();
     $compromis = Compromis::where('id', $facture->compromis_id)->first();
     
-    $mandataire = $compromis->user;
+    $mandataire = $facture->user;
     $contrat = $mandataire->contrat;
 
     $deb_annee = date("Y")."-01-01";
@@ -2657,7 +2657,7 @@ else{
 
 }
 //  dd($formule);
-
+$mandataire->update();
 if( session('is_switch') == true ){
     $action = "a déduit $request->nb_mois_deduire mois de pub sur la facture $facture->type du mandat $compromis->numero_mandat pour  ".Auth::user()->nom." ".Auth::user()->prenom;
     $user_id = session('admin_id');
