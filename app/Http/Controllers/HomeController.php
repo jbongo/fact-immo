@@ -449,7 +449,7 @@ class HomeController extends Controller
                             
                             
                             $ca_glo_n = $ca_encaisse_n + $ca_attente_n + $ca_sous_offre_n + $ca_sous_compromis_n;
-                            $ca_glo_perso_n =$ca_encaisse_perso_n + $ca_attente_perso_n + $ca_sous_offre_n + $ca_sous_compromis_n;
+                            $ca_glo_perso_n =$ca_encaisse_perso_n + $ca_attente_perso_n + $ca_sous_offre_n* $commission + $ca_sous_compromis_n* $commission;
                             
                             $ca_global_N [] = round($ca_glo_n,2);
                             $ca_global_perso_N [] = round($ca_glo_perso_n,2);
@@ -588,8 +588,11 @@ $STATS = array();
             if(Auth::user()->role == "mandataire"){
             $STATS["nb_en_attente_perso_N"] = $nb_en_attente_perso_N;
             $STATS["nb_encaisse_perso_N"] = $nb_encaisse_perso_N;
+            $STATS["nb_global_perso_N"] = $nb_global_perso_N;
+            
             }
             $STATS["nb_global_N"] = $nb_global_N;
+            
             $STATS["nb_sous_offre_N"] = $nb_sous_offre_N;
             $STATS["nb_sous_compromis_N"] = $nb_sous_compromis_N;
             $STATS["nb_en_attente_N"] = $nb_en_attente_N;

@@ -15,18 +15,18 @@
                 </div>
              @endif       
             <div class="card alert">
-                <!-- table -->
-                @if(Auth::user()->role == "admin")
-                <div class="col-lg-12">
-                  <a href="{{route('facture.create_libre')}}" class="btn btn-success btn-flat btn-addon m-b-10 m-l-5"><i class="ti-plus"></i>@lang('Créer facture STYL\'IMMO')</a>
-                  <br> <hr>
-               </div>
-               @endif
+                
+             
+                <br>
             <div class="row">
                     <!-- Navigation Buttons -->
                     <div class="col-lg-12 col-md-12 col-sm-12">
                        <ul class="nav nav-pills nav-tabs" id="myTabs">
-                          <li id="li_stylimmo" class="active"><a href="#stylimmo" data-toggle="pill"> <i class="material-icons" style="font-size: 15px;">account_balance_wallet</i> @lang('Factures Styl\'immo')</a></li>
+                          <li id="li_stylimmo" class=""><a href="#stylimmo" data-toggle="pill"> <i class="material-icons" style="font-size: 15px;">account_balance_wallet</i> @lang('Factures Styl\'immo')</a></li>
+                          <li><a href="{{route('facture.index_honoraire')}}"> <i class="material-icons" style="font-size: 15px;">account_balance_wallet</i> Factures Honoraires</a></li>
+                          <li><a href="{{route('facture.index_communication')}}"><i class="material-icons" style="font-size: 15px;">account_balance_wallet</i> @if(Auth()->user()->role == "admin") @lang('Factures Pubs') @else @lang('Factures Communication')  <span class="badge badge-danger">{{ $nb_comm_non_regle}}</span> @endif</a></li>
+                            @if(Auth()->user()->role == "admin") <li  class="active"><a href="{{route('facture.index_fournisseur')}}"><i class="material-icons" style="font-size: 15px;">account_balance_wallet</i>  @lang('Factures Fournisseurs')  <span class="badge badge-danger"></span></a></li> @endif
+                          
                          
                        </ul>
                     </div>

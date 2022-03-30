@@ -28,6 +28,7 @@
                           <li ><a href="{{route('facture.index')}}"> <i class="material-icons" style="font-size: 15px;">account_balance_wallet</i> Factures Styl'immo <span class="sr-only">(current)</span></a></li>
                           <li class="active"><a href="{{route('facture.index_honoraire')}}"> <i class="material-icons" style="font-size: 15px;">account_balance_wallet</i> Factures Honoraires</a></li>
                           <li><a href="{{route('facture.index_communication')}}"><i class="material-icons" style="font-size: 15px;">account_balance_wallet</i> @if(Auth()->user()->role == "admin") @lang('Factures Pubs') @else @lang('Factures Communication')  <span class="badge badge-danger">{{ $nb_comm_non_regle}}</span> @endif</a></li>
+                        @if(Auth()->user()->role == "admin") <li><a href="{{route('facture.index_fournisseur')}}"><i class="material-icons" style="font-size: 15px;">account_balance_wallet</i>  @lang('Factures Fournisseurs')  <span class="badge badge-danger"></span></a></li> @endif
                           
                         </ul>
                   
