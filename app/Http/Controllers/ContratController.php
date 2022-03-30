@@ -24,6 +24,7 @@ use Illuminate\Support\Facades\Storage;
 use Auth;
 use PDF;
 use iio\libmergepdf\Merger;
+use Illuminate\Support\Facades\DB;
 
 
 
@@ -72,7 +73,13 @@ class ContratController extends Controller
     public function create($user_id)
     {
         //
-        $parrains = User::where([['role','mandataire'], ['id','<>', Crypt::decrypt($user_id)]])->get();
+        // $parrains = User::where([['role','mandataire'], ['id','<>', Crypt::decrypt($user_id)]])->get();
+        $parrains = DB::table('users')
+                        ->join('contrats', 'users.id', '=', 'contrats.user_id')
+                        ->select('users.*', 'contrats.*')
+                        ->where([['role','mandataire'], ['a_demission', false], ['user_id','<>', Crypt::decrypt($user_id)]] )
+                        ->get();
+                        // dd($parrains);
         $modele = Contrat::where('est_modele',true)->first();
         $mandataire = User::where('id', Crypt::decrypt($user_id))->first();
         $packs_pub = Packpub::all();
@@ -91,7 +98,13 @@ class ContratController extends Controller
         //
         $contrat = Contrat::where('id',Crypt::decrypt($contrat_id))->first() ;         
         $packs_pub = Packpub::all();
-        $parrains = User::where([['role','mandataire'], ['id','<>', $contrat->user->id]])->get();
+        // $parrains = User::where([['role','mandataire'], ['id','<>', $contrat->user->id]])->get();
+        
+        $parrains = DB::table('users')
+                        ->join('contrats', 'users.id', '=', 'contrats.user_id')
+                        ->select('users.*', 'contrats.*')
+                        ->where([['role','mandataire'], ['a_demission', false],  ['user_id','<>', $contrat->user->id]] )
+                        ->get();
         
         $parrain_id =   Filleul::where('user_id',$contrat->user->id)->select('parrain_id')->first();
         $parrain = $parrain_id != null ? User::where('id',$parrain_id['parrain_id'])->first() : null;
@@ -494,7 +507,13 @@ class ContratController extends Controller
         $modele = Contrat::where('est_modele',true)->first();
         $palier_starter =  $modele != null ?  $this->palier_unserialize($modele->palier_starter) : null;
         $palier_expert =  $modele != null ? $this->palier_unserialize($modele->palier_expert) : null;
-        $parrains = User::where([['role','mandataire'], ['id','<>', Crypt::decrypt($user_id)]])->get();
+        // $parrains = User::where([['role','mandataire'], ['id','<>', Crypt::decrypt($user_id)]])->get();
+        
+        $parrains = DB::table('users')
+                        ->join('contrats', 'users.id', '=', 'contrats.user_id')
+                        ->select('users.*', 'contrats.*')
+                        ->where([['role','mandataire'], ['a_demission', false], ['user_id','<>', Crypt::decrypt($user_id)]] )
+                        ->get();
         
         $comm_parrain = $modele->comm_parrain;
 

@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\SendFicheProspect;
 use App\Mail\SendModeleContrat;
+use Illuminate\Support\Facades\DB;
 
 use Auth;
 use PDF;
@@ -63,7 +64,15 @@ class ProspectController extends Controller
      */
     public function create()
     {
-        $parrains = User::where([['role','mandataire']])->get();
+        // $parrains = User::where([['role','mandataire']])->get();
+        
+        $parrains = DB::table('users')
+                        ->join('contrats', 'users.id', '=', 'contrats.user_id')
+                        ->select('users.*', 'contrats.*')
+                        ->where([['role','mandataire'], ['a_demission', false] ] )
+                        ->get();
+                        
+        // dd($parrains);
     
         return view('prospect.add',compact('parrains') );
     }
@@ -134,7 +143,13 @@ class ProspectController extends Controller
      */
     public function edit($id)
     {
-        $parrains = User::where([['role','mandataire']])->get();
+        // $parrains = User::where([['role','mandataire']])->get();
+        
+        $parrains = DB::table('users')
+                        ->join('contrats', 'users.id', '=', 'contrats.user_id')
+                        ->select('users.*', 'contrats.*')
+                        ->where([['role','mandataire'], ['a_demission', false] ] )
+                        ->get();
         $prospect = Prospect::where('id', Crypt::decrypt($id))->first();
         $parr = User::where('id',$prospect->parrain_id)->first();
         

@@ -203,7 +203,14 @@
                                 
                                                                             @elseif($compromi->facture_honoraire_cree == 1  || $compromi->facture_honoraire_partage_externe_cree == 1  ) 
                                                                                 <a target="blank" href="{{route('facture.preparer_facture_honoraire',Crypt::encrypt($compromi->id))}}" data-toggle="tooltip" title="@lang('Note honoraire  ')"><i class="large material-icons color-danger">insert_drive_file</i></a> 
-                                                                                
+                                                                            @else 
+                                                                                 @if ($compromi->je_porte_affaire == 0  || $compromi->agent_id == Auth()->user()->id || ($compromi->je_porte_affaire == 1 && $compromi->est_partage_agent == 1) )
+                                                                                    <a target="blank" href="{{route('facture.preparer_facture_honoraire_partage',Crypt::encrypt($compromi->id))}}" data-toggle="tooltip" title="@lang('Note honoraire  ')"><i class="large material-icons color-danger ">insert_drive_file</i></a> 
+                    
+                                                                                @else 
+                                                                                    <a target="blank" href="{{route('facture.preparer_facture_honoraire',Crypt::encrypt($compromi->id))}}" data-toggle="tooltip" title="@lang('Note honoraire  ')"><i class="large material-icons color-danger">insert_drive_file</i></a> 
+                                                                                    
+                                                                                @endif
                                                                             @endif
                                                                     
                                                                     

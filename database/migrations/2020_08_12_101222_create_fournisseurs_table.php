@@ -16,7 +16,7 @@ class CreateFournisseursTable extends Migration
         Schema::create('fournisseurs', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('nom')->nullable();
-            $table->enum('type',['passerelle'])->nullable();
+            $table->string('type')->nullable();
             $table->string('site_web')->nullable();
             $table->string('telephone1')->nullable();
             $table->string('telephone2')->nullable();

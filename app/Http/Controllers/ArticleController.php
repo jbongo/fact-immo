@@ -99,6 +99,7 @@ class ArticleController extends Controller
             "a_expire"=>false,
             "fournisseur_id"=>$request->fournisseur_id,
             "contratfournisseur_id"=>$request->contrat_id,
+            "commandefournisseur_id"=>$request->commande_id,
             
         ]);
 
@@ -235,7 +236,7 @@ class ArticleController extends Controller
         $article->archive = true ;
         $article->update();
 
-        return redirect()->route('fournisseur.show', Crypt::encrypt($request->fournisseur_id))->with('ok', __("article  <<$$article->libelle>> archivé")  );
+        return redirect()->route('fournisseur.show', Crypt::encrypt($article->fournisseur_id))->with('ok', __("article  <<$$article->libelle>> archivé")  );
 
 
     }

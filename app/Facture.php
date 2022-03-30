@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\File ;
 use App\Facture;
 use App\User;
 use App\Factpub;
+use App\Fournisseur;
 
 class Facture extends Model
 {
@@ -221,5 +222,13 @@ class Facture extends Model
         return $factpub;
         
     }
+    
+    // Retournisseur si la facture est une facture fournisseur
+    
+    public function fournisseur()
+    {
+        return $this->belongsTo(Fournisseur::class);
+    }
+
    
 }

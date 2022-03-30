@@ -17,6 +17,7 @@ class CreateArticlesTable extends Migration
             $table->bigIncrements('id');
             $table->integer('fournisseur_id')->nullable();
             $table->integer('contratfournisseur_id')->nullable();
+            $table->integer('commandefournisseur_id')->nullable();
             $table->string('libelle')->nullable();
             // Annonce - Remontée - Autre
             $table->string('type')->default("autre");                  

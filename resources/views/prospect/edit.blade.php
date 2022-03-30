@@ -165,9 +165,9 @@ Modifier prospect {{$prospect->nom}}
        
                         
                          <div class="form-group row">
-                            <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="code_postal">Code postal</label>
+                            <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="code_postal">Code postal <span class="text-danger">*</span></label>
                             <div class="col-lg-8 col-md-8 col-sm-8">
-                               <input type="text" class="form-control {{ $errors->has('code_postal') ? ' is-invalid' : '' }}" value="{{old('code_postal')? old('code_postal') : $prospect->code_postal}}" id="code_postal" name="code_postal" placeholder="Ex: 75001.." >
+                               <input type="text" class="form-control {{ $errors->has('code_postal') ? ' is-invalid' : '' }}" value="{{old('code_postal')? old('code_postal') : $prospect->code_postal}}" id="code_postal" name="code_postal" required placeholder="Ex: 75001.." >
                                @if ($errors->has('code_postal'))
                                <br>
                                <div class="alert alert-warning ">
@@ -193,7 +193,7 @@ Modifier prospect {{$prospect->nom}}
                         
        
                          <div class="form-group row">
-                            <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="telephone_portable">Téléphone Portable  </label>
+                            <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="telephone_portable">Téléphone Portable <span class="text-danger">*</span> </label>
                             <div class="col-lg-8 col-md-8 col-sm-8">
                                <input type="text" class="form-control {{ $errors->has('telephone_portable') ? ' is-invalid' : '' }}" value="{{old('telephone_portable')? old('telephone_portable') : $prospect->telephone_portable}}" id="telephone_portable" name="telephone_portable" placeholder="Ex: 0600000000.." >
                                @if ($errors->has('telephone_portable'))
@@ -207,7 +207,7 @@ Modifier prospect {{$prospect->nom}}
                          <div class="form-group row">
                            <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="telephone_fixe">Téléphone Fixe </label>
                            <div class="col-lg-8 col-md-8 col-sm-8">
-                              <input type="text" class="form-control {{ $errors->has('telephone_fixe') ? ' is-invalid' : '' }}" value="{{old('telephone_fixe')? old('telephone_fixe') : $prospect->telephone_fixe}}" id="telephone_fixe" name="telephone_fixe" placeholder="Ex: 0600000000.." >
+                              <input type="text" class="form-control {{ $errors->has('telephone_fixe') ? ' is-invalid' : '' }}" value="{{old('telephone_fixe')? old('telephone_fixe') : $prospect->telephone_fixe}}" id="telephone_fixe" required name="telephone_fixe" placeholder="Ex: 0600000000.." >
                               @if ($errors->has('telephone_fixe'))
                               <br>
                               <div class="alert alert-warning ">

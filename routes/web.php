@@ -123,6 +123,7 @@ Route::middleware('auth')->group(function(){
     Route::get('/factures/honoraire_encaissee/{annee}','FactureController@index_honoraire_encaissee')->name('facture.index_honoraire_encaissee');
     Route::get('/factures/honoraire_en_attente/{annee}','FactureController@index_honoraire_en_attente')->name('facture.index_honoraire_en_attente');
     Route::get('/factures/communication','FactureController@index_communication')->name('facture.index_communication');
+    Route::get('/factures/fournisseur','FactureController@index_fournisseur')->name('facture.index_fournisseur');
     
     Route::get('/factures/relance/{facture_id}','FactureController@relancer_paiement_facture')->name('facture.relancer_paiement_facture');
     
@@ -240,7 +241,8 @@ Route::middleware('auth')->group(function(){
     Route::post('parametre/generaux/update','ParametreController@update_parametre_generaux')->name('parametre_generaux.update');
 
     // Fournisseur
-    Route::get('fournisseur/type/{type?}','FournisseurController@index')->name('fournisseur.index');
+    Route::get('fournisseurs','FournisseurController@index')->name('fournisseur.index');
+    // Route::get('fournisseur/type/{type?}','FournisseurController@index')->name('fournisseur.index');
     Route::get('fournisseur/edit/{fournisseur_id}','FournisseurController@edit')->name('fournisseur.edit');
     Route::get('fournisseur/show/{fournisseur_id}','FournisseurController@show')->name('fournisseur.show');
     Route::post('fournisseur/update/{fournisseur_id}','FournisseurController@update')->name('fournisseur.update');
@@ -262,6 +264,14 @@ Route::middleware('auth')->group(function(){
      Route::get('fournisseur/contrat/create/{fournisseur_id}','ContratfournisseurController@create')->name('fournisseur.contrat.create');
      Route::post('fournisseur/contrat/store','ContratfournisseurController@store')->name('fournisseur.contrat.store');
      Route::get('fournisseur/contrat/archiver/{contratfournisseur_id}','ContratfournisseurController@archiver')->name('fournisseur.contrat.archiver'); 
+     
+     // Commandefournisseur
+
+     Route::get('fournisseur/commande/edit/{commandefournisseur_id}','CommandefournisseurController@edit')->name('fournisseur.commande.edit');
+     Route::post('fournisseur/commande/update/{commandefournisseur_id}','CommandefournisseurController@update')->name('fournisseur.commande.update');
+     Route::get('fournisseur/commande/create/{fournisseur_id}','CommandefournisseurController@create')->name('fournisseur.commande.create');
+     Route::post('fournisseur/commande/store','CommandefournisseurController@store')->name('fournisseur.commande.store');
+     Route::get('fournisseur/commande/archiver/{commandefournisseur_id}','CommandefournisseurController@archiver')->name('fournisseur.commande.archiver'); 
      
     // Article
     Route::get('articles/{fournisseur}','ArticleController@index')->name('article.index');

@@ -17,6 +17,7 @@ use Auth;
 use App\Historique;
 use App\Updatejeton;
 use Illuminate\Support\Facades\File ;
+use Illuminate\Support\Facades\DB;
 
 
 
@@ -549,7 +550,13 @@ class MandataireController extends Controller
     // dd(date("Y"));
 
    
-        $parrains = User::where([['role','mandataire']])->get();
+        // $parrains = User::where([['role','mandataire']])->get();
+        
+        $parrains = DB::table('users')
+                        ->join('contrats', 'users.id', '=', 'contrats.user_id')
+                        ->select('users.*', 'contrats.*')
+                        ->where([['role','mandataire'], ['a_demission', false]] )
+                        ->get();
  
 
         return view('calculs_stats',compact('mandataire','ca_direct','ca_indirect','vente_12','nb_filleul','parrains'));

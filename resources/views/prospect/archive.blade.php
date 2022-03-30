@@ -65,7 +65,7 @@
                                     <span><a href="{{route('prospect.edit',Crypt::encrypt($prospect->id) )}}" data-toggle="tooltip" title="@lang('Modifier ') {{ $prospect->nom }}"><i class="large material-icons color-warning">edit</i></a></span>
                                     {{-- <span><a href="{{route('switch_user',Crypt::encrypt($prospect->id) )}}" data-toggle="tooltip" title="@lang('Se connecter en tant que ') {{ $prospect->nom }}"><i class="large material-icons color-success">person_pin</i></a></span> --}}
                                     
-                                <span><a  href="{{route('prospect.archiver',[Crypt::encrypt($prospect->id),2])}}" class="archiver" data-toggle="tooltip" title="@lang('Archiver ') {{ $prospect->nom }}"><i class="large material-icons color-danger">delete</i> </a></span>
+                                <span><a  href="{{route('prospect.archiver',[Crypt::encrypt($prospect->id),2])}}" class="archiver" data-toggle="tooltip" title="@lang('Archiver ') {{ $prospect->nom }}"><i class="large material-icons color-danger">replay</i> </a></span>
                                 </td>
                             </tr>
                             
@@ -109,7 +109,7 @@
                  })
 
             swalWithBootstrapButtons({
-                title: '@lang('Vraiment activer cet prospect  ?')',
+                title: '@lang('Vraiment activer ce prospect  ?')',
                 type: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#DD6B55',

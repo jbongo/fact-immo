@@ -12,7 +12,7 @@ Profil du fournisseur
 <div class="card">
    <a href="{{route('fournisseur.index')}}" class="btn btn-default btn-flat btn-addon m-b-10 m-l-5"><i class="ti-angle-double-left"></i>@lang('liste des fournisseurs ')</a>
    <a href="{{route('fournisseur.facture.create',Crypt::encrypt($fournisseur->id) )}}"  class="btn btn-danger btn-rounded btn-addon btn-xs m-b-10 m-l-30"><i class="ti-plus"></i>Ajouter Facture</a>
-   <a href="{{route('fournisseur.contrat.create',Crypt::encrypt($fournisseur->id) )}}"  class="btn btn-danger btn-rounded btn-addon btn-xs m-b-10 m-l-30"><i class="ti-plus"></i>Ajouter Document</a>
+   <a href="{{route('fournisseur.document.create',Crypt::encrypt($fournisseur->id) )}}"  class="btn btn-danger btn-rounded btn-addon btn-xs m-b-10 m-l-30"><i class="ti-plus"></i>Ajouter Document</a>
    
    <div class="card-body">
    
@@ -98,7 +98,7 @@ Profil du fournisseur
                                                 
                    
                             <div class="media-left media-middle" >
-                                <i class="ti-folder f-s-48 color-danger m-r-20"></i> <label for="" style="font-weight: bold">Contrat(s)</label>
+                                <i class="ti-folder f-s-48 color-danger m-r-20"></i> <label for="" style="font-weight: bold">Contrats</label>
                                 <a href="{{route('fournisseur.contrat.create',Crypt::encrypt($fournisseur->id) )}}"  class="btn btn-success btn-rounded btn-addon btn-xs m-b-10 m-l-30"><i class="ti-plus"></i>Ajouter Contrat</a>
                             </div>
                             
@@ -221,53 +221,137 @@ Profil du fournisseur
                             <hr style="border:2px solid red; margin-top:300px">
                         
                             <br><br><br>
-                           <div class="media-left media-middle">
-                              <i class="ti-list f-s-48 color-danger m-r-20"></i> <label for="" style="font-weight: bold">Articles sans contrat </label> 
-                              <a href="{{route('article.create',Crypt::encrypt($fournisseur->id) )}}"  class="btn btn-success btn-rounded btn-addon btn-xs m-b-10 m-l-30"><i class="ti-plus"></i>Ajouter Article</a>
-                           </div>                           
-                           <div class="col-lg-12 m-b-70">
-                              <div class="card alert">
-                                 <div class="card-body">
-                                    <div class="table-responsive">
-                                       <table class="table table-hover">
-                                          <thead>
-                                             <tr>
-                                                <th>Libellé</th>
-                                                <th>Description</th>
-                                                <th>Type</th>
-                                                <th>Quantité</th>
-                                                <th>Prix d'achat</th>
-                                                {{-- <th>Périodicité facturation</th> --}}
-                                                <th>Date d'achat</th>
-                                                <th>Actions</th>
-                                             </tr>
-                                          </thead>
-                                          <tbody>
-                                             @foreach ($fournisseur->contrats as $contrat)
-                                             <tr>
-                                                <td>{{$contrat->nom}}</td>
-                                                <td><span class="text-success" style="font-size: 13px">  </span> <span class="text-danger" style="font-size: 13px"> non envoyé   </td>
-                                                <td><span class="text-warning" style="font-size: 13px"> </span>  </td>
-                                                <td> <span  style="color:white; font-size: 10px" class="badge badge-success">Oui</span><span class="badge badge-danger" style="color:white; font-size: 10px" >Non</span> 
-                                                  
-                                                </td>
-                                                <td><a href="{{route('bibliotheque.envoyer', [$contrat->id,$fournisseur->id, "fournisseur" ])}}"  style="background: #3b4842" class="btn btn-default btn-flat btn-addon m-b-10 m-l-5" data-toggle="tooltip" title="Envoyer par mail"><i class="ti-email"></i>Envoyer  </a></td>
-                                                <td>
-                                                    <span><a href="{{route('fournisseur.show',Crypt::encrypt($fournisseur->id))}}" data-toggle="tooltip" title="@lang('Afficher ') {{ $fournisseur->nom }}"><i class="large material-icons color-success">remove_red_eye</i></a></span>                                                 
-                                                    <span><a href="{{route('fournisseur.edit',Crypt::encrypt($fournisseur->id))}}" data-toggle="tooltip" title="@lang('Modifier ') {{ $fournisseur->nom }}"><i class="large material-icons color-warning">edit</i></a></span>
-                                                    <span><a  href="{{route('fournisseur.edit',$fournisseur->id)}}" class="delete" data-toggle="tooltip" title="@lang('Archiver ') {{ $fournisseur->nom }}"><i class="large material-icons color-danger">delete</i> </a></span>
-                                                </td>
-                                             </tr>
-                                             @endforeach
-                                          </tbody>
-                                       </table>
+                            
+                            
+                            
+                            <div class="media-left media-middle" >
+                              <i class="ti-folder f-s-48 color-danger m-r-20"></i> <label for="" style="font-weight: bold; font-size:20px;">Bons de commande</label>
+                              <a href="{{route('fournisseur.commande.create',Crypt::encrypt($fournisseur->id) )}}"  class="btn btn-success btn-rounded btn-addon btn-xs m-b-10 m-l-30"><i class="ti-plus"></i>Ajouter Bon de Commande</a>
+                          </div>
+                          
+                           @foreach ($fournisseur->commandes as $commande)
+                              @if($commande->archive != true)
+                                 <div class="row">
+                                    <div class="col-md-11 col-lg-11 col-sm-11 " style="background: #617f8e; color: white;">
+                                            <h4>N° {{$commande->numero_commande}} </h4>                          
                                     </div>
+                                    <div class="col-md-1 col-lg-1 col-sm-1"  style="margin-left:-60px;">
+                                            <button class="btn btn-dark btn-flat btn-addon" type="button"  onclick="masquerDiv('btn_clic_afficher_contrat_{{$commande->id}}', 'div_contrat_{{$commande->id}}' )" id="btn_clic_afficher_contrat_{{$commande->id}}" style="height: 39px;margin-left:-10px;margin-bottom:10px;"><i  class="ti-minus"></i>&nbsp;</button>
+                                    </div>        
                                  </div>
-                              </div>
-                           </div>
-                           
-                           
-                         
+                                <hr>
+                                
+                                 <div id="div_contrat_{{$commande->id}}" >
+                                
+                                
+                                    <div class="col-lg-5 col-md-5">
+                                        <div class="card alert">
+                                           <div class="card-body">
+                                              <div class="table-responsive">
+                                                 <table class="table table-hover">
+                                                    <thead>
+                                                       <tr>
+                                                            <th>Numéro Commande</th>
+                                                            <th>Date Commande</th>
+                                                            <th>Description</th>
+                                                            
+                                                            <th>Actions</th>
+                                                       </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                       
+                                                       
+                                                     <tr>
+                                                    
+                                                        <td><span class="text-danger" style="font-size: 13px"> {{$commande->numero_commande}} </span>  </td>
+                                                      
+                                                        <td><span class="text-primary" style="font-size: 13px"> @if($commande->date_commande != null) {{$commande->date_commande->format('d/m/Y')}} @endif</span>  </td>
+                                                        <td>{{$commande->description}}</td>
+                                                        <td>
+                                                            <span><a href="{{route('fournisseur.commande.edit',Crypt::encrypt($commande->id))}}" data-toggle="tooltip" title="@lang('Modifier ') {{ $commande->libelle }}"><i class="large material-icons color-warning">edit</i></a></span>
+                                                            <span><a href="#"  data-href="{{route('fournisseur.commande.archiver',$commande->id)}}" class="archiver" data-toggle="tooltip" title="@lang('Archiver ') {{ $commande->libelle }}"><i class="large material-icons color-danger">delete</i> </a></span>
+                                                        </td>
+                                                       
+                                                     </tr>
+                                                 
+                                                       
+                                                    </tbody>
+                                                 </table>
+                                                 
+                                                 <div style="text-align: center; margin-bottom:50; margin-top:50px">
+                                                        <a data-toggle="modal" data-target="#add-article" data-commande="{{$commande->id}}" class="btn btn-danger btn-rounded btn-addon btn-xs m-b-10 m-l-30 add-commande"><i class="ti-plus"></i>Ajouter un article à la commande</a>
+                                                 </div>
+                                              </div>
+                                           </div>
+                                        </div>
+                                    </div>
+                                    
+                                   
+                                    <div class="col-lg-7 col-md-7">
+                                    
+                                        <div class="media-left media-middle">
+                                            <i class="ti-list f-s-48 color-danger m-r-20"></i> <label for="" style="font-weight: bold">Articles </label> 
+                                         </div>                           
+                                         <div class="col-lg-12 m-b-70">
+                                            <div class="card alert">
+                                               <div class="card-body">
+                                                  <div class="table-responsive">
+                                                     <table class="table table-hover">
+                                                        <thead>
+                                                           <tr>
+                                                              <th>Libellé</th>
+                                                              <th>Description</th>
+                                                              <th>Type</th>
+                                                              <th>Quantité</th>
+                                                              <th>Prix d'achat</th>
+                                                              {{-- <th>Périodicité facturation</th> --}}
+                                                              <th>Date d'achat</th>
+                                                              <th>Actions</th>
+                                                           </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                           @foreach ($commande->articles as $article)
+                                                           @if( $article->archive == false)
+                                                               <tr>
+                                                                    <td>{{$article->libelle}}</td>
+                                                                    <td><span class="text-danger" style="font-size: 13px"> {{$article->description}} </span>  </td>
+                                                                    <td><span class="text-danger" style="font-size: 13px"> {{$article->type}} </span>  </td>
+                                                                    <td><span class="text-danger" style="font-size: 13px"> {{$article->quantite}} </span>  </td>
+                                                                    <td><span class="text-danger" style="font-size: 13px"> {{$article->prix_achat}} </span>  </td>
+                                                                    {{-- <td><span class="text-danger" style="font-size: 13px"> {{$article->periodicite_facturation}} </span>  </td> --}}
+                                                                    <td><span class="text-primary" style="font-size: 13px"> @if($article->date_achat != null) {{$article->date_achat->format('d/m/Y')}} @endif</span>  </td>
+                                                                    <td>
+                                                                        <span><a href="{{route('article.edit',Crypt::encrypt($article->id))}}" data-toggle="tooltip" title="@lang('Modifier ') {{ $article->libelle }}"><i class="large material-icons color-warning">edit</i></a></span>
+                                                                        <span><a href="#"  data-href="{{route('article.archiver',$article->id)}}" class="archiver" data-toggle="tooltip" title="@lang('Archiver ') {{ $article->libelle }}"><i class="large material-icons color-danger">delete</i> </a></span>
+                                                                    </td>
+                                                               </tr>
+                                                           @endif
+                                                           @endforeach
+                                                        </tbody>
+                                                     </table>
+                                                  </div>
+                                               </div>
+                                            </div>
+                                         </div>
+                                         
+                                         
+                                    </div>
+                                
+                                </div>
+                                
+                              @endif
+                          @endforeach
+                      
+                      
+                      
+                          <br><br><br>
+                          <hr style="border:2px solid red; margin-top:300px">
+                            
+                            
+                            
+                            
+                            
+         
                          
                          {{-- ZONE MODAL --}}
                          
@@ -287,9 +371,8 @@ Profil du fournisseur
                                                     {{ csrf_field() }}
                                   
                                                   <div class="row">
-                                                      <hr>
-                                                      <hr>
-                                                      <hr>
+                                                      <br>
+                                                   <br>
                                                       <div class="col-lg-6 col-md-6 col-sm-6">
                                                        
                                                           <div class="form-group row">
@@ -415,6 +498,7 @@ Profil du fournisseur
                                                     
                                                     <input type="hidden"  name="fournisseur_id" value="{{$fournisseur->id}}">
                                                     <input type="hidden"  name="contrat_id" value="">
+                                                    <input type="hidden"  name="commande_id" value="">
                                   
                                                     <div class="form-group row" style="text-align: center; margin-top: 50px;">
                                                        <div class="col-lg-8 ml-auto">
@@ -483,6 +567,11 @@ $('.add-article').click(function(){
 });
 
 
+$('.add-commande').click(function(){
+   var commande_id = $(this).attr('data-commande');
+   
+   $('input[name="commande_id"]').val(commande_id);
+});
 
    
 </script>
@@ -551,9 +640,10 @@ $('.add-article').click(function(){
                     })
                     
                     .done(function () {
-                               that.parents('tr').remove()
-                            })
-                    ;
+                               that.parents('tr').remove();
+                               
+                               location.reload();
+                      });
                     
                   
                     

@@ -89,7 +89,7 @@ Ajout d'un prospect
                         <div class="form-group row">
                            <label  class="col-lg-4 col-md-4 col-sm-4 control-label" for="a_parrain">Le prospect a t'il un parrain ?</label>
                            <div class="col-lg-6">
-                               <input type="checkbox" checked data-toggle="toggle" id="a_parrain" name="a_parrain" data-off="Non" data-on="Oui" data-onstyle="success" data-offstyle="danger">
+                               <input type="checkbox" data-toggle="toggle" id="a_parrain" name="a_parrain" data-off="Non" data-on="Oui" data-onstyle="success" data-offstyle="danger">
                            </div>
                        </div>
                        <div id="parrain_div">
@@ -153,9 +153,9 @@ Ajout d'un prospect
                        
        
                          <div class="form-group row">
-                            <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="code_postal">Code postal</label>
+                            <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="code_postal">Code postal <span class="text-danger">*</span></label>
                             <div class="col-lg-8 col-md-8 col-sm-8">
-                               <input type="text" class="form-control {{ $errors->has('code_postal') ? ' is-invalid' : '' }}" value="{{old('code_postal')}}" id="code_postal" name="code_postal" placeholder="Ex: 75001.." >
+                               <input type="text" class="form-control {{ $errors->has('code_postal') ? ' is-invalid' : '' }}" value="{{old('code_postal')}}" id="code_postal" required name="code_postal" placeholder="Ex: 75001.." >
                                @if ($errors->has('code_postal'))
                                <br>
                                <div class="alert alert-warning ">
@@ -180,9 +180,9 @@ Ajout d'un prospect
        
                       
                          <div class="form-group row">
-                            <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="telephone_portable">Téléphone portable </label>
+                            <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="telephone_portable">Téléphone portable <span class="text-danger">*</span></label>
                             <div class="col-lg-8 col-md-8 col-sm-8">
-                               <input type="text" class="form-control {{ $errors->has('telephone_portable') ? ' is-invalid' : '' }}" value="{{old('telephone_portable')}}" id="telephone_portable" name="telephone_portable" placeholder="Ex: 0600000000.." >
+                               <input type="text" class="form-control {{ $errors->has('telephone_portable') ? ' is-invalid' : '' }}" value="{{old('telephone_portable')}}" id="telephone_portable" required name="telephone_portable" placeholder="Ex: 0600000000.." >
                                @if ($errors->has('telephone_portable'))
                                <br>
                                <div class="alert alert-warning ">
@@ -272,7 +272,7 @@ Ajout d'un prospect
 {{-- ###### Parrainage --}}
 <script>
     
-   // $('#parrain-id').hide();
+   $('#parrain_div').hide();
    $('#source_div').hide();
 
    $('#a_parrain').change(function(e) {

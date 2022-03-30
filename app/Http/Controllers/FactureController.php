@@ -204,7 +204,7 @@ class FactureController extends Controller
     
     
       /**
-     * Afficher toutes les factures d'honoraire
+     * Afficher toutes les factures de communication
      *
      * @return \Illuminate\Http\Response
      */
@@ -230,6 +230,26 @@ class FactureController extends Controller
             return view ('facture.communication',compact(['factureCommunications','nb_comm_non_regle']));
 
         }
+
+        
+    }
+    
+    
+    
+    
+     /**
+     * Afficher toutes les factures fournisseur
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index_fournisseur()
+    {
+                
+            $factureFournisseurs = Facture::where('type','fournisseur')->latest()->get();
+            
+            // dd($factureFournisseurs);
+           
+            return view ('facture.index_fournisseur',compact(['factureFournisseurs']));
 
         
     }

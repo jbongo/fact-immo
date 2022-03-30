@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
 @section ('page_title')
-Modification facture {{$facture->type}} {{$facture->numero}}
+Modification de facture fournisseur  @if($fournisseur != null): {{$fournisseur->nom}} @endif
 @endsection
 <div class="row">
    <div class="col-lg-12 col-md-12 col-sm-12">
@@ -13,11 +13,15 @@ Modification facture {{$facture->type}} {{$facture->numero}}
       @endif      
       <div class="card">
          <div class="col-lg-12">
-            <a href="{{route('facture.index')}}" class="btn btn-warning btn-flat btn-addon m-b-10 m-l-5"><i class="ti-angle-double-left"></i>@lang('Liste des Factures')</a>
+            @if($fournisseur != null)
+                <a href="{{route('fournisseur.show', Crypt::encrypt($fournisseur->id))}}" class="btn btn-warning btn-flat btn-addon m-b-10 m-l-5"><i class="ti-angle-double-left"></i>Retour</a>
+            @else 
+                <a href="{{route('fournisseur.index')}}" class="btn btn-warning btn-flat btn-addon m-b-10 m-l-5"><i class="ti-angle-double-left"></i>Retour</a>
+            @endif
          </div>
          <div class="card-body">
             <div class="form-validation">
-               <form class="form-valide form-horizontal" action="{{ route('facture.update_libre', Crypt::encrypt($facture->id)) }}" method="post">
+               <form class="form-valide form-horizontal" enctype="multipart/form-data" action="{{ route('fournisseur.facture.update', Crypt::encrypt($facture->id)) }}" method="post">
                   {{ csrf_field() }}
 
                 <div class="row">
@@ -29,7 +33,7 @@ Modification facture {{$facture->type}} {{$facture->numero}}
                         <div class="form-group row">
                            <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="numero">Numéro facture <span class="text-danger">*</span></label>
                            <div class="col-lg-8 col-md-8 col-sm-8">
-                              <input type="number" class="form-control {{$errors->has('numero') ? 'is-invalid' : ''}}" value="{{old('numero') ? old('numero') : $facture->numero }}" id="numero" name="numero" placeholder="" required>
+                              <input type="text" class="form-control {{$errors->has('numero') ? 'is-invalid' : ''}}" value="{{old('numero') ? old('numero') : $facture->numero}}" id="numero" name="numero" placeholder="" required>
                               @if ($errors->has('numero'))
                               <br>
                               <div class="alert alert-warning ">
@@ -45,7 +49,7 @@ Modification facture {{$facture->type}} {{$facture->numero}}
                         <div class="form-group row">
                            <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="date_facture">Date de la facture <span class="text-danger">*</span> </label>
                            <div class="col-lg-8 col-md-8 col-sm-8">
-                              <input type="date" class="form-control {{ $errors->has('date_facture') ? ' is-invalid' : '' }}" value="{{old('date_facture') ? old('date_facture') : $facture->date_facture->format('Y-m-d')  }}" id="date_facture" name="date_facture" max="{{date('Y-m-d')}}" required >
+                              <input type="date" class="form-control {{ $errors->has('date_facture') ? ' is-invalid' : '' }}" value="{{old('date_facture') ? old('date_facture') : $facture->date_facture->format('Y-m-d')}}" max="{{date('Y-m-d')}}" id="date_facture" name="date_facture"  required >
                               @if ($errors->has('date_facture'))
                               <br>
                               <div class="alert alert-warning ">
@@ -58,96 +62,92 @@ Modification facture {{$facture->type}} {{$facture->numero}}
 
                 </div>
                   
-                    <hr>
-
-                     <div class="row">
-
-                       <div>
-                           <div class="form-group row" >
-                              <label class="col-lg-3 col-md-3 col-sm-4  control-label" for="type">Type de la facture <span class="text-danger">*</span></label>
-                              <div class="col-lg-3 col-md-3 col-sm-4">
-                                 <select class=" col-lg-6 form-control" id="type" name="type" data-live-search="true" data-style="btn-default btn-rounded" required>
-                                   
-                                    <option value="{{$facture->type}}" data-tokens="{{$facture->type}}">{{$facture->type}}</option>
-                                    <option value="pack_pub" data-tokens="pub">Pub</option>
-                                    <option value="communication" data-tokens="communication">Communication</option>
-                                    <option value="communication" data-tokens="communication">Communication</option>
-                                    <option value="forfait_entree" data-tokens="forfait_entree">Forfait d'entrée</option>
-                                    <option value="autre" data-tokens="autre">Autre</option>
-                                    
-                                 </select>
-                              </div>
-                           </div>
-
-                       </div>
-                     </div>
+       
 
                      <hr>
-                    <div class="row">
-
-                        <div class="form-group row">
-                           <div class="col-lg-4 col-md-4 col-sm-4 col-lg-offset-4 col-md-offset-4 col-sm-offset-4">
-                              <label class=" control-label" for="destinataire_est_mandataire">Le Destinataire est un mandataire <span class="text-danger">*</span></label>
-                              <input type="checkbox"  @if($facture->destinataire_est_mandataire  == true ) checked @endif data-toggle="toggle" id="destinataire_est_mandataire" name="destinataire_est_mandataire" data-off="Non" data-on="Oui" data-onstyle="success" data-offstyle="danger">
-{{-- 
-                              <select class="js-select2 form-control {{$errors->has('statut') ? 'is-invalid' : ''}}" id="statut" name="statut" style="width: 100%;" data-placeholder="Choose one.." required>
-                                 <option value="true">OUI</option>
-                                 <option value="false">NON</option>
-                  
-                              </select> --}}
-                              @if ($errors->has('destinataire_est_mandataire'))
-                              <br>
-                              <div class="alert alert-warning ">
-                                 <strong>{{$errors->first('destinataire_est_mandataire')}}</strong> 
-                              </div>
-                              @endif
-                           </div>
-                        </div>
-
-
-                    </div>
-
-<hr>
+                     <br>
 
                      <div class="row">
 
-              
-                            <div id="div_mandataire">
-                            <div class="form-group row" >
-                                <label class="col-lg-3 col-md-3 col-sm-4  control-label" for="mandataire_id">Choisir le mandataire</label>
-                                <div class="col-lg-8 col-md-8 col-sm-8">
-                                    <select class="selectpicker col-lg-6" id="mandataire_id" name="mandataire_id" data-live-search="true" data-style="btn-default btn-rounded">
-                                        @foreach ($mandataires as $mandataire )
-                                        <option value="{{ $mandataire->id }}" data-tokens="{{ $mandataire->nom }} {{ $mandataire->prenom }}">{{ $mandataire->nom }} {{ $mandataire->prenom }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                            
-                        </div> 
-
-                       
-
-                        <div id="div_destinataire">
-                            <div class="form-group row">
-                                <label class="col-lg-3 col-md-3 col-sm-4  control-label" value="" for="destinataire">Destinataire(s) et adresse(s) </label><br>
-                                <div class="col-lg-8 col-md-8 col-sm-8 ">
-    
-                                    <textarea name="destinataire" id="destinataire" cols="30" rows="10"  >{{old('destinataire') ? old('destinataire') : $facture->destinataire  }}</textarea>
-                                    @if ($errors->has('destinataire'))
-                                    <br>
-                                    <div class="alert alert-warning ">
-                                        <strong>{{$errors->first('destinataire')}}</strong> 
+                        <div class="col-lg-6 col-md-6 col-sm-6">                        
+                            <div id="div_fournisseur">
+                                <div class="form-group row" >
+                                    <label class="col-lg-4 col-md-4 col-sm-4  control-label" for="fournisseur_id">Choisir le fournisseur</label>
+                                    <div class="col-lg-8 col-md-8 col-sm-8">
+                                        <select class="selectpicker col-lg-6" id="fournisseur_id" name="fournisseur_id" data-live-search="true" data-style="btn-default btn-rounded">
+                                            @if($facture->fournisseur != null) <option value="{{ $facture->fournisseur->id }}" data-tokens="{{ $facture->fournisseur->nom }}">{{ $facture->fournisseur->nom }} </option> @endif
+                                        
+                                            @foreach ($fournisseurs as $fourn )
+                                            <option value="{{ $fourn->id }}" data-tokens="{{ $fourn->nom }}">{{ $fourn->nom }} </option>
+                                            @endforeach
+                                        </select>
                                     </div>
-                                    @endif 
                                 </div>
-                            </div>
-
-                       </div>
+                                
+                             </div>
+                        </div>
+                        
+                        <div class="col-lg-6 col-md-6 col-sm-6">                            
+                            <div class="form-group row">
+                                <label class="col-lg-4 col-md-4 col-sm-4  control-label" value="" for="facture_pdf">Modifier la facture (pdf)</label>
+                                <div class="col-lg-8 col-md-8 col-sm-8 ">
+     
+                                   <input type="file"  accept=".pdf" class="form-control"  id="facture_pdf" name="facture_pdf" value="{{old('facture_pdf') ? old('facture_pdf') : $facture->facture_pdf}} " />
+     
+                                   @if ($errors->has('facture_pdf'))
+                                   <br>
+                                   <div class="alert alert-warning ">
+                                      <strong>{{$errors->first('facture_pdf')}}</strong> 
+                                   </div>
+                                   @endif 
+                                </div>
+                             </div>
+                        </div>
+                        
+                        
+                        
 
                       
                      </div>
 
+   <br><br>
+                     <div class="row">
+                        
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <div class="form-group row">
+                                <label class="col-lg-4 col-md-4 col-sm-4  control-label" value="" for="montant_ht">Montant HT produit(s) <span class="text-danger">*</span></label>
+                                <div class="col-lg-8 col-md-8 col-sm-8 ">
+     
+                                   <input type="number" class="form-control" step="any"  id="montant_ht" name="montant_ht" value="{{old('montant_ht') ? old('montant_ht'):$facture->montant_ht}}" required/>
+     
+                                   @if ($errors->has('montant_ht'))
+                                   <br>
+                                   <div class="alert alert-warning ">
+                                      <strong>{{$errors->first('montant_ht')}}</strong> 
+                                   </div>
+                                   @endif 
+                                </div>
+                             </div>
+                        </div>
+                        
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <div class="form-group row">
+                                <label class="col-lg-4 col-md-4 col-sm-4  control-label" value="" for="montant_ttc">Montant TTC produit(s) <span class="text-danger">*</span></label>
+                                <div class="col-lg-8 col-md-8 col-sm-8 ">
+     
+                                   <input type="number" class="form-control" step="any"  id="montant_ttc" name="montant_ttc" value="{{old('montant_ttc') ? old('montant_ttc') : $facture->montant_ttc}}" required/>
+     
+                                   @if ($errors->has('montant_ttc'))
+                                   <br>
+                                   <div class="alert alert-warning ">
+                                      <strong>{{$errors->first('montant_ttc')}}</strong> 
+                                   </div>
+                                   @endif 
+                                </div>
+                             </div>
+                        </div>
+                        
+                  </div>
 
 
                      <hr>
@@ -160,7 +160,7 @@ Modification facture {{$facture->type}} {{$facture->numero}}
                               <label class="col-lg-3 col-md-3 col-sm-4  control-label" value="" for="description_produit">Description produit(s)</label>
                               <div class="col-lg-8 col-md-8 col-sm-8 ">
 
-                              <textarea name="description_produit" id="description_produit" cols="30" rows="10" >{{old('description_produit') ? old('description_produit') : $facture->description_produit  }}</textarea>
+                              <textarea name="description_produit" id="description_produit" cols="30" rows="10" >{{old('description_produit') ? old('description_produit') : $facture->description_produit }}</textarea>
                                  @if ($errors->has('description_produit'))
                                  <br>
                                  <div class="alert alert-warning ">
@@ -170,32 +170,16 @@ Modification facture {{$facture->type}} {{$facture->numero}}
                               </div>
                            </div>
                      </div>
+                     
        <hr>
-                    
-                     <div class="row">
-
-                        <div class="form-group row">
-                           <label class="col-lg-3 col-md-3 col-sm-4  control-label" value="" for="montant_ht">Montant HT produit(s) <span class="text-danger">*</span></label>
-                           <div class="col-lg-3 col-md-3 col-sm-3 ">
-
-                              <input type="number" class="form-control" min="0" step="any"  id="montant_ht" name="montant_ht" value="{{old('montant_ht') ? old('montant_ht') : $facture->montant_ht  }}" required/>
-
-                              @if ($errors->has('montant_ht'))
-                              <br>
-                              <div class="alert alert-warning ">
-                                 <strong>{{$errors->first('montant_ht')}}</strong> 
-                              </div>
-                              @endif 
-                           </div>
-                        </div>
-                  </div>
+                 
     
                      
        
                   
                   <div class="form-group row" style="text-align: center; margin-top: 50px;">
                      <div class="col-lg-8 ml-auto">
-                        <button class="btn btn-success btn-flat btn-addon btn-lg m-b-10 m-l-5 submit" id="ajouter"><i class="ti-plus"></i>Modifier la facture</button>
+                        <button class="btn btn-warning btn-flat btn-addon btn-lg m-b-10 m-l-5 submit" id="ajouter"><i class="ti-pencil"></i>Modifier</button>
                      </div>
                   </div>
                </form>
@@ -210,41 +194,7 @@ Modification facture {{$facture->type}} {{$facture->numero}}
 @section('js-content') 
 
 <script>
-
-    const desti = "{{$facture->destinataire_est_mandataire}}"
-
-    if(desti == true){
-         $('#div_destinataire').hide();
-
-    }else{
-        $('#div_mandataire').hide();
-
-    }
-
-
-
-   $('#destinataire_est_mandataire').change(function(){
-
-      if($('#destinataire_est_mandataire').prop('checked')){
-         $('#div_destinataire').hide();
-         $('#div_mandataire').show();
-
-      }else{
-         $('#div_destinataire').show();
-         $('#div_mandataire').hide();
-      }
-   })
-
-
-   //  Ajout de la facture
-
-   // $('#ajouter').click(function(e){
-
-   //    e.preventDefault();
-
-   //    $('#ajouter').submit()
-   //    console.log("ee");
-   // })
+  
 </script>
 
 

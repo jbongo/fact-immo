@@ -19,14 +19,13 @@ class FournisseurController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($type_fournisseur = null)
+    public function index()
     {
     
-        $fournisseurs = $type_fournisseur == null ? 
-                    Fournisseur::where('archive', false) : 
-                    Fournisseur::where([['type', $type_fournisseur], ['archive', false]])->get();
+        $fournisseurs_passerelles = Fournisseur::where([['type', "passerelle"], ['archive', false]])->get();
+        $fournisseurs_autres = Fournisseur::where([['type', "autre"], ['archive', false]])->get();
 
-        return view('fournisseur.index', compact('fournisseurs'));
+        return view('fournisseur.index', compact('fournisseurs_passerelles','fournisseurs_autres'));
     }
 
     /**
@@ -209,7 +208,7 @@ class FournisseurController extends Controller
         
         
         
-        return redirect()->route('fournisseur.show', $fournisseur->id)->with('ok', __("Facture ajoutée pour le fournisseur ")  );
+        return redirect()->route('fournisseur.show', Crypt::encrypt($fournisseur->id))->with('ok', __("Facture ajoutée pour le fournisseur ")  );
     }
 
 
@@ -222,7 +221,10 @@ class FournisseurController extends Controller
     public function edit_facture($facturefournisseur_id)
     {
         $facture = Facture::where('id',  Crypt::decrypt($facturefournisseur_id))->first();
-        return view('fournisseur.facture.edit',compact('facture'));
+        $fournisseur = Fournisseur::where('id', Crypt::decrypt($facturefournisseur_id))->first();
+        $fournisseurs = Fournisseur::where([['id' ,'<>', Crypt::decrypt($facturefournisseur_id)], ['archive',false]])->get();
+        
+        return view('fournisseur.facture.edit',compact('facture','fournisseur','fournisseurs'));
     }
 
     /**
@@ -232,7 +234,7 @@ class FournisseurController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update_facture(Request $request, $id)
+    public function update_facture(Request $request, $facturefournisseur_id)
     {
         $request->validate([
             'numero' => 'required',
@@ -254,7 +256,7 @@ class FournisseurController extends Controller
     
         $facture->update();
        
-        return redirect()->route('fournisseur.show', $fournisseur_id)->with('ok', __("Facture modifiée ")  );
+        return redirect()->route('fournisseur.show', Crypt::encrypt($request->fournisseur_id))->with('ok', __("Facture modifiée ")  );
 
     }
 }

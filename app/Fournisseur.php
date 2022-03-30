@@ -19,4 +19,14 @@ class Fournisseur extends Model
     {
         return $this->hasMany(Contratfournisseur::class);
     }
+    
+    /**
+     * Retourne toutes les commandes du fournisseur
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function commandes()
+    {
+        return $this->hasMany(Commandefournisseur::class);
+    }
 }

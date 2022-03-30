@@ -382,7 +382,7 @@
                  })
 
             swalWithBootstrapButtons({
-                title: '@lang('Vraiment archiver cet prospect  ?')',
+                title: '@lang('Vraiment archiver ce prospect  ?')',
                 type: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#DD6B55',

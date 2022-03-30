@@ -77,7 +77,14 @@
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                                <h4 class="modal-title"><strong>Rappel</strong></h4>
+                                                <h4 class="modal-title">
+                                                    <strong>Rappel  
+                                                    
+                                                        <br>
+                                                        <label class="text-primary">  {{$prospect->nom}} {{$prospect->prenom}}</label>
+                                                        <label class="control-label">Contact: </label> <label class="text-danger">  {{$prospect->telephone_portable}}</label>
+                                                    </strong>
+                                                </h4>
                                             </div>
                                             <div class="modal-body"></div>
                                             {{-- <div class="modal-footer">
@@ -295,7 +302,16 @@ console.log(agendas);
                                <textarea name="description" class="form-control" id="" cols="30" rows="5">${calEvent.extendedProps.description}</textarea>
                             </div>
                             <br>
+                            <br>
+                            <br>
                             
+                            
+                            <div class="col-md-12">
+                                <label class="text-primary">  {{$prospect->nom}} {{$prospect->prenom}}</label>
+                                <label class="control-label">Contact: </label> <label class="text-danger">  {{$prospect->telephone_portable}}</label>
+                               
+                            </div>
+                            <br>
                             
                         </div> 
                         <div class="modal-footer">
