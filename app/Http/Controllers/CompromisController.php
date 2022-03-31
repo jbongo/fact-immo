@@ -250,12 +250,12 @@ class CompromisController extends Controller
             })->get();
 
 
-            $compromisSousOffre = Compromis::where([['demande_facture','<',2],['pdf_compromis',null],['archive',false]])->where(function($query){
+            $compromisSousOffre = Compromis::where([['demande_facture','<',2],['pdf_compromis',null],['archive',false],['created_at','like',"%$annee%"]])->where(function($query){
                 $query->where('user_id',auth::user()->id)
                 ->orWhere('agent_id',auth::user()->id);
             })->get();
 
-            $compromisSousCompromis = Compromis::where([['demande_facture','<',2],['pdf_compromis','<>',null],['archive',false]])->where(function($query){
+            $compromisSousCompromis = Compromis::where([['demande_facture','<',2],['pdf_compromis','<>',null],['archive',false],['date_vente','like',"%$annee%"]])->where(function($query){
                 $query->where('user_id',auth::user()->id)
                 ->orWhere('agent_id',auth::user()->id);
             })->get();
@@ -274,6 +274,65 @@ class CompromisController extends Controller
         $parametre = Parametre::first();     
         $nb_jour_max_demande = $parametre->nb_jour_max_demande ;
         return view ('compromis.index_from_dash',compact('compromis','compromisEncaissee','compromisEnattente','compromisSousOffre','compromisSousCompromis','annee','nb_jour_max_demande'));
+       
+    }
+
+
+ /**
+     * Afficher les types de compromis à partir du dashbord.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index_from_dashboard_mes_affaires($annee)
+    {
+
+    
+        //########## TYPE AFFAIRE
+
+                   
+        $tab_compromisEncaissee_id = array();
+        $tab_compromisEnattente_id = array();
+        $tab_compromisPrevisionnel_id = array();
+
+        $compromisEncaissee_id =  Facture::where([['user_id',auth::user()->id],['reglee',true]])->whereIn('type',['honoraire','partage','parrainage','parrainage_partage'])->where('date_reglement','like',"%$annee%")->get();
+        $compromisEnattente_id = Facture::where([['user_id',auth::user()->id],['reglee',false]])->whereIn('type',['honoraire','partage','parrainage','parrainage_partage'])->where('created_at','like',"%$annee%")->get();
+
+        foreach ($compromisEncaissee_id as $encaiss) {
+            $tab_compromisEncaissee_id[] = $encaiss["compromis_id"];
+        }
+        foreach ($compromisEnattente_id as $attente) {
+            $tab_compromisEnattente_id[] = $attente["compromis_id"];
+        }
+       
+
+            // On reccupère les affaires du mandataire 
+          
+
+            $compromisEncaissee = Compromis::whereIn('id',$tab_compromisEncaissee_id)->get();
+        
+
+            $compromisEnattente = Compromis::whereIn('id',$tab_compromisEnattente_id)->get();
+
+
+            $compromisSousOffre = Compromis::where([['demande_facture','<',2],['pdf_compromis',null],['archive',false],['created_at','like',"%$annee%"]])->where(function($query){
+                $query->where('user_id',auth::user()->id)
+                ->orWhere('agent_id',auth::user()->id);
+            })->get();
+
+            $compromisSousCompromis = Compromis::where([['demande_facture','<',2],['pdf_compromis','<>',null],['archive',false],['date_vente','like',"%$annee%"]])->where(function($query){
+                $query->where('user_id',auth::user()->id)
+                ->orWhere('agent_id',auth::user()->id);
+            })->get();
+
+// ############ FIN TYPE AFFAIRE
+
+        $compromis = array();
+
+      
+        $compromis = $compromisEncaissee->concat($compromisEnattente)->concat($compromisSousOffre)->concat($compromisSousCompromis);
+        $parametre = Parametre::first();     
+        $nb_jour_max_demande = $parametre->nb_jour_max_demande ;
+        return view ('compromis.index_from_dash_mes_affaires',compact('compromis','compromisEncaissee','compromisEnattente','compromisSousOffre','compromisSousCompromis','annee','nb_jour_max_demande'));
        
     }
 

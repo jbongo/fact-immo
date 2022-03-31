@@ -68,6 +68,7 @@ Route::middleware('auth')->group(function(){
     // compromis  
     Route::get('/compromis','CompromisController@index')->name('compromis.index');
     Route::get('/compromis/from_dashboard/{annee}','CompromisController@index_from_dashboard')->name('compromis.index_from_dashboard');
+    Route::get('/compromis/from_dashboard/mes_affaires/{annee}','CompromisController@index_from_dashboard_mes_affaires')->name('compromis.index_from_dashboard_mes_affaires');
     Route::get('/compromis/page_filleul','CompromisController@index')->name('compromis.filleul.index');
     Route::get('/compromis/create','CompromisController@create')->name('compromis.create');
     Route::post('/compromis/add','CompromisController@store')->name('compromis.add');

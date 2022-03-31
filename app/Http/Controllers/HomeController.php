@@ -399,9 +399,10 @@ class HomeController extends Controller
                             }
                             
                             $ca_sous_offre_n = round(($ca_offre_partage_pas_n+$ca_offre_porte_n+$ca_offre_porte_pas_n)/Tva::coefficient_tva(),2);
+                            $ca_sous_offre_perso_n = round($ca_sous_offre_n* $commission,2);
                             $ca_sous_offre_N [] = $ca_sous_offre_n;
                             
-                            $ca_sous_offre_perso_N [] = $ca_sous_offre_n * $commission;
+                            $ca_sous_offre_perso_N [] = $ca_sous_offre_perso_n;
 
 
 
@@ -439,8 +440,9 @@ class HomeController extends Controller
                             }
                             
                             $ca_sous_compromis_n = round(($ca_compromis_partage_pas_n+$ca_compromis_porte_n+$ca_compromis_porte_pas_n)/Tva::coefficient_tva(),2);
+                            $ca_sous_compromis_perso_n = round($ca_sous_compromis_n* $commission,2);
                             $ca_sous_compromis_N [] = $ca_sous_compromis_n;
-                            $ca_sous_compromis_perso_N [] = $ca_sous_compromis_n * $commission;
+                            $ca_sous_compromis_perso_N [] = $ca_sous_compromis_perso_n;
 
 
 
@@ -449,7 +451,7 @@ class HomeController extends Controller
                             
                             
                             $ca_glo_n = $ca_encaisse_n + $ca_attente_n + $ca_sous_offre_n + $ca_sous_compromis_n;
-                            $ca_glo_perso_n =$ca_encaisse_perso_n + $ca_attente_perso_n + $ca_sous_offre_n* $commission + $ca_sous_compromis_n* $commission;
+                            $ca_glo_perso_n =$ca_encaisse_perso_n + $ca_attente_perso_n + $ca_sous_compromis_perso_n + $ca_sous_offre_perso_n;
                             
                             $ca_global_N [] = round($ca_glo_n,2);
                             $ca_global_perso_N [] = round($ca_glo_perso_n,2);
