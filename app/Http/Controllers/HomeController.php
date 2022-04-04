@@ -76,10 +76,7 @@ class HomeController extends Controller
                 $nb_en_attente_N = 0;
                 $nb_encaisse_N = 0;
                 
-            $PUB_N = array();
-            $PUB_VENDU = array();
-            
-            $PUB_ACH = 0 ; 
+          
                 
                 
                 
@@ -139,36 +136,6 @@ class HomeController extends Controller
                 
                 
                 
-                // ########## PUB #############
-                
-                
-                for ($y=1; $y <= 12 ; $y++) { 
-                    $month = $y < 10 ? "0$y" : $y;
-                    
-                    $montant_jeton = Facture::where([['nb_mois_deduis', '<>', null], ['date_deduction','like',"%$annee_n-$month%"]])->sum('montant_ttc_deduis');
-                    $montant_pub = Facture::where([['type','pack_pub'], ['date_encaissement','like',"%$annee_n-$month%"]])->sum('montant_ttc');
-                    
-                    
-                    
-                   $PUB_N[$y] =  $montant_jeton + $montant_pub;
-                   
-                   
-                   $vendu_y = Packpub::join('contrats', 'packpubs.id','contrats.packpub_id')
-                   ->where([['contrats.a_demission',false], ['date_deb_activite', '<=',"$annee_n-$month-01"]])
-               
-                   ->sum('packpubs.tarif')
-                // ->get()
-                   ;
-               
-                   
-                    $PUB_VENDU[$y] = $vendu_y;
-                    
-                }
-                       
-                
-                // dd($PUB_VENDU);
-               
-                $PUB_ACH = Article::where([['type', 'annonce'], ['a_expire', false]])->sum('prix_achat');
                 
             
                // ########### Autres chiffres
@@ -540,31 +507,7 @@ $STATS = array();
             $nb_filleuls = Filleul::where('expire',0)->select('user_id')->distinct()->count();
 
 
-            // Classement des mandataires
-            
-            $contrat_actifs = Contrat::where([['est_fin_droit_suite',false], ['user_id', '<>', null]])->get();
          
-         
-         
-            // Classement sur l'année N
-            $classements_n = array();
-            foreach ($contrat_actifs as $cont) {
-            $classements_n[] = [$cont->user->chiffre_affaire_styl("$annee_n-01-01", date("Y-m-d")), $cont->user ]  ;
-             
-            }
-            // Trier dans l'ordre decroissant 
-            rsort($classements_n );
-
-            
-            
-             // Classement générale
-             $classements = array();
-             foreach ($contrat_actifs as $cont) {
-             $classements[] = [$cont->user->chiffre_affaire_styl("2020-01-01", date("Y-m-d")), $cont->user ]  ;
-              
-             }
-             // Trier dans l'ordre decroissant 
-             rsort($classements );
 
             $STATS["nb_affaires_en_cours"] = $nb_affaires_en_cours;
             $STATS["nb_mandataires_actifs_n"] = $nb_mandataires_actifs_n;
@@ -573,15 +516,9 @@ $STATS = array();
             $STATS["nb_mandataires_jetons"] = $nb_mandataires_jetons;
             $STATS["nb_mandataires_facture_pub"] = $nb_mandataires_facture_pub;
             
-            $STATS["classements"] = $classements;
-            $STATS["classements_n"] = $classements_n;
+  
                
-            $STATS['TOTAL_PUB_N'] = array_sum($PUB_N)  ;
-            $STATS['TOTAL_PUB_ACH'] = $PUB_ACH * 12 ;           
-            $STATS['PUB_N'] = $PUB_N ;
-            $STATS['PUB_ACH'] = $PUB_ACH ; 
-            $STATS['PUB_VENDU'] = $PUB_VENDU ; 
-            
+      
         }    
             
             

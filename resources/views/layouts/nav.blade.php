@@ -4,13 +4,16 @@
     $curent_url = explode("/", $curent_url);
 
 
-    $li_home = $li_mandataire = $li_prospect_gestion = $li_prospect_archive = $li_affaire = $li_affaire_filleul = $li_affaire_archive=  $li_facture = $li_facture_gestion = $li_facture_demande = $li_facture_a_payer = $li_facture_a_valider = 
+    $li_home = $li_stats= $li_mandataire = $li_prospect_gestion = $li_prospect_archive = $li_affaire = $li_affaire_filleul = $li_affaire_archive=  $li_facture = $li_facture_gestion = $li_facture_demande = $li_facture_a_payer = $li_facture_a_valider = 
     $li_parametre = $li_parametre_modele = $li_parametre_fournisseur = $li_parametre_pack_pub = $li_parametre_generaux = $li_outil = $li_affaire_toutes = $li_affaire_cloture = $li_facture_hors_delais =     
     $li_jetons = $li_facture_pub = $li_parrainage= $li_documents = $li_documents_gestion = $li_documents_a_valider = $li_fournisseurs = $li_fournisseurs_passerelle = $li_fournisseurs_autre = "";
     
     switch ($curent_url[1]) {
         case 'home':       
             $li_home = "active";
+            break;
+        case 'stats':       
+            $li_stats = "active";
             break;
         case 'outil-calcul':       
             $li_outil = "active";
@@ -179,7 +182,7 @@
 
 
                 <ul>
-                <li class="{{$li_home}}"  @if (Auth()->user()->role == "admin")   style=" background:#e6ea9a" @endif ><a href="{{route('home')}}" ><i class="large material-icons" style="font-size:20px;">home</i> Accueil </a></li>
+                    <li class="{{$li_home}}" ><a href="{{route('home')}}" ><i class="large material-icons" style="font-size:20px;">home</i> Accueil </a></li>
                 @if (Auth()->user()->role == "mandataire")                        
                
                     <li class="{{$li_mandataire}}"><a  href="{{route('mandataire.show', Crypt::encrypt(Auth()->user()->id))}}" class=""> <i class="large material-icons" style="font-size:20px;">person</i></i>Mon profil  </a></li>
@@ -187,6 +190,7 @@
                 @endif
                     
                 @if (Auth()->user()->role == "admin")                        
+                    <li class="{{$li_stats}}"  style=" background:#e6ea9a"><a href="{{route('stats.index', date('Y'))}}" ><i class="large material-icons" style="font-size:20px;">equalizer</i> Statistiques </a></li>
                
                     <li class="{{$li_mandataire}}"><a  href="{{route('mandataire.index')}}" class=""> <i class="large material-icons" style="font-size:20px;">person</i></i>Mandataires  </a></li>
                     <li  class="{{$li_prospect_gestion}} {{$li_prospect_archive}}"><a  href="" class="sidebar-sub-toggle"> <i class="large material-icons" style="font-size:20px;">person</i></i> Prospects <span class="sidebar-collapse-icon ti-angle-down"></span> </a>
@@ -201,7 +205,7 @@
                     </li>
                   
                     <li   class="{{$li_jetons}}"><a  href="{{route('mandataires.jetons')}}" class=""> <i class="large material-icons" style="font-size:20px;">adjust</i></i>Gestion des jetons  </a></li>
-                    <li   class="{{$li_facture_pub}}" style=" background:#e6ea9a"><a  href="{{route('mandataires.facture_pub')}}" class=""> <i class="large material-icons" style="font-size:20px;">receipt</i></i>Gestion des Facts pub  </a></li>
+                    <li   class="{{$li_facture_pub}}" ><a  href="{{route('mandataires.facture_pub')}}" class=""> <i class="large material-icons" style="font-size:20px;">receipt</i></i>Gestion des Facts pub  </a></li>
                     <li   class="{{$li_parrainage}}" style=" background:#e6ea9a"><a  href="{{route('parrainage.index')}}" class=""> <i class="large material-icons" style="font-size:20px;">receipt</i></i>Gestion des Parrainages  </a></li>
                 @else 
                     

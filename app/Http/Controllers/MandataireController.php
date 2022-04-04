@@ -562,60 +562,7 @@ class MandataireController extends Controller
         return view('calculs_stats',compact('mandataire','ca_direct','ca_indirect','vente_12','nb_filleul','parrains'));
     }
     
-
-    public function store_parrain(Request $request, $mandataire_id){
-        
-
-        $nb_filleul = Filleul::where([ ['parrain_id',$request->parrain_id]])->count();
-        $parrain = User::where('id',$request->parrain_id)->first();
-      
-        // on détermine le nombre d'année depuis la date de début d'activité du parrain dans le but de determiner le cycle dans le quel nous somme
-        $nb_annee = intval( (strtotime(date('Y-m-d')) - strtotime($parrain->contrat->date_deb_activite->format('Y-m-d'))) / (86400 *365) ) ;
-        $cycle_actuel = intval($nb_annee / 3 ) + 1;
-      
-    
      
-        $date_deb_parrain = $parrain->contrat->date_deb_activite;
-
-        if($nb_filleul > 0){
-
-            // On détermine le rang du filleul dans le cycle
-
-
-            $rang_filleuls = Filleul::where([['parrain_id',$request->parrain_id],['cycle',$cycle_actuel] ])->select('rang')->get()->toArray();
-            $rangs = array();
-
-            foreach ($rang_filleuls as $rang_fill) {
-                $rangs[] = $rang_fill["rang"];
-            }
-
-            $rang = max($rangs)+1;
-
-          
-        }else{
-
-            $rang = 1;
-            $cycle_actuel = 1;
-        }
-        $parametre = Parametre::first();
-        $comm_parrain = unserialize($parametre->comm_parrain) ;
-
-        $r = $rang > 3 ? "n" : $rang ;
-        $pourcentage = $comm_parrain["p_1_".$r];
-
-        // dd($pourcentage);
-        // dd($cycle_actuel);
-        Filleul::create([
-            "user_id" => Crypt::decrypt($request->user_id),
-            "parrain_id" =>  $request->parrain_id,
-            "rang"=> $rang,
-            "cycle"=> $cycle_actuel,
-            "pourcentage"=> $pourcentage,
-            "expire" => false
-        ]);
-
-        
-    }
 
 
     /**

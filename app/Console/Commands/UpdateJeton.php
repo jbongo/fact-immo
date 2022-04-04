@@ -43,7 +43,7 @@ class UpdateJeton extends Command
      */
     public function handle()
     {
-        $contrats = Contrat::where('deduis_jeton',true)->get();
+        $contrats = Contrat::where([['deduis_jeton',true], ['a_demission', false] ])->get();
         
     
         foreach ($contrats as $contrat) {

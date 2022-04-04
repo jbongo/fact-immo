@@ -43,28 +43,12 @@ class MandataireAZero extends Command
     {
         //
 
-$contrats = Contrat::where([["user_id", '<>',null],["user_id", '>',4]])->get();
+$contrats = Contrat::where([["user_id", '<>',null], ['est_fin_droit_suite', false],["user_id", '>',4]])->get();
 
 
 $today = date("Y-m-d") ;
 
         foreach ($contrats as $contrat) {
-
-            // $date_anniversaire = $contrat->date_anniversaire->format("Y-m-d");
-
-            // On va determiner la dernière date d'anniv de sa date d'anniversaire
-            // $m_d_entree = $contrat->date_anniversaire->format('m-d');
-
-            // $y_en_cour = date('Y');
-
-        
-            // if($today > $y_en_cour.'-'.$m_d_entree  ){
-            //     $date_deb = $y_en_cour.'-'.$m_d_entree ;
-                
-            // }else{
-            //     $date_deb =  ($y_en_cour-1).'-'.$m_d_entree ;
-    
-            // }
 
               // date_12 est la date exacte 1 ans avant today
             $date_12 =  strtotime( $today. " -1 year"); 

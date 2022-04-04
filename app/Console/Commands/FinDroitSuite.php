@@ -61,8 +61,6 @@ class FinDroitSuite extends Command
                              
                 $contrat->update();
                 $mandataire->update();
-                
-                echo $contrat->user->nom."---". $contrat->date_fin_droit_suite->format('Y-m-d'). "\n";
             
                 if($contrat->date_fin_droit_suite->format('Y-m-d') == $today )
                     Mail::to($mandataire->email)->send(new NotifFinDroitSuite($contrat));

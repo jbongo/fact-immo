@@ -148,14 +148,8 @@ class Listerfactpub extends Command
                     ]);
                 
                 }
-                
-                
-                
-              
             
             }
-            
-                
             
         }
         Cronjob::create([

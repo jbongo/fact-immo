@@ -298,8 +298,12 @@ Route::middleware('auth')->group(function(){
 
 
 
-    // ##### CALCUL STATS TEST
+    // ##### CALCUL STATS 
+    Route::get('stats/{annee}','StatController@index')->name('stats.index');
     
+    
+    
+    // Test
     Route::get('stats/mandataire/{mandataire_id}','MandataireController@stats_user')->name('stats_user');
     Route::post('stats/mandataire/{mandataire_id}','MandataireController@store_parrain')->name('store.parrain');
 
