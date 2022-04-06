@@ -12,7 +12,7 @@ Profil du fournisseur
 <div class="card">
    <a href="{{route('fournisseur.index')}}" class="btn btn-default btn-flat btn-addon m-b-10 m-l-5"><i class="ti-angle-double-left"></i>@lang('liste des fournisseurs ')</a>
    <a href="{{route('fournisseur.facture.create',Crypt::encrypt($fournisseur->id) )}}"  class="btn btn-danger btn-rounded btn-addon btn-xs m-b-10 m-l-30"><i class="ti-plus"></i>Ajouter Facture</a>
-   <a href="{{route('fournisseur.document.create',Crypt::encrypt($fournisseur->id) )}}"  class="btn btn-danger btn-rounded btn-addon btn-xs m-b-10 m-l-30"><i class="ti-plus"></i>Ajouter Document</a>
+   {{-- <a href="{{route('fournisseur.document.create',Crypt::encrypt($fournisseur->id) )}}"  class="btn btn-danger btn-rounded btn-addon btn-xs m-b-10 m-l-30"><i class="ti-plus"></i>Ajouter Document</a> --}}
    
    <div class="card-body">
    

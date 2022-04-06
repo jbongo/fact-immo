@@ -85,8 +85,6 @@ class UpdateJeton extends Command
         Cronjob::create([
             "nom" => "updatejeton",
             ]);
-        
-        // dd($contrats[1]);
-        
+
     }
 }

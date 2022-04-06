@@ -398,6 +398,17 @@ Route::get('/bibliotheque/delete/{bibliotheque_id}','BibliothequeController@dest
 Route::get('/bibliotheque/envoyer/{bibliotheque_id}/{user_id}/{type?}','BibliothequeController@envoyer_document')->name('bibliotheque.envoyer');
 
 
+// Outils informatique
+Route::get('/outil-info','OutilinfoController@index')->name('outil_info.index');
+Route::get('/outil-info/create','OutilinfoController@create')->name('outil_info.create');
+Route::get('/outil-info/edit/{outil_id}','OutilinfoController@edit')->name('outil_info.edit');
+Route::post('/outil-info/store','OutilinfoController@store')->name('outil_info.store');
+Route::post('/outil-info/update/{outil_id}','OutilinfoController@update')->name('outil_info.update');
+
+Route::get('/outil-info/archive','OutilinfoController@archive')->name('outil_info.archive');
+Route::delete('/outil-info/delete/{outil_id}','OutilinfoController@delete')->name('outil_info.delete');
+
+
 });
 
 // Blibliotheque
@@ -408,6 +419,10 @@ Route::post('/bibliotheque/reponseuser/{bibliotheque_id}/{user_id}/{type?}','Bib
 // Envoi de la fiche info au prospect
 Route::get('fiche/prospect/{prospect}/','ProspectController@create_fiche')->name('prospect.fiche');
 Route::post('fiche/prospect/{prospect}/','ProspectController@sauvegarder_fiche')->name('prospect.sauvegarder_fiche');
+
+
+
+
 // Tests
 Route::get('test','TvaController@test')->name('test');
 

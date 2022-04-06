@@ -312,6 +312,10 @@
                     {{-- @if(Auth()->user()->role == "admin"  ) --}}
                         <li  class="" ><a href="{{route('outil_calcul.index')}}" ><i class="large material-icons" style="font-size:20px;">iso</i> Outil de calcul </a></li>
                     {{-- @endif --}}
+                    
+                     @if(Auth()->user()->role == "admin"  )
+                     <li  class="" ><a href="{{route('outil_info.index')}}" ><i class="large material-icons" style="font-size:20px;">subject</i> Fiche Outil </a></li>
+                     @endif
 
                     <li><a href="{{ route('logout') }}"  onclick="event.preventDefault();
                      document.getElementById('logout-form').submit();" ><i class="large material-icons" style="font-size:20px;">close</i></i> Déconnexion</a></li>

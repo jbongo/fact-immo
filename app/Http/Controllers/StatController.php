@@ -132,29 +132,29 @@ class StatController extends Controller
             $CA = array();
             
             $CA [] =  Facture::where([['type','stylimmo'],['encaissee',1], ['a_avoir',0],['date_encaissement','like',"%$annee_n-01%"]])->sum('montant_ht');
-            $CA_MOY [] = array_sum($CA) ;
+            $CA_MOY [] = array_sum($CA) * 12 ;
             $CA [] =  Facture::where([['type','stylimmo'],['encaissee',1], ['a_avoir',0],['date_encaissement','like',"%$annee_n-02%"]])->sum('montant_ht');
-            $CA_MOY [] = array_sum($CA) / 2 ;
+            $CA_MOY [] = array_sum($CA) / 2 * 12 ;
             $CA [] =  Facture::where([['type','stylimmo'],['encaissee',1], ['a_avoir',0],['date_encaissement','like',"%$annee_n-03%"]])->sum('montant_ht');
-            $CA_MOY [] = array_sum($CA) / 3 ;
+            $CA_MOY [] = array_sum($CA) / 3 * 12 ;
             $CA [] =  Facture::where([['type','stylimmo'],['encaissee',1], ['a_avoir',0],['date_encaissement','like',"%$annee_n-04%"]])->sum('montant_ht');
-            $CA_MOY [] = array_sum($CA) / 4 ;
+            $CA_MOY [] = array_sum($CA) / 4 * 12 ;
             $CA [] =  Facture::where([['type','stylimmo'],['encaissee',1], ['a_avoir',0],['date_encaissement','like',"%$annee_n-05%"]])->sum('montant_ht');
-            $CA_MOY [] = array_sum($CA) / 5 ;
+            $CA_MOY [] = array_sum($CA) / 5 * 12 ;
             $CA [] =  Facture::where([['type','stylimmo'],['encaissee',1], ['a_avoir',0],['date_encaissement','like',"%$annee_n-06%"]])->sum('montant_ht');
-            $CA_MOY [] = array_sum($CA) / 6 ;
+            $CA_MOY [] = array_sum($CA) / 6 * 12 ;
             $CA [] =  Facture::where([['type','stylimmo'],['encaissee',1], ['a_avoir',0],['date_encaissement','like',"%$annee_n-07%"]])->sum('montant_ht');
-            $CA_MOY [] = array_sum($CA) / 7 ;
+            $CA_MOY [] = array_sum($CA) / 7 * 12 ;
             $CA [] =  Facture::where([['type','stylimmo'],['encaissee',1], ['a_avoir',0],['date_encaissement','like',"%$annee_n-08%"]])->sum('montant_ht');
-            $CA_MOY [] = array_sum($CA) / 8 ;
+            $CA_MOY [] = array_sum($CA) / 8 * 12 ;
             $CA [] =  Facture::where([['type','stylimmo'],['encaissee',1], ['a_avoir',0],['date_encaissement','like',"%$annee_n-09%"]])->sum('montant_ht');
-            $CA_MOY [] = array_sum($CA) / 9 ;
+            $CA_MOY [] = array_sum($CA) / 9 * 12 ;
             $CA [] =  Facture::where([['type','stylimmo'],['encaissee',1], ['a_avoir',0],['date_encaissement','like',"%$annee_n-10%"]])->sum('montant_ht');
-            $CA_MOY [] = array_sum($CA) / 10 ;
+            $CA_MOY [] = array_sum($CA) / 10 * 12 ;
             $CA [] =  Facture::where([['type','stylimmo'],['encaissee',1], ['a_avoir',0],['date_encaissement','like',"%$annee_n-11%"]])->sum('montant_ht');
-            $CA_MOY [] = array_sum($CA) / 11 ;
+            $CA_MOY [] = array_sum($CA) / 11 * 12 ;
             $CA [] =  Facture::where([['type','stylimmo'],['encaissee',1], ['a_avoir',0],['date_encaissement','like',"%$annee_n-12%"]])->sum('montant_ht');
-            $CA_MOY [] = array_sum($CA) / 12 ;
+            $CA_MOY [] = array_sum($CA) / 12 * 12 ;
             
             ################## AUTRE CALCULS ########################## 
             

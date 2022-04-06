@@ -144,7 +144,7 @@
                                                     <th scope="row"  style="font-size:18px; color: #7c20c8; font-weight: bold;"> {{number_format( config('stats.STATS')['CA'][11] ,2,'.',',')}} </th>
                                                 </tr>
                                                 <tr>
-                                                    <th scope="row" style="font-size:20px; font-weight: bold;">Moyenne des CA </th> 
+                                                    <th scope="row" style="font-size:20px; font-weight: bold;">CA Annuel prévisionnel </th> 
                                                     <th scope="row" style="font-size:18px; color: #a7275e; font-weight: bold;"> {{number_format( config('stats.STATS')['CA_MOY'][0] ,2,'.',',')}} </th> 
                                                     <th scope="row" style="font-size:18px; color: #a7275e; font-weight: bold;"> {{number_format( config('stats.STATS')['CA_MOY'][1] ,2,'.',',')}} </th>                 
                                                     <th scope="row" style="font-size:18px; color: #a7275e; font-weight: bold;"> {{number_format( config('stats.STATS')['CA_MOY'][2] ,2,'.',',')}} </th>
