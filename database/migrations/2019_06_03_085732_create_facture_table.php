@@ -46,6 +46,9 @@ class CreateFactureTable extends Migration
             
             $table->date('date_relance_paiement')->nullable();
             $table->integer('nb_relance_paiement')->default(0);
+            $table->boolean('exporte')->default(false);
+            $table->date('date_export')->nullable();
+            
             
 
             $table->timestamps();

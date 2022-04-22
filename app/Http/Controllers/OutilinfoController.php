@@ -39,13 +39,17 @@ class OutilinfoController extends Controller
     {
     
     
-      return  Outilinfo::create([
+        Outilinfo::create([
             "nom"=> $request->nom,
             "identifiant"=> $request->identifiant,
             "password"=> $request->password,
+            "site_web"=> $request->site_web,
             "autre_champ"=> $request->autre_champ,
-            "champs_valeurs"=> $request->champs,
+            // "champs_valeurs"=> $request->champs,
         ]);
+        
+        return redirect()->route('outil_info.index')->with('ok', 'Outil Ajouté');
+        
     }
 
     /**
@@ -69,9 +73,9 @@ class OutilinfoController extends Controller
     {
         
         $outil = Outilinfo::where('id', $outil_id)->first();
-        $champs = Outilinfo::champs_unserialize($outil->champs_valeurs);
+        // $champs = Outilinfo::champs_unserialize($outil->champs_valeurs);
      
-        return view('outil_info.edit',compact('outil', 'champs') );
+        return view('outil_info.edit',compact('outil', ) );
     }
 
     /**
@@ -83,15 +87,20 @@ class OutilinfoController extends Controller
      */
     public function update(Request $request, $outil_id)
     {
+    
+
         $outil = Outilinfo::where('id', $outil_id)->first();
         $outil->nom = $request->nom;
         $outil->identifiant = $request->identifiant;
         $outil->password = $request->password;
+        $outil->site_web = $request->site_web;
         $outil->autre_champ = $request->autre_champ;
-        $outil->champs_valeurs = $request->champs;
+        // $outil->champs_valeurs = $request->champs;
         
         $outil->update();
-        return "true";
+        
+        return redirect()->route('outil_info.index')->with('ok', 'Outil modifié');
+    
     }
 
     /**

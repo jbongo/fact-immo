@@ -12,11 +12,12 @@ use iio\libmergepdf\Pages;
 use PDF;
 use Illuminate\Support\Facades\File ;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 
 class ExportwinficController extends Controller
 {
     /**
-     * Afficher de la liste des factures à exporter
+     * Afficher de la liste des factures ventes à exporter
      *
      * @return \Illuminate\Http\Response
      */
@@ -33,7 +34,6 @@ class ExportwinficController extends Controller
         
         $factureStylimmos = Facture::whereIn('type',['stylimmo','avoir','pack_pub','carte_visite','communication','autre','forfait_entree','cci'])->whereBetween('date_facture',[$date_deb,$date_fin])->where('user_id','<>',77)->orderBy('numero','asc')->get();  
         $montant_credit_debit = Facture::whereIn('type',['stylimmo','avoir','pack_pub','carte_visite','communication','autre','forfait_entree','cci'])->whereBetween('date_facture',[$date_deb,$date_fin])->where('user_id','<>',77)->sum('montant_ttc');
-        $montant_debit = Facture::whereIn('type',['stylimmo','avoir','pack_pub','carte_visite','communication','autre','forfait_entree','cci'])->whereBetween('date_facture',[$date_deb,$date_fin])->where('user_id','<>',77)->sum('montant_ht');
         
       
         $this->generer_pdf_facture($date_deb, $date_fin);
@@ -41,6 +41,45 @@ class ExportwinficController extends Controller
         return view ('winfic.index',compact(['factureStylimmos','date_deb','date_fin','montant_credit_debit']));
         
     }
+    
+    
+     /**
+     * Afficher de la liste des factures fournisseurs à exporter
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index_fournisseur(Request $request)
+    {
+    
+        $date_deb = $request->date_deb;
+        $date_fin = $request->date_fin;
+        
+        if($date_deb == null || $date_fin == null || $date_fin < $date_deb){        
+            $date_deb = date("Y-m")."-01";
+            $date_fin = date("Y-m-d");        
+        }     
+        
+        $factureFournisseurs = Facture::whereIn('type',['honoraire','partage','partage_externe','parrainage','parrainage_partage'])->whereBetween('date_reglement',[$date_deb,$date_fin])->where([['user_id','<>',77], ['reglee', true]])->orderBy('numero','asc')->get();  
+        $nbFacturesExporte = Facture::whereIn('type',['honoraire','partage','partage_externe','parrainage','parrainage_partage'])->whereBetween('date_reglement',[$date_deb,$date_fin])->where([['exporte', true],['user_id','<>',77], ['reglee', true]])->count();  
+        $montant_credit_debit = Facture::whereIn('type',['honoraire','partage','partage_externe','parrainage','parrainage_partage'])->whereBetween('date_reglement',[$date_deb,$date_fin])->where([['user_id','<>',77], ['reglee', true]])->sum('montant_ttc');
+        
+        $date_factures = Facture::whereIn('type',['honoraire','partage','partage_externe','parrainage','parrainage_partage'])->whereBetween('date_reglement',[$date_deb,$date_fin])->where([['user_id','<>',77], ['reglee', true]])->orderBy('date_facture','asc')->select('date_facture')->distinct()->get();  
+        
+        
+        // On réccupère les mois de dates de facture utiles pour saisir les numéros de code pièce
+        $mois_factures = array();
+        foreach ($date_factures as $date) {
+           $mois_factures[] = $date['date_facture']->format('m/Y');
+ 
+        }
+        
+        $mois_factures = array_unique($mois_factures);
+      
+       
+        return view ('winfic.index_fournisseur',compact(['factureFournisseurs','date_deb','date_fin','montant_credit_debit','mois_factures','nbFacturesExporte']));
+        
+    }
+    
     
     
     
@@ -471,326 +510,189 @@ class ExportwinficController extends Controller
 
 
     /**
-     *exporter les fichiers ECRANA.WIN / transferts des factures des indépendants 
+     *exporter les fichiers ECRITURE.WIN / transferts des factures des indépendants et fournisseurs externes
      *
      * @return \Illuminate\Http\Response
      */
-    public function exporter_ecrana($date_deb = null, $date_fin = null)
+    public function exporter_ecriture3(Request $request, $date_deb = null, $date_fin = null)
     {
         
         
+        
+        // Si aucune facture selectionnée retourner null
+        
+        if($request->list_id == null ) return null;
     
-    
+        // periodes
         if($date_deb == null || $date_fin == null || $date_fin < $date_deb){        
             $date_deb = date("Y-m")."-01";
             $date_fin = date("Y-m-d");        
         }     
         
-        $factureStylimmos = Facture::whereIn('type',['stylimmo','avoir','pack_pub','carte_visite','communication','autre','forfait_entree','cci'])->whereBetween('date_facture',[$date_deb,$date_fin])->where('user_id','<>',77)->orderBy('numero','asc')->get();    
         
+        $factureFournisseurs = Facture::whereIn('id', $request->list_id)->orderBy('numero','asc')->get();  
+        
+        DB::table('factures')->whereIn('id', $request->list_id)
+                            ->update(['exporte' => true, 'date_export' => date('Y-m-d')]);
+
+         
         $data = "";
         $num_folio = 1;
         $num_ecriture = 1;
         
-        if(file_exists("ECRANA.WIN")){
-            unlink("ECRANA.WIN");
+        if(file_exists("ECRITURE.WIN")){
+            unlink("ECRITURE.WIN");
         }
         
      
         
-        foreach ($factureStylimmos as $facture) {
+        $code_journal = "AC";
+        $jour_ecriture =  $this->formatage_colonne(6,date('dmY'), "droite");
+        $compte_tva = $this->formatage_colonne(6, 445666);
+        $compte_ht = $this->formatage_colonne(6, 622219);
+        $filler1 = "      0,000";
+        $filler2 = "0";
+        
+        
+        //   
+        
+        
+        $periodes = explode('&', $request->periodes)  ;
+        $tab = Array();
+        // Création d'un tableau clé:valeur avec les dates de deb et date de fin + les champs periodes/numero pieces
+        foreach ($periodes as $key => $periode) {
+            
+            $val = explode('=', $periode);
+            
+            $tab[$val[0]] = $val[1];
+            
+        }
+        
+        $mois_numero_pieces = array_slice($tab, 2,sizeof($periodes));
+        
+        // return "".str_contains("10/10/2022", '10/2021');
+        // return $mois_numero_pieces;
+        
+        $data = "";
+        foreach ($factureFournisseurs as $facture) {
         
             
             
-                $code_journal = "VE";
-                $date_operation = $facture->date_facture->format('dmY');
-                // $num_folio = "";
-                // $num_ecriture = "";
+            $date_operation = $facture->date_facture->format('dmY');
+            // Date utilisée pour générer le code pièce
+            $date_fact = $facture->date_facture->format('m/Y');
+            
+            // $num_folio = "";
+            // $num_ecriture = "";
+            
+           
+              // Pour les factures fournisseur utiliser le compte 0FOURN sinon sinon si facture indep, utiliser le 0Nom independant
+        
+            if($facture->type =="fournisseur"){
+                $compte_ttc = "0FOURN";                
+            }else {
+                $compte_ttc = $this->formatage_colonne(6, str_replace('9','0',$facture->user->code_client) );            
+            }
+        
+          
+            $montant_ht = $facture->montant_ht;
+            $montant_ttc = $facture->montant_ttc > $montant_ht ? $facture->montant_ttc :  $montant_ht ; 
+            $montant_tva = $montant_ttc > $montant_ht ? ($montant_ttc - $montant_ht) : 0 ;
+            
+            $montant_credit_ht = $this->formatage_colonne(13, number_format(  $montant_ht ,2, ",",""), "droite");
+            $montant_debit_ht = $this->formatage_colonne(13, "0,00", "droite");
+            
+            $montant_debit_ttc = $this->formatage_colonne(13, number_format(  $montant_ttc ,2, ",",""), "droite");
+            $montant_credit_ttc = $this->formatage_colonne(13, "0,00", "droite");
+            
+            if($montant_tva > 0){
                 
-                // $jour_ecriture =  $this->formatage_colonne(6,$facture->date_facture->format('d'), "droite");;
+                $montant_debit_tva = $this->formatage_colonne(13, "0,00", "droite");
+                $montant_credit_tva = $this->formatage_colonne(13, number_format(  $montant_tva ,2, ",",""), "droite");
+            
+            }
                 
-                
-                
-                $compte_tva = $this->formatage_colonne(6, 445716);
-                
-                
-                
-                // *************** VERIFIER QUE LE COMPRO N'EST PAS NULL
-                
-                if($facture->compromis != null){
-                
-                    $compte_ht = $facture->compromis->type_affaire == "Vente" ? 708229 : 708239;
-                }else{
-                    $compte_ht = 708800;
-                }
-                
-                
+            //  $facture = Facture::where('fournisseur_id', 3)->first();
+             
+            if($facture->fournisseur != null){
+                $libelle = $this->formatage_colonne(30, substr($facture->fournisseur->nom, 0, 15)."/".$facture->numero , "gauche") ; 
+
+            }else{
+                $libelle = $this->formatage_colonne(30, substr($facture->user->nom, 0, 15)."/".$facture->numero."/".$facture->compromis->getFactureStylimmo()->numero , "gauche") ; ; 
+            }
+            
+         
+            $lettrage = "  ";
+            
+          
+            
+            $num_ecriture = $mois_numero_pieces[$date_fact];
+            
+            // return $factureFournisseurs;
+            
+            
+            $code_stat = "    ";
+            $date_echeance =  $facture->date_facture->format('dmY');
+            $monnaie = 1;
+            $filler = " ";
+            $ind_compteur = " ";
+            $quantite = "      0,000";
+            $code_pointage = "  ";
                
-                  // Pour les factures Stylimmo et leurs avoirs, utiliser le le compte 9CLIEN sinon reccuperer directement le code client du mandataire
             
-                if($facture->type == "stylimmo" || ($facture->type == "avoir" && $facture->facture_avoir()->type == "stylimmo")){
-                    $compte_ttc = "9CLIEN";                
-                }else {
-                    $compte_ttc = $this->formatage_colonne(6,$facture->user->code_client);            
-                }
+            // Ligne TTC
             
-               
+            $code_piece = $this->formatage_colonne(5, $mois_numero_pieces[$date_fact]);
+            $mois_numero_pieces[$date_fact]++;
             
-                $filler1 = "      0,000";
-                $filler2 = "0";
-              
+            $data .= $code_journal."|".$date_operation."|".$this->formatage_colonne(6,$num_folio,'droite')."|".$this->formatage_colonne(6,$num_ecriture,'droite')."|".$jour_ecriture."|".$compte_ttc."|".$montant_debit_ttc."|".$montant_credit_ttc."|".$libelle."|".$lettrage."|".$code_piece."|".$code_stat."|".$date_echeance."|".$monnaie."|".$filler."|".$ind_compteur."|".$quantite."|".$code_pointage."|\r\n";
+            $num_ecriture++;
+            
+            // Ligne  HT
+            $code_piece = $this->formatage_colonne(5, $mois_numero_pieces[$date_fact]);
+            $mois_numero_pieces[$date_fact]++;
+            $data .= $code_journal."|".$date_operation."|".$this->formatage_colonne(6,$num_folio,'droite')."|".$this->formatage_colonne(6,$num_ecriture,'droite')."|".$jour_ecriture."|".$compte_ttc."|".$montant_debit_ht."|".$montant_credit_ht."|".$libelle."|".$lettrage."|".$code_piece."|".$code_stat."|".$date_echeance."|".$monnaie."|".$filler."|".$ind_compteur."|".$quantite."|".$code_pointage."|\r\n";
+            
+            $num_ecriture++;
+            
+            // Ligne TVA si y'a la TVA
+            if($montant_tva > 0){
+                $code_piece = $this->formatage_colonne(5, $mois_numero_pieces[$date_fact]);
+                $mois_numero_pieces[$date_fact]++;
                 
-                
-                //  On vérifie si y'a partage ou pas..  Quand y'a partage, créer les lignes pour chaque mandataire              
-                
-                if($facture->compromis != null && $facture->compromis->est_partage_agent == true){
-                
-                    $compromis = $facture->compromis; 
-                    $taux_porteur = $facture->compromis->pourcentage_agent;
-                    $taux_partage = 100 - $facture->compromis->pourcentage_agent;
-                    
-                    
-                    $stylimmo_facture_tout = true;
-                    
-                    $code_section_porteur = $facture->user->code_analytic;
-                        
-                    $code_section_partage = $compromis->partage_reseau == true ? $compromis->getPartage()->code_analytic : "R000";
-                
-                    // on determine les montants en fonction du partage de l'affaire
-                    // qui_porte_externe :::  // 1 = Styl et l'agence-- 2= L'agence -- 3= Styl
-                    
-                    // Qaund STYLIMMO n'a pas tout facturé au notaire
-                    if($compromis->partage_reseau == false && ( $compromis->qui_porte_externe == 1 || $compromis->qui_porte_externe == 2 ) ){
-                    
-                        // STYL a déjà facturé une seule partie des frais agence, donc plus besoin de consider le pourcentage 
-                        $montant_tva_porteur = $facture->montant_ttc - $facture->montant_ht ;
-                        $montant_ht_porteur = $facture->montant_ht ;
-                        $montant_ttc_porteur =  $facture->montant_ttc ;
-                        
-                        $stylimmo_facture_tout = false;
-                        
-                        $taux_porteur = 100 ;
-                        
-                                              
-                    
-                    // Qaund STYLIMMO a tout facturé au notaire
-                    }else{
-                    
-                        $taux_porteur = $compromis->pourcentage_agent;
-                    
-                        $montant_tva_porteur = ($facture->montant_ttc - $facture->montant_ht) * $taux_porteur/100;
-                        $montant_ht_porteur =  $facture->montant_ht * $taux_porteur/100;
-                        $montant_ttc_porteur =  $facture->montant_ttc * $taux_porteur/100;
-                        
-                        
-                        $taux_partage = 100 - $compromis->pourcentage_agent;
-                        
-                        $montant_tva_partage = ($facture->montant_ttc - $facture->montant_ht) * $taux_partage/100  ;
-                        $montant_ht_partage =  $facture->montant_ht * $taux_partage/100;
-                        $montant_ttc_partage = $facture->montant_ttc * $taux_partage/100 ;
-                        
-                        
-                    }
-                    
-                  
-                
-                    if($facture->type == "avoir"){
-                    
-                    
-                     // POUR LE mandataire qui porte l'affaire, USER_ID
-                
-                         $montant_debit_tva_porteur = $this->formatage_colonne(13, number_format( $montant_tva_porteur  ,2, ",",""), "droite");
-                         $montant_credit_tva_porteur = $this->formatage_colonne(13, "0,00", "droite");
-                         
-                         
-                         $montant_debit_ht_porteur = $this->formatage_colonne(13, number_format(  $montant_ht_porteur ,2, ",",""), "droite");
-                         $montant_credit_ht_porteur = $this->formatage_colonne(13, "0,00", "droite");
-                         
-                         $montant_debit_ttc_porteur = $this->formatage_colonne(13, "0,00", "droite");
-                         $montant_credit_ttc_porteur = $this->formatage_colonne(13, number_format( $montant_ttc_porteur ,2, ",",""), "droite");
-                
-                
-                
-                
-                
-                    // POUR LE mandataire qui ne porte pas l'affaire, AGENT_ID OU l'AGENCE OU AGENT EXTERNE ( si c'est STYLIMMO qui porte l'affaire chez le notaire ==> si STYLIMMO facture tout )
-                    
-                        if($stylimmo_facture_tout == true){
-                    
-                   
-                        $montant_debit_tva_partage = $this->formatage_colonne(13, number_format( $montant_tva_partage ,2, ",",""), "droite");
-                        $montant_credit_tva_partage = $this->formatage_colonne(13, "0,00", "droite");
-                        
-                        
-                        $montant_debit_ht_partage = $this->formatage_colonne(13, number_format($montant_ht_partage ,2, ",",""), "droite");
-                        $montant_credit_ht_partage = $this->formatage_colonne(13, "0,00", "droite");
-                        
-                        $montant_debit_ttc_partage =$this->formatage_colonne(13, "0,00", "droite");
-                        $montant_credit_ttc_partage = $this->formatage_colonne(13, number_format($montant_ttc_partage ,2, ",",""), "droite");
-                        
-                        }
-                    
-                    
-                    }else{
-                    
-                    
-                     // POUR LE mandataire qui porte l'affaire, USER_ID
-                
-                        
-                         $montant_debit_tva_porteur = $this->formatage_colonne(13, "0,00", "droite");
-                         $montant_credit_tva_porteur = $this->formatage_colonne(13, number_format($montant_tva_porteur  ,2, ",",""), "droite");
-                         
-                        
-                         $montant_debit_ht_porteur = $this->formatage_colonne(13, "0,00", "droite");
-                         $montant_credit_ht_porteur = $this->formatage_colonne(13, number_format($montant_ht_porteur  ,2, ",",""), "droite");
-                         
-                        
-                         $montant_debit_ttc_porteur = $this->formatage_colonne(13, number_format($montant_ttc_porteur  ,2, ",",""), "droite");
-                         $montant_credit_ttc_porteur = $this->formatage_colonne(13, "0,00", "droite");                        
-                
-                
-                
-                
-                    // POUR LE mandataire qui ne porte pas l'affaire, AGENT_ID OU l'AGENCE OU AGENT EXTERNE ( si c'est STYLIMMO qui porte l'affaire chez le notaire ==> si STYLIMMO facture tout )
-                        
-                        if($stylimmo_facture_tout == true){
-                    
-                        $montant_debit_tva_partage = $this->formatage_colonne(13, "0,00", "droite");
-                        $montant_credit_tva_partage = $this->formatage_colonne(13, number_format($montant_tva_partage ,2, ",",""), "droite");
-                        
-                       
-                        $montant_debit_ht_partage = $this->formatage_colonne(13, "0,00", "droite");
-                        $montant_credit_ht_partage = $this->formatage_colonne(13, number_format($montant_ht_partage ,2, ",",""), "droite");
-                        
-                       
-                        $montant_debit_ttc_partage = $this->formatage_colonne(13, number_format($montant_ttc_partage ,2, ",",""), "droite");
-                        $montant_credit_ttc_partage = $this->formatage_colonne(13, "0,00", "droite");
-                    
-                        }
-                    }
-                    
-                   $taux_porteur = $this->formatage_colonne(13, number_format(  $taux_porteur ,2, ",",""), "droite") ;
-                   $taux_partage = $this->formatage_colonne(13, number_format(  $taux_partage ,2, ",",""), "droite") ;
-                    
-                    
-                    $ligne1_porteur = $code_journal."|".$date_operation."|".$this->formatage_colonne(6,$num_folio,'droite')."|".$this->formatage_colonne(6,$num_ecriture,'droite')."|"."    "."|".$compte_tva."|".$taux_porteur."|".$montant_debit_tva_porteur."|".$montant_credit_tva_porteur."|".$filler1."|".$filler2."|\r\n";
-                    $num_ecriture++;
-                
-                    
-                    $ligne2_porteur = $code_journal."|".$date_operation."|".$this->formatage_colonne(6,$num_folio,'droite')."|".$this->formatage_colonne(6,$num_ecriture,'droite')."|".$code_section_porteur."|".$compte_ht."|".$taux_porteur."|".$montant_debit_ht_porteur."|".$montant_credit_ht_porteur."|".$filler1."|".$filler2."|\r\n";
-                    $num_ecriture++;
-                
-                    $ligne3_porteur = $code_journal."|".$date_operation."|".$this->formatage_colonne(6,$num_folio,'droite')."|".$this->formatage_colonne(6,$num_ecriture,'droite')."|"."    "."|".$compte_ttc."|".$taux_porteur."|".$montant_debit_ttc_porteur."|".$montant_credit_ttc_porteur."|".$filler1."|".$filler2."|\r\n";
-                    $num_ecriture++;
-                         
-                    
-                    $data.=$ligne2_porteur ;
-                    
-                    if($num_ecriture > 47 ){
-                        $num_folio ++;
-                        $num_ecriture = 1;
-                    }
-                    
-                    
-                    
-                    if($stylimmo_facture_tout == true){
-                    
-                        $ligne1_partage = $code_journal."|".$date_operation."|".$this->formatage_colonne(6,$num_folio,'droite')."|".$this->formatage_colonne(6,$num_ecriture,'droite')."|"."    "."|".$compte_tva."|".$taux_partage."|".$montant_debit_tva_partage."|".$montant_credit_tva_partage."|".$filler1."|".$filler2."|\r\n";
-                        $num_ecriture++;
-                    
-                        
-                        $ligne2_partage = $code_journal."|".$date_operation."|".$this->formatage_colonne(6,$num_folio,'droite')."|".$this->formatage_colonne(6,$num_ecriture,'droite')."|".$code_section_partage."|".$compte_ht."|".$taux_partage."|".$montant_debit_ht_partage."|".$montant_credit_ht_partage."|".$filler1."|".$filler2."|\r\n";
-                        $num_ecriture++;
-                    
-                        $ligne3_partage = $code_journal."|".$date_operation."|".$this->formatage_colonne(6,$num_folio,'droite')."|".$this->formatage_colonne(6,$num_ecriture,'droite')."|"."    "."|".$compte_ttc."|".$taux_partage."|".$montant_debit_ttc_partage."|".$montant_credit_ttc_partage."|".$filler1."|".$filler2."|\r\n";
-                        $num_ecriture++;
-                             
-                        
-                        $data.=$ligne2_partage ;
-                        
-                        if($num_ecriture > 47 ){
-                            $num_folio ++;
-                            $num_ecriture = 1;
-                        }
-                    }
-                    
-                    
-                    
-                }
-                
-                // SI y'a pas de partage
-                
-                else{
-                
-                    $code_section_porteur = $facture->user->code_analytic;
-                    $taux_porteur = 100;
-                
-                    if($facture->type == "avoir"){
-                    
-                        $montant_debit_tva = $this->formatage_colonne(13, number_format($facture->montant_ttc - $facture->montant_ht,2, ",",""), "droite");
-                        $montant_credit_tva = $this->formatage_colonne(13, "0,00", "droite");
-                        
-                        
-                        $montant_debit_ht = $this->formatage_colonne(13, number_format($facture->montant_ht,2, ",",""), "droite");
-                        $montant_credit_ht = $this->formatage_colonne(13, "0,00", "droite");
-                        
-                        $montant_debit_ttc =$this->formatage_colonne(13, "0,00", "droite");
-                        $montant_credit_ttc = $this->formatage_colonne(13, number_format($facture->montant_ttc,2, ",",""), "droite");
-                    
-                    }else{
-                    
-                        $montant_debit_tva = $this->formatage_colonne(13, "0,00", "droite");
-                        $montant_credit_tva = $this->formatage_colonne(13, number_format($facture->montant_ttc - $facture->montant_ht,2, ",",""), "droite");
-                        
-                       
-                        $montant_debit_ht = $this->formatage_colonne(13, "0,00", "droite");
-                        $montant_credit_ht = $this->formatage_colonne(13, number_format($facture->montant_ht,2, ",",""), "droite");
-                        
-                       
-                        $montant_debit_ttc = $this->formatage_colonne(13, number_format($facture->montant_ttc,2, ",",""), "droite");
-                        $montant_credit_ttc = $this->formatage_colonne(13, "0,00", "droite");
-                    
-                    
-                    }
-                    
-                    $taux_porteur = $this->formatage_colonne(13, number_format(  $taux_porteur ,2, ",",""), "droite") ;
-                  
-                    
-                    $ligne1 = $code_journal."|".$date_operation."|".$this->formatage_colonne(6,$num_folio,'droite')."|".$this->formatage_colonne(6,$num_ecriture,'droite')."|"."    "."|".$compte_tva."|".$taux_porteur."|".$montant_debit_tva."|".$montant_credit_tva."|".$filler1."|".$filler2."|\r\n";
-                    $num_ecriture++;
-                    
-                    
-                    
-                    $ligne2 = $code_journal."|".$date_operation."|".$this->formatage_colonne(6,$num_folio,'droite')."|".$this->formatage_colonne(6,$num_ecriture,'droite')."|".$code_section_porteur."|".$compte_ht."|".$taux_porteur."|".$montant_debit_ht."|".$montant_credit_ht."|".$filler1."|".$filler2."|\r\n";
-                    $num_ecriture++;
-                
-                    $ligne3 = $code_journal."|".$date_operation."|".$this->formatage_colonne(6,$num_folio,'droite')."|".$this->formatage_colonne(6,$num_ecriture,'droite')."|"."    "."|".$compte_ttc."|".$taux_porteur."|".$montant_debit_ttc."|".$montant_credit_ttc."|".$filler1."|".$filler2."|\r\n";
-                    $num_ecriture++;
-                         
-                    
-                    $data.=$ligne2 ;
-                
-                    if($num_ecriture > 47 ){
-                        $num_folio ++;
-                        $num_ecriture = 1;
-                    }
-                    
-                }
-                
+                $data .= $code_journal."|".$date_operation."|".$this->formatage_colonne(6,$num_folio,'droite')."|".$this->formatage_colonne(6,$num_ecriture,'droite')."|".$jour_ecriture."|".$compte_ttc."|".$montant_debit_tva."|".$montant_credit_tva."|".$libelle."|".$lettrage."|".$code_piece."|".$code_stat."|".$date_echeance."|".$monnaie."|".$filler."|".$ind_compteur."|".$quantite."|".$code_pointage."|\r\n";
+                $num_ecriture++;  
+            }
+           
+            
+            
+            
+  
   
         }
+        // return $data;
  
  
-        file_put_contents("ECRANA.WIN", $data);
+        file_put_contents("ECRITURE.WIN", $data);
         
-        return response()->download("ECRANA.WIN");
+        return response()->download("ECRITURE.WIN");
         
     }
 
 
 
 
+    
 
+    /**
+     * Telecharger les exports
+     */
+    public function download_export($fichier="ECRITURE.WIN")
+    {
+        
+        return response()->download($fichier);
+        
+    }
 
 
 
@@ -887,11 +789,7 @@ class ExportwinficController extends Controller
             
         }
         $createdPdf = $merger->merge();
-        // $merger = new Merger;
-        // $merger->addFile('one.pdf');
-        // // $merger->addFile('two.pdf');
-        // $merger->addFile('three.pdf');
-        // $createdPdf = $merger->merge();
+ 
         return new Response($createdPdf, 200, array('Content-Type' => 'application/pdf'));
         
     

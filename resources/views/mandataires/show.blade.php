@@ -31,15 +31,33 @@
                                     </div>
     
                                     <div class="user-skill">
-                                       <h4 style="color: #32ade1;text-decoration: underline;">Options</h4>
+                                       <h4 style="color: #32ade1;text-decoration: underline; font-size:20px; font-weight:bold;">Options</h4>
                                       
-                                            <a href="{{route('mandataire.edit',Crypt::encrypt($mandataire->id) )}}"  class="btn btn-warning btn-rounded btn-addon btn-lg m-b-10"><i class="ti-pencil"></i>Modifier</a>
+                                            <a href="{{route('mandataire.edit',Crypt::encrypt($mandataire->id) )}}"  class="btn btn-warning btn-rounded btn-addon btn-xs m-b-10"><i class="ti-pencil"></i>Utilisateur</a>
                                      
                                         
                                         @if (auth()->user()->role == "admin" && $mandataire->contrat != null)
                                        <a href="{{route('mandataire.send_access',[ Crypt::encrypt($mandataire->id) ,Crypt::encrypt($mandataire->contrat->id) ])}}" title="Envoyer les accès au mandataire" class="btn btn-default btn-rounded btn-addon btn-xs m-b-10 send-access"><i class="ti-pencil"></i>Envoyer les accès </a>
                                         @endif
                                     </div>
+                                    
+                                    <br>
+                                    
+                                    <div class="user-skill">
+                                        <h4 style="color: #32ade1;text-decoration: underline; font-size:20px; font-weight:bold;">Outils Informatique</h4>
+                                            
+                                        @if (auth()->user()->role == "admin" && $mandataire->ficheinfo != null)
+                                             <a href="{{route('fiche_info.edit',$mandataire->id )}}" target="_blank"  class="btn btn-warning btn-rounded btn-addon btn-xs m-b-10"><i class="ti-pencil"></i>Modifier</a>
+                                        @elseif (auth()->user()->role == "admin" && $mandataire->ficheinfo == null)
+                                            <a href="{{route('fiche_info.create',$mandataire->id )}}" target="_blank"  class="btn btn-success btn-rounded btn-addon btn-xs m-b-10"><i class="ti-plus"></i>Créer</a>
+                                            
+                                        @endif
+                                         
+                                        @if ( $mandataire->ficheinfo != null)
+                                            <a href="{{route('fiche_info.fiche_pdf',Crypt::encrypt($mandataire->id) )}}" title="Télécharger la fiche" class="btn btn-danger btn-rounded btn-addon btn-xs m-b-10 "><i class="ti-download"></i>Télécharger</a>
+                                        @endif
+                                       
+                                     </div>
                                  </div>
                                  <div class="col-lg-8">
                                     <div class="user-profile-name" style="color: #d68300;">{{$mandataire->civilite}} {{$mandataire->nom}} {{$mandataire->prenom}}</div>

@@ -33,7 +33,10 @@
                                 <thead>
                                     <tr  style="background-color: #2a596d;">
                                         <th style=" color:#fff">@lang('Nom')</th>
-                                        <th style=" color:#fff">@lang('Champs')</th>
+                                        <th style=" color:#fff">@lang('Site web')</th>
+                                        <th style=" color:#fff">@lang('Identifiant')</th>
+                                        <th style=" color:#fff">@lang('Mot de passe')</th>
+                                        <th style=" color:#fff">@lang('Autres champs')</th>
                                   
                                         <th style=" color:#fff">@lang('Action')</th>
                                        
@@ -48,11 +51,20 @@
                                             <strong>{{$outil->nom}}</strong> 
                                         </td>
                                         
-                                        <td style="color: #2f0146;">
-                                            @foreach ($outil->champs() as $champ)
-                                                {{$champ[0]}}  |
-                                            @endforeach 
+                                        <td style="color: #2f0146; ">
+                                            <strong>{{$outil->site_web}}</strong> 
                                         </td>
+                                        
+                                        <td style="color: #2f0146; ">
+                                            <strong>{{$outil->identifiant}}</strong> 
+                                        </td>
+                                        <td style="color: #2f0146; ">
+                                            <strong>{{$outil->password}}</strong> 
+                                        </td>
+                                        <td style="color: #2f0146; ">
+                                            <strong>{!!$outil->autre_champ!!}</strong> 
+                                        </td>
+                                        
                                                      
                                 
                                         <td>

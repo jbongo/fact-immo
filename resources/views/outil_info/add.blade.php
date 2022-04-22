@@ -17,17 +17,17 @@ Ajouter un outil informatique
          </div>
          <div class="card-body">
             <div class="form-validation">
-               <form class="form-valide form-horizontal" action="#" method="post">
+               <form class="form-valide form-horizontal" action="{{route('outil_info.store')}}" method="post">
                   {{ csrf_field() }}
 
                 <div class="row">
                     <hr>
                     <hr>
                     <hr>
-                    <div class="col-lg-12 col-md-12 col-sm-12">                      
+                    <div class="col-lg-6 col-md-6 col-sm-6">                      
                          <div class="form-group row">
-                            <label class="col-lg-2 col-md-2 col-sm-2 control-label" for="nom">Nom <span class="text-danger">*</span></label>
-                            <div class="col-lg-4 col-md-4 col-sm-4">
+                            <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="nom">Nom <span class="text-danger">*</span></label>
+                            <div class="col-lg-8 col-md-8 col-sm-8">
                                <input type="text" class="form-control {{$errors->has('nom') ? 'is-invalid' : ''}}" value="{{old('nom')}}" id="nom" name="nom" placeholder="Nom.." required>
                                @if ($errors->has('nom'))
                                <br>
@@ -39,7 +39,20 @@ Ajouter un outil informatique
                          </div>
                     </div>
                     
-                    
+                    <div class="col-lg-6 col-md-6 col-sm-6">                      
+                        <div class="form-group row">
+                           <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="site_web">Site web </label>
+                           <div class="col-lg-8 col-md-8 col-sm-8">
+                              <input type="url" class="form-control {{$errors->has('site_web') ? 'is-invalid' : ''}}" value="{{old('site_web')}}" id="site_web" name="site_web"  >
+                              @if ($errors->has('site_web'))
+                              <br>
+                              <div class="alert alert-warning ">
+                                 <strong>{{$errors->first('site_web')}}</strong> 
+                              </div>
+                              @endif
+                           </div>
+                        </div>
+                   </div>
                     
                     <div class="col-lg-6 col-md-6 col-sm-6">
                         <div class="form-group row">
@@ -71,7 +84,7 @@ Ajouter un outil informatique
                         </div>
                    </div>
                    
-                    <div class="col-lg-12 col-md-12 col-sm-12">
+                    {{-- <div class="col-lg-12 col-md-12 col-sm-12">
 
                         <div class="col-lg-12 col-md-12 col-sm-12" id="palier_expert">                          
                                 
@@ -82,7 +95,7 @@ Ajouter un outil informatique
                            
                         </div>
                     </div>
-                    
+                     --}}
                     
             
 
@@ -122,7 +135,7 @@ Ajouter un outil informatique
 @stop
 @section('js-content') 
 
-
+{{-- 
 <script>
     var y = 1;
     $(document).ready(function() {
@@ -156,20 +169,21 @@ Ajouter un outil informatique
             y--;
         })
     });
-</script>
+</script> --}}
 
 
 {{-- Envoi des données en ajax pour le stockage --}}
 <script>
 
-    $('.form-valide').submit(function(e) {
+    $('.form-validexxx').submit(function(e) {
         e.preventDefault();
-        var form = $(".form-valide");
+        var form = $(".form-validexxxx");
 
         data = {
             "nom" : $('#nom').val(),        
             "identifiant" : $('#identifiant').val(),        
             "password" : $('#password').val(),        
+            "site_web" : $('#site_web').val(),        
             "autre_champ" : $('#autre_champ').val(),        
             "champs" : $('#champs input').serialize(),
 

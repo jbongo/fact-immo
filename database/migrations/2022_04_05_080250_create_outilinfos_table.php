@@ -18,8 +18,9 @@ class CreateOutilinfosTable extends Migration
             $table->string('nom')->nullable();
             $table->string('identifiant')->nullable();
             $table->string('password')->nullable();
+            $table->string('site_web')->nullable();
             $table->text('autre_champ')->nullable();
-            $table->text('champs_valeurs')->nullable();          
+            // $table->text('champs_valeurs')->nullable();          
             $table->boolean('archive')->default(false);
             $table->timestamps();
         });

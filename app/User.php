@@ -12,6 +12,7 @@ use App\Bibliotheque;
 use App\Mail\NotifChangementPalier;
 use Illuminate\Support\Facades\Mail;
 
+use Illuminate\Support\Facades\Hash;
 
 class User extends Authenticatable
 {
@@ -434,5 +435,48 @@ class User extends Authenticatable
         
         return false;
     }
+    
+    
+/*******
+
+*  retourne le mot de passe du mandataire
+
+*******/  
+public function getPassword(){
+    
+    $mandataire = $this;
+    $contrat = $this->contrat;
+
+    if($contrat!= null) {
+    
+        $datedeb = date_create($contrat->date_deb_activite);
+        $dateini = date_create('1899-12-30');
+        $interval = date_diff($datedeb, $dateini);
+        $password = "S". strtoupper (substr($mandataire->nom,0,1).substr($mandataire->nom,strlen($mandataire->nom)-1 ,1)). strtolower(substr($mandataire->prenom,0,1)).$interval->days.'@@';
+       
+        if(Hash::make($mandataire->password) !=Hash::make($password)){
+            $mandataire->password = Hash::make($password) ;
+            $mandataire->update();
+        }
+    }else{
+    
+        return false;
+    
+    }
+   
+    
+    return $password;
+}
+
+/*******
+
+* Retourne la fiche info du mandataire
+
+*******/
+public function ficheinfo(){
+    
+    return $this->hasOne('App\Ficheinfo');
+
+}
 
 }

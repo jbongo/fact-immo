@@ -175,14 +175,14 @@
     $(document).ready(function() {
     var table = $('#example01').DataTable({
     //    responsive: true,
-        dom: 'Bfrtip',
-        buttons: [
+        // dom: 'Bfrtip',
+        // buttons: [
            
-            'excelHtml5',          
-            'pdfHtml5'
-        ],
+        //     'excelHtml5',          
+        //     'pdfHtml5'
+        // ],
         "order": [],
-        "iDisplayLength": 50,
+        "iDisplayLength": 1000,
         "language": {
         "decimal":        "",
         "emptyTable":     "Aucune donnée disponible dans le tableau",
@@ -242,7 +242,7 @@
     var table1 = $('#example1').DataTable({
         "order": [],
         "iDisplayLength": 50,
-        "scrollY": 600,
+        "scrollY": 800,
         "scrollX": true,
 
         "language": {

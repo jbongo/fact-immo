@@ -71,7 +71,7 @@
                                     <a href="{{route('winfic.exporter_ecriture1', [$date_deb, $date_fin])}}"  class="btn btn-lg btn-warning btn-flat btn-addon  m-b-10 m-l-5 "><i class="ti-download"></i>Export VENTES</a>
                                     <a href="{{route('winfic.exporter_ecriture2', [$date_deb, $date_fin])}}"  class="btn btn-lg btn-warning btn-flat btn-addon  m-b-10 m-l-5 "><i class="ti-download"></i>Export ENCAISS & DECAISS</a>
                                     <a href="{{route('merge_facture', [$date_deb, $date_fin])}}" target="_blank" class="btn btn-lg btn-danger btn-flat btn-addon  m-b-10 m-l-5 "><i class="ti-download"></i>Factures PDF</a>
-                                    {{-- <a href="{{route('winfic.exporter_ecrana', [$date_deb, $date_fin])}}"  class="btn btn-lg btn-default btn-flat btn-addon  m-b-10 m-l-5 "><i class="ti-download"></i>Exporter ECRANA.WIN</a> --}}
+                                    ------->><a href="{{route('winfic.index_fournisseur')}}"  class="btn btn-lg btn-default btn-flat btn-addon  m-b-10 m-l-5 " ><i class="ti-link"></i>Export fournisseurs</a>
                                 
                                 </div>
                             </div>

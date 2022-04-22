@@ -314,7 +314,7 @@
                     {{-- @endif --}}
                     
                      @if(Auth()->user()->role == "admin"  )
-                     <li  class="" ><a href="{{route('outil_info.index')}}" ><i class="large material-icons" style="font-size:20px;">subject</i> Fiche Outil </a></li>
+                     <li  class="" ><a href="{{route('outil_info.index')}}" ><i class="large material-icons" style="font-size:20px;">computer</i> Outils informatique </a></li>
                      @endif
 
                     <li><a href="{{ route('logout') }}"  onclick="event.preventDefault();

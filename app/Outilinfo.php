@@ -52,7 +52,7 @@ class Outilinfo extends Model
             $tmp = substr($pal , strpos($pal, "=") + 1, strlen($pal));
             array_push($array, $tmp);
         }
-        // on divise le nouveau tableau de valeur en 4 tableau de même taille
+        // on divise le nouveau tableau de valeur en 2 tableau de même taille
         $chunk = array_chunk($array, 2);
         // syupprime le premier tableau de notre tableau
         // array_shift($chunk);

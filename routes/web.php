@@ -352,12 +352,23 @@ Route::post('/agenda/update','AgendaController@update')->name('agenda.update');
 Route::post('/agenda/delete/{agenda_id}','AgendaController@destroy')->name('agenda.delete');
 
 
-// Export WINFIC
+// Export WINFIC liste des factures ventes
 Route::get('/winfic','ExportwinficController@index')->name('winfic.index');
+
+// Export WINFIC liste des factures fournisseurs
+Route::get('/winfic/fournisseur','ExportwinficController@index_fournisseur')->name('winfic.index_fournisseur');
+
+// tranfert des ventes
 Route::get('/winfic/exporter_ecriture1/{date_deb?}/{date_fin?}','ExportwinficController@exporter_ecriture1')->name('winfic.exporter_ecriture1');
+// Transfert des encaissements et decaissements
 Route::get('/winfic/exporter_ecriture2/{date_deb?}/{date_fin?}','ExportwinficController@exporter_ecriture2')->name('winfic.exporter_ecriture2');
+
+// Transfert des factures fournisseurs (Achats) 
+Route::post('/winfic/exporter_ecriture3/{date_deb?}/{date_fin?}','ExportwinficController@exporter_ecriture3')->name('winfic.exporter_ecriture3');
+
 Route::get('/winfic/exporter_ecrana/{date_deb?}/{date_fin?}','ExportwinficController@exporter_ecrana')->name('winfic.exporter_ecrana');
 Route::get('/winfic/code-analytic-client','ExportwinficController@code_analytic_client')->name('winfic.code_analytic_client');
+Route::get('/winfic/download/{fichier?}','ExportwinficController@download_export')->name('winfic.download_export');
 
 Route::get('/merge_facture/{date_deb?}/{date_fin?}','ExportwinficController@merge_factures')->name('merge_facture');
 
@@ -408,6 +419,14 @@ Route::post('/outil-info/update/{outil_id}','OutilinfoController@update')->name(
 Route::get('/outil-info/archive','OutilinfoController@archive')->name('outil_info.archive');
 Route::delete('/outil-info/delete/{outil_id}','OutilinfoController@delete')->name('outil_info.delete');
 
+// Fiche informatique
+Route::get('/fiche-info','FicheinfoController@index')->name('fiche_info.index');
+Route::get('/fiche-info/create/{mandataire_id}','FicheinfoController@create')->name('fiche_info.create');
+Route::get('/fiche-info/edit/{mandataire_id}','FicheinfoController@edit')->name('fiche_info.edit');
+Route::post('/fiche-info/store','FicheinfoController@store')->name('fiche_info.store');
+Route::post('/fiche-info/update/{mandataire_id}','FicheinfoController@update')->name('fiche_info.update');
+Route::get('/fiche-info/pdf/{mandataire_id}','FicheinfoController@fiche_pdf')->name('fiche_info.fiche_pdf');
+Route::get('/fiche-info/reiniatiliser/{mandataire_id}','FicheinfoController@reiniatiliser')->name('fiche_info.reiniatiliser');
 
 });
 

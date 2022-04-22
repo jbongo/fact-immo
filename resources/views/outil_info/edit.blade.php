@@ -17,17 +17,17 @@ Modifier {{$outil->nom}}
          </div>
          <div class="card-body">
             <div class="form-validation">
-               <form class="form-valide form-horizontal" action="#" method="post">
+               <form class="form-valide form-horizontal" action="{{route('outil_info.update', $outil->id)}}" method="post">
                   {{ csrf_field() }}
 
                 <div class="row">
                     <hr>
                     <hr>
                     <hr>
-                    <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="col-lg-6 col-md-6 col-sm-6">
                         <div class="form-group row">
-                            <label class="col-lg-2 col-md-2 col-sm-2 control-label" for="nom">Nom <span class="text-danger">*</span></label>
-                            <div class="col-lg-4 col-md-4 col-sm-4">
+                            <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="nom">Nom <span class="text-danger">*</span></label>
+                            <div class="col-lg-8 col-md-8 col-sm-8">
                                <input type="text" class="form-control {{$errors->has('nom') ? 'is-invalid' : ''}}" value="{{$outil->nom}}" id="nom" name="nom" placeholder="Nom.." required>
                                @if ($errors->has('nom'))
                                <br>
@@ -38,6 +38,20 @@ Modifier {{$outil->nom}}
                             </div>
                         </div>
                     </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6">                      
+                        <div class="form-group row">
+                           <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="site_web">Site web <span class="text-danger">*</span></label>
+                           <div class="col-lg-8 col-md-8 col-sm-8">
+                              <input type="text" class="form-control {{$errors->has('site_web') ? 'is-invalid' : ''}}" value="{{$outil->site_web}}"id="site_web" name="site_web"  >
+                              @if ($errors->has('site_web'))
+                              <br>
+                              <div class="alert alert-warning ">
+                                 <strong>{{$errors->first('site_web')}}</strong> 
+                              </div>
+                              @endif
+                           </div>
+                        </div>
+                   </div>
                     
                     <div class="col-lg-6 col-md-6 col-sm-6">
                         <div class="form-group row">
@@ -69,7 +83,7 @@ Modifier {{$outil->nom}}
                         </div>
                    </div>
                     
-                    <div class="col-lg-12 col-md-12 col-sm-12">
+                    {{-- <div class="col-lg-12 col-md-12 col-sm-12">
                         <div class="col-lg-12 col-md-12 col-sm-12" id="palier_expert">
                             <a class="btn btn-warning add_champ" style="margin-left: 53px;">Ajouter un champ</a> <br> <hr>
                             <div class="form-inline champs" id="champs">
@@ -79,7 +93,7 @@ Modifier {{$outil->nom}}
                                 @endforeach
                             </div>                               
                         </div>
-                    </div>
+                    </div> --}}
                     
                     <div class="col-lg-12 col-md-12 col-sm-12" style="margin-top:100px; float:left;">
 
@@ -87,7 +101,7 @@ Modifier {{$outil->nom}}
                            <label class="col-lg-2 col-md-2 col-sm-2  control-label"  for="autre_champ">Autre champ</label>
                            <div class="col-lg-6 col-md-6 col-sm-6 ">
 
-                           <textarea name="autre_champ" id="autre_champ" cols="30" rows="15" >{{$outil->autre_champ}}</textarea>
+                           <textarea name="autre_champ" id="autre_champ" cols="30" rows="15"  >{{$outil->autre_champ}}</textarea>
                               @if ($errors->has('autre_champ'))
                               <br>
                               <div class="alert alert-warning ">
@@ -97,6 +111,7 @@ Modifier {{$outil->nom}}
                            </div>
                         </div>
                   </div>
+                  
                   
                   <hr>
                   <div class="form-group row" >
@@ -116,7 +131,7 @@ Modifier {{$outil->nom}}
 @section('js-content') 
 
 
-<script>
+{{-- <script>
     var y = 1;
     $(document).ready(function() {
         var max_fields = 15;
@@ -149,13 +164,14 @@ Modifier {{$outil->nom}}
             y--;
         })
     });
-</script>
+</script> --}}
 
 
 {{-- Envoi des données en ajax pour le stockage --}}
 <script>
 
-    $('.form-valide').submit(function(e) {
+
+    $('.form-validexxxx').submit(function(e) {
         e.preventDefault();
         var form = $(".form-valide");
 
@@ -163,12 +179,13 @@ Modifier {{$outil->nom}}
             "nom" : $('#nom').val(),        
             "identifiant" : $('#identifiant').val(),        
             "password" : $('#password').val(),        
+            "site_web" : $('#site_web').val(),        
             "autre_champ" : $('#autre_champ').val(),        
-            "champs" : $('#champs input').serialize(),
+            // "champs" : $('#champs input').serialize(),
 
         }
           
-        console.log(data);
+      
         
         
         $.ajaxSetup({
@@ -180,31 +197,70 @@ Modifier {{$outil->nom}}
                
                 data: data,
                 success: function(data) {
-                    console.log(data);
+                
+                
+                   console.log(data+"11111111");
+                     data = {
+                        "nom" : $('#nom').val(),        
+                        "identifiant" : $('#identifiant').val(),        
+                        "password" : $('#password').val(),        
+                        "site_web" : $('#site_web').val(),        
+                        "autre_champ" : $('#autre_champ').val(),        
+                        // "champs" : $('#champs input').serialize(),
+            
+                    }
+                      
+                 
+               //   console.log(data);
+                 
+                 
                     
-                    swal(
-                            'Modifié',
-                            'L\'outil a été modifié avec succés!',
-                            'success'
-                        )
-                        .then(function() {
-                            // window.location.href = "{{route('outil_info.index')}}";
-                        })
-                        // setInterval(() => {
-                        //     window.location.href = "{{route('mandataire.index')}}";
-                            
-                        // }, 5);
+                    
+                       $.ajaxSetup({
+                           headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
+                       })
+                        $.ajax({
+                            type: "POST",
+                            url: "{{route('outil_info.update', $outil->id)}}",
+                           
+                            data: data,
+                            success: function(data) {
+                                console.log(data+"22222222222");
+                                
+                                swal(
+                                        'Modifié',
+                                        'L\'outil a été modifié avec succés!',
+                                        'success'
+                                    )
+                                    .then(function() {
+                                        window.location.href = "{{route('outil_info.index')}}";
+                                    })
+                                    // setInterval(() => {
+                                    //     window.location.href = "{{route('mandataire.index')}}";
+                                        
+                                    // }, 5);
+                            },
+                            error: function(data) {
+                                console.log(data);
+                                
+                                swal(
+                                    'Echec',
+                                    'L\'outil  n\'a pas été modifié!',
+                                    'error'
+                                );
+                            }
+                        });
+                      
                 },
                 error: function(data) {
-                    console.log(data);
+                  
                     
-                    swal(
-                        'Echec',
-                        'L\'outil  n\'a pas été modifié!',
-                        'error'
-                    );
+                   
                 }
             });
+            
+
+            
     });
 </script>
 

@@ -179,7 +179,7 @@ class StatController extends Controller
             $contrat_actifs = Contrat::where([['est_fin_droit_suite',false], ['user_id', '<>', null]])->get();
          
          
-         
+ 
             // Classement sur l'année N
             $classements_n = array();
             foreach ($contrat_actifs as $cont) {
