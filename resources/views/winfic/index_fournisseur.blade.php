@@ -71,6 +71,7 @@
                                 {{-- <a href="{{route('merge_facture', [$date_deb, $date_fin])}}" target="_blank" class="btn btn-lg btn-danger btn-flat btn-addon  m-b-10 m-l-5 "><i class="ti-download"></i>Factures PDF</a> --}}
                             <a href="{{route('winfic.index')}}"  class="btn btn-md btn-default btn-flat btn-addon  m-b-10 m-l-5 " ><i class="ti-angle-double-left"></i>Exports Ventes</a>
 
+                            <a href="#" id="telecharger_selection" class="btn btn-lg btn-danger btn-flat btn-addon  m-b-10 m-l-5 "><i class="ti-download"></i>Fact Fournisseurs PDF</a>
                             
                             </div>
                         </div>
@@ -283,10 +284,11 @@ background-color: #9f6e9f;
                     headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
                 })
                 $('[data-toggle="tooltip"]').tooltip()
+                
+                // EXPORT DE ECRITURE
                 $('#valider_selection').click(function(e) {
                 
                     
-             
                     let that = $(this)
                     e.preventDefault()
                     
@@ -298,45 +300,128 @@ background-color: #9f6e9f;
                         });
     
             
-            vide = false;
+                    // On vérifie si tous les champs code pièce ont été renseignés
+                    vide = false;
+              
+                    $('.mois').each( function (){
+                        
+      
+                  
+                        if($(this).val() =="" ) {
+                     
+                            $(this).addClass('champ_manquant');
+                            vide = true;
+                            swalWithBootstrapButtons(
+                                'Remplissez tous les champs',
+                                '',
+                                'error'
+                            );
+                        }else{
+                            $(this).removeClass('champ_manquant');
+                        }
+            
+                  
+                    }) 
+                        
+                        
+                    if(vide == true ) { console.log("vide"); return true ;}
+                        
+                        
+                       
+                        swalWithBootstrapButtons({
+                            title: 'Voulez-Vous exporter les factures sélectionnées  ?',
+                            type: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#DD6B55',
+                            confirmButtonText: '@lang('Oui')',
+                            cancelButtonText: '@lang('Non')',
+                            
+                        }).then((result) => {
+                            if (result.value) {
+                                $('[data-toggle="tooltip"]').tooltip('hide')
+                                
+                                
+                                datas = Array();       
+                        
+                                $('.selection_child').map(function(){
+                                    
+                                    if( this.checked == true){
+                                        datas.push(this.id)
+                                        return this.id;
+                                    }
+                                  
+                                })
+                                
+                                
+                                datas = {
+                                'periodes': decodeURIComponent ($('.champs').serialize()),
+                                'list_id':datas
+                                };
+                                // datas = JSON.stringify(datas);
+                                
+    
+                        
+                                    $.ajax({                        
+                                        url: "{{route('winfic.exporter_ecriture3', [$date_deb, $date_fin])}}",
+                                        data: datas,
+                                        type: 'POST',
+                                        success: function(data){
+                                                
+                                            console.log(data);
+                                            window.location.href = "/winfic/download/";
+                                            // setInterval(() => {
+                                                
+                                            //     location.reload();
+                                            // }, 500);
+                            
+                                        },
+                                        error : function(data){
+                                        console.log(data);
+                                        }
+                                    })
+                        
+                        
+                    } else if (
+                        // Read more about handling dismissals
+                        result.dismiss === swal.DismissReason.cancel
+                    ) {
+                        swalWithBootstrapButtons(
+                        'Annulé',
+                        'Annulation:)',
+                        'error'
+                        )
+                    }
+                })
+                })
+                
+                
+                
+                
+                
+               // Telechargement des factures fournisseurs
+               $('#telecharger_selection').click(function(e) {
+                
                     
-              $('.mois').each( function (){
+                let that = $(this)
+                e.preventDefault()
+                
+                
+                const swalWithBootstrapButtons = swal.mixin({
+                        confirmButtonClass: 'btn btn-success',
+                        cancelButtonClass: 'btn btn-danger',
+                        buttonsStyling: false,
+                    });
+
+        
+          
+                $('.mois').each( function (){
                     
   
               
-                    if($(this).val() =="" ) {
-                 
-                        $(this).addClass('champ_manquant');
-                        vide = true;
-                        swalWithBootstrapButtons(
-                            'Remplissez tous les champs',
-                            '',
-                            'error'
-                        );
-                    }else{
-                        $(this).removeClass('champ_manquant');
-                    }
-        
-              
-              }) 
-                    
-                    
-                    
-             
-                    
-                    
-                    
-                    
-              if(vide == true ) { console.log("vide"); return true ;}
-                    
-                    
-                    
-                    
-                    
                     
                    
                     swalWithBootstrapButtons({
-                        title: 'Voulez-Vous exporter les factures sélectionnées  ?',
+                        title: 'Voulez-Vous télécharger les factures sélectionnées  ?',
                         type: 'warning',
                         showCancelButton: true,
                         confirmButtonColor: '#DD6B55',
@@ -361,7 +446,6 @@ background-color: #9f6e9f;
                             
                             
                             datas = {
-                            'periodes': decodeURIComponent ($('.champs').serialize()),
                             'list_id':datas
                             };
                             // datas = JSON.stringify(datas);
@@ -369,13 +453,13 @@ background-color: #9f6e9f;
 
                     
                                 $.ajax({                        
-                                    url: "{{route('winfic.exporter_ecriture3', [$date_deb, $date_fin])}}",
+                                    url: "{{route('merge_facture_fournisseur')}}",
                                     data: datas,
                                     type: 'POST',
                                     success: function(data){
                                             
                                         console.log(data);
-                                        window.location.href = "/winfic/download/";
+                                        // window.location.href = "/winfic/download/";
                                         // setInterval(() => {
                                             
                                         //     location.reload();
@@ -399,10 +483,11 @@ background-color: #9f6e9f;
                     )
                 }
             })
-                })
+            })
+                
             });
             
-            
+        });  
        
         
         </script>

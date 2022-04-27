@@ -371,6 +371,7 @@ Route::get('/winfic/code-analytic-client','ExportwinficController@code_analytic_
 Route::get('/winfic/download/{fichier?}','ExportwinficController@download_export')->name('winfic.download_export');
 
 Route::get('/merge_facture/{date_deb?}/{date_fin?}','ExportwinficController@merge_factures')->name('merge_facture');
+Route::POST('/merge_facture_fournisseur/{date_deb?}/{date_fin?}','ExportwinficController@merge_factures_fournisseur')->name('merge_facture_fournisseur');
 
 
 

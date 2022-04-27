@@ -9,6 +9,10 @@ use App\User;
 
 use iio\libmergepdf\Merger;
 use iio\libmergepdf\Pages;
+use iio\libmergepdf\Driver\Fpdi2Driver;
+use iio\libmergepdf\Source\FileSource;
+
+
 use PDF;
 use Illuminate\Support\Facades\File ;
 use Illuminate\Support\Facades\Storage;
@@ -813,6 +817,42 @@ class ExportwinficController extends Controller
         }
         $createdPdf = $merger->merge();
  
+        return new Response($createdPdf, 200, array('Content-Type' => 'application/pdf'));
+        
+    
+    
+    }
+
+        
+    /**
+     *Concatener toutes les factures fournisseurs selectionnées dans un seul pdf
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function merge_factures_fournisseur(Request $request)
+    {
+       
+        if($request->list_id == null ) return null;   
+        
+        
+        $factureFournisseurs = Facture::whereIn('id', $request->list_id)->orderBy('date_facture','asc')->get();  
+        
+                
+        $merger = new Merger;
+
+        foreach ($factureFournisseurs as $facture) {
+        
+            if($facture->url != null && file_exists($facture->url))
+                $merger->addFile($facture->url);
+
+            
+        }
+        $createdPdf = $merger->merge(
+            // new FileSource('foo.pdf')
+            );
+            // $merger->Output('I', 'generated.pdf');
+
+            file_put_contents('file.pdf', $createdPdf);
         return new Response($createdPdf, 200, array('Content-Type' => 'application/pdf'));
         
     
