@@ -596,16 +596,16 @@ class ExportwinficController extends Controller
             $montant_ttc = $facture->montant_ttc > $montant_ht ? $facture->montant_ttc :  $montant_ht ; 
             $montant_tva = $montant_ttc > $montant_ht ? ($montant_ttc - $montant_ht) : 0 ;
             
-            $montant_credit_ht = $this->formatage_colonne(13, number_format(  $montant_ht ,2, ",",""), "droite");
-            $montant_debit_ht = $this->formatage_colonne(13, "0,00", "droite");
+            $montant_credit_ht = $this->formatage_colonne(13, "0,00", "droite"); 
+            $montant_debit_ht = $this->formatage_colonne(13, number_format(  $montant_ht ,2, ",",""), "droite");
             
-            $montant_debit_ttc = $this->formatage_colonne(13, number_format(  $montant_ttc ,2, ",",""), "droite");
-            $montant_credit_ttc = $this->formatage_colonne(13, "0,00", "droite");
+            $montant_debit_ttc = $this->formatage_colonne(13, "0,00", "droite"); 
+            $montant_credit_ttc = $this->formatage_colonne(13, number_format(  $montant_ttc ,2, ",",""), "droite");
             
             if($montant_tva > 0){
                 
-                $montant_debit_tva = $this->formatage_colonne(13, "0,00", "droite");
-                $montant_credit_tva = $this->formatage_colonne(13, number_format(  $montant_tva ,2, ",",""), "droite");
+                $montant_debit_tva = $this->formatage_colonne(13, number_format(  $montant_tva ,2, ",",""), "droite");
+                $montant_credit_tva = $this->formatage_colonne(13, "0,00", "droite"); 
             
             }
                 
