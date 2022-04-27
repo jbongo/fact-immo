@@ -454,8 +454,8 @@ class ExportwinficController extends Controller
            $data_decai .= $ligne1_decai;
            // .$ligne3_decai;
            if($num_ecriture_decai > 50 ){
-            $num_folio_decai ++;
-            $num_ecriture_decai = 1;
+                $num_folio_decai ++;
+                $num_ecriture_decai = 1;
             }
            
        }
@@ -562,13 +562,13 @@ class ExportwinficController extends Controller
         // Création d'un tableau clé:valeur avec les dates de deb et date de fin + les champs periodes/numero pieces
         foreach ($periodes as $key => $periode) {
             
-            $val = explode('=', $periode);
-            
+            $val = explode('=', $periode);            
             $tab[$val[0]] = $val[1];
             
         }
         
         $mois_numero_pieces = array_slice($tab, 2,sizeof($periodes));
+        $mois_numero_ecritures = $mois_numero_pieces;
         
         // return "".str_contains("10/10/2022", '10/2021');
         // return $mois_numero_pieces;
@@ -581,9 +581,6 @@ class ExportwinficController extends Controller
             $date_operation = $facture->date_facture->format('dmY');
             // Date utilisée pour générer le code pièce
             $date_fact = $facture->date_facture->format('m/Y');
-            
-            // $num_folio = "";
-            // $num_ecriture = "";
             
            
               // Pour les factures fournisseur utiliser le compte 0FOURN sinon sinon si facture indep, utiliser le 0Nom independant
@@ -615,10 +612,10 @@ class ExportwinficController extends Controller
             //  $facture = Facture::where('fournisseur_id', 3)->first();
              
             if($facture->fournisseur != null){
-                $libelle = $this->formatage_colonne(30, substr($facture->fournisseur->nom, 0, 15)."/".$facture->numero , "gauche") ; 
+                $libelle = $this->formatage_colonne(30, substr($facture->fournisseur->nom, 0, 15)."/".substr($facture->numero, -4) , "gauche") ; 
 
             }else{
-                $libelle = $this->formatage_colonne(30, substr($facture->user->nom, 0, 15)."/".$facture->numero."/".$facture->compromis->getFactureStylimmo()->numero , "gauche") ; ; 
+                $libelle = $this->formatage_colonne(30, substr($facture->user->nom, 0, 15)."/ ".substr($facture->numero, -4)." /".$facture->compromis->getFactureStylimmo()->numero , "gauche") ; ; 
             }
             
          
@@ -626,7 +623,7 @@ class ExportwinficController extends Controller
             
           
             
-            $num_ecriture = $mois_numero_pieces[$date_fact];
+            $num_ecriture = intval($mois_numero_pieces[$date_fact]);
             
             // return $factureFournisseurs;
             
@@ -639,33 +636,59 @@ class ExportwinficController extends Controller
             $quantite = "      0,000";
             $code_pointage = "  ";
                
+              
+            $code_piece = intval($mois_numero_pieces[$date_fact]);
             
+            $code_piece = $code_piece < 10 ? "0$code_piece": $code_piece;
+            
+            
+            $num_ecriture = $mois_numero_ecritures[$date_fact];
+            
+            $num_folio = ceil($num_ecriture / 50) ;
+
             // Ligne TTC
             
-            $code_piece = $this->formatage_colonne(5, $mois_numero_pieces[$date_fact]);
-            $mois_numero_pieces[$date_fact]++;
+            $code_piece = $this->formatage_colonne(5, $code_piece);
             
             $data .= $code_journal."|".$date_operation."|".$this->formatage_colonne(6,$num_folio,'droite')."|".$this->formatage_colonne(6,$num_ecriture,'droite')."|".$jour_ecriture."|".$compte_ttc."|".$montant_debit_ttc."|".$montant_credit_ttc."|".$libelle."|".$lettrage."|".$code_piece."|".$code_stat."|".$date_echeance."|".$monnaie."|".$filler."|".$ind_compteur."|".$quantite."|".$code_pointage."|\r\n";
             $num_ecriture++;
+            $mois_numero_ecritures[$date_fact]++;
+            
+            if($num_ecriture > 50 ){
+                $num_folio ++;
+                $num_ecriture = 1;
+                $mois_numero_ecritures[$date_fact] = 1;
+            }
             
             // Ligne  HT
-            $code_piece = $this->formatage_colonne(5, $mois_numero_pieces[$date_fact]);
-            $mois_numero_pieces[$date_fact]++;
-            $data .= $code_journal."|".$date_operation."|".$this->formatage_colonne(6,$num_folio,'droite')."|".$this->formatage_colonne(6,$num_ecriture,'droite')."|".$jour_ecriture."|".$compte_ttc."|".$montant_debit_ht."|".$montant_credit_ht."|".$libelle."|".$lettrage."|".$code_piece."|".$code_stat."|".$date_echeance."|".$monnaie."|".$filler."|".$ind_compteur."|".$quantite."|".$code_pointage."|\r\n";
+       
+            $data .= $code_journal."|".$date_operation."|".$this->formatage_colonne(6,$num_folio,'droite')."|".$this->formatage_colonne(6,$num_ecriture,'droite')."|".$jour_ecriture."|".$compte_ht."|".$montant_debit_ht."|".$montant_credit_ht."|".$libelle."|".$lettrage."|".$code_piece."|".$code_stat."|".$date_echeance."|".$monnaie."|".$filler."|".$ind_compteur."|".$quantite."|".$code_pointage."|\r\n";
             
+            $mois_numero_ecritures[$date_fact]++;
             $num_ecriture++;
             
+            if($num_ecriture > 50 ){
+                $num_folio ++;
+                $num_ecriture = 1;
+                $mois_numero_ecritures[$date_fact] = 1;
+            }
             // Ligne TVA si y'a la TVA
             if($montant_tva > 0){
-                $code_piece = $this->formatage_colonne(5, $mois_numero_pieces[$date_fact]);
-                $mois_numero_pieces[$date_fact]++;
-                
-                $data .= $code_journal."|".$date_operation."|".$this->formatage_colonne(6,$num_folio,'droite')."|".$this->formatage_colonne(6,$num_ecriture,'droite')."|".$jour_ecriture."|".$compte_ttc."|".$montant_debit_tva."|".$montant_credit_tva."|".$libelle."|".$lettrage."|".$code_piece."|".$code_stat."|".$date_echeance."|".$monnaie."|".$filler."|".$ind_compteur."|".$quantite."|".$code_pointage."|\r\n";
+                // $code_piece = $this->formatage_colonne(5, $mois_numero_pieces[$date_fact]);
+              
+                $data .= $code_journal."|".$date_operation."|".$this->formatage_colonne(6,$num_folio,'droite')."|".$this->formatage_colonne(6,$num_ecriture,'droite')."|".$jour_ecriture."|".$compte_tva."|".$montant_debit_tva."|".$montant_credit_tva."|".$libelle."|".$lettrage."|".$code_piece."|".$code_stat."|".$date_echeance."|".$monnaie."|".$filler."|".$ind_compteur."|".$quantite."|".$code_pointage."|\r\n";
+                $mois_numero_ecritures[$date_fact]++;
                 $num_ecriture++;  
+                
+                if($num_ecriture > 50 ){
+                    $num_folio ++;
+                    $num_ecriture = 1;
+                    $mois_numero_ecritures[$date_fact] = 1;
+                }
             }
            
             
-            
+            $mois_numero_pieces[$date_fact]++;
             
   
   

@@ -32,6 +32,7 @@ Ajout d'un fournisseur
                                <select class="js-select2 form-control {{$errors->has('type') ? 'is-invalid' : ''}}" id="type" name="type" style="width: 100%;" data-placeholder="Choose one.." required>
                                   <option value="{{old('type')}}">{{old('statut')}}</option>
                                   <option value="passerelle">passerelle</option>
+                                  <option value="autre">autre</option>
                                   
                                </select>
                                @if ($errors->has('type'))

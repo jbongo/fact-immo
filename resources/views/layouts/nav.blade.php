@@ -299,8 +299,8 @@
                         <li class="{{$li_fournisseurs}}"><a  class="sidebar-sub-toggle"><i class="large material-icons" style="font-size:20px;">business</i> Fournisseurs <span class="sidebar-collapse-icon ti-angle-down"></span></a>
                             <ul>
                       
-                                <li class="{{$li_fournisseurs_passerelle}}"><a  href="{{route('fournisseur.index',['passerelle'])}}" >Passerelles</a></li>
-                                <li class="{{$li_fournisseurs_autre}}"><a  href="{{route('fournisseur.index',['autre'])}}" >Autres </a></li>
+                                <li class="{{$li_fournisseurs}}"><a  href="{{route('fournisseur.index')}}" >Gestion</a></li>
+                               
                                
                             </ul>
                         </li>
@@ -341,9 +341,56 @@
         <div class="pull-right p-r-15">
             <ul>
                 
-                {{-- <li class="header-icon dib"><a href="" class="waves-effect waves-light btn red"> <span><i class="material-icons left">arrow_back</i> Retourner </span>  </a> 
-                    
-                </li> --}}
+        
+                
+                @if(Auth::user()->role == "admin")
+                
+                <li class="header-icon dib" style="background-color:#c31e3c; color:#fff"><i class="ti-check-box">2</i>
+                    <div class="drop-down">
+                        <div class="dropdown-content-heading">
+                            <span class="text-left"> Tâches</span>
+                        </div>
+                        <div class="dropdown-content-body">
+                            <ul>
+                            
+                              
+                            
+                                <li>
+                                    <a href="#">
+                                        <img class="pull-left m-r-10 avatar-img" src="{{ asset('images/avatar/3.jpg')}}" alt="" />
+                                        
+                                        <div class="notification-content">
+                                            <small class="notification-timestamp pull-right"> </small>
+                                            
+                                            <div class="notification-heading" style="color: rgb(230, 110, 5)">&Agrave; Faire : <span>1</span></div>
+                                            
+                                        </div>
+                                    </a>
+                                </li>
+                                
+                                
+                                <li>
+                                    <a href="#">
+                                        <img class="pull-left m-r-10 avatar-img" src="{{ asset('images/avatar/3.jpg')}}" alt="" />
+                                        <div class="notification-content">
+                                            <small class="notification-timestamp pull-right"> </small>
+                                            
+                                            <div class="notification-heading" style="color: rgb(220, 20, 20)">&Agrave; En retard : <span>1</span></div>
+                                     
+                                        </div>
+                                    </a>
+                                </li>
+                           
+                                <li class="text-center">
+                                    {{-- <a href="{{route('notifications.index')}}" class="more-link">Liste des tâches</a> --}}
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+                
+                @endif 
+                
                 <li class="header-icon dib"><i class="ti-bell"></i>
                     <div class="drop-down">
                         <div class="dropdown-content-heading">

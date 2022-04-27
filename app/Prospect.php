@@ -9,7 +9,7 @@ class Prospect extends Model
 {
     //
     protected $guarded =[];
-    protected $dates = ['date_ouverture_fiche','date_naissance','date_expiration_carteidentite'];
+    protected $dates = ['date_ouverture_fiche','date_naissance','date_expiration_carteidentite','date_envoi_fiche','date_envoi_modele_contrat'];
     
       // Retourne tous les documents qui lui ont étés envoyés
     public function bibliotheques(){

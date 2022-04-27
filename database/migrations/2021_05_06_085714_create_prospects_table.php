@@ -54,7 +54,9 @@ class CreateProspectsTable extends Migration
             $table->boolean('a_ouvert_fiche')->default(false);
             $table->date('date_ouverture_fiche')->nullable();
             $table->boolean('fiche_envoyee')->default(false);
+            $table->date('date_envoi_fiche')->nullable();
             $table->boolean('modele_contrat_envoye')->default(false);
+            $table->date('date_envoi_modele_contrat')->nullable();
             $table->boolean('contrat_envoye')->default(false);
             $table->boolean('est_mandataire')->default(false);
             

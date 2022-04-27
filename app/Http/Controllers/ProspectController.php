@@ -491,6 +491,8 @@ class ProspectController extends Controller
         Mail::to($prospect->email)->send(new SendFicheProspect($prospect, $url));
         
         $prospect->fiche_envoyee = true;
+        $prospect->date_envoi_fiche = date('Y-m-d');
+        
         $prospect->update();
      
         return  redirect()->route('prospect.index')->with('ok','Mail envoyé au prospect');
@@ -613,6 +615,7 @@ class ProspectController extends Controller
    
    
         $prospect->modele_contrat_envoye = true ;
+        $prospect->date_envoi_modele_contrat = date('Y-m-d') ;
    
         $prospect->update();
    

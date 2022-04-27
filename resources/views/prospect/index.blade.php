@@ -189,7 +189,7 @@
             <a href="{{route('prospect.create')}}" class="btn btn-success btn-rounded btn-addon btn-sm m-b-10 m-l-5"><i class="ti-user"></i>@lang('Nouveau prospect')</a>
             <a href="{{route('prospect.agenda')}}" class="btn btn-warning btn-rounded btn-addon btn-sm m-b-10 m-l-5"><i class="ti-calendar"></i>@lang('Agenda général')</a>
               
-            <label for="">Légende:</label><br>
+            {{-- <label for="">Légende:</label><br> --}}
             
             {{-- <span>Non envoyé :</span> <i class="large material-icons color-danger">highlight_off</i> <br>
             <span> Envoyé mais non lu :</span> <i class="large material-icons color-warning">visibility_off</i>  <br>
@@ -202,9 +202,10 @@
                         <div class="panel-body">
 
                 <div class="table-responsive" style="overflow-x: inherit !important;">
-                    <table  id="example00" class=" table student-data-table  table-striped table-hover dt-responsive display    "  style="width:100%">
+                    <table  id="example00" class=" table student-d+ata-table  table-striped table-hover dt-responsive display    "  style="width:100%">
                         <thead>
                             <tr>
+                                <th>@lang('&Eacute;tape')</th>
                                 <th>@lang('Nom')</th>
                                 {{-- @foreach ($bibliotheques as $biblio )
                                 <th>
@@ -229,7 +230,18 @@
                         
                             <tr>
                                 
-                               
+                                <td>
+                                   
+                                    @if($prospect->modele_contrat_envoye == true && $prospect->fiche_envoyee == false)
+                                        <span style="background-color:#0e65b7; color:#fff; background-raduis: 25px; width:15px; height: 15px;">2</span>
+                                    
+                                    @elseif($prospect->modele_contrat_envoye == true && $prospect->fiche_envoyee == true)
+                                        <span style="background-color:#e8bc0b; color:#fff; border-radius:40px; padding: 6px">3</span>
+                                    @else
+                                        <span style="background-color:#e80bce; color:#fff; border-radius:40px; padding: 6px;">1</span>
+                                    @endif
+                                </td>
+                                
                                 <td>
                                     {{$prospect->prenom}} {{$prospect->nom}} 
                                 </td>
@@ -305,7 +317,7 @@
                                 
                               
                                 <td>
-                                    <a href="{{route('prospect.envoi_mail_fiche',Crypt::encrypt($prospect->id) )}}" class="btn btn-warning btn-flat btn-addon m-b-10 m-l-5" data-toggle="tooltip" title="@lang('Envoyer la fiche à remplir à ') {{ $prospect->nom }}"><i class="ti-email"></i>@if($prospect->fiche_envoyee == true) Renvoyer @else Envoyer @endif  fiche prospect </a>
+                                    <a href="{{route('prospect.envoi_mail_fiche',Crypt::encrypt($prospect->id) )}}" class="btn btn-warning btn-flat btn-addon m-b-10 m-l-5" data-toggle="tooltip" title="@lang('Envoyer la fiche à remplir à ') {{ $prospect->nom }}"><i class="ti-email"></i>@if($prospect->fiche_envoyee == true) Renvoyer @else Envoyer @endif  fiche </a>
                                     </td>
                                 <td>
                                     @if($prospect->a_ouvert_fiche == true)
@@ -326,7 +338,7 @@
                                 </td>  
                                 
                                 <td>
-                                    <a href="{{route('prospect.envoyer_modele_contrat',Crypt::encrypt($prospect->id) )}}"  style="background: #3b4842" class="btn btn-default btn-flat btn-addon m-b-10 m-l-5" data-toggle="tooltip" title="@lang('Envoyer le modèle de contrat à  ') {{ $prospect->nom }}"><i class="ti-email"></i>@if($prospect->modele_contrat_envoye == true) Renvoyer @else Envoyer @endif le modèle </a>
+                                    <a href="{{route('prospect.envoyer_modele_contrat',Crypt::encrypt($prospect->id) )}}"  style="background: #3b4842" class="btn btn-default btn-flat btn-addon m-b-10 m-l-5" data-toggle="tooltip" title="@lang('Envoyer le modèle de contrat à  ') {{ $prospect->nom }}"><i class="ti-email"></i>@if($prospect->modele_contrat_envoye == true) Renvoyer @else Envoyer @endif modèle </a>
                                 
                                 </td>
                               

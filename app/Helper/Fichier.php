@@ -3,7 +3,7 @@
 
 // Retourne true si le fichier est une image
 function est_image($url){
-      return is_array(getimagesize($url)) ;
+      return file_exists($url) && is_array(getimagesize($url)) ;
 }
 
 

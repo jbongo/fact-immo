@@ -218,7 +218,7 @@ Modifier prospect {{$prospect->nom}}
                         </div>
                         
                         <div class="form-group row">
-                           <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="commentaire_pro">Commentaire pro</label>
+                           <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="commentaire_pro">Commentaire prospect</label>
                            <div class="col-lg-8 col-md-8 col-sm-8">
                              <textarea name="commentaire_pro" id="commentaire_pro" class="form-control" cols="30" rows="5"> {{old('commentaire_pro') ? old('commentaire_pro'):  $prospect->commentaire_pro }}</textarea>
                               @if ($errors->has('commentaire_pro'))

@@ -1,6 +1,6 @@
 
 <div class="table-responsive" style="overflow-x: inherit !important;">
-    <table  id="example1" class=" table student-data-table  m-t-20 "  style="width:100%">
+    <table  id="example2" class=" table student-data-table  m-t-20 "  style="width:100%">
         <thead>
             <tr  style="background-color: #2a596d;">
                 <th style=" color:#fff">@lang('Nom')</th>

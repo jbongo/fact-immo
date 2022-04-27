@@ -53,7 +53,7 @@ font-family: 'Times New Roman', Times, serif
 <div class="paraphe" style="text-align: left;  margin-right: 1%; margin-left: 5%; margin-top: 20px;" class="paraphes">PARAPHES  &nbsp; le MANDANT: <span style="margin-left: 25%">le MANDATAIRE:</span> </div>
 
   
-<h1 style="text-align: center;">CONTRAT D&rsquo;AGENT COMMERCIAL</h1>
+<h1 style="text-align: center;">MOD&Egrave;LE DE CONTRAT D&rsquo;AGENT COMMERCIAL</h1>
 <h2 style="text-align: center;"><strong>&nbsp;Mandataire immobilier</strong></h2>
 <h2 style="text-align: center;"><strong>Sans bureau ni r&eacute;ception de client&egrave;le</strong></h2>
 <p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</p>

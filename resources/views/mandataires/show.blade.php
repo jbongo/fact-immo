@@ -29,18 +29,18 @@
                                           <img class="img-responsive" style="object-fit: cover; width: 225px; height: 225px; border: 5px solid #8ba2ad; border-style: solid; border-radius: 20px; padding: 3px;" src="{{asset('/images/avatar/'.(($mandataire->civilite == "Mme." || $mandataire->civilite == "Mme") ? "user_female.jpg ": "user_male.jpg"))}}" alt="">
                                        </div>
                                     </div>
-    
+                                    @if(Auth::user()->role == "admin")
                                     <div class="user-skill">
                                        <h4 style="color: #32ade1;text-decoration: underline; font-size:20px; font-weight:bold;">Options</h4>
                                       
                                             <a href="{{route('mandataire.edit',Crypt::encrypt($mandataire->id) )}}"  class="btn btn-warning btn-rounded btn-addon btn-xs m-b-10"><i class="ti-pencil"></i>Utilisateur</a>
                                      
                                         
-                                        @if (auth()->user()->role == "admin" && $mandataire->contrat != null)
+                                        @if ( $mandataire->contrat != null)
                                        <a href="{{route('mandataire.send_access',[ Crypt::encrypt($mandataire->id) ,Crypt::encrypt($mandataire->contrat->id) ])}}" title="Envoyer les accès au mandataire" class="btn btn-default btn-rounded btn-addon btn-xs m-b-10 send-access"><i class="ti-pencil"></i>Envoyer les accès </a>
                                         @endif
                                     </div>
-                                    
+                                    @endif
                                     <br>
                                     
                                     <div class="user-skill">
@@ -50,7 +50,8 @@
                                              <a href="{{route('fiche_info.edit',$mandataire->id )}}" target="_blank"  class="btn btn-warning btn-rounded btn-addon btn-xs m-b-10"><i class="ti-pencil"></i>Modifier</a>
                                         @elseif (auth()->user()->role == "admin" && $mandataire->ficheinfo == null)
                                             <a href="{{route('fiche_info.create',$mandataire->id )}}" target="_blank"  class="btn btn-success btn-rounded btn-addon btn-xs m-b-10"><i class="ti-plus"></i>Créer</a>
-                                            
+                                        @elseif (auth()->user()->role == "mandataire" && $mandataire->ficheinfo == null)
+                                            <span style="color: #782222; font-style:italic; font-size:13px; ">Fiche non créée</span>
                                         @endif
                                          
                                         @if ( $mandataire->ficheinfo != null)
@@ -127,7 +128,10 @@
                                              @if($mandataire->prospect != null )
                                              
                                              <hr>
-                                            <a href="{{route('prospect.fiche',Crypt::encrypt($mandataire->prospect->id) )}}"  class="btn btn-default btn-rounded btn-addon btn-sm m-b-10"><i class="ti-pencil"></i>Fiche prospect</a>
+                                                @if (auth()->user()->role == "admin")
+                                                    <a href="{{route('prospect.fiche',Crypt::encrypt($mandataire->prospect->id) )}}"  class="btn btn-default btn-rounded btn-addon btn-sm m-b-10"><i class="ti-pencil"></i>Fiche prospect</a>
+                                                @endif
+                                                
                                                 @if (session('ok'))
                                                 <div class="alert alert-success alert-dismissible fade in" style="color: red">
                                                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
@@ -139,20 +143,21 @@
                                                 {{-- <h4 style="color: #32ade1;text-decoration: underline;">Role utilisateur</h4> --}}
                                                 
                                                 <div class="gender-content">
-                                                   <span class="contact-title"><strong>Commentaire pro:</strong></span>
+                                                   <span class="contact-title"><strong>Commentaire prospect:</strong></span>
                                                    <span class="gender">{{$mandataire->prospect->commentaire_pro}}</span>
                                                 </div>
                                              </div>
                                              
-                                             <div class="basic-information">
-                                                {{-- <h4 style="color: #32ade1;text-decoration: underline;">Role utilisateur</h4> --}}
-                                                
-                                                <div class="gender-content">
-                                                   <span class="contact-title"><strong>Commentaire admin:</strong></span>
-                                                   <span class="gender">{{$mandataire->prospect->commentaire_perso}}</span>
-                                                </div>
-                                             </div>
-                                             
+                                            @if(Auth::user()->role == "admin")
+                                                 <div class="basic-information">
+                                                    {{-- <h4 style="color: #32ade1;text-decoration: underline;">Role utilisateur</h4> --}}
+                                                    
+                                                    <div class="gender-content">
+                                                       <span class="contact-title"><strong>Commentaire admin:</strong></span>
+                                                       <span class="gender">{{$mandataire->prospect->commentaire_perso}}</span>
+                                                    </div>
+                                                 </div>
+                                            @endif
                                              
                                              <hr>
                                              <br>
@@ -241,10 +246,10 @@
                                                 <div class="gender-content">
                                                    <span class="contact-title"><strong>Pièce d'identité :</strong></span>
                                                    
-                                                   @if($mandataire->prospect->piece_identite != null)
+                                                   @if($mandataire->prospect->piece_identite != null && file_exists($mandataire->prospect->piece_identite))
                                                    
                                                                 
-                                                        @if(est_image($mandataire->prospect->piece_identite))
+                                                        @if( est_image($mandataire->prospect->piece_identite))
                                                         
                                                             <a href="{{lien_public_fichier($mandataire->prospect->piece_identite, "piece_identite_$mandataire->id")}}" data-toggle="tooltip" target="_blank" title="Télécharger pièce d'identité"  class="btn btn-success btn-flat btn-addon "><i class="ti-download"></i>Télécharger</a> 
                                                         @else 

@@ -42,9 +42,7 @@
                                             <a href="{{route('prospect.fiche',Crypt::encrypt($prospect->id) )}}" target="_blank"  class="btn btn-danger btn-rounded btn-addon btn-xs m-b-10"><i class="ti-pencil"></i>Fiche prospect</a>
                           
                                         
-                                        @if (auth()->user()->role == "admin" && $prospect->contrat != null)
-                                       <a href="{{route('prospect.send_access',[ Crypt::encrypt($prospect->id) ,Crypt::encrypt($prospect->contrat->id) ])}}" title="Envoyer les accès au prospect" class="btn btn-default btn-rounded btn-addon btn-xs m-b-10 send-access"><i class="ti-pencil"></i>Envoyer les accès </a>
-                                        @endif
+                                     
                                     </div>
                                  </div>
                                  <div class="col-lg-8">
@@ -101,7 +99,7 @@
                                                 {{-- <h4 style="color: #32ade1;text-decoration: underline;">Role utilisateur</h4> --}}
                                                 
                                                 <div class="gender-content">
-                                                   <span class="contact-title"><strong>Commentaire pro:</strong></span>
+                                                   <span class="contact-title"><strong>Commentaire prospect:</strong></span>
                                                    <span class="gender">{{$prospect->commentaire_pro}}</span>
                                                 </div>
                                              </div>
@@ -297,19 +295,61 @@
                                     <p><label class="color-primary">La fiche a t'elle été renseignée par le prospect ? :</label>  @if($prospect->renseigne == true)<span  style="color:white" class="badge badge-success">Oui</span>@else <span class="badge badge-danger" style="color:white"  >Non</span> @endif </p>
                                 </div>
                                 
+                                <span style="display:flex; flex-direction:row; justify-content:center; font-weight:bold; font-size:20px; margin-top: 50px;">&Eacute;TAPES POUR PASSER &Aacute; MANDATAIRE</span>
                                 
+                                 <div>
+                                    <span style="display:flex; flex-direction:row; justify-content:center; font-weight:bold; font-size:15px; margin-top: 40px;">&Eacute;TAPE 1  
+                                          @if($prospect->modele_contrat_envoye == true) 
+                                             <span style="color: #00f5a4; font-size: 5px; margin-left:10px " >  <i class="small material-icons">check_circle</i></span>                                            
+                                          @else
+                                             <span style="color: #df450d; font-size: 5px; margin-left:10px " >  <i class="small material-icons">highlight_off</i></span>
+                                          @endif
+                                    </span>
+                                    <hr>
                                 
+                                    <span><a href="{{route('prospect.envoyer_modele_contrat',Crypt::encrypt($prospect->id) )}}" style="background: #3b4842" class="btn btn-default btn-flat btn-addon m-b-10 m-l-5" data-toggle="tooltip" title="@lang('Envoyer le modèle de contrat à  ') {{ $prospect->nom }}"><i class="ti-email"></i>@if($prospect->modele_contrat_envoye == true) Renvoyer @else Envoyer @endif le modèle de contrat </a> </span>
+                                    <span><a href="{{route('prospect.telecharger_modele_contrat',Crypt::encrypt($prospect->id) )}}" target="_blank" style="background: #641142" class="btn btn-danger btn-flat btn-addon m-b-10 m-l-5" data-toggle="tooltip" title="@lang('Télécharger le modèle de contrat à  ') {{ $prospect->nom }}"><i class="ti-download"></i>Télécharger le modèle de contrat </a> </span>
+                                    
+                                    @if($prospect->date_envoi_modele_contrat != null)
+                                       <span style="display:flex; flex-direction:row; justify-content:center; font-weight:bold; font-size:13px; margin-top: 20px; color:#1a068c"> Dernier envoi du modèle de contrat | {{$prospect->date_envoi_modele_contrat->format('d/m/Y')}}  </span>
+                                    @endif
+                                    
+                                    <span style="display:flex; flex-direction:row; justify-content:center; font-weight:bold; font-size:15px; margin-top: 60px;">&Eacute;TAPE 2
+                                       @if($prospect->fiche_envoyee == true) 
+                                             <span style="color: #00f5a4; font-size: 5px; margin-left:10px " >  <i class="small material-icons">check_circle</i></span> 
+                                          
+                                          @else
+                                             <span style="color: #df450d; font-size: 5px; margin-left:10px " >  <i class="small material-icons">highlight_off</i></span>
+                                       @endif
+                                    </span>
+                                    
+                                    <hr>
+                                    <span><a href="{{route('prospect.envoi_mail_fiche',Crypt::encrypt($prospect->id) )}}"class="btn btn-warning btn-flat btn-addon m-b-10 m-l-5"  data-toggle="tooltip" title="@lang('Envoyer la fiche à remplir à ') {{ $prospect->nom }}"><i class="ti-email"></i>@if($prospect->fiche_envoyee == true) Renvoyer @else Envoyer @endif  fiche prospect </a> </span>
+                                    
+                                    @if($prospect->date_envoi_fiche != null)
+                                       <span style="display:flex; flex-direction:row; justify-content:center; font-weight:bold; font-size:13px; margin-top: 20px; color:#1a068c"> Dernier envoi de la fiche | {{$prospect->date_envoi_fiche->format('d/m/Y')}}  </span>
+                                    @endif
+                                       
+                                    <span style="display:flex; flex-direction:row; justify-content:center; font-weight:bold; font-size:15px; margin-top: 60px;">&Eacute;TAPE 3
+                                       @if($prospect->est_mandataire == true) 
+                                             <span style="color: #00f5a4; font-size: 5px; margin-left:10px " >  <i class="small material-icons">check_circle</i></span> 
+                                          
+                                          @else
+                                             <span style="color: #df450d; font-size: 5px; margin-left:10px " >  <i class="small material-icons">highlight_off</i></span>
+                                       @endif
+                                    </span>
+                                 
+                                    <hr>                                
+                                    <span><a  @if($prospect->fiche_envoyee == true)  href="{{route('prospect.prospect_a_mandataire',Crypt::encrypt($prospect->id) )}}" class="btn btn-danger btn-flat btn-addon m-b-10 m-l-5" @else
+                                    
+                                       class="btn btn-flat btn-addon m-b-10 m-l-5" href="#" @endif data-toggle="tooltip" title="@lang('Passer le prospect à mandataire ') {{ $prospect->nom }}"><i class="ti-email"></i>Passer à mandataire </a> </span>
+                                    
+                                 </div>  
+                              
+                                 
                                 
-                              <hr>
-                                <span><a href="{{route('prospect.envoi_mail_fiche',Crypt::encrypt($prospect->id) )}}"class="btn btn-warning btn-flat btn-addon m-b-10 m-l-5"  data-toggle="tooltip" title="@lang('Envoyer la fiche à remplir à ') {{ $prospect->nom }}"><i class="ti-email"></i>@if($prospect->fiche_envoyee == true) Renvoyer @else Envoyer @endif  fiche prospect </a> </span>
-                              <hr>
-                                
-                                <span><a href="{{route('prospect.envoyer_modele_contrat',Crypt::encrypt($prospect->id) )}}" style="background: #3b4842" class="btn btn-default btn-flat btn-addon m-b-10 m-l-5" data-toggle="tooltip" title="@lang('Envoyer le modèle de contrat à  ') {{ $prospect->nom }}"><i class="ti-email"></i>@if($prospect->modele_contrat_envoye == true) Renvoyer @else Envoyer @endif le modèle de contrat </a> </span>
-                                <span><a href="{{route('prospect.telecharger_modele_contrat',Crypt::encrypt($prospect->id) )}}" target="_blank" style="background: #641142" class="btn btn-danger btn-flat btn-addon m-b-10 m-l-5" data-toggle="tooltip" title="@lang('Télécharger le modèle de contrat à  ') {{ $prospect->nom }}"><i class="ti-download"></i>Télécharger le modèle de contrat </a> </span>
-                                
-                              <hr>                                
-                                <span><a href="{{route('prospect.prospect_a_mandataire',Crypt::encrypt($prospect->id) )}}"  class="btn btn-danger btn-flat btn-addon m-b-10 m-l-5" data-toggle="tooltip" title="@lang('Passer le prospect à mandataire ') {{ $prospect->nom }}"><i class="ti-email"></i>Passer à mandataire </a> </span>
-                                
+                             
+                              
                               
                             </div>
                         </div>
@@ -328,8 +368,8 @@
               
                <div class="media-left media-middle">
                   <i class="ti-list f-s-48 color-danger m-r-1"></i> <label for="" style="font-weight: bold">Liste des tâches </label>  <hr>  
-                  <span><a href="{{route('prospect.agenda.show',$prospect->id )}}" class="btn btn-success btn-flat btn-addon m-b-10 m-l-5" data-toggle="tooltip" title="@lang('Détails de ') {{ $prospect->nom }}"><i class="ti-pencil "></i>
-                     Modifier agenda</a></span>
+                  <span><a href="{{route('prospect.agenda.show',$prospect->id )}}" class="btn btn-success btn-flat btn-addon m-b-10 m-l-5" data-toggle="tooltip" title="@lang(' Voir Agenda ') {{ $prospect->nom }}"><i class="ti-calendar "></i>
+                     Agenda</a></span>
                </div>
                 <div class="col-lg-12">
                   <div class="card alert">

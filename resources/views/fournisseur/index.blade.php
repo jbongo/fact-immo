@@ -26,23 +26,28 @@
                 <div class="col-lg-12 col-md-12 col-sm-12">
                    <ul class="nav nav-pills nav-tabs" id="myTabs">
                 
-                        <li class="active" id="li_passerelle"  class="active"><a href="#passerelle" data-toggle="pill"> <i class="material-icons" style="font-size: 15px;">file_download</i>  Fournisseurs de Passerelles <span class="sr-only">(current)</span> </a></li>
+                        <li class="active" id="li_passerelle" ><a href="#passerelle" data-toggle="pill"> <i class="material-icons" style="font-size: 15px;">file_download</i>  Fournisseurs de Passerelles <span class="sr-only">(current)</span> </a></li>
                         <li id="li_autre" style="background-color: #FFA500;" class=""><a href="#autre" data-toggle="pill"> <i class="material-icons" style="font-size: 15px;">trending_up</i>Autres Fournisseurs</a></li>                       
 
                    </ul>
                 </div>
+                
                 <!-- Content -->
                 <div class=" col-lg-12 col-md-12 col-sm-12">
                    <div class="card">
                       <div class="card-body">
                          <div class="tab-content">                      
-                            <div class="tab-pane " id="passerelle"> @include('fournisseur.passerelle')</div>
+                            <div class="tab-pane active " id="passerelle"> @include('fournisseur.passerelle')</div>
                             <div class="tab-pane " id="autre"> @include('fournisseur.autre')</div>
                         </div>
                       </div>
                    </div>
                 </div>
             </div>
+            
+            
+            
+            
          </div>
       </div>
     </div>
