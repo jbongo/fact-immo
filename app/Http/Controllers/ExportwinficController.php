@@ -530,7 +530,7 @@ class ExportwinficController extends Controller
         }     
         
         
-        $factureFournisseurs = Facture::whereIn('id', $request->list_id)->orderBy('numero','asc')->get();  
+        $factureFournisseurs = Facture::whereIn('id', $request->list_id)->orderBy('date_facture','asc')->get();  
         
         DB::table('factures')->whereIn('id', $request->list_id)
                             ->update(['exporte' => true, 'date_export' => date('Y-m-d')]);
@@ -612,10 +612,10 @@ class ExportwinficController extends Controller
             //  $facture = Facture::where('fournisseur_id', 3)->first();
              
             if($facture->fournisseur != null){
-                $libelle = $this->formatage_colonne(30, substr($facture->fournisseur->nom, 0, 15)."/".substr($facture->numero, -4) , "gauche") ; 
+                $libelle = $this->formatage_colonne(30, substr($facture->fournisseur->nom, 0, 15)." / ".substr($facture->numero, -4) , "gauche") ; 
 
             }else{
-                $libelle = $this->formatage_colonne(30, substr($facture->user->nom, 0, 15)."/ ".substr($facture->numero, -4)." /".$facture->compromis->getFactureStylimmo()->numero , "gauche") ; ; 
+                $libelle = $this->formatage_colonne(30, substr($facture->user->nom, 0, 15)." / ".substr($facture->numero, -4)." / ".$facture->compromis->getFactureStylimmo()->numero , "gauche") ; ; 
             }
             
          
