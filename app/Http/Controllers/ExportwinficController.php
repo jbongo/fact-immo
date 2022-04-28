@@ -837,14 +837,14 @@ class ExportwinficController extends Controller
         
         $factureFournisseurs = Facture::whereIn('id', $request->list_id)->orderBy('date_facture','asc')->get();  
         
-                $facture  = Facture::where('numero', '202202' )->first();
-                $filecontent = file_get_contents($facture->url);
+                // $facture  = Facture::where('numero', '202202' )->first();
+                // $filecontent = file_get_contents($facture->url);
                 
-                if (preg_match("/^%PDF-1.5/", $filecontent)) {
-                    return "Valid pdf";
-                } else {
-                    return "In Valid pdf";
-                }
+                // if (preg_match("/^%PDF-1.5/", $filecontent)) {
+                //     return "Valid pdf";
+                // } else {
+                //     return "In Valid pdf";
+                // }
                 
                 
         $merger = new Merger;
@@ -862,7 +862,7 @@ class ExportwinficController extends Controller
             // $merger->Output('I', 'generated.pdf');
 
             file_put_contents('file.pdf', $createdPdf);
-        // return new Response($createdPdf, 200, array('Content-Type' => 'application/pdf'));
+        return new Response($createdPdf, 200, array('Content-Type' => 'application/pdf'));
         
     
     
