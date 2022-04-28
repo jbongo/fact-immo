@@ -842,6 +842,19 @@ class ExportwinficController extends Controller
 
         foreach ($factureFournisseurs as $facture) {
         
+        
+            if($facture->numero=="202202"){
+                $filecontent = file_get_contents($facture->url);
+                
+                if (preg_match("/^%PDF-1.5/", $filecontent)) {
+                    return "Valid pdf";
+                } else {
+                    return "In Valid pdf";
+                }
+
+            }
+        
+        return "yes";
             if($facture->url != null && file_exists($facture->url))
                 $merger->addFile($facture->url);
 
@@ -853,7 +866,7 @@ class ExportwinficController extends Controller
             // $merger->Output('I', 'generated.pdf');
 
             file_put_contents('file.pdf', $createdPdf);
-        return new Response($createdPdf, 200, array('Content-Type' => 'application/pdf'));
+        // return new Response($createdPdf, 200, array('Content-Type' => 'application/pdf'));
         
     
     
