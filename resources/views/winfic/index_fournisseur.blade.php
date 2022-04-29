@@ -71,7 +71,11 @@
                                 {{-- <a href="{{route('merge_facture', [$date_deb, $date_fin])}}" target="_blank" class="btn btn-lg btn-danger btn-flat btn-addon  m-b-10 m-l-5 "><i class="ti-download"></i>Factures PDF</a> --}}
                             <a href="{{route('winfic.index')}}"  class="btn btn-md btn-default btn-flat btn-addon  m-b-10 m-l-5 " ><i class="ti-angle-double-left"></i>Exports Ventes</a>
 
-                            <a href="#" id="telecharger_selection" class="btn btn-lg btn-danger btn-flat btn-addon  m-b-10 m-l-5 "><i class="ti-download"></i>Fact Fournisseurs PDF</a>
+                            <a href="#" id="telecharger_selection" class="btn btn-lg btn-danger btn-flat btn-addon  m-b-10 m-l-5 "><i class="ti-download"></i>Fact Fournisseurs PDF</a>  <br>
+                            <span>Liste des Factures non téléchargées :</span> <br>
+                            <u id="unmerge" >
+                                
+                            </u>
                             
                             </div>
                         </div>
@@ -456,9 +460,14 @@ background-color: #9f6e9f;
                                     url: "{{route('merge_facture_fournisseur')}}",
                                     data: datas,
                                     type: 'POST',
-                                    success: function(data){
-                                            
-                                        console.log(data);
+                                    success: function(datas){
+                                        
+                                        datas.forEach(function(data){
+                                          
+                                          $('#unmerge').html('<li> '+data+' </li>')
+                                        });
+                                        
+                                        console.log(datas);
                                         // window.location.href = "/winfic/download/";
                                         // setInterval(() => {
                                             
@@ -466,8 +475,8 @@ background-color: #9f6e9f;
                                         // }, 500);
                         
                                     },
-                                    error : function(data){
-                                    console.log(data);
+                                    error : function(err){
+                                    console.log(err);
                                     }
                                 })
                     

@@ -2931,7 +2931,8 @@ public function store_upload_pdf_honoraire(Request $request , $facture_id)
         "numero_facture" => "required",
         "date_facture" => "required|date",
         "montant_ht" => "required|numeric",
-        "file" => "required|mimes:jpeg,png,pdf,doc,docx|max:5000",
+        "file" => "required|max:5000",
+        // "file" => "required|mimes:jpeg,png,pdf,doc,docx|max:5000",
     ]);
 
 

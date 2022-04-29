@@ -847,22 +847,47 @@ class ExportwinficController extends Controller
                 // }
                 
                 
-        $merger = new Merger;
-
+        $merger2 = new Merger;
+        $createdPdf = "";
+        $facture_non_merge = array();
+        // $merger->addFile("test.jpg");
         foreach ($factureFournisseurs as $facture) {
         
-            if($facture->url != null && file_exists($facture->url))
-                $merger->addFile($facture->url);
+            if($facture->url != null && file_exists($facture->url)){
+                
+                $continue = 0;
+                $merger = new Merger;
+                
+                try {
+                    
+                    $merger->addFile($facture->url);
+                    $createdPdf = $merger->merge();
+
+                } catch (\Throwable $th) {
+                   $continue = 1 ;
+                   $facture_non_merge [] = $facture->numero;
+                }
+                
+                if($continue == 0){
+                    $merger2->addFile($facture->url);
+                    $createdPdf2 = $merger2->merge();
+                }
+                
+            
+            }
 
             
         }
-        $createdPdf = $merger->merge(
-            // new FileSource('foo.pdf')
-            );
+        
+        
+        // $createdPdf = $merger->merge();
+        
             // $merger->Output('I', 'generated.pdf');
-
-            file_put_contents('file.pdf', $createdPdf);
-        return new Response($createdPdf, 200, array('Content-Type' => 'application/pdf'));
+            if($createdPdf2)
+                file_put_contents('file.pdf', $createdPdf2);
+                
+                return $facture_non_merge;
+        // return new Response($createdPdf, 200, array('Content-Type' => 'application/pdf'));
         
     
     
