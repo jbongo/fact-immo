@@ -73,6 +73,10 @@
 
                             <a href="#" id="telecharger_selection" class="btn btn-lg btn-danger btn-flat btn-addon  m-b-10 m-l-5 "><i class="ti-download"></i>Fact Fournisseurs PDF</a>  <br>
                             <span>Liste des Factures non téléchargées :</span> <br>
+                            
+                           
+                            <div id="loading"> 
+                            </div>                            
                             <u id="unmerge" >
                                 
                             </u>
@@ -248,6 +252,55 @@
 
 background-color: #9f6e9f;
 }
+
+                            .lds-ripple {
+  display: inline-block;
+  position: relative;
+  width: 80px;
+  height: 80px;
+}
+.lds-ripple div {
+  position: absolute;
+  border: 4px solid rgb(211, 19, 19);
+  opacity: 1;
+  border-radius: 50%;
+  animation: lds-ripple 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+}
+.lds-ripple div:nth-child(2) {
+  animation-delay: -0.5s;
+}
+@keyframes lds-ripple {
+  0% {
+    top: 36px;
+    left: 36px;
+    width: 0;
+    height: 0;
+    opacity: 0;
+  }
+  4.9% {
+    top: 36px;
+    left: 36px;
+    width: 0;
+    height: 0;
+    opacity: 0;
+  }
+  5% {
+    top: 36px;
+    left: 36px;
+    width: 0;
+    height: 0;
+    opacity: 1;
+  }
+  100% {
+    top: 0px;
+    left: 0px;
+    width: 72px;
+    height: 72px;
+    opacity: 0;
+  }
+}
+
+
 </style>
 @endsection
 
@@ -409,6 +462,7 @@ background-color: #9f6e9f;
                 let that = $(this)
                 e.preventDefault()
                 
+                            
                 
                 const swalWithBootstrapButtons = swal.mixin({
                         confirmButtonClass: 'btn btn-success',
@@ -436,6 +490,7 @@ background-color: #9f6e9f;
                         if (result.value) {
                             $('[data-toggle="tooltip"]').tooltip('hide')
                             
+                $('#loading').append('<div class="lds-ripple"><div></div><div></div></div>');
                             
                             datas = Array();       
                     
@@ -464,9 +519,13 @@ background-color: #9f6e9f;
                                         
                                         datas.forEach(function(data){
                                           
-                                          $('#unmerge').html('<li> '+data+' </li>')
+                                          let id =  data[0];
+                                          let numero = data[1];
+                                          
+                                      
+                                          $('#unmerge').append('<li> <a class="color-info" href="/telecharger/pdf/factures/'+id+'" > '+numero+' <i class="ti-download"></i> </a></li>')
                                         });
-                                        
+                                        $('#loading').remove();
                                         console.log(datas);
                                         // window.location.href = "/winfic/download/";
                                         // setInterval(() => {

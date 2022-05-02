@@ -12,6 +12,7 @@ use iio\libmergepdf\Pages;
 use iio\libmergepdf\Driver\Fpdi2Driver;
 use iio\libmergepdf\Source\FileSource;
 
+use Illuminate\Support\Facades\Crypt;
 
 use PDF;
 use Illuminate\Support\Facades\File ;
@@ -865,7 +866,7 @@ class ExportwinficController extends Controller
 
                 } catch (\Throwable $th) {
                    $continue = 1 ;
-                   $facture_non_merge [] = $facture->numero;
+                   $facture_non_merge [] = array(Crypt::encrypt($facture->id), $facture->numero);
                 }
                 
                 if($continue == 0){
