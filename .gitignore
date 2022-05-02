@@ -1,5 +1,7 @@
 /node_modules
 /public/hot
+/public/*.pdf
+/public/*.WIN
 /public/storage
 /public/tmp
 /storage/*.key

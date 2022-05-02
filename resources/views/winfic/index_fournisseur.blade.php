@@ -526,13 +526,15 @@ background-color: #9f6e9f;
                                     type: 'POST',
                                     success: function(datas){
                                         
+                                        $('#telecharger_pdf').append('<a href="/factures_fournisseur.pdf" target="_blank" class="btn btn-sm btn-success btn-flat btn-addon  m-b-10 m-l-5 "><i class="ti-download"></i>Télécharger PDF</a> ');
+                                        $('#titre_unmerge').append('<span style="font-weight: bold; margin-top: 25px;  ">Factures non ajoutées au PDF :</span>');
+                                            
                                         datas.forEach(function(data){
                                           
                                             let id =  data[0];
                                             let numero = data[1];
                                           
-                                            $('#telecharger_pdf').append('<a href="/factures_fournisseur.pdf" target="_blank" class="btn btn-sm btn-success btn-flat btn-addon  m-b-10 m-l-5 "><i class="ti-download"></i>Télécharger PDF</a> ');
-                                            $('#titre_unmerge').append('<span style="font-weight: bold; margin-top: 25px;  ">Factures non ajoutées au PDF :</span>');
+                                            
                                             $('#unmerge').append('<li> <a style="text-decoration:none;" class="color-info" href="/telecharger/pdf/factures/'+id+'" > '+numero+' <i class="ti-download"></i> </a></li>')
                                           
                                         });
