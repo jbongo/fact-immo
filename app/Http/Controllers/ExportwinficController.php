@@ -885,7 +885,7 @@ class ExportwinficController extends Controller
         
             // $merger->Output('I', 'generated.pdf');
             if($createdPdf2)
-                file_put_contents('file.pdf', $createdPdf2);
+                file_put_contents('factures_fournisseur.pdf', $createdPdf2);
                 
                 return $facture_non_merge;
         // return new Response($createdPdf, 200, array('Content-Type' => 'application/pdf'));

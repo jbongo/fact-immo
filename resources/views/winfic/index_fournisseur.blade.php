@@ -72,14 +72,21 @@
                             <a href="{{route('winfic.index')}}"  class="btn btn-md btn-default btn-flat btn-addon  m-b-10 m-l-5 " ><i class="ti-angle-double-left"></i>Exports Ventes</a>
 
                             <a href="#" id="telecharger_selection" class="btn btn-lg btn-danger btn-flat btn-addon  m-b-10 m-l-5 "><i class="ti-download"></i>Fact Fournisseurs PDF</a>  <br>
-                            <span>Liste des Factures non téléchargées :</span> <br>
                             
                            
-                            <div id="loading"> 
-                            </div>                            
-                            <u id="unmerge" >
+                           <div style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                                <div id="loading"> 
+                                </div>    
                                 
-                            </u>
+                                <div id="telecharger_pdf"></div>
+                                <div id="titre_unmerge">  </div> 
+                                
+                                <u id="unmerge" style="" >
+                                   
+                                </u>
+                           
+                           </div>
+                            
                             
                             </div>
                         </div>
@@ -253,11 +260,11 @@
 background-color: #9f6e9f;
 }
 
-                            .lds-ripple {
+.lds-ripple {
   display: inline-block;
   position: relative;
-  width: 80px;
-  height: 80px;
+  width: 100px;
+  height: 100px;
 }
 .lds-ripple div {
   position: absolute;
@@ -490,7 +497,9 @@ background-color: #9f6e9f;
                         if (result.value) {
                             $('[data-toggle="tooltip"]').tooltip('hide')
                             
-                $('#loading').append('<div class="lds-ripple"><div></div><div></div></div>');
+                            $('#unmerge').empty(); 
+                            $('#titre_unmerge').empty();
+                            $('#loading').append('<div class="lds-ripple"><div></div><div></div></div>');
                             
                             datas = Array();       
                     
@@ -519,13 +528,16 @@ background-color: #9f6e9f;
                                         
                                         datas.forEach(function(data){
                                           
-                                          let id =  data[0];
-                                          let numero = data[1];
+                                            let id =  data[0];
+                                            let numero = data[1];
                                           
-                                      
-                                          $('#unmerge').append('<li> <a class="color-info" href="/telecharger/pdf/factures/'+id+'" > '+numero+' <i class="ti-download"></i> </a></li>')
+                                            $('#telecharger_pdf').append('<a href="/factures_fournisseur.pdf" target="_blank" class="btn btn-sm btn-success btn-flat btn-addon  m-b-10 m-l-5 "><i class="ti-download"></i>Télécharger PDF</a> ');
+                                            $('#titre_unmerge').append('<span style="font-weight: bold; margin-top: 25px;  ">Factures non ajoutées au PDF :</span>');
+                                            $('#unmerge').append('<li> <a style="text-decoration:none;" class="color-info" href="/telecharger/pdf/factures/'+id+'" > '+numero+' <i class="ti-download"></i> </a></li>')
+                                          
                                         });
-                                        $('#loading').remove();
+                                        $('#loading').empty();
+                                        // $('#loading').remove();
                                         console.log(datas);
                                         // window.location.href = "/winfic/download/";
                                         // setInterval(() => {
