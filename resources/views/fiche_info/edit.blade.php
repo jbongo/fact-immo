@@ -23,91 +23,166 @@ Modifier la fiche informatique de {{$mandataire->nom}} {{$mandataire->prenom}}
                <form class="form-valide form-horizontal" action="{{route('fiche_info.update', $mandataire->id)}}" method="post">
                   {{ csrf_field() }}
 
-                @foreach ($champs as $key => $champ  )
+           
+
+                @foreach ($outils as $key => $outil  )
                     
-                
+                  @php 
+                     $champ = $outil->useroutil($fiche->id) ;
+                  @endphp
+                  
                 <hr style="border: 10px solid #3e3a92">
                 
-                <p style="text-align: center; font-size:20px; color:#a21e4b; font-weight:bold">{{$champ[0]}}</p>
-                <div class="row">
-                   <br>
-                   <br>
-                    <div class="col-lg-6 col-md-6 col-sm-6">                      
-                         <div class="form-group row">
-                            <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="nom_{{$key}}">Nom <span class="text-danger">*</span></label>
-                            <div class="col-lg-8 col-md-8 col-sm-8">
-                               <input type="text" class="form-control " value="{{$champ[0]}}" id="nom_{{$key}}" name="nom_{{$key}}" placeholder="Nom.." required>
-                               
-                            </div>
-                         </div>
-                    </div>
-                    
-                    <div class="col-lg-6 col-md-6 col-sm-6">                      
-                        <div class="form-group row">
-                           <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="site_web_{{$key}}">Site web </label>
-                           <div class="col-lg-8 col-md-8 col-sm-8">
-                              <input type="url" class="form-control {{$errors->has('site_web') ? 'is-invalid' : ''}}" value="{{$champ[1]}}" id="site_web_{{$key}}" name="site_web_{{$key}}"  >
-                             
-                           </div>
-                        </div>
-                   </div>
-                    
-                    <div class="col-lg-6 col-md-6 col-sm-6">
-                        <div class="form-group row">
-                           <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="identifiant_{{$key}}">Identifiant </label>
-                           <div class="col-lg-8 col-md-8 col-sm-8">
-                              <input type="text" class="form-control {{$errors->has('identifiant') ? 'is-invalid' : ''}}" value="{{$champ[2]}}" id="identifiant_{{$key}}" name="identifiant_{{$key}}"  >
-                             
-                           </div>
-                        </div>
-                   </div>
-                   
-                   <div class="col-lg-6 col-md-6 col-sm-6">
-                        <div class="form-group row">
-                           <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="password_{{$key}}">Mot de passe </label>
-                           <div class="col-lg-8 col-md-8 col-sm-8">
-                              <input type="text" class="form-control {{$errors->has('password') ? 'is-invalid' : ''}}" value="{{$champ[3]}}" id="nom_{{$key}}" name="password_{{$key}}" >
-                              
-                           </div>
-                        </div>
-                   </div>
-                   
-                  
-                   {{-- @foreach ($champ->champs() as $key => $champ)
-                   
-                   <div class="col-lg-6 col-md-6 col-sm-6">
-                        <div class="form-group row">
-                           <label class="col-lg-4 col-md-4 col-sm-4 control-label text-danger" for="nom{{$key}}_{{$key}}">{{$champ[0]}} </label>
-                           <div class="col-lg-8 col-md-8 col-sm-8">
-                                <input type="text" class="form-control" value="{{$champ[1]}}" id="nom{{$key}}_{{$key}}" name="{{$champ[0]}}{{$key}}_{{$key}}" >
-                            
-                           </div>
-                        </div>
-                   </div>
-                   
-                  
-                  
-                    @endforeach --}}
-                    
-                    
-            
-
-                        
-       
-                    <div class="col-lg-12 col-md-12 col-sm-12" style="margin-top:100px; float:left;">
-
-                          <div class="form-group row">
-                             <label class="col-lg-2 col-md-2 col-sm-2  control-label" value="" for="autre_champ_{{$key}}">Autre champ</label>
-                             <div class="col-lg-6 col-md-6 col-sm-6 ">
-
-                             <textarea name="autre_champ_{{$key}}" id="autre_champ_{{$key}}" cols="30" rows="15" >{{$champ[4]}}</textarea>
-                                
-                             </div>
+                @if($champ != null)
+                      <p style="text-align: center; font-size:20px; color:#a21e4b; font-weight:bold">{{$champ->nom}}</p>
+                      <div class="row">
+                         <br>
+                         <br>
+                         <input type="hidden" value="{{$champ->id}}" id="id_{{$key}}" name="id_{{$key}}">
+                         
+                          <div class="col-lg-6 col-md-6 col-sm-6">                      
+                               <div class="form-group row">
+                                  <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="nom_{{$key}}">Nom <span class="text-danger">*</span></label>
+                                  <div class="col-lg-8 col-md-8 col-sm-8">
+                                     <input type="text" class="form-control " value="{{$champ->nom}}" id="nom_{{$key}}" name="nom_{{$key}}" placeholder="Nom.." required>
+                                     
+                                  </div>
+                               </div>
                           </div>
-                    </div>
+                          
+                          <div class="col-lg-6 col-md-6 col-sm-6">                      
+                              <div class="form-group row">
+                                 <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="site_web_{{$key}}">Site web </label>
+                                 <div class="col-lg-8 col-md-8 col-sm-8">
+                                    <input type="url" class="form-control {{$errors->has('site_web') ? 'is-invalid' : ''}}" value="{{$champ->site_web}}" id="site_web_{{$key}}" name="site_web_{{$key}}"  >
+                                   
+                                 </div>
+                              </div>
+                         </div>
+                          
+                          <div class="col-lg-6 col-md-6 col-sm-6">
+                              <div class="form-group row">
+                                 <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="identifiant_{{$key}}">Identifiant </label>
+                                 <div class="col-lg-8 col-md-8 col-sm-8">
+                                    <input type="text" class="form-control {{$errors->has('identifiant') ? 'is-invalid' : ''}}" value="{{$champ->identifiant}}" id="identifiant_{{$key}}" name="identifiant_{{$key}}"  >
+                                   
+                                 </div>
+                              </div>
+                         </div>
+                         
+                         <div class="col-lg-6 col-md-6 col-sm-6">
+                              <div class="form-group row">
+                                 <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="password_{{$key}}">Mot de passe </label>
+                                 <div class="col-lg-8 col-md-8 col-sm-8">
+                                    <input type="text" class="form-control {{$errors->has('password') ? 'is-invalid' : ''}}" value="{{$champ->password}}" id="nom_{{$key}}" name="password_{{$key}}" >
+                                    
+                                 </div>
+                              </div>
+                         </div>
+                         
+                        
+                         {{-- @foreach ($champ->champs() as $key => $champ)
+                         
+                         <div class="col-lg-6 col-md-6 col-sm-6">
+                              <div class="form-group row">
+                                 <label class="col-lg-4 col-md-4 col-sm-4 control-label text-danger" for="nom{{$key}}_{{$key}}">{{$champ[0]}} </label>
+                                 <div class="col-lg-8 col-md-8 col-sm-8">
+                                      <input type="text" class="form-control" value="{{$champ[1]}}" id="nom{{$key}}_{{$key}}" name="{{$champ[0]}}{{$key}}_{{$key}}" >
+                                  
+                                 </div>
+                              </div>
+                         </div>
+                         
+                        
+                        
+                          @endforeach --}}
+                          
+                          
+                  
+      
+                              
+             
+                          <div class="col-lg-12 col-md-12 col-sm-12" style="margin-top:100px; float:left;">
+      
+                                <div class="form-group row">
+                                   <label class="col-lg-2 col-md-2 col-sm-2  control-label" value="" for="autre_champ_{{$key}}">Autre champ</label>
+                                   <div class="col-lg-6 col-md-6 col-sm-6 ">
+      
+                                   <textarea name="autre_champ_{{$key}}" id="autre_champ_{{$key}}" cols="30" rows="15" >{{$champ->autre_champ}}</textarea>
+                                      
+                                   </div>
+                                </div>
+                          </div>
+                        
+                        
+                      </div> 
+                      
+                  @else 
                   
                   
-                </div> 
+                  <p style="text-align: center; font-size:20px; color:#a21e4b; font-weight:bold">{{$outil->nom}}</p>
+<div class="row">
+   <br>
+   <br>
+   <input type="hidden" value="{{$outil->id}}" id="id_{{$key}}" name="id_{{$key}}">
+   
+    <div class="col-lg-6 col-md-6 col-sm-6">                      
+         <div class="form-group row">
+            <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="nom_{{$key}}">Nom <span class="text-danger">*</span></label>
+            <div class="col-lg-8 col-md-8 col-sm-8">
+               <input type="text" class="form-control " value="{{$outil->nom}}" id="nom_{{$key}}" name="nom_{{$key}}" placeholder="Nom.." required>
+               
+            </div>
+         </div>
+    </div>
+    
+    <div class="col-lg-6 col-md-6 col-sm-6">                      
+        <div class="form-group row">
+           <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="site_web_{{$key}}">Site web </label>
+           <div class="col-lg-8 col-md-8 col-sm-8">
+              <input type="url" class="form-control {{$errors->has('site_web') ? 'is-invalid' : ''}}" value="{{$outil->site_web}}" id="site_web_{{$key}}" name="site_web_{{$key}}"  >
+             
+           </div>
+        </div>
+   </div>
+    
+    <div class="col-lg-6 col-md-6 col-sm-6">
+        <div class="form-group row">
+           <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="identifiant_{{$key}}">Identifiant </label>
+           <div class="col-lg-8 col-md-8 col-sm-8">
+              <input type="text" class="form-control {{$errors->has('identifiant') ? 'is-invalid' : ''}}" value="{{$outil->identifiant}}" id="identifiant_{{$key}}" name="identifiant_{{$key}}"  >
+             
+           </div>
+        </div>
+   </div>
+   
+   <div class="col-lg-6 col-md-6 col-sm-6">
+        <div class="form-group row">
+           <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="password_{{$key}}">Mot de passe </label>
+           <div class="col-lg-8 col-md-8 col-sm-8">
+              <input type="text" class="form-control {{$errors->has('password') ? 'is-invalid' : ''}}" value="{{$outil->password}}" id="nom_{{$key}}" name="password_{{$key}}" >
+              
+           </div>
+        </div>
+   </div>
+   
+
+    <div class="col-lg-12 col-md-12 col-sm-12" style="margin-top:100px; float:left;">
+
+          <div class="form-group row">
+             <label class="col-lg-2 col-md-2 col-sm-2  control-label" value="" for="autre_champ_{{$key}}">Autre champ</label>
+             <div class="col-lg-6 col-md-6 col-sm-6 ">
+
+             <textarea name="autre_champ_{{$key}}" id="autre_champ_{{$key}}" cols="30" rows="15" >{{$outil->autre_champ}}</textarea>
+                
+             </div>
+          </div>
+    </div>
+  
+  
+</div> 
+
+                  @endif
                 
                 <hr style="border: 10px solid #3e3a92">
                 @endforeach

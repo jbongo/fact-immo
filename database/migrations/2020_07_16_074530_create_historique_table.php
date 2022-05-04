@@ -17,7 +17,8 @@ class CreateHistoriqueTable extends Migration
             $table->bigIncrements('id');
             $table->integer('user_id')->nullable();
             $table->integer('ressource_id')->nullable();
-            $table->enum('ressource',['compromis','facture','mandataire','connexion','contrat','autre'])->default('autre');
+            // 'compromis','facture','mandataire','connexion','contrat','ficheinfo','autre' etc
+            $table->string('ressource')->default('autre');
             $table->string('action')->nullable();
             $table->timestamps();
         });

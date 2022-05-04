@@ -59,4 +59,18 @@ class Outilinfo extends Model
 
         return $chunk;
     }
+    
+     
+    /**
+     * Affiche retourne un outil de la fiche du mandataire
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public  function useroutil($fiche_info_id)
+    {
+ 
+        $outil = Outilfiche::where([['ficheinfo_id', $fiche_info_id], ['outilinfo_id', $this->id]])->first();
+        
+        return $outil;
+    }
 }

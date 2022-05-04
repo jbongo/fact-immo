@@ -29,6 +29,8 @@ Créer la fiche informatique de {{$mandataire->nom}} {{$mandataire->prenom}}
                 <div class="row">
                    <br>
                    <br>
+                   <input type="hidden" value="{{$outil->id}}" id="id_{{$outil->id}}" name="id_{{$outil->id}}">
+                   
                     <div class="col-lg-6 col-md-6 col-sm-6">                      
                          <div class="form-group row">
                             <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="nom_{{$outil->id}}">Nom <span class="text-danger">*</span></label>

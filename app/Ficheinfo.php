@@ -20,5 +20,14 @@ class Ficheinfo extends Model
         return $this->belongsTo(User::class);
     }
         
+    /**
+     * Liste des outils de la fiche info
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+    */
+    public function outilfiche()
+    {
+        return $this->hasMany(Outilfiche::class);
+    }
  
 }

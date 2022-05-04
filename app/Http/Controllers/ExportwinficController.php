@@ -6,6 +6,8 @@ use Illuminate\Http\Response;
 use Illuminate\Http\Request;
 use App\Facture;
 use App\User;
+use App\Historique;
+
 
 use iio\libmergepdf\Merger;
 use iio\libmergepdf\Pages;
@@ -13,7 +15,7 @@ use iio\libmergepdf\Driver\Fpdi2Driver;
 use iio\libmergepdf\Source\FileSource;
 
 use Illuminate\Support\Facades\Crypt;
-
+use Auth;
 use PDF;
 use Illuminate\Support\Facades\File ;
 use Illuminate\Support\Facades\Storage;
@@ -217,6 +219,14 @@ class ExportwinficController extends Controller
         }
  
         file_put_contents("ECRITURE.WIN", $data);
+        
+        
+        Historique::create([
+            "user_id"=> Auth::user()->id,
+            "ressource_id"=> null,
+            "ressource"=> "export",
+            "action"=> "a exporté les ventes dans winfic",
+        ]);
         
         return response()->download("ECRITURE.WIN");
         
@@ -506,6 +516,14 @@ class ExportwinficController extends Controller
  
         file_put_contents("ECRITURE.WIN", $data);
         
+        
+        Historique::create([
+            "user_id"=> Auth::user()->id,
+            "ressource_id"=> null,
+            "ressource"=> "export",
+            "action"=> "a exporté les encaissements et décaissements dans winfic",
+        ]);
+        
         return response()->download("ECRITURE.WIN");
         
     }
@@ -702,6 +720,14 @@ class ExportwinficController extends Controller
  
  
         file_put_contents("ECRITURE.WIN", $data);
+        
+        
+        Historique::create([
+            "user_id"=> Auth::user()->id,
+            "ressource_id"=> null,
+            "ressource"=> "export",
+            "action"=> "a exporté les fournisseurs dans winfic",
+        ]);
         
         return response()->download("ECRITURE.WIN");
         

@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Ficheinfo;
 use App\Outilinfo;
+use App\Outilfiche;
 use App\User;
+use App\Historique;
+use Auth;
 
 use PDF;
 use Illuminate\Support\Facades\File ;
@@ -67,15 +70,35 @@ class FicheinfoController extends Controller
         $tab_valeur = array();
         foreach($champs as $key => $pal)
         {
-            // pour chaque element du tableau, on extrait la valeur
-            // $tmp = substr($pal , strpos($pal, " => ") + 1, strlen($pal));
             array_push($tab_valeur, $pal);
         }
-        $tab_valeur = array_chunk( $tab_valeur, 5);
+        $tab_valeur = array_chunk( $tab_valeur, 6);
+        
 
-        Ficheinfo::create([
+        $new_fiche =  Ficheinfo::create([
             "user_id"=> $request->user_id,           
-            "champs_valeurs"=> json_encode($tab_valeur),
+        ]);
+        
+        foreach ($tab_valeur as $tab) {
+            
+            Outilfiche::create([
+                "ficheinfo_id" => $new_fiche->id,
+                "outilinfo_id" => $tab[0],
+                "nom" => $tab[1],
+                "identifiant" => $tab[3],
+                "password" => $tab[4],
+                "site_web" => $tab[2],
+                "autre_champ" => $tab[5],
+            ]);
+        }
+        
+        $user = $new_fiche->user;
+        
+        Historique::create([
+            "user_id"=> Auth::user()->id,
+            "ressource_id"=> $new_fiche->id,
+            "ressource"=> "ficheinfo",
+            "action"=> "a créé la fiche info de $user->nom  $user->prenom",
         ]);
         
         return redirect()->route('fiche_info.edit', $request->user_id)->with('ok', "Nouvelle fiche ajoutée");
@@ -102,12 +125,13 @@ class FicheinfoController extends Controller
     {
         
         $fiche = Ficheinfo::where('user_id', $mandataire_id)->first();
-        $champs = json_decode($fiche->champs_valeurs);
+        $champs = $fiche->outilfiche;
         
       
         $mandataire = $fiche->user;
+        $outils = Outilinfo::where('archive', false)->get();
      
-        return view('fiche_info.edit',compact('fiche', 'champs','mandataire') );
+        return view('fiche_info.edit',compact('fiche', 'champs','outils','mandataire') );
     }
 
     /**
@@ -132,14 +156,36 @@ class FicheinfoController extends Controller
         }
         
 
-        $tab_valeur = array_chunk( $tab_valeur, 5);
+        $tab_valeur = array_chunk( $tab_valeur, 6);
 
        
         $fiche = Ficheinfo::where('user_id', $mandataire_id)->first();
+
+        foreach ($tab_valeur as $tab) {
+            
+          
+            $outilfiche = Outilfiche::where('id', $tab[0])->first();
+            
+            $outilfiche->nom = $tab[1];
+            $outilfiche->identifiant = $tab[3];
+            $outilfiche->password = $tab[4];
+            $outilfiche->site_web = $tab[2];
+            $outilfiche->autre_champ = $tab[5];
+            
+            $outilfiche->update();
+            
+         }
      
-        $fiche->champs_valeurs = json_encode($tab_valeur);
+         $user = $fiche->user;
         
-        $fiche->update();
+         Historique::create([
+             "user_id"=> Auth::user()->id,
+             "ressource_id"=> $fiche->id,
+             "ressource"=> "ficheinfo",
+             "action"=> "a modifié la fiche info de $user->nom  $user->prenom",
+         ]);
+        
+   
         return redirect()->route('fiche_info.edit', $mandataire_id)->with('ok', "Fiche modifiée");
 
     }

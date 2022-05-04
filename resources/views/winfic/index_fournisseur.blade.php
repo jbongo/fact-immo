@@ -82,7 +82,7 @@
                                 <div id="titre_unmerge">  </div> 
                                 
                                 <u id="unmerge" style="" >
-                                   
+                                    
                                 </u>
                            
                            </div>
@@ -307,6 +307,22 @@ background-color: #9f6e9f;
   }
 }
 
+#unmerge>li{
+
+  margin-top: 10px;
+  padding: 10px;
+  background-color:#5c345c;
+  border:4px;
+  text-align: center;
+  
+}
+
+#unmerge>li>a{
+    color:#fff;
+    font-size: 18px;
+    text-decoration: none;
+    
+}
 
 </style>
 @endsection
@@ -498,6 +514,7 @@ background-color: #9f6e9f;
                             $('[data-toggle="tooltip"]').tooltip('hide')
                             
                             $('#unmerge').empty(); 
+                            $('#telecharger_pdf').empty();                             
                             $('#titre_unmerge').empty();
                             $('#loading').append('<div class="lds-ripple"><div></div><div></div></div>');
                             
@@ -527,7 +544,7 @@ background-color: #9f6e9f;
                                     success: function(datas){
                                         
                                         $('#telecharger_pdf').append('<a href="/factures_fournisseur.pdf" target="_blank" class="btn btn-sm btn-success btn-flat btn-addon  m-b-10 m-l-5 "><i class="ti-download"></i>Télécharger PDF</a> ');
-                                        $('#titre_unmerge').append('<span style="font-weight: bold; margin-top: 25px;  ">Factures non ajoutées au PDF :</span>');
+                                        $('#titre_unmerge').append('<span style="font-weight: bold;   ">Factures non ajoutées au PDF :</span>');
                                             
                                         datas.forEach(function(data){
                                           

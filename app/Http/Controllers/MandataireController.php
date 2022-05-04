@@ -615,7 +615,7 @@ class MandataireController extends Controller
         $mandataire = User::where('id', Crypt::decrypt($user_id))->first();
         
         
-        Updatejeton::create([
+        $updatejetons = Updatejeton::create([
         
             "user_id" => Crypt::decrypt($user_id),
             "admin_id" => Auth::user()->id,
@@ -629,7 +629,14 @@ class MandataireController extends Controller
 
         $mandataire->update();
         
-   
+        $action = $request->jetons > 0 ? "ajouté":"déduis";
+        
+        Historique::create([
+            "user_id"=> Auth::user()->id,
+            "ressource_id"=> $updatejetons->id,
+            "ressource"=> "updatejeton",
+            "action"=> "a $action $request->jetons jetons sur le compte de $mandataire->nom  $mandataire->prenom",
+        ]);
        
         return redirect()->route('mandataire.historique_jeton',$user_id )->with('ok', 'Le nombre de jetons du mandataire a été modifié');
        
