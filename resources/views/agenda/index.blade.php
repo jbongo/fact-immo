@@ -219,6 +219,11 @@ var agendas = "{{$agendas}}";
 
 agendas = JSON.parse(agendas.replaceAll('&quot;','"') );
 
+tab_mandataires = "{{$tab_mandataires}}";
+tab_prospects = "{{$tab_prospects}}";
+
+tab_mandataires = JSON.parse(tab_mandataires.replaceAll('&quot;','"') );
+tab_prospects = JSON.parse(tab_prospects.replaceAll('&quot;','"') );
 
 
 ! function($) {
@@ -270,11 +275,11 @@ agendas = JSON.parse(agendas.replaceAll('&quot;','"') );
                         <input type="hidden" name="id" value="${calEvent.extendedProps.id}" />
             
                             <div class="col-md-6">                            
-                                <label class="control-label">Date début  <span class="text-danger">*</span> </label>
+                                <label class="control-label">Date début ${calEvent.extendedProps.date_deb} <span class="text-danger">*</span> </label>
                                 <input class="form-control form-white" placeholder="" type="date" name="date_deb" required value="${calEvent.extendedProps.date_deb}" />
                             </div>
                             <div class="col-md-6">
-                                <label class="control-label">Date Fin  <span class="text-danger">*</span> </label>
+                                <label class="control-label">Date Fin ${calEvent.extendedProps.date_fin} <span class="text-danger">*</span> </label>
                                 <input class="form-control form-white" placeholder="" type="date" name="date_fin" required value="${calEvent.extendedProps.date_fin}" />
                             </div>
                             
@@ -327,6 +332,8 @@ agendas = JSON.parse(agendas.replaceAll('&quot;','"') );
                                     <label class="col-lg-8 col-md-8 col-sm-8 col-form-label" for="mandataire_id2">Choisir un mandataire  </label>
                                     <div class="col-lg-12 col-md-12 col-sm-12">
                                         <select class="selectpickerx form-control " id="mandataire_id2" name="mandataire_id2" data-live-search="true" data-style="btn-warning btn-rounded" >
+                                            <option value="${calEvent.extendedProps.mandataire_id}" data-tokens="${calEvent.extendedProps.mandataire}">${calEvent.extendedProps.mandataire}</option>
+                                        
                                              @foreach ($mandataires as $mandataire )
                                                 <option value="{{ $mandataire->id }}" data-tokens="{{ $mandataire->nom }} {{ $mandataire->prenom }}">{{ $mandataire->nom }} {{ $mandataire->prenom }}</option>
                                             @endforeach 
@@ -341,6 +348,8 @@ agendas = JSON.parse(agendas.replaceAll('&quot;','"') );
                                     <label class="col-lg-8 col-md-8 col-sm-8 col-form-label" for="prospect_id">Choisir un prospect </label>
                                     <div class="col-lg-12 col-md-12 col-sm-12">
                                         <select class="selectpickerx form-control" id="prospect_id" name="prospect_id" data-live-search="true" data-style="btn-warning btn-rounded" >
+                                            <option value="${calEvent.extendedProps.prospect_id}" data-tokens="${calEvent.extendedProps.prospect}">${calEvent.extendedProps.prospect}</option>
+                                        
                                             @foreach ($prospects as $prospect )
                                                 <option value="{{ $prospect->id }}" data-tokens="{{ $prospect->nom }} {{ $prospect->prenom }}">{{ $prospect->nom }} {{ $prospect->prenom }}</option>
                                             @endforeach 
@@ -355,7 +364,7 @@ agendas = JSON.parse(agendas.replaceAll('&quot;','"') );
                         <div class="row">
                             <div class="col-md-12">
                                 <label class="control-label">Titre  <span class="text-danger">*</span></label>
-                                <input class="form-control form-white" placeholder="" value=" ${calEvent.title} " type="text" required name="titre" />
+                                <input class="form-control form-white" placeholder="" value=" ${calEvent.title}" type="text" required name="titre" />
                             </div>
                             <div class="col-md-12">
                                 <label class="control-label">Description</label>
@@ -369,7 +378,7 @@ agendas = JSON.parse(agendas.replaceAll('&quot;','"') );
                             <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Fermer</button>
                             <input type="submit" class="btn btn-success waves-effect waves-light save-agenda"  value="Modifier">
                             
-                            <button type="button" class="btn btn-danger delete-event waves-effect waves-light" data-dismiss="modal">Supprimer</button>
+                            <button type="button" class="btn btn-danger delete-event waves-effect waves-light supprimer" href="/agenda/delete/${calEvent.extendedProps.id}" data-dismiss="modal">Supprimer</button>
                            
                         </div>
                         `);
@@ -565,7 +574,7 @@ agendas = JSON.parse(agendas.replaceAll('&quot;','"') );
             var list = Array();
             var val;
             agendas.forEach( function (agenda)  {
-                    
+                    console.log(tab_mandataires[agenda.user_id]);
                 if(agenda.est_terminee == true){
                     var color = "bg-success";
                 }else{
@@ -573,8 +582,8 @@ agendas = JSON.parse(agendas.replaceAll('&quot;','"') );
                 } 
 
                     val = {title:agenda.titre,
-                    start: agenda.date_deb+'T'+agenda.heure_deb,
-                    end: agenda.date_fin+'T'+agenda.heure_fin,
+                    start: agenda.date_deb,
+                    end: agenda.date_fin,
                     extendedProps: {
                         id:agenda.id,
                         date_deb:agenda.date_deb,
@@ -583,6 +592,10 @@ agendas = JSON.parse(agendas.replaceAll('&quot;','"') );
                         heure_fin:agenda.heure_fin,
                         type_rappel:agenda.type_rappel,
                         liee_a:agenda.liee_a,
+                        mandataire:tab_mandataires[agenda.user_id],
+                        mandataire_id:agenda.user_id,
+                        prospect:tab_prospects[agenda.prospect_id],
+                        prospect_id:agenda.prospect_id,
                         est_terminee:agenda.est_terminee,
                         description:agenda.description,
                     },
@@ -736,6 +749,71 @@ function selectIdEdit(){
     }
 
 }
+
+
+// Supprimer une tâche
+
+    $(function() {
+            $.ajaxSetup({
+                headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
+            })
+            $('[data-toggle="tooltip"]').tooltip()
+            $('body').on('click','.supprimer',function(e) {
+                let that = $(this)
+                e.preventDefault()
+                const swalWithBootstrapButtons = swal.mixin({
+                confirmButtonClass: 'btn btn-success',
+                cancelButtonClass: 'btn btn-danger',
+                buttonsStyling: false,
+                })
+
+            swalWithBootstrapButtons({
+                title: 'Confirmez-vous la suppression de cette tâche  ?',
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#DD6B55',
+                confirmButtonText: '@lang('Oui')',
+                cancelButtonText: '@lang('Non')',
+                
+            }).then((result) => {
+                if (result.value) {
+                    $('[data-toggle="tooltip"]').tooltip('hide')
+                        $.ajax({                        
+                            url: that.attr('href'),
+                            type: 'GET',
+                            success: function(data){
+                           document.location.reload();
+                         },
+                         error : function(data){
+                            console.log(data);
+                         }
+                        })
+                        .done(function () {
+                                that.parents('tr').remove()
+                        })
+    
+                    swalWithBootstrapButtons(
+                    'Supprimée!',
+                    'Tâche success'
+                    )
+                    
+                    
+                } else if (
+                    // Read more about handling dismissals
+                    result.dismiss === swal.DismissReason.cancel
+                ) {
+                    swalWithBootstrapButtons(
+                    'Annulé',
+                    'La tâche n\'a pas été supprimée.',
+                  
+                    'error'
+                    )
+                }
+            })
+        })
+    })
+
+
 
 </script>
 @endsection

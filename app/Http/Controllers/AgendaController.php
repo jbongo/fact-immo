@@ -26,8 +26,29 @@ class AgendaController extends Controller
         $prospects = Prospect::where([['archive',false], ['est_mandataire', false]])->get();
         
         // dd($prospects);
-  
-        return view('agenda.index',compact('agendas','mandataires', 'prospects'));
+        $liste_prosprects = Prospect::all();
+        $liste_mandataires = User::all();
+        
+        
+        $tab_prospects  = array();
+        $tab_mandataires = array();
+        
+        foreach ($liste_prosprects as $value) {
+        
+            $tab_prospects [$value->id] = $value->nom." ". $value->prenom; 
+        }
+        
+        
+        foreach ($liste_mandataires as $value) {
+        
+            $tab_mandataires[$value->id] = $value->nom." ". $value->prenom; 
+        }
+        
+        $tab_prospects  = json_encode($tab_prospects ) ;
+        $tab_mandataires = json_encode($tab_mandataires) ;
+ 
+        
+        return view('agenda.index',compact('agendas','mandataires', 'prospects','tab_prospects','tab_mandataires'));
     }
 
 
@@ -47,7 +68,7 @@ class AgendaController extends Controller
         
         $prospects = Prospect::where([['archive',false], ['est_mandataire', false]])->get();
         
-        // dd($prospects);
+        // dd($agendas);
   
         return view('agenda.listing',compact('agendas','mandataires', 'prospects'));
     }
@@ -80,11 +101,11 @@ class AgendaController extends Controller
             'est_agenda_general' => true,
             'liee_a' => $request->liee_a,
             'prospect_id' => $request->prospect_id, 
-            'mandataire_id' => $request->mandataire_id, 
+            'user_id' => $request->mandataire_id1, 
         
         ]);
         
-    return redirect()->back()->with('ok', 'tâche créee');
+    return redirect()->back()->with('ok', 'tâche créée');
         
     }
 
@@ -117,11 +138,15 @@ class AgendaController extends Controller
         // $agenda->est_agenda_prospect =  $request->est_agenda_prospect;            
         $agenda->est_agenda_general =  true;
         $agenda->liee_a =  $request->liee_a; 
-        $agenda->prospect_id =  $request->prospect_id; 
-        $agenda->mandataire_id =  $request->mandataire_id; 
+        
+        if( $request->mandataire_id2 != "null")  $agenda->prospect_id =  $request->prospect_id2;        
+        if( $request->mandataire_id2 != "null") $agenda->user_id =  $request->mandataire_id2; 
+        
         $agenda->est_terminee = $request->est_terminee == "true" ? true : false;             
         
+    
         $agenda->update();
+   
         
         return redirect()->back()->with('ok', 'tâche modifiée '.$agenda->titre);
         
@@ -138,7 +163,7 @@ class AgendaController extends Controller
         //
         $agenda = Agenda::where('id', $agenda_id)->first();
         
-        return "ok";
         $agenda->delete();
+        return "ok";
     }
 }

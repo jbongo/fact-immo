@@ -12,14 +12,14 @@
 
 
 @foreach ($champs as $key => $champ )
-    <p style="text-align: left; font-size: 20px;"><strong>{{$key + 1}} \ {{$champ[0]}}</strong></p>
+    <p style="text-align: left; font-size: 20px;"><strong>{{$key + 1}} \ {{$champ->nom}}</strong></p>
     
     
     
-    @if($champ[1] != null) <p style="text-align: left;"><span style="font-size: 16px; font-weight:600 ; ">Acc&egrave;s Web:&nbsp;&nbsp;</span>  <span style="color: blue;">{{$champ[1]}}</span></p> @endif
-    @if($champ[2] != null) <p style="text-align: left;"><span style="font-size: 16px; font-weight:600 ; ">Utilisateur:</span>  <span style="color: blue;">{{$champ[2]}}</span></p> @endif
-    @if($champ[3] != null) <p style="text-align: left;"><span style="font-size: 16px; font-weight:600 ; ">Mot de passe:&nbsp;</span>  <span style="color: red;">{{$champ[3]}}</span></p> @endif
-    @if($champ[4] != null) <p style="text-align: left;"> <span>{!!$champ[4]!!}</span></p> @endif
+    @if($champ->site_web != null) <p style="text-align: left;"><span style="font-size: 16px; font-weight:600 ; ">Acc&egrave;s Web:&nbsp;&nbsp;</span>  <span style="color: blue;">{{$champ->site_web}}</span></p> @endif
+    @if($champ->identifiant != null) <p style="text-align: left;"><span style="font-size: 16px; font-weight:600 ; ">Utilisateur:</span>  <span style="color: blue;">{{$champ->identifiant}}</span></p> @endif
+    @if($champ->password != null) <p style="text-align: left;"><span style="font-size: 16px; font-weight:600 ; ">Mot de passe:&nbsp;</span>  <span style="color: red;">{{$champ->password}}</span></p> @endif
+    @if($champ->password != null) <p style="text-align: left;"> <span>{!!$champ[4]!!}</span></p> @endif
     {{-- <p style="text-align: left;">&nbsp;</p> --}}
 @endforeach
 

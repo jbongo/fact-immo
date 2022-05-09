@@ -27,7 +27,7 @@ class CreateAgendasTable extends Migration
             $table->boolean('est_agenda_general')->default(false);
             $table->boolean('est_terminee')->default(false);
             $table->integer('prospect_id')->nullable();
-            $table->integer('mandataire_id')->nullable();
+            $table->integer('user_id')->nullable();
             
             $table->timestamps();
         });

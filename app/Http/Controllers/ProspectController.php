@@ -921,11 +921,11 @@ class ProspectController extends Controller
             // 'est_agenda_prospect' => $request->est_agenda_prospect,            
             'est_agenda_general' => false,
             'prospect_id' => $request->prospect_id, 
-            'mandataire_id' => $request->mandataire_id, 
+            'user_id' => $request->user_id, 
         
         ]);
         
-    return redirect()->back()->with('ok', 'tâche créee');
+    return redirect()->back()->with('ok', 'tâche créée');
         
     }
 
@@ -957,7 +957,7 @@ class ProspectController extends Controller
         // $agenda->est_agenda_prospect =  $request->est_agenda_prospect;            
         $agenda->est_agenda_general =  false;
         $agenda->prospect_id =  $request->prospect_id; 
-        $agenda->mandataire_id =  $request->mandataire_id; 
+        $agenda->user_id =  $request->user_id; 
         
         
         $agenda->est_terminee = $request->est_terminee == "true" ? true : false;             

@@ -1,7 +1,7 @@
 @extends('layouts.app') 
 @section('content') 
 @section ('page_title') 
-    Profil du prospect 
+    Agenda général
 @endsection
 <style>
 .modal-content {
@@ -50,7 +50,7 @@
                                         <th>Tâche prévu pour</th>
                                         <th>Type</th>
                                         <th>Type</th>
-                                        <th>Tâche</th>
+                                        {{-- <th>Tâche</th> --}}
                                         <th>Statut</th>
                                         <th>Date</th>
                                        
@@ -65,7 +65,13 @@
                                                 
                                                 <td style="color: #450854; ">
                                                    <span>
-                                                        @if($agenda->prospect_id != null) {{$agenda->prospect->nom}} {{$agenda->prospect->prenom}}   @elseif($agenda->mandataire_id != null ) {{$agenda->user->nom}} {{$agenda->user->prenom}}  @else  @endif
+                                                        @if($agenda->liee_a =="prospect") 
+                                                                @if($agenda->prospect != null) {{$agenda->prospect->nom}} {{$agenda->prospect->prenom}} @endif   
+                                                        @elseif($agenda->liee_a =="mandataire" ) 
+                                                                @if($agenda->user != null) {{$agenda->user->nom}} {{$agenda->user->prenom}} @endif  
+                                                        @else 
+                                                        
+                                                        @endif
                                                    
                                                    </span>  
                                                    
@@ -104,10 +110,10 @@
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                        <h4 class="modal-title"><strong>Ajouter un évènement</strong></h4>
+                                        <h4 class="modal-title"><strong>Modifier la tâche</strong></h4>
                                     </div>
                                     <div class="modal-body">
-                                        <form action="{{route('prospect.agenda.update')}}" method="post">
+                                        <form action="{{route('agenda.update')}}" method="post">
                                         
                                         @csrf
                                         <input type="hidden" name="id" value="{{$agenda->id}}" />
@@ -140,6 +146,51 @@
                       
                                         </div>
                                         <hr>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <label class="control-label">Tâche liée à :</label>
+                                                        <select name="liee_a" class="form-control liee_a_edit " agenda-id="{{$agenda->id}}"  >
+                                                            <option value="{{$agenda->liee_a}}">{{$agenda->liee_a}}</option>
+                                                            <option value="mandataire">Mandataire</option>
+                                                            <option value="prospect">Prospect</option>
+                                                            <option value="aucun">Aucun</option>
+                                                        </select>
+                                                    </div>
+                                                    
+                                                    <div class="col-lg-6 col-md-6 col-sm-6 {{$agenda->liee_a == "mandataire" ? '' : 'div_non_liee'}} div_mandataire_edit_{{$agenda->id}} "  >
+                                                        <div class="form-group row" >
+                                                            <label class="col-lg-8 col-md-8 col-sm-8 col-form-label" for="user_id">Choisir un mandataire </label> 
+                                                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                                                <select class="selectpickerx form-control " id="user_id" name="user_id" data-live-search="true" data-style="btn-warning btn-rounded" >
+                                                                    @if($agenda->user != null) 
+                                                                        <option value="{{ $agenda->user->id }}" data-tokens="{{ $agenda->user->nom }} {{ $agenda->user->prenom }}">{{ $agenda->user->nom }} {{ $agenda->user->prenom }}</option>
+                                                                    @endif
+                                                                
+                                                                    @foreach ($mandataires as $mandataire )
+                                                                        <option value="{{ $mandataire->id }}" data-tokens="{{ $mandataire->nom }} {{ $mandataire->prenom }}">{{ $mandataire->nom }} {{ $mandataire->prenom }}</option>
+                                                                    @endforeach 
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6 col-md-6 col-sm-6 {{$agenda->liee_a == "prospect" ? '' : 'div_non_liee'}} div_prospect_edit_{{$agenda->id}} "  >
+                                                        <div class="form-group row" >
+                                                            <label class="col-lg-8 col-md-8 col-sm-8 col-form-label" for="prospect_id">Choisir un prospect  </label>
+                                                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                                                <select class="selectpickerx form-control " id="prospect_id" name="prospect_id" data-live-search="true" data-style="btn-warning btn-rounded" >
+                                                                    @if($agenda->prospect != null) 
+                                                                        <option value="{{ $agenda->prospect->id }}" data-tokens="{{ $agenda->prospect->nom }} {{ $agenda->prospect->prenom }}">{{ $agenda->prospect->nom }} {{ $agenda->prospect->prenom }}</option>
+                                                                    @endif
+                                                                    @foreach ($prospects as $prospect )
+                                                                        <option value="{{ $prospect->id }}" data-tokens="{{ $prospect->nom }} {{ $prospect->prenom }}">{{ $prospect->nom }} {{ $prospect->prenom }}</option>
+                                                                    @endforeach 
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                </div>
+                                                <hr>
                                         <div class="row">
                                         
                                             
@@ -273,6 +324,61 @@
     })
         })
     })
+
+</script>
+
+<script>
+
+
+
+$('.div_non_liee').hide();
+
+
+function selectIdNew(){
+
+     
+// #########
+        
+    if($('#liee_a_add_new').val() == "mandataire"){
+        $('#div_mandataire_add_new').show();
+        $('#div_prospect_add_new').hide();
+        
+        
+    }else if($('#liee_a_add_new').val() == "prospect"){
+        $('#div_prospect_add_new').show();
+        $('#div_mandataire_add_new').hide();
+        
+    }else{        
+        $('#div_prospect_add_new').hide();
+        $('#div_mandataire_add_new').hide();
+        
+    }
+}
+
+
+$('.liee_a_edit').on('change', function(el) {
+   
+    
+    let liee_a = $(this).val() ;    
+    let agenda_id = $(this).attr('agenda-id') ;
+    
+    if(liee_a == "mandataire"){
+    
+        $('.div_mandataire_edit_'+agenda_id).show();
+        $('.div_prospect_edit_'+agenda_id).hide();
+        
+    }else if(liee_a == "prospect"){
+    
+        $('.div_mandataire_edit_'+agenda_id).hide();
+        $('.div_prospect_edit_'+agenda_id).show();
+    }else{        
+        $('.div_mandataire_edit_'+agenda_id).hide();
+        $('.div_prospect_edit_'+agenda_id).hide();
+    }
+
+
+})
+
 
 </script>
 @endsection

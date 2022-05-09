@@ -349,7 +349,7 @@ Route::get('/agendas/general/listing','AgendaController@listing')->name('agendas
 
 Route::post('/agenda/store','AgendaController@store')->name('agenda.store');
 Route::post('/agenda/update','AgendaController@update')->name('agenda.update');
-Route::post('/agenda/delete/{agenda_id}','AgendaController@destroy')->name('agenda.delete');
+Route::get('/agenda/delete/{agenda_id}','AgendaController@destroy')->name('agenda.delete');
 
 
 // Export WINFIC liste des factures ventes

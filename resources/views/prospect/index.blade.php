@@ -779,9 +779,9 @@ tab_id_nom_prospect = JSON.parse(tab_id_nom_prospect.replaceAll('&quot;','"') );
                     // console.log(date_deb.length);
                     val = {
                     title:agenda.titre,
-                    start: agenda.date_deb+'T',
+                    start: agenda.date_deb,
                     // start: agenda.date_deb+'T'+agenda.heure_deb,
-                    end: agenda.date_fin+'T',
+                    end: agenda.date_fin,
                     // end: agenda.date_fin+'T'+agenda.heure_fin,
                     extendedProps: {
                         id:agenda.id,

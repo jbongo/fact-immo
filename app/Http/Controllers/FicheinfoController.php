@@ -205,7 +205,7 @@ class FicheinfoController extends Controller
         $fiche = Ficheinfo::where('user_id', Crypt::decrypt($mandataire_id) )->first();
         
         $mandataire = $fiche->user;
-        $champs = json_decode($fiche->champs_valeurs);
+        $champs =$fiche->outilfiche;
     
         // on sauvegarde la fiche dans le repertoire du mandataire
         $path = storage_path('app/public/'.$mandataire->id.'/fiche');
@@ -223,6 +223,7 @@ class FicheinfoController extends Controller
     
         $fiche->update();
         
+        // dd($champs);
      
           
         $pdf = PDF::loadView('fiche_info.fiche_pdf',compact(['fiche','mandataire', 'champs']));

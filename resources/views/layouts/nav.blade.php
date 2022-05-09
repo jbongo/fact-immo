@@ -345,10 +345,10 @@
                 
                 @if(Auth::user()->role == "admin")
                 
-                <li class="header-icon dib" style="background-color:#c31e3c; color:#fff"><i class="ti-check-box">2</i>
+                <li class="header-icon dib" style="background-color:#c31e3c; color:#fff"><i class="ti-check-box">{{\App\Agenda::nb_taches("a_faire") + \App\Agenda::nb_taches("en_retard")}}</i>
                     <div class="drop-down">
                         <div class="dropdown-content-heading">
-                            <span class="text-left"> Tâches</span>
+                            <span class="text-left" style="font-weight: bold;"> Tâches</span>
                         </div>
                         <div class="dropdown-content-body">
                             <ul>
@@ -362,7 +362,7 @@
                                         <div class="notification-content">
                                             <small class="notification-timestamp pull-right"> </small>
                                             
-                                            <div class="notification-heading" style="color: rgb(230, 110, 5)">&Agrave; Faire : <span>1</span></div>
+                                            <div class="notification-heading" style="color: rgb(230, 110, 5)">&Agrave; Faire : <span>{{\App\Agenda::nb_taches("a_faire")}}</span></div>
                                             
                                         </div>
                                     </a>
@@ -375,7 +375,7 @@
                                         <div class="notification-content">
                                             <small class="notification-timestamp pull-right"> </small>
                                             
-                                            <div class="notification-heading" style="color: rgb(220, 20, 20)">&Agrave; En retard : <span>1</span></div>
+                                            <div class="notification-heading" style="color: rgb(220, 20, 20)">En retard : <span>{{\App\Agenda::nb_taches("en_retard")}}</span></div>
                                      
                                         </div>
                                     </a>
