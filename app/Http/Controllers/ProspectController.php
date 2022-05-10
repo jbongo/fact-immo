@@ -46,15 +46,16 @@ class ProspectController extends Controller
         $bibliotheques = Bibliotheque::all();
         
         //  Tableau contenant les ids et noms des prospects pour faciliter l'affichage dans le code js
-        $tab_id_nom_prospect = array();
+        $tab_prospect = array();
         foreach ($prospects as $prospect) {
-            $tab_id_nom_prospect[$prospect->id] = $prospect->nom. " ".$prospect->prenom ;
+            $tab_prospect [$prospect->id]["nom"] = $prospect->nom." ". $prospect->prenom; 
+            $tab_prospect [$prospect->id]["contact"] = $prospect->telephone_portable; 
         }
         
-        $tab_id_nom_prospect =  json_encode($tab_id_nom_prospect);
+        $tab_prospect =  json_encode($tab_prospect);
    
 
-        return view('prospect.index', compact('prospects','agendas', 'mandataires','bibliotheques','tab_id_nom_prospect'));
+        return view('prospect.index', compact('prospects','agendas', 'mandataires','bibliotheques','tab_prospect'));
     }
 
     /**
@@ -920,6 +921,7 @@ class ProspectController extends Controller
             'est_agenda_mandataire' => false,
             // 'est_agenda_prospect' => $request->est_agenda_prospect,            
             'est_agenda_general' => false,
+            'liee_a' => "prospect",
             'prospect_id' => $request->prospect_id, 
             'user_id' => $request->user_id, 
         
@@ -956,6 +958,7 @@ class ProspectController extends Controller
          $agenda->est_agenda_mandataire = false;
         // $agenda->est_agenda_prospect =  $request->est_agenda_prospect;            
         $agenda->est_agenda_general =  false;
+        $agenda->liee_a =  "prospect"; 
         $agenda->prospect_id =  $request->prospect_id; 
         $agenda->user_id =  $request->user_id; 
         

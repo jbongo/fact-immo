@@ -1,7 +1,7 @@
 @extends('layouts.app') 
 @section('content') 
 @section ('page_title') 
-    Agenda général
+    Agenda général en listing
 @endsection
 <style>
 .modal-content {
@@ -14,7 +14,7 @@
    <div class="col-lg-12">
    
       <div class="card">
-    <a href="{{route('agendas.index')}}" class="btn btn-default btn-flat btn-addon m-b-10 m-l-5"><i class="ti-angle-double-left"></i>@lang('Agenda général')</a>
+    <a href="{{route('agendas.index')}}" class="btn btn-default btn-flat btn-addon m-b-10 m-l-5"><i class="ti-angle-double-left"></i>@lang('Agenda général en calendrier')</a>
       
          <div class="card-body">
            
@@ -27,10 +27,29 @@
             <div class="media">
 
               
-               <div class="media-left media-middle">
-                  <i class="ti-list f-s-48 color-danger m-r-1"></i> <label for="" style="font-weight: bold">Toutes les tâches </label>  
-               
-               </div>
+                <div style="display:flex; flex-direction: row; justify-content:space-around; ">
+              
+                    <div class="media-left media-middle">
+                        <i class="ti-list f-s-48 color-primary m-r-1"></i> <label for="" ><a style="font-weight: bold; color:#2483ac; font-size:18px " href="{{route('agendas.listing')}}">Toutes les tâches 
+                            <span class="badge badge-danger">{{\App\Agenda::nb_taches("toutes")}}</span> 
+                        </a></label><hr style="border-top: 5px solid #240c9a; margin-top: 10px">                    
+                    </div>
+                    
+                    <div class="media-left media-middle">
+                        <i class="ti-list f-s-48 color-success m-r-1"></i> <label for="" ><a style="font-weight: bold; color:#14893f;" href="{{route('agendas.listing_a_faire')}}">Tâches à faire
+                            <span class="badge badge-danger">{{\App\Agenda::nb_taches("a_faire")}}</span>
+                        </a></label>                    
+                    </div>
+                    
+                    <div class="media-left media-middle">                       
+                        <i class="ti-list f-s-48 color-danger m-r-1"></i> <label for="" ><a style="font-weight: bold; color:#8b0f06;" href="{{route('agendas.listing_en_retard')}}">Tâches en retard 
+                            <span class="badge badge-danger">{{\App\Agenda::nb_taches("en_retard")}}</span>
+                        </a></label>                    
+                    </div>
+                
+              
+                </div>
+              
                 <div class="col-lg-12">
                   <div class="card alert">
                       <div class="card-header">
@@ -49,10 +68,11 @@
                                     <tr>
                                         <th>Tâche prévu pour</th>
                                         <th>Type</th>
-                                        <th>Type</th>
+                                        <th>Tâche</th>
                                         {{-- <th>Tâche</th> --}}
+                                        <th>Date prévue de réalisation</th>
                                         <th>Statut</th>
-                                        <th>Date</th>
+                                        <th>Action</th>
                                        
 
                                     </tr>
@@ -66,10 +86,11 @@
                                                 <td style="color: #450854; ">
                                                    <span>
                                                         @if($agenda->liee_a =="prospect") 
-                                                                @if($agenda->prospect != null) {{$agenda->prospect->nom}} {{$agenda->prospect->prenom}} @endif   
+                                                                @if($agenda->prospect != null) {{$agenda->prospect->nom}} {{$agenda->prospect->prenom}} @endif  
                                                         @elseif($agenda->liee_a =="mandataire" ) 
                                                                 @if($agenda->user != null) {{$agenda->user->nom}} {{$agenda->user->prenom}} @endif  
                                                         @else 
+                                                        
                                                         
                                                         @endif
                                                    
@@ -83,6 +104,14 @@
                                                 <td style="color: #e05555; font-weight:bold; ">
                                                     <p>{{$agenda->titre}} : <i>{{$agenda->description}} </i>  </p> 
                                                 </td>
+                                                
+                                                <td style="color: #32ade1;">
+                                                    @php 
+                                                        $date_deb = new DateTime($agenda->date_deb);
+                                                   @endphp
+                                                   <p class="text-danger" style="font-weight: bold;">{{$date_deb->format('d/m/Y')}} à {{$agenda->heure_deb}}</p>
+                                                </td>
+                                                
                                                 <td style="color: #32ade1;">
                                                     <div class="comment-action">
                                                         @if($agenda->est_terminee == true )
@@ -93,13 +122,10 @@
                                                         
                                                      </div>
                                                 </td>
-                                                <td style="color: #32ade1;">
-                                                    @php 
-                                                        $date_deb = new DateTime($agenda->date_deb);
-                                                   @endphp
-                                                   <p class="text-danger">{{$date_deb->format('d/m/Y')}} à {{$agenda->heure_deb}}</p>
+                                            
+                                                <td>
+                                                    <span><a  href="{{route('agenda.delete',$agenda->id)}}" class="supprimer" data-toggle="tooltip" title="@lang('Supprimer ') "><i class="large material-icons color-danger">delete</i> </a></span>
                                                 </td>
-                                             
                                              
                                             </tr>
                                           
@@ -117,15 +143,33 @@
                                         
                                         @csrf
                                         <input type="hidden" name="id" value="{{$agenda->id}}" />
-                                       
+                                        
+                                        
+                                        @if($agenda->liee_a == "mandataire")
+            
+                                            <div class="row " style="font-size:17px;">
+                                                <div class="col-md-12">
+                                                    <label class="text-primary"> {{$agenda->user->nom}} {{$agenda->user->prenom}}</label>
+                                                    <label class="control-label">/ </label> <label class="text-danger">   {{$agenda->user->telephone1}}</label>
+                                                </div>
+                                            </div> </br>
+                                        @elseif($agenda->liee_a == "prospect")
+                                        
+                                            <div class="row " style="font-size:17px;">
+                                                <div class="col-md-12">
+                                                    <label class="text-primary"> {{$agenda->prospect->nom}} {{$agenda->prospect->prenom}}</label>
+                                                    <label class="control-label">/ </label> <label class="text-danger">  {{$agenda->prospect->telephone_portable}}</label>
+                                                </div>
+                                            </div> </br>
+                                        @endif
                                         
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <label class="control-label">Date début</label>
-                                                <input class="form-control form-white" placeholder="" value="{{$agenda->date_deb}}" type="date" name="date_deb" />
+                                                <input class="form-control form-white" placeholder="" value="{{$agenda->date_deb->format('Y-m-d')}}" required type="date" name="date_deb" />
                                             </div><div class="col-md-6">
                                                 <label class="control-label">Date Fin</label>
-                                                <input class="form-control form-white" placeholder="" value="{{$agenda->date_fin}}" type="date" name="date_fin" />
+                                                <input class="form-control form-white" placeholder="" value="{{$agenda->date_fin->format('Y-m-d')}}" required type="date" name="date_fin" />
                                             </div>
                                             
                                             <div class="col-md-6">
@@ -159,11 +203,11 @@
                                                     
                                                     <div class="col-lg-6 col-md-6 col-sm-6 {{$agenda->liee_a == "mandataire" ? '' : 'div_non_liee'}} div_mandataire_edit_{{$agenda->id}} "  >
                                                         <div class="form-group row" >
-                                                            <label class="col-lg-8 col-md-8 col-sm-8 col-form-label" for="user_id">Choisir un mandataire </label> 
+                                                            <label class="col-lg-8 col-md-8 col-sm-8 col-form-label" for="mandataire_id">Choisir un mandataire </label> 
                                                             <div class="col-lg-6 col-md-6 col-sm-6">
-                                                                <select class="selectpickerx form-control " id="user_id" name="user_id" data-live-search="true" data-style="btn-warning btn-rounded" >
+                                                                <select class="selectpickerx form-control " id="mandataire_id" name="mandataire_id" data-live-search="true" data-style="btn-warning btn-rounded" >
                                                                     @if($agenda->user != null) 
-                                                                        <option value="{{ $agenda->user->id }}" data-tokens="{{ $agenda->user->nom }} {{ $agenda->user->prenom }}">{{ $agenda->user->nom }} {{ $agenda->user->prenom }}</option>
+                                                                        <option value="{{ $agenda->user->id }}" >{{ $agenda->user->nom }} {{ $agenda->user->prenom }}</option>
                                                                     @endif
                                                                 
                                                                     @foreach ($mandataires as $mandataire )
@@ -226,6 +270,7 @@
                                         <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Fermer</button>
                                         
                                         <input type="submit" class="btn btn-success waves-effect waves-light save-agenda"  value="Modifier">
+                                        <button type="button" class="btn btn-danger delete-event waves-effect waves-light supprimer" href="/agenda/delete/{{$agenda->id}}" data-dismiss="modal">Supprimer</button>
                                     </div>
                                 </form>
                                 </div>
@@ -378,6 +423,74 @@ $('.liee_a_edit').on('change', function(el) {
 
 
 })
+
+
+
+
+// Supprimer une tâche
+
+$(function() {
+            $.ajaxSetup({
+                headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
+            })
+            $('[data-toggle="tooltip"]').tooltip()
+            $('body').on('click','.supprimer',function(e) {
+                let that = $(this)
+                e.preventDefault()
+                const swalWithBootstrapButtons = swal.mixin({
+                confirmButtonClass: 'btn btn-success',
+                cancelButtonClass: 'btn btn-danger',
+                buttonsStyling: false,
+                })
+
+            swalWithBootstrapButtons({
+                title: 'Confirmez-vous la suppression de cette tâche  ?',
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#DD6B55',
+                confirmButtonText: '@lang('Oui')',
+                cancelButtonText: '@lang('Non')',
+                
+            }).then((result) => {
+                if (result.value) {
+                    // $('[data-toggle="tooltip"]').tooltip('hide')
+                        $.ajax({                        
+                            url: that.attr('href'),
+                            type: 'GET',
+                            success: function(data){
+                                that.parents('tr').remove()
+                            
+                                document.location.reload();
+                         },
+                         error : function(data){
+                            console.log(data);
+                         }
+                        })
+                        .done(function () {
+                                // that.parents('tr').remove()
+                        })
+    
+                    swalWithBootstrapButtons(
+                    'Supprimée!',
+                    'Tâche success'
+                    )
+                    
+                    
+                } else if (
+                    // Read more about handling dismissals
+                    result.dismiss === swal.DismissReason.cancel
+                ) {
+                    swalWithBootstrapButtons(
+                    'Annulé',
+                    'La tâche n\'a pas été supprimée.',
+                  
+                    'error'
+                    )
+                }
+            })
+        })
+    })
+
 
 
 </script>

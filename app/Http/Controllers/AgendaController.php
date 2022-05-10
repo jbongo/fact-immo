@@ -20,12 +20,12 @@ class AgendaController extends Controller
         $agendas = Agenda::all()->toJson();
        
         $mandataires = User::join('contrats','users.id','=','contrats.user_id' )
-        ->select('*','contrats.id as contrat_id')
+        ->select('*','users.id as id','contrats.id as contrat_id')
         ->where('contrats.a_demission', false)->get();
         
         $prospects = Prospect::where([['archive',false], ['est_mandataire', false]])->get();
         
-        // dd($prospects);
+        // dd($mandataires);
         $liste_prosprects = Prospect::all();
         $liste_mandataires = User::all();
         
@@ -35,13 +35,15 @@ class AgendaController extends Controller
         
         foreach ($liste_prosprects as $value) {
         
-            $tab_prospects [$value->id] = $value->nom." ". $value->prenom; 
+            $tab_prospects [$value->id]["nom"] = $value->nom." ". $value->prenom; 
+            $tab_prospects [$value->id]["contact"] = $value->telephone_portable; 
         }
         
         
         foreach ($liste_mandataires as $value) {
         
-            $tab_mandataires[$value->id] = $value->nom." ". $value->prenom; 
+            $tab_mandataires[$value->id]["nom"] = $value->nom." ". $value->prenom; 
+            $tab_mandataires[$value->id]["contact"] = $value->telephone1; 
         }
         
         $tab_prospects  = json_encode($tab_prospects ) ;
@@ -52,7 +54,7 @@ class AgendaController extends Controller
     }
 
 
-/**
+    /**
      * Agenda général
      * en listing
      * @return \Illuminate\Http\Response
@@ -63,7 +65,7 @@ class AgendaController extends Controller
         $agendas = Agenda::all();
        
         $mandataires = User::join('contrats','users.id','=','contrats.user_id' )
-        ->select('*','contrats.id as contrat_id')
+        ->select('*','users.id as id','contrats.id as contrat_id')
         ->where('contrats.a_demission', false)->get();
         
         $prospects = Prospect::where([['archive',false], ['est_mandataire', false]])->get();
@@ -71,6 +73,49 @@ class AgendaController extends Controller
         // dd($agendas);
   
         return view('agenda.listing',compact('agendas','mandataires', 'prospects'));
+    }
+    
+      /**
+     * Liste des tâches en retard
+     * 
+     * @return \Illuminate\Http\Response
+     */
+    public function listing_en_retard()
+    {
+        
+        $agendas = Agenda::where([['est_terminee', false], ['date_deb', '<', date('Y-m-d')]])->get();
+
+       
+        $mandataires = User::join('contrats','users.id','=','contrats.user_id' )
+        ->select('*','users.id as id','contrats.id as contrat_id')
+        ->where('contrats.a_demission', false)->get();
+        
+        $prospects = Prospect::where([['archive',false], ['est_mandataire', false]])->get();
+        
+        // dd($agendas);
+  
+        return view('agenda.taches_en_retard',compact('agendas','mandataires', 'prospects'));
+    }
+    
+      /**
+     * Liste des tâches à faire
+     * en listing
+     * @return \Illuminate\Http\Response
+     */
+    public function listing_a_faire()
+    {
+        
+        $agendas = Agenda::where([['est_terminee', false], ['date_deb', '>=', date('Y-m-d')]])->get();
+       
+        $mandataires = User::join('contrats','users.id','=','contrats.user_id' )
+        ->select('*','users.id as id','contrats.id as contrat_id')
+        ->where('contrats.a_demission', false)->get();
+        
+        $prospects = Prospect::where([['archive',false], ['est_mandataire', false]])->get();
+        
+        // dd($agendas);
+  
+        return view('agenda.taches_a_faire',compact('agendas','mandataires', 'prospects'));
     }
 
    
@@ -122,6 +167,8 @@ class AgendaController extends Controller
     public function update(Request $request)
     {
         //
+        
+        
         $agenda = Agenda::where('id',$request->id)->first();
         // dd( $request->heure_fin);
         $agenda->titre =  $request->titre; 
@@ -139,8 +186,8 @@ class AgendaController extends Controller
         $agenda->est_agenda_general =  true;
         $agenda->liee_a =  $request->liee_a; 
         
-        if( $request->mandataire_id2 != "null")  $agenda->prospect_id =  $request->prospect_id2;        
-        if( $request->mandataire_id2 != "null") $agenda->user_id =  $request->mandataire_id2; 
+        if( $request->prospect_id != "null")  $agenda->prospect_id =  $request->prospect_id;        
+        if( $request->mandataire_id != "null") $agenda->user_id =  $request->mandataire_id; 
         
         $agenda->est_terminee = $request->est_terminee == "true" ? true : false;             
         
@@ -148,6 +195,7 @@ class AgendaController extends Controller
         $agenda->update();
    
         
+        // dd($request->prospect_id2);
         return redirect()->back()->with('ok', 'tâche modifiée '.$agenda->titre);
         
     }

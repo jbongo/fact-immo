@@ -356,13 +356,13 @@
                               
                             
                                 <li>
-                                    <a href="#">
+                                    <a href="{{route('agendas.listing_a_faire')}}">
                                         <img class="pull-left m-r-10 avatar-img" src="{{ asset('images/avatar/3.jpg')}}" alt="" />
                                         
                                         <div class="notification-content">
                                             <small class="notification-timestamp pull-right"> </small>
                                             
-                                            <div class="notification-heading" style="color: rgb(230, 110, 5)">&Agrave; Faire : <span>{{\App\Agenda::nb_taches("a_faire")}}</span></div>
+                                            <div class="notification-heading" style="color: rgb(13, 194, 58)">&Agrave; Faire : <span>{{\App\Agenda::nb_taches("a_faire")}}</span></div>
                                             
                                         </div>
                                     </a>
@@ -370,7 +370,7 @@
                                 
                                 
                                 <li>
-                                    <a href="#">
+                                    <a href="{{route('agendas.listing_en_retard')}}">
                                         <img class="pull-left m-r-10 avatar-img" src="{{ asset('images/avatar/3.jpg')}}" alt="" />
                                         <div class="notification-content">
                                             <small class="notification-timestamp pull-right"> </small>

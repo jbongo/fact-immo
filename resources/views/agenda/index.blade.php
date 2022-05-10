@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
     @section ('page_title')
-    <span class="control-label">Agenda Général</span> 
+    <span class="control-label">Agenda Général </span> 
     @endsection
     <style>
         .modal-header .close {
@@ -270,9 +270,31 @@ tab_prospects = JSON.parse(tab_prospects.replaceAll('&quot;','"') );
             var $this = this;
             
             var form = $(`<form action="{{route('agenda.update')}}" method="post" ></form>`);
+            
+            if(calEvent.extendedProps.liee_a == "mandataire"){
+            
+                var contact = ` <div class="row " style="font-size:17px;">
+                                    <div class="col-md-12">
+                                        <label class="text-primary"> ${calEvent.extendedProps.mandataire}</label>
+                                        <label class="control-label">/ </label> <label class="text-danger">  ${calEvent.extendedProps.contact_mandataire} </label>
+                                    </div>
+                                </div> </br`
+            }else if(calEvent.extendedProps.liee_a == "prospect"){
+            
+                var contact = ` <div class="row " style="font-size:17px;">
+                                    <div class="col-md-12">
+                                        <label class="text-primary"> ${calEvent.extendedProps.prospect}</label>
+                                        <label class="control-label">/ </label> <label class="text-danger">  ${calEvent.extendedProps.contact_prospect} </label>
+                                    </div>
+                                </div> </br`
+            }
      
-            form.append(`@csrf <div class="row">
-                        <input type="hidden" name="id" value="${calEvent.extendedProps.id}" />
+            form.append(`@csrf 
+                            
+                        
+                        ${contact}
+                        <div class="row">
+                            <input type="hidden" name="id" value="${calEvent.extendedProps.id}" />
             
                             <div class="col-md-6">                            
                                 <label class="control-label">Date début ${calEvent.extendedProps.date_deb} <span class="text-danger">*</span> </label>
@@ -329,9 +351,9 @@ tab_prospects = JSON.parse(tab_prospects.replaceAll('&quot;','"') );
                             <div id="div_mandataire_edit">
                             <div class="col-lg-6 col-md-6 col-sm-6 div_mandataire_edit"  >
                                 <div class="form-group row" >
-                                    <label class="col-lg-8 col-md-8 col-sm-8 col-form-label" for="mandataire_id2">Choisir un mandataire  </label>
+                                    <label class="col-lg-8 col-md-8 col-sm-8 col-form-label" for="mandataire_id">Choisir un mandataire  </label>
                                     <div class="col-lg-12 col-md-12 col-sm-12">
-                                        <select class="selectpickerx form-control " id="mandataire_id2" name="mandataire_id2" data-live-search="true" data-style="btn-warning btn-rounded" >
+                                        <select class="selectpickerx form-control " id="mandataire_id" name="mandataire_id" data-live-search="true" data-style="btn-warning btn-rounded" >
                                             <option value="${calEvent.extendedProps.mandataire_id}" data-tokens="${calEvent.extendedProps.mandataire}">${calEvent.extendedProps.mandataire}</option>
                                         
                                              @foreach ($mandataires as $mandataire )
@@ -478,9 +500,9 @@ tab_prospects = JSON.parse(tab_prospects.replaceAll('&quot;','"') );
                             
                             <div class="col-lg-6 col-md-6 col-sm-6 "  id="div_prospect_add">
                                 <div class="form-group row" >
-                                    <label class="col-lg-8 col-md-8 col-sm-8 col-form-label"  for="prospect_id">Choisir un prospect  </label>
+                                    <label class="col-lg-8 col-md-8 col-sm-8 col-form-label"  for="prospect_id1">Choisir un prospect  </label>
                                     <div class="col-lg-12 col-md-12 col-sm-12">
-                                        <select class="selectpickerx form-control " id="prospect_id" name="prospect_id" data-live-search="true" data-style="btn-warning btn-rounded" >
+                                        <select class="selectpickerx form-control " id="prospect_id1" name="prospect_id1" data-live-search="true" data-style="btn-warning btn-rounded" >
                                             @foreach ($prospects as $prospect )
                                                 <option value="{{ $prospect->id }}" data-tokens="{{ $prospect->nom }} {{ $prospect->prenom }}">{{ $prospect->nom }} {{ $prospect->prenom }}</option>
                                             @endforeach 
@@ -574,27 +596,47 @@ tab_prospects = JSON.parse(tab_prospects.replaceAll('&quot;','"') );
             var list = Array();
             var val;
             agendas.forEach( function (agenda)  {
-                    console.log(tab_mandataires[agenda.user_id]);
+                    
                 if(agenda.est_terminee == true){
                     var color = "bg-success";
                 }else{
                     var color = "bg-danger";
                 } 
-
-                    val = {title:agenda.titre,
-                    start: agenda.date_deb,
-                    end: agenda.date_fin,
+                    
+                    var date_fin = new Date(agenda.date_fin);
+                    var date_deb = new Date(agenda.date_deb);
+                    
+                    var jour_deb = date_deb.getDate() < 10 ? '0'+date_deb.getDate(): date_deb.getDate() ;
+                    var mois_deb = date_deb.getMonth() < 10 ? '0'+ (date_deb.getMonth() + 1): date_deb.getMonth() +1 ;
+                    var annee_deb = date_deb.getFullYear();
+                    
+                    var jour_fin = date_fin.getDate() < 10 ? '0'+date_fin.getDate(): date_fin.getDate() ;
+                    var mois_fin = date_fin.getMonth() < 10 ? '0'+ (date_fin.getMonth() + 1): date_fin.getMonth() +1 ;
+                    var annee_fin = date_fin.getFullYear();
+                    
+                    date_deb = annee_deb+'-'+(mois_deb)+'-'+jour_deb;
+                    date_fin = annee_fin+'-'+(mois_fin)+'-'+jour_fin;
+                    
+               
+                   
+                    
+                    val = {
+                    title:agenda.titre,
+                    start: date_deb,
+                    end: date_fin,
                     extendedProps: {
                         id:agenda.id,
-                        date_deb:agenda.date_deb,
-                        date_fin:agenda.date_fin,
+                        date_deb:date_deb,
+                        date_fin:date_fin,
                         heure_deb:agenda.heure_deb,
                         heure_fin:agenda.heure_fin,
                         type_rappel:agenda.type_rappel,
                         liee_a:agenda.liee_a,
-                        mandataire:tab_mandataires[agenda.user_id],
+                        mandataire: tab_mandataires[agenda.user_id] ? tab_mandataires[agenda.user_id]["nom"] : "",
+                        contact_mandataire: tab_mandataires[agenda.user_id] ? tab_mandataires[agenda.user_id]["contact"] : "",
                         mandataire_id:agenda.user_id,
-                        prospect:tab_prospects[agenda.prospect_id],
+                        prospect: tab_prospects[agenda.prospect_id] ? tab_prospects[agenda.prospect_id]["nom"] : "",
+                        contact_prospect: tab_prospects[agenda.prospect_id] ? tab_prospects[agenda.prospect_id]["contact"] : "",
                         prospect_id:agenda.prospect_id,
                         est_terminee:agenda.est_terminee,
                         description:agenda.description,
@@ -777,7 +819,7 @@ function selectIdEdit(){
                 
             }).then((result) => {
                 if (result.value) {
-                    $('[data-toggle="tooltip"]').tooltip('hide')
+                    // $('[data-toggle="tooltip"]').tooltip('hide')
                         $.ajax({                        
                             url: that.attr('href'),
                             type: 'GET',
@@ -789,7 +831,7 @@ function selectIdEdit(){
                          }
                         })
                         .done(function () {
-                                that.parents('tr').remove()
+                                // that.parents('tr').remove()
                         })
     
                     swalWithBootstrapButtons(

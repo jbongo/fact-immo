@@ -28,7 +28,11 @@ class Agenda extends Model
     }elseif($type_tache == "en_retard"){
         $nb_taches = Agenda::where([['est_terminee', false], ['date_deb', '<', date('Y-m-d')]])->count();
     
-    }else{
+    }elseif($type_tache == "toutes"){
+        $nb_taches = Agenda::all()->count();
+    
+    }
+    else{
     
         $nb_taches = "erreur de paramètre";
     }

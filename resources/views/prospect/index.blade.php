@@ -482,10 +482,11 @@
 <script>
 
 var agendas = "{{$agendas}}";
-var tab_id_nom_prospect = "{{$tab_id_nom_prospect}}";
+var tab_prospect = "{{$tab_prospect}}";
 
 agendas = JSON.parse(agendas.replaceAll('&quot;','"') );
-tab_id_nom_prospect = JSON.parse(tab_id_nom_prospect.replaceAll('&quot;','"') );
+tab_prospect = JSON.parse(tab_prospect.replaceAll('&quot;','"') );
+
 
 
 
@@ -533,8 +534,23 @@ tab_id_nom_prospect = JSON.parse(tab_id_nom_prospect.replaceAll('&quot;','"') );
             var $this = this;
             
             var form = $(`<form action="{{route('prospect.agenda.update')}}" method="post" ></form>`);
+            
+            var contact = "";
+      
+            if(calEvent.extendedProps.liee_a == "prospect"){
+            
+                contact = ` <div class="row " style="font-size:17px;">
+                                    <div class="col-md-12">
+                                        <label class="text-primary"> ${calEvent.extendedProps.prospect}</label>
+                                        <label class="control-label">/ </label> <label class="text-danger">  ${calEvent.extendedProps.contact_prospect} </label>
+                                    </div>
+                                </div> </br`
+            }
      
-            form.append(`@csrf <div class="row">
+            form.append(`@csrf 
+                        
+                    
+                    ${contact}
                         <input type="hidden" name="id" value="${calEvent.extendedProps.id}" />
                         <div class="row">
                             <div class="col-md-6">
@@ -770,13 +786,13 @@ tab_id_nom_prospect = JSON.parse(tab_id_nom_prospect.replaceAll('&quot;','"') );
                     }else{
                         var color = "bg-danger";
                     } 
-                    var nom_prospect = tab_id_nom_prospect[agenda.prospect_id];
+                    var nom_prospect = tab_prospect[agenda.prospect_id]["nom"];
                     
                  
                     var date_deb = agenda.date_deb.substring(0,10);
                     var date_fin = agenda.date_fin.substring(0,10);
                     
-                    // console.log(date_deb.length);
+                
                     val = {
                     title:agenda.titre,
                     start: agenda.date_deb,
@@ -792,6 +808,9 @@ tab_id_nom_prospect = JSON.parse(tab_id_nom_prospect.replaceAll('&quot;','"') );
                         date_deb:date_deb,
                         date_fin:date_fin,
                         heure_deb:agenda.heure_deb,
+                        liee_a:agenda.liee_a,
+                        prospect: tab_prospect[agenda.prospect_id] ? tab_prospect[agenda.prospect_id]["nom"] : "",
+                        contact_prospect: tab_prospect[agenda.prospect_id] ? tab_prospect[agenda.prospect_id]["contact"] : "",
                         // heure_fin:agenda.heure_fin,
                         description:agenda.description,
                     },

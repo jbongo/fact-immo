@@ -346,6 +346,8 @@ Route::middleware('auth')->group(function(){
 // Agenda  général
 Route::get('/agendas/general','AgendaController@index')->name('agendas.index');
 Route::get('/agendas/general/listing','AgendaController@listing')->name('agendas.listing');
+Route::get('/agendas/general/listing-a-faire','AgendaController@listing_a_faire')->name('agendas.listing_a_faire');
+Route::get('/agendas/general/listing-en-retard','AgendaController@listing_en_retard')->name('agendas.listing_en_retard');
 
 Route::post('/agenda/store','AgendaController@store')->name('agenda.store');
 Route::post('/agenda/update','AgendaController@update')->name('agenda.update');
@@ -371,7 +373,7 @@ Route::get('/winfic/code-analytic-client','ExportwinficController@code_analytic_
 Route::get('/winfic/download/{fichier?}','ExportwinficController@download_export')->name('winfic.download_export');
 
 Route::get('/merge_facture/{date_deb?}/{date_fin?}','ExportwinficController@merge_factures')->name('merge_facture');
-Route::POST('/merge_facture_fournisseur/{date_deb?}/{date_fin?}','ExportwinficController@merge_factures_fournisseur')->name('merge_facture_fournisseur');
+Route::post('/merge_facture_fournisseur/{date_deb?}/{date_fin?}','ExportwinficController@merge_factures_fournisseur')->name('merge_facture_fournisseur');
 
 
 
