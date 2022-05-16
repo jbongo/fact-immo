@@ -891,7 +891,7 @@ class ProspectController extends Controller
     {
         $agendas = Agenda::where('prospect_id', $prospect_id)->get()->toJson();
         $prospect = Prospect::where('id', $prospect_id)->first();
-        // dd($prospect);
+        // dd($agendas);
         return view('prospect.agenda',compact('agendas', 'prospect'));
            
     }

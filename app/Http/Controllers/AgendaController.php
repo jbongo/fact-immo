@@ -35,14 +35,16 @@ class AgendaController extends Controller
         
         foreach ($liste_prosprects as $value) {
         
-            $tab_prospects [$value->id]["nom"] = $value->nom." ". $value->prenom; 
+            $tab_prospects [$value->id]["nom"] = $value->nom; 
+            $tab_prospects [$value->id]["nom_prenom"] = $value->nom." ". $value->prenom; 
             $tab_prospects [$value->id]["contact"] = $value->telephone_portable; 
         }
         
         
         foreach ($liste_mandataires as $value) {
         
-            $tab_mandataires[$value->id]["nom"] = $value->nom." ". $value->prenom; 
+            $tab_mandataires[$value->id]["nom"] = $value->nom; 
+            $tab_mandataires[$value->id]["nom_prenom"] = $value->nom." ". $value->prenom; 
             $tab_mandataires[$value->id]["contact"] = $value->telephone1; 
         }
         

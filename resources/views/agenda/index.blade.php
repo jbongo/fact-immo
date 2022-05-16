@@ -386,7 +386,7 @@ tab_prospects = JSON.parse(tab_prospects.replaceAll('&quot;','"') );
                         <div class="row">
                             <div class="col-md-12">
                                 <label class="control-label">Titre  <span class="text-danger">*</span></label>
-                                <input class="form-control form-white" placeholder="" value=" ${calEvent.title}" type="text" required name="titre" />
+                                <input class="form-control form-white" placeholder="" value=" ${calEvent.titre}" type="text" required name="titre" />
                             </div>
                             <div class="col-md-12">
                                 <label class="control-label">Description</label>
@@ -617,11 +617,22 @@ tab_prospects = JSON.parse(tab_prospects.replaceAll('&quot;','"') );
                     date_deb = annee_deb+'-'+(mois_deb)+'-'+jour_deb;
                     date_fin = annee_fin+'-'+(mois_fin)+'-'+jour_fin;
                     
-               
+                    
+                    if(agenda.liee_a == "mandataire" && tab_mandataires[agenda.user_id]  != "null" ){
+                        var title = agenda.type_rappel+" - "+tab_mandataires[agenda.user_id]["nom"]  ;
+                    }
+                    else if(agenda.liee_a == "prospect" &&  tab_prospects[agenda.prospect_id] != "null" ){
+                        var title = agenda.type_rappel+" - "+tab_prospects[agenda.prospect_id]["nom"]  ;
+                    
+                    }else{
+                        var title = agenda.type_rappel+" - "+agenda.titre ; 
+                    }
+                         
                    
                     
                     val = {
-                    title:agenda.titre,
+                    title: title,
+                    titre:agenda.titre,
                     start: date_deb,
                     end: date_fin,
                     extendedProps: {
@@ -632,10 +643,10 @@ tab_prospects = JSON.parse(tab_prospects.replaceAll('&quot;','"') );
                         heure_fin:agenda.heure_fin,
                         type_rappel:agenda.type_rappel,
                         liee_a:agenda.liee_a,
-                        mandataire: tab_mandataires[agenda.user_id] ? tab_mandataires[agenda.user_id]["nom"] : "",
+                        mandataire: tab_mandataires[agenda.user_id] ? tab_mandataires[agenda.user_id]["nom_prenom"] : "",
                         contact_mandataire: tab_mandataires[agenda.user_id] ? tab_mandataires[agenda.user_id]["contact"] : "",
                         mandataire_id:agenda.user_id,
-                        prospect: tab_prospects[agenda.prospect_id] ? tab_prospects[agenda.prospect_id]["nom"] : "",
+                        prospect: tab_prospects[agenda.prospect_id] ? tab_prospects[agenda.prospect_id]["nom_prenom"] : "",
                         contact_prospect: tab_prospects[agenda.prospect_id] ? tab_prospects[agenda.prospect_id]["contact"] : "",
                         prospect_id:agenda.prospect_id,
                         est_terminee:agenda.est_terminee,

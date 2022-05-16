@@ -198,8 +198,6 @@ var agendas = "{{$agendas}}";
 agendas = JSON.parse(agendas.replaceAll('&quot;','"') );
 
 
-console.log(agendas);
-
 ! function($) {
     "use strict";
 
@@ -455,42 +453,54 @@ console.log(agendas);
             var list = Array();
             var val;
             agendas.forEach( function (agenda)  {
-            
-            
-                if(agenda.type_rappel == "rdv"){
-                        var bgclass = "rdv";
-                    }
-                    else if(agenda.type_rappel == "appel"){
-                        var bgclass = "appel";
-                    }
-                    else if(agenda.type_rappel == "rappel"){
-                        var bgclass = "rappel";
-                    }
-                    else{
-                        var bgclass = "autre";
-                    }
                     
-                    val = {title:agenda.titre,
-                    start: agenda.date_deb+'T'+agenda.heure_deb,
-                    // end: agenda.date_fin+'T'+agenda.heure_fin,
-                    extendedProps: {
-                        id:agenda.id,
-                        prospect_id:agenda.prospect_id,
-                        date_deb:agenda.date_deb,
-                        date_fin:agenda.date_fin,
-                        heure_deb:agenda.heure_deb,
-                        est_terminee:agenda.est_terminee,
-                        type_rappel:agenda.type_rappel,
-                        // heure_fin:agenda.heure_fin,
-                        description:agenda.description,
-                    },
+                    if(agenda.est_terminee == true){
+                        var color = "bg-success";
+                    }else{
+                        var color = "bg-danger";
+                    } 
+                        
+                        var date_fin = new Date(agenda.date_fin);
+                        var date_deb = new Date(agenda.date_deb);
+                        
+                        var jour_deb = date_deb.getDate() < 10 ? '0'+date_deb.getDate(): date_deb.getDate() ;
+                        var mois_deb = date_deb.getMonth() < 10 ? '0'+ (date_deb.getMonth() + 1): date_deb.getMonth() +1 ;
+                        var annee_deb = date_deb.getFullYear();
+                        
+                        var jour_fin = date_fin.getDate() < 10 ? '0'+date_fin.getDate(): date_fin.getDate() ;
+                        var mois_fin = date_fin.getMonth() < 10 ? '0'+ (date_fin.getMonth() + 1): date_fin.getMonth() +1 ;
+                        var annee_fin = date_fin.getFullYear();
+                        
+                        date_deb = annee_deb+'-'+(mois_deb)+'-'+jour_deb;
+                        date_fin = annee_fin+'-'+(mois_fin)+'-'+jour_fin;
+                        
                    
-                    className:bgclass
-                    };
-                                        
-                    list.push(val)
-   
-                });
+                       
+                        
+                        val = {
+                        title:agenda.titre,
+                        start: date_deb,
+                        end: date_fin,
+                        extendedProps: {
+                            id:agenda.id,
+                            date_deb:date_deb,
+                            date_fin:date_fin,
+                            heure_deb:agenda.heure_deb,
+                            heure_fin:agenda.heure_fin,
+                            type_rappel:agenda.type_rappel,
+                            liee_a:agenda.liee_a,
+                           
+                            prospect_id:agenda.prospect_id,
+                            est_terminee:agenda.est_terminee,
+                            description:agenda.description,
+                        },
+                       
+                        className: color
+                        };
+                                            
+                        list.push(val)
+       
+                    });
                 
             
             var defaultEvents = list;
