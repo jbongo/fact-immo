@@ -544,7 +544,7 @@ tab_prospect = JSON.parse(tab_prospect.replaceAll('&quot;','"') );
                                         <label class="text-primary"> ${calEvent.extendedProps.prospect}</label>
                                         <label class="control-label">/ </label> <label class="text-danger">  ${calEvent.extendedProps.contact_prospect} </label>
                                     </div>
-                                </div> </br`
+                                </div> </br>`
             }
      
             form.append(`@csrf 
