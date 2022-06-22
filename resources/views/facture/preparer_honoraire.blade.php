@@ -147,7 +147,7 @@
             <td style="width: 260px;height:35px"></td>
         </tr>
         <tr>
-            <td style="width: 423px;"><span style="text-decoration: underline;"><strong>Facture stylimmo N&deg;:</strong> </span> &nbsp; {{$factureStylimmo->numero}}&nbsp; xxxx  </td>
+            <td style="width: 423px;"><span style="text-decoration: underline;"><strong>Facture stylimmo N&deg;:</strong> </span> &nbsp; {{$factureStylimmo->numero}}&nbsp;   </td>
             <td style="width: 260px;height:35px"></td>
         </tr>
     </tbody>
