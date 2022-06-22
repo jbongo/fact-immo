@@ -1073,7 +1073,7 @@ public  function preparer_facture_honoraire($compromis)
             
             $montant_vnt_ht = ( $compromis->frais_agence *  (100 - $compromis->pourcentage_agent) / 100 ) /Tva::coefficient_tva();
         }else{
-            $montant_vnt_ht = ($compromis->frais_agence/Tva::coefficient_tva()) ; 
+            $montant_vnt_ht = ( $compromis->frais_agence/Tva::coefficient_tva()) ; 
                 
         }
         
@@ -1163,7 +1163,7 @@ public  function preparer_facture_honoraire($compromis)
         }
         
         
-    $factureStylimmo = Facture::where([ ['type','stylimmo'],['compromis_id',$compromis->id]])->first();
+    $factureStylimmo = Facture::where([ ['type','stylimmo'],['compromis_id',$compromis->id], ['a_avoir', false]])->first();
     
     $etat_jeton = Facture::etat_jeton($mandataire->id);
     
@@ -1877,7 +1877,7 @@ public  function preparer_facture_honoraire_partage($compromis,$mandataire_id = 
     }
 
    
-    $factureStylimmo = Facture::where([ ['type','stylimmo'],['compromis_id',$compromis->id]])->first();
+    $factureStylimmo = Facture::where([ ['type','stylimmo'],['compromis_id',$compromis->id], ['a_avoir', false]])->first();
 
     $contrat = $mandataire->contrat;
 
@@ -2160,7 +2160,7 @@ public  function preparer_facture_honoraire_encaissement($compromis_id, $leporte
                   // Si on partage avec une agence externe
             if($compromis->est_partage_agent == true && $compromis->partage_reseau == false){
                 
-                $montant_vnt_ht = ( $compromis->frais_agence *  (100 - $compromis->pourcentage_agent) / 100 ) /Tva::coefficient_tva();
+                $montant_vnt_ht = ( $compromis->frais_agence *  ($compromis->pourcentage_agent) / 100 ) /Tva::coefficient_tva();
             }else{
                 $montant_vnt_ht = ($compromis->frais_agence/Tva::coefficient_tva()) ; 
                     
@@ -2485,7 +2485,7 @@ public  function deduire_pub_facture_honoraire(Request $request, $compromis)
     $mandataire->updateCommission($paliers[$niveau-1][1]);
 
 
-    $factureStylimmo = Facture::where([ ['type','stylimmo'],['compromis_id',$compromis->id]])->first();
+    $factureStylimmo = Facture::where([ ['type','stylimmo'],['compromis_id',$compromis->id], ['a_avoir', false]])->first();
 
     // $facture = Facture::where([ ['type','honoraire'],['compromis_id',$compromis->id]])->first();
 
