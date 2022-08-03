@@ -43,7 +43,7 @@ class ExportwinficController extends Controller
         $factureStylimmos = Facture::whereIn('type',['stylimmo','avoir','pack_pub','carte_visite','communication','autre','forfait_entree','cci'])->whereBetween('date_facture',[$date_deb,$date_fin])->orderBy('numero','asc')->get();  
         $montant_credit_debit = Facture::whereIn('type',['stylimmo','avoir','pack_pub','carte_visite','communication','autre','forfait_entree','cci'])->whereBetween('date_facture',[$date_deb,$date_fin])->where('user_id','<>',77)->sum('montant_ttc');
         
-      dd($factureStylimmos);
+    //   dd($factureStylimmos);
         $this->generer_pdf_facture($date_deb, $date_fin);
        
         return view ('winfic.index',compact(['factureStylimmos','date_deb','date_fin','montant_credit_debit']));
