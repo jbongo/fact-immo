@@ -751,7 +751,7 @@ Détail de l'affaire de {{$compromis->user->prenom}} {{$compromis->user->nom}}
 
 
     $('#adresse1_vendeur').attr('required', 'required');
-    $('#code_postal_vendeur').attr('required', 'required');
+    // $('#code_postal_vendeur').attr('required', 'required');
     $('#ville_vendeur').attr('required', 'required');
     
     $('#charge').on('change',function(){
@@ -759,11 +759,11 @@ Détail de l'affaire de {{$compromis->user->prenom}} {{$compromis->user->nom}}
       if($('#charge').val() == "Vendeur"){
 
             $('#adresse1_vendeur').attr('required', 'required');
-            $('#code_postal_vendeur').attr('required', 'required');
+            // $('#code_postal_vendeur').attr('required', 'required');
             $('#ville_vendeur').attr('required', 'required');
 
             $('#adresse1_acquereur').removeAttr('required');
-            $('#code_postal_acquereur').removeAttr('required');
+            // $('#code_postal_acquereur').removeAttr('required');
             $('#ville_acquereur').removeAttr('required');
 
             swal("L'adresse du vendeur est obligatoire");
@@ -771,11 +771,11 @@ Détail de l'affaire de {{$compromis->user->prenom}} {{$compromis->user->nom}}
 
       }else{
             $('#adresse1_acquereur').attr('required', 'required');
-            $('#code_postal_acquereur').attr('required', 'required');
+            // $('#code_postal_acquereur').attr('required', 'required');
             $('#ville_acquereur').attr('required', 'required');
 
             $('#adresse1_vendeur').removeAttr('required');
-            $('#code_postal_vendeur').removeAttr('required');
+            // $('#code_postal_vendeur').removeAttr('required');
             $('#ville_vendeur').removeAttr('required');
 
             swal("L'adresse de l'acquéreur est obligatoire");

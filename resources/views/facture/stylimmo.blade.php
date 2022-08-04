@@ -114,7 +114,11 @@
                                         <td width="" >
                                             <label class="color-info">
                                                 @if($facture->user !=null)
-                                                <a href="{{route('switch_user',Crypt::encrypt($facture->user->id) )}}" data-toggle="tooltip" title="@lang('Se connecter en tant que ') {{$facture->user->nom}}">{{$facture->user->nom}} {{$facture->user->prenom}}<i style="font-size: 17px" class="material-icons color-success">person_pin</i></a>  
+                                                    <a href="{{route('switch_user',Crypt::encrypt($facture->user->id) )}}" data-toggle="tooltip" title="@lang('Se connecter en tant que ') {{$facture->user->nom}}">{{$facture->user->nom}} {{$facture->user->prenom}}<i style="font-size: 17px" class="material-icons color-success">person_pin</i></a>  
+                                                
+                                                @elseif($facture->est_liee_mandataire_id != null)
+                                                    <span data-toggle="tooltip" title="Facture liée à ce mandataire">{{$facture->userliee()->nom}} {{$facture->userliee()->prenom}}</a>  
+                                                
                                                 @endif
                                             </label> 
                                         </td>

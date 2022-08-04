@@ -144,6 +144,20 @@ Modification facture {{$facture->type}} {{$facture->numero}}
                             </div>
 
                        </div>
+                       
+                       <div class="form-group row">
+                           <label class="col-lg-3 col-md-3 col-sm-4  control-label" value="" for="adresse_destinataire">Adresse du destinataire </label><br>
+                           <div class="col-lg-8 col-md-8 col-sm-8 ">
+   
+                             <textarea name="adresse_destinataire" id="adresse_destinataire" cols="30" rows="10"  >{{old('adresse_destinataire') ? old('adresse_destinataire') : $facture->adresse_destinataire  }}</textarea>
+                              @if ($errors->has('adresse_destinataire'))
+                              <br>
+                              <div class="alert alert-warning ">
+                                 <strong>{{$errors->first('adresse_destinataire')}}</strong> 
+                              </div>
+                              @endif 
+                           </div>
+                        </div>
 
                       
                      </div>

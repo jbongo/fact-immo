@@ -229,6 +229,13 @@ class Facture extends Model
     {
         return $this->belongsTo(Fournisseur::class);
     }
-
+    
+    /**
+    *   Retourne l'utilsateur lié à la facture (quand le destinataire n'est pas un mandataire)
+    */
+    public function userliee(){
+    
+        return User::where('id', $this->est_liee_mandataire_id)->first();
+    }
    
 }

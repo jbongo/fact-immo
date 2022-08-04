@@ -3684,12 +3684,13 @@ return 4444;
             $request->validate([
                 'numero' => 'required|numeric|unique:factures',
                 'type' => 'required',
-                'destinataire' => 'required'
+                'destinataire' => 'required',
+                'adresse_destinataire' => 'required'
             ]);
             
             $user_id = null;
             $destinataire_est_mandataire = false;
-
+            
        }
        
        
@@ -3714,6 +3715,9 @@ return 4444;
             "date_facture"=> $request->date_facture,
             "destinataire_est_mandataire"=> $destinataire_est_mandataire,
             "destinataire"=> $request->destinataire,
+            "est_liee_mandataire"=> $request->est_liee_mandataire ? true : false,
+            "est_liee_mandataire_id"=> $request->est_liee_mandataire_id,            
+            "adresse_destinataire"=> $request->adresse_destinataire,
             "description_produit"=> $request->description_produit,
        ]);
        
@@ -3774,6 +3778,7 @@ return 4444;
             $request->validate([
                 'type' => 'required',
                 'destinataire' => 'required',
+                'adresse_destinataire' => 'required',
             ]);
             
             $user_id = null;
@@ -3799,7 +3804,11 @@ return 4444;
             $facture->montant_ttc = $request->montant_ht * Tva::coefficient_tva();
             $facture->date_facture = $request->date_facture;
             $facture->destinataire_est_mandataire = $destinataire_est_mandataire;
+            $facture->est_liee_mandataire = $request->est_liee_mandataire ? true : false;
+            $facture->est_liee_mandataire_id = $request->est_liee_mandataire_id;
+            
             $facture->destinataire = $request->destinataire;
+            $facture->adresse_destinataire = $request->adresse_destinataire;
             $facture->description_produit = $request->description_produit;
 
 

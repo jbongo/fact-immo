@@ -42,6 +42,7 @@ class CreateFactureTable extends Migration
             // annexe facture (libre)
             $table->boolean('destinataire_est_mandataire')->default(true);
             $table->text('destinataire')->nullable();
+            $table->text('adresse_destinataire')->nullable();
             $table->text('description_produit')->nullable();
             
             $table->date('date_relance_paiement')->nullable();

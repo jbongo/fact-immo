@@ -128,7 +128,7 @@ Création de facture
 
                        <div id="div_destinataire">
                            <div class="form-group row">
-                              <label class="col-lg-3 col-md-3 col-sm-4  control-label" value="" for="destinataire">Destinataire(s) et adresse(s) </label><br>
+                              <label class="col-lg-3 col-md-3 col-sm-4  control-label" value="" for="destinataire">Destinataire(s) </label><br>
                               <div class="col-lg-8 col-md-8 col-sm-8 ">
   
                                 <textarea name="destinataire" id="destinataire" cols="30" rows="10"  >{{old('destinataire')}}</textarea>
@@ -140,6 +140,48 @@ Création de facture
                                  @endif 
                               </div>
                            </div>
+                           
+                           <div class="form-group row">
+                              <label class="col-lg-3 col-md-3 col-sm-4  control-label" value="" for="adresse_destinataire">Adresse du destinataire </label><br>
+                              <div class="col-lg-8 col-md-8 col-sm-8 ">
+  
+                                <textarea name="adresse_destinataire" id="adresse_destinataire" cols="30" rows="10"  >{{old('adresse_destinataire')}}</textarea>
+                                 @if ($errors->has('adresse_destinataire'))
+                                 <br>
+                                 <div class="alert alert-warning ">
+                                    <strong>{{$errors->first('adresse_destinataire')}}</strong> 
+                                 </div>
+                                 @endif 
+                              </div>
+                           </div>
+                           
+                           <div class="form-group row">
+                              <div class="col-lg-4 col-md-4 col-sm-4 col-lg-offset-4 col-md-offset-4 col-sm-offset-4">
+                                 <label class=" control-label" for="est_liee_mandataire">La facture est liée à un mandataire <span class="text-danger">*</span></label>
+                                 <input type="checkbox"  data-toggle="toggle" id="est_liee_mandataire" name="est_liee_mandataire" data-off="Non" data-on="Oui" data-onstyle="success" data-offstyle="danger">
+
+                                 @if ($errors->has('est_liee_mandataire'))
+                                 <br>
+                                 <div class="alert alert-warning ">
+                                    <strong>{{$errors->first('est_liee_mandataire')}}</strong> 
+                                 </div>
+                                 @endif
+                              </div>
+                           </div>
+                           
+                           <div id="div_est_liee_mandataire_id">
+                              <div class="form-group row" >
+                                  <label class="col-lg-3 col-md-3 col-sm-4  control-label" for="est_liee_mandataire_id">Choisir le mandataire</label>
+                                  <div class="col-lg-8 col-md-8 col-sm-8">
+                                      <select class="selectpicker col-lg-6" id="est_liee_mandataire_id" name="est_liee_mandataire_id" data-live-search="true" data-style="btn-default btn-rounded">
+                                          @foreach ($mandataires as $mandataire )
+                                          <option value="{{ $mandataire->id }}" data-tokens="{{ $mandataire->nom }} {{ $mandataire->prenom }}">{{ $mandataire->nom }} {{ $mandataire->prenom }}</option>
+                                          @endforeach
+                                      </select>
+                                  </div>
+                              </div>
+                              
+                          </div>
 
                        </div>
                      </div>
@@ -184,7 +226,7 @@ Création de facture
                               @endif 
                            </div>
                         </div>
-                  </div>
+                     </div>
     
                      
        
@@ -223,15 +265,17 @@ Création de facture
    })
 
 
-   //  Ajout de la facture
+   $('#div_est_liee_mandataire_id').hide();
+   
+   $('#est_liee_mandataire').change(function(){
 
-   // $('#ajouter').click(function(e){
-
-   //    e.preventDefault();
-
-   //    $('#ajouter').submit()
-   //    console.log("ee");
-   // })
+      if($('#est_liee_mandataire').prop('checked')){
+         $('#div_est_liee_mandataire_id').show();
+      
+      }else{
+         $('#div_est_liee_mandataire_id').hide();
+      }
+   })
 </script>
 
 
