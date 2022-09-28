@@ -114,7 +114,7 @@
                                             @elseif($facture->statut == "en attente de validation" && $facture->numero != null) 
                                                 <label class="color-default"><strong> En attente de validation </strong></label> 
                                             @elseif($facture->statut == "refuse" && $facture->numero != null) 
-                                                <label class="color-success"><strong>Refusée </strong></label>
+                                                <label class="color-success"><strong>Refusée </strong>  </label><i class="tiny material-icons " data-toggle="tooltip" data-placement="top" title="{{$facture->motif}}">info_outline</i>
                                             @else
                                                 <label class="color-danger"><strong>Non ajoutée </strong></label> 
 
@@ -130,10 +130,11 @@
 
                                         <td  >
                                             {{-- <label class="color-info">{{$facture->compromis->getFactureStylimmo()->numero}} </label>  --}}
-                                        <a class="color-info" title="Télécharger la facture stylimmo"  href="{{route('facture.telecharger_pdf_facture_stylimmo', Crypt::encrypt($facture->compromis->getFactureStylimmo()->id))}}"  class="  m-b-10 m-l-5 " id="ajouter">{{$facture->compromis->getFactureStylimmo()->numero}}  <i class="ti-download"></i> </a>
-                                            
+                                            @if($facture->compromis->getFactureStylimmo())
+                                                <a class="color-info" title="Télécharger la facture stylimmo"  href="{{route('facture.telecharger_pdf_facture_stylimmo', Crypt::encrypt($facture->compromis->getFactureStylimmo()->id))}}"  class="  m-b-10 m-l-5 " id="ajouter">{{$facture->compromis->getFactureStylimmo()->numero}}  <i class="ti-download"></i> </a>
+                                            @endif
                                         </td>
-                                        <td  >
+                                        <td>
                                            
                                         <label class="color-info"><a href="{{route('compromis.show',Crypt::encrypt($facture->compromis->id) )}}" target="_blank" title="@lang('voir l\'affaire  ') ">{{$facture->compromis->numero_mandat}}  <i style="font-size: 17px" class="material-icons color-success">account_balance</i></a></label>
 
@@ -190,12 +191,13 @@
                                             </label> 
                                         </td>
                                         <td  >
-                                            @if($facture->compromis->getFactureStylimmo()->encaissee == 0 )
-                                                <label class="color-danger" ><strong> Non encaissée </strong> </label>                                            
-                                            @else 
-                                            <label class="color-danger"> @if($facture->compromis->getFactureStylimmo()->date_encaissement != null) encaissée le {{$facture->compromis->getFactureStylimmo()->date_encaissement->format('d/m/Y')}} @else encaissée @endif  </label> 
-                                                
-                                            @endif 
+                                            @if($facture->compromis->getFactureStylimmo())
+                                                @if($facture->compromis->getFactureStylimmo()->encaissee == 0 )
+                                                    <label class="color-danger" ><strong> Non encaissée </strong> </label>                                            
+                                                @else 
+                                                <label class="color-danger"> @if($facture->compromis->getFactureStylimmo()->date_encaissement != null) encaissée le {{$facture->compromis->getFactureStylimmo()->date_encaissement->format('d/m/Y')}} @else encaissée @endif  </label> 
+                                                @endif 
+                                            @endif
                                         </td>
                                   
 
@@ -207,20 +209,19 @@
                                         @endphp
                                         {{-- @if($facture->type == "stylimmo") --}}
                                         <td  >
-                                            @if($facture->reglee == 0)
-                                                @if(Auth()->user()->role == "admin")
-                                                    <button data-toggle="modal" @if($facture->compromis->getFactureStylimmo()->encaissee == 0 || $facture->statut != "valide")disabled style="background:#bdbdbd" @endif data-target="#myModal" onclick="getIdPayer('{{Crypt::encrypt($facture->id)}}')" id="{{Crypt::encrypt($facture->id)}}"  class="btn btn-success btn-flat btn-addon  m-b-10 m-l-5 payer" ><i class="ti-wallet"></i>
-                                                        @if($facture->compromis->getFactureStylimmo()->encaissee == 0 || $facture->statut != "valide") A payer @else .A Payer @endif</button>
-                                                @else
-                                                    <label class="color-danger">Non réglée </label> 
-                                                @endif
-                                            @else 
-                                                <label class="color-success">@if($facture->date_reglement != null) Réglée le {{$facture->date_reglement->format('d/m/Y')}} @else Réglée @endif</label> 
-                                             @if(Auth::user()->role == "admin")   <a data-toggle="modal"  data-target="#myModal" onclick="getIdPayer('{{Crypt::encrypt($facture->id)}}')" id="{{Crypt::encrypt($facture->id)}}"  class="text-danger  payer" ><i class="ti-pencil"></i></a>@endif
-                                                    
-                              
-
-                                            @endif 
+                                            @if($facture->compromis->getFactureStylimmo())
+                                                @if($facture->reglee == 0)
+                                                    @if(Auth()->user()->role == "admin")
+                                                        <button data-toggle="modal" @if($facture->compromis->getFactureStylimmo()->encaissee == 0 || $facture->statut != "valide")disabled style="background:#bdbdbd" @endif data-target="#myModal" onclick="getIdPayer('{{Crypt::encrypt($facture->id)}}')" id="{{Crypt::encrypt($facture->id)}}"  class="btn btn-success btn-flat btn-addon  m-b-10 m-l-5 payer" ><i class="ti-wallet"></i>
+                                                            @if($facture->compromis->getFactureStylimmo()->encaissee == 0 || $facture->statut != "valide") A payer @else .A Payer @endif</button>
+                                                    @else
+                                                        <label class="color-danger">Non réglée </label> 
+                                                    @endif
+                                                @else 
+                                                    <label class="color-success">@if($facture->date_reglement != null) Réglée le {{$facture->date_reglement->format('d/m/Y')}} @else Réglée @endif</label> 
+                                                 @if(Auth::user()->role == "admin")   <a data-toggle="modal"  data-target="#myModal" onclick="getIdPayer('{{Crypt::encrypt($facture->id)}}')" id="{{Crypt::encrypt($facture->id)}}"  class="text-danger  payer" ><i class="ti-pencil"></i></a>@endif
+                                                @endif 
+                                            @endif
                                         </td>
 
                                         

@@ -53,7 +53,7 @@
 <!--charts morris JETON DASHBOARD-->
 <script src="{{ asset('js/lib/morris-chart/raphael-min.js')}}"></script>
 <script src="{{ asset('js/lib/morris-chart/morris.js')}}"></script> 
-<script src="{{ asset('js/lib/morris-chart/morris-init.js')}}"></script>
+{{-- <script src="{{ asset('js/lib/morris-chart/morris-init.js')}}"></script> --}}
 
 <!--charts sparkline JETON DASHBOARD-->
 <script src="{{ asset('js/lib/sparklinechart/jquery.sparkline.min.js')}}"></script>

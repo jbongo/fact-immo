@@ -3,7 +3,11 @@
 
 @if($facture->statut == "refuse")
 
-Votre facture <strong> {{$facture->numero}}</strong> a été refusée. <br>
+Votre facture <strong> {{$facture->numero}}</strong> a été refusée pour le motif suivant: <br>
+@component('mail::panel')
+{{$facture->motif}}<br>
+
+@endcomponent
 Contactez l'administrateur pour plus d'informations.
 @else
 

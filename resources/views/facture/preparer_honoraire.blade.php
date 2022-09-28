@@ -98,7 +98,7 @@
                             <a href="{{route('facture.valider_honoraire', [0,Crypt::encrypt($facture->id)] )}}"  class="btn btn-danger btn-flat btn-addon  m-b-10 m-l-5 refuser" id="refuser"><i class="ti-close"></i>Refuser</a>
                         @endif
                     @elseif($facture->statut == "refuse")
-                         <label class="color-danger" ><strong> Facture refusée </strong> </label>
+                         <label class="color-danger" ><strong> Facture refusée </strong> ({{$facture->motif}})  </label>
                      @else
                      <label class="color-danger" ><strong> Facture non Ajoutée </strong> </label>
                      @endif 

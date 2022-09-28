@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\DemandeFactureStylimmo;
 use App\Mail\EnvoyerFactureStylimmoMandataire;
 use App\Mail\EncaissementFacture;
+use App\Mail\NotifFactureAvoir;
 use App\Mail\NotifierValidationHonoraire;
 use App\Mail\RelancePaiementFacture;
 use App\Mail\PassageTVA;
@@ -3132,7 +3133,48 @@ public function valider_honoraire($action, $facture_id)
     
 }
 
+/**
+ * Valider les factures avec motif
+ *
+ * @return \Illuminate\Http\Response
+ */
+public function valider_honoraire_motif(Request $request, $action, $facture_id)
+{
 
+    $facture = Facture::where('id',  $facture_id)->first();
+   
+    if($action == 1){
+        $facture->statut = "valide";
+        // ##### Notifier le mandataire par mail
+     
+            $action = Auth::user()->nom." ".Auth::user()->prenom." a validé la facture $facture->numero";
+            $user_id = Auth::user()->id;
+       
+            Mail::to($facture->user->email)->send(new NotifierValidationHonoraire($facture));
+      
+            Historique::createHistorique( $user_id,$facture->id,"facture",$action );
+    }else{
+    
+        $facture->statut = "refuse";
+        $facture->motif =  $request->motif;
+        $facture->url = null;
+        
+            $action = Auth::user()->nom." ".Auth::user()->prenom." a refusé la facture $facture->numero";
+            $user_id = Auth::user()->id;
+   
+        Mail::to($facture->user->email)->send(new NotifierValidationHonoraire($facture));
+      
+        Historique::createHistorique( $user_id,$facture->id,"facture",$action );
+       
+       if(file_exists($facture->url)) unlink($facture->url);
+        // ##### Notifier le mandataire par mail
+
+    }
+    $facture->update();
+    // return response()->download($facture->url);
+    return redirect()->back();
+    
+}
 // ############## FIN FACTURES D'HONORAIRES 
 
 
@@ -3182,6 +3224,11 @@ public function valider_honoraire($action, $facture_id)
             $compromis->update();
         }
        
+        if($facture->user != null){
+            $mandataire = $facture->user;
+            Mail::to("gestion@stylimmo.com")->send(new NotifFactureAvoir($avoir, $facture, $mandataire));
+        }
+        
         
             // return redirect()->route('facture.index')->with('ok', __('Avoir crée')  );
         if($facture->type == "stylimmo"){
@@ -3197,7 +3244,7 @@ public function valider_honoraire($action, $facture_id)
     }
 
     /**
-     * sauvegarde de facture d'avoir
+     * Affichage de facture d'avoir
      *
      * @return \Illuminate\Http\Response
      */

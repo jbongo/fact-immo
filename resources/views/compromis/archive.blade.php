@@ -44,7 +44,7 @@
                                                     @if(Auth()->user()->role == "mandataire")
                                                     <th>@lang('porte l\'affaire')</th>
                                                     @endif
-                                                    <th>@lang('Numero Styl')</th>
+                                                    <th>@lang('Numero Avoir Styl')</th>
                                                     <th>@lang('Mandat')</th>
                                                     <th>@lang('Date vente')</th>
                                                     <th>@lang('Comm')</th>
@@ -77,10 +77,10 @@
                                                     </td>  
                                                     @endif 
                                                     <td width="" >
-                                                        @if($compromi->getFactureStylimmo()!=null &&  $compromi->facture_stylimmo_valide != 0)
-                                                        <a class="color-info" title="Télécharger la facture stylimmo"  href="{{route('facture.telecharger_pdf_facture_stylimmo', Crypt::encrypt($compromi->getFactureStylimmo()->id))}}"  class="  m-b-10 m-l-5 " id="ajouter">{{$compromi->getFactureStylimmo()->numero}} <i class="ti-download"></i> </a>
+                                                        @if($compromi->getAvoirFactureStylimmo()!=null )
+                                                        <a class="color-info" title="Télécharger la facture d'avoir stylimmo"  href="{{route('facture.telecharger_pdf_avoir', Crypt::encrypt($compromi->getAvoirFactureStylimmo()->id))}}"  class="  m-b-10 m-l-5 " id="ajouter">{{$compromi->getAvoirFactureStylimmo()->numero}} <i class="ti-download"></i> </a>
                                                         @else 
-                                                            <span class="color-warning">En attente ..</span>                                            
+                                                            <span class="color-warning"> ...</span>                                            
                                                         @endif
                                                     </td>
                                                     <td  style="color: #e05555;{{$grise}}">

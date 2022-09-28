@@ -220,6 +220,27 @@
 </div>
 
 
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card alert">
+            <div class="card-header">
+                <h4>Yearly Sales </h4>
+                <div class="card-header-right-icon">
+                    <ul>
+                        <li class="card-close" data-dismiss="alert"><i class="ti-close"></i></li>
+                        <li class="doc-link"><a href="#"><i class="ti-link"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="sales-chart-comm">
+                <canvas id="sales-chart-comm"></canvas>
+            </div>
+        </div>
+    </div>
+ 
+</div>
+
+
 {{-- #######  STATS ###### --}}
 
 @if(Auth::user()->role == "admin")
@@ -293,61 +314,6 @@
 
 
 @endif
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -725,6 +691,211 @@
 {{-- FIN CA STYL'IMMO --}}
 
 
+<script>
+(function ($) {
+    "use strict";
+
+
+    //Sales chart
+    var ctx = document.getElementById("sales-chart-comm");
+    ctx.height = 150;
+    var myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet","Août","Septembre","Octobre","Novembre","Décembre"],
+            type: 'line',
+            defaultFontFamily: 'Montserrat',
+            datasets: [{
+                label: "Commissions",
+                data: [0, 10000, 15000, 16000, 18000, 0, 6000, 6000, 6000, 8000, 9000, 0],
+                backgroundColor: 'transparent',
+                borderColor: '#e6a1f2',
+                borderWidth: 3,
+                pointStyle: 'circle',
+                pointRadius: 5,
+                pointBorderColor: 'transparent',
+                pointBackgroundColor: '#e6a1f2',
+
+                    },
+                    
+                    {
+                label: "Commissions",
+                data: [50000, 50000, 50000, 50000, 50000, 50000, 50000, 50000, 50000, 50000, 50000, 50000],
+                backgroundColor: 'transparent',
+                borderColor: '#e6a1f2',
+                borderWidth: 3,
+                pointStyle: 'circle',
+                pointRadius: 5,
+                pointBorderColor: 'transparent',
+                pointBackgroundColor: '#eabccd',
+
+                    },
+                    {
+                label: "Commissions",
+                data: [70000, 70000, 70000, 70000, 70000, 70000, 70000, 70000, 70000, 70000, 70000, 70000],
+                backgroundColor: 'transparent',
+                borderColor: '#acdeff',
+                borderWidth: 3,
+                pointStyle: 'circle',
+                pointRadius: 5,
+                pointBorderColor: 'transparent',
+                pointBackgroundColor: '#e6a1f2',
+
+                    }]
+        },
+        options: {
+            responsive: true,
+
+            tooltips: {
+                mode: 'index',
+                titleFontSize: 12,
+                titleFontColor: '#000',
+                bodyFontColor: '#000',
+                backgroundColor: '#fff',
+                titleFontFamily: 'Montserrat',
+                bodyFontFamily: 'Montserrat',
+                cornerRadius: 3,
+                intersect: false,
+            },
+            legend: {
+                labels: {
+                    usePointStyle: true,
+                    fontFamily: 'Montserrat',
+                },
+            },
+            scales: {
+                xAxes: [{
+                    display: true,
+                    gridLines: {
+                        display: false,
+                        drawBorder: false
+                    },
+                    scaleLabel: {
+                        display: false,
+                        labelString: 'Month'
+                    }
+                        }],
+                yAxes: [{
+                    display: true,
+                    gridLines: {
+                        display: false,
+                        drawBorder: false
+                    },
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Chiffre Affaires'
+                    }
+                        }]
+            },
+            title: {
+                display: false,
+                text: 'Normal Legend'
+            }
+        }
+    });
+
+
+
+    
+
+
+    //doughut chart
+    var ctx = document.getElementById("doughutChart");
+    ctx.height = 150;
+    var myChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            datasets: [{
+                data: [45, 25, 20, 10],
+                backgroundColor: [
+                                    "rgba(55,160,0,0.9)",
+                                    "rgba(55,160,0,0.7)",
+                                    "rgba(55,160,0,0.5)",
+                                    "rgba(0,0,0,0.07)"
+                                ],
+                hoverBackgroundColor: [
+                                    "rgba(55,160,0,0.9)",
+                                    "rgba(55,160,0,0.7)",
+                                    "rgba(55,160,0,0.5)",
+                                    "rgba(0,0,0,0.07)"
+                                ]
+
+                            }],
+            labels: [
+                            "green",
+                            "green",
+                            "green",
+                            "green"
+                        ]
+        },
+        options: {
+            responsive: true
+        }
+    });
+
+    //polar chart
+    var ctx = document.getElementById("polarChart");
+    ctx.height = 150;
+    var myChart = new Chart(ctx, {
+        type: 'polarArea',
+        data: {
+            datasets: [{
+                data: [15, 18, 9, 6, 19],
+                backgroundColor: [
+                                    "rgba(55,160,0,0.9)",
+                                    "rgba(55,160,0,0.8)",
+                                    "rgba(55,160,0,0.7)",
+                                    "rgba(0,0,0,0.2)",
+                                    "rgba(55,160,0,0.5)"
+                                ]
+
+                            }],
+            labels: [
+                            "green",
+                            "green",
+                            "green",
+                            "green"
+                        ]
+        },
+        options: {
+            responsive: true
+        }
+    });
+
+    // single bar chart
+    var ctx = document.getElementById("singelBarChart");
+    ctx.height = 150;
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ["Sun", "Mon", "Tu", "Wed", "Th", "Fri", "Sat"],
+            datasets: [
+                {
+                    label: "My First dataset",
+                    data: [40, 55, 75, 81, 56, 55, 40],
+                    borderColor: "rgba(55, 160, 0, 0.9)",
+                    borderWidth: "0",
+                    backgroundColor: "rgba(55, 160, 0, 0.5)"
+                            }
+                        ]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                                }]
+            }
+        }
+    });
+
+
+
+
+})(jQuery);
+
+</script>
 
 
 <script>
