@@ -452,7 +452,7 @@ class ExportwinficController extends Controller
            
            
            $lettrage_decai = "  ";
-           $code_piece_decai = $this->formatage_colonne(5, $facture->numero);
+           $code_piece_decai = $this->formatage_colonne(5, substr($facture->numero, -4));
            $code_stat_decai = "    ";
            $date_echeance_decai =  $facture->date_facture->format('dmY');
            $monnaie_decai = 1;
