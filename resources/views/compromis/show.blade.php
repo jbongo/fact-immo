@@ -1013,4 +1013,86 @@ $('#modifier_pdf_compromis').click(function (){
 $('input#date_vente').attr('readonly',false);
 
 </script>
+
+<script>
+    let autocomplete_acquereur;
+    let autocomplete_vendeur;
+    let autocomplete_code_postal_bien;
+    
+    function initAutocomplete(){
+            autocomplete_acquereur = new google.maps.places.Autocomplete(
+                document.getElementById('adresse1_acquereur'),
+                {
+                    types:['address'],
+                    componentRestrictions: {'country': ['FR']},
+                    fields:['address_components', 'address_components','adr_address', 'formatted_address', 'name','vicinity']
+                }            
+            );
+            
+            autocomplete_vendeur = new google.maps.places.Autocomplete(
+                document.getElementById('adresse1_vendeur'),
+                {
+                    types:['address'],
+                    componentRestrictions: {'country': ['FR']},
+                    fields:['address_components', 'address_components','adr_address', 'formatted_address', 'name','vicinity']
+                }            
+            )
+            
+            autocomplete_code_postal_bien = new google.maps.places.Autocomplete(
+                document.getElementById('code_postal_bien'),
+                {
+                    types:['postal_code'],
+                    componentRestrictions: {'country': ['FR']},
+                    fields:[ 'name','vicinity']
+                }
+            
+            )
+            
+            
+            autocomplete_acquereur.addListener('place_changed', onPlaceChanged);
+            autocomplete_vendeur.addListener('place_changed', onPlaceChanged);
+            autocomplete_code_postal_bien.addListener('place_changed', onPlaceChanged);
+           
+    }
+    
+    function onPlaceChanged(){
+        
+
+        
+        
+        var place_acquereur = autocomplete_acquereur.getPlace();
+        var place_vendeur = autocomplete_vendeur.getPlace();
+        var place_code_postal_bien = autocomplete_code_postal_bien.getPlace();
+  
+      
+        if(place_acquereur){
+            document.getElementById('adresse1_acquereur').value = place_acquereur.name;
+            document.getElementById('ville_acquereur').value = place_acquereur.vicinity;
+            document.getElementById('code_postal_acquereur').value = place_acquereur.address_components[6].long_name;
+            
+        }
+         
+        
+        if(place_vendeur){
+            document.getElementById('adresse1_vendeur').value = place_vendeur.name;
+            document.getElementById('ville_vendeur').value = place_vendeur.vicinity;
+            document.getElementById('code_postal_vendeur').value = place_vendeur.address_components[6].long_name;
+            
+        }
+        
+     
+        
+        if(place_code_postal_bien){
+           
+            document.getElementById('ville_bien').value = place_code_postal_bien.vicinity;
+            document.getElementById('code_postal_bien').value = place_code_postal_bien.name;
+            
+        }
+    }
+</script>
+<script async
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCD0y8QWgApdFG33-i8dVHWia-fIXcOMyc&libraries=places&callback=initAutocomplete" async defer>
+    
+   
+</script>
 @endsection

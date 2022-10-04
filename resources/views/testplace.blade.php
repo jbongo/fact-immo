@@ -11,7 +11,7 @@
     
     <form action="" method="post">
         
-        <input type="text" name="adresse" class="Autocomplete SearchBox " id="autocomplete" placeholder="adresse" style="width: 600px;">
+        <input type="text" name="adresse" id="autocomplete" placeholder="adresse" style="width: 600px;">
         <input type="text" value="" name="code_postal" id="code_postal" placeholder="code_postal">
         <input type="text" value="" name="ville" id="ville" placeholder="ville">
     
@@ -43,9 +43,7 @@
         }else{
             document.getElementById('autocomplete').value = place.name;
             document.getElementById('ville').value = place.vicinity;
-            document.getElementById('code_postal').value = place.address_components[6].long_name
-            
-            console.log(place.address_components[6]);
+            document.getElementById('code_postal').value = place.address_components[6].long_name;
             
         }
     }
