@@ -30,7 +30,41 @@ class TvaController extends Controller
     public function test()
     {
     
+    
+    return view('testplace');
+        $classmap = array('MyWSDLStructure' => 'MyComplexDataType');
+$client = new \SoapClient("https://production.protexa.fr/WSPROTEXA_WEB/awws/wsprotexa.awws?wsdl",array("trace" => 1, "exception" => 0));
+   
+//   $xml = $client->wsajoutacces(
+//     "075137@dimora.fr",
+//     "Vjp57pro@",
+//     "Test jean",
+//     "support@stylimmo.com",
+//     "support@01",
+//     "Agence Bagnols",
+//     4,
+//     "0769191053",
+//     "0160",
+//     true,
+//     true,
+//   );
+  
+  $params = new \stdClass();
+  
+  $params->Login = "pontaud.l@stylimmo.com";
+  $params->MotdePasse = "SPDl44461@@";
+//   $params->Registre = "T";
+//   $params->AvecLien = 1;
+  $res = $client->__soapCall("wsd6info", array($params));
+  echo "<pre>";
+//   echo($res);
+  dd($res);
+  var_dump($client->wsplistereservation("pontaud.l@stylimmo.com","SPDl44461@@", "T", 1));
+  
+//   var_dump($xml);
+//    pontaud.l@stylimmo.com SPDl44461@@
 
+return "yes";
       
         $contrats = Contrat::where([['est_fin_droit_suite', false],['deduis_jeton', false],['user_id','<>', null]])->get();      
 
@@ -47,7 +81,7 @@ class TvaController extends Controller
         }
 
 
-dd("");
+
 
     $filleuls = Filleul::all();
     

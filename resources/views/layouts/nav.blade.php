@@ -5,7 +5,7 @@
 
 
     $li_home = $li_stats= $li_mandataire = $li_prospect_gestion = $li_prospect_archive = $li_affaire = $li_affaire_filleul = $li_affaire_archive=  $li_facture = $li_facture_gestion = $li_facture_demande = $li_facture_a_payer = $li_facture_a_valider = 
-    $li_parametre = $li_parametre_modele = $li_parametre_fournisseur = $li_parametre_pack_pub = $li_parametre_generaux = $li_outil = $li_affaire_toutes = $li_affaire_cloture = $li_facture_hors_delais =     
+    $li_parametre = $li_parametre_modele = $li_parametre_fournisseur = $li_parametre_bareme_honoraire= $li_parametre_pack_pub = $li_parametre_generaux = $li_outil = $li_affaire_toutes = $li_affaire_cloture = $li_facture_hors_delais =     
     $li_jetons = $li_facture_pub = $li_parrainage= $li_documents = $li_documents_gestion = $li_documents_a_valider = $li_fournisseurs = $li_fournisseurs_passerelle = $li_fournisseurs_autre = "";
     
     switch ($curent_url[1]) {
@@ -79,6 +79,9 @@
             case 'fournisseur':
                 $li_parametre_fournisseur = "active";
                 break;
+            case 'bareme-honoraire':
+                $li_parametre_bareme_honoraire = "active";
+                break;                
             case 'generaux':
                 $li_parametre_generaux = "active";
                 break;
@@ -262,6 +265,8 @@
                             <li class="{{$li_parametre_pack_pub}}"><a href="{{route('pack_pub.index')}}">Pack Pub</a></li>
                             <li class="{{$li_parametre_modele}}"><a href="{{route('modele_contrat.create')}}">Modèle contrat</a></li>
                             <li class="{{$li_parametre_fournisseur}}"><a href="{{route('fournisseur.index')}}">Fournisseur</a></li>
+                            <li class="{{$li_parametre_bareme_honoraire}}"><a href="{{route('bareme_honoraire.index')}}">Barème d'honoraire</a></li>
+                            
                         </ul>
                     </li>
                     

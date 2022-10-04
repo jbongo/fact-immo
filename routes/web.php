@@ -237,10 +237,19 @@ Route::middleware('auth')->group(function(){
     Route::get('parametre/modele_contrat/create','ContratController@create_model_contrat')->name('modele_contrat.create');
     Route::post('parametre/modele_contrat/store','ContratController@store_model_contrat')->name('modele_contrat.store');
     Route::post('parametre/modele_contrat/update','ContratController@update_model_contrat')->name('modele_contrat.update');
-    // Pramètre généraux
+    // Paramètre généraux
     Route::get('parametre/generaux/create','ParametreController@create_parametre_generaux')->name('parametre_generaux.create');
     Route::post('parametre/generaux/store','ParametreController@store_parametre_generaux')->name('parametre_generaux.store');
     Route::post('parametre/generaux/update','ParametreController@update_parametre_generaux')->name('parametre_generaux.update');
+
+    // Paramètre barême d'honoraire
+    Route::get('parametre/bareme-honoraire/','BaremehonoraireController@index')->name('bareme_honoraire.index');
+    Route::get('parametre/bareme-honoraire/create','BaremehonoraireController@create')->name('bareme_honoraire.create');
+    Route::get('parametre/bareme-honoraire/edit/{bareme_id}','BaremehonoraireController@edit')->name('bareme_honoraire.edit');
+    Route::post('parametre/bareme-honoraire/store','BaremehonoraireController@store')->name('bareme_honoraire.store');
+    Route::post('parametre/bareme-honoraire/update/{bareme_id}','BaremehonoraireController@update')->name('bareme_honoraire.update');
+    Route::delete('parametre/bareme-honoraire/delete/{bareme_id}','BaremehonoraireController@delete')->name('bareme_honoraire.delete');
+    
 
     // Fournisseur
     Route::get('fournisseurs','FournisseurController@index')->name('fournisseur.index');
