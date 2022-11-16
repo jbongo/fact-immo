@@ -130,7 +130,7 @@ class MandataireController extends Controller
         $id = Crypt::decrypt($id);
         $mandataire = User::where('id', $id)->firstOrFail();
 
-        dd($mandataire);
+        dd($mandataire->contrat);
         $palier_starter = ($mandataire->contrat == null) ? null : $mandataire->contrat->palier_starter ;
         $palier_expert =  ($mandataire->contrat == null) ? null : $mandataire->contrat->palier_expert ;
         
