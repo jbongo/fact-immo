@@ -515,6 +515,8 @@ class ContratController extends Controller
                         ->where([['role','mandataire'], ['a_demission', false], ['user_id','<>', Crypt::decrypt($user_id)]] )
                         ->get();
         
+        dd($parrains);
+        
         $comm_parrain = $modele->comm_parrain;
 
         $comm_parrain = unserialize($modele->comm_parrain); 
