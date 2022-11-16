@@ -698,6 +698,8 @@ class ContratController extends Controller
 
             $nb_filleul = Filleul::where([ ['parrain_id',$request->parrain_id]])->count();
             $parrain = User::where('id',$request->parrain_id)->first();
+            
+            return $parrain;
 
             // on détermine le nombre d'année depuis la date de début d'activité du parrain dans le but de determiner le cycle dans le quel nous somme
             $nb_annee = intval( (strtotime(date('Y-m-d')) - strtotime($parrain->contrat->date_entree->format('Y-m-d'))) / (86400 *365) ) ;
@@ -733,7 +735,7 @@ class ContratController extends Controller
             $comm  = unserialize($comm_parrain) ;
             $pourcentage = $comm["p_1_".$r];
 
-         return $parrain;
+         
             Filleul::create([
                 "user_id" => Crypt::decrypt($request->user_id),
                 "parrain_id" =>  $request->parrain_id,
@@ -745,7 +747,6 @@ class ContratController extends Controller
 
         }
 
-return "no";
 
         // ************ Création de la facture CCI et Forfait d'entree *************
         
