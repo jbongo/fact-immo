@@ -48,12 +48,12 @@ class User extends Authenticatable
 
     public function  contrat(){
 
-        return $this->hasOne('app\Contrat');
+        return $this->hasOne('App\Contrat');
     }
 
     public function  filleul(){
 
-        return $this->hasOne('app\Filleul');
+        return $this->hasOne('App\Filleul');
     }
 
 /*******
