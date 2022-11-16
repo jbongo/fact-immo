@@ -699,7 +699,7 @@ class ContratController extends Controller
             $nb_filleul = Filleul::where([ ['parrain_id',$request->parrain_id]])->count();
             $parrain = User::where('id',$request->parrain_id)->first();
             
-            return $parrain;
+            return $request->all();
 
             // on détermine le nombre d'année depuis la date de début d'activité du parrain dans le but de determiner le cycle dans le quel nous somme
             $nb_annee = intval( (strtotime(date('Y-m-d')) - strtotime($parrain->contrat->date_entree->format('Y-m-d'))) / (86400 *365) ) ;
