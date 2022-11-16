@@ -601,7 +601,7 @@ class ContratController extends Controller
         $cont = Contrat::where('user_id', Crypt::decrypt($request->user_id) )->first();
         if($cont != null) return 0;
         
-dd($request->all());
+return $request->all();
         // return "".$request->forfait_administratif;
         $contrat = Contrat::create([
               // infos basiques
