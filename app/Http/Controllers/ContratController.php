@@ -687,7 +687,6 @@ class ContratController extends Controller
         
         // ******************************************************************************************************
         
-        return $mandataire;
         
         $mandataire->update();
         
@@ -734,7 +733,7 @@ class ContratController extends Controller
             $comm  = unserialize($comm_parrain) ;
             $pourcentage = $comm["p_1_".$r];
 
-         
+         return $parrain;
             Filleul::create([
                 "user_id" => Crypt::decrypt($request->user_id),
                 "parrain_id" =>  $request->parrain_id,
@@ -746,6 +745,7 @@ class ContratController extends Controller
 
         }
 
+return "no";
 
         // ************ Création de la facture CCI et Forfait d'entree *************
         
