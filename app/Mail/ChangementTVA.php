@@ -15,7 +15,7 @@ class ChangementTVA extends Mailable
     public $nouvelle_tva;
 
     /**
-     * Create a new message instance.
+     * Notifié lorsqu'on change de TVA
      *
      * @return void
      */

@@ -187,7 +187,7 @@ Ajout d'une affaire
                                     </div>
                                 </div>                
                             </div>
-                            <div class="col-lg-3 col-md-3 col-sm-3">
+                        <div class="col-lg-3 col-md-3 col-sm-3">
                                 <div class="form-group ">
                                     <label class="col-lg-7 col-md-7 col-sm-7 " for="ville_bien">Ville du bien <span class="text-danger">*</span></label>
                                     <div class="col-lg-12 col-md-12 col-sm-12 ">
