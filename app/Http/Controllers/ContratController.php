@@ -515,8 +515,6 @@ class ContratController extends Controller
                         ->where([['role','mandataire'], ['a_demission', false], ['user_id','<>', Crypt::decrypt($user_id)]] )
                         ->get();
         
-        dd($parrains);
-        
         $comm_parrain = $modele->comm_parrain;
 
         $comm_parrain = unserialize($modele->comm_parrain); 
@@ -603,7 +601,7 @@ class ContratController extends Controller
         $cont = Contrat::where('user_id', Crypt::decrypt($request->user_id) )->first();
         if($cont != null) return 0;
         
-        
+
         // return "".$request->forfait_administratif;
         $contrat = Contrat::create([
               // infos basiques
@@ -689,7 +687,6 @@ class ContratController extends Controller
         
         // ******************************************************************************************************
         
-        
         $mandataire->update();
         
         
@@ -700,8 +697,6 @@ class ContratController extends Controller
 
             $nb_filleul = Filleul::where([ ['parrain_id',$request->parrain_id]])->count();
             $parrain = User::where('id',$request->parrain_id)->first();
-            
-            return $request->all();
 
             // on détermine le nombre d'année depuis la date de début d'activité du parrain dans le but de determiner le cycle dans le quel nous somme
             $nb_annee = intval( (strtotime(date('Y-m-d')) - strtotime($parrain->contrat->date_entree->format('Y-m-d'))) / (86400 *365) ) ;

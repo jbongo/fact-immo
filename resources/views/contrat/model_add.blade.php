@@ -73,10 +73,10 @@
                                                                        <div class="col-lg-8">
                                                                            <select class="selectpicker col-lg-6" id="parrain_id" name="parrain_id" data-live-search="true" data-style="btn-warning btn-rounded">
                                                                                @if ($modele->a_parrain == true)
-                                                                               <option value="{{ $parrain->id }}" data-tokens="{{ $parrain->nom }} {{ $parrain->prenom }}">{{ $parrain->nom }} {{ $parrain->prenom }}</option>
+                                                                               <option value="{{ $parrain->user_id }}" data-tokens="{{ $parrain->nom }} {{ $parrain->prenom }}">{{ $parrain->nom }} {{ $parrain->prenom }}</option>
                                                                                @endif
                                                                                @foreach ($parrains as $parrain )
-                                                                               <option value="{{ $parrain->id }}" data-tokens="{{ $parrain->nom }} {{ $parrain->prenom }}">{{ $parrain->nom }} {{ $parrain->prenom }}</option>
+                                                                               <option value="{{ $parrain->user_id }}" data-tokens="{{ $parrain->nom }} {{ $parrain->prenom }}">{{ $parrain->nom }} {{ $parrain->prenom }}</option>
                                                                                @endforeach
                                                                            </select>
                                                                        </div>
