@@ -98,7 +98,7 @@
                                           <div class="form-group row">
                                                 <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="date_encaissement">Date d'encaissement <span class="text-danger">*</span> </label>
                                                 <div class="col-lg-8 col-md-8 col-sm-8">
-                                                   <input type="date"  class="form-control {{ $errors->has('date_encaissement') ? ' is-invalid' : '' }}" value="{{old('date_encaissement')}}" id="date_encaissement" name="date_encaissement" required >
+                                                   <input type="date"  class="form-control {{ $errors->has('date_encaissement') ? ' is-invalid' : '' }}" value="{{old('date_encaissement')}}" max="{{date('Y-m-d')}}" id="date_encaissement" name="date_encaissement" required >
                                                    @if ($errors->has('date_encaissement'))
                                                    <br>
                                                    <div class="alert alert-warning ">
