@@ -407,7 +407,7 @@ class HomeController extends Controller
                             }
                             
                             $ca_sous_compromis_n = round(($ca_compromis_partage_pas_n+$ca_compromis_porte_n+$ca_compromis_porte_pas_n)/Tva::coefficient_tva(),2);
-                            $ca_sous_compromis_perso_n = round($ca_sous_compromis_n* $commission,2);
+                            $ca_sous_compromis_perso_n = round( ($ca_sous_compromis_n + $ca_attente_n )* $commission,2);
                             $ca_sous_compromis_N [] = $ca_sous_compromis_n;
                             $ca_sous_compromis_perso_N [] = $ca_sous_compromis_perso_n;
 

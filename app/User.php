@@ -182,25 +182,26 @@ class User extends Authenticatable
         foreach ($factures_encaissees as $facture) {
             
             $compromis = $facture->compromis;
-            
-            // Si l'affaire n'est pas partagée
-            if($compromis->est_partage_agent == false){
-            
-            
-                $ca_encaisse += $compromis->getFactureStylimmo()->montant_ht;
-            
-            // }Si l'affaire est partagée
-            }else{
-                // Si le mandataire porte l'affaire
-                if($compromis->user_id == $this->id){
+            if($compromis->getFactureStylimmo() != null){
+                // Si l'affaire n'est pas partagée
+                if($compromis->est_partage_agent == false){
                 
-                    $ca_encaisse += $compromis->getFactureStylimmo()->montant_ht * $compromis->pourcentage_agent/100;
+                
+                    $ca_encaisse += $compromis->getFactureStylimmo()->montant_ht;
+                
+                // }Si l'affaire est partagée
+                }else{
+                    // Si le mandataire porte l'affaire
+                    if($compromis->user_id == $this->id){
                     
-                } //Si le mandataire ne porte pas l'affaire
-                else{
-                    $ca_encaisse += $compromis->getFactureStylimmo()->montant_ht * (100 - $compromis->pourcentage_agent)/100 ;
+                        $ca_encaisse += $compromis->getFactureStylimmo()->montant_ht * $compromis->pourcentage_agent/100;
+                        
+                    } //Si le mandataire ne porte pas l'affaire
+                    else{
+                        $ca_encaisse += $compromis->getFactureStylimmo()->montant_ht * (100 - $compromis->pourcentage_agent)/100 ;
+                    }
+                
                 }
-            
             }
             
         }
