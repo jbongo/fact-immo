@@ -752,65 +752,74 @@ class ContratController extends Controller
         
         $tva = Tva::coefficient_tva() ;
         
-        $facture_cci = Facture::create([
-            "numero"=> $numero,
-            "user_id"=> $mandataire->id,
-           
-            "type"=> "cci",
-            "encaissee"=> false,
-            "montant_ht"=>  $request->forfait_carte_pro / $tva,
-            "montant_ttc"=> $request->forfait_carte_pro ,
-            "date_facture"=> date('Y-m-d'),
-            "destinataire_est_mandataire"=> true,
-       ]);
-       
-        $numero++;
-        
-        $facture_forfait = Facture::create([
-            "numero"=> $numero,
-            "user_id"=> $mandataire->id,
-           
-            "type"=> "forfait_entree",
-            "encaissee"=> false,
-            "montant_ht"=>  $request->forfait_administratif,
-            "montant_ttc"=> $request->forfait_administratif * Tva::coefficient_tva(),
-            "date_facture"=> date('Y-m-d'),
-            "destinataire_est_mandataire"=> true,
-       ]);
-        
         
         // on sauvegarde les factures dans le repertoire du mandataire
         $path = storage_path('app/public/factures/factures_autres');
     
         if(!File::exists($path))
-            File::makeDirectory($path, 0755, true);
-            
+             File::makeDirectory($path, 0755, true);
+             
+        $nom =  str_replace(['/', '\\', '<','>',':','|','?','*','#'],"-",$mandataire->nom) ;
+        $prenom =  str_replace(['/', '\\', '<','>',':','|','?','*','#'],"-",$mandataire->prenom) ;
+        $path_forfait = null;
+        $path_cci = null ;
+        
+        if($request->forfait_carte_pro > 0){
+            $facture_cci = Facture::create([
+                "numero"=> $numero,
+                "user_id"=> $mandataire->id,
+               
+                "type"=> "cci",
+                "encaissee"=> false,
+                "montant_ht"=>  $request->forfait_carte_pro / $tva,
+                "montant_ttc"=> $request->forfait_carte_pro ,
+                "date_facture"=> date('Y-m-d'),
+                "destinataire_est_mandataire"=> true,
+           ]);
+           
+            $numero++;
+           
             $facture = $facture_cci;
             $pdf_cci = PDF::loadView('facture.pdf_cci_forfait',compact(['facture']));
+           
+            $filename_cci = "F".$facture_cci->numero." ".$facture_cci->type." ".$facture_cci->montant_ttc."€ ".strtoupper($nom)." ".strtoupper(substr($prenom,0,1)).".pdf" ;
+            $path_cci = $path.'/'.$filename_cci;
+            $pdf_cci->save($path_cci);
+            $facture_cci->url = $path_cci;
+            $facture_cci->update();
+        }
+      
+       
+       
+        if( $request->forfait_administratif > 0){
+        
+            $facture_forfait = Facture::create([
+                "numero"=> $numero,
+                "user_id"=> $mandataire->id,
+               
+                "type"=> "forfait_entree",
+                "encaissee"=> false,
+                "montant_ht"=>  $request->forfait_administratif,
+                "montant_ttc"=> $request->forfait_administratif * Tva::coefficient_tva(),
+                "date_facture"=> date('Y-m-d'),
+                "destinataire_est_mandataire"=> true,
+            ]);
             
             $facture = $facture_forfait;        
-            $pdf_forfait = PDF::loadView('facture.pdf_cci_forfait',compact(['facture']));
-    
-        
-            $nom =  str_replace(['/', '\\', '<','>',':','|','?','*','#'],"-",$mandataire->nom) ;
-            $prenom =  str_replace(['/', '\\', '<','>',':','|','?','*','#'],"-",$mandataire->prenom) ;
-            
-            $filename_cci = "F".$facture_cci->numero." ".$facture_cci->type." ".$facture_cci->montant_ttc."€ ".strtoupper($nom)." ".strtoupper(substr($prenom,0,1)).".pdf" ;
+            $pdf_forfait = PDF::loadView('facture.pdf_cci_forfait',compact(['facture']));   
+                     
             $filename_forfait = "F".$facture_forfait->numero." ".$facture_forfait->type." ".$facture_forfait->montant_ttc."€ ".strtoupper($nom)." ".strtoupper(substr($prenom,0,1)).".pdf" ;
-       
+      
+            $path_forfait = $path.'/'.$filename_forfait;
+           
+            $pdf_forfait->save($path_forfait);
+           
+            $facture_forfait->url = $path_forfait;
+         
+            $facture_forfait->update();
+        }
         
-        $path_cci = $path.'/'.$filename_cci;
-        $path_forfait = $path.'/'.$filename_forfait;
-        
-        $pdf_cci->save($path_cci);
-        $pdf_forfait->save($path_forfait);
-        
-        $facture_cci->url = $path_cci;
-        $facture_forfait->url = $path_forfait;
-        $facture_cci->update();
-        $facture_forfait->update();
-        
-        
+
         
         //********** Création du contrat et de l'annexe ************
         
