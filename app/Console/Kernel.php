@@ -50,7 +50,7 @@ class Kernel extends ConsoleKernel
                  ->monthlyOn(28, '01:00');	;
 
         $schedule->command('command:documentexpire')
-                 ->monthlyOn(28, '02:00');	;
+                 ->monthlyOn(05, '02:00');	;
                  
     }
 

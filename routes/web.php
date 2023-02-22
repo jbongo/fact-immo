@@ -358,7 +358,6 @@ Route::get('/agendas/general','AgendaController@index')->name('agendas.index');
 Route::get('/agendas/general/listing','AgendaController@listing')->name('agendas.listing');
 Route::get('/agendas/general/listing-a-faire','AgendaController@listing_a_faire')->name('agendas.listing_a_faire');
 Route::get('/agendas/general/listing-en-retard','AgendaController@listing_en_retard')->name('agendas.listing_en_retard');
-
 Route::post('/agenda/store','AgendaController@store')->name('agenda.store');
 Route::post('/agenda/update','AgendaController@update')->name('agenda.update');
 Route::get('/agenda/delete/{agenda_id}','AgendaController@destroy')->name('agenda.delete');
