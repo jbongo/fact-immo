@@ -74,13 +74,13 @@
                                      
                                             <div id="parrain-id">
 
-                                            
+                                         
                                                 <div class="form-group row">
                                                 <label class="col-lg-4 col-form-label" for="parrain_id">Choisir le parrain</label>
                                                     <div class="col-lg-8">
                                                         <select class="selectpicker col-lg-6" id="parrain_id" name="parrain_id" data-live-search="true" data-style="btn-warning btn-rounded">
                                                             @if ($contrat->a_parrain == true)
-                                                            <option value="{{ $parrain->user_id }}" data-tokens="{{ $parrain->nom }} {{ $parrain->prenom }}">{{ $parrain->nom }} {{ $parrain->prenom }}</option>
+                                                            <option value="{{ $parrain->contrat->user_id }}" data-tokens="{{ $parrain->nom }} {{ $parrain->prenom }}">{{ $parrain->nom }} {{ $parrain->prenom }}</option>
                                                             @endif
                                                             @foreach ($parrains as $parrain )
                                                             <option value="{{ $parrain->user_id }}" data-tokens="{{ $parrain->nom }} {{ $parrain->prenom }}">{{ $parrain->nom }} {{ $parrain->prenom }}</option>
@@ -1146,6 +1146,12 @@ console.log($("#a_parrain").prop('checked') );
   
            
         }
+          
+          
+          
+        //   console.log( $('#parrain_id').val());
+          
+        //   return 0;
           
         // console.log(data);
         $.ajaxSetup({
