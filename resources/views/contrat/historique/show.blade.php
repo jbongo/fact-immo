@@ -69,17 +69,6 @@
                                             <div id="parrain-id">
 
                                             
-                                                {{-- <div class="form-group row">
-                                                <label class="col-lg-4 col-form-label"  @if($contrat->modif_parrain_id == true) style="background:#f291bf"  @endif for="parrain_id">Choisir le parrain</label>
-                                                    <div class="col-lg-8">
-                                                        <select class="selectpicker col-lg-6" id="parrain_id" name="parrain_id" data-live-search="true" data-style="btn-warning btn-rounded">
-                                                            @if ($contrat->a_parrain == true)
-                                                            <option value="{{ $parrain->id }}" data-tokens="{{ $parrain->nom }} {{ $parrain->prenom }}">{{ $parrain->nom }} {{ $parrain->prenom }}</option>
-                                                            @endif
-                                                           
-                                                        </select>
-                                                    </div>
-                                                </div> --}}
                                                 
                                                 @php
                                                     $check_parr =  ($contrat->a_condition_parrain == true) ? "checked" : "unchecked";
