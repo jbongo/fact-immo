@@ -63,7 +63,7 @@
                                                 </div>
                                             </div>
                                             @php
-                                               $check_p =  ($contrat->a_parrain == true && $parrain != null) ? "checked" : "unchecked";
+                                               $check_p =  ($contrat->a_parrain == true) ? "checked" : "unchecked";
                                             @endphp
                                             <div class="form-group row">
                                                 <label class="col-lg-6 col-form-label" for="a_parrain">Le mandataire a t'il un parrain ?</label>
@@ -79,7 +79,7 @@
                                                 <label class="col-lg-4 col-form-label" for="parrain_id">Choisir le parrain</label>
                                                     <div class="col-lg-8">
                                                         <select class="selectpicker col-lg-6" id="parrain_id" name="parrain_id" data-live-search="true" data-style="btn-warning btn-rounded">
-                                                            @if ($contrat->a_parrain == true && $parrain != null)
+                                                            @if ($contrat->a_parrain == true)
                                                             <option value="{{ $parrain->user_id }}" data-tokens="{{ $parrain->nom }} {{ $parrain->prenom }}">{{ $parrain->nom }} {{ $parrain->prenom }}</option>
                                                             @endif
                                                             @foreach ($parrains as $parrain )
@@ -838,7 +838,7 @@
 {{-- ###### Parrainage --}}
 <script>
 console.log($("#a_parrain").prop('checked') );
-    if ("{{$contrat->a_parrain}}" == false || "{{$parrain}}" == null){
+    if ("{{$contrat->a_parrain}}" == false){
          $('#parrain-id').hide();
     $('#parrainage_div').hide();
 
