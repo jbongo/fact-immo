@@ -63,7 +63,7 @@
                                                 </div>
                                             </div>
                                             @php
-                                               $check_p =  ($contrat->a_parrain == true) ? "checked" : "unchecked";
+                                               $check_p =  ($contrat->a_parrain == true && $parrain != null) ? "checked" : "unchecked";
                                             @endphp
                                             <div class="form-group row">
                                                 <label class="col-lg-6 col-form-label" for="a_parrain">Le mandataire a t'il un parrain ?</label>
