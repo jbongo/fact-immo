@@ -107,8 +107,8 @@ class ContratController extends Controller
                         ->get();
         
         $parrain_id =   Filleul::where('user_id',$contrat->user->id)->select('parrain_id')->first();
-        dd($parrain_id);
-        $parrain = $parrain_id != null ? User::where('id',$parrain_id['parrain_id'])->first() : null;
+       
+        $parrain = $parrain_id['parrain_id'] != null ? User::where('id',$parrain_id['parrain_id'])->first() : null;
        
         
         $filleuls = Filleul::where('parrain_id', $contrat->user->id)->get();
