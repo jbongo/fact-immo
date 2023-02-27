@@ -29,7 +29,7 @@ class BibliothequeController extends Controller
      */
     public function index()
     {
-        $documents = Bibliotheque::all();
+        $documents = Bibliotheque::orderBy('nom')->get();
         
         
         return view('bibliotheque.index', compact('documents'));

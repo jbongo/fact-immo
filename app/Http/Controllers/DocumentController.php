@@ -42,7 +42,7 @@ class DocumentController extends Controller
      */
     public function liste()
     {
-       $documents = Document::where('archive', false)->get();
+       $documents = Document::where('archive', false)->orderBy('nom','asc')->get();
         
         return view('documents.liste', compact('documents'));
 

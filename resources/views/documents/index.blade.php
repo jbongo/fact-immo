@@ -52,7 +52,7 @@
                                 
                                
                                 <td>
-                                    {{$mandataire->prenom}}    {{$mandataire->nom}} 
+                                    {{$mandataire->nom}}  {{$mandataire->prenom}}   
                                 </td>
                                 <td>
                                     @if($mandataire->contrat != null && $mandataire->contrat->contrat_pdf != null)
