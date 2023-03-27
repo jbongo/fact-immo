@@ -303,13 +303,56 @@ class ExportwinficController extends Controller
             $montant_credit_ttc_encai = $this->formatage_colonne(13, number_format($facture->montant_ttc,2, ",",""), "droite");
             
             
-            // Pour la contraprtie, faire une seule ligne ------------> sortie de la boucleb  somme des ttc
+            // Pour la contraprtie, Sur chaque ligne
               
             if($facture->type == "stylimmo"){
                 $total_transac_ttc+= number_format($facture->montant_ttc,2, ".","");            
             }else{            
                 $total_autre_ttc+= number_format($facture->montant_ttc,2, ".","");            
             }
+            
+            
+            // ######### CONTREPARTIE ENCAISSEMENT
+             // Pour la contraprtie, faire une seule ligne ------------> sortie de la boucleb  somme des ttc
+         
+            // Factures transaction
+            $code_journal_contrepartie_transac_encai = "B2";
+            $compte_contrepartie_transac_encai = "512003";
+            $libelle_contrepartie_transac_encai = $this->formatage_colonne(30, $facture->user->nom." ".$facture->user->prenom);
+            
+            $montant_debit_contrepartie_transac_encai = $this->formatage_colonne(13, number_format($total_transac_ttc,2, ",",""), "droite") ;
+            $montant_credit_contrepartie_transac_encai = $this->formatage_colonne(13, " ", "droite");
+            
+            
+            //  Factures autres
+            
+            $code_journal_contrepartie_autre_encai = "B1";
+            $compte_contrepartie_autre_encai = "512002";
+            $libelle_contrepartie_autre_encai = $this->formatage_colonne(30, "Cumul recettes ".date('m/Y',strtotime($date_fin)));
+            
+            $montant_debit_contrepartie_autre_encai = $this->formatage_colonne(13, number_format($total_autre_ttc,2, ",",""), "droite") ;
+            $montant_credit_contrepartie_autre_encai = $this->formatage_colonne(13, " ", "droite");
+            
+            
+            
+            $date_operation_contrepartie_encai = date('dmY',strtotime($date_fin));
+            $jour_ecriture_contrepartie_encai=  $this->formatage_colonne(6, date('d',strtotime($date_fin)), "droite");
+            $lettrage_contrepartie_encai = "  ";
+            $code_piece_contrepartie_encai = $this->formatage_colonne(5, " ");
+            $code_stat_contrepartie_encai = "    ";
+            $date_echeance_contrepartie_encai =   date('dmY',strtotime($date_fin));
+            $monnaie_contrepartie_encai = 1;
+            $filler_contrepartie_encai = " ";
+            $ind_compteur_contrepartie_encai = " ";
+            $quantite_contrepartie_encai = "      0,000";
+            $code_pointage_contrepartie_encai = "  ";
+            
+            
+            $ligne2_contrepartie_transac_encai = "B2"."|".$date_operation_contrepartie_encai."|".$this->formatage_colonne(6,$num_folio_encai_B2,'droite')."|".$this->formatage_colonne(6,$num_ecriture_encai_B2,'droite')."|".$jour_ecriture_contrepartie_encai."|".$compte_contrepartie_transac_encai."|".$montant_debit_contrepartie_transac_encai."|".$montant_credit_contrepartie_transac_encai."|".$libelle_contrepartie_transac_encai."|".$lettrage_contrepartie_encai."|".$code_piece_contrepartie_encai."|".$code_stat_contrepartie_encai."|".$date_echeance_contrepartie_encai."|".$monnaie_contrepartie_encai."|".$filler_contrepartie_encai."|".$ind_compteur_contrepartie_encai."|".$quantite_contrepartie_encai."|".$code_pointage_contrepartie_encai."|\r\n";
+            $num_ecriture_encai_B2++;
+            
+            $ligne2_contrepartie_autre_encai = "B1"."|".$date_operation_contrepartie_encai."|".$this->formatage_colonne(6,$num_folio_encai_B1,'droite')."|".$this->formatage_colonne(6,$num_ecriture_encai_B1,'droite')."|".$jour_ecriture_contrepartie_encai."|".$compte_contrepartie_autre_encai."|".$montant_debit_contrepartie_autre_encai."|".$montant_credit_contrepartie_autre_encai."|".$libelle_contrepartie_autre_encai."|".$lettrage_contrepartie_encai."|".$code_piece_contrepartie_encai."|".$code_stat_contrepartie_encai."|".$date_echeance_contrepartie_encai."|".$monnaie_contrepartie_encai."|".$filler_contrepartie_encai."|".$ind_compteur_contrepartie_encai."|".$quantite_contrepartie_encai."|".$code_pointage_contrepartie_encai."|\r\n";
+            $num_ecriture_encai_B1++;
             
    
             
@@ -335,7 +378,6 @@ class ExportwinficController extends Controller
                 $data_encai_B1 .= $code_journal_encai."|".$date_operation_encai."|".$this->formatage_colonne(6,$num_folio_encai_B1,'droite')."|".$this->formatage_colonne(6,$num_ecriture_encai_B1,'droite')."|".$jour_ecriture_encai."|".$compte_ttc_encai."|".$montant_debit_ttc_encai."|".$montant_credit_ttc_encai."|".$libelle_encai."|".$lettrage_encai."|".$code_piece_encai."|".$code_stat_encai."|".$date_echeance_encai."|".$monnaie_encai."|".$filler_encai."|".$ind_compteur_encai."|".$quantite_encai."|".$code_pointage_encai."|\r\n";
                 $num_ecriture_encai_B1++;
                 
-            
             }
             
             
@@ -357,49 +399,9 @@ class ExportwinficController extends Controller
         }
         
         
-        // ######### CONTREPARTIE ENCAISSEMENT
-         // Pour la contraprtie, faire une seule ligne ------------> sortie de la boucleb  somme des ttc
-     
-        // Factures transaction
-        $code_journal_contrepartie_transac_encai = "B2";
-        $compte_contrepartie_transac_encai = "512003";
-        $libelle_contrepartie_transac_encai = $this->formatage_colonne(30, "Cumul recettes ".date('m/Y',strtotime($date_fin)));
         
-        $montant_debit_contrepartie_transac_encai = $this->formatage_colonne(13, number_format($total_transac_ttc,2, ",",""), "droite") ;
-        $montant_credit_contrepartie_transac_encai = $this->formatage_colonne(13, " ", "droite");
-        
-        //  Factures autres
-        
-        $code_journal_contrepartie_autre_encai = "B1";
-        $compte_contrepartie_autre_encai = "512002";
-        $libelle_contrepartie_autre_encai = $this->formatage_colonne(30, "Cumul recettes ".date('m/Y',strtotime($date_fin)));
-        
-        $montant_debit_contrepartie_autre_encai = $this->formatage_colonne(13, number_format($total_autre_ttc,2, ",",""), "droite") ;
-        $montant_credit_contrepartie_autre_encai = $this->formatage_colonne(13, " ", "droite");
-        
-        
-        
-        $date_operation_contrepartie_encai = date('dmY',strtotime($date_fin));
-        $jour_ecriture_contrepartie_encai=  $this->formatage_colonne(6, date('d',strtotime($date_fin)), "droite");
-        $lettrage_contrepartie_encai = "  ";
-        $code_piece_contrepartie_encai = $this->formatage_colonne(5, " ");
-        $code_stat_contrepartie_encai = "    ";
-        $date_echeance_contrepartie_encai =   date('dmY',strtotime($date_fin));
-        $monnaie_contrepartie_encai = 1;
-        $filler_contrepartie_encai = " ";
-        $ind_compteur_contrepartie_encai = " ";
-        $quantite_contrepartie_encai = "      0,000";
-        $code_pointage_contrepartie_encai = "  ";
-        
-        
-        $ligne2_contrepartie_transac_encai = "B2"."|".$date_operation_contrepartie_encai."|".$this->formatage_colonne(6,$num_folio_encai_B2,'droite')."|".$this->formatage_colonne(6,$num_ecriture_encai_B2,'droite')."|".$jour_ecriture_contrepartie_encai."|".$compte_contrepartie_transac_encai."|".$montant_debit_contrepartie_transac_encai."|".$montant_credit_contrepartie_transac_encai."|".$libelle_contrepartie_transac_encai."|".$lettrage_contrepartie_encai."|".$code_piece_contrepartie_encai."|".$code_stat_contrepartie_encai."|".$date_echeance_contrepartie_encai."|".$monnaie_contrepartie_encai."|".$filler_contrepartie_encai."|".$ind_compteur_contrepartie_encai."|".$quantite_contrepartie_encai."|".$code_pointage_contrepartie_encai."|\r\n";
-        $num_ecriture_encai_B2++;
-        
-        $ligne2_contrepartie_autre_encai = "B1"."|".$date_operation_contrepartie_encai."|".$this->formatage_colonne(6,$num_folio_encai_B1,'droite')."|".$this->formatage_colonne(6,$num_ecriture_encai_B1,'droite')."|".$jour_ecriture_contrepartie_encai."|".$compte_contrepartie_autre_encai."|".$montant_debit_contrepartie_autre_encai."|".$montant_credit_contrepartie_autre_encai."|".$libelle_contrepartie_autre_encai."|".$lettrage_contrepartie_encai."|".$code_piece_contrepartie_encai."|".$code_stat_contrepartie_encai."|".$date_echeance_contrepartie_encai."|".$monnaie_contrepartie_encai."|".$filler_contrepartie_encai."|".$ind_compteur_contrepartie_encai."|".$quantite_contrepartie_encai."|".$code_pointage_contrepartie_encai."|\r\n";
-        $num_ecriture_encai_B1++;
-        
-        // $data_encai = $data_encai_B1.$data_encai_B2;
-        
+   
+        // 
         $data_encai .= $data_encai_B1.$ligne2_contrepartie_autre_encai.$data_encai_B2.$ligne2_contrepartie_transac_encai;
         
         
