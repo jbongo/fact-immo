@@ -57,6 +57,7 @@ Facture N° {{$facture->numero}}
                 @else
 
                     <p> {!! $facture->destinataire !!}  </p>
+                    <p> {!! $facture->adresse_destinataire !!}  </p>
                 @endif
                
             </td>

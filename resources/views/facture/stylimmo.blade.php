@@ -227,7 +227,7 @@
                                         @if(auth()->user()->role == "admin")
                                         <td width="" >
                                             {{-- si c'est une facture d'avoir --}}
-                                            @if($facture->type == "avoir")
+                                            @if($facture->type == "avoir" && $facture->facture_avoir() != null)
                                                 <label class="color-danger"> Avoir sur {{$facture->facture_avoir()->numero}}</label> 
                                             @else
                                                 {{-- Si la facture stylimmo a un avoir --}}

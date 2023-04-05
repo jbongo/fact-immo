@@ -4,9 +4,18 @@
             <td style="width: 320px;"><img src="https://www.stylimmo.com/images/logo.jpg" alt="" width="279" height="124" /></td>
             <td style="width: 380px;">
              
-                    <p> {{$facture->user->nom}} {{$facture->user->prenom}}</p>
+                @if($facture->destinataire_est_mandataire == true)
+                    <p>  {{$facture->user->nom}} {{$facture->user->prenom}}</p>
                     <p>{{$facture->user->adresse}}</p> 
                     <p>{{$facture->user->code_postal}} {{$facture->user->ville}}</p>
+
+                @else
+
+                    <p> {!! $facture->destinataire !!}  </p>
+                    <p> {!! $facture->adresse_destinataire !!}  </p>
+                    
+                @endif
+                
 
             </td>
         </tr>
