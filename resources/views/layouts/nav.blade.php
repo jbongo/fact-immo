@@ -5,7 +5,7 @@
 
 
     $li_home = $li_stats= $li_mandataire = $li_prospect_gestion = $li_prospect_archive = $li_affaire = $li_affaire_filleul = $li_affaire_archive=  $li_facture = $li_facture_gestion = $li_facture_demande = $li_facture_a_payer = $li_facture_a_valider = 
-    $li_parametre = $li_parametre_modele = $li_parametre_fournisseur = $li_parametre_bareme_honoraire= $li_parametre_pack_pub = $li_parametre_generaux = $li_outil = $li_affaire_toutes = $li_affaire_cloture = $li_facture_hors_delais =     
+    $li_parametre = $li_parametre_modele = $li_parametre_fournisseur = $li_parametre_bareme_honoraire= $li_parametre_pack_pub = $li_agenda_general  = $li_parametre_generaux = $li_outil = $li_affaire_toutes = $li_affaire_cloture = $li_facture_hors_delais =     
     $li_jetons = $li_facture_pub = $li_parrainage= $li_documents = $li_documents_gestion = $li_documents_a_valider = $li_fournisseurs = $li_fournisseurs_passerelle = $li_fournisseurs_autre = "";
     
     switch ($curent_url[1]) {
@@ -32,7 +32,14 @@
             $li_affaire = "active open";
         }
             break;
-
+        case 'agendas':
+            $li_agenda_general = "active";            
+            break;
+        case 'fournisseurs':
+            $li_fournisseurs= "active";           
+            break;
+            
+            
         case 'affaires-clotures':  
          
             $li_affaire_cloture = "active open";
@@ -144,14 +151,14 @@
             
                 case 'passerelle' :
                 if($curent_url[1] == "fournisseur" && $curent_url[2] == "type"){                    
-                        $li_fournisseurs= "active open";
+                        $li_fournisseurs= "active";
                         $li_fournisseurs_passerelle = "active";
                     }
                     break;
                     
                 case 'autre' :
                     if($curent_url[1] == "fournisseur" && $curent_url[2] == "type"){
-                        $li_fournisseurs= "active open";
+                        $li_fournisseurs= "active";
                         $li_fournisseurs_autre = "active";
                     }
                     break;
@@ -193,23 +200,30 @@
                 @endif
                     
                 @if (Auth()->user()->role == "admin")                        
-                    <li class="{{$li_stats}}"  style=" background:#e6ea9a"><a href="{{route('stats.index', date('Y'))}}" ><i class="large material-icons" style="font-size:20px;">equalizer</i> Statistiques </a></li>
                
-                    <li class="{{$li_mandataire}}"><a  href="{{route('mandataire.index')}}" class=""> <i class="large material-icons" style="font-size:20px;">person</i></i>Mandataires  </a></li>
+                    {{-- <li class="{{$li_mandataire}}"><a  href="{{route('mandataire.index')}}" class=""> <i class="large material-icons" style="font-size:20px;">person</i></i>Mandataires  </a></li> --}}
+                    <li   class="{{$li_mandataire}}"><a  href="" class="sidebar-sub-toggle"> <i class="large material-icons" style="font-size:20px;">person</i></i> Mandataires <span class="sidebar-collapse-icon ti-angle-down"></span> </a>
+                        <ul>
+                            <li class="{{$li_mandataire}}" ><a href="{{route('mandataire.index')}}">Gestion</a></li>
+                            <li   class="{{$li_jetons}}"><a  href="{{route('mandataires.jetons')}}" class=""> <i class="large material-icons" style="font-size:20px;">adjust</i></i>Gestion des jetons  </a></li>
+                            <li   class="{{$li_facture_pub}}" ><a  href="{{route('mandataires.facture_pub')}}" class=""> <i class="large material-icons" style="font-size:20px;">receipt</i></i>Gestion des Facts pub  </a></li>
+                            <li   class="{{$li_parrainage}}" ><a  href="{{route('parrainage.index')}}" class=""> <i class="large material-icons" style="font-size:20px;">receipt</i></i>Gestion des Parrainages  </a></li>
+
+                        </ul>                    
+                    </li>
+                    
                     <li  class="{{$li_prospect_gestion}} {{$li_prospect_archive}}"><a  href="" class="sidebar-sub-toggle"> <i class="large material-icons" style="font-size:20px;">person</i></i> Prospects <span class="sidebar-collapse-icon ti-angle-down"></span> </a>
                         <ul>
-                        <li class="{{$li_prospect_gestion}}" ><a href="{{route('prospect.index')}}">Gestion</a></li>
-                        <li class="{{$li_prospect_archive}}" ><a href="{{route('prospect.archives')}}">Archivés</a></li>
-                      
-                        {{-- <li><a href="#">Avoir</a></li> --}}
-                    </ul>
-                    
-                    
+                            <li class="{{$li_prospect_gestion}}" ><a href="{{route('prospect.index')}}">Gestion</a></li>
+                            <li class="{{$li_prospect_archive}}" ><a href="{{route('prospect.archives')}}">Archivés</a></li>
+
+                        </ul>                    
                     </li>
                   
-                    <li   class="{{$li_jetons}}"><a  href="{{route('mandataires.jetons')}}" class=""> <i class="large material-icons" style="font-size:20px;">adjust</i></i>Gestion des jetons  </a></li>
-                    <li   class="{{$li_facture_pub}}" ><a  href="{{route('mandataires.facture_pub')}}" class=""> <i class="large material-icons" style="font-size:20px;">receipt</i></i>Gestion des Facts pub  </a></li>
-                    <li   class="{{$li_parrainage}}" style=" background:#e6ea9a"><a  href="{{route('parrainage.index')}}" class=""> <i class="large material-icons" style="font-size:20px;">receipt</i></i>Gestion des Parrainages  </a></li>
+         
+                    <li class="{{$li_fournisseurs}}"><a  href="{{route('fournisseur.index')}}" class=""> <i class="large material-icons" style="font-size:20px;">business</i></i>Fournisseurs   </a></li>
+            
+                
                 @else 
                     
                     @if(Auth()->user()->contrat->deduis_jeton == true)
@@ -258,29 +272,10 @@
                     
                     @if (Auth()->user()->role == "admin")
                     
-                    <li class="{{$li_parametre}}"><a  class="sidebar-sub-toggle"><i class="large material-icons" style="font-size:20px;">build</i> Paramètres <span class="sidebar-collapse-icon ti-angle-down"></span></a>
-                        <ul>
-                            {{-- <li><a href="page-login.html">Info Entreprise</a></li> --}}
-                            <li class="{{$li_parametre_generaux}}"><a href="{{route('parametre_generaux.create')}}">Généraux</a></li>
-                            <li class="{{$li_parametre_pack_pub}}"><a href="{{route('pack_pub.index')}}">Pack Pub</a></li>
-                            <li class="{{$li_parametre_modele}}"><a href="{{route('modele_contrat.create')}}">Modèle contrat</a></li>
-                            <li class="{{$li_parametre_fournisseur}}"><a href="{{route('fournisseur.index')}}">Fournisseur</a></li>
-                            <li class="{{$li_parametre_bareme_honoraire}}"><a href="{{route('bareme_honoraire.index')}}">Barème d'honoraire</a></li>
-                            
-                        </ul>
-                    </li>
-                    
                     <li class=""><a  href="{{route('winfic.index')}}" class=""> <i class="large material-icons" style="font-size:20px;">vertical_align_center</i></i>Export WINFIC   </a></li>
-                        {{-- <li class=""><a  href="{{route('export_facture.index')}}" class=""> <i class="large material-icons" style="font-size:20px;">vertical_align_center</i></i>Export   </a> --}}
-                    <li class=""><a  href="{{route('historique.index')}}" class=""> <i class="large material-icons" style="font-size:20px;">access_time</i></i>Historique   </a> </li>
-                    {{-- <li class=""><a  href="{{route('etat_financier')}}" class=""> <i class="large material-icons" style="font-size:20px;">enhanced_encryption</i></i>Etat financier   </a></li> --}}
-                    <li class="{{$li_parametre_generaux}}"><a  class="sidebar-sub-toggle"><i class="large material-icons" style="font-size:20px;">view_agenda</i> Agenda <span class="sidebar-collapse-icon ti-angle-down"></span></a>
-                        <ul>
-                            {{-- <li><a href="page-login.html">Info Entreprise</a></li> --}}
-                            <li class="{{$li_parametre_generaux}}"><a href="{{route('agendas.index')}}">Gestion</a></li>
-                           
-                        </ul>
-                    </li>
+                    <li class="{{$li_agenda_general}}"><a  href="{{route('agendas.index')}}" class=""> <i class="large material-icons" style="font-size:20px;">view_agenda</i></i>Agenda   </a></li>
+
+
                     @endif
                     
                     
@@ -299,29 +294,27 @@
                     @endif
                     
                     
-                         
-                    @if (Auth()->user()->role == "admin")
-                        <li class="{{$li_fournisseurs}}"><a  class="sidebar-sub-toggle"><i class="large material-icons" style="font-size:20px;">business</i> Fournisseurs <span class="sidebar-collapse-icon ti-angle-down"></span></a>
-                            <ul>
-                      
-                                <li class="{{$li_fournisseurs}}"><a  href="{{route('fournisseur.index')}}" >Gestion</a></li>
-                               
-                               
-                            </ul>
-                        </li>
-                    @endif
-                    
-                    
                     
 
                     {{-- @if(Auth()->user()->role == "admin"  ) --}}
                         <li  class="" ><a href="{{route('outil_calcul.index')}}" ><i class="large material-icons" style="font-size:20px;">iso</i> Outil de calcul </a></li>
                     {{-- @endif --}}
+                    @if (Auth()->user()->role == "admin")
                     
-                     @if(Auth()->user()->role == "admin"  )
-                     <li  class="" ><a href="{{route('outil_info.index')}}" ><i class="large material-icons" style="font-size:20px;">computer</i> Outils informatique </a></li>
-                     @endif
-
+                    <li class="{{$li_parametre}}"><a  class="sidebar-sub-toggle"><i class="large material-icons" style="font-size:20px;">build</i> Paramètres <span class="sidebar-collapse-icon ti-angle-down"></span></a>
+                        <ul>
+                            {{-- <li><a href="page-login.html">Info Entreprise</a></li> --}}
+                            <li class="{{$li_parametre_generaux}}"><a href="{{route('parametre_generaux.create')}}">Généraux</a></li>
+                            <li class="{{$li_parametre_pack_pub}}"><a href="{{route('pack_pub.index')}}">Pack Pub</a></li>
+                            <li class="{{$li_parametre_modele}}"><a href="{{route('modele_contrat.create')}}">Modèle contrat</a></li>                          
+                            <li  class="" ><a href="{{route('outil_info.index')}}" > Outils informatique </a></li>
+                            {{-- <li class="{{$li_parametre_fournisseur}}"><a href="{{route('fournisseur.index')}}">Fournisseur</a></li> --}}
+                            <li class="{{$li_parametre_bareme_honoraire}}"><a href="{{route('bareme_honoraire.index')}}">Barème d'honoraire</a></li>
+                            
+                        </ul>
+                    </li>
+                    @endif
+                   
                     <li><a href="{{ route('logout') }}"  onclick="event.preventDefault();
                      document.getElementById('logout-form').submit();" ><i class="large material-icons" style="font-size:20px;">close</i></i> Déconnexion</a></li>
 
@@ -437,9 +430,13 @@
                             <ul>
                             <li><a href="{{route('mandataire.show',Crypt::encrypt(Auth()->user()->id) )}}"><i class="ti-user"></i> <span>Mon Profil</span></a></li>
                             @if(session('is_switch') == true)
-                            <li ><a href="{{ route('unswitch_user') }}" class="btn btn-success"><i class="ti-arrow-left"></i> <span>Retour ADMIN</span></a>
+                            <li ><a href="{{ route('unswitch_user') }}" class="btn btn-success"><i class="ti-arrow-left"></i> <span>Retour ADMIN</span></a></li>
                             @endif
-                            </li>
+                            @if (Auth()->user()->role == "admin")
+                                <li class=""  style=" background:#e6ea9a"><a href="{{route('stats.index', date('Y'))}}" ><i class="large material-icons" style="font-size:20px;">equalizer</i> Statistiques </a></li>
+                            
+                                <li class=""><a  href="{{route('historique.index')}}" class=""> <i class="large material-icons" style="font-size:20px;">access_time</i></i>Historique   </a> </li>
+                            @endif
                             <li><a href="{{ route('logout') }}"  onclick="event.preventDefault();
                                 document.getElementById('logout-form').submit();" ><i class="ti-power-off"></i> <span>Se déconnecter</span></a>
                             </li>

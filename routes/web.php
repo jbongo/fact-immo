@@ -440,6 +440,23 @@ Route::post('/fiche-info/update/{mandataire_id}','FicheinfoController@update')->
 Route::get('/fiche-info/pdf/{mandataire_id}','FicheinfoController@fiche_pdf')->name('fiche_info.fiche_pdf');
 Route::get('/fiche-info/reiniatiliser/{mandataire_id}','FicheinfoController@reiniatiliser')->name('fiche_info.reiniatiliser');
 
+/*contacts routes*/
+Route::get('/contacts', 'ContactController@index')->name('contact.index');
+Route::get('/contact/add', 'ContactController@create')->name('contact.add');
+
+Route::get('/contact/individu', 'ContactController@index_individu')->name('contact.individu.index');
+Route::post('/contact/entite/store/{sentinel}', 'ContactController@store_entite')->name('contact.entite.store');
+Route::post('/contact/individu/storeandattach/{id}', 'ContactController@store_and_attach')->name('contact.individu.storeandattach');
+Route::post('/contact/individu/store', 'ContactController@store_individu')->name('contact.individu.store');
+Route::post('/contact/entite/update/{id}', 'ContactController@update_entite')->name('contact.entite.update');
+Route::post('/contact/individu/update/{id}', 'ContactController@update_individu')->name('contact.individu.update');
+Route::get('/contact/entite/show/{id}', 'ContactController@show_entite')->name('contact.entite.show');
+Route::get('/contact/entite/json_get/{id}', 'ContactController@json_entite')->name('contact.json_entite');
+Route::get('/contact/individu/show/{id}', 'ContactController@show_individu')->name('contact.individu.show');
+Route::get('/contact/individu/dissociate_entite/{individu}/{entite}', 'ContactController@detache_entite')->name('contact.individu.dissociate');
+Route::get('/contact/entite/dissociate_individu/{entite}/{individu}', 'ContactController@detache_individu')->name('contact.entite.dissociate');
+Route::post('/contact/entite/associate_individu/{entite}', 'ContactController@attache_individu')->name('contact.entite.attache');
+
 });
 
 // Blibliotheque
@@ -450,6 +467,7 @@ Route::post('/bibliotheque/reponseuser/{bibliotheque_id}/{user_id}/{type?}','Bib
 // Envoi de la fiche info au prospect
 Route::get('fiche/prospect/{prospect}/','ProspectController@create_fiche')->name('prospect.fiche');
 Route::post('fiche/prospect/{prospect}/','ProspectController@sauvegarder_fiche')->name('prospect.sauvegarder_fiche');
+
 
 
 
