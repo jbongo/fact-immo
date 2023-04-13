@@ -443,6 +443,9 @@ Route::get('/fiche-info/reiniatiliser/{mandataire_id}','FicheinfoController@rein
 /*contacts routes*/
 Route::get('/contacts', 'ContactController@index')->name('contact.index');
 Route::get('/contact/add', 'ContactController@create')->name('contact.add');
+Route::post('/contact/add', 'ContactController@store')->name('contact.store');
+Route::get('/contact/show/{contact_id}', 'ContactController@show')->name('contact.show');
+Route::get('/contact/edit/{contact_id}', 'ContactController@edit')->name('contact.edit');
 
 Route::get('/contact/individu', 'ContactController@index_individu')->name('contact.individu.index');
 Route::post('/contact/entite/store/{sentinel}', 'ContactController@store_entite')->name('contact.entite.store');
@@ -456,6 +459,31 @@ Route::get('/contact/individu/show/{id}', 'ContactController@show_individu')->na
 Route::get('/contact/individu/dissociate_entite/{individu}/{entite}', 'ContactController@detache_entite')->name('contact.individu.dissociate');
 Route::get('/contact/entite/dissociate_individu/{entite}/{individu}', 'ContactController@detache_individu')->name('contact.entite.dissociate');
 Route::post('/contact/entite/associate_individu/{entite}', 'ContactController@attache_individu')->name('contact.entite.attache');
+
+  /************************************************************/
+   /*             MODULE BIENS  //JP                           */
+  /* **********************************************************/
+
+  Route::name('bien.add')->get('bien/add','BienController@create');    
+  Route::name('bien.store')->post('bien/store','BienController@store');    
+  Route::name('bien.update')->post('bien/update/{bien}','BienController@update');    
+  Route::name('bien.index')->get('bien/index','BienController@index');    
+  Route::name('bien.show')->get('bien/show/{id}','BienController@show');    
+  
+  Route::get('/images-create/{bien_id}', 'BienController@uploadPhoto')->name('uptof');
+  Route::post('/images-save/{visibilite}/{bien_id}', 'BienController@savePhoto')->name('savetof');
+  Route::post('/images-delete', 'BienController@destroyPhoto');
+  Route::get('/images-show', 'BienController@indexPhoto')->name('indextof');
+  Route::get('/photo-delete/{id}', 'BienController@deletePhoto')->name('photoDelete');
+
+  //Modifer les positions des photos du bien
+  Route::post('/images-update', 'BienController@updatePhoto');
+  // Télechargement d'une photo du bien
+  Route::name('bien.getPhoto')->get('bien/photo/{photoBien}','BienController@getPhoto');
+  // Impression des fiches du  bien
+  Route::get('/imprime-fiche/{bien}/{typefiche}/{action}', 'BienController@impressionFiche')->name('imprimeFiche');
+  
+  
 
 });
 

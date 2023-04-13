@@ -33,10 +33,10 @@
                     <div class="form-group row">
                         <label class="col-lg-4 col-md-4 col-form-label" for="prix_net_info_fin">@lang('Prix net vendeur (€)') </label>
                         <div class="col-lg-8 col-md-8 hide_champ_infos_prix">
-                            <input type="number" value="{{$bien->bienprix->prix_prive}}" min="0" class="form-control " id="prix_net_info_fin" name="prix_prive" placeholder="@lang('€')" > 
+                            <input type="number" value="{{$bien->prix_prive}}" min="0" class="form-control " id="prix_net_info_fin" name="prix_prive" placeholder="@lang('€')" > 
                         </div>
                         <div class="col-lg-6 col-md-6 show_champ_infos_prix">
-                            {{$bien->bienprix->prix_prive}}
+                            {{$bien->prix_prive}}
                         </div>
                     </div>                                    
                 </div>
@@ -44,10 +44,10 @@
                     <div class="form-group row">
                         <label class="col-lg-4 col-md-4 col-form-label" for="prix_public_info_fin">@lang('Public (€)') </label>
                         <div class="col-lg-8 col-md-8 hide_champ_infos_prix">
-                            <input type="number" value="{{$bien->bienprix->prix_public}}" min="0" class="form-control "  id="prix_public_info_fin" name="prix_public" placeholder="@lang('€')" > 
+                            <input type="number" value="{{$bien->prix_public}}" min="0" class="form-control "  id="prix_public_info_fin" name="prix_public" placeholder="@lang('€')" > 
                         </div>
                         <div class="col-lg-6 col-md-6 show_champ_infos_prix">
-                            {{$bien->bienprix->prix_public}}
+                            {{$bien->prix_public}}
                         </div>
                     </div>                                    
                 </div>
@@ -56,12 +56,12 @@
                     <div class="form-group row">   
                         <label class="col-lg-4 col-md-4 col-form-label" for="honoraire_acquereur_info_fin">@lang('Honoraires charge Acquéreur') </label>
                         <div class="col-lg-8 col-md-8 hide_champ_infos_prix">
-                            @php  $honoraire_acquer = $bien->bienprix->honoraire_acquereur @endphp
+                            @php  $honoraire_acquer = $bien->honoraire_acquereur @endphp
                             <label class="radio-inline"><input type="radio" @if($honoraire_acquer == "Non") checked  @endif  value="@lang('Non')" name="honoraire_acquereur_info_fin" checked>@lang('Non')</label>
                             <label class="radio-inline"><input type="radio" @if($honoraire_acquer == "Oui") checked  @endif  value="@lang('Oui')" name="honoraire_acquereur_info_fin" >@lang('Oui')</label>
                         </div>
                         <div class="col-lg-6 col-md-6 show_champ_infos_prix">
-                            {{$bien->bienprix->honoraire_acquereur}}
+                            {{$bien->honoraire_acquereur}}
                         </div>
                     </div> 
                 </div>
@@ -70,12 +70,12 @@
                     <div class="form-group row">   
                         <label class="col-lg-4 col-md-4 col-form-label" for="honoraire_vendeur_info_fin">@lang('Honoraires charge Vendeur') </label>
                         <div class="col-lg-8 col-md-8 hide_champ_infos_prix">
-                                @php  $honoraire_ven = $bien->bienprix->honoraire_vendeur @endphp
+                                @php  $honoraire_ven = $bien->honoraire_vendeur @endphp
                             <label class="radio-inline"><input type="radio" @if($honoraire_ven == "Non") checked  @endif value="@lang('Non')" name="honoraire_vendeur_info_fin" checked>@lang('Non')</label>
                             <label class="radio-inline"><input type="radio" @if($honoraire_ven == "Oui") checked  @endif value="@lang('Oui')" name="honoraire_vendeur_info_fin" >@lang('Oui')</label>
                         </div>
                         <div class="col-lg-6 col-md-6 show_champ_infos_prix">
-                            {{$bien->bienprix->honoraire_vendeur}}
+                            {{$bien->honoraire_vendeur}}
                         </div>
                     </div> 
                 </div>
@@ -101,10 +101,10 @@
                     <div class="form-group row">
                         <label class="col-lg-4 col-md-4 col-form-label" for="estimation_valeur_info_fin">@lang('Valeur') </label>
                         <div class="col-lg-8 col-md-8 hide_champ_infos_prix">
-                            <input type="number" value="{{$bien->bienprix->estimation_valeur}}"  min="0" class="form-control "  id="estimation_valeur_info_fin" name="estimation_valeur_info_fin" placeholder="@lang('€')" > 
+                            <input type="number" value="{{$bien->estimation_valeur}}"  min="0" class="form-control "  id="estimation_valeur_info_fin" name="estimation_valeur_info_fin" placeholder="@lang('€')" > 
                         </div>
                         <div class="col-lg-6 col-md-6 show_champ_infos_prix">
-                            {{$bien->bienprix->estimation_valeur}}
+                            {{$bien->estimation_valeur}}
                         </div>
                     </div>                                    
                 </div>
@@ -112,10 +112,10 @@
                     <div class="form-group row">
                         <label class="col-lg-4 col-md-4 col-form-label" for="estimation_date_info_fin">@lang('date') </label>
                         <div class="col-lg-8 col-md-8 hide_champ_infos_prix">
-                            <input type="date" value="{{$bien->bienprix->estimation_date}}" class="form-control "  id="estimation_date_info_fin" name="estimation_date_info_fin" placeholder="" > 
+                            <input type="date" value="{{$bien->estimation_date}}" class="form-control "  id="estimation_date_info_fin" name="estimation_date_info_fin" placeholder="" > 
                         </div>
                         <div class="col-lg-6 col-md-6 show_champ_infos_prix">
-                            {{$bien->bienprix->estimation_date}}
+                            {{$bien->estimation_date}}
                         </div>
                     </div>                                    
                 </div>                    
@@ -132,10 +132,10 @@
                     <div class="form-group row">
                         <label class="col-lg-4 col-md-4 col-form-label" for="viager_valeur_info_fin">@lang('Prix du bouquet') </label>
                         <div class="col-lg-8 col-md-8 hide_champ_infos_prix">
-                            <input type="number" value="{{$bien->bienprix->viager_prix_bouquet}}" min="0" class="form-control "  id="viager_valeur_info_fin" name="viager_valeur_info_fin"  > 
+                            <input type="number" value="{{$bien->viager_prix_bouquet}}" min="0" class="form-control "  id="viager_valeur_info_fin" name="viager_valeur_info_fin"  > 
                         </div>
                         <div class="col-lg-6 col-md-6 show_champ_infos_prix">
-                            {{$bien->bienprix->viager_prix_bouquet}}
+                            {{$bien->viager_prix_bouquet}}
                         </div>
                     </div>                                    
                 </div>
@@ -143,10 +143,10 @@
                     <div class="form-group row">
                         <label class="col-lg-4 col-md-4 col-form-label" for="viager_rente_mensuelle_info_fin">@lang('Rente Mensuelle') </label>
                         <div class="col-lg-8 col-md-8 hide_champ_infos_prix">
-                            <input type="number" value="{{$bien->bienprix->viager_rente_mensuelle}}" min="0" class="form-control " id="viager_rente_mensuelle_info_fin" name="viager_rente_mensuelle_info_fin" > 
+                            <input type="number" value="{{$bien->viager_rente_mensuelle}}" min="0" class="form-control " id="viager_rente_mensuelle_info_fin" name="viager_rente_mensuelle_info_fin" > 
                         </div>
                         <div class="col-lg-6 col-md-6 show_champ_infos_prix">
-                            {{$bien->bienprix->viager_rente_mensuelle}}
+                            {{$bien->viager_rente_mensuelle}}
                         </div>
                     </div>                                    
                 </div>                    
@@ -158,42 +158,42 @@
         <div class="form-group row">
             <label class="col-lg-4 col-md-4 col-form-label" for="travaux_a_prevoir_info_fin">@lang('Travaux à prévoir') </label>
             <div class="col-lg-6 col-md-6 hide_champ_infos_prix">
-            <input type="text" value="{{$bien->bienprix->travaux_a_prevoir}}"  class="form-control " id="travaux_a_prevoir_info_fin" name="travaux_a_prevoir_info_fin"  > 
+            <input type="text" value="{{$bien->travaux_a_prevoir}}"  class="form-control " id="travaux_a_prevoir_info_fin" name="travaux_a_prevoir_info_fin"  > 
                 
             </div>
             <div class="col-lg-6 col-md-6 show_champ_infos_prix">
-                {{$bien->bienprix->travaux_a_prevoir}}
+                {{$bien->travaux_a_prevoir}}
             </div>
         </div>
 
         <div class="form-group row">
             <label class="col-lg-4 col-md-4 col-form-label" for="depot_garanti_info_fin">@lang('Dépôt de garantie') </label>
             <div class="col-lg-6 col-md-6 hide_champ_infos_prix">
-            <input type="number" value="{{$bien->bienprix->depot_garanti}}" min="0" class="form-control " id="depot_garanti_info_fin" name="depot_garanti_info_fin" placeholder="@lang('€')" > 
+            <input type="number" value="{{$bien->depot_garanti}}" min="0" class="form-control " id="depot_garanti_info_fin" name="depot_garanti_info_fin" placeholder="@lang('€')" > 
                 
             </div>
             <div class="col-lg-6 col-md-6 show_champ_infos_prix">
-                {{$bien->bienprix->depot_garanti}}
+                {{$bien->depot_garanti}}
             </div>
         </div>
         <div class="form-group row">
             <label class="col-lg-4 col-md-4 col-form-label" for="taxe_habitation_info_fin">@lang('Taxe d\'habitation') </label>
             <div class="col-lg-6 col-md-6 hide_champ_infos_prix">
-            <input type="number" value="{{$bien->bienprix->taxe_habitation}}" min="0" class="form-control " id="taxe_habitation_info_fin" name="taxe_habitation_info_fin" placeholder="@lang('€')" > 
+            <input type="number" value="{{$bien->taxe_habitation}}" min="0" class="form-control " id="taxe_habitation_info_fin" name="taxe_habitation_info_fin" placeholder="@lang('€')" > 
                 
             </div>
             <div class="col-lg-6 col-md-6 show_champ_infos_prix">
-                {{$bien->bienprix->taxe_habitation}}
+                {{$bien->taxe_habitation}}
             </div>
         </div>
         <div class="form-group row">
             <label class="col-lg-4 col-md-4 col-form-label" for="taxe_fonciere_info_fin">@lang('Taxe foncière') </label>
             <div class="col-lg-6 col-md-6 hide_champ_infos_prix">
-            <input type="number" value="{{$bien->bienprix->taxe_fonciere}}" min="0" class="form-control " id="taxe_fonciere_info_fin" name="taxe_fonciere_info_fin" placeholder="@lang('€')" > 
+            <input type="number" value="{{$bien->taxe_fonciere}}" min="0" class="form-control " id="taxe_fonciere_info_fin" name="taxe_fonciere_info_fin" placeholder="@lang('€')" > 
                 
             </div>
             <div class="col-lg-6 col-md-6 show_champ_infos_prix">
-                {{$bien->bienprix->taxe_fonciere}}
+                {{$bien->taxe_fonciere}}
             </div>
         </div>
 
@@ -205,11 +205,11 @@
         <div class="form-group row">
             <label class="col-lg-4 col-md-4 col-form-label" for="taxe_fonciere_info_fin">@lang('Montant foncier total') </label>
             <div class="col-lg-6 col-md-6 hide_champ_infos_prix">
-            <input type="number" value="{{$bien->bienprix->taxe_fonciere}}" min="0" class="form-control " id="taxe_fonciere_info_fin" name="taxe_fonciere_info_fin" placeholder="@lang('€')" > 
+            <input type="number" value="{{$bien->taxe_fonciere}}" min="0" class="form-control " id="taxe_fonciere_info_fin" name="taxe_fonciere_info_fin" placeholder="@lang('€')" > 
                 
             </div>
             <div class="col-lg-6 col-md-6 show_champ_infos_prix">
-                {{$bien->bienprix->taxe_fonciere}}
+                {{$bien->taxe_fonciere}}
             </div>
         </div>
 
@@ -221,10 +221,10 @@
                         <div class="form-group row">
                             <label class="col-lg-4 col-md-4 col-form-label" for="charge_mensuelle_total_info_fin">@lang('Total')</label>
                             <div class="col-lg-8 col-md-8 hide_champ_infos_prix">
-                                <input type="number" value="{{$bien->bienprix->charge_mensuelle_total}}" min="0" class="form-control " id="charge_mensuelle_total_info_fin" name="charge_mensuelle_total_info_fin" placeholder="@lang('€')" > 
+                                <input type="number" value="{{$bien->charge_mensuelle_total}}" min="0" class="form-control " id="charge_mensuelle_total_info_fin" name="charge_mensuelle_total_info_fin" placeholder="@lang('€')" > 
                             </div>
                             <div class="col-lg-6 col-md-6 show_champ_infos_prix">
-                                {{$bien->bienprix->charge_mensuelle_total}}
+                                {{$bien->charge_mensuelle_total}}
                             </div>   
                         </div>   
                                                       
@@ -233,11 +233,11 @@
                         <div class="form-group row">
                             <label class="col-lg-4 col-md-4 col-form-label" for="charge_mensuelle_info_info_fin">@lang('Informations')</label>
                             <div class="col-lg-8 col-md-8 hide_champ_infos_prix">
-                                    <textarea class="form-control"  name="charge_mensuelle_info_info_fin" id="charge_mensuelle_info_info_fin" cols="30" rows="3" >{{$bien->bienprix->charge_mensuelle_info}}</textarea>
+                                    <textarea class="form-control"  name="charge_mensuelle_info_info_fin" id="charge_mensuelle_info_info_fin" cols="30" rows="3" >{{$bien->charge_mensuelle_info}}</textarea>
 
                             </div>
                             <div class="col-lg-6 col-md-6 show_champ_infos_prix">
-                                {{$bien->bienprix->charge_mensuelle_info}}
+                                {{$bien->charge_mensuelle_info}}
                             </div>
                         </div>                                    
                     </div>

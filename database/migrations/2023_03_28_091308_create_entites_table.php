@@ -15,6 +15,8 @@ class CreateEntitesTable extends Migration
     {
         Schema::create('entites', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->integer('user_id')->unsigned()->nullable();
+            $table->integer('contact_id')->unsigned()->nullable();            
             $table->string('forme_juridique')->nullable();
             $table->string('raison_sociale')->nullable();
             $table->string('adresse')->nullable();
@@ -32,7 +34,9 @@ class CreateEntitesTable extends Migration
             $table->string('rib_bancaire')->nullable();
             $table->string('iban')->nullable();
             $table->string('bic')->nullable();
+
             $table->boolean('archive')->default(0);
+            
             $table->timestamps();
         });
     }

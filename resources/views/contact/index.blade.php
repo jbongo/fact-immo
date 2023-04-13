@@ -1,58 +1,13 @@
 @extends('layouts.app')
 @section('content')
 @section ('page_title')
-Ajout d'une affaire
+Contacts
 @endsection
 <div class="row">
     <div class="col-lg-12 col-sm-12 col-md-12">
        <div class="card alert">
           <a href="{{route('contact.add')}}"  class="btn btn-success btn-rounded btn-addon btn-sm m-b-10 m-l-5"><i class="ti-plus"></i>@lang('Ajouter')</a>
           <div class="card-body">
-                <div class="col-lg-4">
-                        <div class="card bg-pink">
-                           <div class="stat-widget-six">
-                              <div class="stat-icon">
-                                 <i class="material-icons">person_pin</i>
-                              </div>
-                              <div class="stat-content">
-                                 <div class="text-left dib">
-                                    <div class="stat-heading"><strong>Acquéreurs</strong></div>
-                                    <div class="stat-text"><strong>Total: {{$query->where('type', "acquereur")->count()}}</strong></div>
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                     <div class="col-lg-4">
-                        <div class="card bg-danger">
-                           <div class="stat-widget-six">
-                              <div class="stat-icon">
-                                 <i class="material-icons">person_pin</i>
-                              </div>
-                              <div class="stat-content">
-                                 <div class="text-left dib">
-                                    <div class="stat-heading"><strong>Mandants</strong></div>
-                                    <div class="stat-text"><strong>Total: {{$query->where('type', "mandant")->count()}}</strong></div>
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                     <div class="col-lg-4">
-                        <div class="card bg-warning">
-                           <div class="stat-widget-six">
-                              <div class="stat-icon">
-                                 <i class="material-icons">check_circle</i>
-                              </div>
-                              <div class="stat-content">
-                                 <div class="text-left dib">
-                                    <div class="stat-heading"><strong>Toutes les entités</strong></div>
-                                    <div class="stat-text"><strong>Total: {{$query->count()}}</strong></div>
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
                 <div class="table-responsive" style="overflow-x: inherit !important;">
                         <table  id="entitelist" class="table-hover table student-data-table  m-t-20 table-striped"  style="width:100%">
                            <thead>
@@ -70,27 +25,40 @@ Ajout d'une affaire
                               </tr>
                            </thead>
                            <tbody>
-                                @foreach($query as $one)
+                                @foreach($contacts as $contact)
                                 <tr>
-                                <td style=" min-width: 120px; border-top: 4px solid #b8c7ca;">
+                                    <td style=" min-width: 120px; border-top: 4px solid #b8c7ca;">
                                         <img class="img-thumbnail" style="object-fit: cover; width: 100px; height: 100px; border: 2px solid #8ba2ad;background: #f0f0f0; border-style: solid; border-radius: 20px; padding: 3px;" src="{{asset('/images/common/'."justice.png")}}" alt="" />
-                                  </td >
-                                  <td style="border-top: 4px solid #b8c7ca;">
-                                        <span class="badge badge-pink">{{$one->type}}</span>                                                
-                                     </td>
-                                  <td style="border-top: 4px solid #b8c7ca;">{{$one->raison_sociale}}</td>
-                                  <td style="border-top: 4px solid #b8c7ca;">{{$one->forme_juridique}}</td>
-                                  <td style="border-top: 4px solid #b8c7ca;"><span class="badge badge-default">{{$one->sous_type}}</span></td>
-                                  <td style="border-top: 4px solid #b8c7ca; color: #32ade1; text-decoration: underline;"><strong>{{$one->email}}</strong> </td>
-                                  <td style="border-top: 4px solid #b8c7ca; color: brown; text-decoration: underline;"><strong> {{$one->telephone}}</strong> </td>
-                                  <td style="border-top: 4px solid #b8c7ca;">{{$one->code_postal}}</td>
-                                  <td style="border-top: 4px solid #b8c7ca;">
-                                        <span class="badge badge-warning">{{$one->individus->count()}}</span>                                                
-                                     </td>
-                                  <td style="border-top: 4px solid #b8c7ca;">
-                                    <span><a class="show1" href="{{route('contact.entite.show', CryptId($one->id))}}" title="@lang('Détails')"><i class="large material-icons color-info">visibility</i></a></span>
-                                    <span><a href="#" class="archive_notaire" data-toggle="tooltip" title="@lang('Archiver')"><i class="large material-icons color-danger">delete</i></a></span>
-                                </td>
+                                    </td >
+                                    <td style="border-top: 4px solid #b8c7ca;">
+                                        <span class="badge badge-pink">{{$contact->type}}</span>                                                
+                                    </td>
+                                    @if($contact->type == "individu")
+                                        <td style="border-top: 4px solid #b8c7ca;">{{$contact->individu->prenom}} {{$contact->individu->nom}}</td>
+                                        <td style="border-top: 4px solid #b8c7ca;">  </td>
+                                        <td style="border-top: 4px solid #b8c7ca;"><span class="badge badge-default">{{$contact->sous_type}}</span></td>
+                                        <td style="border-top: 4px solid #b8c7ca; color: #32ade1; text-decoration: underline;"><strong>{{$contact->individu->email}}</strong> </td>
+                                        <td style="border-top: 4px solid #b8c7ca; color: brown; text-decoration: underline;"><strong> {{$contact->individu->telephone}}</strong> </td>
+                                        <td style="border-top: 4px solid #b8c7ca;">{{$contact->code_postal}}</td>
+                                        <td style="border-top: 4px solid #b8c7ca;"><span class="badge badge-warning"></span>{{-- <span class="badge badge-warning">{{$contact->individus->count()}}</span> --}}</td>
+                                        
+                                    @else
+                                        <td style="border-top: 4px solid #b8c7ca;">{{$contact->entite->raison_sociale}}</td>
+                                        <td style="border-top: 4px solid #b8c7ca;"> {{$contact->entite->forme_juridique}} </td>
+                                        <td style="border-top: 4px solid #b8c7ca;"><span class="badge badge-default">{{$contact->sous_type}}</span></td>
+                                        <td style="border-top: 4px solid #b8c7ca; color: #32ade1; text-decoration: underline;"><strong>{{$contact->entite->email}}</strong> </td>
+                                        <td style="border-top: 4px solid #b8c7ca; color: brown; text-decoration: underline;"><strong> {{$contact->entite->telephone_fixe}} - {{$contact->entite->telephone_mobile}}</strong> </td>
+                                        <td style="border-top: 4px solid #b8c7ca;">{{$contact->code_postal}}</td>
+                                        <td style="border-top: 4px solid #b8c7ca;"><span class="badge badge-warning"></span>{{-- <span class="badge badge-warning">{{$contact->individus->count()}}</span> --}}</td>
+                                        
+                                    @endif
+                                    
+                                    <td style="border-top: 4px solid #b8c7ca;">
+                                        
+                                        <span><a class="show1" href="{{route('contact.show', Crypt::encrypt($contact->id))}}" title="@lang('Détails')"><i class="large material-icons color-info">visibility</i></a></span>
+                                        <span><a class="show1" href="{{route('contact.edit', Crypt::encrypt($contact->id))}}" title="@lang('modifier')"><i class="large material-icons color-success">edit</i></a></span>
+                                        <span><a href="#" class="archive_notaire" data-toggle="tooltip" title="@lang('Archiver')"><i class="large material-icons color-danger">delete</i></a></span>
+                                    </td>
                                 </tr>
                                   @endforeach
                             </tbody>

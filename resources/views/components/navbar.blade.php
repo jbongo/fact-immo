@@ -8,7 +8,7 @@
             <div class="nano-content">
         <ul style="font-size:95%;">
                 <li class="label" >Administration</li>
-            @foreach(config('menu') as $section=>$field) 
+            {{-- @foreach(config('menu') as $section=>$field) 
                     <li @if($name === $field['prefix']) class="active open" @endif><a class="sidebar-sub-toggle" ><i class="large material-icons">{{$field['icon']}}</i> {{$field['title']}} <span class="sidebar-collapse-icon ti-angle-down"></span></a>
                         <ul>
                             @foreach($field['sub_menus'] as $part)
@@ -16,7 +16,7 @@
                             @endforeach
                         </ul>
                     </li>
-                    @endforeach
+                    @endforeach --}}
                 </ul>
             </div>
         </div>

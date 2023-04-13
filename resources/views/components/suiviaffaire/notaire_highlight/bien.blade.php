@@ -30,7 +30,7 @@
                              </div>
                              <div class="skype-content">
                                 <span class="contact-title"><strong>Adresse:</strong></span>
-                                <span class="contact-skype">{{$bien->biensecteur->adresse_bien.' '.$bien->code_postal.' '.$bien->ville}}</span>
+                                <span class="contact-skype">{{$bien->adresse_bien.' '.$bien->code_postal.' '.$bien->ville}}</span>
                              </div>
                              <div class="skype-content">
                                 <span class="contact-title"><strong>DPE:</strong></span>
@@ -67,7 +67,7 @@
                              </div>
                              <div class="website-content">
                                 <span class="contact-title"><strong>Prix de vente public:</strong></span>
-                                <span class="contact-website">{{$bien->bienprix->prix_public}}</span>
+                                <span class="contact-website">{{$bien->prix_public}}</span>
                              </div>
                              <div class="skype-content">
                                 <span class="contact-title"><strong>Montant de l'offre:</strong></span>

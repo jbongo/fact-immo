@@ -21,10 +21,10 @@
             
         @if($bien->type_offre == "vente")
             <h4> <strong>@lang('Prix public')</strong> </h4>
-            <h3>{{$bien->bienprix->prix_public}} @lang('€')</h3>
+            <h3>{{$bien->prix_public}} @lang('€')</h3>
         @else
             <h4> <strong>@lang('Loyer')</strong> </h4>
-            <h3>{{$bien->bienprix->loyer}} @lang('€')</h3>
+            <h3>{{$bien->loyer}} @lang('€')</h3>
         @endif
 
     </div>
@@ -99,16 +99,16 @@
 <div class="row">
         <div class="col-md-5 col-lg-5 col-sm-5 ">
                 <p>
-                @lang('Ajouté le : ') {{$bien->creation_le->format('d-m-y à h:m')}}
+                @lang('Ajouté le : ') {{$bien->created_at->format('d-m-y à h:m')}}
                 </p>    
                 <p>
-                @lang('Modifié le : ') {{$bien->modification_le->format('d-m-y à h:m')}}      
+                @lang('Modifié le : ') {{$bien->updated_at->format('d-m-y à h:m')}}      
                 </p>            
         </div>
         <div class="col-md-6 col-lg-6 col-sm-6 col-lg-offset-1 col-md-offset-1 col-sm-offset-1">
                 <br><p>
-                @if($bien->bienprix->taxe_fonciere > 0 && $bien->bienprix->taxe_fonciere !="")
-                <strong>{{$bien->bienprix->taxe_fonciere}} </strong>
+                @if($bien->taxe_fonciere > 0 && $bien->taxe_fonciere !="")
+                <strong>{{$bien->taxe_fonciere}} </strong>
                 @else
                 <strong>0 </strong>
                 @endif

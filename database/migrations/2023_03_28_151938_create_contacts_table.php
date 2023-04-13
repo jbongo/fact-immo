@@ -18,8 +18,10 @@ class CreateContactsTable extends Migration
             $table->integer('user_id')->unsigned()->nullable();
             
             // Entite ou individu
-            $table->string("type")->nullable();         
-            $table->enum('nature', ['personne_seule', 'couple', 'personne_morale', 'groupe', 'autre'])->default('autre');
+            $table->string("type")->nullable();     
+            // 'personne_seule', 'couple', 'personne_morale', 'groupe', 'autre'
+            $table->string("nature")->nullable();         
+           
             
             $table->boolean("est_partenaire")->default(false);
             $table->boolean("est_acquereur")->default(false);
@@ -28,7 +30,7 @@ class CreateContactsTable extends Migration
             $table->boolean("est_notaire")->default(false);
             $table->boolean("est_prospect")->default(false);
             $table->boolean("est_fournisseur")->default(false);
-            
+            $table->text('note')->nullable();
             $table->boolean("archive")->default(false);
             $table->timestamps();
         });

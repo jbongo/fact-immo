@@ -10,7 +10,7 @@ Ajout d'un Contact
           <div class="card-body">
 
             <div class="form-validation">
-                <form class="form-valide form-horizontal" action="{{ route('prospect.add') }}" method="post">
+                <form class="form-valide form-horizontal" action="{{ route('contact.store') }}" method="post">
                    {{ csrf_field() }}
                     
                 <div class="col-md-12 col-lg-12 col-sm-12 " style="background:#175081; color:white!important; padding:10px ">
@@ -49,7 +49,7 @@ Ajout d'un Contact
                         <div class="form-group ">
                             <label class="col-lg-8  col-md-8  col-sm-48 control-label" style="padding-top: 5px;" for="type_contact1">Personne seule <span class="text-danger">*</span></label>
                             <div class="col-lg-2 col-md-2 col-sm-2">
-                               <input type="radio" style="height: 22px;" class="form-control" id="type_contact1" name="type_contact" required>
+                               <input type="radio" style="height: 22px;" class="form-control" id="type_contact1" name="type_contact" value="Personne seule" required>
                                @if ($errors->has('type_contact'))
                                <br>
                                <div class="alert alert-warning ">
@@ -65,7 +65,7 @@ Ajout d'un Contact
                          <div class="form-group ">
                             <label class="col-lg-8 col-md-8 col-sm-8 control-label" style="padding-top: 5px;" for="type_contact2">Personne morale <span class="text-danger">*</span></label>
                             <div class="col-lg-2 col-md-2 col-sm-2">
-                               <input type="radio" style="height: 22px;" class="form-control"  id="type_contact2" name="type_contact"  required>
+                               <input type="radio" style="height: 22px;" class="form-control"  id="type_contact2" name="type_contact"  value="Personne morale" required>
                                @if ($errors->has('type_contact'))
                                <br>
                                <div class="alert alert-warning ">
@@ -81,7 +81,7 @@ Ajout d'un Contact
                         <div class="form-group ">
                            <label class="col-lg-8 col-md-8 col-sm-8 control-label" style="padding-top: 5px;" for="type_contact3">Couple <span class="text-danger">*</span></label>
                            <div class="col-lg-2 col-md-2 col-sm-2">
-                              <input type="radio" style="height: 22px;" class="form-control" id="type_contact3" name="type_contact" required>
+                              <input type="radio" style="height: 22px;" class="form-control" id="type_contact3" name="type_contact" value="Couple" required>
                               @if ($errors->has('type_contact'))
                               <br>
                               <div class="alert alert-warning ">
@@ -96,7 +96,7 @@ Ajout d'un Contact
                         <div class="form-group ">
                            <label class="col-lg-8 col-md-8 col-sm-8 control-label" style="padding-top: 5px;" for="type_contact4">Groupe <span class="text-danger">*</span></label>
                            <div class="col-lg-2 col-md-2 col-sm-2">
-                              <input type="radio" style="height: 22px;" class="form-control" id="type_contact4" name="type_contact" required>
+                              <input type="radio" style="height: 22px;" class="form-control" id="type_contact4" name="type_contact" value="Groupe" required>
                               @if ($errors->has('type_contact'))
                               <br>
                               <div class="alert alert-warning ">
@@ -109,12 +109,97 @@ Ajout d'un Contact
                    
                
                 </div>
+                <input type="hidden" id="type" name="type">
+                
                 <div class="row">
                      <hr>
                     
                      <div class="col-lg-6 col-md-6 col-sm-6">
  
-                   
+                            
+                          <div class="form-group div_personne_couple">
+                            <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="civilite1">@lang('Civilité') <span class="text-danger">*</span></label>
+                            <div class="col-lg-8 col-md-8 col-sm-8">
+                               <select class="js-select2 form-control " id="civilite1" name="civilite1" style="width: 100%;" required>
+                                  <option value="{{old('civilite1')}}">{{old('civilite1')}}</option>
+                                  <option value="M">M</option>
+                                  <option value="Mme">Mme</option>
+                               </select>
+                               @if ($errors->has('civilite1'))
+                               <br>
+                               <div class="alert alert-warning ">
+                                  <strong>{{$errors->first('civilite1')}}</strong> 
+                               </div>
+                               @endif
+                            </div>
+                         </div>
+                         
+                         
+                         <div class="form-group div_personne_couple">
+                            <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="nom1">Nom <span class="text-danger">*</span></label>
+                            <div class="col-lg-8 col-md-8 col-sm-8">
+                               <input type="text" class="form-control " value="{{old('nom1')}}" id="nom1" name="nom1"  required>
+                               @if ($errors->has('nom1'))
+                               <br>
+                               <div class="alert alert-warning ">
+                                  <strong>{{$errors->first('nom1')}}</strong> 
+                               </div>
+                               @endif
+                            </div>
+                         </div>
+       
+                         <div class="form-group div_personne_couple">
+                            <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="prenom1">Prénom <span class="text-danger">*</span></label>
+                            <div class="col-lg-8 col-md-8 col-sm-8">
+                               <input type="text"  class="form-control" value="{{old('prenom1')}}" id="prenom1" name="prenom1"  required>
+                               @if ($errors->has('prenom1'))
+                               <br>
+                               <div class="alert alert-warning ">
+                                  <strong>{{$errors->first('prenom1')}}</strong> 
+                               </div>
+                               @endif
+                            </div>
+                         </div>
+                         <div class="form-group div_personne_couple">
+                            <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="email1">Email <span class="text-danger">*</span></label>
+                            <div class="col-lg-8 col-md-8 col-sm-8">
+                               <input type="text" class="form-control" id="email1" value="{{old('email1')}}" name="email1"  required>
+                               @if ($errors->has('email1'))
+                               <br>
+                               <div class="alert alert-warning ">
+                                  <strong>{{$errors->first('email1')}}</strong> 
+                               </div>
+                               @endif
+                            </div>
+                         </div>
+                         
+                         <div class="form-group div_personne_couple">
+                             <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="telephone_portable1">Téléphone portable </label>
+                             <div class="col-lg-8 col-md-8 col-sm-8">
+                                <input type="text" class="form-control " value="{{old('telephone_portable1')}}" id="telephone_portable1"  name="telephone_portable1"  >
+                                @if ($errors->has('telephone_portable1'))
+                                <br>
+                                <div class="alert alert-warning ">
+                                   <strong>{{$errors->first('telephone_portable1')}}</strong> 
+                                </div>
+                                @endif     
+                             </div>
+                         </div>
+ 
+                        <div class="form-group div_personne_couple">
+                            <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="telephone_fixe1">Téléphone fixe </label>
+                            <div class="col-lg-8 col-md-8 col-sm-8">
+                               <input type="text" class="form-control " value="{{old('telephone_fixe1')}}" id="telephone_fixe1" name="telephone_fixe1"  >
+                               @if ($errors->has('telephone_fixe1'))
+                               <br>
+                               <div class="alert alert-warning ">
+                                  <strong>{{$errors->first('telephone_fixe1')}}</strong> 
+                               </div>
+                               @endif     
+                            </div>
+ 
+                        </div>
+                         
         
                           <div class="form-group div_personne_seule">
                              <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="civilite">@lang('Civilité') <span class="text-danger">*</span></label>
@@ -137,7 +222,7 @@ Ajout d'un Contact
                              <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="nom">Nom <span class="text-danger">*</span></label>
                              <div class="col-lg-8 col-md-8 col-sm-8">
                                 <input type="text" class="form-control " value="{{old('nom')}}" id="nom" name="nom"  required>
-                                @if ($errors->has('val-lastname'))
+                                @if ($errors->has('nom'))
                                 <br>
                                 <div class="alert alert-warning ">
                                    <strong>{{$errors->first('nom')}}</strong> 
@@ -150,7 +235,7 @@ Ajout d'un Contact
                              <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="prenom">Prénom <span class="text-danger">*</span></label>
                              <div class="col-lg-8 col-md-8 col-sm-8">
                                 <input type="text"  class="form-control" value="{{old('prenom')}}" id="prenom" name="prenom"  required>
-                                @if ($errors->has('val-firstname'))
+                                @if ($errors->has('prenom'))
                                 <br>
                                 <div class="alert alert-warning ">
                                    <strong>{{$errors->first('prenom')}}</strong> 
@@ -165,10 +250,36 @@ Ajout d'un Contact
                                <select class="js-select2 form-control" id="forme_juridique" name="forme_juridique" style="width: 100%;" required>
                                   <option value="{{old('forme_juridique')}}">{{old('forme_juridique')}}</option>
                                   
-                                  <option value="Propriétaire">Propriétaire</option>
-                                  <option value="Acquereur">Acquereur</option>
-                                  <option value="Locataire">Locataire</option>
-                                  <option value="Partenaire">Partenaire</option>
+                                  <option value="">Non défini</option>
+                                  <option value="EURL">EURL - Entreprise unipersonnelle à responsabilité limitée</option>
+                                  <option value="EI">EI - Entreprise individuelle</option>
+                                  <option value="SARL">SARL - Société à responsabilité limitée</option>
+                                  <option value="SA">SA - Société anonyme</option>
+                                  <option value="SAS">SAS - Société par actions simplifiée</option>
+                                  <option value="SCI">SCI - Société civile immobilière</option>
+                                  <option value="SNC">SNC - Société en nom collectif</option>
+                                  <option value="EARL">EARL - Entreprise agricole à responsabilité limitée</option>
+                                  <option value="EIRL">EIRL - Entreprise individuelle à responsabilité limitée (01.01.2010)</option>
+                                  <option value="GAEC">GAEC - Groupement agricole d'exploitation en commun</option>
+                                  <option value="GEIE">GEIE - Groupement européen d'intérêt économique</option>
+                                  <option value="GIE">GIE - Groupement d'intérêt économique</option>
+                                  <option value="SASU">SASU - Société par actions simplifiée unipersonnelle</option>
+                                  <option value="SC">SC - Société civile</option>
+                                  <option value="SCA">SCA - Société en commandite par actions</option>
+                                  <option value="SCIC">SCIC - Société coopérative d'intérêt collectif</option>
+                                  <option value="SCM">SCM - Société civile de moyens</option>
+                                  <option value="SCOP">SCOP - Société coopérative ouvrière de production</option>
+                                  <option value="SCP">SCP - Société civile professionnelle</option>
+                                  <option value="SCS">SCS - Société en commandite simple</option>
+                                  <option value="SEL">SEL - Société d'exercice libéral</option>
+                                  <option value="SELAFA">SELAFA - Société d'exercice libéral à forme anonyme</option>
+                                  <option value="SELARL">SELARL - Société d'exercice libéral à responsabilité limitée</option>
+                                  <option value="SELAS">SELAS - Société d'exercice libéral par actions simplifiée</option>
+                                  <option value="SELCA">SELCA - Société d'exercice libéral en commandite par actions</option>
+                                  <option value="SEM">SEM - Société d'économie mixte</option>
+                                  <option value="SEML">SEML - Société d'économie mixte locale</option>
+                                  <option value="SEP">SEP - Société en participation</option>
+                                  <option value="SICA">SICA - Société d'intérêt collectif agricole</option>
                                   
                                </select>
                                @if ($errors->has('forme_juridique'))
@@ -193,12 +304,27 @@ Ajout d'un Contact
                             </div>
                          </div>
                          
+                         <div class="form-group div_personne_groupe">
+                            <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="nom_groupe">Nom du groupe <span class="text-danger">*</span></label>
+                            <div class="col-lg-8 col-md-8 col-sm-8">
+                               <input type="text"  class="form-control" value="{{old('nom_groupe')}}" id="nom_groupe" name="nom_groupe"  required>
+                               @if ($errors->has('nom_groupe'))
+                               <br>
+                               <div class="alert alert-warning ">
+                                  <strong>{{$errors->first('nom_groupe')}}</strong> 
+                               </div>
+                               @endif
+                            </div>
+                        </div>
+                        
                         <div id="source_div">
                             <div class="form-group div_partenaire"  >
                              <label  class="col-lg-4 col-md-4 col-sm-4 control-label" for="metier">Métier</label>
                              <div class="col-lg-8">
                                      <select class="selectpicker col-lg-6" id="metier" name="metier" data-live-search="true" data-style="btn-warning btn-rounded">
                                         
+                                      <option value=""> </option>
+                                      <option value="Notaire">Notaire </option>
                                       <option value="Collaborateur">Collaborateur </option>
                                       <option value="Fournisseur">Fournisseur </option>
                                       <option value="Diagnostiqueur">Diagnostiqueur </option>
@@ -211,13 +337,15 @@ Ajout d'un Contact
                              </div>
                         </div>
                   
-                        
+                   
+                         
                         <div id="source_div">
                             <div class="form-group row" >
                              <label  class="col-lg-4 col-md-4 col-sm-4 control-label" for="source_id">Source du contact</label>
                              <div class="col-lg-8">
                                      <select class="selectpicker col-lg-6" id="source_id" name="source_id" data-live-search="true" data-style="btn-warning btn-rounded">
-                                        
+                                      
+                                      <option value=""> </option>                                        
                                       <option value="Réseaux sociaux">Réseaux sociaux</option>
                                       <option value="Bouche à oreille">Bouche à oreille</option>
                                       <option value="Internet">Internet</option>
@@ -233,10 +361,94 @@ Ajout d'un Contact
                      </div>
                      <div class="col-lg-6 col-md-6 col-sm-6">       
                        
-                        <div class="form-group row">
-                            <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="val-email_perso">Email <span class="text-danger">*</span></label>
+                        <div class="form-group div_personne_couple">
+                            <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="civilite2">@lang('Civilité') <span class="text-danger">*</span></label>
                             <div class="col-lg-8 col-md-8 col-sm-8">
-                               <input type="text" class="form-control" id="val-email_perso" value="{{old('email')}}" name="email"  required>
+                               <select class="js-select2 form-control " id="civilite2" name="civilite2" style="width: 100%;" required>
+                                  <option value="{{old('civilite2')}}">{{old('civilite2')}}</option>
+                                  <option value="M">M</option>
+                                  <option value="Mme">Mme</option>
+                               </select>
+                               @if ($errors->has('civilite2'))
+                               <br>
+                               <div class="alert alert-warning ">
+                                  <strong>{{$errors->first('civilite2')}}</strong> 
+                               </div>
+                               @endif
+                            </div>
+                         </div>
+       
+                         <div class="form-group div_personne_couple">
+                            <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="nom2">Nom <span class="text-danger">*</span></label>
+                            <div class="col-lg-8 col-md-8 col-sm-8">
+                               <input type="text" class="form-control " value="{{old('nom2')}}" id="nom2" name="nom2"  required>
+                               @if ($errors->has('nom2'))
+                               <br>
+                               <div class="alert alert-warning ">
+                                  <strong>{{$errors->first('nom2')}}</strong> 
+                               </div>
+                               @endif
+                            </div>
+                         </div>
+       
+                         <div class="form-group div_personne_couple">
+                            <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="prenom2">Prénom <span class="text-danger">*</span></label>
+                            <div class="col-lg-8 col-md-8 col-sm-8">
+                               <input type="text"  class="form-control" value="{{old('prenom2')}}" id="prenom2" name="prenom2"  required>
+                               @if ($errors->has('prenom2'))
+                               <br>
+                               <div class="alert alert-warning ">
+                                  <strong>{{$errors->first('prenom2')}}</strong> 
+                               </div>
+                               @endif
+                            </div>
+                         </div>
+                         <div class="form-group div_personne_couple">
+                            <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="email2">Email <span class="text-danger">*</span></label>
+                            <div class="col-lg-8 col-md-8 col-sm-8">
+                               <input type="text" class="form-control" id="email2" value="{{old('email2')}}" name="email2"  required>
+                               @if ($errors->has('email2'))
+                               <br>
+                               <div class="alert alert-warning ">
+                                  <strong>{{$errors->first('email2')}}</strong> 
+                               </div>
+                               @endif
+                            </div>
+                         </div>
+                         
+                         <div class="form-group div_personne_couple">
+                             <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="telephone_portable2">Téléphone portable </label>
+                             <div class="col-lg-8 col-md-8 col-sm-8">
+                                <input type="text" class="form-control " value="{{old('telephone_portable2')}}" id="telephone_portable2"  name="telephone_portable2"  >
+                                @if ($errors->has('telephone_portable2'))
+                                <br>
+                                <div class="alert alert-warning ">
+                                   <strong>{{$errors->first('telephone_portable2')}}</strong> 
+                                </div>
+                                @endif     
+                             </div>
+                         </div>
+ 
+                        <div class="form-group div_personne_couple">
+                            <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="telephone_fixe2">Téléphone fixe </label>
+                            <div class="col-lg-8 col-md-8 col-sm-8">
+                               <input type="text" class="form-control " value="{{old('telephone_fixe2')}}" id="telephone_fixe2" name="telephone_fixe2"  >
+                               @if ($errors->has('telephone_fixe2'))
+                               <br>
+                               <div class="alert alert-warning ">
+                                  <strong>{{$errors->first('telephone_fixe2')}}</strong> 
+                               </div>
+                               @endif     
+                            </div>
+ 
+                        </div>
+                         
+                       
+                       
+                        <div class="form-group div_personne_tout">
+                            <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="email">Email <span class="text-danger">*</span></label>
+                            <div class="col-lg-8 col-md-8 col-sm-8">
+                               <input type="text" class="form-control" id="email" value="{{old('email')}}" name="email"  required>
                                @if ($errors->has('email'))
                                <br>
                                <div class="alert alert-warning ">
@@ -244,9 +456,9 @@ Ajout d'un Contact
                                </div>
                                @endif
                             </div>
-                         </div>
+                        </div>
                          
-                         <div class="form-group row">
+                        <div class="form-group div_personne_tout">
                              <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="telephone_portable">Téléphone portable </label>
                              <div class="col-lg-8 col-md-8 col-sm-8">
                                 <input type="text" class="form-control " value="{{old('telephone_portable')}}" id="telephone_portable"  name="telephone_portable"  >
@@ -257,9 +469,9 @@ Ajout d'un Contact
                                 </div>
                                 @endif     
                              </div>
-                         </div>
+                        </div>
  
-                        <div class="form-group row">
+                        <div class="form-group div_personne_tout">
                             <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="telephone_fixe">Téléphone fixe </label>
                             <div class="col-lg-8 col-md-8 col-sm-8">
                                <input type="text" class="form-control " value="{{old('telephone_fixe')}}" id="telephone_fixe" name="telephone_fixe"  >
@@ -414,6 +626,17 @@ Ajout d'un Contact
 @include("components.contact.entite_add")
 @stop
 @section('js-content')
+<script src="{{asset('js/autocomplete_cp_ville.js')}}"> </script>
+   <!--vector map-->
+   <script src="{{ asset('js/lib/vector-map/jquery.vmap.min.js') }}"></script>
+   <script src="{{ asset('js/lib/vector-map/jquery.vmap.sampledata.js') }}"></script>
+   <script src="{{ asset('js/lib/vector-map/country/jquery.vmap.france.js') }}"></script>
+   <!--vector map end-->
+   <script src="{{asset('js/autocomplete_cp_ville.js')}}">
+    // dropzone
+  <script src="{{ asset('js/dropzone.js') }}"></script>
+  <script src="{{ asset('js/dropzone-config.js') }}"></script>
+   
 <script>
     $(document).ready(function() {
              $('#entitelist').DataTable( {
@@ -429,7 +652,14 @@ Ajout d'un Contact
         $(document).ready(function() {
             $(".div_proprietaire").show();
             $(".div_partenaire").hide();
-                    
+            
+            $(".div_personne_seule").show();
+            $(".div_personne_morale").hide();
+            $(".div_personne_couple").hide();
+            $(".div_personne_groupe").hide();
+            
+            
+            
             $('#nature').change(function(e){
                 let nature = e.currentTarget.value ;
                 if( nature != "Partenaire"){
@@ -442,47 +672,85 @@ Ajout d'un Contact
             });
         
             $("input[type='radio']").click(function(e){
-                var radioValue = $("input[name='type_contact'][value='Couple']:checked").val();
-                let type_contact= e.currentTarget.value ;
                 
-                console.log(radioValue);
+                let type_contact = e.currentTarget.value ;
+                
+                if(type_contact == "Personne morale"){
+                
+                    $("input[type='text']").removeAttr("required");
+                    $("select").removeAttr("required");
+                    $("#type").val("entité");
+                    
+                    $(".div_personne_seule").hide();
+                    $(".div_personne_morale").show();
+                    $(".div_personne_couple").hide();
+                    $(".div_personne_groupe").hide();
+                    $(".div_personne_tout").show();
+                    
+                    $("#forme_juridique").attr("required", "required");
+                    $("#raison_sociale").attr("required", "required");
+                    $("#email").attr("required", "required");
+                    
+                }else if(type_contact == "Personne seule"){
+                    $("input[type='text']").removeAttr("required");
+                    $("select").removeAttr("required");
+            
+                    $(".div_personne_seule").show();
+                    $(".div_personne_morale").hide();
+                    $(".div_personne_couple").hide();
+                    $(".div_personne_groupe").hide();
+                    $(".div_personne_tout").show();
+                
+                    $("#civilite").attr("required", "required");
+                    $("#nom").attr("required", "required");
+                    $("#prenom").attr("required", "required");
+                    $("#email").attr("required", "required");
+                    
+                    $("#type").val("individu");
+                
+                
+                }else if(type_contact == "Couple"){
+                    $("input[type='text']").removeAttr("required");
+                    $("select").removeAttr("required");
+            
+                    $(".div_personne_seule").hide();
+                    $(".div_personne_morale").hide();
+                    $(".div_personne_couple").show();
+                    $(".div_personne_groupe").hide();
+                    $(".div_personne_tout").hide();
+                    
+                    $("#civilite1").attr("required", "required");
+                    $("#nom1").attr("required", "required");
+                    $("#prenom1").attr("required", "required");
+                    $("#email1").attr("required", "required");
+                    
+                    $("#civilite2").attr("required", "required");
+                    $("#nom2").attr("required", "required");
+                    $("#prenom2").attr("required", "required");
+                    $("#email2").attr("required", "required"); 
+                    
+                    $("#type").val("individu");
+                    
+                }else if(type_contact == "Groupe"){
+                    $("input[type='text']").removeAttr("required");
+                    $("select").removeAttr("required");
+                    
+                    $(".div_personne_seule").hide();
+                    $(".div_personne_morale").hide();
+                    $(".div_personne_couple").hide();
+                    $(".div_personne_tout").show();
+                    $(".div_personne_groupe").show();
+                    
+                 
+                    $("#nom_groupe").attr("required", "required");
+                    $("#email").attr("required", "required");
+                    
+                    $("#type").val("individu");
+                }
+                
             });
             
-            div_personne_seule
-        
-        
-        
-        
-            ($('#type').val() === "fournisseur") ? $('#sect1').show() : $('#sect1').hide();
-            $('#type').change(function(e){
-                ($('#type').val() === "fournisseur") ? $('#sect1').show() : $('#sect1').hide();
-            });
-            if ($('#sous_type').val() === "personne_simple" || $('#sous_type').val() === "couple")
-                $('#sect2').hide();
-            else
-                $('#sect2').show();
-            $('#sous_type').change(function(e){
-                if ($('#sous_type').val() === "personne_simple" || $('#sous_type').val() === "couple")
-                    $('#sect2').hide();
-                else
-                    $('#sect2').show();
-            });
-            if ($('#type').val() === "acquereur" || $('#type').val() === "mandant" || $('#type').val() === "autre")
-                $('#sect3').show();
-            else{
-                $('#sect3').hide();
-                $('#sect2').show();
-                $('#sous_type').val("personne_morale");
-            }
-            $('#type').change(function(e){
-                if ($('#type').val() === "acquereur" || $('#type').val() === "mandant" || $('#type').val() === "autre")
-                $('#sect3').show();
-            else{
-                $('#sect3').hide();
-                $('#sect2').show();
-                $('#sous_type').val("personne_morale");
-            }
-            });
+            
         });
         </script>
         

@@ -41,9 +41,9 @@ body{
 
 		<div class="col-sm-8 col-md-8 col-lg-8">
 
-			<span style="font-weight:bold; font-size:15px;">{{$bien->bienprix->prix_public}} €</span> <br>
+			<span style="font-weight:bold; font-size:15px;">{{$bien->prix_public}} €</span> <br>
 			<span>{{$bien->titre_annonce}}</span><br>
-			<span>{{$bien->biensecteur->adresse_bien}} {{$bien->code_postal}}, {{$bien->ville}}</span> <br>
+			<span>{{$bien->adresse_bien}} {{$bien->code_postal}}, {{$bien->ville}}</span> <br>
 		</div>
 
 	</div>
@@ -107,10 +107,10 @@ body{
 			<p>
 				<ul>
 					@php
-						printData("Adresse ",$bien->biensecteur->adresse_bien, null," " );						
-						printData("Complément d'adresse ",$bien->biensecteur->complement_adresse, null," " );						
-						printData("Secteur",$bien->biensecteur->secteur,null," " );						
-						printData("Transports à proximité ",$bien->biensecteur->transport_a_proximite, null," " );									
+						printData("Adresse ",$bien->adresse_bien, null," " );						
+						printData("Complément d'adresse ",$bien->complement_adresse, null," " );						
+						printData("Secteur",$bien->secteur,null," " );						
+						printData("Transports à proximité ",$bien->transport_a_proximite, null," " );									
 					@endphp	
 				</ul>
 			</p>
@@ -154,10 +154,10 @@ body{
 		</div>
 		<div class="col-sm-8 col-md-8 col-lg-8">
 			<p class="title">VOTRE AGENCE</p>
-			<span><img src="images/logo.png" alt=""></span> <strong>{{$bien->utilisateur->individu->prenom}}  {{$bien->utilisateur->individu->nom}}</strong> <br>
-			Adresse <strong>{{$bien->utilisateur->adresse}} {{$bien->utilisateur->individu->code_postal}}, {{$bien->utilisateur->individu->ville}}</strong> <br>
-			Tél : <strong>{{$bien->utilisateur->individu->telephone}}</strong> <br>
-			Mail : <strong>{{$bien->utilisateur->email}} </strong> 
+			<span><img src="images/logo.png" alt=""></span> <strong>{{$bien->user->prenom}}  {{$bien->user->nom}}</strong> <br>
+			Adresse <strong>{{$bien->user->adresse}} {{$bien->user->code_postal}}, {{$bien->user->ville}}</strong> <br>
+			Tél : <strong>{{$bien->user->telephone}}</strong> <br>
+			Mail : <strong>{{$bien->user->email}} </strong> 
 			
 		</div>
 	</div>

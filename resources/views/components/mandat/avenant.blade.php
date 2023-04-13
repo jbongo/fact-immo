@@ -41,7 +41,7 @@
                  <div class="form-group row @if($errors->has('prix_public'))has-error @endif">
                     <label class="col-sm-4 control-label" for="prix_public">Nouveau prix de vente publique (€)</label>
                     <div class="col-lg-3">
-                       <input type="number" min="1" id="prix_public" class="form-control {{$errors->has('prix_public') ? 'is-invalid' : ''}}" value="{{(old('prix_public')) ? old('prix_public') : $mandat->bien->bienprix->prix_public}}" name="prix_public" required>
+                       <input type="number" min="1" id="prix_public" class="form-control {{$errors->has('prix_public') ? 'is-invalid' : ''}}" value="{{(old('prix_public')) ? old('prix_public') : $mandat->bien->prix_public}}" name="prix_public" required>
                     </div>
                  </div>
                  @endif

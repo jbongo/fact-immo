@@ -1,7 +1,8 @@
-@extends('layouts.dashboard')
-@extends('components.navbar')
-@extends('components.header')
+@extends('layouts.app')
 @section('content')
+@section ('page_title')
+Ajout d'un Contact
+@endsection
 <div class="row">
    <div class="col-lg-12">
       <div class="card">
@@ -33,8 +34,8 @@
                                              </div>
                                           </div>
                                           <div class="col-lg-8">
-                                             <div class="user-profile-name" style="color: #d68300;">{{$ret->civilite}} {{$ret->nom}} {{$ret->prenom}}</div>
-                                             <div class="user-Location"><i class="ti-location-pin"></i> {{$ret->ville}}</div>
+                                             <div class="user-profile-name" style="color: #d68300;">{{$contact->civilite}} {{$contact->nom}} {{$contact->prenom}}</div>
+                                             <div class="user-Location"><i class="ti-location-pin"></i> {{$contact->ville}}</div>
                                              <div class="custom-tab user-profile-tab">
                                                 <ul class="nav nav-tabs" role="tablist">
                                                    <li role="presentation" class="active"><a href="#1" aria-controls="1" role="tab" data-toggle="tab">Détails</a></li>
@@ -44,31 +45,31 @@
                                                       <div class="contact-information">
                                                             <div class="address-content">
                                                                     <span class="contact-title"><strong>Date de naissance:</strong></span>
-                                                                    <span class="gender">{{date('d-m-Y',strtotime($ret->date_naissance))}}</span>
+                                                                    <span class="gender">{{date('d-m-Y',strtotime($contact->date_naissance))}}</span>
                                                                  </div>
                                                          <div class="phone-content">
                                                             <span class="contact-title"><strong>Téléphone:</strong></span>
-                                                            <span class="phone-number" style="color: #ff435c; text-decoration: underline;">{{$ret->telephone}}</span>
+                                                            <span class="phone-number" style="color: #ff435c; text-decoration: underline;">{{$contact->telephone}}</span>
                                                          </div>
                                                          <div class="email-content">
                                                                 <span class="contact-title"><strong>Email:</strong></span>
-                                                                <span class="contact-email" style="color: #ff435c; text-decoration: underline;">{{$ret->email}}</span>
+                                                                <span class="contact-email" style="color: #ff435c; text-decoration: underline;">{{$contact->email}}</span>
                                                              </div>
                                                          <div class="address-content">
                                                             <span class="contact-title"><strong>Adresse:</strong></span>
-                                                            <span class="mail-address">{{$ret->adresse}}</span>
+                                                            <span class="mail-address">{{$contact->adresse}}</span>
                                                          </div>
                                                          <div class="website-content">
                                                             <span class="contact-title"><strong>Code postal:</strong></span>
-                                                            <span class="contact-website">{{$ret->code_postal}}</span>
+                                                            <span class="contact-website">{{$contact->code_postal}}</span>
                                                          </div>
                                                          <div class="website-content">
                                                             <span class="contact-title"><strong>Ville:</strong></span>
-                                                            <span class="contact-website">{{$ret->ville}}</span>
+                                                            <span class="contact-website">{{$contact->ville}}</span>
                                                          </div>
                                                          <div class="gender-content">
                                                                 <span class="contact-title"><strong>Ajout le:</strong></span>
-                                                                <span class="gender">{{date('d-m-Y',strtotime($ret->creation_le))}}</span>
+                                                                <span class="gender">{{date('d-m-Y',strtotime($contact->creation_le))}}</span>
                                                              </div>
                                                       </div>
                                                    </div>
@@ -98,16 +99,16 @@
                                                                </tr>
                                                             </thead>
                                                             <tbody>
-                                                                 @foreach($ret->entites as $one)
+                                                                 @foreach($contact->individu->entites as $entite)
                                                                  <tr>
                                                                    <td style="border-top: 4px solid #b8c7ca;">
-                                                                         <span class="badge badge-danger">{{$one->type}}</span>                                                
+                                                                         <span class="badge badge-danger">{{$entite->type}}</span>                                                
                                                                       </td>
-                                                                   <td style="border-top: 4px solid #b8c7ca;">{{$one->raison_sociale}}</td>
-                                                                   <td style="border-top: 4px solid #b8c7ca; color: #32ade1; text-decoration: underline;"><strong>{{$one->code_postal}}</strong> </td>
+                                                                   <td style="border-top: 4px solid #b8c7ca;">{{$entite->raison_sociale}}</td>
+                                                                   <td style="border-top: 4px solid #b8c7ca; color: #32ade1; text-decoration: underline;"><strong>{{$entite->code_postal}}</strong> </td>
                                                                    <td style="border-top: 4px solid #b8c7ca;">
-                                                                     <span><a class="show1" href="{{route('contact.entite.show', CryptId($one->id))}}" title="@lang('Détails')"><i class="large material-icons color-info">visibility</i></a></span>
-                                                                     <span><a href="{{route('contact.individu.dissociate', [CryptId($ret->id), CryptId($one->id)])}}" class="dissociate_entite" data-toggle="tooltip" title="@lang('Dissocier')"><i class="large material-icons color-danger">clear</i></a></span>
+                                                                     <span><a class="show1" href="{{route('contact.entite.show', Crypt::encrypt($entite->id))}}" title="@lang('Détails')"><i class="large material-icons color-info">visibility</i></a></span>
+                                                                     <span><a href="{{route('contact.individu.dissociate', [Crypt::encrypt($contact->id), Crypt::encrypt($entite->id)])}}" class="dissociate_entite" data-toggle="tooltip" title="@lang('Dissocier')"><i class="large material-icons color-danger">clear</i></a></span>
                                                                  </td>
                                                                  </tr>
                                                                    @endforeach
