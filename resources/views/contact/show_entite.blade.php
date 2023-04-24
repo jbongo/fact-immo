@@ -417,7 +417,7 @@ $('#individus_check').on('click', function(e){
    });
    if (form.valid() === true){
       $.ajax({
-         url: ("{{route('contact.individu.storeandattach', CryptId($contact->entite->id))}}"),
+         url: ("{{route('contact.individu.storeandattach', Crypt::encrypt($contact->entite->id))}}"),
          type: 'POST',
          data:{
             civilite: $('#_civilite').val(),
