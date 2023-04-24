@@ -104,17 +104,17 @@
                          <!--fin form ajax-->
                          <!--multiselect individus-->
                  <div class="form-validation" id="mvc55">
-                    <form class="form-appel form-horizontal" action="{{route('contact.entite.attache', CryptId($ret->id))}}" method="post">
+                    <form class="form-appel form-horizontal" action="{{route('contact.entite.attache', Crypt::encrypt($contact->id))}}" method="post">
                      @csrf
                      <div class="form-group row" id="op1">
                             <label class="col-sm-4 control-label" for="user">Selectionner les individus<span class="text-danger">*</span></label>
                             <div class="col-lg-8">
                                <select class="selectpicker col-lg-8" id="user" name="user[]" data-live-search="true" data-style="btn-pink btn-rounded" multiple required>
-                                  @foreach($query as $dr)
-                                  @if($dr->entites->where('id', $ret->id)->count() == 0)
+                                  {{-- @foreach($query as $dr)
+                                  @if($dr->entites->where('id', $contact->id)->count() == 0)
                                     <option  value="{{CryptId($dr->id)}}" data-content="<img class='avatar-img' src='http://127.0.0.1:8000/images/photo_profile/default.png' alt=''><span class='user-avatar'></span><span class='badge badge-pink'>{{$dr->civilite}}</span> {{$dr->nom}} {{$dr->prenom}}" data-tokens="{{$dr->civilite}} {{$dr->nom}} {{$dr->prenom}} {{$dr->adresse}} {{$dr->email}} {{$dr->telephone}} {{$dr->code_postal}} {{$dr->ville}}"></option>
                                   @endif
-                                  @endforeach                                
+                                  @endforeach                                 --}}
                                </select>
                             </div>
                          </div>
