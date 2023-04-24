@@ -14,6 +14,8 @@ use App\Biencomposition;
 use App\Biendetail;
 use App\Bienphoto;
 use App\Contact;
+use App\Individu;
+use App\Entite;
 use App\Mandat;
 use Auth;
 

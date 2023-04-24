@@ -575,7 +575,7 @@ Ajout d'un Contact
                          <div class="form-group row">
                             <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="pays">Pays </label>
                             <div class="col-lg-8 col-md-8 col-sm-8">
-                               <input type="text" class="form-control {{ $errors->has('pays') ? ' is-invalid' : '' }}" value="{{old('pays') ? old('pays') : France}}" id="pays" name="pays" placeholder="Entez une lettre et choisissez.." >
+                               <input type="text" class="form-control {{ $errors->has('pays') ? ' is-invalid' : '' }}" value="{{old('pays') ? old('pays') : "France"}}" id="pays" name="pays" placeholder="Entez une lettre et choisissez.." >
                                @if ($errors->has('pays'))
                                <br>
                                <div class="alert alert-warning ">
