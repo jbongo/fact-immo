@@ -137,7 +137,7 @@ Informations du contact
                               </tr>
                            </thead>
                            <tbody>
-                              @foreach($contact->entite->individus as $one)
+                              {{-- @foreach($contact->entite->individus as $one)
                               <tr>
                                  <td style="border-top: 4px solid #b8c7ca;">
                                     <span class="badge badge-pink">{{$one->civilite}}</span>                                                
@@ -149,7 +149,7 @@ Informations du contact
                                     <span><a href="{{route('contact.entite.dissociate', [CryptId($contact->entite->id), CryptId($one->id)])}}" class="dissociate_individu" data-toggle="tooltip" title="@lang('Dissocier')"><i class="large material-icons color-danger">clear</i></a></span>
                                  </td>
                               </tr>
-                              @endforeach
+                              @endforeach --}}
                            </tbody>
                         </table>
                      </div>
