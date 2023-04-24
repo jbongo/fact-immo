@@ -6,7 +6,7 @@
               </div>
               <div class="modal-body">
                  <div class="form-validation">
-                    <form class="form-appel form-horizontal" action="{{route('contact.entite.update', CryptId($ret->id))}}" method="post">
+                    <form class="form-appel form-horizontal" action="{{route('contact.update', Crypt::encrypt($contact->id))}}" method="post">
                      @csrf
                      <div class="form-group row">
                         <label class="col-sm-4 control-label" for="type">Type de l'entité<span class="text-danger">*</span></label>
@@ -15,7 +15,7 @@
                               @if(old('role'))
                                <option selected value="{{old('type')}}">{{old('type')}}</option>
                               @else
-                               <option selected value="{{$ret->type}}">{{$ret->type}}</option>
+                               <option selected value="{{$contact->entite->type}}">{{$contact->entite->type}}</option>
                               @endif
                               <option value="notaire">Etude de notaire</option>
                               <option value="acquereur">Acquéreur</option>
@@ -33,7 +33,7 @@
                               @if(old('sous_type'))
                                <option selected value="{{old('sous_type')}}">{{old('sous_type')}}</option>
                               @else
-                               <option selected value="{{$ret->sous_type}}">{{$ret->sous_type}}</option>
+                               <option selected value="{{$contact->entite->sous_type}}">{{$contact->entite->sous_type}}</option>
                               @endif
                               <option value="personne_morale">Personne morale</option>
                               <option value="personne_simple">Personne simple</option>
@@ -59,7 +59,7 @@
                        <div class="form-group row @if($errors->has('raison_sociale'))has-error @endif">
                         <label class="col-sm-4 control-label" for="raison_sociale">Nom ou raison sociale<span class="text-danger">*</span></label>
                         <div class="col-lg-3">
-                           <input type="text" id="raison_sociale" class="form-control" value="{{(old('raison_sociale')) ? old('raison_sociale') : $ret->raison_sociale}}" name="raison_sociale" placeholder="Ex: SARL V4F..." required>
+                           <input type="text" id="raison_sociale" class="form-control" value="{{(old('raison_sociale')) ? old('raison_sociale') : $contact->entite->raison_sociale}}" name="raison_sociale" placeholder="Ex: SARL V4F..." required>
                            @if ($errors->has('raison_sociale'))
                            <br>
                            <div class="alert alert-warning ">
@@ -72,7 +72,7 @@
                      <div class="form-group row @if($errors->has('email'))has-error @endif">
                             <label class="col-sm-4 control-label" for="email">Email<span class="text-danger">*</span></label>
                             <div class="col-lg-3">
-                               <input type="email" id="email" class="form-control {{$errors->has('email') ? 'is-invalid' : ''}}" value="{{(old('email')) ? old('email') : $ret->email}}" name="email" placeholder="Ex: contact@gmail.com..." required>
+                               <input type="email" id="email" class="form-control {{$errors->has('email') ? 'is-invalid' : ''}}" value="{{(old('email')) ? old('email') : $contact->entite->email}}" name="email" placeholder="Ex: contact@gmail.com..." required>
                                @if ($errors->has('email'))
                                <br>
                                <div class="alert alert-warning ">
@@ -85,7 +85,7 @@
                          <div class="form-group row @if($errors->has('telephone'))has-error @endif">
                            <label class="col-sm-4 control-label" for="telephone">Téléphone<span class="text-danger">*</span></label>
                            <div class="col-lg-2">
-                              <input type="text" id="telephone" class="form-control {{$errors->has('telephone') ? 'is-invalid' : ''}}" value="{{(old('telephone')) ? old('telephone') : $ret->telephone}}" name="telephone" placeholder="Ex: 0600000000..." required>
+                              <input type="text" id="telephone" class="form-control {{$errors->has('telephone') ? 'is-invalid' : ''}}" value="{{(old('telephone')) ? old('telephone') : $contact->entite->telephone}}" name="telephone" placeholder="Ex: 0600000000..." required>
                               @if ($errors->has('telephone'))
                               <br>
                               <div class="alert alert-warning ">
@@ -99,7 +99,7 @@
                                 <div class="form-group row @if($errors->has('forme_juridique'))has-error @endif">
                                         <label class="col-sm-4 control-label" for="forme_juridique">Forme juridique</label>
                                         <div class="col-lg-3">
-                                           <input type="text" id="forme_juridique" class="form-control" value="{{(old('forme_juridique')) ? old('forme_juridique') : $ret->forme_juridique}}" name="forme_juridique" placeholder="Ex: SARL, SAS...">
+                                           <input type="text" id="forme_juridique" class="form-control" value="{{(old('forme_juridique')) ? old('forme_juridique') : $contact->entite->forme_juridique}}" name="forme_juridique" placeholder="Ex: SARL, SAS...">
                                            @if ($errors->has('forme_juridique'))
                                            <br>
                                            <div class="alert alert-warning ">
@@ -113,7 +113,7 @@
                      <div class="form-group row @if($errors->has('code_postal'))has-error @endif">
                         <label class="col-sm-4 control-label" for="code_postal">Code postal</label>
                         <div class="col-lg-2">
-                           <input type="text" id="code_postal" class="form-control" value="{{(old('code_postal')) ? old('code_postal') : $ret->code_postal}}" name="code_postal" placeholder="Ex: 75001...">
+                           <input type="text" id="code_postal" class="form-control" value="{{(old('code_postal')) ? old('code_postal') : $contact->entite->code_postal}}" name="code_postal" placeholder="Ex: 75001...">
                            @if ($errors->has('code_postal'))
                            <br>
                            <div class="alert alert-warning ">
@@ -126,7 +126,7 @@
                      <div class="form-group row @if($errors->has('ville'))has-error @endif">
                         <label class="col-sm-4 control-label" for="ville">Ville</label>
                         <div class="col-lg-3">
-                           <input type="text" id="ville" class="form-control" value="{{(old('ville')) ? old('ville') : $ret->ville}}" name="ville" placeholder="Ex: Paris..." >
+                           <input type="text" id="ville" class="form-control" value="{{(old('ville')) ? old('ville') : $contact->entite->ville}}" name="ville" placeholder="Ex: Paris..." >
                            @if ($errors->has('ville'))
                            <br>
                            <div class="alert alert-warning ">
@@ -140,7 +140,7 @@
                      <div class="form-group row @if($errors->has('adresse'))has-error @endif">
                             <label class="col-sm-4 control-label" for="adresse">Adresse</label>
                             <div class="col-lg-4">
-                               <input type="text" id="adresse" class="form-control" value="{{(old('adresse')) ? old('adresse') : $ret->adresse}}" name="adresse" placeholder="Ex: 1 Rue Rivoli...">
+                               <input type="text" id="adresse" class="form-control" value="{{(old('adresse')) ? old('adresse') : $contact->entite->adresse}}" name="adresse" placeholder="Ex: 1 Rue Rivoli...">
                                @if ($errors->has('adresse'))
                                <br>
                                <div class="alert alert-warning ">
@@ -154,7 +154,7 @@
                      <div class="form-group row @if($errors->has('numero_siret'))has-error @endif">
                         <label class="col-sm-4 control-label" for="numero_siret">Numéro siret</label>
                         <div class="col-lg-2">
-                           <input type="text" id="numero_siret" class="form-control {{$errors->has('numero_siret') ? 'is-invalid' : ''}}" value="{{(old('numero_siret')) ? old('numero_siret') : $ret->numero_siret}}" name="numero_siret" placeholder="Ex: 729654789...">
+                           <input type="text" id="numero_siret" class="form-control {{$errors->has('numero_siret') ? 'is-invalid' : ''}}" value="{{(old('numero_siret')) ? old('numero_siret') : $contact->entite->numero_siret}}" name="numero_siret" placeholder="Ex: 729654789...">
                            @if ($errors->has('telephone'))
                            <br>
                            <div class="alert alert-warning ">
@@ -167,7 +167,7 @@
                      <div class="form-group row @if($errors->has('numero_tva'))has-error @endif">
                         <label class="col-sm-4 control-label" for="numero_tva">Numéro TVA</label>
                         <div class="col-lg-2">
-                           <input type="text" id="numero_tva" class="form-control {{$errors->has('numero_tva') ? 'is-invalid' : ''}}" value="{{(old('numero_tva')) ? old('numero_tva') : $ret->numero_tva}}" name="numero_tva" placeholder="Ex: FR98456487...">
+                           <input type="text" id="numero_tva" class="form-control {{$errors->has('numero_tva') ? 'is-invalid' : ''}}" value="{{(old('numero_tva')) ? old('numero_tva') : $contact->entite->numero_tva}}" name="numero_tva" placeholder="Ex: FR98456487...">
                            @if ($errors->has('numero_tva'))
                            <br>
                            <div class="alert alert-warning ">
