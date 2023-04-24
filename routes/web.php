@@ -445,6 +445,7 @@ Route::get('/contacts', 'ContactController@index')->name('contact.index');
 Route::get('/contact/add', 'ContactController@create')->name('contact.add');
 Route::post('/contact/add', 'ContactController@store')->name('contact.store');
 Route::get('/contact/show/{contact_id}', 'ContactController@show')->name('contact.show');
+Route::get('/contact/update/{contact_id}', 'ContactController@update')->name('contact.update');
 Route::get('/contact/edit/{contact_id}', 'ContactController@edit')->name('contact.edit');
 
 Route::get('/contact/individu', 'ContactController@index_individu')->name('contact.individu.index');
