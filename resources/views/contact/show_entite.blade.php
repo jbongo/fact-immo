@@ -1,9 +1,7 @@
-@extends('layouts.dashboard')
-@extends('components.navbar')
-@extends('components.header')
+@extends('layouts.app')
+@section('content')
 @section ('page_title')
 Informations du contact
-
 @endsection
 @section('content')
 <div class="row">
