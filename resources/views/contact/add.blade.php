@@ -24,9 +24,9 @@ Ajout d'un Contact
                     <div class="col-lg-12 col-md-12 col-sm-12" style="margin-top: 10px">
                         
                         <div class="form-group row">
-                            <label class="col-lg-2 col-md-2 col-sm-4 control-label" for="nature">@lang('Statut du contact') <span class="text-danger">*</span></label>
+                            <label class="col-lg-2 col-md-2 col-sm-4 control-label" for="statut">@lang('Statut du contact') <span class="text-danger">*</span></label>
                             <div class="col-lg-4 col-md-4 col-sm-4">
-                               <select class="js-select2 form-control" id="nature" name="nature" style="width: 100%;" required>
+                               <select class="js-select2 form-control" id="statut" name="statut" style="width: 100%;" required>
                                                                  
                                   <option value="Propriétaire">Propriétaire</option>
                                   <option value="Acquereur">Acquereur</option>
@@ -34,10 +34,10 @@ Ajout d'un Contact
                                   <option value="Partenaire">Partenaire</option>
                                   
                                </select>
-                               @if ($errors->has('nature'))
+                               @if ($errors->has('statut'))
                                <br>
                                <div class="alert alert-warning ">
-                                  <strong>{{$errors->first('nature')}}</strong> 
+                                  <strong>{{$errors->first('statut')}}</strong> 
                                </div>
                                @endif
                             </div>
@@ -47,13 +47,13 @@ Ajout d'un Contact
                     
                     <div class="col-lg-3 col-md-3 col-sm-3  ">
                         <div class="form-group ">
-                            <label class="col-lg-8  col-md-8  col-sm-48 control-label" style="padding-top: 5px;" for="type_contact1">Personne seule <span class="text-danger">*</span></label>
+                            <label class="col-lg-8  col-md-8  col-sm-48 control-label" style="padding-top: 5px;" for="nature1">Personne seule <span class="text-danger">*</span></label>
                             <div class="col-lg-2 col-md-2 col-sm-2">
-                               <input type="radio" style="height: 22px;" class="form-control" id="type_contact1" name="type_contact" value="Personne seule" required>
-                               @if ($errors->has('type_contact'))
+                               <input type="radio" style="height: 22px;" class="form-control" id="nature1" name="nature" value="Personne seule" required>
+                               @if ($errors->has('nature'))
                                <br>
                                <div class="alert alert-warning ">
-                                  <strong>{{$errors->first('type_contact')}}</strong> 
+                                  <strong>{{$errors->first('nature')}}</strong> 
                                </div>
                                @endif
                             </div>
@@ -63,13 +63,13 @@ Ajout d'un Contact
                     <div class="col-lg-3 col-md-3 col-sm-3  ">
            
                          <div class="form-group ">
-                            <label class="col-lg-8 col-md-8 col-sm-8 control-label" style="padding-top: 5px;" for="type_contact2">Personne morale <span class="text-danger">*</span></label>
+                            <label class="col-lg-8 col-md-8 col-sm-8 control-label" style="padding-top: 5px;" for="nature2">Personne morale <span class="text-danger">*</span></label>
                             <div class="col-lg-2 col-md-2 col-sm-2">
-                               <input type="radio" style="height: 22px;" class="form-control"  id="type_contact2" name="type_contact"  value="Personne morale" required>
-                               @if ($errors->has('type_contact'))
+                               <input type="radio" style="height: 22px;" class="form-control"  id="nature2" name="nature"  value="Personne morale" required>
+                               @if ($errors->has('nature'))
                                <br>
                                <div class="alert alert-warning ">
-                                  <strong>{{$errors->first('type_contact')}}</strong> 
+                                  <strong>{{$errors->first('nature')}}</strong> 
                                </div>
                                @endif
                             </div>
@@ -79,13 +79,13 @@ Ajout d'un Contact
                     <div class="col-lg-3 col-md-3 col-sm-3 div_proprietaire ">
            
                         <div class="form-group ">
-                           <label class="col-lg-8 col-md-8 col-sm-8 control-label" style="padding-top: 5px;" for="type_contact3">Couple <span class="text-danger">*</span></label>
+                           <label class="col-lg-8 col-md-8 col-sm-8 control-label" style="padding-top: 5px;" for="nature3">Couple <span class="text-danger">*</span></label>
                            <div class="col-lg-2 col-md-2 col-sm-2">
-                              <input type="radio" style="height: 22px;" class="form-control" id="type_contact3" name="type_contact" value="Couple" required>
-                              @if ($errors->has('type_contact'))
+                              <input type="radio" style="height: 22px;" class="form-control" id="nature3" name="nature" value="Couple" required>
+                              @if ($errors->has('nature'))
                               <br>
                               <div class="alert alert-warning ">
-                                 <strong>{{$errors->first('type_contact')}}</strong> 
+                                 <strong>{{$errors->first('nature')}}</strong> 
                               </div>
                               @endif
                            </div>
@@ -94,13 +94,13 @@ Ajout d'un Contact
                    <div class="col-lg-3 col-md-3 col-sm-3  ">
            
                         <div class="form-group ">
-                           <label class="col-lg-8 col-md-8 col-sm-8 control-label" style="padding-top: 5px;" for="type_contact4">Groupe <span class="text-danger">*</span></label>
+                           <label class="col-lg-8 col-md-8 col-sm-8 control-label" style="padding-top: 5px;" for="nature4">Groupe <span class="text-danger">*</span></label>
                            <div class="col-lg-2 col-md-2 col-sm-2">
-                              <input type="radio" style="height: 22px;" class="form-control" id="type_contact4" name="type_contact" value="Groupe" required>
-                              @if ($errors->has('type_contact'))
+                              <input type="radio" style="height: 22px;" class="form-control" id="nature4" name="nature" value="Groupe" required>
+                              @if ($errors->has('nature'))
                               <br>
                               <div class="alert alert-warning ">
-                                 <strong>{{$errors->first('type_contact')}}</strong> 
+                                 <strong>{{$errors->first('nature')}}</strong> 
                               </div>
                               @endif
                            </div>
@@ -575,7 +575,7 @@ Ajout d'un Contact
                          <div class="form-group row">
                             <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="pays">Pays </label>
                             <div class="col-lg-8 col-md-8 col-sm-8">
-                               <input type="text" class="form-control {{ $errors->has('pays') ? ' is-invalid' : '' }}" value="{{old('pays')}}" id="pays" name="pays" placeholder="Entez une lettre et choisissez.." >
+                               <input type="text" class="form-control {{ $errors->has('pays') ? ' is-invalid' : '' }}" value="{{old('pays') ? old('pays') : France}}" id="pays" name="pays" placeholder="Entez une lettre et choisissez.." >
                                @if ($errors->has('pays'))
                                <br>
                                <div class="alert alert-warning ">
@@ -626,26 +626,23 @@ Ajout d'un Contact
 @include("components.contact.entite_add")
 @stop
 @section('js-content')
-<script src="{{asset('js/autocomplete_cp_ville.js')}}"> </script>
-   <!--vector map-->
-   <script src="{{ asset('js/lib/vector-map/jquery.vmap.min.js') }}"></script>
-   <script src="{{ asset('js/lib/vector-map/jquery.vmap.sampledata.js') }}"></script>
-   <script src="{{ asset('js/lib/vector-map/country/jquery.vmap.france.js') }}"></script>
-   <!--vector map end-->
-   <script src="{{asset('js/autocomplete_cp_ville.js')}}">
-    // dropzone
-  <script src="{{ asset('js/dropzone.js') }}"></script>
-  <script src="{{ asset('js/dropzone-config.js') }}"></script>
+
+<script src="{{ asset('js/autocomplete_cp_ville.js')}}"> </script>
+<script src={{"https://code.jquery.com/ui/1.13.2/jquery-ui.js"}}></script>
+   
+{{-- dropzone --}}
+<script src="{{ asset('js/dropzone.js') }}"></script>
+<script src="{{ asset('js/dropzone-config.js') }}"></script>
    
 <script>
     $(document).ready(function() {
-             $('#entitelist').DataTable( {
-                 "language": {
-                     "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
-                 }
-             } );
+         $('#entitelist').DataTable( {
+             "language": {
+                 "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
+             }
          } );
-    </script>
+     } );
+</script>
     
     
     <script>
@@ -660,9 +657,9 @@ Ajout d'un Contact
             
             
             
-            $('#nature').change(function(e){
-                let nature = e.currentTarget.value ;
-                if( nature != "Partenaire"){
+            $('#statut').change(function(e){
+                let statut = e.currentTarget.value ;
+                if( statut != "Partenaire"){
                     $(".div_proprietaire").show();
                     $(".div_partenaire").hide();
                 }else{
@@ -673,9 +670,9 @@ Ajout d'un Contact
         
             $("input[type='radio']").click(function(e){
                 
-                let type_contact = e.currentTarget.value ;
+                let nature = e.currentTarget.value ;
                 
-                if(type_contact == "Personne morale"){
+                if(nature == "Personne morale"){
                 
                     $("input[type='text']").removeAttr("required");
                     $("select").removeAttr("required");
@@ -691,7 +688,7 @@ Ajout d'un Contact
                     $("#raison_sociale").attr("required", "required");
                     $("#email").attr("required", "required");
                     
-                }else if(type_contact == "Personne seule"){
+                }else if(nature == "Personne seule"){
                     $("input[type='text']").removeAttr("required");
                     $("select").removeAttr("required");
             
@@ -709,7 +706,7 @@ Ajout d'un Contact
                     $("#type").val("individu");
                 
                 
-                }else if(type_contact == "Couple"){
+                }else if(nature == "Couple"){
                     $("input[type='text']").removeAttr("required");
                     $("select").removeAttr("required");
             
@@ -731,7 +728,7 @@ Ajout d'un Contact
                     
                     $("#type").val("individu");
                     
-                }else if(type_contact == "Groupe"){
+                }else if(nature == "Groupe"){
                     $("input[type='text']").removeAttr("required");
                     $("select").removeAttr("required");
                     
@@ -755,8 +752,7 @@ Ajout d'un Contact
         </script>
         
         
-        
-        {{-- Auto complète adresses --}}
+{{-- //   Auto complète adresses  --}}
         <script>
                 $("#code_postal").autocomplete({
                  source: function (request, response) {

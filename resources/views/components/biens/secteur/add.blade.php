@@ -24,7 +24,7 @@
         <div class="form-group row">
             <label class="col-lg-4 col-form-label" for="section_secteur"  >@lang('Section')  <span class="text-danger">*</span> </label>
             <div class="col-lg-6">
-                <input type="text" required  class="form-control " value="" id="section_secteur" name="section_secteur"  >
+                <input type="text"   class="form-control " value="" id="section_secteur" name="section_secteur"  >
             </div>
         </div>
 
@@ -35,7 +35,7 @@
         <div class="form-group row">
             <label class="col-lg-4 col-form-label" for="parcelle_secteur" >@lang('Parcelle')  <span class="text-danger">*</span> </label>
             <div class="col-lg-6">
-                <input type="number" requiredgit  min="0"  class="form-control " value="" id="parcelle_secteur" name="parcelle_secteur"  >
+                <input type="number"   min="0"  class="form-control " value="" id="parcelle_secteur" name="parcelle_secteur"  >
             </div>
         </div>
     </div>

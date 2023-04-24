@@ -52,7 +52,7 @@ Ajout de Biens
                      <li>@lang('Secteurs')</li>
                      <li>@lang('Composition')</li>
                      <li>@lang('Détails')</li>
-                     <li>@lang('Prix')</li>
+                     <li>@lang('Prix / Mandat')</li>
                      <li>@lang('Photos/Diffusion')</li>
                   </ul>
                   <!-- fieldsets -->
@@ -208,9 +208,9 @@ Ajout de Biens
 </div>
 @endsection
 @section('js-content')
-    {{-- <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script> --}}
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
-    <script src="{{asset('js/autocomplete_cp_ville.js')}}"> </script>
+
+<script src="{{ asset('js/autocomplete_cp_ville.js')}}"> </script>
+<script src={{"https://code.jquery.com/ui/1.13.2/jquery-ui.js"}}></script>
 <script>
 
 function viderFormulaire(id){
@@ -1220,6 +1220,8 @@ modifierFichier("#piece_identite","#piece_identite_content","piece_identite");
 <script >
     
     
+        autocomplete_cp_ville( "#code_postal_proprietaire",  "code_postal_proprietaire", "#ville_proprietaire", "ville_proprietaire", "#adresse_proprietaire", "adresse_proprietaire" );
+        
         autocomplete_cp_ville( "#code_postal_vente_maison",  "code_postal_vente_maison", "#ville_vente_maison", "ville_vente_maison", null, null );
         autocomplete_cp_ville( "#code_postal_vente_appart",  "code_postal_vente_appart", "#ville_vente_appart", "ville_vente_appart", null, null );
         autocomplete_cp_ville( "#code_postal_vente_terrain",  "code_postal_vente_terrain", "#ville_vente_terrain", "ville_vente_terrain", null, null );
@@ -1236,6 +1238,126 @@ modifierFichier("#piece_identite","#piece_identite_content","piece_identite");
 
 
 
+{{-- AJOUT DU PROPRIETAIRE --}}
 
+<script>
+    $(document).ready(function() {
+        $(".div_proprietaire").show();
+        
+        $(".div_personne_seule").show();
+        $(".div_personne_morale").hide();
+        $(".div_personne_couple").hide();
+        $(".div_personne_groupe").hide();
+        
+        
+  
+    
+        $("input[type='radio']").click(function(e){
+            
+            let type_contact = e.currentTarget.value ;
+            
+            if(type_contact == "Personne morale"){
+            
+                $("input[type='text']").removeAttr("required");
+                $("select").removeAttr("required");
+                $("#type").val("entité");
+                
+                $(".div_personne_seule").hide();
+                $(".div_personne_morale").show();
+                $(".div_personne_couple").hide();
+                $(".div_personne_groupe").hide();
+                $(".div_personne_tout").show();
+                
+                $("#forme_juridique").attr("required", "required");
+                $("#raison_sociale").attr("required", "required");
+                $("#email").attr("required", "required");
+                
+            }else if(type_contact == "Personne seule"){
+                $("input[type='text']").removeAttr("required");
+                $("select").removeAttr("required");
+        
+                $(".div_personne_seule").show();
+                $(".div_personne_morale").hide();
+                $(".div_personne_couple").hide();
+                $(".div_personne_groupe").hide();
+                $(".div_personne_tout").show();
+            
+                $("#civilite").attr("required", "required");
+                $("#nom").attr("required", "required");
+                $("#prenom").attr("required", "required");
+                $("#email").attr("required", "required");
+                
+                $("#type").val("individu");
+            
+            
+            }else if(type_contact == "Couple"){
+                $("input[type='text']").removeAttr("required");
+                $("select").removeAttr("required");
+        
+                $(".div_personne_seule").hide();
+                $(".div_personne_morale").hide();
+                $(".div_personne_couple").show();
+                $(".div_personne_groupe").hide();
+                $(".div_personne_tout").hide();
+                
+                $("#civilite1").attr("required", "required");
+                $("#nom1").attr("required", "required");
+                $("#prenom1").attr("required", "required");
+                $("#email1").attr("required", "required");
+                
+                $("#civilite2").attr("required", "required");
+                $("#nom2").attr("required", "required");
+                $("#prenom2").attr("required", "required");
+                $("#email2").attr("required", "required"); 
+                
+                $("#type").val("individu");
+                
+            }else if(type_contact == "Groupe"){
+                $("input[type='text']").removeAttr("required");
+                $("select").removeAttr("required");
+                
+                $(".div_personne_seule").hide();
+                $(".div_personne_morale").hide();
+                $(".div_personne_couple").hide();
+                $(".div_personne_tout").show();
+                $(".div_personne_groupe").show();
+                
+             
+                $("#nom_groupe").attr("required", "required");
+                $("#email").attr("required", "required");
+                
+                $("#type").val("individu");
+            }
+            
+        });
+        
+        
+    });
+    </script>
+    
+    
+    {{-- Ajout de propriétaire --}}
+    
+    <script>
+        
+        $('#nouveau_proprietaire').hide();
+        
+        
+        $('#ajouter_proprietaire').change(function(e){
+        
+            if($('#ajouter_proprietaire').is(':checked')){
+                $('#nouveau_proprietaire').show();
+                $('#ancien_proprietaire').hide()
+            }
+            else {
+                $('#nouveau_proprietaire').hide();
+                $('#ancien_proprietaire').show()
+            }
+        
+        });
+    
+    
+    </script>
+    
 
 @endsection

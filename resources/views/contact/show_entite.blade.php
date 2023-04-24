@@ -1,6 +1,10 @@
 @extends('layouts.dashboard')
 @extends('components.navbar')
 @extends('components.header')
+@section ('page_title')
+Informations du contact
+
+@endsection
 @section('content')
 <div class="row">
    <div class="col-lg-12">
@@ -28,9 +32,9 @@
                                     </div>
                                     <div class="user-skill">
                                        <h4 style="color: #32ade1;text-decoration: underline;">Options</h4>
-                                       <a type="button" data-toggle="modal" data-target="#entite_edit" class="btn btn-warning btn-rounded btn-addon btn-xs m-b-10"><i class="ti-pencil"></i>Modifier</a>
+                                       <a type="button" href="{{route('contact.edit', Crypt::encrypt($contact->id))}}" class="btn btn-warning btn-rounded btn-addon btn-xs m-b-10"><i class="ti-pencil"></i>Modifier</a>
                                        <a type="button" data-toggle="modal" data-target="#entite_attache_individu" class="btn btn-info btn-rounded btn-addon btn-xs m-b-10"><i class="ti-key"></i>Associer des individus</a>
-                                       <a type="button" data-toggle="modal" data-target="#planifiate_usr" class="btn btn-danger btn-rounded btn-addon btn-xs m-b-10"><i class="ti-email"></i>Envoyer un email</a>
+                                       {{-- <a type="button" data-toggle="modal" data-target="#planifiate_usr" class="btn btn-danger btn-rounded btn-addon btn-xs m-b-10"><i class="ti-email"></i>Envoyer un email</a> --}}
                                     </div>
                                  </div>
                                  <div class="col-lg-8">

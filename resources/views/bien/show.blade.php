@@ -21,7 +21,7 @@
             <ul class="nav nav-pills nav-tabs" id="myTabs">
                <li id="li_home_nav" class="active"><a href="#home_nav" data-toggle="pill"> <i class="material-icons" style="font-size: 15px;">home</i> @lang('ACCUEIL')</a></li>
                <li id="li_caracteristique_nav"><a href="#caracteristique_nav" data-toggle="pill"> <i class="material-icons" style="font-size: 15px;">info_outline</i> @lang('CARACTERISTIQUES')</a></li>
-               <li ><a href="#prix_nav" data-toggle="pill"> <i class="material-icons" style="font-size: 15px;">euro_symbol</i> @lang('PRIX')</a></li>
+               <li ><a href="#prix_nav" data-toggle="pill"> <i class="material-icons" style="font-size: 15px;">euro_symbol</i> @lang('PRIX / MANDAT')</a></li>
                <li ><a href="#secteur_nav" data-toggle="pill"> <i class="material-icons" style="font-size: 15px;">map</i> @lang('SECTEUR')</a></li>
                <li ><a href="#photo_nav" data-toggle="pill"> <i class="material-icons" style="font-size: 15px;">perm_media</i> @lang('PHOTOS / MEDIAS')</a></li>
                <li ><a href="#impression_nav" data-toggle="pill"> <i class="material-icons" style="font-size: 15px;">print</i> @lang('IMPRESSIONS')</a></li>

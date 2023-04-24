@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
 @section ('page_title')
-Ajout d'un Contact
+Modifier le contact
 @endsection
 <div class="row">
     <div class="col-lg-12 col-sm-12 col-md-12">
@@ -21,39 +21,39 @@ Ajout d'un Contact
                 <br>
                 
                 <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12" style="margin-top: 10px">
+                    {{-- <div class="col-lg-12 col-md-12 col-sm-12" style="margin-top: 10px">
                         
                         <div class="form-group row">
-                            <label class="col-lg-2 col-md-2 col-sm-4 control-label" for="nature">@lang('Statut du contact') <span class="text-danger">*</span></label>
+                            <label class="col-lg-2 col-md-2 col-sm-4 control-label" for="statut">@lang('Statut du contact') <span class="text-danger">*</span></label>
                             <div class="col-lg-4 col-md-4 col-sm-4">
-                               <select class="js-select2 form-control" id="nature" name="nature" style="width: 100%;" required>
-                                                                 
+                               <select class="js-select2 form-control" id="statut" name="statut" style="width: 100%;" required>
+                                <option value="{{$contact->nature}}">{{$contact->nature}}</option>
                                   <option value="Propriétaire">Propriétaire</option>
                                   <option value="Acquereur">Acquereur</option>
                                   <option value="Locataire">Locataire</option>
                                   <option value="Partenaire">Partenaire</option>
                                   
                                </select>
-                               @if ($errors->has('nature'))
+                               @if ($errors->has('statut'))
                                <br>
                                <div class="alert alert-warning ">
-                                  <strong>{{$errors->first('nature')}}</strong> 
+                                  <strong>{{$errors->first('statut')}}</strong> 
                                </div>
                                @endif
                             </div>
                          </div>
                          
                     </div>
-                    
-                    <div class="col-lg-3 col-md-3 col-sm-3  ">
+                     --}}
+                    {{-- <div class="col-lg-3 col-md-3 col-sm-3  ">
                         <div class="form-group ">
-                            <label class="col-lg-8  col-md-8  col-sm-48 control-label" style="padding-top: 5px;" for="type_contact1">Personne seule <span class="text-danger">*</span></label>
+                            <label class="col-lg-8  col-md-8  col-sm-48 control-label" style="padding-top: 5px;" for="nature1">Personne seule <span class="text-danger">*</span></label>
                             <div class="col-lg-2 col-md-2 col-sm-2">
-                               <input type="radio" style="height: 22px;" class="form-control" id="type_contact1" name="type_contact" value="Personne seule" required>
-                               @if ($errors->has('type_contact'))
+                               <input type="radio" style="height: 22px;" class="form-control" id="nature1" name="nature" value="Personne seule" required>
+                               @if ($errors->has('nature'))
                                <br>
                                <div class="alert alert-warning ">
-                                  <strong>{{$errors->first('type_contact')}}</strong> 
+                                  <strong>{{$errors->first('nature')}}</strong> 
                                </div>
                                @endif
                             </div>
@@ -63,13 +63,13 @@ Ajout d'un Contact
                     <div class="col-lg-3 col-md-3 col-sm-3  ">
            
                          <div class="form-group ">
-                            <label class="col-lg-8 col-md-8 col-sm-8 control-label" style="padding-top: 5px;" for="type_contact2">Personne morale <span class="text-danger">*</span></label>
+                            <label class="col-lg-8 col-md-8 col-sm-8 control-label" style="padding-top: 5px;" for="nature2">Personne morale <span class="text-danger">*</span></label>
                             <div class="col-lg-2 col-md-2 col-sm-2">
-                               <input type="radio" style="height: 22px;" class="form-control"  id="type_contact2" name="type_contact"  value="Personne morale" required>
-                               @if ($errors->has('type_contact'))
+                               <input type="radio" style="height: 22px;" class="form-control"  id="nature2" name="nature"  value="Personne morale" required>
+                               @if ($errors->has('nature'))
                                <br>
                                <div class="alert alert-warning ">
-                                  <strong>{{$errors->first('type_contact')}}</strong> 
+                                  <strong>{{$errors->first('nature')}}</strong> 
                                </div>
                                @endif
                             </div>
@@ -79,13 +79,13 @@ Ajout d'un Contact
                     <div class="col-lg-3 col-md-3 col-sm-3 div_proprietaire ">
            
                         <div class="form-group ">
-                           <label class="col-lg-8 col-md-8 col-sm-8 control-label" style="padding-top: 5px;" for="type_contact3">Couple <span class="text-danger">*</span></label>
+                           <label class="col-lg-8 col-md-8 col-sm-8 control-label" style="padding-top: 5px;" for="nature3">Couple <span class="text-danger">*</span></label>
                            <div class="col-lg-2 col-md-2 col-sm-2">
-                              <input type="radio" style="height: 22px;" class="form-control" id="type_contact3" name="type_contact" value="Couple" required>
-                              @if ($errors->has('type_contact'))
+                              <input type="radio" style="height: 22px;" class="form-control" id="nature3" name="nature" value="Couple" required>
+                              @if ($errors->has('nature'))
                               <br>
                               <div class="alert alert-warning ">
-                                 <strong>{{$errors->first('type_contact')}}</strong> 
+                                 <strong>{{$errors->first('nature')}}</strong> 
                               </div>
                               @endif
                            </div>
@@ -94,18 +94,18 @@ Ajout d'un Contact
                    <div class="col-lg-3 col-md-3 col-sm-3  ">
            
                         <div class="form-group ">
-                           <label class="col-lg-8 col-md-8 col-sm-8 control-label" style="padding-top: 5px;" for="type_contact4">Groupe <span class="text-danger">*</span></label>
+                           <label class="col-lg-8 col-md-8 col-sm-8 control-label" style="padding-top: 5px;" for="nature4">Groupe <span class="text-danger">*</span></label>
                            <div class="col-lg-2 col-md-2 col-sm-2">
-                              <input type="radio" style="height: 22px;" class="form-control" id="type_contact4" name="type_contact" value="Groupe" required>
-                              @if ($errors->has('type_contact'))
+                              <input type="radio" style="height: 22px;" class="form-control" id="nature4" name="nature" value="Groupe" required>
+                              @if ($errors->has('nature'))
                               <br>
                               <div class="alert alert-warning ">
-                                 <strong>{{$errors->first('type_contact')}}</strong> 
+                                 <strong>{{$errors->first('nature')}}</strong> 
                               </div>
                               @endif
                            </div>
                         </div>
-                   </div>
+                   </div> --}}
                    
                
                 </div>
@@ -121,7 +121,7 @@ Ajout d'un Contact
                             <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="civilite1">@lang('Civilité') <span class="text-danger">*</span></label>
                             <div class="col-lg-8 col-md-8 col-sm-8">
                                <select class="js-select2 form-control " id="civilite1" name="civilite1" style="width: 100%;" required>
-                                  <option value="{{old('civilite1')}}">{{old('civilite1')}}</option>
+                                  <option value="{{$contact->civilite1}}">{{$contact->civilite1}}</option>
                                   <option value="M">M</option>
                                   <option value="Mme">Mme</option>
                                </select>
@@ -138,7 +138,7 @@ Ajout d'un Contact
                          <div class="form-group div_personne_couple">
                             <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="nom1">Nom <span class="text-danger">*</span></label>
                             <div class="col-lg-8 col-md-8 col-sm-8">
-                               <input type="text" class="form-control " value="{{old('nom1')}}" id="nom1" name="nom1"  required>
+                               <input type="text" class="form-control " value="{{$infosContact->nom1}}" id="nom1" name="nom1"  required>
                                @if ($errors->has('nom1'))
                                <br>
                                <div class="alert alert-warning ">
@@ -151,7 +151,7 @@ Ajout d'un Contact
                          <div class="form-group div_personne_couple">
                             <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="prenom1">Prénom <span class="text-danger">*</span></label>
                             <div class="col-lg-8 col-md-8 col-sm-8">
-                               <input type="text"  class="form-control" value="{{old('prenom1')}}" id="prenom1" name="prenom1"  required>
+                               <input type="text"  class="form-control" value="{{$infosContact->prenom1}}" id="prenom1" name="prenom1"  required>
                                @if ($errors->has('prenom1'))
                                <br>
                                <div class="alert alert-warning ">
@@ -163,7 +163,7 @@ Ajout d'un Contact
                          <div class="form-group div_personne_couple">
                             <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="email1">Email <span class="text-danger">*</span></label>
                             <div class="col-lg-8 col-md-8 col-sm-8">
-                               <input type="text" class="form-control" id="email1" value="{{old('email1')}}" name="email1"  required>
+                               <input type="text" class="form-control" id="email1" value="{{$infosContact->email1}}" name="email1"  required>
                                @if ($errors->has('email1'))
                                <br>
                                <div class="alert alert-warning ">
@@ -176,7 +176,7 @@ Ajout d'un Contact
                          <div class="form-group div_personne_couple">
                              <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="telephone_portable1">Téléphone portable </label>
                              <div class="col-lg-8 col-md-8 col-sm-8">
-                                <input type="text" class="form-control " value="{{old('telephone_portable1')}}" id="telephone_portable1"  name="telephone_portable1"  >
+                                <input type="text" class="form-control " value="{{$infosContact->telephone_portable1}}" id="telephone_portable1"  name="telephone_portable1"  >
                                 @if ($errors->has('telephone_portable1'))
                                 <br>
                                 <div class="alert alert-warning ">
@@ -189,7 +189,7 @@ Ajout d'un Contact
                         <div class="form-group div_personne_couple">
                             <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="telephone_fixe1">Téléphone fixe </label>
                             <div class="col-lg-8 col-md-8 col-sm-8">
-                               <input type="text" class="form-control " value="{{old('telephone_fixe1')}}" id="telephone_fixe1" name="telephone_fixe1"  >
+                               <input type="text" class="form-control " value="{{$infosContact->telephone_fixe1}}" id="telephone_fixe1" name="telephone_fixe1"  >
                                @if ($errors->has('telephone_fixe1'))
                                <br>
                                <div class="alert alert-warning ">
@@ -221,7 +221,7 @@ Ajout d'un Contact
                           <div class="form-group div_personne_seule">
                              <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="nom">Nom <span class="text-danger">*</span></label>
                              <div class="col-lg-8 col-md-8 col-sm-8">
-                                <input type="text" class="form-control " value="{{old('nom')}}" id="nom" name="nom"  required>
+                                <input type="text" class="form-control " value="{{$infosContact->nom}}" id="nom" name="nom"  required>
                                 @if ($errors->has('nom'))
                                 <br>
                                 <div class="alert alert-warning ">
@@ -234,7 +234,7 @@ Ajout d'un Contact
                           <div class="form-group div_personne_seule">
                              <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="prenom">Prénom <span class="text-danger">*</span></label>
                              <div class="col-lg-8 col-md-8 col-sm-8">
-                                <input type="text"  class="form-control" value="{{old('prenom')}}" id="prenom" name="prenom"  required>
+                                <input type="text"  class="form-control" value="{{$infosContact->prenom}}" id="prenom" name="prenom"  required>
                                 @if ($errors->has('prenom'))
                                 <br>
                                 <div class="alert alert-warning ">
@@ -294,7 +294,7 @@ Ajout d'un Contact
                           <div class="form-group div_personne_morale">
                             <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="raison_sociale">Raison sociale <span class="text-danger">*</span></label>
                             <div class="col-lg-8 col-md-8 col-sm-8">
-                               <input type="text"  class="form-control" value="{{old('raison_sociale')}}" id="raison_sociale" name="raison_sociale"  required>
+                               <input type="text"  class="form-control" value="{{$infosContact->raison_sociale}}" id="raison_sociale" name="raison_sociale"  required>
                                @if ($errors->has('raison_sociale'))
                                <br>
                                <div class="alert alert-warning ">
@@ -307,7 +307,7 @@ Ajout d'un Contact
                          <div class="form-group div_personne_groupe">
                             <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="nom_groupe">Nom du groupe <span class="text-danger">*</span></label>
                             <div class="col-lg-8 col-md-8 col-sm-8">
-                               <input type="text"  class="form-control" value="{{old('nom_groupe')}}" id="nom_groupe" name="nom_groupe"  required>
+                               <input type="text"  class="form-control" value="{{$infosContact->nom_groupe}}" id="nom_groupe" name="nom_groupe"  required>
                                @if ($errors->has('nom_groupe'))
                                <br>
                                <div class="alert alert-warning ">
@@ -381,7 +381,7 @@ Ajout d'un Contact
                          <div class="form-group div_personne_couple">
                             <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="nom2">Nom <span class="text-danger">*</span></label>
                             <div class="col-lg-8 col-md-8 col-sm-8">
-                               <input type="text" class="form-control " value="{{old('nom2')}}" id="nom2" name="nom2"  required>
+                               <input type="text" class="form-control " value="{{$infosContact->nom2}}" id="nom2" name="nom2"  required>
                                @if ($errors->has('nom2'))
                                <br>
                                <div class="alert alert-warning ">
@@ -394,7 +394,7 @@ Ajout d'un Contact
                          <div class="form-group div_personne_couple">
                             <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="prenom2">Prénom <span class="text-danger">*</span></label>
                             <div class="col-lg-8 col-md-8 col-sm-8">
-                               <input type="text"  class="form-control" value="{{old('prenom2')}}" id="prenom2" name="prenom2"  required>
+                               <input type="text"  class="form-control" value="{{$infosContact->prenom2}}" id="prenom2" name="prenom2"  required>
                                @if ($errors->has('prenom2'))
                                <br>
                                <div class="alert alert-warning ">
@@ -406,7 +406,7 @@ Ajout d'un Contact
                          <div class="form-group div_personne_couple">
                             <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="email2">Email <span class="text-danger">*</span></label>
                             <div class="col-lg-8 col-md-8 col-sm-8">
-                               <input type="text" class="form-control" id="email2" value="{{old('email2')}}" name="email2"  required>
+                               <input type="text" class="form-control" id="email2" value="{{$infosContact->email2}}" name="email2"  required>
                                @if ($errors->has('email2'))
                                <br>
                                <div class="alert alert-warning ">
@@ -419,7 +419,7 @@ Ajout d'un Contact
                          <div class="form-group div_personne_couple">
                              <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="telephone_portable2">Téléphone portable </label>
                              <div class="col-lg-8 col-md-8 col-sm-8">
-                                <input type="text" class="form-control " value="{{old('telephone_portable2')}}" id="telephone_portable2"  name="telephone_portable2"  >
+                                <input type="text" class="form-control " value="{{$infosContact->telephone_portable2}}" id="telephone_portable2"  name="telephone_portable2"  >
                                 @if ($errors->has('telephone_portable2'))
                                 <br>
                                 <div class="alert alert-warning ">
@@ -432,7 +432,7 @@ Ajout d'un Contact
                         <div class="form-group div_personne_couple">
                             <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="telephone_fixe2">Téléphone fixe </label>
                             <div class="col-lg-8 col-md-8 col-sm-8">
-                               <input type="text" class="form-control " value="{{old('telephone_fixe2')}}" id="telephone_fixe2" name="telephone_fixe2"  >
+                               <input type="text" class="form-control " value="{{$infosContact->telephone_fixe2}}" id="telephone_fixe2" name="telephone_fixe2"  >
                                @if ($errors->has('telephone_fixe2'))
                                <br>
                                <div class="alert alert-warning ">
@@ -448,7 +448,7 @@ Ajout d'un Contact
                         <div class="form-group div_personne_tout">
                             <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="email">Email <span class="text-danger">*</span></label>
                             <div class="col-lg-8 col-md-8 col-sm-8">
-                               <input type="text" class="form-control" id="email" value="{{old('email')}}" name="email"  required>
+                               <input type="text" class="form-control" id="email" value="{{$infosContact->email}}" name="email"  required>
                                @if ($errors->has('email'))
                                <br>
                                <div class="alert alert-warning ">
@@ -461,7 +461,7 @@ Ajout d'un Contact
                         <div class="form-group div_personne_tout">
                              <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="telephone_portable">Téléphone portable </label>
                              <div class="col-lg-8 col-md-8 col-sm-8">
-                                <input type="text" class="form-control " value="{{old('telephone_portable')}}" id="telephone_portable"  name="telephone_portable"  >
+                                <input type="text" class="form-control " value="{{$infosContact->telephone_portable}}" id="telephone_portable"  name="telephone_portable"  >
                                 @if ($errors->has('telephone_portable'))
                                 <br>
                                 <div class="alert alert-warning ">
@@ -474,7 +474,7 @@ Ajout d'un Contact
                         <div class="form-group div_personne_tout">
                             <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="telephone_fixe">Téléphone fixe </label>
                             <div class="col-lg-8 col-md-8 col-sm-8">
-                               <input type="text" class="form-control " value="{{old('telephone_fixe')}}" id="telephone_fixe" name="telephone_fixe"  >
+                               <input type="text" class="form-control " value="{{$infosContact->telephone_fixe}}" id="telephone_fixe" name="telephone_fixe"  >
                                @if ($errors->has('telephone_fixe'))
                                <br>
                                <div class="alert alert-warning ">
@@ -489,7 +489,7 @@ Ajout d'un Contact
                          <div class="form-group div_personne_morale ">
                             <label class="col-lg-4 col-md-4 col-sm-4  control-label" for="numero_siret">Numéro siret</label>
                             <div class="col-lg-8 col-md-8 col-sm-8">
-                               <input type="text" id="numero_siret" class="form-control " value="{{old('numero_siret')}}" name="numero_siret" >
+                               <input type="text" id="numero_siret" class="form-control " value="{{$infosContact->numero_siret}}" name="numero_siret" >
                                @if ($errors->has('telephone'))
                                <br>
                                <div class="alert alert-warning ">
@@ -502,7 +502,7 @@ Ajout d'un Contact
                          <div class="form-group div_personne_morale ">
                             <label class="col-lg-4 col-md-4 col-sm-4  control-label" for="numero_tva">Numéro TVA</label>
                             <div class="col-lg-8 col-md-8 col-sm-8">
-                               <input type="text" id="numero_tva" class="form-control " value="{{old('numero_tva')}}" name="numero_tva" >
+                               <input type="text" id="numero_tva" class="form-control " value="{{$infosContact->numero_tva}}" name="numero_tva" >
                                @if ($errors->has('numero_tva'))
                                <br>
                                <div class="alert alert-warning ">
@@ -534,7 +534,7 @@ Ajout d'un Contact
                         <div class="form-group row">
                             <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="adresse">Adresse </label>
                             <div class="col-lg-8 col-md-8 col-sm-8">
-                               <input type="text" class="form-control " value="{{old('adresse')}}" id="adresse" name="adresse"  >
+                               <input type="text" class="form-control " value="{{$infosContact->adresse}}" id="adresse" name="adresse"  >
                                @if ($errors->has('adresse'))
                                <br>
                                <div class="alert alert-warning ">
@@ -549,7 +549,7 @@ Ajout d'un Contact
                          <div class="form-group row">
                             <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="code_postal">Code postal </label>
                             <div class="col-lg-8 col-md-8 col-sm-8">
-                               <input type="text" class="form-control" value="{{old('code_postal')}}" id="code_postal"  name="code_postal"  >
+                               <input type="text" class="form-control" value="{{$infosContact->code_postal}}" id="code_postal"  name="code_postal"  >
                                @if ($errors->has('code_postal'))
                                <br>
                                <div class="alert alert-warning ">
@@ -562,7 +562,7 @@ Ajout d'un Contact
                          <div class="form-group row">
                             <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="ville">Ville </label>
                             <div class="col-lg-8 col-md-8 col-sm-8">
-                               <input type="text" class="form-control" value="{{old('ville')}}" id="ville" name="ville"  >
+                               <input type="text" class="form-control" value="{{$infosContact->ville}}" id="ville" name="ville"  >
                                @if ($errors->has('ville'))
                                <br>
                                <div class="alert alert-warning ">
@@ -575,7 +575,7 @@ Ajout d'un Contact
                          <div class="form-group row">
                             <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="pays">Pays </label>
                             <div class="col-lg-8 col-md-8 col-sm-8">
-                               <input type="text" class="form-control {{ $errors->has('pays') ? ' is-invalid' : '' }}" value="{{old('pays')}}" id="pays" name="pays" placeholder="Entez une lettre et choisissez.." >
+                               <input type="text" class="form-control {{ $errors->has('pays') ? ' is-invalid' : '' }}" value="{{$infosContact->pays}}" id="pays" name="pays" placeholder="Entez une lettre et choisissez.." >
                                @if ($errors->has('pays'))
                                <br>
                                <div class="alert alert-warning ">
@@ -596,7 +596,7 @@ Ajout d'un Contact
                         <div class="form-group row">
                             <label class="col-lg-4 col-md-4 col-sm-4 control-label" for="note">Note</label>
                             <div class="col-lg-8 col-md-8 col-sm-8">
-                              <textarea name="note" id="note" class="form-control" cols="30" rows="5"> {{old('note')}}</textarea>
+                              <textarea name="note" id="note" class="form-control" cols="30" rows="5"> {{$infosContact->note}}</textarea>
                                @if ($errors->has('note'))
                                <br>
                                <div class="alert alert-warning ">
@@ -655,9 +655,9 @@ Ajout d'un Contact
             
             
             
-            $('#nature').change(function(e){
-                let nature = e.currentTarget.value ;
-                if( nature != "Partenaire"){
+            $('#statut').change(function(e){
+                let statut = e.currentTarget.value ;
+                if( statut != "Partenaire"){
                     $(".div_proprietaire").show();
                     $(".div_partenaire").hide();
                 }else{
@@ -668,9 +668,9 @@ Ajout d'un Contact
         
             $("input[type='radio']").click(function(e){
                 
-                let type_contact = e.currentTarget.value ;
+                let nature = e.currentTarget.value ;
                 
-                if(type_contact == "Personne morale"){
+                if(nature == "Personne morale"){
                 
                     $("input[type='text']").removeAttr("required");
                     $("select").removeAttr("required");
@@ -686,7 +686,7 @@ Ajout d'un Contact
                     $("#raison_sociale").attr("required", "required");
                     $("#email").attr("required", "required");
                     
-                }else if(type_contact == "Personne seule"){
+                }else if(nature == "Personne seule"){
                     $("input[type='text']").removeAttr("required");
                     $("select").removeAttr("required");
             
@@ -704,7 +704,7 @@ Ajout d'un Contact
                     $("#type").val("individu");
                 
                 
-                }else if(type_contact == "Couple"){
+                }else if(nature == "Couple"){
                     $("input[type='text']").removeAttr("required");
                     $("select").removeAttr("required");
             
@@ -726,7 +726,7 @@ Ajout d'un Contact
                     
                     $("#type").val("individu");
                     
-                }else if(type_contact == "Groupe"){
+                }else if(nature == "Groupe"){
                     $("input[type='text']").removeAttr("required");
                     $("select").removeAttr("required");
                     

@@ -16,6 +16,7 @@ class CreateBiensTable extends Migration
         Schema::create('biens', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('user_id')->unsigned();
+            $table->integer('proprietaire_id')->unsigned()->nullable();
             $table->string('type_offre')->nullable();
             $table->string('type_bien')->nullable();
 

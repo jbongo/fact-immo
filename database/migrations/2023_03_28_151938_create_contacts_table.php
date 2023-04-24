@@ -19,7 +19,7 @@ class CreateContactsTable extends Migration
             
             // Entite ou individu
             $table->string("type")->nullable();     
-            // 'personne_seule', 'couple', 'personne_morale', 'groupe', 'autre'
+            // 'Personne seule', 'couple', 'Personne morale', 'groupe', 'autre'
             $table->string("nature")->nullable();         
            
             

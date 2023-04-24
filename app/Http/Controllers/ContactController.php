@@ -60,10 +60,10 @@ class ContactController extends Controller
     {
         $contact = Contact::where('id', Crypt::decrypt($contact_id))->first();
         
-        if($contact->type == "entite"){
+        if($contact->type == "entité"){
             return view('contact.show_entite', compact('contact')); 
             
-        }else{
+        }else{     
             return view('contact.show_individu', compact('contact')); 
             
         }
@@ -78,7 +78,16 @@ class ContactController extends Controller
     public function edit($contact_id)
     {
         $contact = Contact::where('id', Crypt::decrypt($contact_id))->first();
-        return view('contact.edit', compact('contact')); 
+        
+        if($contact->type == "entité"){
+            $infosContact = $contact->entite;
+        }else{
+            $infosContact = $contact->individu;
+      
+        }
+        
+
+        return view('contact.edit', compact('contact', 'infosContact')); 
     }
     
     
@@ -129,10 +138,10 @@ class ContactController extends Controller
             "user_id"=> Auth::user()->id,
             "nature"=> $request->nature,
             "type"=> $request->type,
-            "est_partenaire" => $request->nature == "Partenaire" ? true : false,
-            "est_acquereur" => $request->nature == "Acquereur" ? true : false,
-            "est_proprietaire" => $request->nature == "Propriétaire" ? true : false,
-            "est_locataire" => $request->nature == "Locataire" ? true : false,
+            "est_partenaire" => $request->statut == "Partenaire" ? true : false,
+            "est_acquereur" => $request->statut == "Acquereur" ? true : false,
+            "est_proprietaire" => $request->statut == "Propriétaire" ? true : false,
+            "est_locataire" => $request->statut == "Locataire" ? true : false,
             "est_notaire" => $request->metier == "Notaire" ? true : false,
             "est_prospect" => $request->metier == "Prospect" ? true : false,
             "est_fournisseur" => $request->metier == "Fournisseur" ? true : false,

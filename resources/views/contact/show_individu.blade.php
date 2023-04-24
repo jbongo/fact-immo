@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
 @section ('page_title')
-Ajout d'un Contact
+Informations du contact
 @endsection
 <div class="row">
    <div class="col-lg-12">
@@ -29,8 +29,9 @@ Ajout d'un Contact
                                              </div>
                                              <div class="user-skill">
                                                 <h4 style="color: #32ade1;text-decoration: underline;">Options</h4>
-                                                <a type="button" data-toggle="modal" data-target="#individu_edit" class="btn btn-warning btn-rounded btn-addon btn-xs m-b-10"><i class="ti-pencil"></i>Modifier</a>
-                                                <a type="button" data-toggle="modal" data-target="#planifiate_usr" class="btn btn-danger btn-rounded btn-addon btn-xs m-b-10"><i class="ti-email"></i>Envoyer un email</a>
+                                                <a type="button" href="{{route('contact.edit', Crypt::encrypt($contact->id))}}" class="btn btn-warning btn-rounded btn-addon btn-xs m-b-10"><i class="ti-pencil"></i>Modifier</a>
+                                                
+                                                {{-- <a type="button" data-toggle="modal" data-target="#planifiate_usr" class="btn btn-danger btn-rounded btn-addon btn-xs m-b-10"><i class="ti-email"></i>Envoyer un email</a> --}}
                                              </div>
                                           </div>
                                           <div class="col-lg-8">
