@@ -38,15 +38,15 @@ Informations du contact
                                     </div>
                                  </div>
                                  <div class="col-lg-8">
-                                    <div class="user-profile-name" style="color: #d68300;">{{$ret->raison_sociale}}</div>
-                                    <div class="user-Location"><i class="ti-location-pin"></i> {{$ret->ville}}</div>
+                                    <div class="user-profile-name" style="color: #d68300;">{{$contact->entite->raison_sociale}}</div>
+                                    <div class="user-Location"><i class="ti-location-pin"></i> {{$contact->entite->ville}}</div>
                                     <div class="card p-0">
                                        <div class="media bg-primary">
                                           <div class="p-20 bg-info-dark media-left media-middle">
                                              <i class="ti-id-badge f-s-48 color-white"></i>
                                           </div>
                                           <div class="p-20 media-body">
-                                             <h4 class="colcolor-white" style="color: white;"><strong>{{strtoupper ($ret->type)}}</strong></h4>
+                                             <h4 class="colcolor-white" style="color: white;"><strong>{{strtoupper ($contact->entite->type)}}</strong></h4>
                                           </div>
                                        </div>
                                     </div>
@@ -59,55 +59,55 @@ Informations du contact
                                              <div class="contact-information">
                                                 <div class="phone-content">
                                                    <span class="contact-title"><strong>Téléphone:</strong></span>
-                                                   <span class="phone-number" style="color: #ff435c; text-decoration: underline;">{{$ret->telephone}}</span>
+                                                   <span class="phone-number" style="color: #ff435c; text-decoration: underline;">{{$contact->entite->telephone}}</span>
                                                 </div>
                                                 <div class="address-content">
                                                    <span class="contact-title"><strong>Adresse:</strong></span>
-                                                   <span class="mail-address">{{$ret->adresse}}</span>
+                                                   <span class="mail-address">{{$contact->entite->adresse}}</span>
                                                 </div>
                                                 <div class="website-content">
                                                    <span class="contact-title"><strong>Code postal:</strong></span>
-                                                   <span class="contact-website">{{$ret->code_postal}}</span>
+                                                   <span class="contact-website">{{$contact->entite->code_postal}}</span>
                                                 </div>
                                                 <div class="website-content">
                                                    <span class="contact-title"><strong>Ville:</strong></span>
-                                                   <span class="contact-website">{{$ret->ville}}</span>
+                                                   <span class="contact-website">{{$contact->entite->ville}}</span>
                                                 </div>
                                                 <div class="email-content">
                                                    <span class="contact-title"><strong>Email:</strong></span>
-                                                   <span class="contact-email" style="color: #ff435c; text-decoration: underline;">{{$ret->email}}</span>
+                                                   <span class="contact-email" style="color: #ff435c; text-decoration: underline;">{{$contact->entite->email}}</span>
                                                 </div>
                                              </div>
                                              <div class="basic-information">
                                                 <h4 style="color: #32ade1;text-decoration: underline;">Informations juridiques</h4>
                                                 <div class="birthday-content">
                                                    <span class="contact-title"><strong>Personnalité:</strong></span>
-                                                   @if($ret->sous_type === "personne_simple" || $ret->sous_type === "couple")
-                                                   <span class="birth-date"><span class="badge badge-success">{{$ret->sous_type}}</span></span>
+                                                   @if($contact->entite->sous_type === "personne_simple" || $contact->entite->sous_type === "couple")
+                                                   <span class="birth-date"><span class="badge badge-success">{{$contact->entite->sous_type}}</span></span>
                                                    @else
-                                                   <span class="birth-date"><span class="badge badge-warning">{{$ret->sous_type}}</span></span>
+                                                   <span class="birth-date"><span class="badge badge-warning">{{$contact->entite->sous_type}}</span></span>
                                                    @endif
                                                 </div>
                                                 <div class="gender-content">
                                                    <span class="contact-title"><strong>Ajout le:</strong></span>
-                                                   <span class="gender">{{date('d-m-Y',strtotime($ret->creation_le))}}</span>
+                                                   <span class="gender">{{date('d-m-Y',strtotime($contact->entite->creation_le))}}</span>
                                                 </div>
-                                                @if($ret->sous_type != "personne_simple" && $ret->sous_type != "couple")
+                                                @if($contact->entite->sous_type != "personne_simple" && $contact->entite->sous_type != "couple")
                                                 <div class="address-content">
                                                    <span class="contact-title"><strong>Forme juridique:</strong></span>
-                                                   <span class="mail-address">{{$ret->forme_juridique}}</span>
+                                                   <span class="mail-address">{{$contact->entite->forme_juridique}}</span>
                                                 </div>
                                                 <div class="address-content">
                                                    <span class="contact-title"><strong>Numéro SIRET:</strong></span>
-                                                   <span class="mail-address">{{$ret->numero_siret}}</span>
+                                                   <span class="mail-address">{{$contact->entite->numero_siret}}</span>
                                                 </div>
                                                 <div class="address-content">
                                                    <span class="contact-title"><strong>Numéro TVA:</strong></span>
-                                                   <span class="mail-address">{{$ret->numero_tva}}</span>
+                                                   <span class="mail-address">{{$contact->entite->numero_tva}}</span>
                                                 </div>
                                                 <div class="address-content">
                                                    <span class="contact-title"><strong>Numéro RCS:</strong></span>
-                                                   <span class="mail-address">{{$ret->numero_rcs}}</span>
+                                                   <span class="mail-address">{{$contact->entite->numero_rcs}}</span>
                                                 </div>
                                                 @endif
                                              </div>
@@ -137,7 +137,7 @@ Informations du contact
                               </tr>
                            </thead>
                            <tbody>
-                              @foreach($ret->individus as $one)
+                              @foreach($contact->entite->individus as $one)
                               <tr>
                                  <td style="border-top: 4px solid #b8c7ca;">
                                     <span class="badge badge-pink">{{$one->civilite}}</span>                                                
@@ -146,7 +146,7 @@ Informations du contact
                                  <td style="border-top: 4px solid #b8c7ca; color: #32ade1; text-decoration: underline;"><strong>{{$one->email}}</strong> </td>
                                  <td style="border-top: 4px solid #b8c7ca;">
                                     <span><a class="show1" href="{{route('contact.individu.show', CryptId($one->id))}}" title="@lang('Détails')"><i class="large material-icons color-info">visibility</i></a></span>
-                                    <span><a href="{{route('contact.entite.dissociate', [CryptId($ret->id), CryptId($one->id)])}}" class="dissociate_individu" data-toggle="tooltip" title="@lang('Dissocier')"><i class="large material-icons color-danger">clear</i></a></span>
+                                    <span><a href="{{route('contact.entite.dissociate', [CryptId($contact->entite->id), CryptId($one->id)])}}" class="dissociate_individu" data-toggle="tooltip" title="@lang('Dissocier')"><i class="large material-icons color-danger">clear</i></a></span>
                                  </td>
                               </tr>
                               @endforeach
@@ -417,7 +417,7 @@ $('#individus_check').on('click', function(e){
    });
    if (form.valid() === true){
       $.ajax({
-         url: ("{{route('contact.individu.storeandattach', CryptId($ret->id))}}"),
+         url: ("{{route('contact.individu.storeandattach', CryptId($contact->entite->id))}}"),
          type: 'POST',
          data:{
             civilite: $('#_civilite').val(),

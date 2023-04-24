@@ -214,9 +214,9 @@
                     <li   class="{{$li_mandataire}}"><a  href="" class="sidebar-sub-toggle"> <i class="large material-icons" style="font-size:20px;">person</i></i> Mandataires <span class="sidebar-collapse-icon ti-angle-down"></span> </a>
                         <ul>
                             <li class="{{$li_mandataire}}" ><a href="{{route('mandataire.index')}}">Gestion</a></li>
-                            <li   class="{{$li_jetons}}"><a  href="{{route('mandataires.jetons')}}" class=""> <i class="large material-icons" style="font-size:20px;">adjust</i></i>Gestion des jetons  </a></li>
-                            <li   class="{{$li_facture_pub}}" ><a  href="{{route('mandataires.facture_pub')}}" class=""> <i class="large material-icons" style="font-size:20px;">receipt</i></i>Gestion des Facts pub  </a></li>
-                            <li   class="{{$li_parrainage}}" ><a  href="{{route('parrainage.index')}}" class=""> <i class="large material-icons" style="font-size:20px;">receipt</i></i>Gestion des Parrainages  </a></li>
+                            <li   class="{{$li_jetons}}"><a  href="{{route('mandataires.jetons')}}" class=""> Gestion des jetons  </a></li>
+                            <li   class="{{$li_facture_pub}}" ><a  href="{{route('mandataires.facture_pub')}}" class=""> Gestion des Facts pub  </a></li>
+                            <li   class="{{$li_parrainage}}" ><a  href="{{route('parrainage.index')}}" class=""> Gestion des Parrainages  </a></li>
 
                         </ul>                    
                     </li>
