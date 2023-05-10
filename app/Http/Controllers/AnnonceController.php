@@ -6,9 +6,9 @@ use Illuminate\Http\Request;
 use Intervention\Image\Facades\Image;
 use SoapBox\Formatter\Formatter;
 
-use App\Models\Bien;
-use App\Models\Bienphoto;
-use App\Models\Annonce;
+use App\Bien;
+use App\Bienphoto;
+use App\Annonce;
 use Illuminate\Support\Facades\Crypt;
 
 class AnnonceController extends Controller

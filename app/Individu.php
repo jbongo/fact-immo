@@ -18,4 +18,13 @@ class Individu extends Model
     {
         return $this->belongsToMany(Entite::class);
     }
+    
+       /**
+     * Get the contact that owns the Entite
+     *
+     */
+    public function contact()
+    {
+        return $this->belongsTo(Contact::class);
+    }
 }

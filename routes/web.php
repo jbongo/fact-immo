@@ -450,16 +450,14 @@ Route::get('/contact/edit/{contact_id}', 'ContactController@edit')->name('contac
 
 Route::get('/contact/individu', 'ContactController@index_individu')->name('contact.individu.index');
 Route::post('/contact/entite/store/{sentinel}', 'ContactController@store_entite')->name('contact.entite.store');
-Route::post('/contact/individu/storeandattach/{id}', 'ContactController@store_and_attach')->name('contact.individu.storeandattach');
 Route::post('/contact/individu/store', 'ContactController@store_individu')->name('contact.individu.store');
 Route::post('/contact/entite/update/{id}', 'ContactController@update_entite')->name('contact.entite.update');
 Route::post('/contact/individu/update/{id}', 'ContactController@update_individu')->name('contact.individu.update');
 Route::get('/contact/entite/show/{id}', 'ContactController@show_entite')->name('contact.entite.show');
-Route::get('/contact/entite/json_get/{id}', 'ContactController@json_entite')->name('contact.json_entite');
 Route::get('/contact/individu/show/{id}', 'ContactController@show_individu')->name('contact.individu.show');
-Route::get('/contact/individu/dissociate_entite/{individu}/{entite}', 'ContactController@detache_entite')->name('contact.individu.dissociate');
-Route::get('/contact/entite/dissociate_individu/{entite}/{individu}', 'ContactController@detache_individu')->name('contact.entite.dissociate');
-Route::post('/contact/entite/associate_individu/{entite}', 'ContactController@attache_individu')->name('contact.entite.attache');
+
+Route::get('/contact/detache/{entite_id}/{individu}', 'ContactController@detache')->name('contact.detach');
+Route::post('/contact/attache/{entite_id}', 'ContactController@attache')->name('contact.attach');
 
   /************************************************************/
    /*             MODULE BIENS  //JP                           */
@@ -485,8 +483,108 @@ Route::post('/contact/entite/associate_individu/{entite}', 'ContactController@at
   Route::get('/imprime-fiche/{bien}/{typefiche}/{action}', 'BienController@impressionFiche')->name('imprimeFiche');
   
   
+  
+
+    /************************************************************/
+   /*             MODULE PASSERELLES     //JP                  */
+  /* **********************************************************/
+
+      // Liste des Passerelles
+      Route::name('passerelle.index')->get('passerelles','PasserelleController@index');
+      //Formulaire d'ajout d'une passerelle
+      Route::name('passerelle.add')->get('passerelles/add','PasserelleController@create');
+      // Ajouter une passerelle
+      Route::name('passerelle.add')->post('passerelles/add','PasserelleController@store');
+      // Obtenir une passerelle
+      Route::name('passerelle.get')->get('passerelle/{id}','PasserelleController@getPasserelle');
+      // Supprimer une passerelle
+      Route::name('passerelle.delete')->post('passerelle/delete/{passerelle}','PasserelleController@delete');
+      // Formulaire de modification d'une passerelle
+      Route::name('passerelle.edit')->get('passerelle/edit/{passerelle}','PasserelleController@edit');
+      //Modification d'une passerelle
+      Route::name('passerelle.update')->post('passerelle/update/{passerelle}','PasserelleController@update');
+      //Modifier le statut d'une passerelle       
+      Route::name('passerelle.statut')->get('passerelle/statut/{passerelle}/{statut}','PasserelleController@statut');
+
+      // -----------  Forunisseurs passerelle
+      // Liste des forunisseurs passerelle
+      Route::name('fournisseur.passerelle.index')->get('fournisseur/passerelles','FournisseurController@index_passerelle');
+      //Formulaire d'ajout d'un forunisseur de passerelle
+      Route::name('fournisseur.passerelle.add')->get('fournisseur/passerelles/add','FournisseurController@create_passerelle');
+      //Afficher un forunisseur de passerelle
+      Route::name('fournisseur.passerelle.show')->get('fournisseur/passerelles/show/{contrat_id}','FournisseurController@show_passerelle');
+      
+
+
+   /************************************************************/
+  /*             MODULE DE DIFFUSION     //JP                 */
+ /* **********************************************************/
+
+ //////########  Partie Diffusion automatique   ########/////////
+    
+    Route::name('diffusion_auto.index')->get('diffusion/auto/','DiffusionController@index_auto');
+     //Obtenir la liste des passerelles d'un bien et de toutes les passerelles pour la diffusion automatique
+     Route::get('/get-passerelles/{bien_id}', 'DiffusionController@getPasserelles')->name('getPasserelles');
+     // Ascocier ou discocier des passerelles à un bien
+     Route::name('passerelle.bien')->post('passerelle/attach/{bien}','DiffusionController@attach_passerelle_bien');
+
+    Route::name('diffusion_auto.diffuser')->get('diffusion/auto/diffuser','DiffusionController@diffuser_auto');     
+      
+ //////*************  Fin Partie Diffusion automatique   *************/////////
+
+
+ //////########  Partie Diffusion programmée   ########/////////
+    
+    Route::name('diffusion_prog.index')->get('diffusion/prog/','DiffusionController@index_prog');
+    //Sauvegarder la planification de la Diffusion
+    Route::name('diffusion_prog.planifier')->post('diffusion/prog/planifier/{bien_id}','DiffusionController@planifier');
+    // Afficher page création de diffusions
+    Route::name('diffusion_prog.add')->get('diffusion/prog/create/{bien_id}','DiffusionController@create');
+    Route::name('diffusion_prog.add_suiv_prec')->post('diffusion/prog/create_suiv_prec/{bien_id}','DiffusionController@create_suiv_prec');
+    //Affiche la page sur laquelle on choisi les date de diffusion et les annonces
+    Route::name('diffusion_prog.date_annonce')->get('diffusion/prog/date_annonce/{passerelles}/{bien_id}','DiffusionController@date_annonce');
+    //Affiche la liste de toutes les diffusions programmées d'un bien 
+    Route::name('diffusion_prog.show')->get('diffusion/prog/show/{type}/{bien_id}','DiffusionController@listeDiffusion');
+    // Supprimer une diffusions
+    Route::name('diffusion_prog.delete')->post('diffusion/prog/delete/{diffusion}','DiffusionController@delete');
+
+      
+ //////**********  Fin Partie Diffusion programmée   **********/////////
+
+  /************************************************************/
+ /*             MODULE DES ANNONCES       //JP               */
+/* **********************************************************/
+
+// Afficher la page d'ajout d'annonce
+Route::name('annonce.create')->get('annonce/create/{bien_id}','AnnonceController@create');
+
+// Ajouter une nouvelle annonce
+Route::name('annonce.add')->post('annonce/add/','AnnonceController@store');
+
+// Formulaire d'ajout de photos
+Route::name('annonce.add_photo')->get('annonce/add/photos/{bien_id}/{annonce_id}','AnnonceController@uploadPhoto');
+
+// Formulaire d'édition d'une annonce
+Route::name('annonce.edit')->get('annonce/edit/{annonce_id}','AnnonceController@edit');
+
+// Modifier une annonce
+Route::name('annonce.update')->post('annonce/update/{annonce}','AnnonceController@update');
+
+// Ajouter les photos de  l'annonce
+Route::name('annonce.store_photo')->post('annonce/store/photos/{bien_id}/{annonce_id}','AnnonceController@storePhotos');
+
+// Liste des annonces d'un bien
+Route::name('annonce.index')->get('annonce/bien/{bien_id}','AnnonceController@index');
+
+
+
+  
 
 });
+
+
+
+
 
 // Blibliotheque
 Route::get('/bibliotheque/show/{bibliotheque_id}/{user_id}/{type_user}','BibliothequeController@show')->name('bibliotheque.show');
@@ -504,6 +602,6 @@ Route::post('fiche/prospect/{prospect}/','ProspectController@sauvegarder_fiche')
 // Tests
 Route::get('test','TvaController@test')->name('test');
 
-// Route::get('/test', function () {
-//     return view('test');
-// });
+Route::get('/tests', function () {
+    return view('test');
+});

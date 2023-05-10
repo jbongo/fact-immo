@@ -19,10 +19,13 @@ class CreateEntitesTable extends Migration
             $table->integer('contact_id')->unsigned()->nullable();            
             $table->string('forme_juridique')->nullable();
             $table->string('raison_sociale')->nullable();
+            $table->string('nom')->nullable();            
+            $table->string('type')->nullable();            
             $table->string('adresse')->nullable();
             $table->string('code_postal')->nullable();
             $table->string('ville')->nullable();
-            $table->string('telephone')->nullable();
+            $table->string('telephone_fixe')->nullable();
+            $table->string('telephone_mobile')->nullable();
             $table->string('email')->nullable();
             $table->string('numero_siret')->nullable();
             $table->string('code_naf')->nullable();

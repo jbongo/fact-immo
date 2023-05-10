@@ -46,8 +46,8 @@ class ContactController extends Controller
      */
     public function create()
     {
-      
-        return view('contact.add'); 
+        $contacts = Contact::where([['type', 'individu'], ['archive', false]])->get();
+        return view('contact.add', compact('contacts')); 
     }
     
     /**
@@ -60,11 +60,32 @@ class ContactController extends Controller
     {
         $contact = Contact::where('id', Crypt::decrypt($contact_id))->first();
         
+        $contacts = null;
+        $idAttach = array();
+        
+        
         if($contact->type == "entité"){
-            return view('contact.show_entite', compact('contact')); 
+        
+            $contactAttachs = $contact->entite->individus;
+            
+
+            foreach ($contactAttachs as $contactAttach) {
+            
+                $idAttach[] = $contactAttach->contact->id;
+            }
+            
+            // On ajoute le contact
+            $idAttach[] = $contact->id;
+            $contacts = Contact::where('type',"individu" )->whereNotIn('id', $idAttach)->get();
+       
+        }
+        
+       
+        if($contact->type == "entité"){
+            return view('contact.show_entite', compact('contact', 'contacts')); 
             
         }else{     
-            return view('contact.show_individu', compact('contact')); 
+            return view('contact.show_individu', compact('contact', 'contacts')); 
             
         }
     }
@@ -100,7 +121,7 @@ class ContactController extends Controller
     public function store(Request $request)
     {
     
-          
+     
         
         if($request->type_contact == "Personne seule"){
             
@@ -201,11 +222,14 @@ class ContactController extends Controller
                 "user_id"=> Auth::user()->id,                
                 "contact_id" => $contact->id,
                 "forme_juridique" => $request->forme_juridique,
+                "nom" => $request->nom_groupe,
+                "type" => $request->type_groupe,
                 "raison_sociale" => $request->raison_sociale,
                 "adresse" => $request->adresse,
                 "code_postal" => $request->code_postal,
                 "ville" => $request->ville,
-                "telephone" => $request->telephone,
+                "telephone_fixe" => $request->telephone_fixe,
+                "telephone_mobile" => $request->telephone_mobile,
                 "email" => $request->email,
                 "numero_siret" => $request->numero_siret,
                 "code_naf" => $request->code_naf,
@@ -219,12 +243,122 @@ class ContactController extends Controller
                 "bic" => $request->bic,                             
              
             ]);
+            
+            // Si des contacts sont associés
+            if($request->individus != null){
+                $entite->individus()->attach($request->individus);
+            }
         }
+       
        
 
         return redirect()->route('contact.index')->with('ok', 'Contact ajouté');
    
     }
+    
+    
+    
+    
+    /**
+     * Associer un contact à une entité
+     *
+     * @param
+     * @return \Illuminate\Http\Response
+     */
+    public function attache(Request $request, $entite_id)
+    {
+        $entite = Entite::where('id', Crypt::decrypt($entite_id))->first();
+     
+
+        if($request->statut != null){
+        
+            $contact = Contact::create([
+                "user_id"=> Auth::user()->id,
+                "nature"=> $request->nature,
+                "type"=> $request->type,
+                "est_partenaire" => $request->statut == "Partenaire" ? true : false,
+                "est_acquereur" => $request->statut == "Acquereur" ? true : false,
+                "est_proprietaire" => $request->statut == "Propriétaire" ? true : false,
+                "est_locataire" => $request->statut == "Locataire" ? true : false,
+                "est_notaire" => $request->metier == "Notaire" ? true : false,
+                "est_prospect" => $request->metier == "Prospect" ? true : false,
+                "est_fournisseur" => $request->metier == "Fournisseur" ? true : false,
+                "note" => $request->note,
+                         
+            ]);
+    
+            $individu = Individu::create([
+                "user_id"=> Auth::user()->id,     
+                "contact_id" => $contact->id,
+                
+                "civilite" => $request->civilite,
+                "nom" => $request->nom,
+                "prenom" => $request->prenom,
+                "date_naissance" => $request->date_naissance,
+                "lieu_naissance" => $request->lieu_naissance,
+                "nationalite" => $request->nationalite,
+                "prenom_pere" => $request->prenom_pere,
+                "nom_prenom_mere" => $request->nom_prenom_mere,
+                "situation_matrimoniale" => $request->situation_matrimoniale,
+                "nom_jeune_fille" => $request->nom_jeune_fille,
+                "adresse" => $request->adresse,
+                "code_postal" => $request->code_postal,
+                "ville" => $request->ville,
+                "telephone_fixe" => $request->telephone_fixe,
+                "telephone_mobile" => $request->telephone_mobile,
+                "email" => $request->email,
+                
+                "civilite1" => $request->civilite1,
+                "nom1" => $request->nom1,
+                "prenom1" => $request->prenom1,
+                "adresse1" => $request->adresse1,
+                "code_postal1" => $request->code_postal1,
+                "ville1" => $request->ville1,
+                "telephone_fixe1" => $request->telephone_fixe1,
+                "telephone_mobile1" => $request->telephone_mobile1,
+                "email1" => $request->email1,
+                
+                "civilite2" => $request->civilite2,
+                "nom2" => $request->nom2,
+                "prenom2" => $request->prenom2,
+                "adresse2" => $request->adresse2,
+                "code_postal2" => $request->code_postal2,
+                "ville2" => $request->ville2,
+                "telephone_fixe2" => $request->telephone_fixe2,
+                "telephone_mobile2" => $request->telephone_mobile2,
+                "email2" => $request->email2,                
+             
+            ]);
+            
+            $entite->individus()->attach($individu->id);
+            
+        }else{
+        
+            $entite->individus()->attach($request->individus);
+        }
+      
+        
+        return redirect()->back()->with('ok', "Contact associé");
+        
+    }
+    
+    /**
+     * dissocier un contact d'une entité
+     *
+     * @param
+     * @return \Illuminate\Http\Response
+     */
+    public function detache($entite_id, $individu_id)
+    {
+    
+
+        $entite = Entite::where('id', Crypt::decrypt($entite_id))->first();
+            
+        $entite->individus()->detach(Crypt::decrypt($individu_id));
+        
+        return "ok";
+    }
+    
     
     
     

@@ -47,12 +47,17 @@ class BienController extends Controller
             return view('bien.index',compact('biens'));
         }
     
-    
+    /**  
+     * Créer un bien 
+     * 
+     * @author jean-philippe
+     * @return \Illuminate\Http\Response
+    **/ 
         public function create(){
-            $user = User::find(1)->get();
+            // $user = User::find(1)->get();
             $contacts = Contact::where([['user_id', Auth::user()->id], ['archive', false]])->get();
 
-            return view('bien.add',compact('user','contacts'));
+            return view('bien.add',compact('contacts'));
         }
     
     /**   
@@ -95,7 +100,7 @@ class BienController extends Controller
         $contact = Contact::create([
             "user_id" => Auth::user()->id,
             "nature" => $request->nature_proprietaire,
-            "type" => $request->nature_proprietaire == "Personne morale" ? "entité" : "individu",           
+            "type" => $request->type,           
             "est_proprietaire" => true,         
             "note" => $request->note_proprietaire,
                      
@@ -146,11 +151,14 @@ class BienController extends Controller
                 "user_id"=> Auth::user()->id,                
                 "contact_id" => $contact->id,
                 "forme_juridique" => $request->forme_juridique_proprietaire,
+                "nom" => $request->nom_groupe_proprietaire,
                 "raison_sociale" => $request->raison_sociale_proprietaire,
+                "type" => $request->type_groupe_proprietaire,
                 "adresse" => $request->adresse_proprietaire,
                 "code_postal" => $request->code_postal_proprietaire,
                 "ville" => $request->ville_proprietaire,
-                "telephone" => $request->telephone_proprietaire,
+                "telephone_fixe" => $request->telephone_fixe_proprietaire,
+                "telephone_mobile" => $request->telephone_mobile_proprietaire,
                 "email" => $request->email_proprietaire,
                 "numero_siret" => $request->numero_siret_proprietaire,
                 "code_naf" => $request->code_naf_proprietaire,
@@ -636,13 +644,14 @@ class BienController extends Controller
             $biendetail->update();
            
     
-         
+            
+            $bien->contacts()->attach([$contact->id => ['role_contact' => "Propriétaire"]]);
     
             // Sauvegarde du bien
             $bien->update();
     
     
-             $bien_id = Crypt::encrypt($bien->id); 
+            $bien_id = Crypt::encrypt($bien->id); 
             
             return redirect()->route('uptof',$bien_id);
             // dd($request);
@@ -666,9 +675,11 @@ class BienController extends Controller
         $bien_id_crypt = $id;
     
         $liste_photos = Bienphoto::where('bien_id',$bien_id)->orderBy('image_position','asc')->get();
+        $contacts = Contact::where([['user_id', Auth::user()->id], ['archive', false]])->get();
        
-    
-        return view("bien.show",compact(['bien','bien_id_crypt','liste_photos']));
+        $proprietaire = $bien->proprietaire;
+        
+        return view("bien.show",compact(['bien','bien_id_crypt','liste_photos','contacts', 'proprietaire']));
     }
     
     

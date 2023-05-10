@@ -40,4 +40,23 @@ class Bien extends Model
 
         return $this->hasMany(Mandat::class);
     }
+    
+    /**
+     * Retourne les contacts du biens
+     *
+     */
+    public function contacts()
+    {
+        return $this->belongsToMany(Contact::class);
+    }
+    
+    /**
+     * Retourne le proprietaire du Bien
+     *
+     */
+    public function proprietaire()
+    {
+    
+        return $this->belongsTo(Contact::class, 'proprietaire_id', 'id');
+    }
 }

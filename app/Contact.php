@@ -31,4 +31,12 @@ class Contact extends Model
         return $this->hasOne(Entite::class);
     }
     
+    /**
+     * Retourne les biesn du contacts
+     *
+     */
+    public function biens()
+    {
+        return $this->belongsToMany(Bien::class);
+    }
 }
