@@ -18,8 +18,10 @@
             <!-- Navigation Buttons -->
             <div class="col-lg-12 col-md-12 col-sm-12">
                 <ul class="nav nav-pills nav-tabs" id="myTabs">
-                    <li id="li_home_nav" class="active"><a href="#home_nav" data-toggle="pill"> <i
-                                class="material-icons" style="font-size: 15px;">home</i> @lang('ACCUEIL')</a></li>
+                    <li id="li_affaire_nav" class="active"><a href="#affaire_nav" data-toggle="pill"> <i
+                                class="material-icons" style="font-size: 15px;">home</i> @lang('AFFAIRE')</a></li>
+                    <li id="li_infos_nav" class=""><a href="#infos_nav" data-toggle="pill"> <i
+                                class="material-icons" style="font-size: 15px;">home</i> @lang('INFOS')</a></li>
                     <li id="li_caracteristique_nav"><a href="#caracteristique_nav" data-toggle="pill"> <i
                                 class="material-icons" style="font-size: 15px;">info_outline</i> @lang('CARACTERISTIQUES')</a>
                     </li>
@@ -40,7 +42,8 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="tab-content">
-                            <div class="tab-pane active" id="home_nav"> @include('components.biens.show.accueil')</div>
+                            <div class="tab-pane active" id="affaire_nav"> @include('components.biens.show.affaire')</div>
+                            <div class="tab-pane" id="infos_nav"> @include('components.biens.show.infos')</div>
                             <div class="tab-pane" id="caracteristique_nav">@include('components.biens.show.caracteristique')</div>
                             <div class="tab-pane" id="prix_nav">@include('components.biens.show.prix')</div>
                             <div class="tab-pane" id="secteur_nav">@include('components.biens.show.secteur')</div>

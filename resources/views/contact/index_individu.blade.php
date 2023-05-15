@@ -34,15 +34,17 @@
                                     </td>
                                     <td
                                         style="border-top: 4px solid #b8c7ca; color: #32ade1; text-decoration: underline;">
-                                        <strong>{{ $one->email }}</strong> </td>
+                                        <strong>{{ $one->email }}</strong>
+                                    </td>
                                     <td
                                         style="border-top: 4px solid #b8c7ca; color: brown; text-decoration: underline;">
-                                        <strong> {{ $one->telephone }}</strong> </td>
+                                        <strong> {{ $one->telephone }}</strong>
+                                    </td>
                                     <td style="border-top: 4px solid #b8c7ca;">{{ $one->ville }}</td>
                                     <td style="border-top: 4px solid #b8c7ca;">{{ $one->code_postal }}</td>
                                     <td style="border-top: 4px solid #b8c7ca;">
                                         <span><a class="show1"
-                                                href="{{ route('contact.individu.show', CryptId($one->id)) }}"
+                                                href="{{ route('contact.individu.show', Crypt::encrypt($one->id)) }}"
                                                 title="@lang('Détails')"><i
                                                     class="large material-icons color-info">visibility</i></a></span>
                                         <span><a href="#" class="archive_notaire" data-toggle="tooltip"

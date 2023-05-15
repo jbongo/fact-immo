@@ -22,7 +22,9 @@ class PasserelleController extends Controller
     * @author jean-philippe
     * @return \Illuminate\Http\Response
     **/ 
-        public function index(){
+        public function index(Request $request){
+        
+    //    dd($request);
             $passerelles = Passerelle::all();
             // dd($passerelles);
             return view('passerelle.index',compact('passerelles'));
@@ -52,7 +54,7 @@ class PasserelleController extends Controller
             'fournisseur'=>'required|integer',
             'nom'=>'required|string|unique:passerelles',
             'site' => 'url|unique:passerelles',
-            'logo' => 'required|image:jpg,png|max:5000',
+            'logo' => 'required|max:5000',
             
         ]);
         
@@ -122,21 +124,21 @@ class PasserelleController extends Controller
             'type_passerelle'=>'required|string',
             'nom'=>'required|string',
             'site' => 'required|url',
-            'logo' => 'image:jpg,png|max:5000',        
+            // 'logo' => 'image:jpg,png|max:5000',        
         ]);
     }elseif($passerelle->nom == $request->nom && $passerelle->site != $request->site){
         $request->validate([
             'type_passerelle'=>'required|string',
             'nom'=>'required|string',
             'site' => 'required|url|unique:passerelles',
-            'logo' => 'image:jpg,png|max:5000',        
+            // 'logo' => 'image:jpg,png|max:5000',        
         ]);
     }elseif($passerelle->nom != $request->nom && $passerelle->site == $request->site){
         $request->validate([
             'type_passerelle'=>'required|string',
             'nom'=>'required|string|unique:passerelles',
             'site' => 'required|url',
-            'logo' => 'image:jpg,png|max:5000',        
+            // 'logo' => 'image:jpg,png|max:5000',        
         ]);
     }
     else{
@@ -144,7 +146,7 @@ class PasserelleController extends Controller
             'type_passerelle'=>'required|string',
             'nom'=>'required|string|unique:passerelles',
             'site' => 'required|url|unique:passerelles',
-            'logo' => 'image:jpg,png|max:5000',        
+            // 'logo' => 'image:jpg,png|max:5000',        
         ]);
     }
     

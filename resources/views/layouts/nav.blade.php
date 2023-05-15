@@ -18,7 +18,7 @@
             case 'mandataires':
                 $li_mandataire = 'active';
                 break;
-            case 'biens':
+            case 'bien':
                 $li_bien = 'active';
                 break;
             case 'contacts':

@@ -37,12 +37,11 @@ class Bien extends Model
     }
 
     public function mandat(){
-
-        return $this->hasMany(Mandat::class);
+        return $this->hasOne(Mandat::class);
     }
     
     /**
-     * Retourne les contacts du biens
+     * Retourne les contacts du bien
      *
      */
     public function contacts()
@@ -50,6 +49,27 @@ class Bien extends Model
         return $this->belongsToMany(Contact::class);
     }
     
+     /**
+     * Retourne les visites du bien
+     *
+     */
+    public function visites()
+    {
+    return $this->belongsToMany(Contact::class);
+
+        return $this->belongsToMany(Visite::class);
+    }
+    
+    /**
+     * Retourne les offres d'achats du bien
+     *
+     */
+    public function offreachats()
+    {
+    return $this->belongsToMany(Contact::class);
+
+        return $this->belongsToMany(Visite::class);
+    }
     /**
      * Retourne le proprietaire du Bien
      *

@@ -578,6 +578,27 @@ Route::name('annonce.index')->get('annonce/bien/{bien_id}','AnnonceController@in
 
 
 
+/*suivi d'affaires routes*/
+Route::get('/suiviaffaire', 'SuiviaffaireController@index')->name('suiviaffaire.index');
+Route::get('/suiviaffaire/show/{id}', 'SuiviaffaireController@show')->name('suiviaffaire.show');
+Route::post('/suiviaffaire/visite/add/{id}', 'VisiteController@store')->name('suiviaffaire.visite.add');
+Route::get('/suiviaffaire/visite/download/{id}', 'VisiteController@download')->name('suiviaffaire.visite.download');
+Route::get('/suiviaffaire/visite/delete/{id}', 'VisiteController@delete')->name('suiviaffaire.visite.delete');
+Route::post('/suiviaffaire/visite/confirm/{id}/{state}', 'VisiteController@confirm')->name('suiviaffaire.visite.confirm');
+Route::post('/suiviaffaire/offre/add/{id}', 'OffreachatController@store')->name('suiviaffaire.offre.add');
+Route::post('/suiviaffaire/offre/contreoffre/add/{id}', 'OffreachatController@store_counter')->name('suiviaffaire.offre.contreoffre.add');
+Route::get('/suiviaffaire/offre/accept/{id}/{state}', 'OffreachatController@accept')->name('suiviaffaire.offre.accept');
+Route::get('/suiviaffaire/offre/download/{id}', 'OffreachatController@download')->name('suiviaffaire.offre.download');
+Route::post('/suiviaffaire/document/add/{type}/{id}', 'SuiviaffaireController@get_documents')->name('suiviaffaire.document.add');
+Route::get('/suiviaffaire/document/action/{affaire}/{key}/{type}/{action}', 'SuiviaffaireController@action_on_document')->name('suiviaffaire.document.action');
+Route::post('/suiviaffaire/offre/condition/add/{id}', 'OffreachatController@store_condition')->name('suiviaffaire.offre.condition.add');
+Route::get('/suiviaffaire/offre/condition/action/{id}/{action}', 'OffreachatController@action_on_condition')->name('suiviaffaire.offre.condition.action');
+Route::post('/suiviaffaire/rendez_vous/{id}/{type}', 'SuiviaffaireController@store_rendezvous')->name('suiviaffaire.rdv');
+Route::post('/suiviaffaire/rendez_vous/update/{id}/{type}', 'SuiviaffaireController@update_rendezvous')->name('suiviaffaire.rdv.update');
+Route::get('/suiviaffaire/rendez_vous/action/{id}/{type}/{action}', 'SuiviaffaireController@action_rendezvous')->name('suiviaffaire.rdv.action');
+Route::post('/suiviaffaire/notaire/store/{id}', 'SuiviaffaireController@store_notaires')->name('suiviaffaire.notaire.store');
+Route::get('/suiviaffaire/notaire/request_appointement/{id}/{role}', 'SuiviaffaireController@request_apointement_notaire')->name('suiviaffaire.notaire.appointement');
+
   
 
 });
