@@ -58,7 +58,7 @@ class MandataireController extends Controller
     {
         //
         $mandataires = User::where('role','mandataire')->orderBy('nom')->get();
-        
+ 
         return view ('mandataires.index',compact('mandataires'));
     }
 

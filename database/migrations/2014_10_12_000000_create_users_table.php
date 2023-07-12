@@ -42,6 +42,7 @@ class CreateUsersTable extends Migration
             $table->integer('nb_facture_pub_retard')->default(0);            
             $table->string('numero_rsac')->nullable();
             $table->string('code_client')->nullable();
+            $table->boolean('is_superviseur')->default(false);
             
 
             $table->rememberToken();

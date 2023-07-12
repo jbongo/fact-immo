@@ -30,19 +30,19 @@ Route::middleware('auth')->group(function(){
     
     // Prospects
     
-    Route::get('/prospects','ProspectController@index')->name('prospect.index')->middleware('admin');
-    Route::get('/prospect/create','ProspectController@create')->name('prospect.create')->middleware('admin');
-    Route::post('/prospect/add','ProspectController@store')->name('prospect.add')->middleware('admin');
-    Route::get('/prospect/show/{id}','ProspectController@show')->name('prospect.show')->middleware('admin');
-    Route::get('/prospect/edit/{prospect}','ProspectController@edit')->name('prospect.edit')->middleware('admin');
-    Route::post('/prospect/update/{prospect}','ProspectController@update')->name('prospect.update')->middleware('admin');
+    Route::get('/prospects','ProspectController@index')->name('prospect.index')->middleware('supervisor');
+    Route::get('/prospect/create','ProspectController@create')->name('prospect.create')->middleware('supervisor');
+    Route::post('/prospect/add','ProspectController@store')->name('prospect.add')->middleware('supervisor');
+    Route::get('/prospect/show/{id}','ProspectController@show')->name('prospect.show')->middleware('supervisor');
+    Route::get('/prospect/edit/{prospect}','ProspectController@edit')->name('prospect.edit')->middleware('supervisor');
+    Route::post('/prospect/update/{prospect}','ProspectController@update')->name('prospect.update')->middleware('supervisor');
     Route::delete('/prospect/delete/{prospect}','ProspectController@destroy')->name('prospect.delete');
     Route::get('/prospect/archives/','ProspectController@archives')->name('prospect.archives');
     Route::get('/prospect/archiver/{prospect}/{action}','ProspectController@archiver')->name('prospect.archiver');
     Route::get('/prospects/agenda','ProspectController@agenda_general')->name('prospect.agenda');
-    Route::get('/prospect/agenda/{prospect_id}','ProspectController@show_agenda_prospect')->name('prospect.agenda.show')->middleware('admin');
-    Route::post('/prospect/agenda/store','ProspectController@store_agenda_prospect')->name('prospect.agenda.store')->middleware('admin');
-    Route::post('/prospect/agenda/update','ProspectController@update_agenda_prospect')->name('prospect.agenda.update')->middleware('admin');
+    Route::get('/prospect/agenda/{prospect_id}','ProspectController@show_agenda_prospect')->name('prospect.agenda.show')->middleware('supervisor');
+    Route::post('/prospect/agenda/store','ProspectController@store_agenda_prospect')->name('prospect.agenda.store')->middleware('supervisor');
+    Route::post('/prospect/agenda/update','ProspectController@update_agenda_prospect')->name('prospect.agenda.update')->middleware('supervisor');
     
     
     Route::get('/prospect/telecharger/{url}/{type}','ProspectController@telecharger_doc')->name('prospect.telecharger');
