@@ -117,6 +117,8 @@ Création de facture
                                <label class="col-lg-3 col-md-3 col-sm-4  control-label" for="mandataire_id">Choisir le mandataire</label>
                                <div class="col-lg-8 col-md-8 col-sm-8">
                                    <select class="selectpicker col-lg-6" id="mandataire_id" name="mandataire_id" data-live-search="true" data-style="btn-default btn-rounded">
+                                    <option value="" data-tokens=""></option>
+                                   
                                        @foreach ($mandataires as $mandataire )
                                        <option value="{{ $mandataire->id }}" data-tokens="{{ $mandataire->nom }} {{ $mandataire->prenom }}">{{ $mandataire->nom }} {{ $mandataire->prenom }}</option>
                                        @endforeach
@@ -174,9 +176,11 @@ Création de facture
                                   <label class="col-lg-3 col-md-3 col-sm-4  control-label" for="est_liee_mandataire_id">Choisir le mandataire</label>
                                   <div class="col-lg-8 col-md-8 col-sm-8">
                                       <select class="selectpicker col-lg-6" id="est_liee_mandataire_id" name="est_liee_mandataire_id" data-live-search="true" data-style="btn-default btn-rounded">
-                                          @foreach ($mandataires as $mandataire )
-                                          <option value="{{ $mandataire->id }}" data-tokens="{{ $mandataire->nom }} {{ $mandataire->prenom }}">{{ $mandataire->nom }} {{ $mandataire->prenom }}</option>
-                                          @endforeach
+                                            <option value="" data-tokens=""></option>
+                                      
+                                            @foreach ($mandataires as $mandataire )
+                                            <option value="{{ $mandataire->id }}" data-tokens="{{ $mandataire->nom }} {{ $mandataire->prenom }}">{{ $mandataire->nom }} {{ $mandataire->prenom }}</option>
+                                            @endforeach
                                       </select>
                                   </div>
                               </div>

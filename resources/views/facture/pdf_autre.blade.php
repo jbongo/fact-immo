@@ -97,7 +97,8 @@
           <tr>
               <td style="width: 400px;">&nbsp;</td>
               <td style="width: 160px;">TOTAL T.T.C:</td>
-              <td style="width: 100px; text-align:right;">{{ number_format($facture->montant_ttc, 2, ',', ' ') }} &euro;
+              <td style="width: 100px; text-align:right;">{{ number_format($facture->montant_ttc, 2, ',', ' ') }}
+                  &euro;
               </td>
           </tr>
       </tbody>
@@ -108,7 +109,8 @@
       <tbody>
           <tr style="height: 25px;">
               <td style="width: 300px; height: 25px;">Valeur en votre aimable r&egrave;glement de :</td>
-              <td style="width: 200px; height: 25px;">{{ number_format($facture->montant_ttc, 2, '.', ' ') }} &euro; TTC
+              <td style="width: 200px; height: 25px;">{{ number_format($facture->montant_ttc, 2, '.', ' ') }} &euro;
+                  TTC
               </td>
               <td style="width: 187px; height: 25px;"><span
                       style="color: #ff0000; font-size:18px; font-weight:bold">&nbsp;R&eacute;f &agrave; rappeler:

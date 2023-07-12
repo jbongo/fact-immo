@@ -39,6 +39,15 @@
 
 
 
+                <p> {!! $facture->destinataire !!} </p>
+                <p> {!! $facture->adresse_destinataire !!} </p>
+                @endif
+
+                </td>
+                </tr>
+                </tbody>
+                </table>
+                <br>
 
             </div>
             <hr>
@@ -120,7 +129,8 @@
                     <tr>
                         <td style="width: 400px;">&nbsp;</td>
                         <td style="width: 160px;">TOTAL H.T :</td>
-                        <td style="width: 100px; text-align:right;">{{ number_format($facture->montant_ht, 2, ',', ' ') }}
+                        <td style="width: 100px; text-align:right;">
+                            {{ number_format($facture->montant_ht, 2, ',', ' ') }}
                             &euro;</td>
                     </tr>
                     <tr>
