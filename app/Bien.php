@@ -55,9 +55,8 @@ class Bien extends Model
      */
     public function visites()
     {
-    return $this->belongsToMany(Contact::class);
 
-        return $this->belongsToMany(Visite::class);
+        return $this->HasMany(Visite::class);
     }
     
     /**
@@ -66,9 +65,20 @@ class Bien extends Model
      */
     public function offreachats()
     {
-    return $this->belongsToMany(Contact::class);
 
-        return $this->belongsToMany(Visite::class);
+        return $this->hasMany(Offreachat::class);
+    }
+    
+    /**
+     * Retourne les offres d'achats du bien
+     *
+     */
+    public function offreachataccepte()
+    {   
+        $offre = Offreachat::where('bien_id', $this->id)->first();
+        
+        return $offre;
+        return $this->hasMany(Offreachat::class);
     }
     /**
      * Retourne le proprietaire du Bien

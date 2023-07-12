@@ -39,4 +39,14 @@ class Contact extends Model
     {
         return $this->belongsToMany(Bien::class);
     }
+    
+    /**
+     * The typecontacts that belong to the Contact
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function typecontacts()
+    {
+        return $this->belongsToMany(Typecontact::class);
+    }
 }

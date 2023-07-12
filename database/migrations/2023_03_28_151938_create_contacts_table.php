@@ -22,14 +22,6 @@ class CreateContactsTable extends Migration
             // 'Personne seule', 'couple', 'Personne morale', 'groupe', 'autre'
             $table->string("nature")->nullable();         
            
-            
-            $table->boolean("est_partenaire")->default(false);
-            $table->boolean("est_acquereur")->default(false);
-            $table->boolean("est_proprietaire")->default(false);
-            $table->boolean("est_locataire")->default(false);
-            $table->boolean("est_notaire")->default(false);
-            $table->boolean("est_prospect")->default(false);
-            $table->boolean("est_fournisseur")->default(false);
             $table->text('note')->nullable();
             $table->boolean("archive")->default(false);
             $table->timestamps();

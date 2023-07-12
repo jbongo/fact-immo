@@ -84,10 +84,23 @@
                                     </td>
 
                                     <td style="border-top: 4px solid #b8c7ca;">
+                                        @php
+                                            $color = [
+                                                'Partenaire' => 'badge-pink',
+                                                'Acquéreur' => 'badge-warning',
+                                                'Propriétaire' => 'badge-primary',
+                                                'Locataire' => 'badge-success',
+                                                'Notaire' => 'badge-danger',
+                                            ];
+                                            
+                                        @endphp
 
+                                        @foreach ($contact->typeContacts as $typeContact)
+                                            <span
+                                                class="badge {{ isset($color[$typeContact->type]) ? $color[$typeContact->type] : 'badge-default' }}">{{ $typeContact->type }}</span>
+                                        @endforeach
 
-
-                                        @if ($contact->est_partenaire)
+                                        {{-- @if ($contact->est_partenaire)
                                             <span class="badge badge-pink">Partenaire</span>
                                         @endif
 
@@ -105,7 +118,7 @@
 
                                         @if ($contact->est_notaire)
                                             <span class="badge badge-danger">Notaire</span>
-                                        @endif
+                                        @endif --}}
 
 
                                     </td>
@@ -287,7 +300,7 @@
         }
         $('#type').change(function(e) {
             if ($('#type').val() === "acquereur" || $('#type').val() === "mandant" || $('#type')
-            .val() === "autre")
+                .val() === "autre")
                 $('#sect3').show();
             else {
                 $('#sect3').hide();

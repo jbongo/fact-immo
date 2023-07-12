@@ -70,8 +70,9 @@ Route::middleware('auth')->group(function(){
     Route::get('/compromis/from_dashboard/{annee}','CompromisController@index_from_dashboard')->name('compromis.index_from_dashboard');
     Route::get('/compromis/from_dashboard/mes_affaires/{annee}','CompromisController@index_from_dashboard_mes_affaires')->name('compromis.index_from_dashboard_mes_affaires');
     Route::get('/compromis/page_filleul','CompromisController@index')->name('compromis.filleul.index');
-    Route::get('/compromis/create','CompromisController@create')->name('compromis.create');
+    Route::get('/compromis/create/{bien_id?}','CompromisController@create')->name('compromis.create');
     Route::post('/compromis/add','CompromisController@store')->name('compromis.add');
+    Route::post('/compromis/add/{bien_id}','CompromisController@store2')->name('compromis.add2');
     Route::get('/compromis/show/{id}','CompromisController@show')->name('compromis.show');
     Route::get('/compromis/telecharger_pdf_compromis/{id}','CompromisController@telecharger_pdf_compromis')->name('compromis.telecharger_pdf_compromis');
     Route::put('/compromis/edit/{compromis}','CompromisController@edit')->name('compromis.edit');
@@ -466,7 +467,7 @@ Route::post('/contact/attache/{entite_id}', 'ContactController@attache')->name('
   Route::name('bien.add')->get('bien/add','BienController@create');    
   Route::name('bien.store')->post('bien/store','BienController@store');    
   Route::name('bien.update')->post('bien/update/{bien}','BienController@update');    
-  Route::name('bien.index')->get('bien/index','BienController@index');    
+  Route::name('bien.index')->get('biens','BienController@index');    
   Route::name('bien.show')->get('bien/show/{id}','BienController@show');    
   
   Route::get('/images-create/{bien_id}', 'BienController@uploadPhoto')->name('uptof');
@@ -482,6 +483,46 @@ Route::post('/contact/attache/{entite_id}', 'ContactController@attache')->name('
   // Impression des fiches du  bien
   Route::get('/imprime-fiche/{bien}/{typefiche}/{action}', 'BienController@impressionFiche')->name('imprimeFiche');
   
+  
+  
+  
+  /************************************************************/
+ /*             MODULE DES EXPORTS       //JP               */
+/* **********************************************************/
+
+Route::get('/testlog', 'ExportdiffusionController@exportLogicImmo')->name('testlog');
+Route::get('/testcle', 'ExportdiffusionController@exportCleMidi')->name('testcle');
+Route::get('/testleb', 'ExportdiffusionController@exportLeboncoin')->name('testleb');
+Route::get('/testgre', 'ExportdiffusionController@exportGreenacres')->name('testgre');
+Route::get('/testsel', 'ExportdiffusionController@exportSeloger')->name('testsel');
+
+
+//////**********  Fin Partie EXPORTS  **********/////////
+
+
+
+    /************************************************************/
+   /*             MODULE VISITES     //JP                  */
+  /* **********************************************************/
+  
+//   Route::get('/visites', 'VisiteController@index')->name('visite.index');
+//   Route::get('/visite/add', 'VisiteController@create')->name('visite.add');
+  Route::post('/visite/store', 'VisiteController@store')->name('visite.store');
+//   Route::get('/visite/show/{visite_id}', 'VisiteController@show')->name('visite.show');
+  Route::post('/visite/update/{visite_id}', 'VisiteController@update')->name('visite.update');
+  Route::get('/visite/delete/{visite_id}', 'VisiteController@delete')->name('visite.delete');
+
+
+ /************************************************************/
+   /*             MODULE OFFRE D'ACHAT     //JP                  */
+  /* **********************************************************/
+
+    Route::post('/offre/store', 'OffreachatController@store')->name('offreachat.store');
+    Route::post('/offre/update/{offreachat_id}', 'OffreachatController@update')->name('offreachat.update');
+    Route::get('/offre/delete/{offreachat_id}', 'OffreachatController@delete')->name('offreachat.delete');
+    Route::get('/offre/accept/{offreachat_id}/{statut}', 'OffreachatController@accepter')->name('offreachat.accepter');
+    Route::get('/offre/download/{offreachat_id}', 'OffreachatController@download')->name('offreachat.download');
+
   
   
 
@@ -623,6 +664,6 @@ Route::post('fiche/prospect/{prospect}/','ProspectController@sauvegarder_fiche')
 // Tests
 Route::get('test','TvaController@test')->name('test');
 
-Route::get('/tests', function () {
-    return view('test');
-});
+// Route::get('/tests', function () {
+//     return view('test');
+// });

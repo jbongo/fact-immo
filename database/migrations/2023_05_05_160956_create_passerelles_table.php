@@ -16,12 +16,15 @@ class CreatePasserellesTable extends Migration
         Schema::create('passerelles', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('type')->nullable();
-            $table->integer('fournisseur_id')->nullable();
+            $table->string('reference')->nullable();
+            // le fournisseur
+            $table->integer('contact_id')->nullable();
             $table->string('nom')->nullable();
             $table->string('logo')->nullable();
             $table->string('site')->nullable();
             $table->string('statut')->nullable();
             $table->timestamps();
+            
         });
     }
 

@@ -41,10 +41,26 @@
                                                         </div>
                                                     </div>
                                                     <div class="user-work">
-                                                        <h4 style="color: #32ade1;text-decoration: underline;">Statistiques
-                                                        </h4>
+                                                        {{-- <h4 style="color: #32ade1;text-decoration: underline;">Statistiques</h4> --}}
+
                                                         <div class="work-content">
-                                                            @if ($contact->est_partenaire)
+
+                                                            @php
+                                                                $color = [
+                                                                    'Partenaire' => 'badge-pink',
+                                                                    'Acquéreur' => 'badge-warning',
+                                                                    'Propriétaire' => 'badge-primary',
+                                                                    'Locataire' => 'badge-success',
+                                                                    'Notaire' => 'badge-danger',
+                                                                ];
+                                                                
+                                                            @endphp
+
+                                                            @foreach ($contact->typeContacts as $typeContact)
+                                                                <span
+                                                                    class="badge {{ isset($color[$typeContact->type]) ? $color[$typeContact->type] : 'badge-default' }}">{{ $typeContact->type }}</span>
+                                                            @endforeach
+                                                            {{-- @if ($contact->est_partenaire)
                                                                 <span class="badge badge-pink">Partenaire</span>
                                                             @endif
 
@@ -62,7 +78,7 @@
 
                                                             @if ($contact->est_notaire)
                                                                 <span class="badge badge-danger">Notaire</span>
-                                                            @endif
+                                                            @endif --}}
                                                         </div>
                                                     </div>
                                                     <div class="user-skill">
@@ -610,7 +626,10 @@
 
 
             $('#statut').change(function(e) {
-                let statut = e.currentTarget.value;
+                // let statut = e.currentTarget.value;
+
+                let statut = $("#statut option:selected").text();
+                statut = $.trim(statut);
                 if (statut != "Partenaire") {
                     $(".div_proprietaire").show();
                     $(".div_partenaire").hide();

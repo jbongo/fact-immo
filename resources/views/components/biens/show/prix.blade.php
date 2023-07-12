@@ -145,10 +145,10 @@
                         <div class="row">
                             <div class="form-group row">
                                 <label class="col-lg-4 col-md-4 col-form-label"
-                                    for="prix_net_info_fin">@lang('Prix net vendeur (€)') </label>
+                                    for="prix_net_info_fin">@lang('Net vendeur (€)') </label>
                                 <div class="col-lg-8 col-md-8 hide_champ_infos_prix">
                                     <input type="number" value="{{ $bien->prix_prive }}" min="0"
-                                        class="form-control " id="prix_net_info_fin" name="prix_prive"
+                                        class="form-control " id="prix_net_info_fin" name="prix_prive_info_fin"
                                         placeholder="@lang('€')">
                                 </div>
                                 <div class="col-lg-6 col-md-6 show_champ_infos_prix">
@@ -162,7 +162,7 @@
                                     for="prix_public_info_fin">@lang('Public (€)') </label>
                                 <div class="col-lg-8 col-md-8 hide_champ_infos_prix">
                                     <input type="number" value="{{ $bien->prix_public }}" min="0"
-                                        class="form-control " id="prix_public_info_fin" name="prix_public"
+                                        class="form-control " id="prix_public_info_fin" name="prix_public_info_fin"
                                         placeholder="@lang('€')">
                                 </div>
                                 <div class="col-lg-6 col-md-6 show_champ_infos_prix">
@@ -178,11 +178,18 @@
                                 <div class="col-lg-8 col-md-8 hide_champ_infos_prix">
                                     @php  $honoraire_acquer = $bien->honoraire_acquereur @endphp
                                     <label class="radio-inline"><input type="radio"
+                                            class="honoraire_acquereur_info_fin"
                                             @if ($honoraire_acquer == 'Non') checked @endif value="@lang('Non')"
-                                            name="honoraire_acquereur_info_fin" checked>@lang('Non')</label>
+                                            name="honoraire_acquereur_info_fin" id="honoraire_acquereur_info_fin_non"
+                                            checked>
+                                        @lang('Non')
+                                    </label>
                                     <label class="radio-inline"><input type="radio"
+                                            class="honoraire_acquereur_info_fin"
                                             @if ($honoraire_acquer == 'Oui') checked @endif value="@lang('Oui')"
-                                            name="honoraire_acquereur_info_fin">@lang('Oui')</label>
+                                            name="honoraire_acquereur_info_fin" id="honoraire_acquereur_info_fin_oui">
+                                        @lang('Oui')
+                                    </label>
                                 </div>
                                 <div class="col-lg-6 col-md-6 show_champ_infos_prix">
                                     {{ $bien->honoraire_acquereur }}
@@ -196,17 +203,46 @@
                                     for="honoraire_vendeur_info_fin">@lang('Honoraires charge Vendeur') </label>
                                 <div class="col-lg-8 col-md-8 hide_champ_infos_prix">
                                     @php  $honoraire_ven = $bien->honoraire_vendeur @endphp
-                                    <label class="radio-inline"><input type="radio"
+                                    <label class="radio-inline">
+                                        <input type="radio" class="honoraire_vendeur_info_fin"
                                             @if ($honoraire_ven == 'Non') checked @endif
-                                            value="@lang('Non')" name="honoraire_vendeur_info_fin"
-                                            checked>@lang('Non')</label>
+                                            value="@lang('Non')" id="honoraire_vendeur_info_fin_non"
+                                            name="honoraire_vendeur_info_fin" checked>
+                                        @lang('Non')
+                                    </label>
                                     <label class="radio-inline"><input type="radio"
+                                            class="honoraire_vendeur_info_fin"
                                             @if ($honoraire_ven == 'Oui') checked @endif
-                                            value="@lang('Oui')"
-                                            name="honoraire_vendeur_info_fin">@lang('Oui')</label>
+                                            value="@lang('Oui')" id="honoraire_vendeur_info_fin_oui"
+                                            name="honoraire_vendeur_info_fin">
+                                        @lang('Oui')
+                                    </label>
                                 </div>
                                 <div class="col-lg-6 col-md-6 show_champ_infos_prix">
                                     {{ $bien->honoraire_vendeur }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row" id="">
+                            <div class="form-group row">
+                                <label class="col-lg-4 col-md-4 col-form-label"
+                                    for="frais_agence_info_fin">@lang('Frais agence (TTC) €')
+                                </label>
+                                <div class="col-lg-4 col-md-4">
+                                    <input type="number" min="0" class="form-control " required
+                                        id="frais_agence_info_fin" value="{{ $bien->frais_agence }}"
+                                        name="frais_agence_info_fin" placeholder="@lang('€')">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-4 col-md-4 col-form-label"
+                                    for="taux_frais_info_fin">@lang('Taux frais agence %')
+                                </label>
+                                <div class="col-lg-4 col-md-4">
+                                    <input type="number" min="0" class="form-control "
+                                        id="taux_frais_info_fin" value="{{ $bien->taux_frais }}"
+                                        name="taux_frais_info_fin" required placeholder="@lang('%')">
                                 </div>
                             </div>
                         </div>

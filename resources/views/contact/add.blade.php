@@ -33,10 +33,10 @@
                                         <select class="js-select2 form-control" id="statut" name="statut"
                                             style="width: 100%;" required>
 
-                                            <option value="Propriétaire">Propriétaire</option>
-                                            <option value="Acquereur">Acquereur</option>
-                                            <option value="Locataire">Locataire</option>
-                                            <option value="Partenaire">Partenaire</option>
+                                            @foreach ($typeContacts as $typeContact)
+                                                <option value="{{ $typeContact->id }}">{{ $typeContact->type }}</option>
+                                            @endforeach
+
 
                                         </select>
                                         @if ($errors->has('statut'))
@@ -137,7 +137,7 @@
                                         <select class="js-select2 form-control " id="civilite1" name="civilite1"
                                             style="width: 100%;" required>
                                             <option value="{{ old('civilite1') }}">{{ old('civilite1') }}</option>
-                                            <option value="M">M</option>
+                                            <option value="M.">M.</option>
                                             <option value="Mme">Mme</option>
                                         </select>
                                         @if ($errors->has('civilite1'))
@@ -235,7 +235,7 @@
                                         <select class="js-select2 form-control " id="civilite" name="civilite"
                                             style="width: 100%;" required>
                                             <option value="{{ old('civilite') }}">{{ old('civilite') }}</option>
-                                            <option value="M">M</option>
+                                            <option value="M.">M.</option>
                                             <option value="Mme">Mme</option>
                                         </select>
                                         @if ($errors->has('civilite'))
@@ -443,7 +443,7 @@
                                         <select class="js-select2 form-control " id="civilite2" name="civilite2"
                                             style="width: 100%;" required>
                                             <option value="{{ old('civilite2') }}">{{ old('civilite2') }}</option>
-                                            <option value="M">M</option>
+                                            <option value="M.">M.</option>
                                             <option value="Mme">Mme</option>
                                         </select>
                                         @if ($errors->has('civilite2'))
@@ -812,10 +812,9 @@
 
         $(".div_associer").hide();
 
-
-
         $('#statut').change(function(e) {
-            let statut = e.currentTarget.value;
+            let statut = $("#statut option:selected").text();
+
             if (statut != "Partenaire") {
                 $(".div_proprietaire").show();
                 $(".div_partenaire").hide();

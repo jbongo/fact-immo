@@ -16,9 +16,12 @@ class CreateBiensTable extends Migration
         Schema::create('biens', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('user_id')->unsigned();
+            $table->integer('offreachat_id')->nullable();
             $table->integer('proprietaire_id')->unsigned()->nullable();
             $table->string('type_offre')->nullable();
             $table->string('type_bien')->nullable();
+            //  ['actif','offre','compromis', 'acte', 'cloture']
+            $table->string('statut')->default('actif')->nullable();
 
             $table->string('type_type_bien')->nullable();
             $table->string('titre_annonce')->nullable();
@@ -64,11 +67,13 @@ class CreateBiensTable extends Migration
             $table->double('loyer')->nullable();
             $table->double('complement_loyer')->nullable();
             $table->string('honoraire_acquereur')->nullable();
-            $table->double('part_acquereur')->nullable();
-            $table->double('taux_prix')->nullable();
+            $table->double('frais_agence')->nullable();
+            $table->double('taux_frais')->nullable();
+            // $table->double('part_acquereur')->nullable();
+            // $table->double('taux_prix')->nullable();
             $table->string('honoraire_vendeur')->nullable();
-            $table->double('part_vendeur')->nullable();
-            $table->double('taux_net')->nullable();
+            // $table->double('part_vendeur')->nullable();
+            // $table->double('taux_net')->nullable();
             $table->date('estimation_date')->nullable();
             $table->double('estimation_valeur')->nullable();
             $table->double('viager_prix_bouquet')->nullable();

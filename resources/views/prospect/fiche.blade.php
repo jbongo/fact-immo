@@ -245,7 +245,7 @@
               @if($prospect->civilite != null)
               <option value="{{$prospect->civilite}}" >{{$prospect->civilite}}</option>
               @endif
-              <option value="M">M</option>
+              <option value="M.">M.</option>>
               <option value="Mme">Mme</option>
               </select>
             </div>

@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Envelope>
+    <Body>
+        <add_adverts>
+            <advert>
+                <account_id>xxxxxxxx</account_id>
+                <reference>xxxxxxxx14280</reference>
+                <publications>
+                    <greenacres>1</greenacres>
+                </publications>
+                <advert_type>properties</advert_type>
+                <status>under_offer</status>
+                <price>14000</price>
+                <currency>EUR</currency>
+                <has_included_fees>1</has_included_fees>
+                <agency_rates_type>2</agency_rates_type>
+                <agency_rates>0</agency_rates>
+                <postal_code>69001</postal_code>
+                <city>Lyon</city>
+                <summary_fr>Terrain à vendre</summary_fr>
+                <country_code>fr</country_code>
+                <property_type>land</property_type>
+                <dpe_type></dpe_type>
+                <dpe_value></dpe_value>
+                <ges_type></ges_type>
+                <ges_value></ges_value>
+                <pics>
+                    <pic order="1">C:\xampp2\htdocs\fact-immo-recette\public\/images/photos_bien/1/a865d38627d8a89f6c9d8820675e6584331a0005.jpg</pic>
+                    <pic order="1">C:\xampp2\htdocs\fact-immo-recette\public\/images/photos_bien/1/5aed7091757f95cd1791aef4b338c3d2fe8e3a9d.jpg</pic>
+                </pics>
+            </advert>
+            <advert>
+                <account_id>xxxxxxxx</account_id>
+                <reference>xxxxxxxx14280</reference>
+                <publications>
+                    <greenacres>1</greenacres>
+                </publications>
+                <advert_type>properties</advert_type>
+                <status>under_offer</status>
+                <price>14000</price>
+                <currency>EUR</currency>
+                <has_included_fees>1</has_included_fees>
+                <agency_rates_type>2</agency_rates_type>
+                <agency_rates>0</agency_rates>
+                <postal_code>69001</postal_code>
+                <city>Lyon</city>
+                <summary_fr>Terrain à vendre</summary_fr>
+                <country_code>fr</country_code>
+                <property_type>land</property_type>
+                <dpe_type></dpe_type>
+                <dpe_value></dpe_value>
+                <ges_type></ges_type>
+                <ges_value></ges_value>
+                <pics>
+                    <pic order="1">C:\xampp2\htdocs\fact-immo-recette\public\/images/photos_bien/1/a865d38627d8a89f6c9d8820675e6584331a0005.jpg</pic>
+                    <pic order="1">C:\xampp2\htdocs\fact-immo-recette\public\/images/photos_bien/1/5aed7091757f95cd1791aef4b338c3d2fe8e3a9d.jpg</pic>
+                </pics>
+            </advert>
+            <advert>
+                <account_id>xxxxxxxx</account_id>
+                <reference>xxxxxxxx14280</reference>
+                <publications>
+                    <greenacres>1</greenacres>
+                </publications>
+                <advert_type>properties</advert_type>
+                <status>under_offer</status>
+                <price>14000</price>
+                <currency>EUR</currency>
+                <has_included_fees>1</has_included_fees>
+                <agency_rates_type>2</agency_rates_type>
+                <agency_rates>0</agency_rates>
+                <postal_code>69001</postal_code>
+                <city>Lyon</city>
+                <summary_fr>Terrain à vendre</summary_fr>
+                <country_code>fr</country_code>
+                <property_type>land</property_type>
+                <dpe_type></dpe_type>
+                <dpe_value></dpe_value>
+                <ges_type></ges_type>
+                <ges_value></ges_value>
+                <pics>
+                    <pic order="1">C:\xampp2\htdocs\fact-immo-recette\public\/images/photos_bien/1/a865d38627d8a89f6c9d8820675e6584331a0005.jpg</pic>
+                    <pic order="1">C:\xampp2\htdocs\fact-immo-recette\public\/images/photos_bien/1/5aed7091757f95cd1791aef4b338c3d2fe8e3a9d.jpg</pic>
+                </pics>
+            </advert>
+            <advert>
+                <account_id>xxxxxxxx</account_id>
+                <reference>xxxxxxxx14280</reference>
+                <publications>
+                    <greenacres>1</greenacres>
+                </publications>
+                <advert_type>properties</advert_type>
+                <status>under_offer</status>
+                <price>14000</price>
+                <currency>EUR</currency>
+                <has_included_fees>1</has_included_fees>
+                <agency_rates_type>2</agency_rates_type>
+                <agency_rates>0</agency_rates>
+                <postal_code>69001</postal_code>
+                <city>Lyon</city>
+                <summary_fr>Terrain à vendre</summary_fr>
+                <country_code>fr</country_code>
+                <property_type>land</property_type>
+                <dpe_type></dpe_type>
+                <dpe_value></dpe_value>
+                <ges_type></ges_type>
+                <ges_value></ges_value>
+                <pics>
+                    <pic order="1">C:\xampp2\htdocs\fact-immo-recette\public\/images/photos_bien/1/a865d38627d8a89f6c9d8820675e6584331a0005.jpg</pic>
+                    <pic order="1">C:\xampp2\htdocs\fact-immo-recette\public\/images/photos_bien/1/5aed7091757f95cd1791aef4b338c3d2fe8e3a9d.jpg</pic>
+                </pics>
+            </advert>
+            <advert>
+                <account_id>xxxxxxxx</account_id>
+                <reference>xxxxxxxx14280</reference>
+                <publications>
+                    <greenacres>1</greenacres>
+                </publications>
+                <advert_type>properties</advert_type>
+                <status>available</status>
+                <price>95000</price>
+                <currency>EUR</currency>
+                <has_included_fees>1</has_included_fees>
+                <agency_rates_type>2</agency_rates_type>
+                <agency_rates>0</agency_rates>
+                <postal_code>75001</postal_code>
+                <city>Paris</city>
+                <summary_fr>Joli appartement meublé</summary_fr>
+                <country_code>fr</country_code>
+                <property_type>appartement</property_type>
+                <dpe_type></dpe_type>
+                <dpe_value></dpe_value>
+                <ges_type></ges_type>
+                <ges_value></ges_value>
+                <pics>
+                    <pic order="1">C:\xampp2\htdocs\fact-immo-recette\public\/images/photos_bien/1/9bc0e5559870fb28f92925bf69819d68066e09a1.jpg</pic>
+                </pics>
+            </advert>
+            <advert>
+                <account_id>xxxxxxxx</account_id>
+                <reference>xxxxxxxx14280</reference>
+                <publications>
+                    <greenacres>1</greenacres>
+                </publications>
+                <advert_type>properties</advert_type>
+                <status>available</status>
+                <price>95000</price>
+                <currency>EUR</currency>
+                <has_included_fees>1</has_included_fees>
+                <agency_rates_type>2</agency_rates_type>
+                <agency_rates>0</agency_rates>
+                <postal_code>75001</postal_code>
+                <city>Paris</city>
+                <summary_fr>Joli appartement meublé</summary_fr>
+                <country_code>fr</country_code>
+                <property_type>appartement</property_type>
+                <dpe_type></dpe_type>
+                <dpe_value></dpe_value>
+                <ges_type></ges_type>
+                <ges_value></ges_value>
+                <pics>
+                    <pic order="1">C:\xampp2\htdocs\fact-immo-recette\public\/images/photos_bien/1/9bc0e5559870fb28f92925bf69819d68066e09a1.jpg</pic>
+                </pics>
+            </advert>
+            <advert>
+                <account_id>xxxxxxxx</account_id>
+                <reference>xxxxxxxx14280</reference>
+                <publications>
+                    <greenacres>1</greenacres>
+                </publications>
+                <advert_type>properties</advert_type>
+                <status>available</status>
+                <price>95000</price>
+                <currency>EUR</currency>
+                <has_included_fees>1</has_included_fees>
+                <agency_rates_type>2</agency_rates_type>
+                <agency_rates>0</agency_rates>
+                <postal_code>75001</postal_code>
+                <city>Paris</city>
+                <summary_fr>Joli appartement meublé</summary_fr>
+                <country_code>fr</country_code>
+                <property_type>appartement</property_type>
+                <dpe_type></dpe_type>
+                <dpe_value></dpe_value>
+                <ges_type></ges_type>
+                <ges_value></ges_value>
+                <pics>
+                    <pic order="1">C:\xampp2\htdocs\fact-immo-recette\public\/images/photos_bien/1/9bc0e5559870fb28f92925bf69819d68066e09a1.jpg</pic>
+                </pics>
+            </advert>
+        </add_adverts>
+    </Body>
+</Envelope>

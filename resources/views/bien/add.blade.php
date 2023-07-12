@@ -1122,58 +1122,86 @@
 
     // ********* Partie honnaires pour la vente    
 
-    $('#div_honoraire_acquereur_info_fin').hide();
-    $('#div_honoraire_vendeur_info_fin').hide();
-
-    $('#honoraire_acquereur_info_fin_oui').click(function() {
-        $('#div_honoraire_acquereur_info_fin').show();
-    });
-    $('#honoraire_acquereur_info_fin_non').click(function() {
-        $('#div_honoraire_acquereur_info_fin').hide();
-    });
-
-    $('#honoraire_vendeur_info_fin_oui').click(function() {
-        $('#div_honoraire_vendeur_info_fin').show();
-    });
-    $('#honoraire_vendeur_info_fin_non').click(function() {
-        $('#div_honoraire_vendeur_info_fin').hide();
-    });
 
     var tau_prix_pub = 0;
     var var_acq = 0;
     var tau_net = 0;
     var par_vend = 0;
 
-    $('#part_acquereur_info_fin').on("change keypress keydown keyup mouseover click ", function() {
+    $('.honoraire_vendeur_info_fin').change(function() {
+
+        if ($('#honoraire_vendeur_info_fin_oui').is(':checked')) {
+
+            $('#honoraire_acquereur_info_fin_non').prop('checked', true);
+
+            tau_frais = ($('#frais_agence_info_fin').val() * 100) / $('#prix_net_info_fin').val();
+            console.log(tau_frais);
+            $('#taux_frais_info_fin').val(Number(tau_frais).toFixed(2));
+
+        } else {
+
+            $('#honoraire_acquereur_info_fin_oui').prop('checked', true);
+
+
+            tau_frais = ($('#frais_agence_info_fin').val() * 100) / $('#prix_public_info_fin').val();
+            $('#taux_frais_info_fin').val(Number(tau_frais).toFixed(2));
+        }
+
+
+    })
+
+    $('.honoraire_acquereur_info_fin').change(function() {
+
+        if ($('#honoraire_acquereur_info_fin_oui').is(':checked')) {
+
+            $('#honoraire_vendeur_info_fin_non').prop('checked', true);
+            tau_frais = ($('#frais_agence_info_fin').val() * 100) / $('#prix_public_info_fin').val();
+            $('#taux_frais_info_fin').val(Number(tau_frais).toFixed(2));
+
+
+        } else {
+
+            $('#honoraire_vendeur_info_fin_oui').prop('checked', true);
+
+            tau_frais = ($('#frais_agence_info_fin').val() * 100) / $('#prix_net_info_fin').val();
+            $('#taux_frais_info_fin').val(Number(tau_frais).toFixed(2));
+        }
+
+
+    })
+
+
+
+    $('#frais_agence_info_fin').on("change keypress keydown keyup mouseover click ", function() {
         if ($('#prix_net_info_fin').val() > 0 && $('#prix_public_info_fin').val() > 0) {
 
-            if ($('#honoraire_acquereur_info_fin_oui').is(':checked') && $('#honoraire_vendeur_info_fin_non')
-                .is(':checked')) {
+            if ($('#honoraire_acquereur_info_fin_oui').is(':checked')) {
 
-                tau_prix_pub = ($('#part_acquereur_info_fin').val() * 100) / $('#prix_net_info_fin').val();
-                $('#taux_prix_info_fin').val(tau_prix_pub);
+                tau_frais = ($('#frais_agence_info_fin').val() * 100) / $('#prix_public_info_fin').val();
+                $('#taux_frais_info_fin').val(Number(tau_frais).toFixed(2));
             } else {
-                tau_prix_pub = ($('#part_acquereur_info_fin').val() * 100) / $('#prix_public_info_fin').val();
-                $('#taux_prix_info_fin').val(tau_prix_pub);
+                tau_frais = ($('#frais_agence_info_fin').val() * 100) / $('#prix_net_info_fin').val();
+                $('#taux_frais_info_fin').val(Number(tau_frais).toFixed(2));
             }
 
         }
 
     });
 
-    $('#taux_prix_info_fin').on("change keypress keydown keyup mouseover click ", function() {
+
+
+
+
+    $('#taux_frais_info_fin').on("change keypress keydown keyup mouseover click ", function() {
         if ($('#prix_net_info_fin').val() > 0 && $('#prix_public_info_fin').val() > 0) {
 
-            if ($('#honoraire_acquereur_info_fin_oui').is(':checked') && $('#honoraire_vendeur_info_fin_non')
-                .is(':checked')) {
+            if ($('#honoraire_acquereur_info_fin_oui').is(':checked')) {
 
-                var_acq = (($('#prix_net_info_fin').val()) * ($('#taux_prix_info_fin').val() / 100));
-                console.log(var_acq);
-
-                $('#part_acquereur_info_fin').val(var_acq);
+                tau_frais = ($('#frais_agence_info_fin').val() * 100) / $('#prix_public_info_fin').val();
+                $('#taux_frais_info_fin').val(Number(tau_frais).toFixed(2));
             } else {
-                var_acq = (($('#prix_public_info_fin').val()) * ($('#taux_prix_info_fin').val() / 100));
-                $('#part_acquereur_info_fin').val(var_acq);
+                tau_frais = ($('#frais_agence_info_fin').val() * 100) / $('#prix_net_info_fin').val();
+                $('#taux_frais_info_fin').val(Number(tau_frais).toFixed(2));
             }
 
 
@@ -1181,13 +1209,18 @@
 
     });
 
-    $('#part_vendeur_info_fin').on("change keypress keydown keyup mouseover click ", function() {
+
+
+    $('#prix_net_info_fin').on("change keypress keydown keyup mouseover click ", function() {
         if ($('#prix_net_info_fin').val() > 0 && $('#prix_public_info_fin').val() > 0) {
 
-            if ($('#honoraire_vendeur_info_fin_oui').is(':checked')) {
+            if ($('#honoraire_acquereur_info_fin_oui').is(':checked')) {
 
-                tau_net = ($('#part_vendeur_info_fin').val() * 100) / $('#prix_public_info_fin').val();
-                $('#taux_net_info_fin').val(tau_net);
+                tau_frais = ($('#frais_agence_info_fin').val() * 100) / $('#prix_public_info_fin').val();
+                $('#taux_frais_info_fin').val(Number(tau_frais).toFixed(2));
+            } else {
+                tau_frais = ($('#frais_agence_info_fin').val() * 100) / $('#prix_net_info_fin').val();
+                $('#taux_frais_info_fin').val(Number(tau_frais).toFixed(2));
             }
 
 
@@ -1195,19 +1228,22 @@
 
     });
 
-    $('#taux_net_info_fin').on("change keypress keydown keyup mouseover click ", function() {
+    $('#prix_public_info_fin').on("change keypress keydown keyup mouseover click ", function() {
         if ($('#prix_net_info_fin').val() > 0 && $('#prix_public_info_fin').val() > 0) {
 
-            if ($('#honoraire_vendeur_info_fin_oui').is(':checked')) {
+            if ($('#honoraire_acquereur_info_fin_oui').is(':checked')) {
 
-                par_vend = (($('#prix_public_info_fin').val()) * ($('#taux_net_info_fin').val() / 100));
-                $('#part_vendeur_info_fin').val(par_vend);
+                tau_frais = ($('#frais_agence_info_fin').val() * 100) / $('#prix_public_info_fin').val();
+                $('#taux_frais_info_fin').val(Number(tau_frais).toFixed(2));
+            } else {
+                tau_frais = ($('#frais_agence_info_fin').val() * 100) / $('#prix_net_info_fin').val();
+                $('#taux_frais_info_fin').val(Number(tau_frais).toFixed(2));
             }
-
 
         }
 
     });
+
 
     // ********* FIN 
 

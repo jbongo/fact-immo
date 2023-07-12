@@ -165,7 +165,7 @@
                     <select class="js-select2 form-control " id="civilite1" name="civilite1_proprietaire"
                         style="width: 100%;" required>
                         <option value="{{ old('civilite1') }}">{{ old('civilite1_proprietaire') }}</option>
-                        <option value="M">M</option>
+                        <option value="M.">M.</option>>
                         <option value="Mme">Mme</option>
                     </select>
                     @if ($errors->has('civilite1_proprietaire'))
@@ -261,7 +261,7 @@
                         style="width: 100%;" required>
                         <option value="{{ old('civilite_proprietaire') }}">{{ old('civilite_proprietaire') }}
                         </option>
-                        <option value="M">M</option>
+                        <option value="M.">M.</option>>
                         <option value="Mme">Mme</option>
                     </select>
                     @if ($errors->has('civilite_proprietaire'))
@@ -433,7 +433,7 @@
                         style="width: 100%;" required>
                         <option value="{{ old('civilite2_proprietaire') }}">{{ old('civilite2_proprietaire') }}
                         </option>
-                        <option value="M">M</option>
+                        <option value="M.">M.</option>>
                         <option value="Mme">Mme</option>
                     </select>
                     @if ($errors->has('civilite2_proprietaire'))
@@ -961,7 +961,7 @@
 
                 <div class="row">
                     <div class="form-group row">
-                        <label class="col-lg-4 col-md-4 col-form-label" for="prix_net_info_fin">@lang('Prix net vendeur (€)')
+                        <label class="col-lg-4 col-md-4 col-form-label" for="prix_net_info_fin">@lang('Net vendeur (€)')
                             <span class="text-danger">*</span> </label>
                         <div class="col-lg-8 col-md-8">
                             <input type="number" required min="0" class="form-control "
@@ -986,31 +986,16 @@
                         <label class="col-lg-4 col-md-4 col-form-label"
                             for="honoraire_acquereur_info_fin">@lang('Honoraires charge Acquéreur') </label>
                         <div class="col-lg-8 col-md-8">
-                            <label class="radio-inline"><input type="radio" checked value="@lang('Non')"
-                                    id="honoraire_acquereur_info_fin_non"
-                                    name="honoraire_acquereur_info_fin">@lang('Non')</label>
-                            <label class="radio-inline"><input type="radio" value="@lang('Oui')"
-                                    id="honoraire_acquereur_info_fin_oui"
-                                    name="honoraire_acquereur_info_fin">@lang('Oui')</label>
-                        </div>
-                    </div>
-                    <div class="row" id="div_honoraire_acquereur_info_fin">
-                        <div class="form-group row">
-                            <label class="col-lg-4 col-md-4 col-form-label"
-                                for="part_acquereur_info_fin">@lang('Part Acquéreur (TTC) €') </label>
-                            <div class="col-lg-4 col-md-4">
-                                <input type="number" min="0" class="form-control "
-                                    id="part_acquereur_info_fin" name="part_acquereur_info_fin"
-                                    placeholder="@lang('€')">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-lg-4 col-md-4 col-form-label"
-                                for="taux_prix_info_fin">@lang('Taux Prix Public %') </label>
-                            <div class="col-lg-4 col-md-4">
-                                <input type="number" min="0" class="form-control " id="taux_prix_info_fin"
-                                    name="taux_prix_info_fin" placeholder="@lang('%')">
-                            </div>
+                            <label class="radio-inline"><input type="radio" class="honoraire_acquereur_info_fin"
+                                    checked value="@lang('Non')" id="honoraire_acquereur_info_fin_non"
+                                    name="honoraire_acquereur_info_fin">
+                                @lang('Non')
+                            </label>
+                            <label class="radio-inline"><input type="radio" class="honoraire_acquereur_info_fin"
+                                    value="@lang('Oui')" id="honoraire_acquereur_info_fin_oui"
+                                    name="honoraire_acquereur_info_fin">
+                                @lang('Oui')
+                            </label>
                         </div>
                     </div>
                 </div>
@@ -1020,15 +1005,20 @@
                         <label class="col-lg-4 col-md-4 col-form-label"
                             for="honoraire_vendeur_info_fin">@lang('Honoraires charge Vendeur') </label>
                         <div class="col-lg-8 col-md-8">
-                            <label class="radio-inline"><input type="radio" checked value="@lang('Non')"
-                                    id="honoraire_vendeur_info_fin_non"
-                                    name="honoraire_vendeur_info_fin">@lang('Non')</label>
-                            <label class="radio-inline"><input type="radio" value="@lang('Oui')"
-                                    id="honoraire_vendeur_info_fin_oui"
-                                    name="honoraire_vendeur_info_fin">@lang('Oui')</label>
+                            <label class="radio-inline"><input type="radio" value="@lang('Non')"
+                                    id="honoraire_vendeur_info_fin_non" class="honoraire_vendeur_info_fin"
+                                    name="honoraire_vendeur_info_fin">
+                                @lang('Non')
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" class="honoraire_vendeur_info_fin" checked
+                                    value="@lang('Oui')" id="honoraire_vendeur_info_fin_oui"
+                                    name="honoraire_vendeur_info_fin">
+                                @lang('Oui')
+                            </label>
                         </div>
                     </div>
-                    <div class="row" id="div_honoraire_vendeur_info_fin">
+                    {{-- <div class="row" id="div_honoraire_vendeur_info_fin">
                         <div class="form-group row">
                             <label class="col-lg-4 col-md-4 col-form-label"
                                 for="part_vendeur_info_fin">@lang('Part Vendeur (TTC) €') </label>
@@ -1045,6 +1035,27 @@
                                 <input type="number" min="0" class="form-control " id="taux_net_info_fin"
                                     name="taux_net_info_fin" placeholder="@lang('%')">
                             </div>
+                        </div>
+                    </div> --}}
+                </div>
+
+                <div class="row" id="">
+                    <div class="form-group row">
+                        <label class="col-lg-4 col-md-4 col-form-label" for="frais_agence_info_fin">@lang('Frais agence (TTC) €')
+                            <span class="text-danger">*</span>
+                        </label>
+                        <div class="col-lg-4 col-md-4">
+                            <input type="number" min="0" class="form-control " id="frais_agence_info_fin"
+                                required name="frais_agence_info_fin" placeholder="@lang('€')">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-lg-4 col-md-4 col-form-label" for="taux_frais_info_fin">@lang('Taux frais agence %')
+                            <span class="text-danger">*</span>
+                        </label>
+                        <div class="col-lg-4 col-md-4">
+                            <input type="number" min="0" class="form-control " id="taux_frais_info_fin"
+                                required name="taux_frais_info_fin" placeholder="@lang('%')">
                         </div>
                     </div>
                 </div>
@@ -1074,8 +1085,73 @@
                     </div>
                 </div>
             </div>
+            <div class="row">
+                <div class="form-group row">
+                    <label class="col-lg-4 col-md-4 col-form-label"
+                        for="honoraire_acquereur_info_fin">@lang('Honoraires charge Acquéreur') </label>
+                    <div class="col-lg-8 col-md-8">
+                        <label class="radio-inline"><input type="radio" class="honoraire_acquereur_info_fin"
+                                checked value="@lang('Non')" id="honoraire_acquereur_info_fin_non"
+                                name="honoraire_acquereur_info_fin">
+                            @lang('Non')
+                        </label>
+                        <label class="radio-inline"><input type="radio" class="honoraire_acquereur_info_fin"
+                                value="@lang('Oui')" id="honoraire_acquereur_info_fin_oui"
+                                name="honoraire_acquereur_info_fin">
+                            @lang('Oui')
+                        </label>
+                    </div>
+                </div>
+            </div>
 
             <div class="row">
+                <div class="form-group row">
+                    <label class="col-lg-4 col-md-4 col-form-label"
+                        for="honoraire_vendeur_info_fin">@lang('Honoraires charge Vendeur') </label>
+                    <div class="col-lg-8 col-md-8">
+                        <label class="radio-inline"><input type="radio" value="@lang('Non')"
+                                id="honoraire_vendeur_info_fin_non" class="honoraire_vendeur_info_fin"
+                                name="honoraire_vendeur_info_fin">
+                            @lang('Non')
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" class="honoraire_vendeur_info_fin" checked
+                                value="@lang('Oui')" id="honoraire_vendeur_info_fin_oui"
+                                name="honoraire_vendeur_info_fin">
+                            @lang('Oui')
+                        </label>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row" id="">
+                <div class="form-group row">
+                    <label class="col-lg-4 col-md-4 col-form-label" for="frais_agence_info_fin">@lang('Frais agence (TTC) €')
+                        <span class="text-danger">*</span>
+                    </label>
+                    <div class="col-lg-4 col-md-4">
+                        <input type="number" min="0" class="form-control " id="frais_agence_info_fin"
+                            required name="frais_agence_info_fin" placeholder="@lang('€')">
+                    </div>
+                </div>
+
+            </div>
+
+            {{-- <div class="row">
+                <div class="form-group row">
+                    <label class="col-lg-4 col-md-4 col-form-label"
+                        for="honoraires_location_info_fin">@lang('Honoraires €') <span
+                            class="text-danger">*</span></label>
+                    <div class="col-lg-8 col-md-8">
+                        <input type="number" min="0" required class="form-control "
+                            id="honoraires_location_info_fin" name="honoraires_location_info_fin"
+                            placeholder="@lang('€')">
+                    </div>
+                </div>
+            </div> --}}
+
+            {{-- <div class="row">
                 <div class="form-group row">
                     <label class="col-lg-4 col-md-4 col-form-label"
                         for="honoraire_acquereur_info_fin">@lang('Part Locataire') </label>
@@ -1106,7 +1182,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> --}}
 
             <div class="row">
                 <div class="form-group row">
@@ -1151,7 +1227,7 @@
     <div class="col-md-6 col-lg-6">
 
 
-        <div class="form-group row">
+        <div class="form-group row div_prix_vente">
             <label class="col-lg-4 col-md-4 col-form-label" for="estimation_valeur_info_fin">@lang('Estimation')
             </label>
             <div class="col-lg-6 col-md-6">
@@ -1182,7 +1258,7 @@
             </div>
         </div>
 
-        <div class="form-group row">
+        <div class="form-group row div_prix_vente">
             <label class="col-lg-4 col-md-4 col-form-label" for="viager_valeur_info_fin">@lang('Viager') </label>
             <div class="col-lg-6 col-md-6">
 

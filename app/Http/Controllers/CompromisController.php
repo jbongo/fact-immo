@@ -10,6 +10,7 @@ use App\Filleul;
 use App\Parametre;
 use App\Facture;
 use App\Avoir;
+use App\Bien;
 use App\Historique;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Mail;
@@ -60,7 +61,7 @@ class CompromisController extends Controller
         $compromisEnattente_id = Facture::where([['encaissee',0],['type','stylimmo'],['a_avoir',0]])->get();
 
         foreach ($compromisEncaissee_id as $encaiss) {
-        $tab_compromisEncaissee_id[] = $encaiss["compromis_id"];
+            $tab_compromisEncaissee_id[] = $encaiss["compromis_id"];
         }
         foreach ($compromisEnattente_id as $attente) {
             $tab_compromisEnattente_id[] = $attente["compromis_id"];
@@ -396,11 +397,22 @@ class CompromisController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($bien_id = null)
     {
         //
         $agents = User::where([['role','mandataire'],['id','<>',Auth::user()->id]])->orderBy("nom")->get();
-        return view ('compromis.add',compact('agents'));
+        if($bien_id == null){
+            return view ('compromis.add',compact('agents'));
+            
+        }else{
+        
+            $bien = Bien::where('id', Crypt::decrypt($bien_id))->first();
+        
+            return view ('compromis.add2',compact('agents','bien'));
+        
+        }
+        
+        
     }
 
     /**
@@ -425,8 +437,7 @@ class CompromisController extends Controller
         $date_signature = $date_s->format('Y-m-d');
  
     }else{
-        $date_signature = null;
-       
+        $date_signature = null;       
 
     }
 
@@ -584,6 +595,273 @@ class CompromisController extends Controller
             
         return redirect()->route('compromis.show', ['id' => Crypt::encrypt($compromis->id)]); 
     }
+    
+    
+    
+    /**
+     * Ajouter une affaire dont le bien a été saisi
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store2(Request $request, $bien_id)
+    {
+        
+        // return $request->partage_reseau ;
+
+    $bien = Bien::where('id', Crypt::decrypt($bien_id))->first();
+    
+    dd($request->all());
+    dd($bien->mandat);
+    
+    // on force le format des dates à cause des vieux navigateurs
+    // $date = date_create($bien->date_mandat);
+    $date_s = date_create($request->date_signature);
+    $date_v = date_create($request->date_vente);
+
+    if($request->date_signature != null && is_string($request->date_signature)  ){
+        $date_s = date_create($request->date_signature);
+        $date_signature = $date_s->format('Y-m-d');
+ 
+    }else{
+        $date_signature = null;       
+
+    }
+
+    
+    $date_mandat = $bien->mandat->date_debut;
+    $date_vente = $date_v->format('Y-m-d');
+     
+    $aff = Compromis::where('numero_mandat',$bien->mandat->numero)->first();
+    
+  
+
+        if($request->partage == "Non"  || ($request->partage == "Oui" &&  $request->je_porte_affaire == "on" ) ){
+            
+       
+           
+            if($request->type_affaire == "Vente"){
+                $request->validate([
+                    'numero_mandat' => 'unique:compromis',
+                    'pdf_compromis' => 'file:pdf'
+                ]);
+                
+               
+            }else{
+               
+            
+                if($aff != null && $aff->type_affaire == "Vente"){
+                
+                    
+                    $request->validate([
+                        'numero_mandat' => 'unique:compromis',
+                        'pdf_compromis' => 'file:pdf'
+                    ]);
+        
+                }else{
+                  
+                    $request->validate([                    
+                        'pdf_compromis' => 'file:pdf'
+                    ]);
+                }
+                
+            }
+           
+            
+            // On détermine les infos du vendeur
+            $proprietaire = $bien->proprietaire;
+            $acquereur = $bien->offreachataccepte();
+            
+            if($acquereur == null) return redirect()->back();
+            
+            if($proprietaire->nature == "Personne seule"){
+           
+                $nom_vendeur = $proprietaire->individu->nom." ".$proprietaire->individu->prenom;
+                $civilite_vendeur = $proprietaire->individu->civilite;
+                $ville_vendeur = $proprietaire->individu->ville;
+                $code_postal_vendeur = $proprietaire->individu->code_postal;
+            
+            }elseif($proprietaire->nature == "Personne morale"){
+           
+                $nom_vendeur = $proprietaire->entite->raison_sociale;
+                $civilite_vendeur = $proprietaire->entite->forme_juridique;
+                $ville_vendeur = $proprietaire->entite->ville;
+                $code_postal_vendeur = $proprietaire->entite->code_postal;
+           
+            }elseif($proprietaire->nature == "Couple"){
+           
+                $nom_vendeur = $proprietaire->individu->nom1." ".$proprietaire->individu->prenom1.", ". $proprietaire->individu->nom2." ".$proprietaire->individu->prenom2;
+                $civilite_vendeur = $proprietaire->individu->civilite1."/".$proprietaire->individu->civilite2;
+                $ville_vendeur = $proprietaire->individu->ville1;
+                $code_postal_vendeur = $proprietaire->individu->code_postal1;
+       
+            }else{
+                
+                $nom_vendeur = $proprietaire->entite->nom;
+                $civilite_vendeur = $proprietaire->entite->type;
+                $ville_vendeur = $proprietaire->entite->ville;
+                $code_postal_vendeur = $proprietaire->entite->code_postal;
+                
+            }
+            
+            
+            // On détermine les infos des acquereurs
+            
+            if($acquereur->nature == "Personne seule"){
+           
+                $nom_acquereur = $acquereur->individu->nom." ".$acquereur->individu->prenom;
+                $civilite_acquereur = $acquereur->individu->civilite;
+                $ville_acquereur = $acquereur->individu->ville;
+                $code_postal_acquereur = $acquereur->individu->code_postal;
+            
+            }elseif($acquereur->nature == "Personne morale"){
+            
+                $nom_acquereur = $acquereur->entite->raison_sociale;
+                $civilite_acquereur = $acquereur->entite->forme_juridique;
+                $ville_acquereur = $acquereur->entite->ville;
+                $code_postal_acquereur = $acquereur->entite->code_postal;
+            
+            }elseif($acquereur->nature == "Couple"){
+            
+                $nom_acquereur = $acquereur->individu->nom1." ".$acquereur->individu->prenom1.", ". $acquereur->individu->nom2." ".$acquereur->individu->prenom2;
+                $civilite_acquereur = $acquereur->individu->civilite1."/".$acquereur->individu->civilite2;
+                $ville_acquereur = $acquereur->individu->ville1;
+                $code_postal_acquereur = $acquereur->individu->code_postal1;
+            
+            }else{
+                
+                $nom_acquereur = $acquereur->entite->nom;
+                $civilite_acquereur = $acquereur->entite->type;
+                $ville_acquereur = $acquereur->entite->ville;
+                $code_postal_acquereur = $acquereur->entite->code_postal;
+                
+            }
+           
+           
+           ***************
+           
+            // 'Personne seule', 'couple', 'Personne morale', 'groupe', 'autre'
+
+            $compromis = Compromis::create([
+                "user_id"=> Auth::user()->id,
+                "est_partage_agent"=>$request->partage == "Non" ? false : true,
+                "partage_reseau"=>$request->hors_reseau == "Non" ? true : false,
+                "agent_id"=> ($request->partage == "Oui" && $request->hors_reseau == "Non" ) ? $request->agent_id : null,
+                "nom_agent"=>$request->nom_agent,
+                "adresse_agence"=>$request->adresse_agence,
+                "code_postal_agence"=>$request->code_postal_agence,
+                "ville_agence"=>$request->ville_agence,
+                "qui_porte_externe"=>$request->qui_porte_externe,
+                "pourcentage_agent"=>$request->pourcentage_agent,
+                "je_porte_affaire"=>$request->je_porte_affaire == "on" ? true : false,
+                
+                "type_affaire"=>  ucwords($bien->type_offre),
+                "description_bien"=> substr($bien->description_annonce, 0 , 175)."...",
+                "code_postal_bien"=> $bien->code_postal,
+                "ville_bien"=> $bien->ville,
+                
+                "civilite_vendeur"=> $request->civilite_vendeur,
+                "nom_vendeur"=> $request->nom_vendeur,
+                // "prenom_vendeur"=>$request->prenom_vendeur,
+                "adresse1_vendeur"=>$request->adresse1_vendeur,
+                "adresse2_vendeur"=>$request->adresse2_vendeur,
+                "code_postal_vendeur"=>$request->code_postal_vendeur,
+                "ville_vendeur"=>$request->ville_vendeur,
+                "civilite_acquereur"=>$request->civilite_acquereur,
+                "nom_acquereur"=>$request->nom_acquereur,
+                // "prenom_acquereur"=>$request->prenom_acquereur,
+                "adresse1_acquereur"=>$request->adresse1_acquereur,
+                "adresse2_acquereur"=>$request->adresse2_acquereur,
+                "code_postal_acquereur"=>$request->code_postal_acquereur,
+                "ville_acquereur"=>$request->ville_acquereur,
+                // "raison_sociale_vendeur"=>$request->raison_sociale_vendeur,
+                // "raison_sociale_acquereur"=>$request->raison_sociale_acquereur,
+                
+                
+                "numero_mandat"=>$request->numero_mandat,
+                "date_mandat"=>$date_mandat,
+                "frais_agence"=>$request->frais_agence,
+                "charge"=>$request->charge,
+                "net_vendeur"=>$request->net_vendeur,
+                "scp_notaire"=>$request->scp_notaire,
+                "date_vente"=>$date_vente,
+                "date_signature"=>$date_signature,
+                "observations"=>$request->observations,
+                
+                
+                ]);
+
+                if($request->hasFile('pdf_compromis')){
+
+                    $request->validate([
+                        'pdf_compromis' => 'mimes:pdf',
+                    ]);
+                    $filename = 'pdf_compromis_'.$compromis->id.'.pdf';
+                    $compromis->pdf_compromis = $filename;
+                    // return response()->download(storage_path('app/pdf_compromis/pdf_compro.pdf'));
+                    $request->pdf_compromis->storeAs('public/pdf_compromis',$filename);
+                }
+               
+                $compromis->update();
+        }else{
+            $request->validate([
+                'numero_mandat_porte_pas' => 'unique:compromis',
+            ]);
+            $compromis = Compromis::create([
+                "user_id"=> Auth::user()->id,
+                "est_partage_agent"=>$request->partage == "Non" ? false : true,
+                "partage_reseau"=>$request->hors_reseau == "Non" ? true : false,
+                "agent_id"=>$request->agent_id,
+                "nom_agent"=>$request->nom_agent,
+                "pourcentage_agent"=>$request->pourcentage_agent,
+                "je_porte_affaire"=>$request->je_porte_affaire == "on" ? true : false,
+                "numero_mandat_porte_pas"=>$request->numero_mandat_porte_pas,
+                "je_renseigne_affaire"=>false,
+                
+            ]);
+
+        }
+
+        // dd($compromis);
+ 
+            if($request->partage == "Oui" && $request->hors_reseau == "Non" && $request->agent_id != null){
+                $agent = User::where('id',$request->agent_id)->first();
+                
+                // On check si le partage a un parrain 
+                $parrain_agent = Filleul::where('user_id',$agent->id)->first();
+                if($parrain_agent != null ){
+                    $compromis->parrain_partage_id = $parrain_agent->parrain_id ;
+                    $compromis->update();
+
+                }
+
+                $filleuls = Filleul::where([['parrain_id',Auth::user()->id],['expire',false]])->select('user_id')->get()->toArray();
+                $fill_ids = array();
+                foreach ($filleuls as $fill) {
+                    $fill_ids[]= $fill['user_id'];
+                }
+
+                
+                Mail::to($agent->email)->send(new PartageAffaire($compromis->user, $compromis));
+                // Mail::to("gestion@stylimmo.com")->send(new PartageAffaire($compromis->user, $compromis));
+            }
+
+           if( session('is_switch') == true ){
+                $action = "a crée l'affaire $compromis->numero_mandat pour  ".Auth::user()->nom." ".Auth::user()->prenom;
+                $user_id = session('admin_id');
+           }else{
+                $action = Auth::user()->nom." ".Auth::user()->prenom." a crée l'affaire $compromis->numero_mandat";
+                $user_id = Auth::user()->id;
+           }
+          
+            Historique::createHistorique( $user_id,$compromis->id,"compromis",$action );
+            
+            
+        return redirect()->route('compromis.show', ['id' => Crypt::encrypt($compromis->id)]); 
+    }
+    
+    
+    
 
     /**
      * Afficher le compromis

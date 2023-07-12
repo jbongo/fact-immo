@@ -480,4 +480,15 @@ public function ficheinfo(){
 
 }
 
+/*******
+
+* Retourne la fiche info du mandataire
+
+*******/
+public function contacts(){
+    
+    return $this->hasMany(Contact::class);
+
+}
+
 }

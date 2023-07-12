@@ -17,6 +17,7 @@ use App\Contact;
 use App\Individu;
 use App\Entite;
 use App\Mandat;
+use App\Typecontact;
 use Auth;
 
 use App\Models\Passerelles;
@@ -56,8 +57,9 @@ class BienController extends Controller
         public function create(){
             // $user = User::find(1)->get();
             $contacts = Contact::where([['user_id', Auth::user()->id], ['archive', false]])->get();
+            $typeContacts = Typecontact::all();
 
-            return view('bien.add',compact('contacts'));
+            return view('bien.add',compact('contacts','typeContacts'));
         }
     
     /**   
@@ -474,11 +476,13 @@ class BienController extends Controller
             $bien->prix_public = $request['prix_public_info_fin'];
             $bien->prix_prive = $request['prix_net_info_fin'];        
             $bien->honoraire_acquereur = $request['honoraire_acquereur_info_fin'];
-            $bien->part_acquereur = $request['part_acquereur_info_fin'];
-            $bien->taux_prix = $request['taux_prix_info_fin'];
             $bien->honoraire_vendeur = $request['honoraire_vendeur_info_fin'];
-            $bien->part_vendeur = $request['part_vendeur_info_fin'];
-            $bien->taux_net = $request['taux_net_info_fin'];
+            $bien->frais_agence = $request['frais_agence_info_fin'];
+            $bien->taux_frais = $request['taux_frais_info_fin'];
+            // $bien->part_acquereur = $request['part_acquereur_info_fin'];
+            // $bien->taux_prix = $request['taux_prix_info_fin'];
+            // $bien->part_vendeur = $request['part_vendeur_info_fin'];
+            // $bien->taux_net = $request['taux_net_info_fin'];
             $bien->complement_loyer = $request['complement_loyer'];
             $bien->loyer = $request['loyer'];
             $bien->estimation_date = $request['estimation_date_info_fin'];
@@ -490,6 +494,7 @@ class BienController extends Controller
             $bien->taxe_habitation = $request['taxe_habitation_info_fin'];
             $bien->taxe_fonciere = $request['taxe_fonciere_info_fin'];
             $bien->charge_mensuelle_total = $request['charge_mensuelle_total_info_fin'];
+            // $bien->honoraires_location = $request['honoraires_location_info_fin'];
             $bien->charge_mensuelle_info = $request['charge_mensuelle_info_info_fin'];
      
              //fin
@@ -678,8 +683,10 @@ class BienController extends Controller
         $contacts = Contact::where([['user_id', Auth::user()->id], ['archive', false]])->get();
        
         $proprietaire = $bien->proprietaire;
+        $typeContacts = Typecontact::all();
+    
         
-        return view("bien.show",compact(['bien','bien_id_crypt','liste_photos','contacts', 'proprietaire']));
+        return view("bien.show",compact(['bien','bien_id_crypt','liste_photos','contacts', 'proprietaire','typeContacts']));
     }
     
     
@@ -1005,12 +1012,16 @@ class BienController extends Controller
     
         }
         elseif($request["type_update"] == "prix"){
-            $bien->prix_public = $request['prix_public'];
-            $bien->prix_prive = $request['prix_prive'];
+            $bien->prix_public = $request['prix_public_info_fin'];
+            $bien->prix_prive = $request['prix_prive_info_fin'];
             $bien->loyer = $request['loyer'];
             $bien->complement_loyer = $request['complement_loyer'];
             $bien->honoraire_acquereur = $request['honoraire_acquereur_info_fin'];
             $bien->honoraire_vendeur = $request['honoraire_vendeur_info_fin'];
+            
+            $bien->frais_agence = $request['frais_agence_info_fin'];
+            $bien->taux_frais = $request['taux_frais_info_fin'];
+            
             $bien->estimation_valeur = $request['estimation_valeur_info_fin'];
             $bien->estimation_date = $request['estimation_date_info_fin'];
             $bien->viager_prix_bouquet = $request['viager_valeur_info_fin'];
@@ -1020,6 +1031,8 @@ class BienController extends Controller
             $bien->taxe_habitation = $request['taxe_habitation_info_fin'];
             $bien->taxe_fonciere = $request['taxe_fonciere_info_fin'];
             $bien->charge_mensuelle_total = $request['charge_mensuelle_total_info_fin'];
+            // $bien->honoraires_location = $request['honoraires_location_info_fin'];
+            
             $bien->charge_mensuelle_info = $request['charge_mensuelle_info_info_fin'];
             $biendetail->dossier_dispo_numero = $request['numero_dossier_dispo'];
             $biendetail->dossier_dispo_dossier_cree_le = $request['dossier_cree_le_dossier_dispo'];

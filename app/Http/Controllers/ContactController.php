@@ -11,6 +11,7 @@ use App\Utilisateur;
 use App\Entite;
 use App\Individu;
 use App\Contact;
+use App\Typecontact;
 use App\EntiteIndividu;
 use App\Http\Requests\ContactsValidator;
 
@@ -47,7 +48,9 @@ class ContactController extends Controller
     public function create()
     {
         $contacts = Contact::where([['type', 'individu'], ['archive', false]])->get();
-        return view('contact.add', compact('contacts')); 
+        $typeContacts = Typecontact::all();
+        
+        return view('contact.add', compact('contacts','typeContacts')); 
     }
     
     /**
@@ -80,12 +83,14 @@ class ContactController extends Controller
        
         }
         
+        $typeContacts = Typecontact::all();
+        
        
         if($contact->type == "entité"){
-            return view('contact.show_entite', compact('contact', 'contacts')); 
+            return view('contact.show_entite', compact('contact', 'contacts','typeContacts')); 
             
         }else{     
-            return view('contact.show_individu', compact('contact', 'contacts')); 
+            return view('contact.show_individu', compact('contact', 'contacts','typeContacts')); 
             
         }
     }
@@ -99,6 +104,7 @@ class ContactController extends Controller
     public function edit($contact_id)
     {
         $contact = Contact::where('id', Crypt::decrypt($contact_id))->first();
+        $typeContacts = Typecontact::all();
         
         if($contact->type == "entité"){
             $infosContact = $contact->entite;
@@ -108,7 +114,7 @@ class ContactController extends Controller
         }
         
 
-        return view('contact.edit', compact('contact', 'infosContact')); 
+        return view('contact.edit', compact('contact', 'infosContact','typeContacts')); 
     }
     
     
@@ -159,17 +165,18 @@ class ContactController extends Controller
             "user_id"=> Auth::user()->id,
             "nature"=> $request->nature,
             "type"=> $request->type,
-            "est_partenaire" => $request->statut == "Partenaire" ? true : false,
-            "est_acquereur" => $request->statut == "Acquereur" ? true : false,
-            "est_proprietaire" => $request->statut == "Propriétaire" ? true : false,
-            "est_locataire" => $request->statut == "Locataire" ? true : false,
-            "est_notaire" => $request->metier == "Notaire" ? true : false,
-            "est_prospect" => $request->metier == "Prospect" ? true : false,
-            "est_fournisseur" => $request->metier == "Fournisseur" ? true : false,
+            // "est_partenaire" => $request->statut == "Partenaire" ? true : false,
+            // "est_acquereur" => $request->statut == "Acquereur" ? true : false,
+            // "est_proprietaire" => $request->statut == "Propriétaire" ? true : false,
+            // "est_locataire" => $request->statut == "Locataire" ? true : false,
+            // "est_notaire" => $request->metier == "Notaire" ? true : false,
+            // "est_prospect" => $request->metier == "Prospect" ? true : false,
+            // "est_fournisseur" => $request->metier == "Fournisseur" ? true : false,
             "note" => $request->note,
                      
         ]);
         
+        $contact->typeContacts()->attach($request->statut);
   
         if($request->type == "individu"){
         
@@ -276,16 +283,18 @@ class ContactController extends Controller
                 "user_id"=> Auth::user()->id,
                 "nature"=> $request->nature,
                 "type"=> $request->type,
-                "est_partenaire" => $request->statut == "Partenaire" ? true : false,
-                "est_acquereur" => $request->statut == "Acquereur" ? true : false,
-                "est_proprietaire" => $request->statut == "Propriétaire" ? true : false,
-                "est_locataire" => $request->statut == "Locataire" ? true : false,
-                "est_notaire" => $request->metier == "Notaire" ? true : false,
-                "est_prospect" => $request->metier == "Prospect" ? true : false,
-                "est_fournisseur" => $request->metier == "Fournisseur" ? true : false,
+                // "est_partenaire" => $request->statut == "Partenaire" ? true : false,
+                // "est_acquereur" => $request->statut == "Acquereur" ? true : false,
+                // "est_proprietaire" => $request->statut == "Propriétaire" ? true : false,
+                // "est_locataire" => $request->statut == "Locataire" ? true : false,
+                // "est_notaire" => $request->metier == "Notaire" ? true : false,
+                // "est_prospect" => $request->metier == "Prospect" ? true : false,
+                // "est_fournisseur" => $request->metier == "Fournisseur" ? true : false,
                 "note" => $request->note,
                          
             ]);
+    
+            $contact->typeContacts()->attach($request->statut);
     
             $individu = Individu::create([
                 "user_id"=> Auth::user()->id,     
