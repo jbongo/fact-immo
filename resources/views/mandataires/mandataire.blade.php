@@ -114,7 +114,7 @@
                                     </td>
                                     <td>
                                         <span
-                                            class="color-warning">{{ number_format($mandataire->chiffre_affaire_styl(date('Y') . '-01-01', date('Y-m-d')), 2) }}
+                                            class="color-warning">{{ number_format($mandataire->chiffre_affaire_sty, 2) }}
                                             €</span>
                                     </td>
 

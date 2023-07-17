@@ -32,7 +32,7 @@ class Kernel extends ConsoleKernel
                  ->daily();
                  
         $schedule->command('command:cloturercompromis')
-        ->daily();
+                ->daily();
                  
         $schedule->command('command:findroitsuite')
                  ->daily();
@@ -47,10 +47,14 @@ class Kernel extends ConsoleKernel
                  ->daily();
   
         $schedule->command('command:listerfactpub')
-                 ->monthlyOn(28, '01:00');	;
+                 ->monthlyOn(28, '01:00');	
 
         $schedule->command('command:documentexpire')
-                 ->monthlyOn(05, '02:00');	;
+                 ->monthlyOn(05, '02:00');	
+                 
+        $schedule->command('command:calculcastyl')        
+                 ->monthlyOn(01, '02:00');	;
+                 
                  
     }
 

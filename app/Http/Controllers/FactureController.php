@@ -737,14 +737,20 @@ public  function valider_facture_stylimmo( Request $request, $compromis)
     {
     
     
-    
+     
     // ########## On calucul la note d'hono du Porteur et du partage  ##################################################################
     
             if($compromis->agent_id == null){
             
+                $compromis->user->sauvegarder_chiffre_affaire_styl(date('Y') . '-01-01', date('Y-m-d'));
                 $this->preparer_facture_honoraire_encaissement($compromis->id, true );
             
             }else{
+            
+            
+                $compromis->user->sauvegarder_chiffre_affaire_styl(date('Y') . '-01-01', date('Y-m-d'));
+                $compromis->getPartage()->sauvegarder_chiffre_affaire_styl(date('Y') . '-01-01', date('Y-m-d'));
+
             // facture du porteur de l'affaire
                 $this->preparer_facture_honoraire_encaissement($compromis->id, true );
                 // facture du partage de l'affaire

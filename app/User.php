@@ -167,6 +167,14 @@ class User extends Authenticatable
         }
 
 
+        public function  sauvegarder_chiffre_affaire_styl($date_deb, $date_fin){
+            
+            $this->chiffre_affaire_sty = $this->chiffre_affaire_styl($date_deb, $date_fin);
+            
+            $this->update();
+        }
+        
+
 
 /*******
 
