@@ -340,9 +340,17 @@
                                     class="large material-icons"
                                     style="font-size:20px;">vertical_align_center</i></i>Export WINFIC </a></li>
                         {{-- <li class=""><a  href="{{route('export_facture.index')}}" class=""> <i class="large material-icons" style="font-size:20px;">vertical_align_center</i></i>Export   </a> --}}
-                        <li class=""><a href="{{ route('historique.index') }}" class=""> <i
+                        <li class="">
+                            <a href="{{ route('historique.index') }}" class=""> <i
                                     class="large material-icons" style="font-size:20px;">access_time</i></i>Historique
-                            </a> </li>
+                            </a>
+                        </li>
+                        <li class="">
+                            <a href="{{ route('historique.connexions') }}" class=""> <i
+                                    class="large material-icons" style="font-size:20px;">access_time</i></i>Dernières
+                                connexions
+                            </a>
+                        </li>
                         {{-- <li class=""><a  href="{{route('etat_financier')}}" class=""> <i class="large material-icons" style="font-size:20px;">enhanced_encryption</i></i>Etat financier   </a></li> --}}
                         <li class="{{ $li_parametre_generaux }}"><a class="sidebar-sub-toggle"><i
                                     class="large material-icons" style="font-size:20px;">view_agenda</i> Agenda <span

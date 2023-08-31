@@ -335,6 +335,7 @@ Route::middleware('auth')->group(function(){
     
     // historique
     Route::get('/historiques', 'HistoriqueController@index')->name('historique.index');       
+    Route::get('/historique/connexions', 'HistoriqueController@connexions')->name('historique.connexions');       
 
 
     // Se connecter sur une autre session utilisateur
