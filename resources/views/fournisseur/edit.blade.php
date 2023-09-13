@@ -92,7 +92,7 @@
                                         <input type="text"
                                             class="form-control {{ $errors->has('telephone1') ? ' is-invalid' : '' }}"
                                             id="telephone1" value="{{ $fournisseur->telephone1 }}" name="telephone1"
-                                            placeholder="telephone..">
+                                            placeholder="">
                                         @if ($errors->has('telephone1'))
                                             <br>
                                             <div class="alert alert-warning ">
@@ -161,7 +161,7 @@
                                         <input type="text"
                                             class="form-control {{ $errors->has('telephone2') ? ' is-invalid' : '' }}"
                                             id="telephone2" value="{{ $fournisseur->telephone2 }}" name="telephone2"
-                                            placeholder="telephone..">
+                                            placeholder="">
                                         @if ($errors->has('telephone2'))
                                             <br>
                                             <div class="alert alert-warning ">
