@@ -375,8 +375,9 @@
                                 <span class="sidebar-collapse-icon ti-angle-down"></span></a>
                             <ul>
 
-                                <li class="{{ $li_documents_gestion }}"><a
-                                        href="{{ route('document.index') }}">Gestion</a></li>
+                                <li class="{{ $li_documents_gestion }}">
+                                    <a href="{{ route('document.index') }}">Gestion</a>
+                                </li>
                                 <li class="{{ $li_documents_a_valider }}"><a
                                         href="{{ route('document.a_valider') }}">A valider @if ($nb_doc_a_valider > 0)
                                             <span class="badge badge-danger">{{ $nb_doc_a_valider }}

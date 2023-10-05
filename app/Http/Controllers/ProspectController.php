@@ -589,7 +589,7 @@ class ProspectController extends Controller
        
         $parametre  = Parametre::first();
         $contrat  = Contrat::where('est_modele', true)->first();
-        $contrat  = Contrat::where("id", 19)->first();
+        // $contrat  = Contrat::where("id", 19)->first();
         
         $packs = Packpub::all();
         
@@ -649,7 +649,7 @@ class ProspectController extends Controller
        
         $parametre  = Parametre::first();
         $contrat  = Contrat::where('est_modele', true)->first();
-        $contrat  = Contrat::where("id", 19)->first();
+        // $contrat  = Contrat::where("id", 19)->first();
         
         $packs = Packpub::all();
         
