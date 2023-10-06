@@ -42,6 +42,7 @@ class ExportwinficController extends Controller
         $factureStylimmos = Facture::whereIn('type',['stylimmo','avoir','pack_pub','carte_visite','communication','autre','forfait_entree','cci'])->whereBetween('date_facture',[$date_deb,$date_fin])->where('user_id','<>',77)->orderBy('numero','asc')->get();  
         $montant_credit_debit = Facture::whereIn('type',['stylimmo','avoir','pack_pub','carte_visite','communication','autre','forfait_entree','cci'])->whereBetween('date_facture',[$date_deb,$date_fin])->where('user_id','<>',77)->sum('montant_ttc');
         
+        dd($factureStylimmos);
       
         $this->generer_pdf_facture($date_deb, $date_fin);
        
@@ -509,23 +510,16 @@ class ExportwinficController extends Controller
            $ligne2_contrepartie_transac_decai = "B2"."|".$date_operation_contrepartie_decai."|".$this->formatage_colonne(6,$num_folio_decai,'droite')."|".$this->formatage_colonne(6,$num_ecriture_decai,'droite')."|".$jour_ecriture_contrepartie_decai."|".$compte_contrepartie_decai."|".$montant_debit_contrepartie_decai."|".$montant_credit_contrepartie_decai."|".$libelle_contrepartie_decai."|".$lettrage_contrepartie_decai."|".$code_piece_contrepartie_decai."|".$code_stat_contrepartie_decai."|".$date_echeance_contrepartie_decai."|".$monnaie_contrepartie_decai."|".$filler_contrepartie_decai."|".$ind_compteur_contrepartie_decai."|".$quantite_contrepartie_decai."|".$code_pointage_contrepartie_decai."|\r\n";
            $num_ecriture_decai++;
            
-          
-           
+
            $data_decai .= $ligne2_contrepartie_transac_decai;
             
-            
-            
-            
-            
-           
+
        }
-       
-       
        
         
         $data = $data_encai.$data_decai;
        
-//    dd($data);
+
  
         file_put_contents("ECRITURE.WIN", $data);
         
