@@ -163,8 +163,16 @@ class ExportwinficController extends Controller
                 $libelle = $facture->compromis->charge == "vendeur" ? $this->formatage_colonne(30, $facture->compromis->nom_vendeur." ".$facture->compromis->prenon_vendeur) : $this->formatage_colonne(30, $facture->compromis->nom_acquereur." ".$facture->compromis->prenon_acquereur);
                 
             }else {
-                $compte_ttc = $this->formatage_colonne(6,$facture->user->code_client);
-                $libelle = $this->formatage_colonne(30, $facture->user->nom." ".$facture->user->prenom);
+            
+                if($facture->user != null){
+                    $compte_ttc = $this->formatage_colonne(6,$facture->user->code_client);
+                    $libelle = $this->formatage_colonne(30, $facture->user->nom." ".$facture->user->prenom);
+                }else{
+                
+                    $compte_ttc = $this->formatage_colonne(6,"9DIVER");
+                    $libelle = $this->formatage_colonne(30, strip_tags($facture->destinataire));
+                }
+                
             
             }
             
@@ -265,7 +273,7 @@ class ExportwinficController extends Controller
         // TRANSFERT DES ENCAISSEMENTS
         
         
-        $factureEncaissees = Facture::whereIn('type',['stylimmo','pack_pub','carte_visite','communication','autre','forfait_entree','cci'])->where('user_id','<>',null)->whereBetween('date_encaissement',[$date_deb,$date_fin])->orderBy('numero','asc')->get();  
+        $factureEncaissees = Facture::whereIn('type',['stylimmo','pack_pub','carte_visite','communication','autre','forfait_entree','cci'])->whereBetween('date_encaissement',[$date_deb,$date_fin])->orderBy('numero','asc')->get();  
         
         
         $data_encai = "";
@@ -305,12 +313,22 @@ class ExportwinficController extends Controller
                 
             }else{
                 
-                if(!$facture->user) dd("Erreur: Facture liée à aucun mandataire du réseau");
-                $compte_ttc_encai = $facture->user->code_client;
+                // if(!$facture->user) dd("Erreur: Facture liée à aucun mandataire du réseau");
+                               
                 
-                $libelle_encai =  $this->formatage_colonne(30, $facture->user->nom." ".$facture->user->prenom);
-                $libelle_contrepartie_transac_encai = $this->formatage_colonne(30, $facture->user->nom." ".$facture->user->prenom);
-                $libelle_contrepartie_autre_encai = $this->formatage_colonne(30, $facture->user->nom." ".$facture->user->prenom);
+                if($facture->user != null){
+                    $compte_ttc_encai = $facture->user->code_client;
+                    $libelle_encai =  $this->formatage_colonne(30, $facture->user->nom." ".$facture->user->prenom);
+                    
+                }else{
+                
+                    $compte_ttc_encai = "9DIVER";
+                    $libelle_encai =  $this->formatage_colonne(30, strip_tags($facture->destinataire));
+                }
+                
+                $libelle_contrepartie_transac_encai = $libelle_encai;
+                $libelle_contrepartie_autre_encai = $libelle_encai;
+                
 
             }
             
