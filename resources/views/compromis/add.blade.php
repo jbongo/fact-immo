@@ -998,10 +998,14 @@
             $('#div_net_vendeur').hide();
             $('#div_notaire').hide();
             $('#net_vendeur').val(0);
+            $('#scp_notaire').removeAttr('required');
+
 
         } else {
             $('#div_net_vendeur').show();
             $('#div_notaire').show();
+            $('#scp_notaire').attr('required', 'required');
+
 
         }
     })
