@@ -141,7 +141,11 @@ class FactpubController extends Controller
         
                 $tabmois = ['','Janvier','Février','Mars','Avril', 'Mai','Juin','Juillet','Aôut', 'Septembre','Octobre','Novembre','Décembre'];
                 
-                $mois = $tabmois[$facture->factpublist()->created_at->format('m')*1];
+                if($facture->factpublist() != null){
+                    $mois = $tabmois[$facture->factpublist()->created_at->format('m')*1];
+                } else{
+                    $mois = $tabmois[$facture->created_at->format('m')*1];
+                }
                 
                 $this->generer_pdf_fact_pub(Crypt::encrypt($facture->id));
                 
@@ -171,7 +175,11 @@ class FactpubController extends Controller
         
         $tabmois = ['','Janvier','Février','Mars','Avril', 'Mai','Juin','Juillet','Aôut', 'Septembre','Octobre','Novembre','Décembre'];
         
-        $mois = $tabmois[$facture->factpublist()->created_at->format('m')*1];
+        if($facture->factpublist() != null){
+            $mois = $tabmois[$facture->factpublist()->created_at->format('m')*1];
+        } else{
+            $mois = $tabmois[$facture->created_at->format('m')*1];
+        }
         
         $this->generer_pdf_fact_pub($facture_id);
        
@@ -197,8 +205,12 @@ class FactpubController extends Controller
        
            $facture = Facture::where('id', crypt::decrypt($facture_id))->first();
            
-       $tabmois = ['','Janvier','Février','Mars','Avril', 'Mai','Juin','Juillet','Aôut', 'Septembre','Octobre','Novembre','Décembre'];        
-       $mois = $tabmois[$facture->factpublist()->created_at->format('m')*1];
+        $tabmois = ['','Janvier','Février','Mars','Avril', 'Mai','Juin','Juillet','Aôut', 'Septembre','Octobre','Novembre','Décembre'];        
+        if($facture->factpublist() != null){
+            $mois = $tabmois[$facture->factpublist()->created_at->format('m')*1];
+        } else{
+            $mois = $tabmois[$facture->created_at->format('m')*1];
+        }
        
        $pdf = PDF::loadView('facture.pub.pdf_facture_pub',compact(['facture','mois']));
           
@@ -234,7 +246,13 @@ class FactpubController extends Controller
  
         
             $tabmois = ['','Janvier','Février','Mars','Avril', 'Mai','Juin','Juillet','Aôut', 'Septembre','Octobre','Novembre','Décembre'];        
-            $mois = $tabmois[$facture->factpublist()->created_at->format('m')*1];
+            
+            if($facture->factpublist() != null){
+                $mois = $tabmois[$facture->factpublist()->created_at->format('m')*1];
+            } else{
+                $mois = $tabmois[$facture->created_at->format('m')*1];
+            }
+               
             
             $pdf = PDF::loadView('facture.pub.pdf_facture_pub',compact(['facture','mois']));
            
