@@ -936,7 +936,7 @@ class CompromisController extends Controller
             $action = Auth::user()->nom." ".Auth::user()->prenom." a archivé l'affaire $compromis->numero_mandat";
             $user_id = Auth::user()->id;
        }
-      
+        
         Historique::createHistorique( $user_id,$compromis->id,"compromis",$action );
 
         if($compromis->getFactureStylimmo() != null ){
