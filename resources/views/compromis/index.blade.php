@@ -218,6 +218,9 @@
 
 $('.archiver').on('click',function(e){
       archive_id = $(this).attr('id');
+      
+      console.log("redd");
+      console.log(archive_id);
    });
    
    
