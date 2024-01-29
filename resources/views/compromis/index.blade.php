@@ -218,9 +218,6 @@
 
 $('.archiver').on('click',function(e){
       archive_id = $(this).attr('id');
-      
-      console.log("redd");
-      console.log(archive_id);
    });
    
    
@@ -236,7 +233,7 @@ if($("#motif_archive").val() != ""){
    $.ajax({
 
          type: "POST",
-         url: "compromis/archiver/"+archive_id ,
+         url: "/compromis/archiver/"+archive_id ,
          data:  $("#form_archive").serialize(),
          success: function (result) {
              if(result =="avoir"){

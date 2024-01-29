@@ -489,7 +489,7 @@
             $.ajax({
 
                 type: "POST",
-                url: "compromis/archiver/" + archive_id,
+                url: "/compromis/archiver/" + archive_id,
                 data: $("#form_archive").serialize(),
                 success: function(result) {
                     if (result == "avoir") {
