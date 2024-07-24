@@ -1743,16 +1743,48 @@ public  function store_facture_honoraire_parrainage(Compromis $compromis, Filleu
             $pourcentage_partage = $compromis->pourcentage_agent/100;
         }
         
+ 
         
         
         // On determine les montants ttc et ht du parrain 
         $montant_ht = round ( ($compromis->frais_agence() * $pourcentage_partage * $pourcentage_parrain/100 )/Tva::coefficient_tva(),2);
+        
+        
+        
+        $deb_annee = date("Y")."-01-01";
+
+        // on determine les chiffres d'affaires encaissé du parrain depuis le 1er janvier, pour voir s'il est soumis à la TVA
+        $chiffre_affaire_parrain_encai = Facture::where('user_id',$parrain->id)->whereIn('type',['honoraire','partage','parrainage','parrainage_partage'])->where('reglee',true)->where('date_reglement','>=',$deb_annee)->sum('montant_ht');
+    
+        //    on reccupere le contrat du parrain
+        $contrat = $parrain->contrat;
+        $tva = Tva::coefficient_tva();
+        
+              
+        if($contrat->est_soumis_tva == false){
+                
+            if( ($chiffre_affaire_parrain_encai + $montant_ht ) < Parametre::montant_tva()){
+                $tva = 0;
+            }else{
+                $contrat->est_soumis_tva = true;
+                $contrat->update();
+                Mail::to($contrat->user->email)->send(new PassageTVA($contrat->user));
+                
+            }
+
+        }
+        
+       
+        
+    
+         
+        
         $montant_ttc = round($montant_ht*$tva,2);
         
         // on determine les droits de parrainage du parrain pour chacun de ses filleuls
         $result = Filleul::droitParrainage($parrain->id, $filleul->user_id, $compromis->id);
 
-        // On vérifie que le parrain n'a pas dépassé le plafond de comm sur son filleul            
+        // On vérifie que le parrain n'a pas dépassé le plafond de comm sur son filleul           
 
         if($result['ca_comm_parr'] >= $filleul->user->contrat->seuil_comm ){
             $montant_ht = 0;
