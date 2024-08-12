@@ -23,8 +23,8 @@
             <div class="row">
 				<div class="col-lg-6 col-sm-6">
 					<span>Total jetons déduits : </span> <label class="color-success" style="font-size: 20px">{{$total_deduis}} </label> <br>
-					<span>Total jetons restants : </span> <label class="color-danger" style="font-size: 20px">{{$total_restant}} </label> <br>
-					@if($mandataire->etat_jeton()['retard'] > 0 )    <span class="badge badge-danger">retard</span> <-- ({{$mandataire->etat_jeton()['retard']}} mois de retards)-->  @else    <span class="badge badge-success">à jour</span> @endif  Sur les jetons
+					<span>Total jetons restants jusqu'à la prochaine d'ate d'anniversaire : </span> <label class="color-danger" style="font-size: 20px">{{$total_restant}} </label> <br>
+					@if($mandataire->etat_jeton()['retard'] > 0 )    <span class="badge badge-danger">retard</span>  <span class="fw-bold" style="font-weight:bold; "> {{$mandataire->etat_jeton()['retard']}} mois de retard </span> @else    <span class="badge badge-success">à jour</span> @endif  
 				</div>
 				<div class="col-lg-6 col-sm-6">
 					<span>Date d'anniversaire : </span> <label class="color-primary" style="font-size: 20px">{{$mandataire->date_anniv("fr")}} </label>
@@ -159,7 +159,7 @@
 							
 							
 							
-							<h2>Jetons déduits ou ajouté par l'administrateur</h2>
+							<h2>Jetons déduits ou ajoutés par l'administrateur</h2>
 								
 							<div class="panel panel-danger m-t-15" id="cont">
 									<div class="panel-heading"></div>
@@ -171,10 +171,10 @@
 										<tr>
 										   
 						
-											<th>@lang('Nb de Jetons avant déduction ')</th>
-											<th>@lang('Nb de Jetons déduits ')</th>
+											<th>@lang('Nb de Jetons avant ajout/déduction ')</th>
+											<th>@lang('Nb de Jetons ajoutés/déduits ')</th>
 											<th>@lang('Ajouté automatiquement à la date d\'anniv ')</th>
-											<th>@lang('Date Déduction')</th>
+											<th>@lang('Date de l\'opération')</th>
 										
 											
 					
