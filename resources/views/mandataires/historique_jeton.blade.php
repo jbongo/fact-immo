@@ -15,16 +15,16 @@
              @endif       
             <div class="card alert">
             @if (Auth()->user()->role == "admin")
-				<a href="{{route('mandataire.index')}}" class="btn btn-warning btn-flat btn-addon m-b-10 m-l-5"><i class="ti-angle-double-left"></i>@lang('Retour')</a> 
+				<a href="{{route('mandataire.index')}}" class="btn btn-warning btn-flat btn-addon m-b-20 m-l-5"><i class="ti-angle-double-left"></i>@lang('Retour')</a> 
 
             @endif
             <br>
             
             <div class="row">
 				<div class="col-lg-6 col-sm-6">
-					<span>Total jetons déduits : </span> <label class="color-success" style="font-size: 20px">{{$total_deduis}} </label> <br>
+					@if($mandataire->etat_jeton()['retard'] > 0 )    <span class="badge badge-danger" style="font-size: 18px">retard</span>  <span class="fw-bold" style="font-weight:bold; "> {{$mandataire->etat_jeton()['retard']}} mois de retard </span> @else    <span class="badge badge-success" style="font-size: 18px">à jour</span> @endif <br> 
 					<span>Total jetons restants jusqu'à la prochaine d'ate d'anniversaire : </span> <label class="color-danger" style="font-size: 20px">{{$total_restant}} </label> <br>
-					@if($mandataire->etat_jeton()['retard'] > 0 )    <span class="badge badge-danger">retard</span>  <span class="fw-bold" style="font-weight:bold; "> {{$mandataire->etat_jeton()['retard']}} mois de retard </span> @else    <span class="badge badge-success">à jour</span> @endif  
+					<span>Total jetons déduits : </span> <label class="color-success" style="font-size: 20px">{{$total_deduis}} </label> 
 				</div>
 				<div class="col-lg-6 col-sm-6">
 					<span>Date d'anniversaire : </span> <label class="color-primary" style="font-size: 20px">{{$mandataire->date_anniv("fr")}} </label>
