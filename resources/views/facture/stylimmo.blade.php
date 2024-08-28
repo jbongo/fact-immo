@@ -228,7 +228,9 @@
                                         <td width="" >
                                             {{-- si c'est une facture d'avoir --}}
                                             @if($facture->type == "avoir" && $facture->facture_avoir() != null)
-                                                <label class="color-danger"> Avoir sur {{$facture->facture_avoir()->numero}}</label> 
+                                                <label class="color-danger"> Avoir sur {{$facture->facture_avoir()->numero}}</label> <br>
+                                            <span class="color-primary"> {{$facture->facture_avoir()->motif}}</span>
+                                                
                                             @else
                                                 {{-- Si la facture stylimmo a un avoir --}}
                                                 @if($facture->a_avoir == 1 && $facture->avoir() != null)
