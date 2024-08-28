@@ -106,7 +106,7 @@ class Listerfactpub extends Command
                 
                 
                 // après la fin de la gratuité le mandataire paye des packs pub
-                }elseif(date('Y-m-d') >= date('Y-m-d',$date_fin_pack_info_expert)){
+                }elseif(date('Y-m-d') >= date('Y-m-d',$date_fin_pack_info_expert) && $contrat->deduis_jeton == false){
                 
                     Factpub::create([
                         'user_id' => $contrat->user_id,
@@ -136,7 +136,7 @@ class Listerfactpub extends Command
                 
                 
                 // après la fin de la gratuité le mandataire paye des packs pub
-                }elseif(date('Y-m-d') >= date('Y-m-d',$date_fin_pack_info_starter)){
+                }elseif(date('Y-m-d') >= date('Y-m-d',$date_fin_pack_info_starter) && $contrat->deduis_jeton == false){
                 
               
                     Factpub::create([
