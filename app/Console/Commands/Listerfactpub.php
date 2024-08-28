@@ -53,105 +53,108 @@ class Listerfactpub extends Command
         
         foreach ($contrats as $contrat) {
             
+            if( $contrat->deduis_jeton || $contrat->est_soumis_fact_pub  ){
+            
+                // On determine la date à laquelle le mandataire doit passer expert
+                $date_passage_expert = strtotime($contrat->date_deb_activite->format('Y-m-d'). "+ $contrat->duree_max_starter month");
+                $date_passage_expert = date('Y-m-d', $date_passage_expert);
+                
+                $today = date_create(date('Y-m-d'));
+                $date_passage= date_create($date_passage_expert);
+                
+                // on determine le nombre de jours entre son passage à expert et aujourd'hui
+                $duree_passage_expert = date_diff($today, $date_passage);
+                
+    
           
-            // On determine la date à laquelle le mandataire doit passer expert
-            $date_passage_expert = strtotime($contrat->date_deb_activite->format('Y-m-d'). "+ $contrat->duree_max_starter month");
-            $date_passage_expert = date('Y-m-d', $date_passage_expert);
-            
-            $today = date_create(date('Y-m-d'));
-            $date_passage= date_create($date_passage_expert);
-            
-            // on determine le nombre de jours entre son passage à expert et aujourd'hui
-            $duree_passage_expert = date_diff($today, $date_passage);
-            
-
-      
-            
-            
-       
-            
-            
-            
-            // Date de fin de la gratuité totale pour le starter
-            $date_fin_gratuite_totale_starter = strtotime($contrat->date_deb_activite->format('Y-m-d'). "+ $contrat->duree_gratuite_starter month");            
-            $date_fin_pack_info_starter = strtotime( date('Y-m-d',$date_fin_gratuite_totale_starter)."+ $contrat->duree_pack_info_starter month");
-            
-            
-            
-             // Date de fin de la gratuité totale pour l'expert
-             $date_fin_gratuite_totale_expert = strtotime($contrat->date_deb_activite->format('Y-m-d'). "+ $contrat->duree_gratuite_expert month");            
-             $date_fin_pack_info_expert = strtotime( date('Y-m-d',$date_fin_gratuite_totale_expert)."+ $contrat->duree_pack_info_expert month");
-             
-            
-            
-            // dd( $contrat->user->pack_actuel);
-            
-            // Le Mandataire paye si 
-            // son pack est starter et sa période de gratuitée est terminée 
-            // son pack est expert et sa période de gratuitée est terminée et 28 jour après qu'il soit passé expert
-            
-            if($contrat->user->pack_actuel == "expert"  && ($contrat->est_demarrage_starter == false || $contrat->est_demarrage_starter == true && $duree_passage_expert->days > 28 ) ){
                 
-               
-                // période pendant laquelle le mandataire ne paye que le pack info
-                if( date('Y-m-d') > date('Y-m-d',$date_fin_gratuite_totale_expert) && date('Y-m-d') < date('Y-m-d',$date_fin_pack_info_expert) && $contrat->forfait_pack_info > 0 ){
                 
-                    Factpub::create([
-                        'user_id' => $contrat->user_id,
-                        'packpub' => $contrat->packpub->nom,
-                        'montant_ht' => $contrat->forfait_pack_info ,
-                        'montant_ttc' => $contrat->forfait_pack_info * Tva::coefficient_tva(),
+           
+                
+                
+                
+                // Date de fin de la gratuité totale pour le starter
+                $date_fin_gratuite_totale_starter = strtotime($contrat->date_deb_activite->format('Y-m-d'). "+ $contrat->duree_gratuite_starter month");            
+                $date_fin_pack_info_starter = strtotime( date('Y-m-d',$date_fin_gratuite_totale_starter)."+ $contrat->duree_pack_info_starter month");
+                
+                
+                
+                 // Date de fin de la gratuité totale pour l'expert
+                 $date_fin_gratuite_totale_expert = strtotime($contrat->date_deb_activite->format('Y-m-d'). "+ $contrat->duree_gratuite_expert month");            
+                 $date_fin_pack_info_expert = strtotime( date('Y-m-d',$date_fin_gratuite_totale_expert)."+ $contrat->duree_pack_info_expert month");
+                 
+                
+                
+                // dd( $contrat->user->pack_actuel);
+                
+                // Le Mandataire paye si 
+                // son pack est starter et sa période de gratuitée est terminée 
+                // son pack est expert et sa période de gratuitée est terminée et 28 jour après qu'il soit passé expert
+                
+                if($contrat->user->pack_actuel == "expert"  && ($contrat->est_demarrage_starter == false || $contrat->est_demarrage_starter == true && $duree_passage_expert->days > 28 ) ){
                     
-                    ]);
-                
-                
-                // après la fin de la gratuité le mandataire paye des packs pub
-                }elseif(date('Y-m-d') >= date('Y-m-d',$date_fin_pack_info_expert) && $contrat->deduis_jeton == false){
-                
-                    Factpub::create([
-                        'user_id' => $contrat->user_id,
-                        'packpub' => $contrat->packpub->nom,
-                        'montant_ht' => round($contrat->packpub->tarif / Tva::coefficient_tva(), 2),
-                        'montant_ttc' => $contrat->packpub->tarif,
+                   
+                    // période pendant laquelle le mandataire ne paye que le pack info
+                    if( date('Y-m-d') > date('Y-m-d',$date_fin_gratuite_totale_expert) && date('Y-m-d') < date('Y-m-d',$date_fin_pack_info_expert) && $contrat->forfait_pack_info > 0 ){
                     
-                    ]);
+                        Factpub::create([
+                            'user_id' => $contrat->user_id,
+                            'packpub' => $contrat->packpub->nom,
+                            'montant_ht' => $contrat->forfait_pack_info ,
+                            'montant_ttc' => $contrat->forfait_pack_info * Tva::coefficient_tva(),
+                        
+                        ]);
+                    
+                    
+                    // après la fin de la gratuité le mandataire paye des packs pub
+                    }elseif(date('Y-m-d') >= date('Y-m-d',$date_fin_pack_info_expert) && $contrat->deduis_jeton == false){
+                    
+                        Factpub::create([
+                            'user_id' => $contrat->user_id,
+                            'packpub' => $contrat->packpub->nom,
+                            'montant_ht' => round($contrat->packpub->tarif / Tva::coefficient_tva(), 2),
+                            'montant_ttc' => $contrat->packpub->tarif,
+                        
+                        ]);
+                    
+                    }
+    
+                   
+                    
+                }elseif($contrat->user->pack_actuel == "starter") {
+                
+                    
+                    // période pendant laquelle le mandataire ne paye que le pack info
+                    if( date('Y-m-d') > date('Y-m-d',$date_fin_gratuite_totale_starter) && date('Y-m-d') < date('Y-m-d',$date_fin_pack_info_starter) && $contrat->forfait_pack_info > 0 ){
+                    
+                        Factpub::create([
+                            'user_id' => $contrat->user_id,
+                            'packpub' => $contrat->packpub->nom,
+                            'montant_ht' => $contrat->forfait_pack_info ,
+                            'montant_ttc' => $contrat->forfait_pack_info * Tva::coefficient_tva(),
+                        
+                        ]);
+                    
+                    
+                    // après la fin de la gratuité le mandataire paye des packs pub
+                    }elseif(date('Y-m-d') >= date('Y-m-d',$date_fin_pack_info_starter) && $contrat->deduis_jeton == false){
+                    
+                  
+                        Factpub::create([
+                            'user_id' => $contrat->user_id,
+                            'packpub' => $contrat->packpub->nom,
+                            'montant_ht' => round($contrat->packpub->tarif / Tva::coefficient_tva(), 2),
+                            'montant_ttc' => $contrat->packpub->tarif,
+                        
+                        ]);
+                    
+                    }
                 
                 }
-
-               
                 
-            }elseif($contrat->user->pack_actuel == "starter") {
-            
-                
-                // période pendant laquelle le mandataire ne paye que le pack info
-                if( date('Y-m-d') > date('Y-m-d',$date_fin_gratuite_totale_starter) && date('Y-m-d') < date('Y-m-d',$date_fin_pack_info_starter) && $contrat->forfait_pack_info > 0 ){
-                
-                    Factpub::create([
-                        'user_id' => $contrat->user_id,
-                        'packpub' => $contrat->packpub->nom,
-                        'montant_ht' => $contrat->forfait_pack_info ,
-                        'montant_ttc' => $contrat->forfait_pack_info * Tva::coefficient_tva(),
-                    
-                    ]);
-                
-                
-                // après la fin de la gratuité le mandataire paye des packs pub
-                }elseif(date('Y-m-d') >= date('Y-m-d',$date_fin_pack_info_starter) && $contrat->deduis_jeton == false){
-                
-              
-                    Factpub::create([
-                        'user_id' => $contrat->user_id,
-                        'packpub' => $contrat->packpub->nom,
-                        'montant_ht' => round($contrat->packpub->tarif / Tva::coefficient_tva(), 2),
-                        'montant_ttc' => $contrat->packpub->tarif,
-                    
-                    ]);
-                
-                }
-            
             }
-            
         }
+            
         Cronjob::create([
             "nom" => "listerfactpub",
             ]);
