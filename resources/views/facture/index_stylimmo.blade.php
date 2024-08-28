@@ -195,6 +195,7 @@
                                         {{-- si c'est une facture d'avoir --}}
                                         @if($facture->type == "avoir")
                                             <label class="color-danger"> Avoir sur {{$facture->facture_avoir()->numero}}</label> 
+                                            <span class="color-primary"> {{$facture->facture_avoir()->motif}} </span>
                                         @else
                                             {{-- Si la facture stylimmo a un avoir --}}
                                             @if($facture->a_avoir == 1 && $facture->avoir() != null)
