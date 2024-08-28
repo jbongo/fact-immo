@@ -66,10 +66,10 @@
                                     @if($mandataire->document($document->reference) != null && $mandataire->document($document->reference)->valide == 1)
                                          
                                         
-                                        @if($mandataire->document($document->id)->est_image())                                            
+                                        @if($mandataire->document($document->id)->expire == 0)                                            
                                             <a href="{{$mandataire->document($document->id)->lien_public_image()}}" data-toggle="tooltip" target="_blank" title="Télécharger {{$document->nom}}"  class="btn btn-success btn-flat btn-addon "><i class="ti-download"></i>{{$document->nom}}</a> 
                                         @else                                        
-                                            <a href="{{route('document.telecharger', [$mandataire->id, $document->reference])}}" data-toggle="tooltip" title="Télécharger {{$document->nom}}"  class="btn btn-danger btn-flat btn-addon "><i class="ti-download"></i>Voir</a>
+                                            <a href="{{route('document.telecharger', [$mandataire->id, $document->reference])}}" data-toggle="tooltip" title="Télécharger {{$document->nom}}"  class="btn btn-danger btn-flat btn-addon "><i class="ti-download"></i>Expiré</a>
                                         @endif
                                         
                                     @endif
