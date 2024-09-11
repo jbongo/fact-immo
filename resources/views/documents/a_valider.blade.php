@@ -66,7 +66,7 @@
                                 </td>
                                 
                                 <td>
-                                    <span class="text-default">{{$fichier->created_at->format('d/m/Y')}}</span>
+                                    <span class="text-default">{{$fichier->updated_at->format('d/m/Y')}}</span>
                                 </td>
                                     
 

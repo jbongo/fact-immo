@@ -228,8 +228,8 @@ class DocumentController extends Controller
                         // On déplace le fichier dans le dossier document 
                         $file->move($path,$filename.$extension);  
                         // on enregistre le chemin complet du fichier déplacé dans la variable path
-                        $path = $path.'/'.$filename.$extension;
-                        
+                        $path = $path.'/'.$filename.$extension;                        
+                       
                         
                         $fichier =   Fichier::create([                        
                             "user_id" => $mandataire->id,
@@ -309,9 +309,12 @@ class DocumentController extends Controller
                          $path = $path.'/'.$filename.$extension;
                          
                          $fichier->valide = 0 ;
-                         
+                        
+                        $today = date('Y-m-d');
+                        
                         $fichier->url = $path;
                         $fichier->extension = $extension;
+                        $fichier->expire = $request["date_expiration_$reference"] < $today ? true : false;
                         $fichier->date_expiration = $request["date_expiration_$reference"] ;
                         
                       
@@ -485,7 +488,9 @@ class DocumentController extends Controller
         
         $fichier->valide = $validation;
         $fichier->motif_refu = $request->motif;
-        
+        if($fichier->date_expiration != null && $fichier->date_expiration > date('Y-m-d')){
+            $fichier->expire = false;
+        }
         $fichier->update();
        
         // Si le fichié est refusé
