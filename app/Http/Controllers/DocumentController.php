@@ -339,7 +339,10 @@ class DocumentController extends Controller
                 if( $fichier != null){
                 
                     $reference = $document->reference;
-                    $fichier->date_expiration = $request["date_expiration_$reference"] ;                        
+                    $fichier->date_expiration = $request["date_expiration_$reference"] ;
+                    $today = date('Y-m-d');
+                    $fichier->expire = $request["date_expiration_$reference"] < $today ? true : false;
+                    
                     $fichier->update();
                     
                     $action = Auth::user()->nom." ".Auth::user()->prenom." a modifié la date d'expiration du fichier $document->nom de $mandataire->prenom $mandataire->nom";
