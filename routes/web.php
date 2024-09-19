@@ -13,7 +13,7 @@
 
 
 Auth::routes(['register' => false]);
-Route::middleware('auth')->group(function(){
+Route::middleware('admin')->group(function(){
 
     // Mandataires
    
