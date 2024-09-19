@@ -13,7 +13,7 @@
 
 
 Auth::routes(['register' => false]);
-Route::middleware('admin')->group(function(){
+Route::middleware('auth')->group(function(){
 
     // Mandataires
    
@@ -327,10 +327,11 @@ Route::middleware('admin')->group(function(){
 
     
     Route::get('/', function () {
+    dd("gee");
         return view('home');
     });
     Route::get('/home/{annee?}', 'HomeController@index')->name('home');       
-    Route::get('/', 'HomeController@index')->name('home');       
+    // Route::get('/', 'HomeController@index')->name('home');       
   
     
     // historique
