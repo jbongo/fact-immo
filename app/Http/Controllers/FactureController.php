@@ -3759,6 +3759,7 @@ return 4444;
             $request->validate([
                 'numero' => 'required|numeric|unique:factures',
                 'type' => 'required',
+                'mandataire_id' => 'required',
             ]);
 
             $destinataire_est_mandataire = true;
@@ -3786,7 +3787,8 @@ return 4444;
         ]);
    
    }
-       
+  
+       $montant_ttc = $request->soumis_tva ? $request->montant_ht * Tva::coefficient_tva() : 0;
        
 
        $facture = Facture::create([
@@ -3796,7 +3798,7 @@ return 4444;
             "type"=> $request->type,
             "encaissee"=> false,
             "montant_ht"=>  $request->montant_ht,
-            "montant_ttc"=> $request->montant_ht * Tva::coefficient_tva(),
+            "montant_ttc"=> $montant_ttc,
             "date_facture"=> $request->date_facture,
             "destinataire_est_mandataire"=> $destinataire_est_mandataire,
             "destinataire"=> $request->destinataire,
@@ -3879,6 +3881,7 @@ return 4444;
            
            }
 
+           $montant_ttc = $request->soumis_tva ? $request->montant_ht * Tva::coefficient_tva() : 0;
 
             $facture->numero = $request->numero;
             $facture->user_id = $user_id;
@@ -3886,7 +3889,7 @@ return 4444;
             $facture->type = $request->type;
 
             $facture->montant_ht =  $request->montant_ht;
-            $facture->montant_ttc = $request->montant_ht * Tva::coefficient_tva();
+            $facture->montant_ttc = $montant_ttc;
             $facture->date_facture = $request->date_facture;
             $facture->destinataire_est_mandataire = $destinataire_est_mandataire;
             $facture->est_liee_mandataire = $request->est_liee_mandataire ? true : false;
@@ -3917,16 +3920,18 @@ return 4444;
 
         // $compromis = Compromis::where('id', Crypt::decrypt($compromis_id))->first();
         // $mandataire = $compromis->user;
-
+        
+        $montant = $facture->montant_ttc > 0 ? $facture->montant_ttc : $facture->montant_ht ;
+        
         $facture = Facture::where('id', crypt::decrypt($facture_id))->first();
         if($facture->destinataire_est_mandataire == true ){
         
             $nom =  str_replace(['/', '\\', '<','>',':','|','?','*','#'],"-",$facture->user->nom) ;
             $prenom =  str_replace(['/', '\\', '<','>',':','|','?','*','#'],"-",$facture->user->prenom) ;
             
-            $filename = "F".$facture->numero." ".$facture->type." ".$facture->montant_ttc."€ ".strtoupper($nom)." ".strtoupper(substr($prenom,0,1)).".pdf" ;
+            $filename = "F".$facture->numero." ".$facture->type." ".$montant."€ ".strtoupper($nom)." ".strtoupper(substr($prenom,0,1)).".pdf" ;
         }else{
-            $filename = "F".$facture->numero." ".$facture->type." ".$facture->montant_ttc."€.pdf" ;
+            $filename = "F".$facture->numero." ".$facture->type." ".$montant."€.pdf" ;
         }
 
         if($facture->type == "cci" || $facture->type=="forfait_entree"){
@@ -3975,15 +3980,16 @@ return 4444;
             }
            
 
-
+        $montant = $facture->montant_ttc > 0 ? $facture->montant_ttc : $facture->montant_ht ;
+        
         if($facture->destinataire_est_mandataire == true ){
         
             $nom =  str_replace(['/', '\\', '<','>',':','|','?','*','#'],"-",$facture->user->nom) ;
             $prenom =  str_replace(['/', '\\', '<','>',':','|','?','*','#'],"-",$facture->user->prenom) ;
             
-            $filename = "F".$facture->numero." ".$facture->type." ".$facture->montant_ttc."€ ".strtoupper($nom)." ".strtoupper(substr($prenom,0,1)).".pdf" ;
+            $filename = "F".$facture->numero." ".$facture->type." ".$montant."€ ".strtoupper($nom)." ".strtoupper(substr($prenom,0,1)).".pdf" ;
         }else{
-            $filename = "F".$facture->numero." ".$facture->type." ".$facture->montant_ttc."€.pdf" ;
+            $filename = "F".$facture->numero." ".$facture->type." ".$montant."€.pdf" ;
         }
         
         $path = $path.'/'.$filename;
