@@ -3921,9 +3921,9 @@ return 4444;
         // $compromis = Compromis::where('id', Crypt::decrypt($compromis_id))->first();
         // $mandataire = $compromis->user;
         
-        $montant = $facture->montant_ttc > 0 ? $facture->montant_ttc : $facture->montant_ht ;
         
         $facture = Facture::where('id', crypt::decrypt($facture_id))->first();
+        $montant = $facture->montant_ttc > 0 ? $facture->montant_ttc : $facture->montant_ht ;
         if($facture->destinataire_est_mandataire == true ){
         
             $nom =  str_replace(['/', '\\', '<','>',':','|','?','*','#'],"-",$facture->user->nom) ;
