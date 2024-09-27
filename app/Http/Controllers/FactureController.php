@@ -3788,7 +3788,7 @@ return 4444;
    
    }
   
-       $montant_ttc = $request->soumis_tva ? $request->montant_ht * Tva::coefficient_tva() : 0;
+       $montant_ttc = $request->soumis_tva ? $request->montant_ht * Tva::coefficient_tva() : $request->montant_ht;
        
 
        $facture = Facture::create([
@@ -3881,7 +3881,7 @@ return 4444;
            
            }
 
-           $montant_ttc = $request->soumis_tva ? $request->montant_ht * Tva::coefficient_tva() : 0;
+           $montant_ttc = $request->soumis_tva ? $request->montant_ht * Tva::coefficient_tva() : $request->montant_ht;
 
             $facture->numero = $request->numero;
             $facture->user_id = $user_id;
@@ -3923,7 +3923,7 @@ return 4444;
         
         
         $facture = Facture::where('id', crypt::decrypt($facture_id))->first();
-        $montant = $facture->montant_ttc > 0 ? $facture->montant_ttc : $facture->montant_ht ;
+        $montant = $facture->montant_ttc ;
         if($facture->destinataire_est_mandataire == true ){
         
             $nom =  str_replace(['/', '\\', '<','>',':','|','?','*','#'],"-",$facture->user->nom) ;
@@ -3980,7 +3980,7 @@ return 4444;
             }
            
 
-        $montant = $facture->montant_ttc > 0 ? $facture->montant_ttc : $facture->montant_ht ;
+        $montant = $facture->montant_ttc;
         
         if($facture->destinataire_est_mandataire == true ){
         
