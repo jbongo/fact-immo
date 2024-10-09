@@ -1,17 +1,11 @@
 @component('mail::message')
 # Bonjour {{$mandataire->nom}} {{$mandataire->prenom}}
 
-{{-- Vous trouverez en pièce jointe la facture  --}}
+Vous trouverez en pièce jointe la facture 
 @if($facture->type == "stylimmo")
 STYL'IMMO 
 @elseif($facture->type == "cci")
-{{-- Attestation de Collaborateur (CCI)  --}}
-Après vérification, une erreur a été constatée dans le numéro de la facture CCI précédemment envoyée. <br>
-
-Veuillez trouver ci-joint la version corrigée de la facture.<br>
-Nous vous prions de bien vouloir ne pas prendre en compte la version initiale.<br>
-
-Nous restons à votre disposition pour toute question. <br>
+Attestation de Collaborateur (CCI) 
 @elseif($facture->type == "forfait_entree")
 Forfait d'entrée
 @elseif($facture->type == "pack_pub")
@@ -19,7 +13,7 @@ Pack pub
 @elseif($facture->type == "communication")
 Communication
 @endif
-{{-- <span style="color:red">F{{$facture->numero}}</span> --}}
+<span style="color:red">F{{$facture->numero}}</span>
 <br>
 
 @if($facture->type == "stylimmo")
