@@ -4002,7 +4002,6 @@ return 4444;
         
             $mandataire = $facture->user;
             Mail::to($mandataire->email)->send(new EnvoyerFactureStylimmoMandataire($mandataire,$facture));
-            Mail::to("contact@1genei.com")->send(new EnvoyerFactureStylimmoMandataire($mandataire,$facture));
             return   redirect()->route('facture.index')->with("ok", "Votre facture ". $facture->type." " .$facture->numero." a été créée et envoyée à $mandataire->email ");
             
        }
