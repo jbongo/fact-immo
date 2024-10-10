@@ -659,7 +659,7 @@ class CompromisController extends Controller
         if($request->a_avoir == "true" && $compromis->getFactureStylimmo() != null ){
             $facture = $compromis->getFactureStylimmo();
              $motif = "Modification du compromis";
-             $numero = Facture::whereIn('type',['avoir','stylimmo','pack_pub','carte_visite','communication','autre'])->max('numero') + 1;
+             $numero = Facture::whereIn('type',['avoir','stylimmo','pack_pub','carte_visite','communication','autre','forfait_entree','cci'])->max('numero') + 1;
  
             //   dd($numero);
              $avoir = Facture::store_avoir($facture->id, $numero, $motif);
@@ -942,7 +942,7 @@ class CompromisController extends Controller
         if($compromis->getFactureStylimmo() != null ){
             $facture = $compromis->getFactureStylimmo();
              $motif = "Archivage du compromis";
-             $numero = Facture::whereIn('type',['avoir','stylimmo','pack_pub','carte_visite','communication','autre'])->max('numero') + 1;
+             $numero = Facture::whereIn('type',['avoir','stylimmo','pack_pub','carte_visite','communication','autre','forfait_entree','cci'])->max('numero') + 1;
  
             //  dd($facture);
              $avoir = Facture::store_avoir($facture->id, $numero, $motif);

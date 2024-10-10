@@ -55,7 +55,7 @@ class FactpubController extends Controller
         // Si la facture a été validé
         if($validation == 1){
            
-            $numero = Facture::whereIn('type',['avoir','stylimmo','pack_pub','carte_visite','communication','autre'])->max('numero') + 1;
+            $numero = Facture::whereIn('type',['avoir','stylimmo','pack_pub','carte_visite','communication','autre','forfait_entree','cci'])->max('numero') + 1;
             
             $facture = Facture::create([
                 "numero"=> $numero,
@@ -118,7 +118,7 @@ class FactpubController extends Controller
             // Si la facture a été validé
             if($validation == 1){
                
-                $numero = Facture::whereIn('type',['avoir','stylimmo','pack_pub','carte_visite','communication','autre'])->max('numero') + 1;
+                $numero = Facture::whereIn('type',['avoir','stylimmo','pack_pub','carte_visite','communication','autre','forfait_entree','cci'])->max('numero') + 1;
                 
               
                 
