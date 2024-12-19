@@ -113,7 +113,7 @@ class CompromisController extends Controller
             $compromis = Compromis::where([['je_renseigne_affaire',true],['archive',false],['cloture_affaire','<',2]])->latest()->get();
             $compromisParrain = Compromis::where([['je_renseigne_affaire',true],['archive',false],['cloture_affaire','<',2]])->latest()->get();
         }else{
-            $compromis = Compromis::where([['user_id',Auth::user()->id],['je_renseigne_affaire',true],['archive',false],['cloture_affaire','<',2]])->orWhere([['agent_id',Auth::user()->id],['archive',false]])->latest()->get();
+            $compromis = Compromis::where([['user_id',Auth::user()->id],['je_renseigne_affaire',true],['archive',false],['cloture_affaire','<',2]])->orWhere([['agent_id',Auth::user()->id],['archive',false],['cloture_affaire','<',2]])->latest()->get();
             
         
            
