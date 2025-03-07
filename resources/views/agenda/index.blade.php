@@ -3,13 +3,7 @@
     @section ('page_title')
     <span class="control-label">Agenda Général </span> 
     @endsection
-    <style>
-        .modal-header .close {
-            font-size: 55px;
-            margin-right: 15px;  
-            color: red;
-        }
-    </style>
+
     
     <div class="row"> 
 

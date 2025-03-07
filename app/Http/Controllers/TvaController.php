@@ -31,6 +31,10 @@ class TvaController extends Controller
     {
     
  
+        return view('test');
+
+
+
         $classmap = array('MyWSDLStructure' => 'MyComplexDataType');
         $client = new \SoapClient("https://production.protexa.fr/WSPROTEXA_WEB/awws/wsprotexa.awws?wsdl",array("trace" => 1, "exception" => 0));
            
@@ -66,50 +70,13 @@ dd($xml);
 // echo($res->wsplistereservationResult);
   
 //   var_dump($xml);
-//    pontaud.l@stylimmo.com SPDl44461@@
+
 
 return "yes";
       
-        $contrats = Contrat::where([['est_fin_droit_suite', false],['deduis_jeton', false],['user_id','<>', null]])->get();      
+     
 
 
-
-    
-        foreach ($contrats as $contrat) {
-        
-            $mandataire = $contrat->user;
-            // On met à jour le nombre de factures pub non encaissée du mandataire
-            $mandataire->nb_facture_pub_retard =  Facture::where([['user_id', $contrat->user_id], ['type', 'pack_pub'], ['encaissee', false]])->count() ;
-            $mandataire->update();
-           
-        }
-
-
-
-
-    $filleuls = Filleul::all();
-    
-        foreach ($filleuls as $fill) {
-            
-            $expire = $fill->expire == 0 ? "": "expiré";
-            
-            echo " Parrain: {$fill->parrain()->nom} {$fill->parrain()->prenom} |  Filleul: {$fill->user->nom } {$fill->user->prenom} ===> $expire <br><br>";
-            
-        }
-
-exit;
-       
-        $mandataires = User::where('role','mandataire')->orderBy('nom')->get();
-        
-        foreach ($mandataires as $mandataire) {
-            if(($mandataire->contrat != null && $mandataire->contrat->a_demission == false && $mandataire->contrat->est_fin_droit_suite == false) ) {
-            
-                echo $mandataire->email.", $mandataire->email_perso,<br>";
-            }
-        }
-
-
-dd("cc");
 
 }
 

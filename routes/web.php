@@ -1,5 +1,8 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -354,96 +357,119 @@ Route::middleware('auth')->group(function(){
 
 
 
-// Agenda  général
-Route::get('/agendas/general','AgendaController@index')->name('agendas.index');
-Route::get('/agendas/general/listing','AgendaController@listing')->name('agendas.listing');
-Route::get('/agendas/general/listing-a-faire','AgendaController@listing_a_faire')->name('agendas.listing_a_faire');
-Route::get('/agendas/general/listing-en-retard','AgendaController@listing_en_retard')->name('agendas.listing_en_retard');
-Route::post('/agenda/store','AgendaController@store')->name('agenda.store');
-Route::post('/agenda/update','AgendaController@update')->name('agenda.update');
-Route::get('/agenda/delete/{agenda_id}','AgendaController@destroy')->name('agenda.delete');
+    // Agenda  général
+    Route::get('/agendas/general','AgendaController@index')->name('agendas.index');
+    Route::get('/agendas/general/listing','AgendaController@listing')->name('agendas.listing');
+    Route::get('/agendas/general/listing-a-faire','AgendaController@listing_a_faire')->name('agendas.listing_a_faire');
+    Route::get('/agendas/general/listing-en-retard','AgendaController@listing_en_retard')->name('agendas.listing_en_retard');
+    Route::post('/agenda/store','AgendaController@store')->name('agenda.store');
+    Route::post('/agenda/update','AgendaController@update')->name('agenda.update');
+    Route::get('/agenda/delete/{agenda_id}','AgendaController@destroy')->name('agenda.delete');
 
 
-// Export WINFIC liste des factures ventes
-Route::get('/winfic','ExportwinficController@index')->name('winfic.index');
+    // Export WINFIC liste des factures ventes
+    Route::get('/winfic','ExportwinficController@index')->name('winfic.index');
 
-// Export WINFIC liste des factures fournisseurs
-Route::get('/winfic/fournisseur','ExportwinficController@index_fournisseur')->name('winfic.index_fournisseur');
+    // Export WINFIC liste des factures fournisseurs
+    Route::get('/winfic/fournisseur','ExportwinficController@index_fournisseur')->name('winfic.index_fournisseur');
 
-// tranfert des ventes
-Route::get('/winfic/exporter_ecriture1/{date_deb?}/{date_fin?}','ExportwinficController@exporter_ecriture1')->name('winfic.exporter_ecriture1');
-// Transfert des encaissements et decaissements
-Route::get('/winfic/exporter_ecriture2/{date_deb?}/{date_fin?}','ExportwinficController@exporter_ecriture2')->name('winfic.exporter_ecriture2');
+    // tranfert des ventes
+    Route::get('/winfic/exporter_ecriture1/{date_deb?}/{date_fin?}','ExportwinficController@exporter_ecriture1')->name('winfic.exporter_ecriture1');
+    // Transfert des encaissements et decaissements
+    Route::get('/winfic/exporter_ecriture2/{date_deb?}/{date_fin?}','ExportwinficController@exporter_ecriture2')->name('winfic.exporter_ecriture2');
 
-// Transfert des factures fournisseurs (Achats) 
-Route::post('/winfic/exporter_ecriture3/{date_deb?}/{date_fin?}','ExportwinficController@exporter_ecriture3')->name('winfic.exporter_ecriture3');
+    // Transfert des factures fournisseurs (Achats) 
+    Route::post('/winfic/exporter_ecriture3/{date_deb?}/{date_fin?}','ExportwinficController@exporter_ecriture3')->name('winfic.exporter_ecriture3');
 
-Route::get('/winfic/exporter_ecrana/{date_deb?}/{date_fin?}','ExportwinficController@exporter_ecrana')->name('winfic.exporter_ecrana');
-Route::get('/winfic/code-analytic-client','ExportwinficController@code_analytic_client')->name('winfic.code_analytic_client');
-Route::get('/winfic/download/{fichier?}','ExportwinficController@download_export')->name('winfic.download_export');
+    Route::get('/winfic/exporter_ecrana/{date_deb?}/{date_fin?}','ExportwinficController@exporter_ecrana')->name('winfic.exporter_ecrana');
+    Route::get('/winfic/code-analytic-client','ExportwinficController@code_analytic_client')->name('winfic.code_analytic_client');
+    Route::get('/winfic/download/{fichier?}','ExportwinficController@download_export')->name('winfic.download_export');
 
-Route::get('/merge_facture/{date_deb?}/{date_fin?}','ExportwinficController@merge_factures')->name('merge_facture');
-Route::post('/merge_facture_fournisseur/{date_deb?}/{date_fin?}','ExportwinficController@merge_factures_fournisseur')->name('merge_facture_fournisseur');
-
-
-
-// Banque
-
-Route::get('/banque/traitement','BanqueController@traiter_encaissement')->name('banque.traitement');
-Route::get('/banque/lecture_fichier','BanqueController@lecture_fichier_banque')->name('banque.lecture.fichier');
+    Route::get('/merge_facture/{date_deb?}/{date_fin?}','ExportwinficController@merge_factures')->name('merge_facture');
+    Route::post('/merge_facture_fournisseur/{date_deb?}/{date_fin?}','ExportwinficController@merge_factures_fournisseur')->name('merge_facture_fournisseur');
 
 
-// Documents
 
-Route::get('/documents','DocumentController@index')->name('document.index')->middleware('admin');
-Route::get('/documents/a_valider','DocumentController@a_valider')->name('document.a_valider')->middleware('admin');
-Route::get('/documents/valider/{validation}/{fichier_id}','DocumentController@valider')->name('document.valider')->middleware('admin');
-Route::get('/documents/liste','DocumentController@liste')->name('document.liste');
-Route::get('/documents/create','DocumentController@create')->name('document.create')->middleware('admin');
-Route::get('/documents/edit/{document_id}','DocumentController@edit')->name('document.edit')->middleware('admin');
-Route::get('/documents/show/{mandataire_id}','DocumentController@show')->name('document.show');
-Route::post('/documents/store','DocumentController@store')->name('document.store');
-Route::post('/documents/update/{document_id}','DocumentController@update')->name('document.update');
-Route::get('/documents/archiver/{document_id}','DocumentController@archiver')->name('document.archiver');
-Route::post('/documents/save_doc/{mandataire_id}','DocumentController@save_doc')->name('document.save_doc');
-Route::get('/documents/telecharger/{mandataire_id}/{document_id}','DocumentController@download_document')->name('document.telecharger');
-Route::get('/documents/telecharger_historique/{historique_id}/','DocumentController@download_historique_document')->name('document.telecharger.historique');
-Route::get('/documents/historique/{mandataire_id}','DocumentController@historique')->name('document.historique');
+    // Banque
+
+    Route::get('/banque/traitement','BanqueController@traiter_encaissement')->name('banque.traitement');
+    Route::get('/banque/lecture_fichier','BanqueController@lecture_fichier_banque')->name('banque.lecture.fichier');
 
 
-// Blibliotheque
-Route::get('/bibliotheque','BibliothequeController@index')->name('bibliotheque.index');
-Route::get('/bibliotheque/create','BibliothequeController@create')->name('bibliotheque.create');
-Route::get('/bibliotheque/edit/{bibliotheque_id}','BibliothequeController@edit')->name('bibliotheque.edit');
-Route::post('/bibliotheque/store','BibliothequeController@store')->name('bibliotheque.store');
-Route::post('/bibliotheque/update/{bibliotheque_id}','BibliothequeController@update')->name('bibliotheque.update');
-Route::get('/bibliotheque/telecharger/{bibliotheque_id}','BibliothequeController@download_bibliotheque')->name('bibliotheque.telecharger');
-Route::get('/bibliotheque/delete/{bibliotheque_id}','BibliothequeController@destroy')->name('bibliotheque.delete');
-Route::get('/bibliotheque/envoyer/{bibliotheque_id}/{user_id}/{type?}','BibliothequeController@envoyer_document')->name('bibliotheque.envoyer');
+    // Documents
+
+    Route::get('/documents','DocumentController@index')->name('document.index')->middleware('admin');
+    Route::get('/documents/a_valider','DocumentController@a_valider')->name('document.a_valider')->middleware('admin');
+    Route::get('/documents/valider/{validation}/{fichier_id}','DocumentController@valider')->name('document.valider')->middleware('admin');
+    Route::get('/documents/liste','DocumentController@liste')->name('document.liste');
+    Route::get('/documents/create','DocumentController@create')->name('document.create')->middleware('admin');
+    Route::get('/documents/edit/{document_id}','DocumentController@edit')->name('document.edit')->middleware('admin');
+    Route::get('/documents/show/{mandataire_id}','DocumentController@show')->name('document.show');
+    Route::post('/documents/store','DocumentController@store')->name('document.store');
+    Route::post('/documents/update/{document_id}','DocumentController@update')->name('document.update');
+    Route::get('/documents/archiver/{document_id}','DocumentController@archiver')->name('document.archiver');
+    Route::post('/documents/save_doc/{mandataire_id}','DocumentController@save_doc')->name('document.save_doc');
+    Route::get('/documents/telecharger/{mandataire_id}/{document_id}','DocumentController@download_document')->name('document.telecharger');
+    Route::get('/documents/telecharger_historique/{historique_id}/','DocumentController@download_historique_document')->name('document.telecharger.historique');
+    Route::get('/documents/historique/{mandataire_id}','DocumentController@historique')->name('document.historique');
 
 
-// Outils informatique
-Route::get('/outil-info','OutilinfoController@index')->name('outil_info.index');
-Route::get('/outil-info/create','OutilinfoController@create')->name('outil_info.create');
-Route::get('/outil-info/edit/{outil_id}','OutilinfoController@edit')->name('outil_info.edit');
-Route::post('/outil-info/store','OutilinfoController@store')->name('outil_info.store');
-Route::post('/outil-info/update/{outil_id}','OutilinfoController@update')->name('outil_info.update');
+    // Blibliotheque
+    Route::get('/bibliotheque','BibliothequeController@index')->name('bibliotheque.index');
+    Route::get('/bibliotheque/create','BibliothequeController@create')->name('bibliotheque.create');
+    Route::get('/bibliotheque/edit/{bibliotheque_id}','BibliothequeController@edit')->name('bibliotheque.edit');
+    Route::post('/bibliotheque/store','BibliothequeController@store')->name('bibliotheque.store');
+    Route::post('/bibliotheque/update/{bibliotheque_id}','BibliothequeController@update')->name('bibliotheque.update');
+    Route::get('/bibliotheque/telecharger/{bibliotheque_id}','BibliothequeController@download_bibliotheque')->name('bibliotheque.telecharger');
+    Route::get('/bibliotheque/delete/{bibliotheque_id}','BibliothequeController@destroy')->name('bibliotheque.delete');
+    Route::get('/bibliotheque/envoyer/{bibliotheque_id}/{user_id}/{type?}','BibliothequeController@envoyer_document')->name('bibliotheque.envoyer');
 
-Route::get('/outil-info/archive','OutilinfoController@archive')->name('outil_info.archive');
-Route::delete('/outil-info/delete/{outil_id}','OutilinfoController@delete')->name('outil_info.delete');
 
-// Fiche informatique
-Route::get('/fiche-info','FicheinfoController@index')->name('fiche_info.index');
-Route::get('/fiche-info/create/{mandataire_id}','FicheinfoController@create')->name('fiche_info.create');
-Route::get('/fiche-info/edit/{mandataire_id}','FicheinfoController@edit')->name('fiche_info.edit');
-Route::post('/fiche-info/store','FicheinfoController@store')->name('fiche_info.store');
-Route::post('/fiche-info/update/{mandataire_id}','FicheinfoController@update')->name('fiche_info.update');
-Route::get('/fiche-info/pdf/{mandataire_id}','FicheinfoController@fiche_pdf')->name('fiche_info.fiche_pdf');
-Route::get('/fiche-info/reiniatiliser/{mandataire_id}','FicheinfoController@reiniatiliser')->name('fiche_info.reiniatiliser');
+    // Outils informatique
+    Route::get('/outil-info','OutilinfoController@index')->name('outil_info.index');
+    Route::get('/outil-info/create','OutilinfoController@create')->name('outil_info.create');
+    Route::get('/outil-info/edit/{outil_id}','OutilinfoController@edit')->name('outil_info.edit');
+    Route::post('/outil-info/store','OutilinfoController@store')->name('outil_info.store');
+    Route::post('/outil-info/update/{outil_id}','OutilinfoController@update')->name('outil_info.update');
+
+    Route::get('/outil-info/archive','OutilinfoController@archive')->name('outil_info.archive');
+    Route::delete('/outil-info/delete/{outil_id}','OutilinfoController@delete')->name('outil_info.delete');
+
+    // Fiche informatique
+    Route::get('/fiche-info','FicheinfoController@index')->name('fiche_info.index');
+    Route::get('/fiche-info/create/{mandataire_id}','FicheinfoController@create')->name('fiche_info.create');
+    Route::get('/fiche-info/edit/{mandataire_id}','FicheinfoController@edit')->name('fiche_info.edit');
+    Route::post('/fiche-info/store','FicheinfoController@store')->name('fiche_info.store');
+    Route::post('/fiche-info/update/{mandataire_id}','FicheinfoController@update')->name('fiche_info.update');
+    Route::get('/fiche-info/pdf/{mandataire_id}','FicheinfoController@fiche_pdf')->name('fiche_info.fiche_pdf');
+    Route::get('/fiche-info/reiniatiliser/{mandataire_id}','FicheinfoController@reiniatiliser')->name('fiche_info.reiniatiliser');
+
+    // Gestion des mandats
+    Route::get('/mandats','MandatController@index')->name('mandat.index');
+    Route::get('/mandats/create','MandatController@create')->name('mandat.create');
+    Route::post('/mandats/store','MandatController@store')->name('mandat.store');
+    Route::get('/mandats/edit/{mandat_id}','MandatController@edit')->name('mandat.edit');
+    Route::get('/mandats/completer/{mandat_id}','MandatController@completer')->name('mandat.completer');
+    Route::get('/mandats/show/{mandat_id}','MandatController@show')->name('mandat.show');
+    Route::post('/mandats/update/{id}', 'MandatController@update')->name('mandat.update');
+    Route::post('/mandats/reserver', 'MandatController@reserver')->name('mandat.reserver');
+    Route::post('/mandats/store-reservation', 'MandatController@store_reservation')->name('mandat.store_reservation');
+    Route::post('/mandats/update-reservation/{mandat}', 'MandatController@update_reservation')->name('mandat.update_reservation');
+    Route::get('/mandats/contacts', 'MandatController@getContacts')->name('contacts.list');
+    Route::post('/mandats/cloturer/{id}', 'MandatController@cloturer')->name('mandat.cloturer');
+    Route::post('/mandats/archiver/{id}', 'MandatController@archiver')->name('mandat.archiver');
+    Route::post('/mandats/desarchiver/{id}', 'MandatController@desarchiver')->name('mandat.desarchiver');
+
+    // Ajouter cette route avant la route create
+    Route::get('/mandats/select-type', 'MandatController@selectType')->name('mandat.select_type');
+
+    // Ajouter dans le groupe middleware auth
+    Route::get('/mandats/parametres', 'MandatController@parametres')->name('mandat.parametres');
+    Route::post('/mandats/update-parametres/{user}', 'MandatController@updateParametres')->name('mandat.update_parametres');
 
 });
 
-// Blibliotheque
+    // Blibliotheque
 Route::get('/bibliotheque/show/{bibliotheque_id}/{user_id}/{type_user}','BibliothequeController@show')->name('bibliotheque.show');
 Route::post('/bibliotheque/reponseuser/{bibliotheque_id}/{user_id}/{type?}','BibliothequeController@reponseUser')->name('bibliotheque.reponseuser');
 
@@ -455,9 +481,17 @@ Route::post('fiche/prospect/{prospect}/','ProspectController@sauvegarder_fiche')
 
 
 
+
 // Tests
 Route::get('test','TvaController@test')->name('test');
 
 // Route::get('/test', function () {
 //     return view('test');
 // });
+
+// Ajouter ces routes en dehors du groupe middleware auth
+Route::get('/reservation-externe', 'MandatController@reservationExterne')->name('reservation.externe');
+Route::post('/check-code', 'MandatController@checkCode')->name('check.code');
+Route::post('/reserver-externe', 'MandatController@reserverExterne')->name('reserver.externe');
+
+Route::post('/mandats/update-reservation-externe/{id}', 'MandatController@updateReservationExterne')->name('update.reservation.externe');

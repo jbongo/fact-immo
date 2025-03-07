@@ -11,17 +11,12 @@
     <link href="{{ asset('css/lib/chartist/chartist.min.css')}}" rel="stylesheet">
     <link href="{{ asset('css/lib/font-awesome.min.css')}}" rel="stylesheet">
     <link href="{{ asset('css/lib/themify-icons.css')}}" rel="stylesheet">
-    {{-- <link href="{{ asset('css/lib/owl.carousel.min.css')}}" rel="stylesheet" /> --}}
-    {{-- <link href="{{ asset('css/lib/owl.theme.default.min.css')}}" rel="stylesheet" /> --}}
-    {{-- <link href="{{ asset('css/lib/weather-icons.css')}}" rel="stylesheet" /> --}}
     <link href="{{ asset('css/lib/menubar/sidebar.css')}}" rel="stylesheet">
-    <link href="{{ asset('css/lib/bootstrap.min.css')}}" rel="stylesheet">
+    {{-- <link href="{{ asset('css/lib/bootstrap.min.css')}}" rel="stylesheet"> --}}
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link href="{{ asset('css/lib/unix.css')}}" rel="stylesheet">
     <link href="{{ asset('css/style.css')}}" rel="stylesheet">
-    {{-- <link href="{{ asset('css/dropzone.css')}}" rel="stylesheet">
-    <link href="{{ asset('css/dropzone-custom.css')}}" rel="stylesheet"> --}}
     <link href="{{ asset('css/lib/sweetalert/sweetalert.css')}}" rel="stylesheet">
-    {{-- <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"> --}}
     <link href="https://cdn.datatables.net/fixedheader/3.1.7/css/fixedHeader.bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.datatables.net/responsive/2.2.4/css/responsive.bootstrap.min.css" rel="stylesheet">
 
@@ -34,7 +29,8 @@
 
     <link href="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.css" rel="stylesheet">
 
-
+{{-- TAILWIND CSS --}}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
 
 
     <link href="{{ asset('css/lib/select2/select2.min.css') }}" rel="stylesheet">
@@ -68,13 +64,5 @@
 			border-radius: 4px; 
 			padding: 5px 5px 5px 10px; 
 			background-color: #ffffff;
-    }
-</style>
-
-<style>
-    .modal-header .close {
-        font-size: 55px;
-        margin-right: 15px;  
-        color: red;
     }
 </style>

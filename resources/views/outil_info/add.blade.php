@@ -83,24 +83,7 @@ Ajouter un outil informatique
                            </div>
                         </div>
                    </div>
-                   
-                    {{-- <div class="col-lg-12 col-md-12 col-sm-12">
 
-                        <div class="col-lg-12 col-md-12 col-sm-12" id="palier_expert">                          
-                                
-                            <a class="btn btn-danger add_champ" style="margin-left: 53px;">Ajouter un champ</a> <br> <hr>
-                            <div class="form-inline champs" id="champs">
-                                
-                            </div>                          
-                           
-                        </div>
-                    </div>
-                     --}}
-                    
-            
-
-                        
-       
                     <div class="col-lg-12 col-md-12 col-sm-12" style="margin-top:100px; float:left;">
 
                           <div class="form-group row">

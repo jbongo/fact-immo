@@ -3,7 +3,7 @@
         $curent_url = $_SERVER['REQUEST_URI'];
         $curent_url = explode('/', $curent_url);
         
-        $li_home = $li_stats = $li_mandataire = $li_prospect_gestion = $li_prospect_archive = $li_affaire = $li_affaire_filleul = $li_affaire_archive = $li_facture = $li_facture_gestion = $li_facture_demande = $li_facture_a_payer = $li_facture_a_valider = $li_parametre = $li_parametre_modele = $li_parametre_fournisseur = $li_parametre_bareme_honoraire = $li_parametre_pack_pub = $li_parametre_generaux = $li_outil = $li_affaire_toutes = $li_affaire_cloture = $li_facture_hors_delais = $li_jetons = $li_facture_pub = $li_parrainage = $li_documents = $li_documents_gestion = $li_documents_a_valider = $li_fournisseurs = $li_fournisseurs_passerelle = $li_fournisseurs_autre = '';
+        $li_home = $li_stats = $li_mandataire = $li_mandat= $li_prospect_gestion = $li_prospect_archive = $li_affaire = $li_affaire_filleul = $li_affaire_archive = $li_facture = $li_facture_gestion = $li_facture_demande = $li_facture_a_payer = $li_facture_a_valider = $li_parametre = $li_parametre_modele = $li_parametre_fournisseur = $li_parametre_bareme_honoraire = $li_parametre_pack_pub = $li_parametre_generaux = $li_outil = $li_affaire_toutes = $li_affaire_cloture = $li_facture_hors_delais = $li_jetons = $li_facture_pub = $li_parrainage = $li_documents = $li_documents_gestion = $li_documents_a_valider = $li_fournisseurs = $li_fournisseurs_passerelle = $li_fournisseurs_autre = '';
         
         switch ($curent_url[1]) {
             case 'home':
@@ -18,6 +18,10 @@
             case 'mandataires':
                 $li_mandataire = 'active';
                 break;
+            case 'mandats':
+                $li_mandat = 'active';
+                break;
+
             case 'parrainage':
                 $li_parrainage = 'active';
                 break;
@@ -190,16 +194,20 @@
 
 
                     @if (Auth()->user()->role == 'admin')
-                        <li class="{{ $li_stats }}" style=" background:#e6ea9a"><a
+                        <li class="{{ $li_stats }}"><a
                                 href="{{ route('stats.index', date('Y')) }}"><i class="large material-icons"
                                     style="font-size:20px;">equalizer</i> Statistiques </a></li>
                     @endif
+                    <li class="{{ $li_mandat }}"><a href="{{ route('mandat.index') }}" class=""> <i
+                        class="large material-icons" style="font-size:20px;">person</i></i>Mandats </a>
+                    </li>
 
                     @if (Auth()->user()->role == 'admin')
                         <li class="{{ $li_mandataire }}"><a href="{{ route('mandataire.index') }}" class=""> <i
                                     class="large material-icons" style="font-size:20px;">person</i></i>Mandataires </a>
                         </li>
                     @endif
+                    
                     @if (Auth()->user()->role == 'admin' || Auth()->user()->is_superviseur == true)
                         <li class="{{ $li_prospect_gestion }} {{ $li_prospect_archive }}"><a href=""
                                 class="sidebar-sub-toggle"> <i class="large material-icons"

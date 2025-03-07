@@ -30,6 +30,10 @@ class CreateUsersTable extends Migration
             $table->string('numero_tva')->nullable();
             $table->string('email')->unique();
             $table->string('email_perso')->nullable()->unique();
+            $table->string('code_unique')->nullable();
+            $table->integer('quota_mandats_non_retournes')->default(5)->nullable();
+            $table->integer('nb_reservation_en_cours')->default(0)->nullable();
+            $table->integer('quota_reservation_en_cours')->default(5)->nullable();
             $table->enum('role',['admin','mandataire']);
             $table->integer('demande_facture')->default(0);
             $table->timestamp('email_verified_at')->nullable();
