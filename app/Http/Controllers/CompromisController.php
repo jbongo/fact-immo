@@ -113,7 +113,7 @@ class CompromisController extends Controller
             $compromis = Compromis::where([['je_renseigne_affaire',true],['archive',false],['cloture_affaire','<',2]])->latest()->get();
             $compromisParrain = Compromis::where([['je_renseigne_affaire',true],['archive',false],['cloture_affaire','<',2]])->latest()->get();
         }else{
-            $compromis = Compromis::where([['user_id',Auth::user()->id],['je_renseigne_affaire',true],['archive',false],['cloture_affaire','<',2]])->orWhere([['agent_id',Auth::user()->id],['archive',false]])->latest()->get();
+            $compromis = Compromis::where([['user_id',Auth::user()->id],['je_renseigne_affaire',true],['archive',false],['cloture_affaire','<',2]])->orWhere([['agent_id',Auth::user()->id],['archive',false],['cloture_affaire','<',2]])->latest()->get();
             
         
            
@@ -659,7 +659,7 @@ class CompromisController extends Controller
         if($request->a_avoir == "true" && $compromis->getFactureStylimmo() != null ){
             $facture = $compromis->getFactureStylimmo();
              $motif = "Modification du compromis";
-             $numero = Facture::whereIn('type',['avoir','stylimmo','pack_pub','carte_visite','communication','autre'])->max('numero') + 1;
+             $numero = Facture::whereIn('type',['avoir','stylimmo','pack_pub','carte_visite','communication','autre','forfait_entree','cci'])->max('numero') + 1;
  
             //   dd($numero);
              $avoir = Facture::store_avoir($facture->id, $numero, $motif);
@@ -942,7 +942,7 @@ class CompromisController extends Controller
         if($compromis->getFactureStylimmo() != null ){
             $facture = $compromis->getFactureStylimmo();
              $motif = "Archivage du compromis";
-             $numero = Facture::whereIn('type',['avoir','stylimmo','pack_pub','carte_visite','communication','autre'])->max('numero') + 1;
+             $numero = Facture::whereIn('type',['avoir','stylimmo','pack_pub','carte_visite','communication','autre','forfait_entree','cci'])->max('numero') + 1;
  
             //  dd($facture);
              $avoir = Facture::store_avoir($facture->id, $numero, $motif);

@@ -203,8 +203,26 @@ Modification facture {{$facture->type}} {{$facture->numero}}
                               @endif 
                            </div>
                         </div>
-                  </div>
-    
+                     </div>
+                     
+                     <div class="row">
+
+                        <div class="form-group row">
+                           <label class="col-lg-3 col-md-3 col-sm-4  control-label" value="" for="montant_ht">Facture soumise à la TVA ? <span class="text-danger">*</span></label>
+                           <div class="col-lg-3 col-md-3 col-sm-3 ">
+                             <input type="checkbox" @if($facture->montant_ttc > 0) checked @endif data-toggle="toggle" id="soumis_tva" name="soumis_tva" data-off="Non" data-on="Oui" data-onstyle="success" data-offstyle="danger">
+                              @if ($errors->has('soumis_tva'))
+                                 <br>
+                                 <div class="alert alert-warning ">
+                                    <strong>{{$errors->first('soumis_tva')}}</strong> 
+                                 </div>
+                              @endif
+                             
+                           </div>
+                        </div>
+                        
+                        
+                     </div>
                      
        
                   
@@ -250,16 +268,6 @@ Modification facture {{$facture->type}} {{$facture->numero}}
       }
    })
 
-
-   //  Ajout de la facture
-
-   // $('#ajouter').click(function(e){
-
-   //    e.preventDefault();
-
-   //    $('#ajouter').submit()
-   //    console.log("ee");
-   // })
 </script>
 
 

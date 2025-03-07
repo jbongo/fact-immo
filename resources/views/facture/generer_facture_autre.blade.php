@@ -120,11 +120,20 @@ Facture N° {{$facture->numero}}
             <td style="width: 160px;">TOTAL H.T :</td>
             <td style="width: 100px; text-align:right;" >{{number_format($facture->montant_ht,2,',',' ')}} &euro;</td>
         </tr>
-        <tr>
-            <td style="width: 400px;">&nbsp;</td>
-            <td style="width: 160px;">T.V.A 20% :</td>
-            <td style="width: 100px; text-align:right;" >{{number_format($facture->montant_ht * App\Tva::tva(),2,',',' ')}} &euro;</td>
-        </tr>
+        @if($facture->montant_ttc > $facture->montant_ht)
+            <tr>
+                <td style="width: 400px;">&nbsp;</td>
+                <td style="width: 160px;">T.V.A 20% :</td>
+                <td style="width: 100px; text-align:right;" >{{number_format($facture->montant_ht * App\Tva::tva(),2,',',' ')}} &euro;</td>
+            </tr>
+        @else 
+            <tr>
+                <td style="width: 400px;">&nbsp;</td>
+                <td style="width: 160px;">T.V.A :</td>
+                <td style="width: 100px; text-align:right;" >0 &euro;</td>
+            </tr>        
+        @endif
+        
         <tr>
             <td style="width: 400px;">&nbsp;</td>
             <td style="width: 160px;">TOTAL T.T.C:</td>
@@ -138,7 +147,7 @@ Facture N° {{$facture->numero}}
     <tbody>
         <tr style="height: 25px;">
             <td style="width: 300px; height: 25px;">Valeur en votre aimable r&egrave;glement de :</td>
-            <td style="width: 200px; height: 25px;">{{number_format($facture->montant_ttc,2,'.',' ')}} &euro; TTC</td>
+            <td style="width: 200px; height: 25px;">{{number_format($facture->montant_ttc,2,'.',' ')}} &euro; </td>           
             <td style="width: 187px; height: 25px;"><span style="color: #ff0000; font-size:18px; font-weight:bold">&nbsp;R&eacute;f &agrave; rappeler: {{$facture->numero}}</span></td>
         </tr>
     </tbody>

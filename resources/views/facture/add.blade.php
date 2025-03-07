@@ -219,7 +219,6 @@ Création de facture
                         <div class="form-group row">
                            <label class="col-lg-3 col-md-3 col-sm-4  control-label" value="" for="montant_ht">Montant HT produit(s) <span class="text-danger">*</span></label>
                            <div class="col-lg-3 col-md-3 col-sm-3 ">
-
                               <input type="number" class="form-control" step="any"  id="montant_ht" name="montant_ht" value="{{old('montant_ht')}} " required/>
 
                               @if ($errors->has('montant_ht'))
@@ -230,8 +229,30 @@ Création de facture
                               @endif 
                            </div>
                         </div>
+                        
+                        
+                     </div>
+                     
+                     <div class="row">
+
+                        <div class="form-group row">
+                           <label class="col-lg-3 col-md-3 col-sm-4  control-label" value="" for="montant_ht">Facture soumise à la TVA ? <span class="text-danger">*</span></label>
+                           <div class="col-lg-3 col-md-3 col-sm-3 ">
+                             <input type="checkbox" checked data-toggle="toggle" id="soumis_tva" name="soumis_tva" data-off="Non" data-on="Oui" data-onstyle="success" data-offstyle="danger">
+                              @if ($errors->has('soumis_tva'))
+                                 <br>
+                                 <div class="alert alert-warning ">
+                                    <strong>{{$errors->first('soumis_tva')}}</strong> 
+                                 </div>
+                              @endif
+                             
+                           </div>
+                        </div>
+                        
+                        
                      </div>
     
+                    
                      
        
                   

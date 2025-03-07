@@ -49,10 +49,15 @@
 <table style="height: 47px; width: 672px;">
     <tbody>
     <tr style="height: 18px;">
-        <td style="width: 400px;"> <strong>  @if($facture->type =="cci")   Attestation de Collaborateur (CCI)  @elseif($facture->type =="forfait_entree") Forfait d'entrée @else {!! $facture->description_produit !!}   @endif </strong></td>
-        <td style="width: 160px;">&nbsp; </td>
-        <td style="width: 100px; text-align:right;" >{{ number_format($facture->montant_ht,2,',',' ')}} &euro; </td>
-    </tr>
+        @if($facture->description_produit != null)
+            <td style="width: 400px;">{!! $facture->description_produit !!}</td>        
+        @else
+            <td style="width: 400px;"> <strong>  @if($facture->type =="cci")   Attestation Collaborateur (CCI)  @elseif($facture->type =="forfait_entree") Forfait d'entrée @else {!! $facture->description_produit !!}   @endif </strong></td>
+        @endif
+            
+            <td style="width: 160px;">&nbsp; </td>
+            <td style="width: 100px; text-align:right;" >{{ number_format($facture->montant_ht,2,',',' ')}} &euro; </td>
+        </tr>
     </tbody>
 </table>
     
@@ -67,11 +72,19 @@
             <td style="width: 160px;">TOTAL H.T :</td>
             <td style="width: 100px; text-align:right;" >{{number_format($facture->montant_ht,2,',',' ')}} &euro;</td>
         </tr>
-        <tr>
-            <td style="width: 400px;">&nbsp;</td>
-            <td style="width: 160px;">T.V.A 20% :</td>
-            <td style="width: 100px; text-align:right;" >{{number_format($facture->montant_ht * App\Tva::tva(),2,',',' ')}} &euro;</td>
-        </tr>
+        @if($facture->montant_ttc > $facture->montant_ht)
+            <tr>
+                <td style="width: 400px;">&nbsp;</td>
+                <td style="width: 160px;">T.V.A 20% :</td>
+                <td style="width: 100px; text-align:right;" >{{number_format($facture->montant_ht * App\Tva::tva(),2,',',' ')}} &euro;</td>
+            </tr>
+        @else 
+            <tr>
+                <td style="width: 400px;">&nbsp;</td>
+                <td style="width: 160px;">T.V.A :</td>
+                <td style="width: 100px; text-align:right;" >0 &euro;</td>
+            </tr>        
+        @endif
         <tr>
             <td style="width: 400px;">&nbsp;</td>
             <td style="width: 160px;">TOTAL T.T.C:</td>
