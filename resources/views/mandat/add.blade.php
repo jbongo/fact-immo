@@ -65,7 +65,7 @@
                                                         <label class="control-label">Suivi par <span class="text-danger">*</span></label>
                                                         <select class="form-control form-white" name="suivi_par_id" required>
                                                             <option value="">Sélectionner</option>
-                                                            @foreach(App\User::where('role', 'mandataire')->get() as $mandataire)
+                                                            @foreach($mandataires as $mandataire)
                                                                 <option value="{{ $mandataire->id }}">{{ $mandataire->nom }} {{ $mandataire->prenom }}</option>
                                                             @endforeach
                                                         </select>

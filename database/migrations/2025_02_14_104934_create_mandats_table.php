@@ -33,7 +33,7 @@ class CreateMandatsTable extends Migration
             $table->boolean('cloture')->default(false);
             $table->text('motif_cloture')->nullable();
             $table->date('date_cloture')->nullable();
-            $table->boolean('est_archive')->default(false);
+            // $table->boolean('est_archive')->default(false);
             $table->text('observation')->nullable();          
             $table->timestamps();   
         });

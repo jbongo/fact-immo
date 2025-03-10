@@ -15,15 +15,22 @@
         <div class="card alert">
             <div class="row">
                 <div class="col-lg-3 col-md-3 col-sm-4">
-                    <a href="{{route('mandat.select_type')}}" class="btn btn-success btn-flat btn-addon m-b-10 m-l-5"><i class="ti-plus"></i> @lang('Nouveau mandat')</a>
+                    <a href="{{route('mandat.select_type')}}" class="btn btn-success btn-addon">
+                        <i class="ti-plus"></i>
+                        <span class="ml-2">@lang('Nouveau mandat')</span>
+                    </a>
                 </div>
                 <div class="col-lg-3 col-md-3 col-sm-4">
-                    <a href="" class="btn btn-info btn-flat btn-addon m-b-10 m-l-5" data-toggle="modal" data-target="#modalReservation"><i class="ti-calendar"></i> @lang('Nouvelle réservation')</a>
+                    <a href="" class="btn btn-info btn-addon" data-toggle="modal" data-target="#modalReservation">
+                        <i class="ti-calendar"></i>
+                        <span class="ml-4">@lang('Nouvelle réservation')</span>
+                    </a>
                 </div>
                 @if(Auth::user()->role == 'admin')
                     <div class="col-lg-3 col-md-3 col-sm-4">
-                        <a href="{{ route('mandat.parametres') }}" class="btn btn-warning btn-flat btn-addon m-b-10 m-l-5">
-                            <i class="ti-settings"></i> Paramètres mandats
+                        <a href="{{ route('mandat.parametres') }}" class="btn btn-warning btn-addon">
+                            <i class="ti-settings"></i>
+                            <span class="ml-2">Paramètres mandats</span>
                         </a>
                     </div>
                 @endif
@@ -57,7 +64,7 @@
                                             <label class="control-label">@lang('Suivi par') <span class="text-danger">*</span></label>
                                             <select class="selectpicker form-control form-white" id="mandataire_id" name="mandataire_id" data-live-search="true" data-style="btn-warning btn-rounded" required>
                                                 <option value="">@lang('Sélectionner')</option>
-                                                @foreach(App\User::where('role', 'mandataire')->get() as $mandataire)
+                                                @foreach($mandataires as $mandataire)
                                                     <option value="{{ $mandataire->id }}" data-tokens="{{ $mandataire->nom }} {{ $mandataire->prenom }}">{{ $mandataire->nom }} {{ $mandataire->prenom }}</option>
                                                 @endforeach
                                             </select>
@@ -113,7 +120,7 @@
                                 <label class="control-label">@lang('Suivi par') <span class="text-danger">*</span></label>
                                 <select class="selectpicker form-control form-white" id="edit_mandataire_id" name="mandataire_id" data-live-search="true" data-style="btn-warning btn-rounded" required>
                                     <option value="">@lang('Sélectionner')</option>
-                                    @foreach(App\User::where('role', 'mandataire')->get() as $mandataire)
+                                    @foreach($mandataires as $mandataire)
                                         <option value="{{ $mandataire->id }}" data-tokens="{{ $mandataire->nom }} {{ $mandataire->prenom }}">{{ $mandataire->nom }} {{ $mandataire->prenom }}</option>
                                     @endforeach
                                 </select>
@@ -305,4 +312,173 @@
         });
     })
 </script>
+
+{{-- GESTION DU DATATABLE --}}
+<script type="text/javascript">
+$('body').addClass("sidebar-hide");
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Fonction de filtrage
+    function filterTable() {
+        var searchText = $('#searchInput').val().toLowerCase();
+        // var suiviFilter = $('#filterSuivi').val().toLowerCase();
+        // var typeFilter = $('#filterType').val().toLowerCase();
+
+        $('.custom-table tbody tr').each(function() {
+            var row = $(this);
+            
+            // Récupérer le contenu des colonnes
+            var numero = row.find('td:eq(0)').text().toLowerCase();
+            var type = row.find('td:eq(1)').text().toLowerCase();
+            var dates = row.find('td:eq(2)').text().toLowerCase();
+            var mandant = row.find('td:eq(3)').text().toLowerCase();
+            var bien = row.find('td:eq(4)').text().toLowerCase();
+            var observation = row.find('td:eq(5)').text().toLowerCase();
+            var suivi = @if(Auth::user()->role == 'admin') row.find('td:eq(6)').text().toLowerCase() @else '' @endif;
+
+            // Appliquer les filtres
+            var matchSearch = 
+                numero.includes(searchText) ||
+                type.includes(searchText) ||
+                dates.includes(searchText) ||
+                mandant.includes(searchText) ||
+                bien.includes(searchText) ||
+                observation.includes(searchText) ||
+                suivi.includes(searchText);
+
+            // var matchSuivi = suiviFilter === '' || suivi.includes(suiviFilter);
+            // var matchType = typeFilter === '' || type.includes(typeFilter);
+
+            // Afficher/masquer la ligne
+            // row.toggle(matchSearch && matchSuivi && matchType);
+            row.toggle(matchSearch );
+        });
+
+        // Mettre à jour le compteur
+        updateCounter();
+    }
+
+    function updateCounter() {
+        var total = $('.custom-table tbody tr').length;
+        var visible = $('.custom-table tbody tr:visible').length;
+        $('.result-count').text(visible + ' sur ' + total + ' mandats');
+    }
+
+    // Événements de filtrage
+    $('#searchInput').on('input', function() {
+        filterTable();
+    });
+
+    $('#filterSuivi, #filterType').on('change', function() {
+        filterTable();
+    });
+
+
+    // Initialisation
+    updateCounter();
+
+    // Tri des colonnes
+    let currentSort = { column: '', direction: 'asc' };
+
+    $('.sortable').click(function() {
+        const column = $(this).data('column');
+        const index = $(this).index();
+        
+        // Inverser la direction si même colonne
+        if (currentSort.column === column) {
+            currentSort.direction = currentSort.direction === 'asc' ? 'desc' : 'asc';
+        } else {
+            currentSort.column = column;
+            currentSort.direction = 'asc';
+        }
+
+        // Mise à jour visuelle
+        $('.sortable').removeClass('sorting-active sorting-asc');
+        $(this).addClass('sorting-active');
+        if (currentSort.direction === 'desc') {
+            $(this).addClass('sorting-asc');
+        }
+
+        // Tri des lignes
+        const rows = $('.custom-table tbody tr').get();
+        rows.sort(function(a, b) {
+            let A = $(a).children('td').eq(index).text().trim();
+            let B = $(b).children('td').eq(index).text().trim();
+
+            // Conversion pour les nombres (comme les numéros de mandat)
+            if (column === 'numero') {
+                A = parseInt(A) || 0;
+                B = parseInt(B) || 0;
+            }
+
+            if (A < B) return currentSort.direction === 'asc' ? -1 : 1;
+            if (A > B) return currentSort.direction === 'asc' ? 1 : -1;
+            return 0;
+        });
+
+        // Réinsertion des lignes triées
+        $.each(rows, function(index, row) {
+            $('.custom-table tbody').append(row);
+        });
+    });
+
+});
+</script>
+
 @endsection
+
+<style>
+.btn-addon {
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 16px;
+    margin: 10px 5px;
+    border-radius: 4px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.btn-addon i {
+    margin-right: 8px;
+    font-size: 16px;
+}
+
+.btn-addon:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Ajustements spécifiques pour chaque type de bouton */
+.btn-success.btn-addon {
+    background-color: #1cc88a;
+    border-color: #1cc88a;
+}
+
+.btn-info.btn-addon {
+    background-color: #36b9cc;
+    border-color: #36b9cc;
+}
+
+.btn-warning.btn-addon {
+    background-color: #f6c23e;
+    border-color: #f6c23e;
+    color: #fff;
+}
+
+/* Hover states */
+.btn-success.btn-addon:hover {
+    background-color: #169b6b;
+    border-color: #169b6b;
+}
+
+.btn-info.btn-addon:hover {
+    background-color: #2a94a5;
+    border-color: #2a94a5;
+}
+
+.btn-warning.btn-addon:hover {
+    background-color: #dda20a;
+    border-color: #dda20a;
+    color: #fff;
+}
+</style>

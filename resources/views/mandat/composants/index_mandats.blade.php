@@ -1,139 +1,407 @@
+<div class="row" style="margin-top: 30px;">
+    <form action="{{ route('mandat.index') }}" method="GET">
+        <div class="col-md-3">
+            <div class="form-group">
+                <div class="input-group">
+                <span class="input-group-addon"><i class="ti-search"></i></span>
+                <input type="text" id="searchInputx" name="search" class="form-control" placeholder="Rechercher...">
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="form-group">
+            <select id="filterSuivi" name="suivi" class="form-control">
+                <option value="">Tous les mandataires</option>
+                @foreach($mandataires as $mandataire)
+                    <option value="{{ $mandataire->nom }} {{ $mandataire->prenom }}">
+                        {{ $mandataire->nom }} {{ $mandataire->prenom }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="form-group">
+            <select id="filterType" name="type" class="form-control">
+                <option value="">Tous les types de mandat</option>
+                <option value="réservation">Réservation</option>
+                <option value="mandat">Mandat</option>
+            </select>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <button class="btn btn-secondary clear-filter">
+            <i class="ti-search"></i> Rechercher
+        </button>
+    </div>
+   
+    </form>
+</div>
 <div class="card-body">
     <div class="panel panel-info m-t-15" id="cont">
-        <div class="panel-heading"></div>
         <div class="panel-body">
+            <!-- Filtres -->
+            <div class="row mb-4">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="ti-search"></i></span>
+                            <input type="text" id="searchInput" class="form-control" placeholder="Rechercher...">
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-            <div class="table-responsive" style="overflow-x: inherit !important;">
-                <table id="example00"
-                    class=" table student-data-table  table-striped table-hover dt-responsive display    "
-                    style="width:100%">
+            <!-- Compteur de résultats -->
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <div class="result-count text-muted"></div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table custom-table">
                     <thead>
                         <tr>
-                            <th>@lang('Mandat')</th>
-                            <th>@lang('Type')</th>
-                            <th>@lang('Date du mandat')</th>
-                            <th>@lang('Mandant(s)')</th>
-                            <th>@lang('Bien')</th>
-                            <th>@lang('Observations')</th>
+                            <th class="text-center sortable" data-column="numero">@lang('Mandat') <i class="ti-exchange-vertical"></i></th>
+                            <th class="sortable" data-column="type">@lang('Type') <i class="ti-exchange-vertical"></i></th>
+                            <th class="sortable" data-column="date">@lang('Date du mandat') <i class="ti-exchange-vertical"></i></th>
+                            <th class="sortable" data-column="mandant">@lang('Mandant(s)') <i class="ti-exchange-vertical"></i></th>
+                            <th class="sortable" data-column="bien">@lang('Bien') <i class="ti-exchange-vertical"></i></th>
+                            <th class="sortable" data-column="observations">@lang('Observations') <i class="ti-exchange-vertical"></i></th>
                             @if(Auth::user()->role == 'admin')
-                                <th>@lang('Suivi par')</th>
+                                <th class="sortable" data-column="suivi">@lang('Suivi par') <i class="ti-exchange-vertical"></i></th>
                             @endif
-
-                            <th>@lang('Action')</th>
+                            <th class="text-center">@lang('Action')</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($mandats as $mandat)                         
-                            <tr>
+                        @foreach($mandats as $mandat)
+                            <tr class="align-middle">
                                 <td>
-                                    <span class="badge  badge-danger border-orange-600">{{$mandat->numero}}</span>
+                                    <span class="badge badge-danger border-orange-600">{{ $mandat->numero }}</span>
                                 </td>
-                                <td style="font-size: 15px; font-weight: bold;   ">
-                                    @if($mandat->type == null)
-                                        <span class="color-primary"> <strong> {{ $mandat->statut }} </strong> </span>
-                                    @else 
-                                        <span class="color-success"> <strong> {{ $mandat->type }} </strong> </span>
-                                    @endif
-                                </td>
-                                <td style="color: #32ade1;  ">
-                                    {{ $mandat->date_debut != null ? $mandat->date_debut->format('d/m/Y') : '' }} -
-                                    {{ $mandat->date_fin != null ? $mandat->date_fin->format('d/m/Y') : '' }}
-                                </td>
-
                                 <td>
-                                    @if($mandat->contact_id != null)
-                                        @if($mandat->contact->type_contact == 'personne_physique')
-                                            <span>{{ $mandat->contact->civilite }} {{ $mandat->contact->nom }} {{ $mandat->contact->prenom }}</span> <br>
-                                            <span>{{ $mandat->contact->adresse }} {{ $mandat->contact->code_postal }} {{ $mandat->contact->ville }}</span>
-                                        @elseif($mandat->contact->type_contact == 'entreprise')
-                                            <span>{{ $mandat->contact->raison_sociale }}</span> <br>
-                                            <span>{{ $mandat->contact->adresse }} {{ $mandat->contact->code_postal }} {{ $mandat->contact->ville }}</span>
-                                        @elseif($mandat->contact->type_contact == 'couple')
-                                            <span>{{ $mandat->contact->nom_p1 }} {{ $mandat->contact->prenom_p1 }}</span> <br>
-                                            <span>{{ $mandat->contact->adresse_p1 }} {{ $mandat->contact->code_postal_p1 }} {{ $mandat->contact->ville_p1 }}</span> <br>
-                                            <span>{{ $mandat->contact->nom_p2 }} {{ $mandat->contact->prenom_p2 }}</span> <br>
-                                            <span>{{ $mandat->contact->adresse_p2 }} {{ $mandat->contact->code_postal_p2 }} {{ $mandat->contact->ville_p2 }}</span>
-                                     
-                                        @elseif($mandat->contact->type_contact == 'indivision')
-                                            <span>{{ $mandat->contact->nom_indivision }}</span> <br>
-                                            <span>{{ $mandat->contact->adresse }} {{ $mandat->contact->code_postal }} {{ $mandat->contact->ville }}</span>
-                                        @else 
-                                            <span>{{ $mandat->contact->nom }} </span> <br>
-                                            <span>{{ $mandat->contact->adresse }} {{ $mandat->contact->code_postal }} {{ $mandat->contact->ville }}</span>
-                                        @endif
+                                    @if(!$mandat->type)
+                                        <span class="color-primary"><strong>{{ $mandat->statut }}</strong></span>
                                     @else
-                                        <span>{{$mandat->nom_reservation}}</span>
+                                        <span class="color-success"><strong>{{ $mandat->type }}</strong></span>
                                     @endif
                                 </td>
-
-                                <td style="color: #e05555;">
-                                    @if($mandat->bien_id != null)
-                                        <span>{{ $mandat->bien->type_bien }} <br>
-                                            {{ $mandat->bien->adresse }} <br>
-                                            {{ $mandat->bien->code_postal }} {{ $mandat->bien->ville }}</span>
-                                    @endif
+                                <td style="color: #32ade1;">
+                                    {{ $mandat->date_debut ? $mandat->date_debut->format('d/m/Y') : '' }} -
+                                    {{ $mandat->date_fin ? $mandat->date_fin->format('d/m/Y') : '' }}
                                 </td>
                                 <td>
-                                    {{ $mandat->observation }}
+                                    @if($mandat->contact)
+                                        @if($mandat->contact->type_contact == 'personne_physique')
+                                            {{ $mandat->contact->civilite }} {{ $mandat->contact->nom }} {{ $mandat->contact->prenom }}<br>
+                                            {{ $mandat->contact->adresse }} {{ $mandat->contact->code_postal }} {{ $mandat->contact->ville }}
+                                        @endif
+                                        {{-- Ajouter les autres cas si nécessaire --}}
+                                    @else
+                                        {{ $mandat->nom_reservation }}
+                                    @endif
                                 </td>
+                                <td style="color: #e05555;">
+                                    @if($mandat->bien)
+                                        {{ $mandat->bien->type_bien }}<br>
+                                        {{ $mandat->bien->adresse }}<br>
+                                        {{ $mandat->bien->code_postal }} {{ $mandat->bien->ville }}
+                                    @endif
+                                </td>
+                                <td>{{ $mandat->observation }}</td>
                                 @if(Auth::user()->role == 'admin')
                                     <td>
-                                        @if($mandat->suivi_par_id != null)
-                                            <a href="{{ route('switch_user', Crypt::encrypt($mandat->suivi_par_id)) }}"
-                                                data-toggle="tooltip"
-                                                title="@lang('Se connecter en tant que ') {{ $mandat->suiviPar->nom }}">
-                                                {{ $mandat->suiviPar->nom }} {{ $mandat->suiviPar->prenom }}<i style="font-size: 17px"
-                                                    class="material-icons color-success">person_pin</i>
+                                        @if($mandat->suiviPar)
+                                            <a href="{{ route('switch_user', Crypt::encrypt($mandat->suivi_par_id)) }}" 
+                                               data-toggle="tooltip" style="font-size: 12px"
+                                               title="Se connecter en tant que {{ $mandat->suiviPar->nom }}">
+                                                {{ $mandat->suiviPar->nom }} {{ $mandat->suiviPar->prenom }}
+                                                <i class="material-icons color-success">person_pin</i>
                                             </a>
                                         @endif
                                     </td>
                                 @endif
-                             
-                                <td width="13%">
-                                    @if($mandat->statut != "réservation" )
-                                    <span>
-                                        <a href="{{ route('mandat.show', Crypt::encrypt($mandat->id)) }}"
-                                            data-toggle="tooltip"
-                                            title="@lang('Détails de ') {{ $mandat->nom }}"><i
-                                                class="large material-icons color-info">visibility</i>
+                                <td>
+                                    @if($mandat->statut != "réservation")
+                                        <a href="{{ route('mandat.show', Crypt::encrypt($mandat->id)) }}" 
+                                           data-toggle="tooltip" 
+                                           title="Détails">
+                                            <i class="large material-icons color-info">visibility</i>
                                         </a>
-                                    </span>
                                     @endif
-                                    @if($mandat->statut == "réservation" )
-                                    <span>
-                                        <a href="{{ route('mandat.edit', Crypt::encrypt($mandat->id)) }}" class="btn btn-dark" 
-                                           title="@lang('Compléter le mandat ') {{ $mandat->nom_reservation }}">
+                                    
+                                    @if($mandat->statut == "réservation")
+                                        <a href="{{ route('mandat.edit', Crypt::encrypt($mandat->id)) }}" 
+                                           class="btn btn-dark" 
+                                           title="Compléter">
                                             Compléter
                                         </a>
-                                    </span>
-                                    <span>
-                                        <a href="#" class="btn-edit-reservation" 
-                                           data-id="{{ $mandat->id }}"
-                                           data-nom="{{ $mandat->nom_reservation }}"
-                                           data-suivi="{{ $mandat->suivi_par_id }}"
-                                           data-toggle="tooltip"
-                                           title="@lang('Modifier ') {{ $mandat->nom_reservation }}">
+                                        <a href="#" 
+                                            class="btn-edit-reservation" 
+                                            data-id="{{ $mandat->id }}"
+                                            data-nom="{{ $mandat->nom_reservation }}"
+                                            data-suivi="{{ $mandat->suivi_par_id }}"
+                                            title="Modifier la réservation">
                                             <i class="large material-icons color-warning">edit</i>
                                         </a>
-                                    </span>
                                     @else
-                                        <span>
-                                            <a href="{{ route('mandat.edit', Crypt::encrypt($mandat->id)) }}"
-                                                data-toggle="tooltip"
-                                                title="@lang('Modifier ') {{ $mandat->nom }}"><i
-                                                    class="large material-icons color-warning">edit</i>
-                                            </a>
-                                        </span>
+                                        <a href="{{ route('mandat.edit', Crypt::encrypt($mandat->id)) }}" 
+                                           data-toggle="tooltip" 
+                                           title="Modifier">
+                                            <i class="large material-icons color-warning">edit</i>
+                                        </a>
                                     @endif
-                
                                 </td>
                             </tr>
-                
                         @endforeach
                     </tbody>
                 </table>
+
+                <div class="d-flex justify-content-center">
+                    {{ $mandats->links() }}
+                </div>
             </div>
         </div>
     </div>
-
 </div>
+
+<style>
+/* Style général du tableau */
+.custom-table {
+    width: 100%;
+    background: #fff;
+    border-radius: 8px;
+    border-collapse: separate;
+    border-spacing: 0;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+    margin: 20px 0;
+}
+
+/* En-tête du tableau */
+.custom-table thead tr {
+    background: #f8f9fa;
+    border-radius: 8px 8px 0 0;
+}
+
+.custom-table th {
+    font-weight: 600;
+    padding: 15px 20px;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #495057;
+    border-bottom: 2px solid #e9ecef;
+}
+
+/* Corps du tableau */
+.custom-table td {
+    padding: 15px 20px;
+    vertical-align: middle;
+    border-bottom: 1px solid #e9ecef;
+    color: #495057;
+    font-size: 13px;
+}
+
+/* Effet hover sur les lignes */
+.custom-table tbody tr {
+    transition: all 0.2s ease;
+}
+
+.custom-table tbody tr:hover {
+    background-color: #f8f9fa;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* Style des badges */
+.badge {
+    padding: 8px 12px;
+    font-weight: 500;
+    font-size: 0.85rem;
+    border-radius: 6px;
+    letter-spacing: 0.3px;
+}
+
+.badge-danger {
+    background-color: #dc3545;
+    color: white;
+}
+
+/* Style des boutons d'action */
+.btn {
+    
+    /* padding: 8px 16px 8px 40px; */
+    border-radius: 6px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Style des icônes */
+.material-icons {
+    font-size: 20px;
+    vertical-align: middle;
+    transition: all 0.2s ease;
+}
+
+.material-icons:hover {
+    transform: scale(1.1);
+}
+
+/* Style des liens */
+a {
+    text-decoration: none;
+    color: #4e73df;
+    transition: all 0.2s ease;
+}
+
+a:hover {
+    color: #2e59d9;
+}
+
+/* Style de la pagination */
+.pagination {
+    margin-top: 30px;
+    gap: 5px;
+}
+
+.page-link {
+    border-radius: 6px;
+    padding: 8px 16px;
+    color: #4e73df;
+    border: 1px solid #e9ecef;
+    transition: all 0.2s ease;
+}
+
+.page-link:hover {
+    background-color: #4e73df;
+    color: white;
+    border-color: #4e73df;
+}
+
+.page-item.active .page-link {
+    background-color: #4e73df;
+    border-color: #4e73df;
+    box-shadow: 0 2px 5px rgba(78, 115, 223, 0.2);
+}
+
+/* Style des colonnes spécifiques */
+.color-primary {
+    color: #4e73df;
+}
+
+.color-success {
+    color: #1cc88a;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .custom-table {
+        font-size: 0.9rem;
+    }
+    
+    .custom-table td, .custom-table th {
+        padding: 10px 15px;
+    }
+}
+
+/* Style des filtres */
+.input-group {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-group-addon {
+    position: absolute;
+    left: 10px;
+    z-index: 10;
+    color: #6c757d;
+}
+
+#searchInput {
+    padding-left: 35px;
+    border-radius: 6px;
+    border: 1px solid #e9ecef;
+    transition: all 0.2s ease;
+}
+
+#searchInput:focus {
+    border-color: #4e73df;
+    box-shadow: 0 0 0 0.2rem rgba(78, 115, 223, 0.25);
+}
+
+select.form-control {
+    border-radius: 6px;
+    border: 1px solid #e9ecef;
+    height: 38px;
+    padding: 0 12px;
+    color: #495057;
+    transition: all 0.2s ease;
+}
+
+select.form-control:focus {
+    border-color: #4e73df;
+    box-shadow: 0 0 0 0.2rem rgba(78, 115, 223, 0.25);
+}
+
+/* Style du bouton réinitialiser */
+.clear-filter {
+    padding: 8px 15px;
+    border-radius: 4px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+    color: #666;
+    transition: all 0.2s ease;
+}
+
+.clear-filter:hover {
+    background-color: #e9ecef;
+    color: #333;
+}
+
+.clear-filter i {
+    font-size: 14px;
+}
+
+/* Style du compteur */
+.result-count {
+    font-size: 0.9rem;
+    color: #6c757d;
+    padding: 5px 0;
+}
+
+.sortable {
+    cursor: pointer;
+    position: relative;
+}
+
+.sortable i {
+    font-size: 12px;
+    margin-left: 5px;
+    opacity: 0.5;
+}
+
+.sortable:hover i {
+    opacity: 1;
+}
+
+.sorting-asc i {
+    transform: rotate(180deg);
+}
+
+.sorting-active {
+    color: #4e73df;
+}
+
+.sorting-active i {
+    opacity: 1;
+}
+</style>

@@ -10,7 +10,6 @@ use App\Contact;
 use Illuminate\Support\Facades\DB;
 use App\Bien;
 use Illuminate\Support\Facades\Crypt;
-use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Validator;
 
 
@@ -20,14 +19,88 @@ class MandatController extends Controller
      * Liste des mandats
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {   
-        if(Auth::user()->role == 'admin') {
-            $mandats = Mandat::with('user')->orderBy('created_at', 'desc')->get();
-        } else {
-            $mandats = Mandat::with('user')->where('suivi_par_id', Auth::user()->id)->orderBy('created_at', 'desc')->get();
+        $query = Mandat::with(['user', 'suiviPar', 'contact', 'bien']);
+        
+        // Filtrer selon le rôle
+        if(Auth::user()->role != 'admin') {
+            $query->where('suivi_par_id', Auth::user()->id);
         }
-        return view('mandat.index', compact('mandats'));
+
+        // Recherche globale
+        if($request->search) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('numero', 'LIKE', "%{$search}%")
+                  ->orWhere('type', 'LIKE', "%{$search}%")
+                  ->orWhere('nom_reservation', 'LIKE', "%{$search}%")
+                  ->orWhere('observation', 'LIKE', "%{$search}%")
+                  ->orWhereHas('contact', function($q) use ($search) {
+                      $q->where('nom', 'LIKE', "%{$search}%")
+                        ->orWhere('prenom', 'LIKE', "%{$search}%")
+                        ->orWhere('raison_sociale', 'LIKE', "%{$search}%");
+                  })
+                  ->orWhereHas('bien', function($q) use ($search) {
+                      $q->where('type_bien', 'LIKE', "%{$search}%")
+                        ->orWhere('ville', 'LIKE', "%{$search}%")
+                        ->orWhere('adresse', 'LIKE', "%{$search}%");
+                  })
+                  ->orWhereHas('suiviPar', function($q) use ($search) {
+                      $q->where('nom', 'LIKE', "%{$search}%")
+                        ->orWhere('prenom', 'LIKE', "%{$search}%");
+                  });
+            });
+        }
+
+        // Filtre par mandataire
+        if($request->suivi) {
+            $query->whereHas('suiviPar', function($q) use ($request) {
+                $q->where(DB::raw("CONCAT(nom, ' ', prenom)"), 'LIKE', "%{$request->suivi}%");
+            });
+        }
+
+        // Filtre par type
+        if($request->type) {
+            $query->where('statut', $request->type);
+        }
+
+        // Tri
+        if($request->sort && $request->direction) {
+            $sortField = $request->sort;
+            $direction = $request->direction;
+
+            switch($sortField) {
+                case 'mandant':
+                    $query->orderBy(function($q) {
+                        return Contact::select('nom')
+                            ->whereColumn('contacts.id', 'mandats.contact_id')
+                            ->limit(1);
+                    }, $direction);
+                    break;
+                case 'suivi':
+                    $query->orderBy(function($q) {
+                        return User::select(DB::raw("CONCAT(nom, ' ', prenom)"))
+                            ->whereColumn('users.id', 'mandats.suivi_par_id')
+                            ->limit(1);
+                    }, $direction);
+                    break;
+                default:
+                    $query->orderBy($sortField, $direction);
+            }
+        } else {
+            $query->orderBy('created_at', 'desc');
+        }
+
+        $mandats = $query->paginate(50);
+ 
+        
+        $mandataires = DB::table('users')
+                    ->join('contrats', 'users.id', '=', 'contrats.user_id')
+                    ->select('users.*', 'contrats.*')
+                    ->where([['role','mandataire'], ['a_demission', false]] )
+                    ->get();
+        return view('mandat.index', compact('mandats', 'mandataires'));
     }
 
     /**
@@ -118,7 +191,12 @@ class MandatController extends Controller
      */
     public function create()
     {
-        return view('mandat.add');
+        $mandataires = DB::table('users')
+                    ->join('contrats', 'users.id', '=', 'contrats.user_id')
+                    ->select('users.*', 'contrats.*')
+                    ->where([['role','mandataire'], ['a_demission', false]] )
+                    ->get();
+        return view('mandat.add', compact('mandataires'));
     }
     /**
      * Formulaire de modification d'un mandat
@@ -129,7 +207,12 @@ class MandatController extends Controller
     {
        
         $mandat = Mandat::findOrFail(Crypt::decrypt($id));
-        return view('mandat.edit', compact('mandat'));
+        $mandataires = DB::table('users')
+                    ->join('contrats', 'users.id', '=', 'contrats.user_id')
+                    ->select('users.*', 'contrats.*')
+                    ->where([['role','mandataire'], ['a_demission', false]] )
+                    ->get();
+        return view('mandat.edit', compact('mandat', 'mandataires'));
     }
 
     /**
@@ -570,53 +653,6 @@ class MandatController extends Controller
     }
 
     /**
-     * Archiver un mandat
-     * 
-     * @param  \Illuminate\Http\Request  $request
-     */
-    public function archiver(Request $request, $id)
-    {
-        try {
-            $mandat = Mandat::findOrFail(Crypt::decrypt($id));
-            $mandat->update(['est_archive' => true]);
-            
-            return response()->json([
-                'success' => true,
-                'message' => 'Le mandat a été archivé avec succès'
-            ]);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Une erreur est survenue lors de l\'archivage du mandat'
-            ], 500);
-        }
-    }
-    /**
-     * Désarchiver un mandat
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function desarchiver(Request $request, $id)
-    {
-        try {
-            $mandat = Mandat::findOrFail(Crypt::decrypt($id));
-            $mandat->update(['est_archive' => false]);
-            
-            return response()->json([
-                'success' => true,
-                'message' => 'Le mandat a été désarchivé avec succès'
-            ]);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Une erreur est survenue lors du désarchivage du mandat'
-            ], 500);
-        }
-    }
-
-    /**
      * Affiche la page de sélection du type de mandat (nouveau ou réservation)
      */
     public function selectType()
@@ -740,5 +776,28 @@ class MandatController extends Controller
             'success' => true,
             'message' => 'Paramètres mis à jour avec succès'
         ]);
+    }
+
+    public function restaurer(Request $request, $id)
+    {
+        try {
+            $mandat = Mandat::findOrFail(Crypt::decrypt($id));
+            
+            $mandat->update([
+                'cloture' => false,
+                'motif_cloture' => null,
+                'date_cloture' => null
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Le mandat a été restauré avec succès'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Une erreur est survenue lors de la restauration du mandat'
+            ], 500);
+        }
     }
 }

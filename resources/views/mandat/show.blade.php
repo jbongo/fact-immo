@@ -11,21 +11,18 @@
             <a href="{{ route('mandat.edit', Crypt::encrypt($mandat->id)) }}" class="btn btn-info btn-flat btn-addon">
                 <i class="ti-pencil"></i> Modifier
             </a>
-            @if($mandat->statut == 'mandat' && !$mandat->cloture)
-                <button class="btn btn-danger btn-flat btn-addon btn-cloturer">
-                    <i class="ti-close"></i> Clôturer
-                </button>
-                
+            @if($mandat->statut == 'mandat')
+                @if($mandat->cloture)
+                    <button class="btn btn-success btn-flat btn-addon btn-restaurer">
+                        <i class="ti-back-right"></i> Restaurer
+                    </button>
+                @else
+                    <button class="btn btn-danger btn-flat btn-addon btn-cloturer">
+                        <i class="ti-close"></i> Clôturer
+                    </button>
+                @endif
             @endif
-            @if($mandat->est_archive )
-                <button class="btn btn-success btn-flat btn-addon btn-desarchive" >
-                    <i class="ti-back-right"></i> Désarchiver
-                </button>
-            @else 
-                <button class="btn btn-secondary btn-flat btn-addon btn-archive"  >
-                    <i class="ti-archive"></i> Archiver
-                </button>
-            @endif
+            
         </div>
     </div>
 @endsection
@@ -37,13 +34,13 @@
                 <!-- En-tête avec les informations principales -->
                 <div class="row mb-4">
                     <div class="col-md-8">
-                        <h3 class="text-primary">
-                            Mandat N° {{ $mandat->numero }}
+                        <h3 >
+                           <span class="text-primary">Mandat N° {{ $mandat->numero }}</span> 
                             <span class="badge badge-{{ $mandat->statut == 'mandat' ? 'success' : 'warning' }}">
                                 {{ ucfirst($mandat->statut) }}
                             </span>
                             @if($mandat->cloture)
-                                <span class="badge badge-danger">Clôturé</span>
+                                <span class="badge badge-danger">Clôturé</span> @if($mandat->date_cloture)<span class="text-danger" style="font-size: 13px;">le {{ $mandat->date_cloture->format('d/m/Y') }}</span>@endif <span style="font-size: 13px;"> Motif: {{ $mandat->motif_cloture }}</span>
                             @endif
                         </h3>
                         <p class="text-muted " style="font-size: 18px; margin-bottom: 35px;">
@@ -240,10 +237,10 @@
                         <label>Raison de la clôture <span class="text-danger">*</span></label>
                         <select class="form-control" name="raison_cloture" id="raison_cloture" required>
                             <option value="">Sélectionner une raison</option>
-                            <option value="vente_realisee">Vente réalisée</option>
-                            <option value="retrait_vente">Retrait de la vente</option>
-                            <option value="fin_mandat">Fin de mandat</option>
-                            <option value="rupture_mandant">Rupture par le mandant</option>
+                            <option value="Vente réalisée">Vente réalisée</option>
+                            <option value="Résiliation">Résiliation</option>
+                            <option value="Sans suite">Sans suite</option>
+                            <option value="Fin de mandat">Fin de mandat</option>
                             <option value="autre">Autre raison</option>
                         </select>
                     </div>
@@ -255,6 +252,30 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
                     <button type="submit" class="btn btn-danger">Clôturer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Ajouter le modal de confirmation de restauration -->
+<div class="modal fade" id="modalRestaurer" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Restaurer le mandat</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="formRestaurer" action="{{ route('mandat.restaurer', Crypt::encrypt($mandat->id)) }}" method="POST">
+                @csrf
+                <div class="modal-body">
+                    <p>Êtes-vous sûr de vouloir restaurer ce mandat ?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                    <button type="submit" class="btn btn-success">Restaurer</button>
                 </div>
             </form>
         </div>
@@ -309,175 +330,44 @@ $(document).ready(function() {
                 });
             }
         });
+
+       
     });
-});
 
-
-// function desarchiverMandat() {
-//     swal({
-//         title: "Êtes-vous sûr?",
-//         text: "Voulez-vous vraiment désarchiver ce mandat?",
-//         icon: "warning",
-//         buttons: ["Annuler", "Oui, désarchiver"],
-//         dangerMode: false,
-//     })
-//     .then((willUnarchive) => {
-//         if (willUnarchive) {
-//             $.ajax({
-//                 url: "{{ route('mandat.desarchiver', Crypt::encrypt($mandat->id)) }}",
-//                 method: 'POST',
-//                 data: {
-//                     _token: '{{ csrf_token() }}'
-//                 },
-//                 success: function(response) {
-//                     if(response.success) {
-//                         swal({
-//                             title: "Succès",
-//                             text: response.message,
-//                             icon: "success",
-//                         }).then(() => {
-//                             window.location.reload();
-//                         });
-//                     }
-//                 },
-//                 error: function(xhr) {
-//                     swal({
-//                         title: "Erreur",
-//                         text: "Une erreur est survenue lors du désarchivage du mandat",
-//                         icon: "error",
-//                     });
-//                 }
-//             });
-//         }
-//     });
-// }
-
-// Pour le bouton archiver
-$('.btn-desarchive').click(function(e) {
-    
-              
-    $('[data-toggle="tooltip"]').tooltip();
-    
-        let that = $(this);
-        e.preventDefault();
-        const swalWithBootstrapButtons = swal.mixin({
-            confirmButtonClass: 'btn btn-success',
-            cancelButtonClass: 'btn btn-danger',
-            buttonsStyling: false,
+     // Gestion du clic sur le bouton restaurer
+     $('.btn-restaurer').click(function() {
+            $('#modalRestaurer').modal('show');
         });
 
-        swalWithBootstrapButtons({
-            title: '@lang('Voulez-vous vraiment désarchiver ce mandat ? ')',
-            type : 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#DD6B55',
-            confirmButtonText: '@lang('Oui ')',
-            cancelButtonText: '@lang('Non ')',
-
-        }).then((result) => {
-            if (result.value) {
-                $('[data-toggle="tooltip"]').tooltip('hide');
-                $.ajax({                        
-                    url: "{{ route('mandat.desarchiver', Crypt::encrypt($mandat->id)) }}",
-                    type: 'POST',
-                    data: {
-                        _token: '{{ csrf_token() }}'
-                    },
-                    dataType: 'text',
-
-                    success: function(data, statut) {
-                        console.log(data);
-                    },
-                    error: function(resultat, statut, erreur) {
-                        console.log(resultat + ' ' + statut);
+        // Soumission du formulaire de restauration
+        $('#formRestaurer').on('submit', function(e) {
+            e.preventDefault();
+            
+            $.ajax({
+                url: $(this).attr('action'),
+                method: 'POST',
+                data: $(this).serialize(),
+                success: function(response) {
+                    if(response.success) {
+                        swal({
+                            title: "Succès",
+                            text: "Le mandat a été restauré avec succès",
+                            icon: "success",
+                        }).then(() => {
+                            window.location.reload();
+                        });
                     }
-                })
-                .done(function () {
-                    window.location.reload();
-                })
-
-                swalWithBootstrapButtons(
-                'Le mandat a été désarchivé avec succès.!',
-                '',
-                'success'
-                ) 
-            }
-            else   {
-                swalWithBootstrapButtons(
-                'Annulé',
-                'Désarchivage annulé :)',
-                'error'
-                );
-            }
+                },
+                error: function(xhr) {
+                    swal({
+                        title: "Erreur",
+                        text: "Une erreur est survenue lors de la restauration du mandat",
+                        icon: "error",
+                    });
+                }
+            });
         });
-
-
 });
-
-
-
-// Pour le bouton désarchiver
-$('.btn-archive').click(function(e) {
-    
-              
-    $('[data-toggle="tooltip"]').tooltip();
-    
-        let that = $(this);
-        e.preventDefault();
-        const swalWithBootstrapButtons = swal.mixin({
-            confirmButtonClass: 'btn btn-success',
-            cancelButtonClass: 'btn btn-danger',
-            buttonsStyling: false,
-        });
-
-        swalWithBootstrapButtons({
-            title: '@lang('Voulez-vous vraiment archiver ce mandat ? ')',
-            type : 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#DD6B55',
-            confirmButtonText: '@lang('Oui ')',
-            cancelButtonText: '@lang('Non ')',
-
-        }).then((result) => {
-            if (result.value) {
-                $('[data-toggle="tooltip"]').tooltip('hide');
-                $.ajax({                        
-                    url: "{{ route('mandat.archiver', Crypt::encrypt($mandat->id)) }}",
-                    type: 'POST',
-                    data: {
-                        _token: '{{ csrf_token() }}'
-                    },
-                    dataType: 'text',
-
-                    success: function(data, statut) {
-                        console.log(data);
-                    },
-                    error: function(resultat, statut, erreur) {
-                        console.log(resultat + ' ' + statut);
-                    }
-                })
-                .done(function () {
-                    window.location.reload();
-                })
-
-                swalWithBootstrapButtons(
-                'Le mandat a été archivé avec succès.!',
-                '',
-                'success'
-                ) 
-            }
-            else   {
-                swalWithBootstrapButtons(
-                'Annulé',
-                'Archivage annulé :)',
-                'error'
-                );
-            }
-        });
-
-
-});
-
 </script>
 @endsection
 

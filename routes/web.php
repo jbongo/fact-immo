@@ -457,8 +457,8 @@ Route::middleware('auth')->group(function(){
     Route::post('/mandats/update-reservation/{mandat}', 'MandatController@update_reservation')->name('mandat.update_reservation');
     Route::get('/mandats/contacts', 'MandatController@getContacts')->name('contacts.list');
     Route::post('/mandats/cloturer/{id}', 'MandatController@cloturer')->name('mandat.cloturer');
-    Route::post('/mandats/archiver/{id}', 'MandatController@archiver')->name('mandat.archiver');
-    Route::post('/mandats/desarchiver/{id}', 'MandatController@desarchiver')->name('mandat.desarchiver');
+    // Route::post('/mandats/archiver/{id}', 'MandatController@archiver')->name('mandat.archiver');
+    // Route::post('/mandats/desarchiver/{id}', 'MandatController@desarchiver')->name('mandat.desarchiver');
 
     // Ajouter cette route avant la route create
     Route::get('/mandats/select-type', 'MandatController@selectType')->name('mandat.select_type');
@@ -466,6 +466,16 @@ Route::middleware('auth')->group(function(){
     // Ajouter dans le groupe middleware auth
     Route::get('/mandats/parametres', 'MandatController@parametres')->name('mandat.parametres');
     Route::post('/mandats/update-parametres/{user}', 'MandatController@updateParametres')->name('mandat.update_parametres');
+
+    // Ajouter ces routes dans le groupe middleware auth
+    Route::get('/mandats/mandataires', 'MandatController@getMandataires')->name('mandat.mandataires');
+    Route::get('/mandats/types', 'MandatController@getTypes')->name('mandat.types');
+
+    // Ajouter dans le groupe middleware auth
+    Route::get('/mandats/filter', 'MandatController@getMandatsByFilter')->name('mandat.filter');
+
+    // Ajouter dans le groupe middleware auth
+    Route::post('/mandats/restaurer/{id}', 'MandatController@restaurer')->name('mandat.restaurer');
 
 });
 
