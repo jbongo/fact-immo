@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Mandat extends Model
 {
     protected $guarded = [];
-    protected $dates = ['date_debut','date_fin', 'date_cloture'];
+    protected $dates = ['date_debut','date_fin', 'date_cloture', 'date_retour'];
 
 
 /**

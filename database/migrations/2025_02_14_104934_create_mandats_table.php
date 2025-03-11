@@ -30,10 +30,11 @@ class CreateMandatsTable extends Migration
             $table->integer('duree_irrevocabilite')->nullable();
             $table->boolean('annulation')->default(false);
             $table->text('motif_annulation')->nullable();
-            $table->boolean('cloture')->default(false);
+            $table->boolean('est_cloture')->default(false);
             $table->text('motif_cloture')->nullable();
             $table->date('date_cloture')->nullable();
-            // $table->boolean('est_archive')->default(false);
+            $table->boolean('est_retourne')->default(false)->nullable();
+            $table->date('date_retour')->nullable();
             $table->text('observation')->nullable();          
             $table->timestamps();   
         });

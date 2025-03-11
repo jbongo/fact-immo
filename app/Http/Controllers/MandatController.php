@@ -64,7 +64,17 @@ class MandatController extends Controller
         if($request->type) {
             $query->where('statut', $request->type);
         }
+        
+        // Filtre par clôturé
+        if($request->cloture) {
+            $query->where('est_cloture', true);
+        }
 
+        // Filtre par non retourné
+        if($request->non_retourne) {
+            $query->where('est_retourne', false);
+        }
+        
         // Tri
         if($request->sort && $request->direction) {
             $sortField = $request->sort;
@@ -635,7 +645,7 @@ class MandatController extends Controller
                 : $request->raison_cloture;
 
             $mandat->update([
-                'cloture' => true,
+                'est_cloture' => true,
                 'motif_cloture' => $raison,
                 'date_cloture' => now()
             ]);
@@ -784,7 +794,7 @@ class MandatController extends Controller
             $mandat = Mandat::findOrFail(Crypt::decrypt($id));
             
             $mandat->update([
-                'cloture' => false,
+                'est_cloture' => false,
                 'motif_cloture' => null,
                 'date_cloture' => null
             ]);

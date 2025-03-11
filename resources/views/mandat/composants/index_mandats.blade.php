@@ -1,40 +1,63 @@
 <div class="row" style="margin-top: 30px;">
     <form action="{{ route('mandat.index') }}" method="GET">
-        <div class="col-md-3">
-            <div class="form-group">
-                <div class="input-group">
-                <span class="input-group-addon"><i class="ti-search"></i></span>
-                <input type="text" id="searchInputx" name="search" class="form-control" placeholder="Rechercher...">
+        <div class="col-md-9">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="ti-search"></i></span>
+                            <input type="text" id="searchInput2" name="search" class="form-control" 
+                                placeholder="Rechercher..." value="{{ request()->search }}">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <select id="filterSuivi" name="suivi" class="form-control">
+                            <option value="">Tous les mandataires</option>
+                            @foreach($mandataires as $mandataire)
+                                <option value="{{ $mandataire->nom }} {{ $mandataire->prenom }}"
+                                    {{ request()->suivi == $mandataire->nom.' '.$mandataire->prenom ? 'selected' : '' }}>
+                                    {{ $mandataire->nom }} {{ $mandataire->prenom }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <select id="filterType" name="type" class="form-control">
+                            <option value="">Tous les types de mandat</option>
+                            <option value="réservation" {{ request()->type == 'réservation' ? 'selected' : '' }}>Réservation</option>
+                            <option value="mandat" {{ request()->type == 'mandat' ? 'selected' : '' }}>Mandat</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-check form-check-inline col-md-4">
+                    <input class="form-check-input" type="checkbox" id="filterCloture" name="cloture"
+                        {{ request()->cloture ? 'checked' : '' }}>
+                    <label class="form-check-label" for="filterCloture">Clôturés</label>
+                </div>
+                <div class="form-check form-check-inline col-md-4">
+                    <input class="form-check-input" type="checkbox" id="filterNonRetourne" name="non_retourne"
+                        {{ request()->non_retourne ? 'checked' : '' }}>
+                    <label class="form-check-label" for="filterNonRetourne">Non retournés</label>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="col-md-3">
-        <div class="form-group">
-            <select id="filterSuivi" name="suivi" class="form-control">
-                <option value="">Tous les mandataires</option>
-                @foreach($mandataires as $mandataire)
-                    <option value="{{ $mandataire->nom }} {{ $mandataire->prenom }}">
-                        {{ $mandataire->nom }} {{ $mandataire->prenom }}
-                    </option>
-                @endforeach
-            </select>
+
+        <div class="col-md-3">
+            <button type="submit" class="btn btn-secondary">
+                <i class="ti-search"></i> Rechercher
+            </button>
+            @if(request()->hasAny(['search', 'suivi', 'type', 'cloture', 'non_retourne']))
+                <a href="{{ route('mandat.index') }}" class="btn btn-light ml-2">
+                    <i class="ti-reload"></i> Réinitialiser
+                </a>
+            @endif
         </div>
-    </div>
-    <div class="col-md-3">
-        <div class="form-group">
-            <select id="filterType" name="type" class="form-control">
-                <option value="">Tous les types de mandat</option>
-                <option value="réservation">Réservation</option>
-                <option value="mandat">Mandat</option>
-            </select>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <button class="btn btn-secondary clear-filter">
-            <i class="ti-search"></i> Rechercher
-        </button>
-    </div>
-   
     </form>
 </div>
 <div class="card-body">
@@ -66,6 +89,7 @@
                             <th class="sortable" data-column="date">@lang('Date du mandat') <i class="ti-exchange-vertical"></i></th>
                             <th class="sortable" data-column="mandant">@lang('Mandant(s)') <i class="ti-exchange-vertical"></i></th>
                             <th class="sortable" data-column="bien">@lang('Bien') <i class="ti-exchange-vertical"></i></th>
+                            <th class="sortable ">@lang('État') <i class="ti-exchange-vertical"></i></th>
                             <th class="sortable" data-column="observations">@lang('Observations') <i class="ti-exchange-vertical"></i></th>
                             @if(Auth::user()->role == 'admin')
                                 <th class="sortable" data-column="suivi">@lang('Suivi par') <i class="ti-exchange-vertical"></i></th>
@@ -75,7 +99,7 @@
                     </thead>
                     <tbody>
                         @foreach($mandats as $mandat)
-                            <tr class="align-middle">
+                            <tr class="align-middle" style="background-color: {{ $mandat->statut == 'réservation'  ? '#F3F3F3' : 'white' }}">
                                 <td>
                                     <span class="badge badge-danger border-orange-600">{{ $mandat->numero }}</span>
                                 </td>
@@ -108,19 +132,27 @@
                                         {{ $mandat->bien->code_postal }} {{ $mandat->bien->ville }}
                                     @endif
                                 </td>
+                                <td class="text-center">
+                                    @if($mandat->est_cloture)
+                                        <span class="badge badge-default">Clôturé</span><br>
+                                    @endif
+                                    @if($mandat->statut == "mandat" && !$mandat->est_retourne)                                     
+                                        <span class="badge badge-danger">Non retourné</span>
+                                    @endif
+                                </td>
                                 <td>{{ $mandat->observation }}</td>
-                                @if(Auth::user()->role == 'admin')
-                                    <td>
-                                        @if($mandat->suiviPar)
-                                            <a href="{{ route('switch_user', Crypt::encrypt($mandat->suivi_par_id)) }}" 
-                                               data-toggle="tooltip" style="font-size: 12px"
-                                               title="Se connecter en tant que {{ $mandat->suiviPar->nom }}">
-                                                {{ $mandat->suiviPar->nom }} {{ $mandat->suiviPar->prenom }}
-                                                <i class="material-icons color-success">person_pin</i>
-                                            </a>
-                                        @endif
-                                    </td>
-                                @endif
+                                    @if(Auth::user()->role == 'admin')
+                                        <td>
+                                            @if($mandat->suiviPar)
+                                                <a href="{{ route('switch_user', Crypt::encrypt($mandat->suivi_par_id)) }}" 
+                                                data-toggle="tooltip" style="font-size: 12px"
+                                                title="Se connecter en tant que {{ $mandat->suiviPar->nom }}">
+                                                    {{ $mandat->suiviPar->nom }} {{ $mandat->suiviPar->prenom }}
+                                                    <i class="material-icons color-success">person_pin</i>
+                                                </a>
+                                            @endif
+                                        </td>
+                                    @endif
                                 <td>
                                     @if($mandat->statut != "réservation")
                                         <a href="{{ route('mandat.show', Crypt::encrypt($mandat->id)) }}" 
@@ -330,6 +362,12 @@ a:hover {
     transition: all 0.2s ease;
 }
 
+#searchInput2 {
+    padding-left: 35px;
+    border-radius: 6px;
+    border: 1px solid #e9ecef;
+    transition: all 0.2s ease;
+}
 #searchInput:focus {
     border-color: #4e73df;
     box-shadow: 0 0 0 0.2rem rgba(78, 115, 223, 0.25);
