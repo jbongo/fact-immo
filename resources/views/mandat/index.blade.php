@@ -33,6 +33,13 @@
                             <span class="ml-2">Paramètres mandats</span>
                         </a>
                     </div>
+                    <div class="col-lg-3 col-md-3 col-sm-4">
+                        <a href="{{ route('mandat.statistiques') }}" class="btn btn-danger btn-addon">
+                            <i class="ti-bar-chart"></i>
+                            <span class="ml-2">Statistiques</span>
+                        </a>
+                    </div>
+                   
                 @endif
             </div>
            
@@ -49,7 +56,7 @@
                             <form id="reservationForm" action="{{ route('mandat.reserver') }}" method="POST">
                                 @csrf
                                 <div class="row">
-                                    <div class="col-md-8 ">
+                                    <div class="col-md-10 ">
                                         <div class="form-group">
                                             <label class="control-label">@lang('Nom de la réservation') <span class="text-danger">*</span></label>
                                             <input class="form-control form-white" type="text" id="nom_reservation" name="nom_reservation" required>
@@ -59,7 +66,7 @@
 
                                 @if(Auth::user()->role == 'admin')
                                 <div class="row">
-                                    <div class="col-md-8">
+                                    <div class="col-md-10">
                                         <div class="form-group">
                                             <label class="control-label">@lang('Suivi par') <span class="text-danger">*</span></label>
                                             <select class="selectpicker form-control form-white" id="mandataire_id" name="mandataire_id" data-live-search="true" data-style="btn-warning btn-rounded" required>
@@ -105,7 +112,7 @@
                     @csrf
                     @method('POST')
                     <div class="row">
-                        <div class="col-md-8">
+                        <div class="col-md-10">
                             <div class="form-group">
                                 <label class="control-label">@lang('Nom de la réservation') <span class="text-danger">*</span></label>
                                 <input class="form-control form-white" type="text" id="edit_nom_reservation" name="nom_reservation" required>
@@ -115,13 +122,13 @@
 
                     @if(Auth::user()->role == 'admin')
                     <div class="row">
-                        <div class="col-md-8">
+                        <div class="col-md-10">
                             <div class="form-group">
                                 <label class="control-label">@lang('Suivi par') <span class="text-danger">*</span></label>
-                                <select class="selectpicker form-control form-white" id="edit_mandataire_id" name="mandataire_id" data-live-search="true" data-style="btn-warning btn-rounded" required>
+                                <select class="form-control form-white" id="edit_mandataire_id" name="mandataire_id" data-style="btn-warning btn-rounded" required>
                                     <option value="">@lang('Sélectionner')</option>
                                     @foreach($mandataires as $mandataire)
-                                        <option value="{{ $mandataire->id }}" data-tokens="{{ $mandataire->nom }} {{ $mandataire->prenom }}">{{ $mandataire->nom }} {{ $mandataire->prenom }}</option>
+                                        <option value="{{$mandataire->id}}">{{ $mandataire->nom }} {{ $mandataire->prenom }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -270,9 +277,11 @@
             let id = $(this).data('id');
             let nom = $(this).data('nom');
             let suivi = $(this).data('suivi');
+           
             
-            $('#edit_nom_reservation').val(nom);
-            $('#edit_mandataire_id').val(suivi).selectpicker('refresh');
+            $('#edit_nom_reservation').val(nom);            
+           test = $('#edit_mandataire_id option[value="'+suivi+'"]').prop("selected",true);
+           console.log(test);
             $('#editReservationForm').attr('action', '/mandats/update-reservation/' + id);
             
             $('#editReservationModal').modal('show');

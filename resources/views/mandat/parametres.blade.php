@@ -26,18 +26,29 @@
                             <tr>
                                 <th>Mandataire</th>
                                 <th>Quota mandats non retournés</th>
-                                <th>Réservations en cours</th>
+                                <th>Mandats non retournés</th>
                                 <th>Quota réservations</th>
+                                <th>Réservations en cours</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach($users as $user)
+                            @php
+                                $mandataire = \App\User::find($user->user_id);
+                                $nbMandatsNonRetournes = \App\Mandat::nonRetournesParUser($user->user_id)->count();
+                                if($mandataire){
+                                    $nbReservations = $mandataire->nombreReservations();
+                                }else{
+                                    $nbReservations = 0;
+                                }
+                            @endphp
                             <tr>
                                 <td>{{ $user->nom }} {{ $user->prenom }}</td>
                                 <td>{{ $user->quota_mandats_non_retournes }}</td>
-                                <td>{{ $user->nb_reservation_en_cours }}</td>
+                                <td class="text-center text-danger">{{ $nbMandatsNonRetournes }}</td>
                                 <td>{{ $user->quota_reservation_en_cours }}</td>
+                                <td class="text-center text-danger">{{ $nbReservations }}</td>
                                 <td>
                                     <button class="btn btn-info btn-sm" onclick="editParametres({{ $user->id }}, '{{ $user->nom }}', '{{ $user->prenom }}', {{ $user->quota_mandats_non_retournes }}, {{ $user->quota_reservation_en_cours }})">
                                         <i class="ti-pencil"></i> Modifier

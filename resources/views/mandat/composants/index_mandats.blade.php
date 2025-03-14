@@ -60,6 +60,7 @@
         </div>
     </form>
 </div>
+
 <div class="card-body">
     <div class="panel panel-info m-t-15" id="cont">
         <div class="panel-body">
@@ -441,5 +442,9 @@ select.form-control:focus {
 
 .sorting-active i {
     opacity: 1;
+}
+
+.modal-dialog {
+    max-width: 400px;
 }
 </style>

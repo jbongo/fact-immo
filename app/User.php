@@ -11,6 +11,7 @@ use App\Document;
 use App\Bibliotheque;
 use App\Mail\NotifChangementPalier;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\DB;
 
 use Illuminate\Support\Facades\Hash;
 
@@ -488,4 +489,26 @@ public function ficheinfo(){
 
 }
 
+/***
+ *  Retourne les mandataires actifs
+ */
+public static function mandatairesActifs(){
+    $mandataires = DB::table('users')
+                    ->join('contrats', 'users.id', '=', 'contrats.user_id')
+                    ->select('users.*','users.id as user_id', 'contrats.*')
+                    ->where([['role','mandataire'], ['a_demission', false]] )
+                    ->get();
+    return $mandataires;
+}
+/**
+ * Retourne le nombre de réservations d'un mandataire
+ */
+public function nombreReservations(){
+    $nbReservations = DB::table('mandats')
+                        ->where('statut', 'réservation')
+                        ->where('user_id', $this->id)
+                        ->count();
+                
+    return $nbReservations;
+}
 }

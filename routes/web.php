@@ -477,6 +477,9 @@ Route::middleware('auth')->group(function(){
     // Ajouter dans le groupe middleware auth
     Route::post('/mandats/restaurer/{id}', 'MandatController@restaurer')->name('mandat.restaurer');
 
+    // Ajouter dans le groupe middleware auth
+    Route::get('/mandats/statistiques', 'MandatController@statistiques')->name('mandat.statistiques');
+
 });
 
     // Blibliotheque

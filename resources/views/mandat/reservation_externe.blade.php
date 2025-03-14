@@ -98,10 +98,10 @@
 
                 <!-- Étape 2: Liste des réservations ou nouvelle réservation -->
                 <div id="step2" style="display: none;">
-                    <div class="col-sm-6">
+                    <div class="col-md-12">
                         <div id="reservations-list"></div>
                     </div>
-                    <div class="col-sm-6">
+                    <div class="col-sm-8">
                         <div id="new-reservation-form">
                         <h4 class="mb-4">Créer une nouvelle réservation</h4>
                             <div class="form-group">
@@ -189,9 +189,17 @@
                     
                     if(response.reservations.length > 0) {
                         let html = '<h4 class="mb-4">Réservations existantes</h4>';
-                        response.reservations.forEach(function(reservation) {
+                        let rowCount = 0;
+                        response.reservations.forEach(function(reservation, index) {
+                            if (index % 6 === 0) {
+                                if (rowCount > 0) {
+                                    html += '</div>';
+                                }
+                                html += '<div class="row">';
+                                rowCount++;
+                            }
                             html += `
-                                <div class="reservation-item">
+                                <div class="col-md-4 reservation-item">
                                     <h5>Réservation #${reservation.numero}</h5>
                                     <p class="mb-3">${reservation.nom_reservation}</p>
                                     <button class="btn btn-info" onclick="recupererReservation(${reservation.id}, '${reservation.numero}', '${reservation.nom_reservation}')">
@@ -200,15 +208,21 @@
                                 </div>
                             `;
                         });
-                        html += '<hr class="my-4">';
+                        if (rowCount > 0) {
+                            html += '</div>';
+                        }
+
                         $('#reservations-list').html(html);
                     }
                 },
                 error: function(xhr) {
                     swal({
                         title: "Erreur",
-                        text: xhr.responseJSON?.message || "Code client invalide",
+                        text: xhr.responseJSON?.message+", veuillez réessayer" || "Code client invalide, veuillez réessayer",
                         icon: "error"
+                    })
+                    .then(function() {
+                        window.location.reload();
                     });
                 }
             });
@@ -256,14 +270,13 @@
                         .html(`La réservation #${numero} a été modifiée avec le nouveau nom : <strong>${nouveauNom}</strong>`)
                         .show();
 
-                    // Mettre à jour l'affichage de la réservation
-                    $(`button[onclick="recupererReservation(${id}, '${numero}', '${nouveauNom}')"]`)
-                        .closest('.reservation-item')
+                    // Mettre à jour l'affichage de la réservation dans le bloc
+                    $(`.reservation-item:has(button[onclick*="recupererReservation(${id}"])`)
                         .find('p')
                         .text(nouveauNom);
 
                     // Mettre à jour l'attribut onclick du bouton
-                    $(`button[onclick="recupererReservation(${id}, '${numero}', '${nouveauNom}')"]`)
+                    $(`.reservation-item button[onclick*="recupererReservation(${id}"]`)
                         .attr('onclick', `recupererReservation(${id}, '${numero}', '${nouveauNom}')`);
 
                     // Faire défiler jusqu'au message
@@ -272,8 +285,11 @@
                 error: function(xhr) {
                     swal({
                         title: "Erreur",
-                        text: xhr.responseJSON?.message || "Une erreur est survenue",
+                        text: xhr.responseJSON?.message+", veuillez réessayer" || "Une erreur est survenue, veuillez réessayer",
                         icon: "error"
+                    })
+                    .then(function() {
+                        window.location.reload();
                     });
                 }
             });
@@ -307,8 +323,11 @@
                 error: function(xhr) {
                     swal({
                         title: "Erreur",
-                        text: xhr.responseJSON?.message || "Une erreur est survenue",
+                        text: xhr.responseJSON?.message || "Une erreur est survenue, veuillez réessayer",
                         icon: "error"
+                    })
+                    .then(function() {
+                        window.location.reload();
                     });
                 }
             });

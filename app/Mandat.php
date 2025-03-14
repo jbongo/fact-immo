@@ -46,5 +46,47 @@ class Mandat extends Model
     public function bien(){
         return $this->belongsTo('App\Bien');
     }
+    /**
+     * Retourne le nombre de mandats non retournés.
+     * 
+     * @return int
+     */
+    public function nonRetournes($query)
+    {
+        return $query->where('statut', 'mandat')->where('est_retourne', false);
+    }
+
+    /**
+     * Retourne le nombre de mandats non retorunés d'un utilisateur.
+     * 
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public static function nonRetournesParUser($user_id)
+    {
+            return Mandat::where('user_id', $user_id)
+                        ->where('statut', 'mandat')
+                     ->where('est_retourne', false)
+                     ;
+    }
+
+    /**
+     * Retourne le nombre de réservations.
+     * 
+     * @return int
+     */
+    public function reservations()
+    {
+        return $this->where('statut', 'réservation');
+    }
+
+    /**
+     * Retourne le nombre de réservations d'un utilisateur.
+     * 
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public static function reservationsParUser($user_id)
+    {
+        return static::where('user_id', $user_id)->where('statut', 'réservation');
+    }
 }
 

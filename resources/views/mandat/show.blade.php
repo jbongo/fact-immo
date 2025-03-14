@@ -12,7 +12,7 @@
                 <i class="ti-pencil"></i> Modifier
             </a>
             @if($mandat->statut == 'mandat')
-                @if($mandat->cloture)
+                @if($mandat->est_cloture)
                     <button class="btn btn-success btn-flat btn-addon btn-restaurer">
                         <i class="ti-back-right"></i> Restaurer
                     </button>
@@ -39,7 +39,7 @@
                             <span class="badge badge-{{ $mandat->statut == 'mandat' ? 'success' : 'warning' }}">
                                 {{ ucfirst($mandat->statut) }}
                             </span>
-                            @if($mandat->cloture)
+                            @if($mandat->est_cloture)
                                 <span class="badge badge-danger">Clôturé</span> @if($mandat->date_cloture)<span class="text-danger" style="font-size: 13px;">le {{ $mandat->date_cloture->format('d/m/Y') }}</span>@endif <span style="font-size: 13px;"> Motif: {{ $mandat->motif_cloture }}</span>
                             @endif
                         </h3>

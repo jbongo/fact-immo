@@ -105,11 +105,7 @@ class MandatController extends Controller
         $mandats = $query->paginate(50);
  
         
-        $mandataires = DB::table('users')
-                    ->join('contrats', 'users.id', '=', 'contrats.user_id')
-                    ->select('users.*', 'contrats.*')
-                    ->where([['role','mandataire'], ['a_demission', false]] )
-                    ->get();
+        $mandataires = User::mandatairesActifs();
         return view('mandat.index', compact('mandats', 'mandataires'));
     }
 
@@ -156,7 +152,7 @@ class MandatController extends Controller
             'numero' => $this->getNextMandatNumber()
         ]);
 
-        $mandataire->decrement('quota_mandats_non_retournes');
+        // $mandataire->decrement('quota_mandats_non_retournes');
         return response()->json(['success' => true]);
 
     }
@@ -190,7 +186,7 @@ class MandatController extends Controller
             'numero' => $this->getNextMandatNumber()
         ]);
 
-        $mandataire->decrement('quota_mandats_non_retournes');
+        // $mandataire->decrement('quota_mandats_non_retournes');
 
         return redirect()->route('mandat.index')->with('success', 'Mandat réservé !');
     }
@@ -201,11 +197,7 @@ class MandatController extends Controller
      */
     public function create()
     {
-        $mandataires = DB::table('users')
-                    ->join('contrats', 'users.id', '=', 'contrats.user_id')
-                    ->select('users.*', 'contrats.*')
-                    ->where([['role','mandataire'], ['a_demission', false]] )
-                    ->get();
+        $mandataires = User::mandatairesActifs();
         return view('mandat.add', compact('mandataires'));
     }
     /**
@@ -217,11 +209,7 @@ class MandatController extends Controller
     {
        
         $mandat = Mandat::findOrFail(Crypt::decrypt($id));
-        $mandataires = DB::table('users')
-                    ->join('contrats', 'users.id', '=', 'contrats.user_id')
-                    ->select('users.*', 'contrats.*')
-                    ->where([['role','mandataire'], ['a_demission', false]] )
-                    ->get();
+        $mandataires = User::mandatairesActifs();
         return view('mandat.edit', compact('mandat', 'mandataires'));
     }
 
@@ -580,11 +568,13 @@ class MandatController extends Controller
      * @param  \App\Mandat  $mandat
      * @return \Illuminate\Http\JsonResponse
      */
-    public function updateReservationExterne(Request $request, Mandat $mandat)
+    public function updateReservationExterne(Request $request, $id)
     {
         $request->validate([
             'nom_reservation' => 'required',
         ]);
+
+        $mandat = Mandat::findOrFail($id);
 
         $mandat->nom_reservation = $request->nom_reservation;
         $mandat->save();
@@ -685,11 +675,20 @@ class MandatController extends Controller
         return view('mandat.select_type', compact('reservations'));
     }
 
+    /**
+     * Affiche la page de réservation externe
+     */
     public function reservationExterne()
     {
         return view('mandat.reservation_externe');
     }
 
+    /**
+     * Vérifie si le code client est valide
+     * 
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */ 
     public function checkCode(Request $request)
     {
         $request->validate([
@@ -716,7 +715,12 @@ class MandatController extends Controller
             'reservations' => $reservations
         ]);
     }
-
+    /**
+     * Réserve un mandat depuis la page de réservation externe
+     * 
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function reserverExterne(Request $request)
     {
         $request->validate([
@@ -733,10 +737,21 @@ class MandatController extends Controller
             ], 404);
         }
 
-        if ($user->quota_mandats_non_retournes <= 0) {
+        $nb_mandats_non_retournes = Mandat::nonRetournesParUser($user->id)->count();
+
+        if ($user->quota_mandats_non_retournes <= $nb_mandats_non_retournes) {
             return response()->json([
                 'success' => false,
-                'message' => 'Quota de mandats atteint'
+                'message' => 'Quota de mandats non retorunés atteint ('.$nb_mandats_non_retournes.'/'.$user->quota_mandats_non_retournes.')'
+            ], 422);
+        }
+
+        $nb_reservations = Mandat::reservationsParUser($user->id)->count();
+
+        if ($user->quota_reservation_en_cours <= $nb_reservations) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Quota de réservations atteint ('.$nb_reservations.'/'.$user->quota_reservation_en_cours.')'
             ], 422);
         }
 
@@ -749,7 +764,7 @@ class MandatController extends Controller
             'numero' => $this->getNextMandatNumber()
         ]);
 
-        $user->decrement('quota_mandats_non_retournes');
+        // $user->decrement('quota_mandats_non_retournes');
 
         return response()->json([
             'success' => true,
@@ -763,7 +778,8 @@ class MandatController extends Controller
      */
     public function parametres()
     {
-        $users = User::where('role', 'mandataire')->get();
+        $users = User::mandatairesActifs();
+        // dd($users); 
         return view('mandat.parametres', compact('users'));
     }
 
@@ -788,6 +804,13 @@ class MandatController extends Controller
         ]);
     }
 
+    /**
+     * Restaure un mandat clôturé
+     * 
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Mandat  $mandat
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function restaurer(Request $request, $id)
     {
         try {
@@ -809,5 +832,67 @@ class MandatController extends Controller
                 'message' => 'Une erreur est survenue lors de la restauration du mandat'
             ], 500);
         }
+    }
+
+    public function statistiques()
+    {
+        $stats = [
+            'total_mandats' => Mandat::where('statut', 'mandat')->count(),
+            'mandats_mois' => Mandat::where('statut', 'mandat')
+                ->whereMonth('created_at', now()->month)
+                ->count(),
+            'reservations_actives' => Mandat::where('statut', 'réservation')->count(),
+            'non_retournes' => Mandat::where('statut', 'mandat')
+                ->where('est_retourne', false)
+                ->count(),
+            
+            // Stats par mandataire - Correction de la jointure
+            'non_retournes_par_mandataire' => User::join('contrats', 'users.id', '=', 'contrats.user_id')
+                ->where('users.role', 'mandataire')
+                ->where('contrats.a_demission', false)
+                ->select('users.*', 'contrats.a_demission')
+                ->get()
+                ->map(function($user) {
+                    return [
+                        'nom' => $user->nom . ' ' . $user->prenom,
+                        'count' => Mandat::nonRetournesParUser($user->id)->count(),
+                        'quota' => $user->quota_mandats_non_retournes
+                    ];
+                }),
+
+            // Données d'évolution
+            'evolution' => $this->getEvolutionData()
+        ];
+
+        return view('mandat.statistiques', compact('stats'));
+    }
+
+    private function getEvolutionData()
+    {
+        $months = collect(range(5, 0))->map(function($i) {
+            return now()->subMonths($i)->format('Y-m');
+        });
+
+        $mandats = $months->map(function($month) {
+            return Mandat::where('statut', 'mandat')
+                ->whereYear('created_at', substr($month, 0, 4))
+                ->whereMonth('created_at', substr($month, 5, 2))
+                ->count();
+        });
+
+        $reservations = $months->map(function($month) {
+            return Mandat::where('statut', 'réservation')
+                ->whereYear('created_at', substr($month, 0, 4))
+                ->whereMonth('created_at', substr($month, 5, 2))
+                ->count();
+        });
+
+        return [
+            'labels' => $months->map(function($month) {
+                return \Carbon\Carbon::createFromFormat('Y-m', $month)->format('M Y');
+            }),
+            'mandats' => $mandats,
+            'reservations' => $reservations
+        ];
     }
 }
