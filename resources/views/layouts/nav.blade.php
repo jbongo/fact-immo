@@ -194,13 +194,14 @@
 
 
                     @if (Auth()->user()->role == 'admin')
-                        <li class="{{ $li_stats }}"><a
-                                href="{{ route('stats.index', date('Y')) }}"><i class="large material-icons"
-                                    style="font-size:20px;">equalizer</i> Statistiques </a></li>
+                        <li class="{{ $li_stats }}"><a href="{{ route('stats.index', date('Y')) }}">
+                            <i class="large material-icons" style="font-size:20px;">equalizer</i> Statistiques </a>
+                        </li>
+                        <li class="{{ $li_mandat }}"><a href="{{ route('mandat.index') }}" class=""> 
+                            <i class="large material-icons" style="font-size:20px;">assignment</i></i>Mandats </a>
+                        </li>
                     @endif
-                    <li class="{{ $li_mandat }}"><a href="{{ route('mandat.index') }}" class=""> <i
-                        class="large material-icons" style="font-size:20px;">person</i></i>Mandats </a>
-                    </li>
+                    
 
                     @if (Auth()->user()->role == 'admin')
                         <li class="{{ $li_mandataire }}"><a href="{{ route('mandataire.index') }}" class=""> <i

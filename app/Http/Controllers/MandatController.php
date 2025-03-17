@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\DB;
 use App\Bien;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Validator;
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Storage;
 
 
 class MandatController extends Controller
@@ -894,5 +896,79 @@ class MandatController extends Controller
             'mandats' => $mandats,
             'reservations' => $reservations
         ];
+    }
+
+    /**
+     * Affiche la page d'importation de mandats
+     */
+    public function import()
+    {
+        return view('mandat.import');
+    }
+
+    /**
+     * Traite l'importation de mandats
+     */
+    public function processImport(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls'
+        ]);
+
+        try {
+            $path = $request->file('file')->store('temp');
+            $data = Excel::toArray([], storage_path('app/' . $path));
+            $rows = $data[0];
+            array_shift($rows); // Enlever l'en-tête
+            
+            // Prendre les 30 premières lignes
+            $preview = array_slice($rows, 0, 1000);
+            $formattedPreview = [];
+            
+            foreach($preview as $row) {
+                // Traitement de la date et du mandataire
+                preg_match('/(\d{2}\/\d{2}\/\d{4})\s*(?:\((.*?)\))?\s*(\d{2}\/\d{2}\/\d{4})?/', $row[1], $matches);
+                
+                $dateDebut = $matches[1] ?? null;
+                $mandataire = isset($matches[2]) ? trim($matches[2]) : null;
+                $dateFin = $matches[3] ?? null;
+
+                // Traitement du mandant et de l'adresse du mandat
+                $nomMandant = trim($row[2] ?? '');
+                $adresseMandat = trim($row[3] ?? '');
+
+                // Traitement du type de mandat
+                $typeMandat = $row[4] ?? '';
+                $typeExtrait = '';
+                if (stripos($typeMandat, 'vente') !== false) {
+                    $typeExtrait = 'vente';
+                } elseif (stripos($typeMandat, 'recherche') !== false) {
+                    $typeExtrait = 'recherche';
+                }
+
+                $formattedPreview[] = [
+                    'numero' => $row[0] ?? '',
+                    'date_debut' => $dateDebut,
+                    'mandataire' => $mandataire,
+                    'date_fin' => $dateFin,
+                    'mandant' => $nomMandant,
+                    'adresse_mandat' => $adresseMandat,
+                    'type_mandat' => [
+                        'original' => $typeMandat,
+                        'extrait' => $typeExtrait
+                    ],
+                    'adresse_bien' => $row[5] ?? '',
+                    'observations' => $row[6] ?? ''
+                ];
+            }
+
+            // Supprimer le fichier temporaire
+            Storage::delete($path);
+            
+            return back()->with('preview', $formattedPreview);
+
+        } catch (\Exception $e) {
+            return back()->with('error', 'Erreur lors de la lecture du fichier : ' . $e->getMessage());
+        }
     }
 }

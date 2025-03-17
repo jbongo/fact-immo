@@ -480,6 +480,10 @@ Route::middleware('auth')->group(function(){
     // Ajouter dans le groupe middleware auth
     Route::get('/mandats/statistiques', 'MandatController@statistiques')->name('mandat.statistiques');
 
+    // Ajouter dans le groupe middleware auth
+    Route::get('/mandats/import', 'MandatController@import')->name('mandat.import')->middleware('admin');
+    Route::post('/mandats/process-import', 'MandatController@processImport')->name('mandat.process_import')->middleware('admin');
+
 });
 
     // Blibliotheque

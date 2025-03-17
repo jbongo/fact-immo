@@ -39,7 +39,18 @@
                             <span class="ml-2">Statistiques</span>
                         </a>
                     </div>
-                   
+                    <div class="col-lg-3 col-md-3 col-sm-4">
+                        <a href="{{ route('mandat.import') }}" class="btn btn-primary btn-addon">
+                            <i class="ti-import"></i>
+                            <span class="ml-2">Importer des mandats</span>
+                        </a>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-4">
+                        <a href="{{ route('reservation.externe') }}" target="_blank" class="btn ">
+                            <i class="ti-import"></i>
+                            <span class="ml-2 mt-5">Réservations externes</span>
+                        </a>
+                    </div>
                 @endif
             </div>
            
