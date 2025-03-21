@@ -1142,7 +1142,9 @@ class MandatController extends Controller
             DB::beginTransaction();
             $updatedCount = 0;
             $errors = [];
-
+            // $rows1 = array_slice($rows, 0, 4000);
+            $rows = array_slice($rows,6000, 3000);
+            // dd($rows);
             foreach($rows as $row) {
                 // Vérifier si le numéro de mandat est vide
                 if (empty(trim($row[0] ?? ''))) {
@@ -1185,7 +1187,7 @@ class MandatController extends Controller
 
             $message = "$updatedCount mandats mis à jour avec succès.";
             if (!empty($errors)) {
-                $message .= " Erreurs : " . implode(", ", $errors);
+                // $message .= " Erreurs : " . implode(", ", $errors);
             }
 
             return back()->with('success', $message);
@@ -1196,6 +1198,57 @@ class MandatController extends Controller
             \Log::error('Erreur d\'importation des retours : ' . $e->getMessage());
             return back()->with('error', 'Erreur lors de l\'importation : ' . $e->getMessage());
         }
+    }
+
+    public function getMandatInfo($numero)
+    {
+        try {
+            $mandat = Mandat::with(['contact', 'bien'])->where('numero', $numero)->first();
+            
+            if (!$mandat) {
+                return response()->json(['error' => 'Mandat non trouvé'], 404);
+            }
+
+            return response()->json([
+                'success' => true,
+                'data' => [
+                    'date_mandat' => $mandat->date_debut->format('Y-m-d'),
+                    'type_mandat' => $mandat->type,
+                    'bien' => [
+                        'description' => $mandat->bien->type_bien,
+                        'code_postal' => $mandat->bien->code_postal,
+                        'ville' => $mandat->bien->ville
+                    ],
+                    'contact' => [
+                        'civilite' => $mandat->contact->civilite ?? 'Autre',
+                        'nom' => $mandat->contact->nom,
+                        'adresse' => $mandat->contact->adresse,
+                        'code_postal' => $mandat->contact->code_postal,
+                        'ville' => $mandat->contact->ville
+                    ]
+                ]
+            ]);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+
+    // Ajouter cette méthode pour récupérer la liste des mandats
+    public function getMandatsForCompromis()
+    {
+        if (Auth::user()->role == 'admin') {
+            $mandats = Mandat::where('statut', 'mandat')
+                             ->orderBy('numero', 'desc')
+                             ->get(['id', 'numero']);
+        } else {
+            $mandats = Mandat::where('statut', 'mandat')
+                             ->where('suivi_par_id', Auth::user()->id)
+                             ->orderBy('numero', 'desc')
+                             ->get(['id', 'numero']);
+        }
+      
+                         
+        return response()->json($mandats);
     }
 
 }

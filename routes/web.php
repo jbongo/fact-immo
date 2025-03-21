@@ -484,6 +484,12 @@ Route::middleware('auth')->group(function(){
     Route::get('/mandats/import', 'MandatController@import')->name('mandat.import')->middleware('admin');
     Route::post('/mandats/process-import', 'MandatController@processImport')->name('mandat.process_import')->middleware('admin');
 
+    // Ajouter cette route
+    Route::get('/mandats/info/{numero}', 'MandatController@getMandatInfo')->name('mandat.info');
+
+    // Ajouter cette route
+    Route::get('/mandats/for-compromis', 'MandatController@getMandatsForCompromis')->name('mandats.for-compromis');
+
 });
 
     // Blibliotheque

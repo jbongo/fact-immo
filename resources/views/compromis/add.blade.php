@@ -34,6 +34,57 @@
                             </div>
                         </div>
 
+                        <div class="panel-body">
+                            <fieldset class="col-md-12">
+                                <legend>Infos Mandat</legend>
+                                <div class="panel panel-warning">
+                                    <div class="panel-body">
+
+                                        <div class="row">
+
+                                            <div class="col-lg-4 col-md-4 col-sm-4">
+                                                <div id="div_numero_mandat">
+                                                    <div class="form-group">
+                                                        <label for="numero_mandat">Numéro Mandat <span
+                                                                class="text-danger">*</span></label>
+                                                        <select class="selectpicker form-control" id="numero_mandat" name="numero_mandat" 
+                                                                data-live-search="true" data-style="btn-warning btn-rounded" required>
+                                                            <option value="">Sélectionner un mandat</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-4 col-md-4 col-sm-4">
+                                                <div class="form-group">
+                                                    <label for="date_mandat">Date mandat <span
+                                                            class="text-danger">*</span> </label>
+                                                    <input class="form-control" type="date"
+                                                        value="{{ old('date_mandat') }}" id="date_mandat"
+                                                        name="date_mandat" required>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>
+                        <br>
+
+                        <div id="loader" style="display: none;">
+                            <div class="loading-spinner">
+                                <div class="spinner-border text-warning" role="status">
+                                    <span class="sr-only">Chargement...</span>
+                                </div>
+                                <div class="loading-text">
+                                    Chargement des informations...
+                                </div>
+                            </div>
+                        </div>
+
                         <fieldset class="col-md-12">
                             <legend>Infos Partage</legend>
                             <div class="panel panel-warning">
@@ -449,57 +500,7 @@
                         <br>
 
 
-                        <div class="panel-body">
-                            <fieldset class="col-md-12">
-                                <legend>Infos Mandat</legend>
-                                <div class="panel panel-warning">
-                                    <div class="panel-body">
-
-                                        <div class="row">
-
-                                            <div class="col-lg-4 col-md-4 col-sm-4">
-                                                <div id="div_numero_mandat">
-
-                                                    <div class="form-group">
-                                                        <label for="numero_mandat">Numéro Mandat <span
-                                                                class="text-danger">*</span></label>
-                                                        <input class="form-control" type="number" min="10000"
-                                                            max="99999" value="{{ old('numero_mandat') }}"
-                                                            id="numero_mandat" name="numero_mandat" required>
-                                                    </div>
-                                                    @if ($errors->has('numero_mandat'))
-                                                        <br>
-                                                        <div class="alert alert-warning " style="color:black">
-                                                            <strong>{{ $errors->first('numero_mandat') }}, vérifiez vos
-                                                                affaires en cours ou archivées.</strong>
-                                                        </div>
-                                                    @endif
-                                                </div>
-                                            </div>
-
-                                            <div class="col-lg-4 col-md-4 col-sm-4">
-                                                <div class="form-group">
-                                                    <label for="date_mandat">Date mandat <span
-                                                            class="text-danger">*</span> </label>
-                                                    <input class="form-control" type="date"
-                                                        value="{{ old('date_mandat') }}" id="date_mandat"
-                                                        name="date_mandat" required>
-                                                </div>
-                                            </div>
-
-                                        </div>
-
-
-                                    </div>
-                                </div>
-                            </fieldset>
-                        </div>
-                        <br>
-
-
-
-
-
+                
                         <div class="panel-body">
                             <fieldset class="col-md-12">
                                 <legend>Autres Infos</legend>
@@ -1113,4 +1114,119 @@
 <script async
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCD0y8QWgApdFG33-i8dVHWia-fIXcOMyc&libraries=places&callback=initAutocomplete"
     async defer></script>
+
+<script>
+$(document).ready(function() {
+    // Charger la liste des mandats au chargement de la page
+    $.ajax({
+        url: '/mandats/for-compromis',
+        method: 'GET',
+        success: function(mandats) {
+            let select = $('#numero_mandat');
+            mandats.forEach(function(mandat) {
+                select.append(new Option(mandat.numero, mandat.numero));
+            });
+            select.selectpicker('refresh');
+        }
+    });
+
+    // Gérer le changement de mandat
+    $('#numero_mandat').on('change', function() {
+        let numero = $(this).val();
+        if (numero) {
+            $('#loader').show(); // Afficher le loader
+            
+            $.ajax({
+                url: '/mandats/info/' + numero,
+                method: 'GET',
+                success: function(response) {
+                    if (response.success) {
+                        let data = response.data;
+                        
+                        // Date du mandat
+                        $('#date_mandat').val(data.date_mandat);
+                        
+                        // Type d'affaire
+                        if (data.type_mandat === 'location') {
+                            $('#type_affaire').val('Location').trigger('change');
+                        } else {
+                            $('#type_affaire').val('Vente').trigger('change');
+                        }
+                        
+                        // Description du bien (type + adresse)
+                        let descriptionBien = data.bien.description;
+                        $('#description_bien').val(descriptionBien)
+                            .trigger('keyup'); // Pour mettre à jour le compteur de caractères
+                        
+                        // Adresse du bien
+                        $('#code_postal_bien').val(data.bien.code_postal);
+                        $('#ville_bien').val(data.bien.ville.toUpperCase());
+                        
+                        // Infos vendeur
+                        let civilite = data.contact.civilite;
+                        if ($('#civilite_vendeur option[value="' + civilite + '"]').length > 0) {
+                            $('#civilite_vendeur').val(civilite);
+                        } else {
+                            $('#civilite_vendeur').val('Autre');
+                        }
+                        
+                        $('#nom_vendeur').val(data.contact.nom);
+                        $('#adresse1_vendeur').val(data.contact.adresse);
+                        $('#code_postal_vendeur').val(data.contact.code_postal);
+                        $('#ville_vendeur').val(data.contact.ville.toUpperCase());
+                    }
+                },
+                error: function(xhr) {
+                    if (xhr.status === 404) {
+                        // Réinitialiser les champs si le mandat n'est pas trouvé
+                        $('#date_mandat').val('');
+                        $('#description_bien').val('');
+                        $('#code_postal_bien').val('');
+                        $('#ville_bien').val('');
+                        $('#civilite_vendeur').val('');
+                        $('#nom_vendeur').val('');
+                        $('#adresse1_vendeur').val('');
+                        $('#code_postal_vendeur').val('');
+                        $('#ville_vendeur').val('');
+                        
+                        swal("Erreur", "Mandat non trouvé", "error");
+                    } else {
+                        swal("Erreur", "Une erreur est survenue", "error");
+                    }
+                },
+                complete: function() {
+                    $('#loader').hide(); // Cacher le loader
+                }
+            });
+        }
+    });
+});
+</script>
+
+<style>
+.loading-spinner {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.loading-text {
+    margin-top: 10px;
+    color: #1f1292;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.spinner-border {
+    width: 3rem;
+    height: 3rem;
+}
+</style>
 @endsection
