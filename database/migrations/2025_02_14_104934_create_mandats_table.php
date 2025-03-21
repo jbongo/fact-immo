@@ -17,7 +17,7 @@ class CreateMandatsTable extends Migration
             $table->bigIncrements('id');
             $table->integer('numero')->nullable();
             $table->string('nom_reservation')->nullable();
-            $table->string('type')->nullable(); // Vente, Achat, etc.
+            $table->string('type')->nullable(); // Vente, Achat, recherche etc.
             $table->string('nature')->nullable(); // Simple, Exclusif...
             $table->integer('user_id')->unsigned()->nullable(); // mandataire qui saisi
             $table->integer('suivi_par_id')->unsigned()->nullable(); // mandataire qui suit l'affaire

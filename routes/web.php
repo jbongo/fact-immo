@@ -512,3 +512,5 @@ Route::post('/check-code', 'MandatController@checkCode')->name('check.code');
 Route::post('/reserver-externe', 'MandatController@reserverExterne')->name('reserver.externe');
 
 Route::post('/mandats/update-reservation-externe/{id}', 'MandatController@updateReservationExterne')->name('update.reservation.externe');
+
+Route::post('/mandats/process-import-retour', 'MandatController@processImportRetour')->name('mandat.process_import_retour')->middleware('admin');

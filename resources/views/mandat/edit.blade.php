@@ -49,6 +49,8 @@
                                                         <select class="form-control form-white" name="type_mandat" required>
                                                             <option value="vente" {{ $mandat->type == 'vente' ? 'selected' : '' }}>Mandat de Vente</option>
                                                             <option value="achat" {{ $mandat->type == 'achat' ? 'selected' : '' }}>Mandat d'Achat</option>
+                                                            <option value="location" {{ $mandat->type == 'location' ? 'selected' : '' }}>Mandat de Location</option>
+                                                            <option value="recherche" {{ $mandat->type == 'recherche' ? 'selected' : '' }}>Mandat de Recherche</option>
                                                         </select>
                                                     </div>
                                                     <div class="col-md-6">

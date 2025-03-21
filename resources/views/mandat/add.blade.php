@@ -46,6 +46,10 @@
                                                             <option value="">Sélectionner</option>
                                                             <option value="vente">Mandat de Vente</option>
                                                             <option value="achat">Mandat d'Achat</option>
+                                                            <option value="location">Mandat de Location</option>
+                                                            <option value="recherche">Mandat de Recherche</option>
+
+
                                                         </select>
                                                     </div>
                                                     <div class="col-md-6">

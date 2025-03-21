@@ -120,8 +120,22 @@
                                         @if($mandat->contact->type_contact == 'personne_physique')
                                             {{ $mandat->contact->civilite }} {{ $mandat->contact->nom }} {{ $mandat->contact->prenom }}<br>
                                             {{ $mandat->contact->adresse }} {{ $mandat->contact->code_postal }} {{ $mandat->contact->ville }}
+                                        @elseif($mandat->contact->type_contact == 'entreprise')
+                                            {{ $mandat->contact->raison_sociale }} <br>
+                                            {{ $mandat->contact->adresse }} {{ $mandat->contact->code_postal }} {{ $mandat->contact->ville }}
+                                        @elseif($mandat->contact->type_contact == 'tiers')
+                                            {{ $mandat->contact->nom }} <br>
+                                            {{ $mandat->contact->adresse }} {{ $mandat->contact->code_postal }} {{ $mandat->contact->ville }}
+                                        @elseif($mandat->contact->type_contact == 'couple')
+                                            {{ $mandat->contact->nom_p1 }} {{ $mandat->contact->prenom_p1 }} et {{ $mandat->contact->nom_p2 }} {{ $mandat->contact->prenom_p2 }}<br>
+                                            {{ $mandat->contact->adresse_p1 }} {{ $mandat->contact->code_postal_p1 }} {{ $mandat->contact->ville_p1 }}<br>
+                                                {{ $mandat->contact->adresse_p2 }} {{ $mandat->contact->code_postal_p2 }} {{ $mandat->contact->ville_p2 }}
+                                        @elseif($mandat->contact->type_contact == 'indivision')
+                                            {{ $mandat->contact->nom_indivision }}<br>
+                                            {{ $mandat->contact->adresse }} {{ $mandat->contact->code_postal }} {{ $mandat->contact->ville }}
+
                                         @endif
-                                        {{-- Ajouter les autres cas si nécessaire --}}
+                                        
                                     @else
                                         {{ $mandat->nom_reservation }}
                                     @endif

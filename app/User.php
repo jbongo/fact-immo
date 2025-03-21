@@ -506,7 +506,7 @@ public static function mandatairesActifs(){
 public function nombreReservations(){
     $nbReservations = DB::table('mandats')
                         ->where('statut', 'réservation')
-                        ->where('user_id', $this->id)
+                        ->where('suivi_par_id', $this->id)
                         ->count();
                 
     return $nbReservations;

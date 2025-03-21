@@ -101,7 +101,7 @@ class MandatController extends Controller
                     $query->orderBy($sortField, $direction);
             }
         } else {
-            $query->orderBy('created_at', 'desc');
+            $query->orderBy('numero', 'desc');
         }
 
         $mandats = $query->paginate(50);
@@ -911,6 +911,224 @@ class MandatController extends Controller
      */
     public function processImport(Request $request)
     {
+
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls'
+        ]);
+
+        try {
+            $mandataires = User::where('role', 'mandataire')->get();
+            $path = $request->file('file')->store('temp');
+            $data = Excel::toArray([], storage_path('app/' . $path));
+            $rows = $data[0];
+            array_shift($rows);
+
+            $preview = array_slice($rows, 0, 100);
+            $formattedPreview = [];
+
+            DB::beginTransaction();
+            
+            foreach($rows as $row) {
+                // Vérifier si le numéro de mandat est vide
+                if (empty(trim($row[0] ?? ''))) {
+                    break; // Sortir de la boucle si la première colonne est vide
+                }
+
+                try {
+                    // Traitement de la date et du mandataire
+                    preg_match('/(\d{2}\/\d{2}\/\d{4})\s*(?:\((.*?)\))?\s*(\d{2}\/\d{2}\/\d{4})?/', $row[1], $matches);
+                   
+                    $mandataireNom = isset($matches[2]) ? trim(explode(' ', $matches[2])[0]) : null;
+                    $mandataireId = null;
+                    
+                    // Rechercher l'ID du mandataire
+                    if ($mandataireNom) {
+                        $mandataire = $mandataires->first(function($user) use ($mandataireNom) {
+                            return strcasecmp($user->nom, $mandataireNom) === 0;
+                        });
+                        
+                        if ($mandataire) {
+                            $mandataireId = $mandataire->id;
+                        }
+                    }
+                    // $dateDebut = $matches[1] ?? null;
+                    $mandataire = isset($matches[2]) ? trim($matches[2]) : null;
+                    $dateDebut = $matches[3] ?? null;
+
+                    // Traitement du type de mandat
+                    $typeMandat = $row[4] ?? '';
+                    if (stripos($row[0], 'RESERVATION') !== false) {
+                        $typeExtrait = 'réservation';
+                    } elseif (stripos($typeMandat, 'vente') !== false) {
+                        $typeExtrait = 'vente';
+                    } elseif (stripos($typeMandat, 'recherche') !== false) {
+                        $typeExtrait = 'recherche';
+                    } else {
+                        $typeExtrait = 'réservation';
+                    }
+
+                    // Traitement de l'adresse du bien
+                    $adresseBien = $row[5] ?? '';
+                    // Nettoyer les espaces multiples
+                    $adresseBien = preg_replace('/\s+/', ' ', trim($adresseBien));
+                    // Découper sur les tirets en gérant les espaces
+                    $adresseParts = array_map('trim', explode('-', $adresseBien));
+                    $typeBien = trim($adresseParts[0] ?? '');
+                    
+                    // Traiter le reste de l'adresse
+                    if (isset($adresseParts[1])) {
+                        // Nettoyer la chaîne en enlevant France et les espaces multiples
+                        $restAdresse = preg_replace('/\s+France\s*$/i', '', implode(' ', array_slice($adresseParts, 1)));
+                        $restAdresse = preg_replace('/\s+/', ' ', trim($restAdresse));
+                        
+                        // Extraire le code postal et la ville avec une expression régulière plus permissive
+                        if (preg_match('/^(.*?)\s*(\d{5})\s*([^0-9]+)$/i', $restAdresse, $matches)) {
+                            $adresseBienDetail = trim($matches[1]);
+                            $codePostal = trim($matches[2]);
+                            $ville = trim($matches[3]);
+                        } else {
+                            // Si le pattern ne correspond pas, essayer de trouver juste le code postal
+                            preg_match('/(\d{5})/', $restAdresse, $cpMatches);
+                            if (!empty($cpMatches)) {
+                                $parts = explode($cpMatches[1], $restAdresse);
+                                $adresseBienDetail = trim($parts[0]);
+                                $codePostal = $cpMatches[1];
+                                $ville = trim($parts[1] ?? '');
+                            } else {
+                                $adresseBienDetail = $restAdresse;
+                                $codePostal = '';
+                                $ville = '';
+                            }
+                        }
+                    } else {
+                        $adresseBienDetail = '';
+                        $codePostal = '';
+                        $ville = '';
+                    }
+
+                    // Traitement de l'adresse du mandant
+                    $adresseMandant = $row[3] ?? '';
+                    // Nettoyer les espaces multiples et enlever le pays
+                    $adresseMandant = preg_replace('/\s*\([A-Z]{2}\)\s*$/', '', trim($adresseMandant));
+                    $adresseMandant = preg_replace('/\s+/', ' ', $adresseMandant);
+
+                    // Pattern pour extraire le code postal entre parenthèses à la fin
+                    if (preg_match('/^(.*?)\s+([^\s]+(?:\s*-\s*[^\s]+)*)\s*\((\d{5})\)$/i', $adresseMandant, $matches)) {
+                        $fullAddress = trim($matches[1]); // Tout ce qui précède la ville
+                        $villeMandant = trim($matches[2]); // Le dernier mot avant le code postal
+                        $codePostalMandant = trim($matches[3]);
+                        
+                        // L'adresse est tout ce qui précède la ville
+                        $adresseMandantDetail = $fullAddress;
+                    } else {
+                        // Si le format ne correspond pas, garder toute la chaîne comme adresse
+                        $adresseMandantDetail = $adresseMandant;
+                        $villeMandant = '';
+                        $codePostalMandant = '';
+                    }
+
+                    // Nettoyer les résultats
+                    $adresseMandantDetail = trim($adresseMandantDetail);
+                    $villeMandant = trim(str_replace(['(', ')'], '', $villeMandant));
+                    $codePostalMandant = trim($codePostalMandant);
+
+                    // Après avoir formaté les données, créer les enregistrements
+                    
+                    // 1. Créer le contact avec vérification
+                    $contact = Contact::create([
+                        'nom' => trim($row[2] ?? ''),
+                        'adresse' => $adresseMandantDetail,
+                        'code_postal' => $codePostalMandant,
+                        'ville' => $villeMandant,
+                        'type_contact' => 'tiers',
+                        'user_id' => $mandataireId ?? null
+                    ]);
+
+                    if (!$contact) {
+                        throw new \Exception("Erreur lors de la création du contact");
+                    }
+
+                    // 2. Créer le bien avec vérification
+                    $bien = Bien::create([
+                        'type_bien' => $typeBien,
+                        'user_id' => $mandataireId ?? 2,
+                        'adresse' => $adresseBienDetail,
+                        'code_postal' => $codePostal,
+                        'ville' => $ville
+                    ]);
+
+                    if (!$bien) {
+                        throw new \Exception("Erreur lors de la création du bien");
+                    }
+
+                    // 3. Créer le mandat avec vérification
+                    $mandat = Mandat::create([
+                        'numero' => $row[0] ?? '',
+                        'date_debut' => \Carbon\Carbon::createFromFormat('d/m/Y', $dateDebut),
+                        'type' => $typeExtrait,
+                        'observation' => $row[6] ?? '',
+                        'user_id' => $mandataireId,
+                        'suivi_par_id' => $mandataireId,
+                        'contact_id' => $contact->id,
+                        'bien_id' => $bien->id,
+                        'statut' => $typeExtrait === 'réservation' ? 'réservation' : 'mandat'
+                    ]);
+
+                    if (!$mandat) {
+                        throw new \Exception("Erreur lors de la création du mandat");
+                    }
+
+                    // Ajouter à l'aperçu comme avant
+                    $formattedPreview[] = [
+                        'numero' => $row[0] ?? '',
+                        'date_debut' => $dateDebut,
+                        'mandataire' => $mandataire,
+                        'mandataire_id' => $mandataireId,
+                        'mandant' => trim($row[2] ?? ''),
+                        'adresse_mandant' => [
+                            'adresse' => $adresseMandantDetail,
+                            'code_postal' => $codePostalMandant,
+                            'ville' => $villeMandant
+                        ],
+                        'type_mandat' => $typeExtrait,
+                        'bien' => [
+                            'type' => $typeBien,
+                            'adresse' => $adresseBienDetail,
+                            'code_postal' => $codePostal,
+                            'ville' => $ville
+                        ],
+                        'observations' => $row[6] ?? ''
+                    ];
+
+                } catch (\Exception $e) {
+                    \Log::error('Erreur lors du traitement de la ligne : ' . json_encode($row));
+                    \Log::error($e->getMessage());
+                    throw $e;
+                }
+            }
+
+            DB::commit();
+            Storage::delete($path);
+            
+            return back()
+                ->with('preview', $formattedPreview)
+                ->with('success', 'Importation réussie ! ' . count($formattedPreview) . ' mandats importés.');
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Storage::delete($path);
+            \Log::error('Erreur d\'importation : ' . $e->getMessage());
+            return back()
+                ->with('error', 'Erreur lors de l\'importation : ' . $e->getMessage())
+                ->with('preview', $formattedPreview ?? []);
+        }
+    }
+
+    /**
+     * Traite l'importation de mandats pour les retours 
+     */
+    public function processImportRetour(Request $request)
+    {
         $request->validate([
             'file' => 'required|mimes:xlsx,xls'
         ]);
@@ -920,55 +1138,64 @@ class MandatController extends Controller
             $data = Excel::toArray([], storage_path('app/' . $path));
             $rows = $data[0];
             array_shift($rows); // Enlever l'en-tête
-            
-            // Prendre les 30 premières lignes
-            $preview = array_slice($rows, 0, 1000);
-            $formattedPreview = [];
-            
-            foreach($preview as $row) {
-                // Traitement de la date et du mandataire
-                preg_match('/(\d{2}\/\d{2}\/\d{4})\s*(?:\((.*?)\))?\s*(\d{2}\/\d{2}\/\d{4})?/', $row[1], $matches);
-                
-                $dateDebut = $matches[1] ?? null;
-                $mandataire = isset($matches[2]) ? trim($matches[2]) : null;
-                $dateFin = $matches[3] ?? null;
 
-                // Traitement du mandant et de l'adresse du mandat
-                $nomMandant = trim($row[2] ?? '');
-                $adresseMandat = trim($row[3] ?? '');
+            DB::beginTransaction();
+            $updatedCount = 0;
+            $errors = [];
 
-                // Traitement du type de mandat
-                $typeMandat = $row[4] ?? '';
-                $typeExtrait = '';
-                if (stripos($typeMandat, 'vente') !== false) {
-                    $typeExtrait = 'vente';
-                } elseif (stripos($typeMandat, 'recherche') !== false) {
-                    $typeExtrait = 'recherche';
+            foreach($rows as $row) {
+                // Vérifier si le numéro de mandat est vide
+                if (empty(trim($row[0] ?? ''))) {
+                    break;
                 }
 
-                $formattedPreview[] = [
-                    'numero' => $row[0] ?? '',
-                    'date_debut' => $dateDebut,
-                    'mandataire' => $mandataire,
-                    'date_fin' => $dateFin,
-                    'mandant' => $nomMandant,
-                    'adresse_mandat' => $adresseMandat,
-                    'type_mandat' => [
-                        'original' => $typeMandat,
-                        'extrait' => $typeExtrait
-                    ],
-                    'adresse_bien' => $row[5] ?? '',
-                    'observations' => $row[6] ?? ''
-                ];
+                try {
+                    $numeroMandat = trim($row[0]);
+                    $dateRetour = !empty($row[3]) ? \Carbon\Carbon::createFromFormat('d/m/Y', trim($row[3])) : null;
+                    $dateCloture = !empty($row[2]) ? \Carbon\Carbon::createFromFormat('d/m/Y', trim($row[2])) : null;
+
+                    $mandat = Mandat::where('numero', $numeroMandat)->first();
+
+                    if ($mandat) {
+                        $updates = [
+                            'est_retourne' => true,
+                            'date_retour' => $dateRetour
+                        ];
+
+                        // Si une date de clôture est présente
+                        if ($dateCloture) {
+                            $updates['est_cloture'] = true;
+                            $updates['date_cloture'] = $dateCloture;
+                        }
+
+                        $mandat->update($updates);
+                        $updatedCount++;
+                    } else {
+                        $errors[] = "Mandat numéro $numeroMandat non trouvé dans la base de données.";
+                    }
+                } catch (\Exception $e) {
+                    \Log::error('Erreur lors du traitement de la ligne : ' . json_encode($row));
+                    \Log::error($e->getMessage());
+                    $errors[] = "Erreur pour le mandat {$row[0]} : " . $e->getMessage();
+                }
             }
 
-            // Supprimer le fichier temporaire
+            DB::commit();
             Storage::delete($path);
-            
-            return back()->with('preview', $formattedPreview);
+
+            $message = "$updatedCount mandats mis à jour avec succès.";
+            if (!empty($errors)) {
+                $message .= " Erreurs : " . implode(", ", $errors);
+            }
+
+            return back()->with('success', $message);
 
         } catch (\Exception $e) {
-            return back()->with('error', 'Erreur lors de la lecture du fichier : ' . $e->getMessage());
+            DB::rollBack();
+            Storage::delete($path);
+            \Log::error('Erreur d\'importation des retours : ' . $e->getMessage());
+            return back()->with('error', 'Erreur lors de l\'importation : ' . $e->getMessage());
         }
     }
+
 }
